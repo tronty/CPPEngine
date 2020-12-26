@@ -1,0 +1,69 @@
+OS="Windows"
+STR = $(shell uname -a)
+ifneq (, $(findstring Ubuntu, $(STR)))
+	OS="Ubuntu"
+else ifneq (, $(findstring Darwin, $(STR)))
+	OS="Darwin"
+else ifneq (, $(findstring Debian, $(STR)))
+	OS="Debian"
+else
+	OS="Windows"
+endif
+
+SIMULATE ?= yes
+
+ifeq ($(SIMULATE), yes)
+DEV := /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer
+BIN := $(DEV)/usr/bin
+else
+DEV := /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer
+BIN := $(DEV)/usr/bin
+endif
+
+ifeq ($(SIMULATE), yes)
+
+CC := $(BIN)/gcc
+CFLAGS += -arch i386
+LDFLAGS += -arch i386
+CFLAGS += -isysroot $(DEV)/SDKs/iPhoneSimulator6.0.sdk
+
+else
+
+CC := $(BIN)/gcc
+CFLAGS += -arch armv6 -mthumb 
+LDFLAGS += -arch armv6 -mthumb 
+CFLAGS += -isysroot $(DEV)/SDKs/iPhoneOS6.0.sdk
+
+endif
+
+CFLAGS += -fobjc-abi-version=2
+CFLAGS += -fobjc-legacy-dispatch
+CFLAGS += -mmacosx-version-min=10.6
+CFLAGS += -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100
+CFLAGS += -Wno-import #-Werror
+LDFLAGS += -Xlinker -objc_abi_version -Xlinker 2
+
+CFLAGS += -I.
+FRAMEWORKS:= -framework Foundation -framework GLKit -framework UIKit -framework CoreGraphics -framework OpenGLES -framework CoreAudio -framework AudioToolbox -framework QuartzCore
+LIBRARIES:= -lobjc -lstdc++
+
+TARGET = main
+
+SOURCE= main.m \
+	EAGLView.mm \
+	Lesson01AppDelegate.mm \
+	Lesson01.mm \
+	Lesson.mm
+
+
+CFLAGS+=-Wall -g -v $(SOURCE) #-Werror
+LDFLAGS=$(LIBRARIES) $(FRAMEWORKS)
+
+all: $(TARGET)
+clean:
+	rm -fr *.o $(TARGET)
+
+$(TARGET):
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(TARGET)
+	$(DEV)/Applications/iPhone\ Simulator.app/Contents/MacOS/iPhone\ Simulator \ -SimulateApplication ./$(TARGET)
+

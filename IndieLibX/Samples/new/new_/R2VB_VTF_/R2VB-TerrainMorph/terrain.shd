@@ -1,0 +1,41 @@
+//-----------------------------------------------------------------------------
+// File: terrain.shd
+// Copyright (c) 2006 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+[Vertex shader]
+
+float4x4 mvp;
+float TexFactor;
+float HeightFactor;
+
+struct VsOut {
+	float4 Pos:      POSITION;
+	float2 TexCoord: TEXCOORD0;
+	float4 Color:    COLOR;
+};
+
+VsOut main(float2 pos: POSITION, float4 dmap: TEXCOORD0){
+	VsOut Out;
+	float4 tPos;
+
+	tPos = float4(pos.x, dmap.x*HeightFactor, pos.y, 1.0f);
+	Out.Pos = mul(mvp, tPos);
+	Out.Color.rgba = dmap.x;
+	Out.TexCoord = float2(pos.x/TexFactor, pos.y/TexFactor);
+	
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler base;
+sampler base2;
+float time;
+
+float4 main(float2 texcoord:TEXCOORD0, float4 color : COLOR) : COLOR {
+	float4 tex = lerp(tex2D(base, texcoord), tex2D(base2, texcoord), time);
+	return float4(color.r, color.g, color.b, 1)* tex;
+}

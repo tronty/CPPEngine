@@ -1,0 +1,147 @@
+/*********************************************************************NVMH3****
+Path:  NVSDK\Common\media\programs
+File:  cg_Volumelines.cg
+
+Copyright NVIDIA Corporation 2002
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+Comments:
+
+******************************************************************************/
+[Vertex shader]
+struct app2vert
+ {
+	float4 startpos	: POSITION;
+	float4 endpos	: PSIZE;
+	float4 color	: COLOR0;
+	float4 param8	: TEXCOORD0;
+	float3 param9	: TEXCOORD1;
+ };
+
+struct vfconn
+ {
+	float4 hpos		: POSITION;
+	float4 col0		: COLOR0;
+	float4 blendFactor		: COLOR1;
+	float4 tex0		: TEXCOORD0;
+	float4 tex1		: TEXCOORD1;
+    float4 noisePos	: TEXCOORD2;
+ };
+//
+// Vertex Program Entry : 
+//
+float4x4 ModelViewProj;
+float4x4 ModelView;
+float4x4 Projection;
+vfconn main(app2vert IN
+			)
+ {
+	vfconn OUT;
+	OUT.col0 = IN.color;
+	//-------------------------------------------------------------------------------
+	//
+	//====> Transform 2 positions with modelview
+	//
+	float4 posstart = mul(ModelView, IN.startpos);
+	float4 posend = mul(ModelView, IN.endpos);
+	//====> unit vector between EYE and CENTER of the line (param4.x = 1/2)
+	float3	middlepoint = normalize((posstart.xyz + posend.xyz)/2.0);
+	//====> unit vector of the line direction
+	float3	lineoffset = posend.xyz - posstart.xyz; // do we realy need to use intermediate ??
+	float3	linedir = normalize(lineoffset); // can we imagin doing this at the same time ??
+	float	sqlinelength = dot(lineoffset, lineoffset);
+	//====> dot product in order to compute the texture coef
+	float	texcoef = abs(dot(linedir, middlepoint));
+	//====> change texture coef depending on line length: y=(Sz/(l^2))(x-1)+1
+	texcoef = max(((texcoef - 1)*(sqlinelength / IN.param9.z)) + 1, 0);
+
+	//----------------------------------------------------------------------------
+
+	//
+	//====> modelview + projection on start and end points
+	//
+	posstart = mul(ModelViewProj, IN.startpos);
+	posend = mul(ModelViewProj, IN.endpos);
+	//====> perspective transform to get projected point
+	float2 startpos2d = posstart.xy / posstart.w;
+	float2 endpos2d = posend.xy / posend.w;
+	//====> vector between these 2 points
+	float2 linedir2d = normalize(startpos2d - endpos2d);
+	//====> move corners with radius0 and radius1
+	posstart.xy = ((texcoef * IN.param8.x) * linedir2d.xy) + posstart.xy; // horizontal
+
+	linedir2d = IN.param9.x * linedir2d;
+
+	posstart.x = posstart.x + linedir2d.y; // vertical x
+	posstart.y = posstart.y - linedir2d.x; // vertical y
+	OUT.noisePos = posstart;
+	OUT.hpos = posstart;
+	//--------------------------------------------------------------------------------
+	//
+	//=====> compute tex coords depending on texcoef
+	//
+	OUT.tex0.xy = IN.param8.zw; 
+	OUT.tex0.zw = float2(0,1);
+	OUT.blendFactor = texcoef.xxxx;
+
+	return OUT;
+ }
+[Fragment shader]
+sampler2D texture0;
+sampler2D texture0_mask;
+sampler2D texture1;
+sampler2D texture1_mask;
+sampler3D noisetex;
+float3 NoiseScaleAmpTime;
+float4 main(in float4 color0	    : COLOR0,
+			in float4 blendFactor   : COLOR1,
+            in float4 texCoord0     : TEXCOORD0,
+		    in float4 noisePos		: TEXCOORD2
+            ) : COLOR
+{
+	//
+	// Noise
+	//
+	half nscale;
+	float3 scaledpos;
+	noisePos.z = NoiseScaleAmpTime.z; // time
+	noisePos *= NoiseScaleAmpTime.x; //scale
+	half4 l = tex3D(noisetex, noisePos.xyz);
+	nscale = 0.5f;
+	scaledpos = noisePos.xyz * 2.0;
+	l += tex3D(noisetex, scaledpos) * nscale;
+	nscale *= 0.5f;
+	scaledpos *= 2.0;
+	l += tex3D(noisetex, scaledpos) * nscale;
+	nscale *= 0.5f;
+	scaledpos *= 2.0;
+	l += tex3D(noisetex, scaledpos) * nscale;
+	//
+	// 2D texture glow
+	//
+	half2 tc0;
+	half2 tc1;
+    half4 interp0 = tex2D(texture0_mask, texCoord0.xy);
+    half4 interp1 = tex2D(texture1_mask, texCoord0.xy);
+    half4 interp = lerp(interp0, interp1, blendFactor);
+	l = NoiseScaleAmpTime.y*l;//(l*0.5+0.5);
+	tc0 = texCoord0.xy - interp0.x*l.xy;
+	tc1 = texCoord0.xy - interp1.x*l.yz;
+
+    half4 tex0 = tex2D(texture0, tc0);
+    half4 tex1 = tex2D(texture1, tc1);
+
+    half4 color = lerp(tex0, tex1, blendFactor);
+	return color0.x * color * interp.y;
+}
+
+

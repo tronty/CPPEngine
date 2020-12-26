@@ -1,0 +1,263 @@
+<html>
+<head>
+<title>SimpleTexture_on_NDK</title>
+</head>
+<body>
+<br>
+<h1>SimpleTexture_on_NDK</h1>
+<br>
+<br>
+<p>The NDK solutions are now built without compilation errors. It is uncertain if the files $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES.cpp and $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES2.cpp work properly. The NDK solutions are now built with SDL2 and main dynamic libraries. With testgles2.sh the test project started succesfully in the emulator <A TARGET="_blank" HREF="testgles2.sh">testgles2.sh</A> The android_fopen function seems to work properly in the NDK project $HOME/IndieLibX/Samples/NDKfiles. I added similar android_fopen functionality to the SDL2 project ($HOME/IndieLibX/Libraries/SDL2-2.0.10) and the android_fopen function seems to work properly with SimpleTexture sample. Also the GLES2 shaders seem to be created properly with the SimpleTexture sample. The SimpleTexture sample application exits with message: The application may be doing too much work on its main thread. This means probably that the SimpleTexture sample application needs an separate worker thread for the resources initialization.</p>
+<pre>
+03-14 05:01:56.468   369   545 I ActivityManager: Start proc com.Test.SimpleTexture for activity com.Test.SimpleTexture/.SimpleTextureActivity: pid=1152 uid=10054 gids={50054, 1028, 1015}
+03-14 05:01:56.678  1152  1152 I dalvikvm: CheckJNI enabled: not enabling JNI app bug workarounds.
+03-14 05:01:56.958   629   629 V PhoneStatusBar: setLightsOn(true)
+03-14 05:01:57.478  1152  1152 D dalvikvm: Trying to load lib /data/app-lib/com.Test.SimpleTexture-2/libSDL2.so 0xb2d6ffc0
+03-14 05:01:57.518  1152  1152 D dalvikvm: Added shared lib /data/app-lib/com.Test.SimpleTexture-2/libSDL2.so 0xb2d6ffc0
+03-14 05:01:57.528  1152  1152 D dalvikvm: Trying to load lib /data/app-lib/com.Test.SimpleTexture-2/libmain.so 0xb2d6ffc0
+03-14 05:01:57.578  1152  1152 D dalvikvm: Added shared lib /data/app-lib/com.Test.SimpleTexture-2/libmain.so 0xb2d6ffc0
+03-14 05:01:57.578  1152  1152 D dalvikvm: No JNI_OnLoad found in /data/app-lib/com.Test.SimpleTexture-2/libmain.so 0xb2d6ffc0, skipping init
+03-14 05:01:58.078  1152  1152 D         : HostConnection::get() New Host Connection established 0xb7108dd0, tid 1152
+03-14 05:01:58.308  1152  1152 W EGL_emulation: eglSurfaceAttrib not implemented
+03-14 05:01:58.348  1152  1152 D OpenGLRenderer: Enabling debug mode 0
+03-14 05:01:58.618  1152  1152 I Choreographer: Skipped 42 frames!  The application may be doing too much work on its main thread.
+03-14 05:01:58.858   369   380 I ActivityManager: Process com.Test.SimpleTexture (pid 1152) has died.
+03-14 05:01:58.878   369   380 W ActivityManager: Force removing ActivityRecord{b2f503c8 u0 com.Test.SimpleTexture/.SimpleTextureActivity t4}: app died, no saved state
+03-14 05:01:58.928   369   397 W InputDispatcher: channel 'b2f6a7c0 com.Test.SimpleTexture/com.Test.SimpleTexture.SimpleTextureActivity (server)' ~ Consumer closed input channel or an error occurred.  events=0x9
+03-14 05:01:58.928   369   397 E InputDispatcher: channel 'b2f6a7c0 com.Test.SimpleTexture/com.Test.SimpleTexture.SimpleTextureActivity (server)' ~ Channel is unrecoverably broken and will be disposed!
+03-14 05:01:58.938    55    55 D Zygote  : Process 1152 exited cleanly (255)
+03-14 05:01:58.958   369   381 W InputDispatcher: Attempted to unregister already unregistered input channel 'b2f6a7c0 com.Test.SimpleTexture/com.Test.SimpleTexture.SimpleTextureActivity (server)'
+03-14 05:01:58.958   369   381 I WindowState: WIN DEATH: Window{b2f6a7c0 u0 com.Test.SimpleTexture/com.Test.SimpleTexture.SimpleTextureActivity}
+03-14 05:01:58.958   369   381 W WindowManager: Force-removing child win Window{b2f6a9e0 u0 SurfaceView} from container Window{b2f6a7c0 u0 com.Test.SimpleTexture/com.Test.SimpleTexture.SimpleTextureActivity}
+</pre>
+<tr><td>The messages (Choreographer: Skipped N frames!  The application may be doing too much work on its main thread.) disappeared from the NDK log after adding sleep(5) to numerous places in the C++ code. So the UI thread is not now starved. Still the ActivityManager seem to kill the SimpleTexture application for some reason. May be the memory is exhausted?</td></tr>
+<pre>
+03-17 17:34:49.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1215
+03-17 17:34:54.180  2020  2036 I libIndieLibX: 
+03-17 17:34:54.180  2020  2036 I libIndieLibX: 
+03-17 17:34:59.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1217
+03-17 17:35:04.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addHLSLShaderVrtl:1263
+03-17 17:35:09.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererHLSLCg.cpp:addHLSLShaderVrtl:1149
+03-17 17:35:14.310   367   379 I ActivityManager: Process com.Test.SimpleTexture (pid 2020) has died.
+03-17 17:35:14.330    56    56 D Zygote  : Process 2020 exited cleanly (255)
+</pre>
+<pre>
+I removed the sleep function calls from the C/C++ code
+and added instead android:persistent="true" to the AndroidManifest.xml file. 
+Messages related to the ActivityManager disappeared from the adb log. 
+Now there are only following messages in the adb log:
+
+03-27 16:02:47.055  1416  1416 E libEGL  : call to OpenGL ES API with no current context 
+(logged once per thread)
+
+Finally probably because of this, shader linking fails and the program exits.
+So the problem of setting the current context should be solved next. 
+May be by utilizing the testgles2.c file from the SDL2 sources package is the solution.
+Other option is to use android_egl_context_restore() function in the SDL2 sources package.
+Third point is to make sure that all the android threads work properly.
+</pre>
+<pre>
+Because it is hard to tell from where the troubles with threads actually come from, 
+i decided to exclude the SDL2 project from the NDK solutions. The android_fopen function
+is now included in the STX project in the android.c file. Also the code passing 
+the android AssetManager from Java to C/C++ is included in the STX project in the android.c file.
+Something is wrong with the shaders in the file RendererGLES2.cpp in the project Framework3 around line 556.
+The function glGetActiveAttrib (lines 561 and 571) fails as there is something wrong with the functions
+glGetProgramiv(prog, GL_ACTIVE_ATTRIBUTES, &active_attribs) (line 540) and 
+glGetProgramiv(prog, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &max_length) (line 544). 
+After making some corrections around lines 548-550
+I succeeded to get log file <A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A>. 
+In the log there may be more clues also about other errors. 
+In the emulator the background is colored to gray so in the function render
+in the file SimpleTexture.cpp in the sample SimpleTexture 
+the following functions seem to work properly:
+	IRenderer::GetRendererInstance()->Clear
+	IRenderer::GetRendererInstance()->BeginScene
+	IRenderer::GetRendererInstance()->EndScene
+	IRenderer::GetRendererInstance()->Present
+
+The function addVertexBufferVrtl seem to get odd looking data (data=-1438369208):
+
+03-29 03:24:50.463  1222  1235 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:addVertexBufferVrtl:913
+03-29 03:24:50.463  1222  1235 I libIndieLibX: size=64
+03-29 03:24:50.463  1222  1235 I libIndieLibX: data=-1438369208
+03-29 03:24:50.463  1222  1235 I libIndieLibX: aold=0
+
+This probabaly means that function call to DrawPrimitiveUP fails in NDK.
+This is somewhat strange since DrawPrimitiveUP works in LNX32/64, OSX64 and in Win32/64.
+
+The log file <A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A> contains now two clues: 
+
+03-30 07:00:59.395  1152  1165 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1147
+03-30 07:00:59.395  1152  1165 I libIndieLibX: Set: uniform name=worldViewProj
+03-30 07:00:59.405  1152  1165 I libIndieLibX: Set: uniform index=(null)
+
+03-30 07:00:59.695  1152  1165 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:changeVertexBufferVrtl:161
+03-30 07:00:59.705  1152  1165 I libIndieLibX: glVertexAttribPointer:
+03-30 07:00:59.705  1152  1165 I libIndieLibX: index=1
+03-30 07:00:59.705  1152  1165 I libIndieLibX: size=0,2
+03-30 07:00:59.705  1152  1165 I libIndieLibX: type=5126
+03-30 07:00:59.705  1152  1165 I libIndieLibX: stride=16
+03-30 07:00:59.705  1152  1165 I libIndieLibX: pointer=-1440808956
+
+So there are probably something wrong with matrix worldViewProj and VertexArray.
+
+The log file <A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A> contains now only one clue:
+
+03-31 08:57:27.053  1063  1076 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:changeVertexBufferVrtl:161
+03-31 08:57:27.063  1063  1076 I libIndieLibX: glVertexAttribPointer:
+03-31 08:57:27.063  1063  1076 I libIndieLibX: index=1
+03-31 08:57:27.073  1063  1076 I libIndieLibX: size=0,2
+03-31 08:57:27.073  1063  1076 I libIndieLibX: type=5126
+03-31 08:57:27.083  1063  1076 I libIndieLibX: stride=16
+03-31 08:57:27.083  1063  1076 I libIndieLibX: pointer=-1440870396
+
+So there are probably something wrong with the VertexArray.
+
+</pre>
+<pre>
+In the emulator console (make emulator) there are shown two gl errors:
+
+../../sdk/emulator/opengl//host/libs/Translator/GLES_V2//GLESv2Imp.cpp:glTexImage2D:1812 error 0x501
+../../sdk/emulator/opengl//host/libs/Translator/GLES_V2//GLESv2Imp.cpp:glUniformMatrix4fv:1980 error 0x501
+
+they are probably generated by calls to the addTexture and applyConstants.
+Also the checkGlError macro detects these errors:
+
+Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:addTexture:1515
+04-03 06:37:27.048  1090  1103 I libIndieLibX: glTexImage2D:
+04-03 06:37:27.088  1090  1103 I libIndieLibX: GL error:
+04-03 06:37:27.088  1090  1103 I libIndieLibX: file=/home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:
+04-03 06:37:27.088  1090  1103 I libIndieLibX: fn=addTexture:
+04-03 06:37:27.088  1090  1103 I libIndieLibX: line=1518:
+04-03 06:37:27.088  1090  1103 I libIndieLibX:  0x00000501
+04-03 06:37:27.088  1090  1103 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:addTexture:1519
+
+04-03 06:37:27.218  1090  1103 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:applyConstants:212
+04-03 06:37:27.218  1090  1103 I libIndieLibX: uni->name:worldViewProj
+04-03 06:37:27.218  1090  1103 I libIndieLibX: uni->type:14
+04-03 06:37:27.218  1090  1103 I libIndieLibX: uni->index:0
+04-03 06:37:27.218  1090  1103 I libIndieLibX: uni->nElements:1
+04-03 06:37:27.218  1090  1103 I libIndieLibX: uni->data:-1208369336
+04-03 06:37:27.218  1090  1103 I libIndieLibX: GL error:
+04-03 06:37:27.218  1090  1103 I libIndieLibX: file=/home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:
+04-03 06:37:27.218  1090  1103 I libIndieLibX: fn=applyConstants:
+04-03 06:37:27.218  1090  1103 I libIndieLibX: line=219:
+04-03 06:37:27.218  1090  1103 I libIndieLibX:  0x00000501
+04-03 06:37:27.218  1090  1103 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:applyConstants:220
+
+In the addVertexBufferVrtl and in the changeVertexBufferVrtl there are shown in many places 
+in the log (<A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A>) odd negative signed data 
+which is a sign of malfunction:
+
+Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererHLSLCg.cpp:DrawPrimitiveUP:1755
+04-03 06:37:27.148  1090  1103 I libIndieLibX: vb_=-1
+04-03 06:37:27.198  1090  1103 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:addVertexBufferVrtl:954
+04-03 06:37:27.198  1090  1103 I libIndieLibX: size=64
+04-03 06:37:27.208  1090  1103 I libIndieLibX: data=-1440399356
+04-03 06:37:27.208  1090  1103 I libIndieLibX: aold=-1
+
+04-03 06:37:27.218  1090  1103 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:changeVertexBufferVrtl:161
+04-03 06:37:27.218  1090  1103 I libIndieLibX: glVertexAttribPointer:
+04-03 06:37:27.218  1090  1103 I libIndieLibX: index=1
+04-03 06:37:27.218  1090  1103 I libIndieLibX: size=0,2
+04-03 06:37:27.218  1090  1103 I libIndieLibX: type=5126
+04-03 06:37:27.218  1090  1103 I libIndieLibX: stride=16
+04-03 06:37:27.218  1090  1103 I libIndieLibX: base=-1440399356
+04-03 06:37:27.318  1090  1103 I libIndieLibX: pointer=-1440399356
+</pre>
+<pre>
+I edited the emulator configuration file:
+$HOME/adt-bundle/sdk/platforms/android-19/skins/WVGA800/hardware.ini .
+I increased the heap and ram sizes:
+
+# skin-specific hardware values
+hw.lcd.density=240
+#vm.heapSize=48
+#hw.ramSize=512
+vm.heapSize=480
+hw.ramSize=5120
+
+There was no positive effect in the log file 
+(<A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A>).
+Result was the same odd negative signed data in the log.
+
+Other place to specify larger values is the call to emulator:
+$(ANDROID_SDK)/tools/emulator -force-32bit -memory 128 -cache-size 256 -partition-size 256 -avd avd19 -gpu on
+If memory/cache-size/partition-size is too large the emulator start is very slow.
+The result was the same odd negative signed data in the log.
+
+I added some memory related C functions to the STX library:
+long getNativeHeapSize();
+long getNativeHeapAllocatedSize();
+long getNativeHeapFreeSize();
+
+On android there is consumed somewhat more heap memory than on Ubuntu:
+
+NDK:
+04-10 09:50:28.554  1326  1339 I libgl2jni: NativeHeapAllocatedSize=10283840
+04-10 09:50:28.624  1326  1339 I libgl2jni: NativeHeapSize=10387456
+04-10 09:50:28.624  1326  1339 I libgl2jni: NativeHeapFreeSize=43656
+
+Ubuntu:
+	HeapAllocatedSize=3826432
+	HeapSize=0
+	HeapFreeSize=290048
+
+
+
+The odd negative signed data in <A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A> appeared to be positive signed after all.
+After changing some %d:s and %ld:s in some LOG_PRINT statements to %x:s.
+
+So now there are only two good clues (I libIndieLibX: GL error:) about what is wrong with SimpleTexture sample 
+and Framework3 library:
+
+04-18 11:40:36.928  1339  1353 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:applyConstants:212
+04-18 11:40:36.928  1339  1353 I libIndieLibX: uni->name:worldViewProj
+04-18 11:40:36.938  1339  1353 I libIndieLibX: uni->type:14
+04-18 11:40:36.938  1339  1353 I libIndieLibX: uni->index:0
+04-18 11:40:36.938  1339  1353 I libIndieLibX: uni->nElements:1
+04-18 11:40:36.938  1339  1353 I libIndieLibX: uni->data:b7648728
+04-18 11:40:36.938  1339  1353 I libIndieLibX: GL error:
+
+04-18 11:40:36.598  1339  1353 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES.cpp:addTexture:1524
+04-18 11:40:36.608  1339  1353 I libIndieLibX: glTexImage2D:
+04-18 11:40:36.618  1339  1353 I libIndieLibX: glTarget=3553
+04-18 11:40:36.618  1339  1353 I libIndieLibX: mipMapLevel=0
+04-18 11:40:36.628  1339  1353 I libIndieLibX: internalFormat=32849
+04-18 11:40:36.628  1339  1353 I libIndieLibX: WIDTH=128
+04-18 11:40:36.628  1339  1353 I libIndieLibX: HEIGHT=128
+04-18 11:40:36.628  1339  1353 I libIndieLibX: srcFormat=6407
+04-18 11:40:36.628  1339  1353 I libIndieLibX: srcType=5121
+04-18 11:40:36.628  1339  1353 I libIndieLibX: data=b766b528
+04-18 11:40:36.628  1339  1353 I libIndieLibX: GL error:
+
+
+
+After correcting RendererGLES.cpp file, there remains only one error message in the log (<A TARGET="_blank" HREF="NDK2.log.html">NDK2.log</A>):
+
+
+04-19 09:51:47.139  1194  1207 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:applyConstants:212
+04-19 09:51:47.139  1194  1207 I libIndieLibX: uni->name:worldViewProj
+04-19 09:51:47.139  1194  1207 I libIndieLibX: uni->type:14
+04-19 09:51:47.139  1194  1207 I libIndieLibX: uni->index:0
+04-19 09:51:47.139  1194  1207 I libIndieLibX: uni->nElements:1
+04-19 09:51:47.139  1194  1207 I libIndieLibX: uni->data:b850f120
+04-19 09:51:47.139  1194  1207 I libIndieLibX: GL error:
+04-19 09:51:47.139  1194  1207 I libIndieLibX: file=/home/tronty/IndieLibX/DesktopProjects/NDK_gl_code2/../../Libraries/MVC/NDK/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:
+04-19 09:51:47.139  1194  1207 I libIndieLibX: fn=applyConstants:
+04-19 09:51:47.139  1194  1207 I libIndieLibX: line=219:
+04-19 09:51:47.139  1194  1207 I libIndieLibX:  0x00000501
+</pre>
+<br>
+<pre>
+$HOME/IndieLibX/Libraries/SDL2-2.0.10/android-project/jni/Application.mk:
+APP_ABI := armeabi mips x86 # works in the emulator
+APP_ABI := x86 # does not work in the emulator
+</pre>
+<!-- p></p>
+<pre>
+</pre -->
+</body>
+</html>
+

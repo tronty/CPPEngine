@@ -1,0 +1,461 @@
+/*
+  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+struct VsIn {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main(VsIn In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv = In.uv;
+	return Out;
+}
+
+[Fragment shader]
+float iTime;
+float2 iResolution;
+float2 iMouse;
+/*--------------------------------------------------------------------------------------
+License CC0 - http://creativecommons.org/publicdomain/zero/1.0/
+To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
+----------------------------------------------------------------------------------------
+-Otavio Good
+*/
+
+// The noise_ function in this was inspired by IQ's "Terrain Tubes" shader. I never really figured out
+// his function completely, so I'm not sure of the exact similarities. It's nice though because it
+// works the same on all computers (I think). It's not based on a hash that changes from computer to 
+// computer. That means I can finally rely on the terrain being the same and make a camera path. :)
+// It's also a much faster noise_ function, although it can look a bit repetitive.
+
+#define MOTION_BLUR
+#define MOVING_SUN
+
+float Hash2d(float2 uv)
+{
+    float f = uv.x + uv.y * 47.0;
+    return fract(cos(f*3.333)*100003.9);
+}
+float Hash3d(float3 uv)
+{
+    float f = uv.x + uv.y * 37.0 + uv.z * 521.0;
+    return fract(cos(f*3.333)*100003.9);
+}
+
+float PI=3.14159265;
+
+float3 saturate(float3 a) { return clamp(a, 0.0, 1.0); }
+float2 saturate(float2 a) { return clamp(a, 0.0, 1.0); }
+float saturate(float a) { return clamp(a, 0.0, 1.0); }
+
+float3 RotateX(float3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return float3(v.x, cos * v.y + sin * v.z, -sin * v.y + cos * v.z);
+  //else return new float3(x, cos * y - sin * z, sin * y + cos * z);
+}
+float3 RotateY(float3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return float3(cos * v.x - sin * v.z, v.y, sin * v.x + cos * v.z);
+  //else return new float3(cos * x + sin * z, y, -sin * x + cos * z);
+}
+float3 RotateZ(float3 v, float rad)
+{
+  float cos = cos(rad);
+  float sin = sin(rad);
+  //if (RIGHT_HANDED_COORD)
+  return float3(cos * v.x + sin * v.y, -sin * v.x + cos * v.y, v.z);
+}
+
+
+// This function basically is a procedural environment map that makes the sun
+float3 sunCol = float3(258.0, 208.0, 100.0) / 4255.0;//unfortunately, i seem to have 2 different sun colors. :(
+float3 GetSunColorReflection(float3 rayDir, float3 sunDir)
+{
+	float3 localRay = normalize(rayDir);
+	float dist = 1.0 - (dot(localRay, sunDir) * 0.5 + 0.5);
+	float sunIntensity = 0.015 / dist;
+	sunIntensity = pow(sunIntensity, 0.3)*100.0;
+
+    sunIntensity += exp(-dist*12.0)*300.0;
+	sunIntensity = min(sunIntensity, 40000.0);
+	return sunCol * sunIntensity*0.0425;
+}
+float3 GetSunColorSmall(float3 rayDir, float3 sunDir)
+{
+	float3 localRay = normalize(rayDir);
+	float dist = 1.0 - (dot(localRay, sunDir) * 0.5 + 0.5);
+	float sunIntensity = 0.05 / dist;
+    sunIntensity += exp(-dist*12.0)*300.0;
+	sunIntensity = min(sunIntensity, 40000.0);
+	return sunCol * sunIntensity*0.025;
+}
+
+// This is a spline used for the camera path
+float4 CatmullRom(float4 p0, float4 p1, float4 p2, float4 p3, float t)
+{
+    float t2 = t*t;
+    float t3 = t*t*t;
+    return 0.5 *((2.0 * p1) +
+                 (-p0 + p2) * t +
+    			 (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t2 +
+    			 (-p0 + 3.0 * p1- 3.0 * p2 + p3) * t3);
+}
+
+// This spiral noise_ works by successively adding and rotating sin waves while increasing frequency.
+// It should work the same on all computers since it's not based on a hash function like some other noises.
+// It can be much faster than other noise_ functions if you're ok with some repetition.
+const float nudge = 0.739513;	// size of perpendicular vector
+float normalizer = 1.0 / sqrt(1.0 + nudge*nudge);	// pythagorean theorem on that perpendicular to maintain scale
+float SpiralNoiseC(float3 p)
+{
+    float n = 0.0;	// noise_ amount
+    float iter = 1.0;
+    for (int i = 0; i < 8; i++)
+    {
+        // add sin and cos scaled inverse with the frequency
+        n += -abs(sin(p.y*iter) + cos(p.x*iter)) / iter;	// abs for a ridged look
+        // rotate by adding perpendicular and scaling down
+        p.xy += float2(p.y, -p.x) * nudge;
+        p.xy *= normalizer;
+        // rotate on other axis
+        p.xz += float2(p.z, -p.x) * nudge;
+        p.xz *= normalizer;
+        // increase the frequency
+        iter *= 1.733733;
+    }
+    return n;
+}
+float SpiralNoiseD(float3 p)
+{
+    float n = 0.0;
+    float iter = 1.0;
+    for (int i = 0; i < 6; i++)
+    {
+        n += abs(sin(p.y*iter) + cos(p.x*iter)) / iter;	// abs for a ridged look
+        p.xy += float2(p.y, -p.x) * nudge;
+        p.xy *= normalizer;
+        p.xz += float2(p.z, -p.x) * nudge;
+        p.xz *= normalizer;
+        iter *= 1.733733;
+    }
+    return n;
+}
+float SpiralNoise3D(float3 p)
+{
+    float n = 0.0;
+    float iter = 1.0;
+    for (int i = 0; i < 5; i++)
+    {
+        n += (sin(p.y*iter) + cos(p.x*iter)) / iter;
+        //p.xy += float2(p.y, -p.x) * nudge;
+        //p.xy *= normalizer;
+        p.xz += float2(p.z, -p.x) * nudge;
+        p.xz *= normalizer;
+        iter *= 1.33733;
+    }
+    return n;
+}
+
+// These are the xyz camera positions and a left/right facing angle relative to the path line
+// I think webgl glsl can only access arrays using a constant, so I'm writing all these out.
+// Someone please tell me if I'm wrong.
+float4 c00 = float4(3.5, 2.0, 13.1, 0.0);	// start point
+float4 c01 = float4(12.5, 2.2, 17.0, 0.0);	// run up to canyon 2 before hole in large rock face
+float4 c02 = float4(21.5, 4.0, 8.1, 0.0);	// canyon 2 before hole in large rock face
+float4 c03 = float4(21.0, 5.0, 1.1, -0.5);	// before hole in large rock face
+float4 c04 = float4(17.8, 5.4, -0.2, 0.0);	// hole in large rock face
+float4 c05 = float4(14.7, 2.5, 1.4, 0.0);	// after hole in large rock face
+float4 c06 = float4(7.9, 2.3, -2.1, 0.0);
+float4 c07 = float4(0.5, -0.7, -3.5, 1.0);
+float4 c08 = float4(-3.0, -1.0, -3.5, 1.3);
+float4 c09 = float4(-3.5, -1.0, 4.0, 1.3);
+float4 c10 = float4(3.0, -0.7, 3.3, 0.8);
+float4 c11 = float4(3.5, -1.0, -4.75, 0.0);
+float4 c12 = float4(-6.0, -0.2, 1.0, 3.14);
+float4 c13 = float4(-6.0, -1.0, 5.5, 0.0);
+
+float4 cXX = float4(0.0, 3.0, 0.0, 0.0);
+
+float camPathOffset = 0.0;	// where to start on the camera path - parametric t var for catmull-rom spline
+float3 camPos = float3(0.0), camFacing;
+float3 camLookat=float3(0,0.0,0);
+float waterLevel = 1.5;
+
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+// from a time t, this finds where in the camera path you are.
+// It uses Catmull-Rom splines
+float4 CamPos(float t)
+{
+    t = mod(t, 14.0);	// repeat after 14 time units
+    float bigTime = floor(t);
+    float smallTime = fract(t);
+    // Can't do arrays right, so write this all out.
+    if (bigTime == 0.0) return CatmullRom(c00, c01, c02, c03, smallTime);
+    if (bigTime == 1.0) return CatmullRom(c01, c02, c03, c04, smallTime);
+    if (bigTime == 2.0) return CatmullRom(c02, c03, c04, c05, smallTime);
+    if (bigTime == 3.0) return CatmullRom(c03, c04, c05, c06, smallTime);
+    if (bigTime == 4.0) return CatmullRom(c04, c05, c06, c07, smallTime);
+    if (bigTime == 5.0) return CatmullRom(c05, c06, c07, c08, smallTime);
+    if (bigTime == 6.0) return CatmullRom(c06, c07, c08, c09, smallTime);
+
+    if (bigTime == 7.0) return CatmullRom(c07, c08, c09, c10, smallTime);
+    if (bigTime == 8.0) return CatmullRom(c08, c09, c10, c11, smallTime);
+    if (bigTime == 9.0) return CatmullRom(c09, c10, c11, c12, smallTime);
+    if (bigTime == 10.0) return CatmullRom(c10, c11, c12, c13, smallTime);
+    if (bigTime == 11.0) return CatmullRom(c11, c12, c13, c00, smallTime);
+    if (bigTime == 12.0) return CatmullRom(c12, c13, c00, c01, smallTime);
+    if (bigTime == 13.0) return CatmullRom(c13, c00, c01, c02, smallTime);
+    return float4(0.0);
+}
+
+float DistanceToObject(float3 p)
+{
+	float final = p.y + 4.5;
+    final -= SpiralNoiseC(p.xyz);	// mid-range noise_
+    final += SpiralNoiseC(p.zxy*0.123+100.0)*3.0;	// large scale terrain features
+    final -= SpiralNoise3D(p);	// more large scale features, but 3d, so not just a height map.
+    final -= SpiralNoise3D(p*49.0)*0.0625*0.125;	// small scale noise_ for variation
+	final = min(final, length(p) - 1.99);	// sphere in center
+    final = min(final, p.y + waterLevel);	// water
+	//final = min(final, length(p-camLookat) - 0.3);
+    return final;
+}
+
+
+
+float4 main(VsOut IN): COLOR 
+{
+	float4 fragColor;
+	float2 fragCoord=IN.uv;
+	// ---------------- First, set up the camera rays for ray marching ----------------
+	float2 uv = fragCoord.xy/iResolution.xy * 2.0 - 1.0;
+
+	// Camera up vector.
+	float3 camUp=float3(0,1,0); // vuv
+
+	// Camera lookat.
+	camLookat=float3(0,0.0,0);	// vrp
+
+/*    if (iTime == 0.0)	// for debugging with manual camera
+    {
+        camPos = cXX.xyz;
+        camLookat = float3(0.0)*cXX.xyz;
+    }*/
+
+    // debugging camera
+    float mx=iMouse.x/iResolution.x*PI*2.0;// + iTime * 0.1;
+	float my=-iMouse.y/iResolution.y*10.0;// + sin(iTime * 0.3)*0.2+0.2;//*PI/2.01;
+	camPos += float3(cos(my)*cos(mx),sin(my),cos(my)*sin(mx))*(5.2); 	// prp
+
+    // set time for moving camera along path
+    float timeLine = iTime*0.2 + camPathOffset;
+    camFacing = camLookat + camPos;
+    // without this if condition, the mac doesn't work. mysterious. :(
+    if (iTime != -1.0)
+    {
+        float4 catmullA = CamPos(timeLine);
+        // get a smoother derivative even though the spline is not C2 continuous.
+        // Also look ahead a bit so the camera leads the motion
+        float4 catmullB = CamPos(timeLine + 0.3);
+#ifdef MOTION_BLUR
+        float4 catmullC = CamPos(timeLine + 0.004);	// adjust for camera motion blur
+        float4 catmullBlur = mix(catmullA, catmullC, Hash2d(uv));	// motion blur along camera path
+        camPos = catmullBlur.xyz;
+        // face camera along derivate of motion path
+        camFacing = normalize(catmullB.xyz - catmullA.xyz);
+        // rotate camera based on w component of camera path vectors
+        camFacing = RotateY(camFacing, -catmullBlur.w);
+#else
+        camPos = catmullA.xyz;
+        // face camera along derivate of motion path
+        camFacing = normalize(catmullB.xyz - catmullA.xyz);
+        // rotate camera based on w component of camera path vectors
+        camFacing = RotateY(camFacing, -catmullA.w);
+#endif
+        camFacing = RotateY(camFacing, -mx);
+    	camLookat = camPos + camFacing;
+    }
+
+
+    // add randomness to camera for depth-of-field look close up.
+    //camPos += float3(Hash2d(uv)*0.91, Hash2d(uv+37.0), Hash2d(uv+47.0))*0.01;
+
+	// Camera setup.
+	float3 camVec=normalize(camLookat - camPos);//vpn
+	float3 sideNorm=normalize(cross(camUp, camVec));	// u
+	float3 upNorm=cross(camVec, sideNorm);//v
+	float3 worldFacing=(camPos + camVec);//vcv
+	float3 worldPix = worldFacing + uv.x * sideNorm * (iResolution.x/iResolution.y) + uv.y * upNorm;//scrCoord
+	float3 relVec = normalize(worldPix - camPos);//scp
+
+	// --------------------------------------------------------------------------------
+	float dist = 0.05;
+	float t = 0.0;
+	float inc = 0.02;
+	float maxDepth = 110.0;
+	float3 pos = float3(0,0,0);
+	// ray marching time
+    for (int i = 0; i < 200; i++)	// This is the count of the max times the ray actually marches.
+    {
+        if ((t > maxDepth) || (abs(dist) < 0.0075)) break;
+        pos = camPos + relVec * t;
+        // *******************************************************
+        // This is _the_ function that defines the "distance field".
+        // It's really what makes the scene geometry.
+        // *******************************************************
+        dist = DistanceToObject(pos);
+        t += dist * 0.25;	// because deformations mess up distance function.
+    }
+
+	// --------------------------------------------------------------------------------
+	// Now that we have done our ray marching, let's put some color on this geometry.
+
+#ifdef MOVING_SUN
+	float3 sunDir = normalize(float3(sin(iTime*0.047-1.5), cos(iTime*0.047-1.5), -0.5));
+#else
+	float3 sunDir = normalize(float3(0.93, 1.0, -1.5));
+#endif
+    // This makes the sky fade at sunset
+    float skyMultiplier = saturate(sunDir.y+0.7);
+	float3 finalColor = float3(0.0);
+
+	// If a ray actually hit the object, let's light it.
+	if (abs(dist) < 0.75)
+    //if (t <= maxDepth)
+	{
+        // calculate the normal from the distance field. The distance field is a volume, so if you
+        // sample the current point and neighboring points, you can use the difference to get
+        // the normal.
+        float3 smallVec = float3(0.005, 0, 0);
+        float3 normal = float3(dist - DistanceToObject(pos - smallVec.xyy),
+                           dist - DistanceToObject(pos - smallVec.yxy),
+                           dist - DistanceToObject(pos - smallVec.yyx));
+
+        /*if (pos.y <= waterLevel-2.995)	// water waves?
+        {
+            normal += SpiralNoise3D(pos*32.0+float3(iTime*8.0,0.0,0.0))*0.0001;
+            normal += SpiralNoise3D(pos*27.0+float3(0.0,0.0, iTime* 10.333))*0.0001;
+            normal += SpiralNoiseD(pos*37.0+float3(0.0,iTime* 14.333,0.0))*0.0002;
+        }*/
+        normal = normalize(normal);
+
+        // calculate 2 ambient occlusion values. One for global stuff and one
+        // for local stuff - so the green sphere light source can also have ambient.
+        float ambientS = 1.0;
+        //ambient *= saturate(DistanceToObject(pos + normal * 0.1)*10.0);
+        ambientS *= saturate(DistanceToObject(pos + normal * 0.2)*5.0);
+        ambientS *= saturate(DistanceToObject(pos + normal * 0.4)*2.5);
+        ambientS *= saturate(DistanceToObject(pos + normal * 0.8)*1.25);
+        float ambient = ambientS * saturate(DistanceToObject(pos + normal * 1.6)*1.25*0.5);
+        ambient *= saturate(DistanceToObject(pos + normal * 3.2)*1.25*0.25);
+        ambient *= saturate(DistanceToObject(pos + normal * 6.4)*1.25*0.125);
+        //ambient = max(0.05, pow(ambient, 0.3));	// tone down ambient with a pow and min clamp it.
+        ambient = saturate(ambient);
+
+        // Trace a ray toward the sun for sun shadows
+        float sunShadow = 1.0;
+        float iter = 0.2;
+		for (int i = 0; i < 10; i++)
+        {
+            float tempDist = DistanceToObject(pos + sunDir * iter);
+	        sunShadow *= saturate(tempDist*10.0);
+            if (tempDist <= 0.0) break;
+            iter *= 1.5;	// constant is more reliable than distance-based
+            //iter += max(0.2, tempDist)*1.2;
+        }
+        float sunSet = saturate(sunDir.y*4.0); // sunset dims the sun
+        sunShadow = saturate(sunShadow) * sunSet;
+
+        // calculate the reflection vector for highlights
+        float3 ref = reflect(relVec, normal);
+
+        // pulse the ball light source
+        float3 ballGlow = float3(0.1, 0.97, 0.1) * abs(SpiralNoise3D(float3(iTime*1.3)));
+
+        // ------ Calculate texture color of the rock ------
+        // basic orange and white blended together with noise_
+        float3 texColor = mix(float3(0.95, 1.0, 1.0),  float3(0.9, 0.7, 0.5), pow(abs(SpiralNoise3D(pos*1.0)-1.0), 0.6) );
+        // make the undersides darker greenish
+        texColor = mix(float3(0.2, 0.2, 0.1), texColor, saturate(normal.y));
+        // fade to reddish/orange closer to the water level
+        texColor = mix(texColor, float3(0.64, 0.2, 0.1) , saturate(-0.4-pos.y));
+        // some more variation to the color vertically
+        texColor = mix(texColor, float3(0.2, 0.13, 0.02) , pow(saturate(pos.y*0.125+0.5), 2.0));
+        // give the rock a stratified, layered look
+        float rockLayers = abs(cos(pos.y*1.5+ SpiralNoiseD(pos*float3(1.0, 2.0, 1.0)*4.0)*0.2 ));
+        texColor += float3(0.7, 0.4, 0.3)*(1.0-pow(rockLayers, 0.3));
+
+        // make the water orange. I'm trying for that "nickel tailings" look.
+        texColor = mix(texColor, float3(1.4, 0.15, 0.05) + SpiralNoise3D(pos)*0.025, saturate((-pos.y-1.45)*17.0));
+        // make the sphere white
+        if (length(pos) <= 2.01) texColor = float3(1.0);
+        // don't let it get too saturated or dark
+        texColor = max(texColor, 0.05);
+
+        // ------ Calculate lighting color ------
+        // Start with sun color, standard lighting equation, and shadow
+        float3 lightColor = float3(1.0, 0.75, 0.75) * saturate(dot(sunDir, normal)) * sunShadow*1.5;
+        // sky color, hemisphere light equation approximation, anbient occlusion, sunset multiplier
+        lightColor += float3(1.0,0.3,0.6) * ( dot(sunDir, normal) * 0.5 + 0.5 ) * ambient * 0.25 * skyMultiplier;
+        // Make the ball cast light. Distance to the 4th light falloff looked best. Use local ambient occlusion.
+        float lp = length(pos) - 1.0;
+        lightColor += ambientS*(ballGlow*1.2 * saturate(dot(normal, -pos)*0.5+0.5) / (lp*lp*lp*lp));
+
+        // finally, apply the light to the texture.
+        finalColor = texColor * lightColor;
+
+        // Make the water reflect the sun (leaving out sky reflection for no good reason)
+        float3 refColor = GetSunColorReflection(ref, sunDir)*0.68;
+        finalColor += refColor * sunShadow * saturate(normal.y*normal.y) * saturate(-(pos.y+1.35)*16.0);
+
+        // make the ball itself glow
+        finalColor += pow(saturate(1.0 - length(pos)*0.4925), 0.65) * ballGlow*6.1;
+        // fog that fades to reddish plus the sun color so that fog is brightest towards sun
+        finalColor = mix(float3(1.0, 0.41, 0.41)*skyMultiplier + min(float3(0.25),GetSunColorSmall(relVec, sunDir))*2.0*sunSet, finalColor, exp(-t*0.03));
+	}
+    else
+    {
+        // Our ray trace hit nothing, so draw sky.
+        // fade the sky color, multiply sunset dimming
+        finalColor = mix(float3(1.0, 0.5, 0.5), float3(0.40, 0.25, 0.91), saturate(relVec.y))*skyMultiplier;
+        // add the sun
+        finalColor += GetSunColorSmall(relVec, sunDir);// + float3(0.1, 0.1, 0.1);
+    }
+
+    //finalColor = float3(Hash2d(uv)*0.91,  Hash2d(uv+47.0)*0.91, 0.0);
+    // vignette?
+    finalColor *= float3(1.0) * saturate(1.0 - length(uv/2.5));
+    finalColor *= 1.3;
+
+	// output the final color with sqrt for "gamma correction"
+	fragColor = float4(sqrt(clamp(finalColor, 0.0, 1.0)),1.0);
+	return fragColor;
+}
+
+
+

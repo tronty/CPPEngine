@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)]><!-->
+<html lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Unity Shadertoys (a.k.a Converting GLSL shaders to Cg/HLSL) | Alastair Aitchison</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/style_002.css">
+<link rel="pingback" href="https://alastaira.wordpress.com/xmlrpc.php">
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="alternate" type="application/rss+xml" title="Alastair Aitchison » Feed" href="https://alastaira.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Alastair Aitchison » Comments Feed" href="https://alastaira.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Alastair Aitchison » Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL) Comments Feed" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/feed/">
+	
+			
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="all-css-0-1" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/a.css" type="text/css" media="all">
+
+<link rel="stylesheet" id="all-css-0-2" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s1.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://alastaira.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Multiple Mice Input in&nbsp;Unity" href="https://alastaira.wordpress.com/2015/08/04/multiple-mice-input-in-unity/">
+<link rel="next" title="Bulk-renaming files" href="https://alastaira.wordpress.com/2016/01/31/bulk-renaming-files/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/a_002.html">
+<link rel="shortlink" href="http://wp.me/p1eX6o-wI">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=https%3A%2F%2Falastaira.wordpress.com%2F2015%2F08%2F07%2Funity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=https%3A%2F%2Falastaira.wordpress.com%2F2015%2F08%2F07%2Funity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shadertoys (a.k.a Converting GLSL shaders to Cg/HLSL)">
+<meta property="og:url" content="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/">
+<meta property="og:description" content="If you’ve tried dabbling with shaders at all, you’ve probably come across ShaderToy – an online shader showcase with some pretty amazing examples of what’s possible in a few lines of shader code, i…">
+<meta property="article:published_time" content="2015-08-07T09:35:27+00:00">
+<meta property="article:modified_time" content="2015-08-07T09:35:28+00:00">
+<meta property="og:site_name" content="Alastair Aitchison">
+<meta property="og:image" content="https://alastaira.files.wordpress.com/2015/08/bubbles_thumb.gif">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@wordpressdotcom">
+<meta name="twitter:image" content="https://alastaira.files.wordpress.com/2015/08/seascape_thumb.gif?w=240">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
+<link rel="openid.server" href="https://alastaira.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://alastaira.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://alastaira.wordpress.com/osd.xml" title="Alastair Aitchison">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+<meta name="theme-color" content="#033005">
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="application-name" content="Alastair Aitchison"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Spatial / A.I. / Game Development"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://alastaira.wordpress.com/feed/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL) | Alastair Aitchison on WordPress.com">
+<meta name="description" content="If you’ve tried dabbling with shaders at all, you’ve probably come across ShaderToy – an online shader showcase with some pretty amazing examples of what’s possible in a few lines of shader code, inspired greatly by classic demoscene coding. Here’s just two examples: “Seascape” by TDM “Elevated” by iq It’s an amazing resource, not only…">
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #033005; }
+</style>
+ 		
+		
+ 		
+		<link rel="amphtml" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/amp/"><style type="text/css" id="syntaxhighlighteranchor"></style>
+
+
+
+<style type="text/css"></style><link rel="stylesheet" type="text/css" id="gravatar-card-css" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/services.css"></head>
+
+<body class="post-template-default single single-post postid-2028 single-format-standard custom-background mp6 customizer-styles-applied single-author highlander-enabled highlander-light">
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="branding" role="banner">
+								<div id="site-title">
+					<span>
+						<a href="https://alastaira.wordpress.com/" title="Alastair Aitchison" rel="home">Alastair Aitchison</a>
+					</span>
+				</div>
+				<div id="site-description">Spatial / A.I. / Game Development</div>
+
+										<a class="home-link" href="https://alastaira.wordpress.com/" title="Alastair Aitchison" rel="home">
+							<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/banner.jpg" alt="" width="940" height="198">
+						</a>
+								</div><!-- #branding -->
+
+			<div id="access" role="navigation">
+			  				<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+								<div class="menu"><ul>
+<li><a href="https://alastaira.wordpress.com/">Home</a></li><li class="page_item page-item-2"><a href="https://alastaira.wordpress.com/about/">About</a></li>
+<li class="page_item page-item-1145"><a href="https://alastaira.wordpress.com/mapnik-for-sql-server/">Mapnik for SQL&nbsp;Server</a></li>
+<li class="page_item page-item-1177"><a href="https://alastaira.wordpress.com/ogr2ogr-patterns-for-sql-server/">OGR2OGR Patterns for SQL&nbsp;Server</a></li>
+</ul></div>
+			</div><!-- #access -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+
+	<div id="main">
+
+		<div id="container">
+			<div id="content" role="main">
+
+			
+
+				<div id="nav-above" class="navigation">
+					<div class="nav-previous"><a href="https://alastaira.wordpress.com/2015/08/04/multiple-mice-input-in-unity/" rel="prev"><span class="meta-nav">←</span> Multiple Mice Input in&nbsp;Unity</a></div>
+					<div class="nav-next"><a href="https://alastaira.wordpress.com/2016/01/31/bulk-renaming-files/" rel="next">Bulk-renaming files <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-above -->
+
+				<div id="post-2028" class="post-2028 post type-post status-publish format-standard hentry category-game-dev tag-cg tag-glsl tag-hlsl tag-shader tag-shadertoy tag-unity">
+											<h2 class="entry-title"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/" rel="bookmark">Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL)</a></h2>					
+					<div class="entry-meta">
+						<span class="meta-prep meta-prep-author">Posted on</span> <a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/" title="9:35 am" rel="bookmark"><span class="entry-date">August 7, 2015</span></a>						<span class="by-author"><span class="sep">by</span> <span class="author vcard"><a class="url fn n" href="https://alastaira.wordpress.com/author/alastaira/" title="View all posts by alastaira" rel="author">alastaira</a></span> </span>					</div><!-- .entry-meta -->
+
+					<div class="entry-content">
+						<p>If you’ve tried dabbling with shaders at all, you’ve probably come across <a href="https://www.shadertoy.com/">ShaderToy</a>
+ – an online shader showcase with some pretty amazing examples of what’s
+ possible in a few lines of shader code, inspired greatly by classic 
+demoscene coding. Here’s just two examples:</p>
+<table width="500" cellspacing="0" cellpadding="2" border="0">
+<tbody>
+<tr>
+<td width="250" valign="top"><a href="https://alastaira.files.wordpress.com/2015/08/seascape.gif"><img title="seascape" style="display:inline;" alt="seascape" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/seascape_thumb.gif" width="240" height="171"></a><br>“<a href="https://www.shadertoy.com/view/Ms2SD1">Seascape</a>” by TDM</td>
+<td width="250" valign="top"><a href="https://alastaira.files.wordpress.com/2015/08/elevated.gif"><img title="elevated" style="display:inline;" alt="elevated" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/elevated_thumb.gif" width="240" height="171"></a><br>“<a href="https://www.shadertoy.com/view/MdX3Rr">Elevated</a>” by iq</td>
+</tr>
+</tbody>
+</table>
+<p>It’s an amazing resource, not only for inspiration but for learning 
+how to create shaders, since every example comes with full source code 
+which you can edit and immediately test online in your browser, alter 
+parameters, supply different inputs etc.</p>
+<p>The shaders exhibited on ShaderToy are exclusively written in GLSL, 
+and run in your browser using WebGL. I thought it might be fun to keep 
+my shader skills up to scratch by converting some of them to Cg / HLSL 
+for use in Unity. I’m using Unity 5 but, to the best of my knowledge, 
+this should work with any version of Unity.</p>
+<h2>GLSL –&gt; HLSL conversion</h2>
+<p>It would probably be possible to write an automatic conversion tool 
+to turn a GLSL shader into an HLSL shader, but I’m not aware of one. So 
+I’ve been simply stepping through each line of the shader and replacing 
+any GLSL-specific functions with the HLSL equivalent. Fortunately, many 
+functions are the same, others have direct equivalents and, as a shader 
+is typically less than 100 lines long, what sounds like a manual process
+ only takes a few minutes in practice.</p>
+<p>Microsoft have published a very useful reference guide <a href="https://msdn.microsoft.com/en-GB/library/windows/apps/dn166865.aspx">here</a> which details many of the general differences between GLSL and HLSL. Unity also have a useful page <a href="http://docs.unity3d.com/Manual/SL-PlatformDifferences.html">here</a>. The following is a list of specific issues I’ve encountered when converting Shadertoy shaders to Unity:</p>
+<ul>
+<li>Replace <strong>iGlobalTime</strong> shader input (“shader playback time in seconds”) with <strong>_Time.y</strong></li>
+<li>Replace<strong> iResolution.xy</strong> (“viewport resolution in pixels”) with <strong>_ScreenParams.xy</strong></li>
+<li>Replace <strong>vec2</strong> types with <strong>float2</strong>, <strong>mat2</strong> with <strong>float2x2</strong> etc.</li>
+<li>Replace <strong>vec3(1)</strong> shortcut constructors in which all elements have same value with explicit <strong>float3(1,1,1)</strong></li>
+<li>Replace <strong>Texture2D</strong> with <strong>Tex2D</strong></li>
+<li>Replace <strong>atan(x,y)</strong> with<strong> atan2(y,x)</strong> &lt;- Note parameter ordering!</li>
+<li>Replace <strong>mix()</strong> with <strong>lerp()</strong></li>
+<li>Replace <strong>*=</strong> with <strong>mul()</strong></li>
+<li>Remove third (bias) parameter from Texture2D lookups</li>
+<li><strong>mainImage(out vec4 fragColor, in vec2 fragCoord)</strong> is the fragment shader function, equivalent to <strong>float4 mainImage(float2 fragCoord : SV_POSITION) : SV_Target</strong></li>
+<li>UV coordinates in GLSL have 0 at the top and increase downwards, in 
+HLSL 0 is at the bottom and increases upwards, so you may need to use <strong>uv.y = 1 – uv.y</strong> at some point.</li>
+</ul>
+<p>Note that ShaderToys don’t have a vertex shader function – they are 
+effectively full-screen pixel shaders which calculate the value at each 
+UV coordinate in screenspace. As such, they are most suitable for use in
+ a full-screen image effect (or, you can just apply them to a plane/quad
+ if you want) in which the UVs range from 0-1. </p>
+<p>But calculating pixel shaders for each pixel in a 1024×768 resolution
+ (or higher) is *expensive*. One solution if you want to achieve 
+anything like a game-playable framerate is to render the effect to a 
+fixed-size rendertexture, and then scale that up to fill the screen. 
+Here’s a simple generic script to do that:</p>
+<p><font face="Courier New" size="2">using System;<br>using UnityEngine;</font></p>
+<p><font face="Courier New" size="2">[ExecuteInEditMode]<br>public class ShaderToy : UnityStandardAssets.ImageEffects.ImageEffectBase<br>{</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp; public int horizontalResolution = 320;<br>&nbsp;&nbsp;&nbsp; public int verticalResolution = 240;</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp; // Called by camera to apply image effect<br>&nbsp;&nbsp;&nbsp; void OnRenderImage (RenderTexture source, RenderTexture destination)<br>&nbsp;&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // To draw the shader at full resolution, use: <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Graphics.Blit (source, destination, material);</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // To draw the shader at scaled down resolution, use:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ RenderTexture scaled = RenderTexture.GetTemporary 
+(horizontalResolution, verticalResolution);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Graphics.Blit (source, scaled, material);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Graphics.Blit (scaled, destination);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RenderTexture.ReleaseTemporary (scaled);<br>&nbsp;&nbsp;&nbsp; }<br>}</font></p>
+<p>And finally, here’s an example of a ShaderToy shader converted to Unity. This one is “<a href="https://www.shadertoy.com/view/4dl3zn">Bubbles</a>” by Inigo Quiles:</p>
+<p><font face="Courier New" size="2">// See </font><a href="https://www.shadertoy.com/view/4dl3zn"><font face="Courier New" size="2">https://www.shadertoy.com/view/4dl3zn</font></a><br><font face="Courier New" size="2">// GLSL -&gt; HLSL reference: </font><a href="https://msdn.microsoft.com/en-GB/library/windows/apps/dn166865.aspx"><font face="Courier New" size="2">https://msdn.microsoft.com/en-GB/library/windows/apps/dn166865.aspx</font></a></p>
+<p><font face="Courier New" size="2">Shader “Custom/Bubbles” {</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp; SubShader {<br>&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pass {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CGPROGRAM</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #pragma vertex vert<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #pragma fragment frag<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; struct v2f{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; float4 position : SV_POSITION;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; };<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v2f vert(float4 v:POSITION) : SV_POSITION {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v2f o;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ o.position = mul (UNITY_MATRIX_MVP, v);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return o;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fixed4 frag(v2f i) : SV_Target {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float2 uv = -1.0 + 2.0*i.position.xy/ _ScreenParams.xy;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ uv.x *= _ScreenParams.x/ _ScreenParams.y ;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Background<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ fixed4 outColour = fixed4(0.8+0.2*uv.y,0.8+0.2*uv.y,0.8+0.2*uv.y,1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Bubbles<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i = 0; i &lt; 40; i++) {</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ // Bubble seeds<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float pha =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sin(float(i)*546.13+1.0)*0.5 +
+ 0.5;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float siz = pow( sin(float(i)*651.74+5.0)*0.5 + 0.5, 4.0 );<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float pox =&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sin(float(i)*321.55+4.1);</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ // Bubble size, position and color<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float rad = 0.1 + 0.5*siz;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float2&nbsp; pos = float2( pox, -1.0-rad + 
+(2.0+2.0*rad)*fmod(pha+0.1*_Time.y*(0.2+0.8*siz),1.0));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float dis = length( uv – pos );<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float3 col = lerp( float3(0.94,0.3,0.0), float3(0.1,0.4,0.8), 
+0.5+0.5*sin(float(i)*1.2+1.9));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ // Add a black outline around each bubble<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ col+= 8.0*smoothstep( rad*0.95, rad, dis );<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Render<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ float f = length(uv-pos)/rad;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ f = sqrt(clamp(1.0-f*f,0.0,1.0));</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ outColour.rgb -= col.zyx *(1.0-smoothstep( rad*0.95, rad, dis )) * f;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Vignetting&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ outColour *= sqrt(1.5-0.5*length(uv));</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return outColour;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</font></p>
+<p><font face="Courier New" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ENDCG<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp; }<br>}</font></p>
+<p>Pretty, isn’t it?</p>
+<p><a href="https://alastaira.files.wordpress.com/2015/08/bubbles.gif"><img title="bubbles" style="display:inline;" alt="bubbles" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/bubbles_thumb.gif" width="320" height="240"></a></p>
+			<style type="text/css">
+			div.wpmrec2x{max-width:610px;}
+			div.wpmrec2x div.u > div{float:left;margin-right:10px;}
+			div.wpmrec2x div.u > div:nth-child(3n){margin-right:0px;}
+			</style>		<div class="wpcnt">
+			<div class="wpa wpmrec wpmrec2x">
+				<span class="wpa-about">Advertisements</span>
+				<div class="u">
+								<div id="automattic-id-9773" data-section="26942" style="width: 300px; height: 250px;"><iframe style="border:none;width:300px;height:250px;" scrolling="no" name="fif_slot_automattic-id-_automattic-id-9773" id="fif_slot_automattic-id-_automattic-id-9773" src="javascript:&quot;<html><body style='background:transparent;margin:0%;'></body></html>&quot;" frameborder="0" width="300" height="250"></iframe></div><div id="automattic-id-10074" data-section="114160" style="width: 300px; height: 250px;"><iframe style="border:none;width:300px;height:250px;" scrolling="no" name="fif_slot_automattic-id-_automattic-id-10074" id="fif_slot_automattic-id-_automattic-id-10074" src="javascript:&quot;<html><body style='background:transparent;margin:0%;'></body></html>&quot;" frameborder="0" width="300" height="250"></iframe></div>
+				</div>
+				        <div id="crt-362369204" style="width: 300px; height: 250px; display: none !important; visibility: hidden !important;"></div>
+        
+			</div>
+		</div><div id="jp-post-flair" class="sharedaddy sd-like-enabled"><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-18340120-2028-590fba51096d9" data-src="//widgets.wp.com/likes/#blog_id=18340120&amp;post_id=2028&amp;origin=alastaira.wordpress.com&amp;obj_id=18340120-2028-590fba51096d9" data-name="like-post-frame-18340120-2028-590fba51096d9"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-18340120-2028-590fba51096d9" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/a_003.html" frameborder="0" width="100%" height="55px"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="1844" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://alastaira.wordpress.com/2013/12/07/custom-unity-terrain-material-shaders/" title="Custom Unity Terrain Material / Shaders
+
+I love Unity – it’s one of those environments that’s actually a pleasure to program in, but its terrain system seems somewhat lacking behind its other features, requiring quite a lot of hacks and workarounds to get desired appearance and functionality (while still having an acceptable level of performance). For…" rel="nofollow" data-origin="2028" data-position="0">Custom Unity Terrain Material / Shaders</a></span><span class="jp-relatedposts-post-context">In "Game Dev"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="1714" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://alastaira.wordpress.com/2013/10/25/animal-crossing-curved-world-shader/" title="Animal Crossing Curved World Shader
+
+Continuing the theme of my last post, I thought I’d write another shader – this time to mimic the cylindrical rolloff effect of distant objects seen in, amongst others, the “Animal Crossing” series. Rather than appearing on a flat plane, the world surface gently rolls towards you as if projected…" rel="nofollow" data-origin="2028" data-position="1">Animal Crossing Curved World Shader</a></span><span class="jp-relatedposts-post-context">In "Game Dev"</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="1706" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://alastaira.wordpress.com/2013/08/24/the-7dfps-game-jam-augmented-reality-and-spectral-echoes/" title="The 7DFPS Game Jam, Augmented Reality, and &amp;ldquo;Spectral Echoes&amp;rdquo;
+
+For the recent 7-Day FPS Challenge, I decided to try writing an augmented reality game - blending in-game graphics with a display taken from the rear-facing video feed on an phone/tablet device, and game navigation achieved through physical manipulation of the device. After all, how much more &amp;quot;First Person&amp;quot; can…" rel="nofollow" data-origin="2028" data-position="2">The 7DFPS Game Jam, Augmented Reality, and “Spectral Echoes”</a></span><span class="jp-relatedposts-post-context">In "Game Dev"</span></p></div></div></div>											</div><!-- .entry-content -->
+
+
+					<div class="entry-utility">
+												This entry was posted in <a href="https://alastaira.wordpress.com/category/game-dev/" rel="category tag">Game Dev</a> and tagged <a href="https://alastaira.wordpress.com/tag/cg/" rel="tag">CG</a>, <a href="https://alastaira.wordpress.com/tag/glsl/" rel="tag">GLSL</a>, <a href="https://alastaira.wordpress.com/tag/hlsl/" rel="tag">HLSL</a>, <a href="https://alastaira.wordpress.com/tag/shader/" rel="tag">Shader</a>, <a href="https://alastaira.wordpress.com/tag/shadertoy/" rel="tag">ShaderToy</a>, <a href="https://alastaira.wordpress.com/tag/unity/" rel="tag">Unity</a>. Bookmark the <a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/" title="Permalink to Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL)" rel="bookmark">permalink</a>.											</div><!-- .entry-utility -->
+				</div><!-- #post-## -->
+
+				<div id="nav-below" class="navigation">
+					<div class="nav-previous"><a href="https://alastaira.wordpress.com/2015/08/04/multiple-mice-input-in-unity/" rel="prev"><span class="meta-nav">←</span> Multiple Mice Input in&nbsp;Unity</a></div>
+					<div class="nav-next"><a href="https://alastaira.wordpress.com/2016/01/31/bulk-renaming-files/" rel="next">Bulk-renaming files <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-below -->
+
+				
+			<div id="comments">
+
+
+			<h3 id="comments-title">5 Responses to <em>Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL)</em></h3>
+
+
+			<ol class="commentlist">
+					<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-4958">
+		<div id="comment-4958">
+			<div class="comment-author vcard">
+				<img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/roFnFaFU_normal.jpeg" class="avatar avatar-40" width="40" height="40">				<cite class="fn"><a href="http://twitter.com/djmips" rel="external nofollow" class="url">David (@djmips)</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#comment-4958">
+				August 12, 2015 at 12:10 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Nvidia’s cgc can take GLSL and output HLSL apparently.  <a href="http://http.developer.nvidia.com/Cg/cgc.html" rel="nofollow">http://http.developer.nvidia.com/Cg/cgc.html</a></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/?replytocom=4958#respond" onclick='return addComment.moveForm( "comment-4958", "4958", "respond", "2028" )' aria-label="Reply to David (@djmips)">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-5018">
+		<div id="comment-5018">
+			<div class="comment-author vcard">
+				<img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/1b999c8d491261d41ccd2a61a760918d.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-1b999c8d491261d41ccd2a61a760918d-0" width="40" height="40">				<cite class="fn">odivalq</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#comment-5018">
+				September 10, 2015 at 7:10 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I’m not adept at writing shaders, so 
+could you tell me if one can convert the seascape to Unity? Would that 
+work? Since you told they’re all fullscreen fx, I’m not an ocean shader 
+would work as it should in Unity ecosystem. =|</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/?replytocom=5018#respond" onclick='return addComment.moveForm( "comment-5018", "5018", "respond", "2028" )' aria-label="Reply to odivalq">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-alastaira bypostauthor even depth-2 highlander-comment" id="li-comment-5019">
+		<div id="comment-5019">
+			<div class="comment-author vcard">
+				<img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ae7d819811cc106f8f14c385e17b19e8.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-ae7d819811cc106f8f14c385e17b19e8-0" width="40" height="40">				<cite class="fn"><a href="https://alastaira.wordpress.com/" rel="external nofollow" class="url">alastaira</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#comment-5019">
+				September 10, 2015 at 7:18 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Yes – any of the shadertoys can be 
+converted. Full screen fx / shaders differ only in how they interpret UV
+ coordinates, and whether they can access anything already written to 
+the render buffer.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/?replytocom=5019#respond" onclick='return addComment.moveForm( "comment-5019", "5019", "respond", "2028" )' aria-label="Reply to alastaira">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-5163">
+		<div id="comment-5163">
+			<div class="comment-author vcard">
+				<img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/e4206f7e51198ef5a6507bde36e18afd.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-e4206f7e51198ef5a6507bde36e18afd-0" width="40" height="40">				<cite class="fn"><a href="http://www.xelnath.com/" rel="external nofollow" class="url">Alexander Brazie</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#comment-5163">
+				October 22, 2015 at 9:35 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I am having trouble converting this CGToy to Unity:</p>
+<p><a href="https://www.shadertoy.com/view/4tsXRH" rel="nofollow">https://www.shadertoy.com/view/4tsXRH</a></p>
+<p>Specifically with the Mul2 and the usage of the mul() function. Could you add a couple examples? <img draggable="false" class="emoji" alt="🙂" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/1f642.svg"></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/?replytocom=5163#respond" onclick='return addComment.moveForm( "comment-5163", "5163", "respond", "2028" )' aria-label="Reply to Alexander Brazie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-5164">
+		<div id="comment-5164">
+			<div class="comment-author vcard">
+				<img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/e4206f7e51198ef5a6507bde36e18afd.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-e4206f7e51198ef5a6507bde36e18afd-1" width="40" height="40">				<cite class="fn"><a href="http://www.xelnath.com/" rel="external nofollow" class="url">Alexander Brazie</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#comment-5164">
+				October 22, 2015 at 9:36 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I am having trouble converting this CGToy to Unity:</p>
+<p><a href="https://www.shadertoy.com/view/4tsXRH" rel="nofollow">https://www.shadertoy.com/view/4tsXRH</a></p>
+<p>Specifically with the Mul2 and the usage of the mul() function. Could you add a couple examples? <img draggable="false" class="emoji" alt="🙂" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/1f642.svg"></p>
+<p>edit: Now with email notification checked. Please remove the other reply.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/?replytocom=5164#respond" onclick='return addComment.moveForm( "comment-5164", "5164", "respond", "2028" )' aria-label="Reply to Alexander Brazie">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+			</ol>
+
+
+	
+
+	<div id="respond" class="comment-respond js">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://alastaira.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<input id="highlander_comment_nonce" name="highlander_comment_nonce" value="e2265a5d70" type="hidden"><input name="_wp_http_referer" value="/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/" type="hidden">
+<input name="hc_post_as" id="hc_post_as" value="guest" type="hidden">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px none; padding: 0px; box-sizing: content-box; overflow-wrap: break-word; height: 0px !important; min-height: 0px !important; overflow: hidden; transition: none 0s ease 0s ; font-family: Arial,Helvetica,Tahoma,Verdana,sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 24px; width: 618px;" class="autosizejs ">Enter your comment here...</textarea><textarea id="comment" name="comment" title="Enter your comment here..." placeholder="Enter your comment here..." style="height: 44px; overflow: hidden; overflow-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/a_004.html" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0" width="24" height="24"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Gravatar" class="no-grav" width="25">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email"></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text"></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url"></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="WordPress.com Logo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" type="hidden">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'wordpress'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Twitter picture" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" type="hidden">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'twitter'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Facebook photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" type="hidden">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'facebook'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Google+ photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" type="hidden">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'googleplus'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input name="subscribe" id="subscribe" value="subscribe" style="width: auto;" type="checkbox"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p></div>
+
+
+
+
+<p class="form-submit" style="display: none;"><input name="submit" id="comment-submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="2028" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="60312a2c7f" type="hidden"></p>
+<input name="genseq" value="1494202961" type="hidden">
+<p style="display: none;"></p>			<input id="ak_js" name="ak_js" value="1494202962474" type="hidden"></form>
+			</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments -->
+
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+
+		<div id="primary" class="widget-area" role="complementary">
+						<ul class="xoxo">
+
+<li id="search-2" class="widget-container widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://alastaira.wordpress.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input name="s" id="s" type="text">
+					<input id="searchsubmit" value="Search" type="submit">
+				</div>
+			</form></li>		<li id="recent-posts-2" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+					<li>
+				<a href="https://alastaira.wordpress.com/2016/09/02/guess-who-reloaded-for-the-rainbow-jam-2016/">Guess Who Reloaded for the Rainbow Jam&nbsp;2016</a>
+						</li>
+					<li>
+				<a href="https://alastaira.wordpress.com/2016/01/31/bulk-renaming-files/">Bulk-renaming files</a>
+						</li>
+					<li>
+				<a href="https://alastaira.wordpress.com/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/">Unity Shadertoys (a.k.a Converting GLSL shaders to&nbsp;Cg/HLSL)</a>
+						</li>
+					<li>
+				<a href="https://alastaira.wordpress.com/2015/08/04/multiple-mice-input-in-unity/">Multiple Mice Input in&nbsp;Unity</a>
+						</li>
+					<li>
+				<a href="https://alastaira.wordpress.com/2015/06/27/learnings-from-unite-2015/">Learnings from Unite&nbsp;2015</a>
+						</li>
+				</ul>
+		</li>					</ul>
+		</div><!-- #primary .widget-area -->
+
+
+		<div id="secondary" class="widget-area" role="complementary">
+			<ul class="xoxo">
+				<li id="image-5" class="widget-container widget_image"><div style="overflow:hidden;"><img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/mvp.png" alt="Most Valuable Professional" class="alignnone" width="64" height="100"></div>
+</li><li id="image-6" class="widget-container widget_image"><div style="overflow:hidden;"><img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/mcts.png" alt="Microsoft Certified Technology Specialist" class="alignnone" width="110" height="80"></div>
+</li><li id="image-3" class="widget-container widget_image"><div style="overflow:hidden;"><img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/mcp.png" alt="Microsoft Certified Professional" class="alignnone" width="150" height="68"></div>
+</li><li id="archives-2" class="widget-container widget_archive"><h3 class="widget-title">Archives</h3>		<ul>
+			<li><a href="https://alastaira.wordpress.com/2016/09/">September 2016</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2016/01/">January 2016</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2015/08/">August 2015</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2015/06/">June 2015</a>&nbsp;(3)</li>
+	<li><a href="https://alastaira.wordpress.com/2015/05/">May 2015</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2015/04/">April 2015</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/12/">December 2014</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/11/">November 2014</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/10/">October 2014</a>&nbsp;(3)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/08/">August 2014</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/04/">April 2014</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/03/">March 2014</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2014/02/">February 2014</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/12/">December 2013</a>&nbsp;(4)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/11/">November 2013</a>&nbsp;(6)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/10/">October 2013</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/09/">September 2013</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/08/">August 2013</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/07/">July 2013</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/05/">May 2013</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/04/">April 2013</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/03/">March 2013</a>&nbsp;(4)</li>
+	<li><a href="https://alastaira.wordpress.com/2013/01/">January 2013</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/11/">November 2012</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/10/">October 2012</a>&nbsp;(1)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/07/">July 2012</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/06/">June 2012</a>&nbsp;(3)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/05/">May 2012</a>&nbsp;(3)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/04/">April 2012</a>&nbsp;(2)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/03/">March 2012</a>&nbsp;(15)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/02/">February 2012</a>&nbsp;(3)</li>
+	<li><a href="https://alastaira.wordpress.com/2012/01/">January 2012</a>&nbsp;(5)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/09/">September 2011</a>&nbsp;(6)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/08/">August 2011</a>&nbsp;(7)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/07/">July 2011</a>&nbsp;(17)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/06/">June 2011</a>&nbsp;(14)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/05/">May 2011</a>&nbsp;(13)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/04/">April 2011</a>&nbsp;(13)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/03/">March 2011</a>&nbsp;(10)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/02/">February 2011</a>&nbsp;(12)</li>
+	<li><a href="https://alastaira.wordpress.com/2011/01/">January 2011</a>&nbsp;(19)</li>
+	<li><a href="https://alastaira.wordpress.com/2010/12/">December 2010</a>&nbsp;(4)</li>
+		</ul>
+		</li><li id="linkcat-1356" class="widget-container widget_links"><h3 class="widget-title">Blogroll</h3>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.garzilla.net/vemaps/">Bing Maps Concepts</a></li>
+<li><a href="http://www.sqlskills.com/blogs/bobb/">Bob Beachemin's Blog</a></li>
+<li><a href="http://www.earthware.co.uk/blog/">Earthware Blog</a></li>
+<li><a href="http://jkebeck.wordpress.com/">Hannes's Virtual Earth</a></li>
+<li><a href="http://blogs.developpeur.org/nicoboo/default.aspx">Nicolas Boonaert's Blog</a></li>
+<li><a href="http://rbrundritt.wordpress.com/" rel="friend met" target="_blank">Ricky's Bing Maps Blog</a></li>
+<li><a href="http://blogs.msdn.com/b/edkatibah/default.aspx">Spatial Ed</a></li>
+
+	</ul>
+</li>
+<li id="meta-2" class="widget-container widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+			<li><a href="https://wordpress.com/start?ref=wplogin">Register</a></li>			<li><a href="https://alastaira.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://alastaira.wordpress.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://alastaira.wordpress.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
+			</li>			</ul>
+		</div><!-- #secondary .widget-area -->
+
+	</div><!-- #main -->
+
+	<div id="footer" role="contentinfo">
+		<div id="colophon">
+
+
+
+			<div id="site-info">
+				<a href="https://alastaira.wordpress.com/" title="Alastair Aitchison" rel="home">
+					Alastair Aitchison				</a>
+			</div><!-- #site-info -->
+
+			<div id="site-generator">
+								<a href="https://wordpress.com/?ref=footer_blog">Blog at WordPress.com.</a>
+			</div><!-- #site-generator -->
+
+		</div><!-- #colophon -->
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<!--  -->
+
+
+
+
+	
+
+		<div style="display:none">
+	<div class="grofile-hash-map-b16eda7534a37b90e84c0dbde4658f28">
+	</div>
+	<div class="grofile-hash-map-1b999c8d491261d41ccd2a61a760918d">
+	</div>
+	<div class="grofile-hash-map-ae7d819811cc106f8f14c385e17b19e8">
+	</div>
+	<div class="grofile-hash-map-e4206f7e51198ef5a6507bde36e18afd">
+	</div>
+	</div>
+
+
+
+	<div id="carousel-reblog-box">
+		<form action="#" name="carousel-reblog">
+			<textarea id="carousel-reblog-content" name="carousel-reblog-content" placeholder="Add your thoughts here... (optional)"></textarea>
+			<label for="carousel-reblog-to-blog-id" id="carousel-reblog-lblogid">Post to</label>
+			<select name="carousel-reblog-to-blog-id" id="carousel-reblog-to-blog-id">
+						</select>
+
+			<div class="submit">
+				<span class="canceltext"><a href="#" class="cancel">Cancel</a></span>
+				<input name="carousel-reblog-submit" class="button" id="carousel-reblog-submit" value="Reblog Post" type="submit">
+				<input id="carousel-reblog-blog-id" value="18340120" type="hidden">
+				<input id="carousel-reblog-blog-url" value="https://alastaira.wordpress.com" type="hidden">
+				<input id="carousel-reblog-blog-title" value="Alastair Aitchison" type="hidden">
+				<input id="carousel-reblog-post-url" value="" type="hidden">
+				<input id="carousel-reblog-post-title" value="" type="hidden">
+			</div>
+
+			<input id="_wpnonce" name="_wpnonce" value="7e84e2f42e" type="hidden"><input name="_wp_http_referer" value="/2015/08/07/unity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl/" type="hidden">		</form>
+
+		<div class="arrow"></div>
+	</div>
+
+<link rel="stylesheet" id="all-css-0-3" href="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/jetpack-carousel.css" type="text/css" media="all">
+<!--[if lte IE 8]>
+<link rel='stylesheet' id='jetpack-carousel-ie8fix-css'  href='https://s1.wp.com/wp-content/mu-plugins/carousel/jetpack-carousel-ie8fix.css?m=1412618825h&#038;ver=20121024' type='text/css' media='all' />
+<![endif]-->
+
+
+<div id="actionbar" class="actnbr-pub-twentyten actnbr-has-follow"><ul><li class="actnbr-btn actnbr-hidden"> 			    	<a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a> 			    	<div class="actnbr-popover tip tip-top-left actnbr-notice"> 			    		<div class="tip-arrow"></div> 			    		<div class="tip-inner actnbr-follow-bubble"></div> 			    	</div> 			    </li><li class="actnbr-ellipsis actnbr-hidden"> 			  <svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 			  <div class="actnbr-popover tip tip-top-left actnbr-more"> 			  	<div class="tip-arrow"></div> 			  	<div class="tip-inner"> 				  <ul> 				    <li class="actnbr-sitename actnbr-hidden"><a href="http://alastaira.wordpress.com/"><img alt="" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/wpcom-gray-white.png" class="avatar avatar-50" width="50" height="50"> Alastair Aitchison</a></li> 				   	<li class="actnbr-folded-customize actnbr-hidden"><a href="https://alastaira.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Falastaira.wordpress.com%2F2015%2F08%2F07%2Funity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Customize<span></span></span></a></li> 				    <li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a></li> 					<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Sign up</a></li> 				    <li class="actnbr-login actnbr-hidden"><a href="https://alastaira.wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Falastaira.wordpress.com%2F2015%2F08%2F07%2Funity-shadertoys-a-k-a-converting-glsl-shaders-to-cghlsl%2F">Log in</a></li> 				     				    <li class="actnbr-shortlink actnbr-hidden"><a href="http://wp.me/p1eX6o-wI">Copy shortlink</a></li> 				    <li class="flb-report actnbr-hidden"><a href="http://en.wordpress.com/abuse/">Report this content</a></li> 				     				     				    <li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Manage subscriptions</a></li> 				    <li class="actnbr-fold actnbr-hidden"><a href="">Collapse this bar</a></li> 			      </ul> 			    </div> 		      </div> 		    </li> 	      </ul></div>
+	
+			<iframe src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		
+		<noscript>
+			<p class="robots-nocontent"><img 
+src="https://sb.scorecardresearch.com/p?c1=2&c2=7518284&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"
+ alt="" style="display:none;" width="1" height="1" /></p>
+		</noscript>
+
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+
+
+<img src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/g.gif" alt=":)" id="wpstats"><iframe style="position: absolute; left: -1000px; top: -1000px; border: 0px solid; width: 0px; height: 0px;" name="automattic-passback-receiver" src="Unity%20Shadertoys%20%28a.k.a%20Converting%20GLSL%20shaders%20to%20Cg_HLSL%29%20%7C%20Alastair%20Aitchison_tiedostot/passback.html" width="0" height="0"></iframe></body></html>

@@ -1,0 +1,172 @@
+<Panel visible     = "false"
+       name        = "Main Frame">
+  
+  <Font path = "/NSGUI/ArialSmall.tga" />
+
+  <Panel name="LoadingPanel" >
+    <Label name="Loading">
+       <Text string="Loading Demo, please wait...">
+         <Color x="255" y="0" z="0" /> 
+       </Text>
+     </Label>
+  </Panel>
+  
+  <Panel name        = "User Controls"
+         layout      = "YAXIS"
+         anchorPoint = "CORNERRU"> 
+         
+    <Position    x = "-10" y = "10"/>
+    <Interval    y = "2" x = "2" />
+
+    <TabbedPanel callbackString = "tp">
+      <TabButtonsBordersColor  x = "50" g = "50" b = "50" />
+      <TabButtonsColor         x = "255" g = "180" b = "40" />
+      <BordersColor            x = "216" y = "169" z =  "0" />
+      <BGColor                 x =  "50" y =  "50" z = "50" />
+
+      <Panel name           = "Alpha"
+             layout         = "YAXIS"> 
+
+         <Interval y = "10" />
+
+         <Slider  callbackString = "aReference"
+                  progress       = "0.25">
+            <Dimensions x = "150" />
+            <Text    string  = "Alpha Reference: 0.25" />
+         </Slider>
+         
+         <Slider  callbackString = "aBooster"
+                  progress       = "0.75">
+            <Dimensions x = "150" />
+            <Text    string  = "Alpha Booster: 1.50" />
+         </Slider>
+
+         <CheckBox callbackString = "aToCoverage"
+                   checked        = "true">
+           <Text string = "Transparency AA" />
+         </CheckBox>
+
+      </Panel>
+      
+      <Panel name           = "Visibility"
+             layout         = "YAXIS"> 
+   
+         <CheckBox callbackString = "eOcclusion"
+                   checked        = "true">
+           <Text string = "Enable Occlusion Queries" />
+         </CheckBox> 
+
+         <CheckBox callbackString = "eFrustum"
+                   checked        = "true">
+           <Text string = "Enable Frustum Culling" />
+         </CheckBox> 
+
+         <CheckBox callbackString = "rAABB"
+                   checked        = "false">
+           <Text string = "Render Bounding Boxes" />
+         </CheckBox>    
+  
+      </Panel>
+
+      <Panel name           = "Terrain"
+             layout         = "YAXIS"> 
+
+         <CheckBox callbackString = "rTBN"
+                   checked        = "false">
+           <Text string = "Render TBN Info" />
+         </CheckBox>
+         
+         <CheckBox callbackString = "rGrass"
+                   checked        = "true">
+           <Text string = "Render Grass" />
+         </CheckBox>
+
+         <CheckBox callbackString = "rWater"
+                   checked        = "true">
+           <Text string = "Render Water" />
+         </CheckBox>
+         
+         <CheckBox callbackString = "rMode"
+                   checked        = "false">
+           <Text string = "Wire Frame" />
+         </CheckBox>
+      </Panel>
+
+      <Panel name           = "Sky"
+             layout         = "YAXIS"> 
+
+         <Slider  callbackString = "red"
+                  progress       = "0.45">
+            <Dimensions x = "150" />
+            <Text    string  = "Red Intensity: 0.45" />
+         </Slider>
+
+         <Slider  callbackString = "green"
+                  progress       = "0.70">
+            <Dimensions x = "150" />
+            <Text    string  = "Green Intensity: 0.70" />
+         </Slider>
+         
+         <Slider  callbackString = "blue"
+                  progress       = "0.90">
+            <Dimensions x = "150" />
+            <Text    string  = "Blue Intensity: 0.90" />
+         </Slider> 
+                 
+         <Slider  callbackString = "sSpeed"
+                  progress       = "0.07">
+            <Dimensions x = "150" />
+            <Text    string  = "Scrolling Speed: 0.07" />
+         </Slider>       
+      </Panel>
+
+      <Panel name           = "Matrix"
+             layout         = "YAXIS">  
+
+         <CheckBox callbackString = "VP"
+                   checked        = "false">
+           <Text string = "VP" />
+         </CheckBox>
+
+         <CheckBox callbackString = "PV"
+                   checked        = "false">
+           <Text string = "PV" />
+         </CheckBox>
+         
+         <CheckBox callbackString = "TRANSPOSE"
+                   checked        = "false">
+           <Text string = "Transpose MV" />
+         </CheckBox>
+
+         <CheckBox callbackString = "IDENTITY"
+                   checked        = "true">
+           <Text string = "Identity MV" />
+         </CheckBox>
+      </Panel>
+  
+    </TabbedPanel>
+  </Panel>
+
+  <Panel name           = "Statistics"
+         layout         = "YAXIS"
+         drawBounds     = "true"
+         anchorPoint    = "CORNERLU"
+         drawBackground = "true"> 
+
+    <BGColor      x =  "50" y =  "50" z = "50" />
+    <BordersColor x = "216" y = "169" z =  "0" />
+
+    <Position    x = "10" y = "10"/>
+    <Interval    y = "2" />
+ 
+    <Label name = "Title">    
+      <Text string = "FPS Monitor">
+         <Color r = "255" g = "180" b = "40" />
+       </Text>
+    </Label>
+    <Separator ratio = "1.0" />
+    <Label name = "triCounter"> <Text string = "Rendered Triangles: 0" /></Label>
+    <Label name = "cellCounter"><Text string = "Visible Cells: 0" /></Label>
+    <Label name = "fpsCounter"> <Text string = "Current FPS: 0" /></Label>
+  </Panel>
+</Panel>

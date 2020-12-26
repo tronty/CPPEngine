@@ -1,0 +1,579 @@
+/*
+  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+
+struct VsIn {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main(VsIn In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv = In.uv;
+	return Out;
+}
+
+[Fragment shader]
+float3      iResolution;                  // viewport resolution (in pixels)
+float     iTime;                        // shader playback time (in seconds)
+float4      iMouse;                       // mouse pixel coords
+sampler2D iChannel0;
+sampler2D iChannel1;
+sampler2D iChannel2;
+// Based on https://www.shadertoy.com/view/lsySzd
+//
+// "Volumetric explosion" by Duke
+//-------------------------------------------------------------------------------------
+// Based on "Supernova remnant" (https://www.shadertoy.com/view/MdKXzc) 
+// and other previous shaders 
+// otaviogood's "Alien Beacon" (https://www.shadertoy.com/view/ld2SzK)
+// and Shane's "Cheap Cloud Flythrough" (https://www.shadertoy.com/view/Xsc3R4) shaders
+// Some ideas came from other shaders from this wonderful site
+// Press 1-2-3 to zoom in and zoom out.
+// License: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+//-------------------------------------------------------------------------------------
+//
+// And based on https://www.shadertoy.com/view/XlcGRn
+//
+// "Space Elevator" by dr2 - 2016
+// License: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+//
+// And based on https://www.shadertoy.com/view/4djSRW
+//
+// Hash without Sine
+// Creative Commons Attribution-ShareAlike 4.0 International Public License
+// Created by David Hoskins.
+//
+// With varous small tweaks to have the effect play nice against a colorful background,
+// keeping the black smoky look.
+//
+// Explosion colors
+const float3 veDensityBeg  = float3(0.22,0.16,0.046);
+const float3 veDensityEnd  = float3(0.403,0.291,0.216);
+const float3 veMediaCenter = float3(0.305,0.49,0.616);
+const float3 veMediaEdge   = float3(0.918,0.796,0.495);
+// Sky colors
+const float3 veColSkyHigh = float3(0.2, 0.4, 0.6);
+const float3 veColSkyLow  = float3(0.0, 0.1, 0.3);
+const float3 veColStars   = float3(0.8, 0.9, 1.0);
+const float accuscale = -0.005;
+const float scalestar = 18.1  ;
+const float subdiv    = 11.714;
+const float variable  = 0.612 ;
+const float variable2 = 1.171 ;
+// Default
+const bool veBOTH         = false;
+const bool veLEFT         = true ;
+const bool veLOW_QUALITY  = false;
+const bool veDITHERING    = true ;
+const bool veTONEMAPPING  = false;
+const bool veBackground   = true ;
+const float veBackgroundCutoff      = 0.891;
+const float veBackgroundCutoffStart = 0.387;
+
+float veProgress;// = mod(iTime * 0.1, 1.);
+//-------------------
+#define HASHSCALE1 .1031
+#define HASHSCALE3 float3(.1031, .1030, .0973)
+#define HASHSCALE4 float4(1031, .1030, .0973, .1099)
+
+#define pi 3.14159265
+
+void veR( inout float2 p, in float a) {
+	p = cos(a) * p + sin(a) * float2(p.y, -p.x);
+}
+
+// iq's noise_
+float veNoise( in float3 x) {
+	float3 p = floor(x);
+	float3 f = fract(x);
+	f = f * f * (3.0 - 2.0 * f);
+	float2 uv = (p.xy + float2(37.0, 17.0) * p.z) + f.xy;
+	float2 rg = tex2Dlod( iChannel0, (uv+.5)/256., 0.).yx;
+	return 1. - 0.82 * mix(rg.x, rg.y, f.z);
+}
+
+float veFBM(float3 p) {
+	return veNoise(p * .06125) * .5 + veNoise(p * .125) * .25
+			+ veNoise(p * .25) * .125 + veNoise(p * .4) * .2;
+}
+
+float veSphere(float3 p, float r) {
+	return length(p) - r * 1.92 * veProgress;
+}
+
+//==============================================================
+// otaviogood's noise_ from https://www.shadertoy.com/view/ld2SzK
+//--------------------------------------------------------------
+// This spiral noise_ works by successively adding and rotating sin waves while increasing frequency.
+// It should work the same on all computers since it's not based on a hash function like some other noises.
+// It can be much faster than other noise_ functions if you're ok with some repetition.
+const float veNudge = 100.3 * 4.;	// size of perpendicular vector
+float veNormalizer = 1.0 / sqrt(1.0 + veNudge * veNudge);	// pythagorean theorem on that perpendicular to maintain scale
+float veSpiralNoiseC(float3 p) {
+	float n = 1.5 - 6. * veProgress; // noise_ amount
+	float iter = 2.0;
+	for (int i = 0; i < 8; i++) {
+		// add sin and cos scaled inverse with the frequency
+		n += -abs(sin(p.y * iter) + cos(p.x * iter)) / iter; // abs for a ridged look
+		// rotate by adding perpendicular and scaling down
+		p.xy += float2(p.y, -p.x) * veNudge;
+		p.xy *= veNormalizer;
+		// rotate on other axis
+		p.xz += float2(p.z, -p.x) * veNudge;
+		p.xz *= veNormalizer;
+		// increase the frequency
+		iter *= 1.733733;
+	}
+	return n;
+}
+
+float veVolumetricExplosion(float3 p) {
+	float fin = veSphere(p, 4.);
+	if (veLOW_QUALITY) {
+		fin += veNoise(p * 12.5) * .2;
+	} else {
+		fin += veFBM(p * 50.);
+	}
+	fin += veSpiralNoiseC(p.zxy * 0.4132 + 333. * floor(iMouse.y * 0.1)) * 1.25; //1.25;
+
+	return fin;
+}
+
+float veMap(float3 p) {
+	//veR(p.yz, iMouse.x * 0.008 * pi + 4. * veProgress);
+	veR(p.yz, 4. * veProgress);
+	float VolExplosion = veVolumetricExplosion(p * 2.) * 0.5; // scale
+	return VolExplosion;
+}
+//--------------------------------------------------------------
+
+// assign color to the media
+float3 veComputeColor(float density, float radius) {
+	// color based on density alone, gives impression of occlusion within
+	// the media
+	float3 result = mix(veDensityBeg, veDensityEnd, 1. - density);
+
+	// color added to the media
+	float3 colCenter = 7. * veMediaCenter;
+	float3 colEdge = 1.5 * veMediaEdge;
+	result *= mix(colCenter, colEdge, min((radius + .05) / .9, 1.15));
+
+	return result;
+}
+
+bool veRaySphereIntersect(float3 org, float3 dir, out float near, out float far) {
+	float b = dot(dir, org);
+	float c = dot(org, org) - 8. * 4. * veProgress;
+	float delta = b * b - c;
+	if (delta < 0.0)
+		return false;
+	float deltasqrt = sqrt(delta);
+	near = -b - deltasqrt;
+	far = -b + deltasqrt;
+	return far > 0.0;
+}
+
+// Applies the filmic curve from John Hable's presentation
+// More details at : http://filmicgames.com/archives/75
+float3 veToneMapFilmicALU(float3 _color) {
+	_color = max(float3(0), _color - float3(0.004));
+	_color = (_color * (6.2 * _color + float3(0.5)))
+			/ (_color * (6.2 * _color + float3(1.7)) + float3(0.06));
+	return _color;
+}
+
+float3 veAddZoom(float3 rd, float3 ro) {
+	const float KEY_1 = 49.5 / 256.0;
+	const float KEY_2 = 50.5 / 256.0;
+	const float KEY_3 = 51.5 / 256.0;
+	float key = 0.0;
+	key += 0.7 * tex2D(iChannel1, float2(KEY_1, 0.25)).x;
+	key += 1.4 * tex2D(iChannel1, float2(KEY_2, 0.25)).x;
+	key += 2.1 * tex2D(iChannel1, float2(KEY_3, 0.25)).x;
+	return ro - (ro - rd) * key * 1.6 / 6.;
+}
+
+const float4 vecHashA4 = float4(0., 1., 57., 58.);
+const float3 vecHashA3 = float3(1., 57., 113.);
+const float vecHashM = 43758.54;
+
+float4 veHashv4f(float p) {
+	return fract(sin(p + vecHashA4) * vecHashM);
+}
+
+float veNoisefv2(float2 p) {
+	float4 t;
+	float2 ip, fp;
+	ip = floor(p);
+	fp = fract(p);
+	fp = fp * fp * (3. - 2. * fp);
+	t = veHashv4f(dot(ip, vecHashA3.xy));
+	return mix(mix(t.x, t.y, fp.x), mix(t.z, t.w, fp.x), fp.y);
+}
+
+float veNoisefv3(float3 p) {
+	float4 t1, t2;
+	float3 ip, fp;
+	float q;
+	ip = floor(p);
+	fp = fract(p);
+	fp = fp * fp * (3. - 2. * fp);
+	q = dot(ip, vecHashA3);
+	t1 = veHashv4f(q);
+	t2 = veHashv4f(q + vecHashA3.z);
+	return mix(mix(mix(t1.x, t1.y, fp.x), mix(t1.z, t1.w, fp.x), fp.y),
+			mix(mix(t2.x, t2.y, fp.x), mix(t2.z, t2.w, fp.x), fp.y), fp.z);
+}
+
+float veFbm3(float3 p) {
+	float f, a;
+	f = 0.;
+	a = 1.;
+	for (int i = 0; i < 5; i++) {
+		f += a * veNoisefv3(p);
+		a *= 0.5;
+		p *= 2.;
+	}
+	return f;
+}
+
+float veFbmn(float3 p, float3 n) {
+	float3 s;
+	float a;
+	s = float3(0.);
+	a = 1.;
+	for (int i = 0; i < 5; i++) {
+		s += a * float3(veNoisefv2(p.yz), veNoisefv2(p.zx), veNoisefv2(p.xy));
+		a *= 0.5;
+		p *= 2.;
+	}
+	return dot(s, abs(n));
+}
+
+float3 veSpaceCol(float3 ro, float3 rd) {
+	float3 rds, col;
+	rds = floor(2000. * rd);
+	rds = 0.00015 * rds + 0.1 * veNoisefv3(0.0005 * rds.yzx);
+	for (int j = 0; j < 19; j++)
+		rds = abs(rds) / dot(rds, rds) - 0.9;
+	col = veColStars * min(1., 0.5e-3 * pow(min(6., length(rds)), 5.));
+	float s = pow(max(0., abs(dot(rd, float3(0.0, 1.0, 0.0)))), 1.60);
+	col = veColSkyLow + col * (1. - smoothstep(0.9, 1., s));
+	s = pow(s, 128.);
+	col += veColSkyHigh * (0.2 * s + 0.9 * pow(s, 8.));
+	return col;
+}
+//----------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------
+//  1 out, 1 in...
+float hash11(float p) {
+	float3 p3 = fract(float3(p) * HASHSCALE1);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+//----------------------------------------------------------------------------------------
+//  1 out, 2 in...
+float hash12(float2 p) {
+	float3 p3 = fract(float3(p.xyx) * HASHSCALE1);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+//----------------------------------------------------------------------------------------
+//  1 out, 3 in...
+float hash13(float3 p3) {
+	p3 = fract(p3 * HASHSCALE1);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+//----------------------------------------------------------------------------------------
+//  2 out, 1 in...
+float2 hash21(float p) {
+	float3 p3 = fract(float3(p) * HASHSCALE3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+}
+
+//----------------------------------------------------------------------------------------
+///  2 out, 2 in...
+float2 hash22(float2 p) {
+	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+}
+
+//----------------------------------------------------------------------------------------
+///  2 out, 3 in...
+float2 hash23(float3 p3) {
+	p3 = fract(p3 * HASHSCALE3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+}
+
+//----------------------------------------------------------------------------------------
+//  3 out, 1 in...
+float3 hash31(float p) {
+	float3 p3 = fract(float3(p) * HASHSCALE3);
+	p3 += dot(p3, p3.yzx + 19.19);
+	return fract(
+			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
+}
+
+//----------------------------------------------------------------------------------------
+///  3 out, 2 in...
+float3 hash32(float2 p) {
+	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	p3 += dot(p3, p3.yxz + 19.19);
+	return fract(
+			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
+}
+
+//----------------------------------------------------------------------------------------
+///  3 out, 3 in...
+float3 hash33(float3 p3) {
+	p3 = fract(p3 * HASHSCALE3);
+	p3 += dot(p3, p3.yxz + 19.19);
+	return fract(
+			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
+}
+
+//----------------------------------------------------------------------------------------
+// 4 out, 1 in...
+float4 hash41(float p) {
+	float4 p4 = fract(float4(p) * HASHSCALE4);
+	p4 += dot(p4, p4.wzxy + 19.19);
+	return fract(
+			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
+					(p4.z + p4.w) * p4.x));
+
+}
+
+//----------------------------------------------------------------------------------------
+// 4 out, 2 in...
+float4 hash42(float2 p) {
+	float4 p4 = fract(float4(p.xyxy) * HASHSCALE4);
+	p4 += dot(p4, p4.wzxy + 19.19);
+	return fract(
+			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
+					(p4.z + p4.w) * p4.x));
+}
+
+//----------------------------------------------------------------------------------------
+// 4 out, 3 in...
+float4 hash43(float3 p) {
+	float4 p4 = fract(float4(p.xyzx) * HASHSCALE4);
+	p4 += dot(p4, p4.wzxy + 19.19);
+	return fract(
+			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
+					(p4.z + p4.w) * p4.x));
+}
+
+//----------------------------------------------------------------------------------------
+// 4 out, 4 in...
+float4 hash44(float4 p4) {
+	p4 = fract(p4 * HASHSCALE4);
+	p4 += dot(p4, p4.wzxy + 19.19);
+	return fract(
+			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
+					(p4.z + p4.w) * p4.x));
+}
+// From iq's website
+float sdCapsule(float3 p, float3 a, float3 b, float r) {
+	float3 pa = p - a, ba = b - a;
+	float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+	return length(pa - ba * h) - r;
+}
+float parabola(float x, float k) {
+	return pow(4.0 * x * (1.0 - x), k);
+}
+float4 parabola(float4 x, float k) {
+	return pow(4.0 * x * (1.0 - x), float4(k));
+}
+float3 parabola(float3 x, float k) {
+	return pow(4.0 * x * (1.0 - x), float3(k));
+}
+float pcurve(float x, float a, float b) {
+	float k = pow(a + b, a + b) / (pow(a, a) * pow(b, b));
+	return k * pow(x, a) * pow(1.0 - x, b);
+}
+float3 veStars(float3 ro, float3 rd) {
+	float3 bs[8];
+	float3 srd = rd;
+	float size = floor(subdiv);
+	rd *= length(rd) / max(abs(rd.x), max(abs(rd.y), abs(rd.z)));
+	rd *= size;
+	float3 lower = floor(rd + 0.5);
+	float3 point = rd - lower;
+	float3 ba = rd - ro;
+	float3 nba = normalize(ba);
+	float ilba = 1.0 / dot(ba, ba);
+	float3 nbatilba = nba * ilba;
+	float d = 99999999.0;
+    
+	for (int xi = -1; xi <= 1; xi++) {
+		for (int yi = -1; yi <= 1; yi++) {
+			for (int zi = -1; zi <= 1; zi++) {
+				for (int i = 0; i < 5; i++) {
+					float3 box = lower + float3(float(xi), float(yi), float(zi));
+					float4 a = float4(0.0);
+					for (int t = 0; t < 4; t++) {
+						float v = float(t + 1) * .152;
+						float3 pos = (box * v + float(5 * i));
+						a += hash43(pos);
+					}
+					float3 local = a.xyz / 4.0 - 0.5;
+					float dist = sdCapsule(ro + srd, ro, ro + box + local,
+							a.w * accuscale);
+					d = min(d, dist);
+				}
+			}
+		}
+	}
+	float3 result = pow(
+			clamp(pcurve(d * scalestar, 0.0, 1.0 + 31.0 * variable), 0.0, 1.0),
+			variable2) * veColStars;
+	return result;
+}
+
+float4 main(VsOut IN): COLOR 
+{
+	float2 fragCoord=IN.uv;
+	float2 uv = fragCoord / iResolution.xy;
+    veProgress = mod(iTime * 0.1, 1.);
+	// ro: ray origin
+	// rd: direction of the ray
+	float3 rd = normalize(
+			float3((fragCoord.xy - 0.5 * iResolution.xy) / iResolution.y, 1.));
+	float3 ro = float3(0., 0., -6.);
+	ro = veAddZoom(rd, ro);
+	veR(rd.yz, iMouse.x * 0.008 * pi);
+
+	// ld, td: local, total density 
+	// w: weighting factor
+	float ld = 0., td = 0., w = 0.;
+
+	// t: length of the ray
+	// d: distance function
+	float density = 1., t = 0.;
+	const float h = 0.1;
+	float4 sum = float4(0.0);
+	float min_dist = 0.0, max_dist = 0.0;
+	if (veRaySphereIntersect(ro, rd, min_dist, max_dist)) {
+		t = min_dist * step(t, min_dist);
+		// raymarch loop
+		for (int i = 0; i < 86; i++) {
+			if (veLOW_QUALITY && i >= 56) {
+				break;
+			}
+			float3 pos = ro + t * rd;
+			// Loop break conditions.
+			if (td > 0.99 || t > max_dist)
+				break;
+			// evaluate distance function
+			float d = veMap(pos);
+			if (veBOTH) {
+				if (uv.y < 0.5) {
+					d = abs(d) + 0.07;
+				}
+			} else if (veLEFT) {
+				d = abs(d) + 0.07;
+			}
+			// change this string to control density
+			d = max(d, 0.0000003);	//0.03
+			// point light calculations
+			float3 ldst = float3(0.0) - pos;
+			float lDist = max(length(ldst), 0.000000000001);
+			// the color of light
+			float3 lightColor = float3(1.0, 0.5, 0.25);
+			// bloom
+			float3 halo = lightColor / exp(pow(lDist, 3.) * 0.108);
+			sum.rgb += halo * (0.0333 * smoothstep(0.5, 0.1, veProgress) + smoothstep(.125, .0, veProgress));
+			if (d < h) {
+				// compute local density
+				ld = h - d;
+				// compute weighting factor
+				w = (1. - td) * ld;
+				// accumulate density
+				td += w + 1. / 20000.;
+				float4 col = float4(veComputeColor(td, lDist), td);
+				// emission
+				sum += sum.a * float4(sum.rgb, 0.0) * 0.2 / lDist;
+				// uniform scale density
+				col.a *= 0.2;
+				// colour by alpha
+				col.rgb *= col.a;
+				// alpha blend in contribution
+				sum = sum + col * (1.0 - sum.a);
+            } else {
+			    td += 1. / 70.;
+			    td += (sin(7.*d+ veProgress)+1.-veProgress)/128.*smoothstep(.3, .125, abs(veProgress-0.7));
+            }
+			if (veDITHERING) {
+				// idea from https://www.shadertoy.com/view/lsj3Dw
+				float2 uvd = uv;
+				uvd.y *= 120.;
+				uvd.x *= 280.;
+				float sine = sin(4. * veProgress + uvd.y * 4.0);
+				float2 texUV = float2(uvd.y, -uvd.x + 0.5 * sine);
+				float4 tex = tex2D(iChannel2, texUV);
+				d = abs(d) * (.8 + 0.08 * tex.r);
+			}
+			// trying to optimize step size
+			if (veLOW_QUALITY) {
+				t += max(d * 0.25, 0.01);
+			} else {
+				t += max(d * 0.08 * max(min(length(ldst), d), 2.0), 0.01);
+			}
+		}
+		// simple scattering
+		if (veLOW_QUALITY) {
+			sum *= 1. / exp(ld * 0.2) * 0.9;
+		} else {
+			sum *= 1. / exp(ld * 0.2) * 0.8;
+		}
+		sum = clamp(sum, 0.0, 1.0);
+		sum.xyz = sum.xyz * sum.xyz * (3.0 - 2.0 * sum.xyz);
+	}
+	if (veBackground) {
+		// stars background
+		//float3 stars = float3(veNoise(rd * 200.0) * 0.5 + 0.5);
+		float3 stars = veStars(ro, rd);
+		float3 starbg = mix(veColSkyHigh, veColSkyLow,
+				abs(1.5 * dot(normalize(rd), float3(0., 1., 0.))));
+		//float3 starbg = mix(veColSkyHigh, veColSkyLow, uv.y);
+		//float3 brightness = smoothstep(0.95, 1.0, stars);
+		//float limits = dot(float3(0.0), rd) + 0.75;
+		//starbg += veColStars * brightness * limits;
+//		if (td < veBackgroundCutoff) {
+//		}
+		float pass = smoothstep(veBackgroundCutoff, veBackgroundCutoffStart, td);
+		//starbg *= pass;
+		sum.xyz += (starbg + stars) * pass * (1.0 - sum.a);
+		//sum.xyz += (veSpaceCol(ro, rd) * pass + starbg) * (1.0 - sum.a);
+		//sum.xyz += veSpaceCol(ro, rd) * (1 - sum.a);
+	}
+	if (veTONEMAPPING) {
+		return float4(veToneMapFilmicALU(sum.xyz * 2.2), 1.0);
+	} else {
+		return float4(sum.xyz, 1.0);
+	}
+    //gl_FragColor = fragColor;
+}

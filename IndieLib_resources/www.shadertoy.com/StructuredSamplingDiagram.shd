@@ -1,0 +1,134 @@
+/*
+  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+struct VsIn {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main(VsIn In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv = In.uv;
+	return Out;
+}
+
+[Fragment shader]
+float iTime;
+float2 iResolution;
+sampler2D iChannel0;
+/*
+The MIT License (MIT)
+
+Copyright (c) 2016 Huw Bowles, Daniel Zimmermann, Beibei Wang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+//
+// For volume render shader:
+//
+// https://www.shadertoy.com/view/Mt3GWs
+//
+// We are in the process of writing up this technique. The following github repos
+// is the home of this research.
+//
+// https://github.com/huwb/volsample
+//
+
+#define PERIOD (30.)
+#define SAMPLE_CNT 15
+#define RESOLUTIONS 1
+#define GRID_CONTRAST 1.5
+#define PI 3.141592654
+bool STRATIFIED;
+
+float line( float2 p, float2 n, bool repeat )
+{
+    //n /= dot(n,n);
+    
+    float d = abs(dot(p, n));
+    
+    if( !repeat )
+    {
+	    d = d / PERIOD;
+	    return smoothstep( 1.5/PERIOD, 0., abs(d) );
+    }
+    
+    float res = 0.;
+    for( int i = 0; i < RESOLUTIONS; i++ )
+    {
+        float period = PERIOD*pow(2.,float(RESOLUTIONS-i-1));
+        
+        float fr = abs(fract(d/period));
+        // fix fract boundary
+        fr = min( fr, 1.-fr );
+        float col = mix( 0., .3, pow(GRID_CONTRAST,-float(i)) );
+        res = max( res, smoothstep( 2./period, 0., fr ) * col );
+    }
+    return res;
+}
+
+float lines( float2 p )
+{
+    float l = 0.;
+    
+    l = max( l, line( p, float2(1.,0.), true ) );
+    
+    if( bool( 10 ) )
+    {
+        l = max( l, line( p, float2(1.,1.)/sqrt(2.), true ) );
+        l = max( l, line( p, float2(1.,-1.)/sqrt(2.), true ) );
+        l = max( l, line( p, float2(0.,1.), true ) );
+    }
+    
+    return l;
+}
+
+
+
+float4 main(VsOut IN): COLOR 
+{
+	float4 fragColor;
+	float2 fragCoord=IN.uv;
+	STRATIFIED = fract(iTime/(4.*PI))<0.5;
+    
+    float2 p = fragCoord.xy - iResolution.xy / 2.;
+    
+    float l = lines( p );
+    
+    fragColor = float4(l);
+
+    fragColor += texture( iChannel0, fragCoord/iResolution.xy );
+	return fragColor;
+}
+

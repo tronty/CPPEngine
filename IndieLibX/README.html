@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+<TITLE>README</TITLE>
+<H1>README</H1>
+<PRE>
+#
+# Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+# Licensed under The GNU Lesser General Public License, version 2.1:
+#     http://opensource.org/licenses/LGPL-2.1
+#
+# Commands below in this file and on the file ./install_.sh were tested on following operating systems:
+# 	macOS High Sierra (64-bit) (any other version of 64-bit macOS may also do as well)
+# 	Ubuntu 18.04.2 LTS Bionic Beaver (32-bit and 64-bit)
+# 	Linux Mint 19.1 "Tessa"  - Cinnamon (32-bit and 64-bit)
+# 	Linux Mint 19.2 "Tina" 	 - Cinnamon (32-bit and 64-bit) also now available should do equally well
+# 	Linux Mint 19.3 "Tricia" - Cinnamon (32-bit and 64-bit) also now available should do equally well
+# 	Linux Mint 20 	"Ulyana" - Cinnamon (64-bit) also now available should do equally well
+# 	I use currently mainly Linux Mint 19.1 "Tessa" - Cinnamon where there is the LightDM as a display manager
+# 	and system snapshots are available on update manager
+# 	(may save time if the system breaks and must be restored to a some previous state)
+
+git:
+    git clone https://github.com/CPPEngine/CPPEngine.git
+
+LINUX (Ubuntu/Mint/Debian):
+	cd $HOME
+	curl -O http://tommironty.fi/IndieLibX.zip
+	unzip -x ./IndieLibX.zip -d ./IndieLibX
+	curl -O http://tommironty.fi/IndieLib_resources.zip
+	unzip -x ./IndieLib_resources.zip -d ./IndieLib_resources
+	cd ./IndieLibX
+	# chmod a+x ./install_.sh
+	sudo ./install_.sh
+	./make.sh AllLibs LNX GNUMAKE GLSL1_1		-> Builds All C++ static libraries.
+	./make.sh Test LNX GNUMAKE GLSL1_1         	-> Builds C++ Test applications.
+	./make.sh SampleApps LNX GNUMAKE GLSL1_1	-> Builds C++ Sample applications.
+	./make.sh TerrainApps LNX GNUMAKE GLSL1_1  	-> Builds C++ Terrain applications.
+	./make.sh IndielibApps LNX GNUMAKE GLSL1_1	-> Builds C++ Indielib applications.
+	./make.sh TestApps LNX GNUMAKE GLSL1_1      -> Builds All C++ working applications.
+	./run.sh					                -> Runs built applications.
+	./make.sh					                -> Removes temporary files.
+	make RadeonTerrainDemo 	   			        -> Runs original RadeonTerrainDemo.exe with wine
+	make NatureScene       	   			        -> Runs original NatureScene.exe with wine
+	make Particles         	   			        -> Runs original Particles.exe with wine
+	make ParticleVS        	   			        -> Runs original ParticleVS.exe with wine
+
+OSX:
+	cd $HOME
+	curl -O http://tommironty.fi/IndieLibX.zip
+	unzip -x ./IndieLibX.zip -d ./IndieLibX
+	curl -O http://tommironty.fi/IndieLib_resources.zip
+	unzip -x ./IndieLib_resources.zip -d ./IndieLib_resources
+	cd ./IndieLibX
+	# chmod a+x ./install_.sh
+	sudo ./install_.sh
+	./make.sh AllLibs OSX GNUMAKE GLSL1_1		-> Builds All C++ static libraries.
+	./make.sh Test OSX GNUMAKE GLSL1_1         	-> Builds C++ Test applications.
+	./make.sh SampleApps OSX GNUMAKE GLSL1_1	-> Builds C++ Sample applications.
+	./make.sh TerrainApps OSX GNUMAKE GLSL1_1  	-> Builds C++ Terrain applications.
+	./make.sh IndielibApps OSX GNUMAKE GLSL1_1	-> Builds C++ Indielib applications.
+	./make.sh TestApps OSX GNUMAKE GLSL1_1      -> Builds All C++ working applications.
+	./run.sh					                -> Runs built applications.
+	./make.sh					                -> Removes temporary files.
+
+Windows10 (32-bit and 64-bit):
+	Make.bat AllLibs WIN VC D3D11 	   -> Generates C++ static library .sln and .prj files for VC.
+	Make.bat Test WIN VC D3D11         -> Generates C++ Test applications .sln and .prj files for VC.
+	Make.bat SampleApps WIN VC D3D11   -> Generates C++ Sample applications .sln and .prj files for VC.
+	Make.bat TerrainApps WIN VC D3D11  -> Generates C++ Terrain applications .sln and .prj files for VC.
+	Make.bat IndielibApps WIN VC D3D11 -> Generates C++ Indielib applications .sln and .prj files for VC.
+	Make.bat TestApps WIN VC D3D11	   -> Generates All C++ working applications .sln and .prj files for VC.
+	run.bat				               -> Runs built applications.
+	Make.bat RadeonTerrainDemo 	       -> Runs original RadeonTerrainDemo.exe
+	Make.bat NatureScene       	       -> Runs original NatureScene.exe
+	Make.bat Particles         	       -> Runs original Particles.exe
+	Make.bat ParticleVS        	       -> Runs original ParticleVS.exe
+</PRE>
+</BODY>
+</HTML>
+

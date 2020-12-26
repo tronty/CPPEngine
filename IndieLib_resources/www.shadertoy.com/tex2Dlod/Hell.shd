@@ -1,0 +1,146 @@
+/*
+  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+struct VsIn {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main(VsIn In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv = In.uv;
+	return Out;
+}
+
+[Fragment shader]
+
+float3      iChannelResolution[4];        // channel resolution (in pixels)
+float3      iResolution;                  // viewport resolution (in pixels)
+float     iTime;                        // shader playback time (in seconds)
+float4      iMouse;                       // mouse pixel coords
+sampler2D iChannel0;
+
+// Created by inigo quilez - iq/2013
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+
+float noise_( in float3 x )
+{
+    float3 p = floor(x);
+    float3 f = fract(x);
+	f = f*f*(3.0-2.0*f);
+	
+	float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
+	float2 rg = tex2Dlod( iChannel0, (uv+ 0.5)/256.0, 0.0 ).yx;
+	return mix( rg.x, rg.y, f.z );
+}
+
+float4 map( float3 p )
+{
+	float den = 0.2 - p.y;
+
+    // invert space	
+	p = -7.0*p/dot(p,p);
+
+    // twist space	
+	float co = cos(den - 0.25*iTime);
+	float si = sin(den - 0.25*iTime);
+	p.xz = float2x2(co,-si,si,co)*p.xz;
+
+    // smoke	
+	float f;
+	float3 q = p                          - float3(0.0,1.0,0.0)*iTime;;
+    f  = 0.50000*noise_( q ); q = q*2.02 - float3(0.0,1.0,0.0)*iTime;
+    f += 0.25000*noise_( q ); q = q*2.03 - float3(0.0,1.0,0.0)*iTime;
+    f += 0.12500*noise_( q ); q = q*2.01 - float3(0.0,1.0,0.0)*iTime;
+    f += 0.06250*noise_( q ); q = q*2.02 - float3(0.0,1.0,0.0)*iTime;
+    f += 0.03125*noise_( q );
+
+	den = clamp( den + 4.0*f, 0.0, 1.0 );
+	
+	float3 col = mix( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), den ) + 0.05*sin(p);
+	
+	return float4( col, den );
+}
+
+float3 raymarch( in float3 ro, in float3 rd, in float2 pixel )
+{
+	float4 sum = float4( 0.0 );
+
+	float t = 0.0;
+
+    // dithering	
+	t += 0.05*tex2Dlod( iChannel0, pixel.xy/iChannelResolution[0].x, 0.0 ).x;
+	
+	for( int i=0; i<100; i++ )
+	{
+		if( sum.a > 0.99 ) break;
+		
+		float3 pos = ro + t*rd;
+		float4 col = map( pos );
+		
+		col.xyz *= mix( 3.1*float3(1.0,0.5,0.05), float3(0.48,0.53,0.5), clamp( (pos.y-0.2)/2.0, 0.0, 1.0 ) );
+		
+		col.a *= 0.6;
+		col.rgb *= col.a;
+
+		sum = sum + col*(1.0 - sum.a);	
+
+		t += 0.05;
+	}
+
+	return clamp( sum.xyz, 0.0, 1.0 );
+}
+
+
+
+float4 main(VsOut IN): COLOR 
+{
+	float4 fragColor;
+	float2 fragCoord=IN.uv;
+	float2 q = fragCoord.xy / iResolution.xy;
+    float2 p = -1.0 + 2.0*q;
+    p.x *= iResolution.x/ iResolution.y;
+	
+    float2 mo = iMouse.xy / iResolution.xy;
+    if( iMouse.w<=0.00001 ) mo=float2(0.0);
+	
+    // camera
+    float3 ro = 4.0*normalize(float3(cos(3.0*mo.x), 1.4 - 1.0*(mo.y-.1), sin(3.0*mo.x)));
+	float3 ta = float3(0.0, 1.0, 0.0);
+	float cr = 0.5*cos(0.7*iTime);
+	
+    // shake		
+	ro += 0.1*(-1.0+2.0*tex2Dlod( iChannel0, iTime*float2(0.010,0.014), 0.0 ).xyz);
+	ta += 0.1*(-1.0+2.0*tex2Dlod( iChannel0, iTime*float2(0.013,0.008), 0.0 ).xyz);
+	
+	// build ray
+    float3 ww = normalize( ta - ro);
+    float3 uu = normalize(cross( float3(sin(cr),cos(cr),0.0), ww ));
+    float3 vv = normalize(cross(ww,uu));
+    float3 rd = normalize( p.x*uu + p.y*vv + 2.0*ww );
+	
+    // raymarch	
+	float3 col = raymarch( ro, rd, fragCoord );
+	
+	// contrast and vignetting	
+	col = col*0.5 + 0.5*col*col*(3.0-2.0*col);
+	col *= 0.25 + 0.75*pow( 16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y), 0.1 );
+	
+    fragColor = float4( col, 1.0 );
+	return fragColor;
+}
+

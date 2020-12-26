@@ -1,0 +1,236 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Spherical Texture Mapping</title>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:Categories msdt:dt="string">Articles;Direct3D Articles</mso:Categories>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+<meta name="Microsoft Theme" content="xzone 011, default">
+<meta name="Microsoft Border" content="tb, default">
+</head>
+
+<body alink="#CC3333" background="Spherical%20Texture%20Mapping_tiedostot/indtextb.jpg" bgcolor="#FFFFFF" link="#0033CC" text="#000000" vlink="#666633"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><center>
+<h1>
+<img src="Spherical%20Texture%20Mapping_tiedostot/spheremap.gif" alt="Spherical Texture Mapping" border="0" height="65" width="600">
+</h1>
+<p>
+<nobr><a href="https://www.mvps.org/directx/" target="" style="text-decoration: none;">Home</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/indexes/direct3d_articles.htm" target="" style="text-decoration: none;">Up</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/search.htm" target="" style="text-decoration: none;">Search</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/news/index.htm" target="" style="text-decoration: none;">X-Zone&nbsp;News</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/services.htm" target="" style="text-decoration: none;">Services</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/support/book_support.htm" target="" style="text-decoration: none;">Book&nbsp;Support</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/links.htm" target="" style="text-decoration: none;">Links</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/fdbk.htm" target="" style="text-decoration: none;">Feedback</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/smalltalk/index.htm" target="" style="text-decoration: none;">Smalltalk&nbsp;MT</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/scrapyard/index.html" target="" style="text-decoration: none;">The&nbsp;Scrapyard</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/faq/faq.htm" target="" style="text-decoration: none;">FAQ</a></nobr>&nbsp;|&nbsp;<nobr><a href="https://www.mvps.org/directx/indexes/index.htm" target="" style="text-decoration: none;">Technical&nbsp;Articles</a></nobr>
+</p>
+<!--msthemeseparator--><p align="center"><img src="Spherical%20Texture%20Mapping_tiedostot/indhorsa.gif" height="10" width="600"></p></center>
+<p>&nbsp;</p>
+
+<!--mstheme--></font></td></tr><!--msnavigation--></tbody></table><!--msnavigation--><table dir="ltr" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><!--msnavigation--><td valign="top"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--webbot bot="Include" U-Include="arthead.htm" TAG="BODY" startspan
+-->
+
+</font><div align="center"><font face="Trebuchet MS, Arial, Helvetica">
+  </font><center><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table border="0" cellpadding="2">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+        </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><font color="#993333" size="4">Written by Robert
+        Dunlop<br>
+        Microsoft DirectX MVP</font></b><!--mstheme--></font></p></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><font face="Fixedsys" color="#000080"><img src="Spherical%20Texture%20Mapping_tiedostot/mvpani.gif" align="middle" border="0" height="89" width="108"><a name="thetop"></a></font><!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+  </font></center><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<!--msthemeseparator--><p align="center"><img src="Spherical%20Texture%20Mapping_tiedostot/indhorsa.gif" height="10" width="600"></p>
+<!--webbot bot="Include" i-checksum="30347" endspan -->
+
+</font><div align="center"><font face="Trebuchet MS, Arial, Helvetica">
+  </font><center><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table border="0" cellpadding="4" cellspacing="4">
+    <tbody><tr>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><img src="Spherical%20Texture%20Mapping_tiedostot/spmap.jpg" border="0" height="80" width="92"><!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">When loading a mesh from a modeling package, texture mapping
+        coordinates are usually included to indicate how a texture is applied to
+        the mesh.&nbsp; However, when generating our own meshes, it will often
+        be necessary to create texture coordinates based on the shape of the
+        object.&nbsp; One such method for&nbsp; generating texture coordinates
+        from geometry is known as spherical mapping.<!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+  </font></center><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p>The basis of this mapping technique is to treat the object as if it were a
+sphere, and mapping coordinates based by determining the position on a sphere by
+angular displacement.&nbsp; In this article we'll take a look at two forms of
+spherical mapping, one based on normals and another based on vertex position.</p>
+<h2>Spherical Mapping with Normals</h2>
+<p>The simplest method is to use the normal of each vertex, which is usually
+already pre-calculated for the purpose of lighting.&nbsp; Texture coordinates
+are generated based on the angle of the surface at each point.&nbsp; Values for the texture
+coordinates are calculated as follows:</p>
+
+  <!--mstheme--></font><table bordercolordark="#000000" bordercolorlight="#999999" border="3" cellpadding="4" cellspacing="4" width="100%">
+    <tbody><tr>
+      <td width="240"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><img src="Spherical%20Texture%20Mapping_tiedostot/sphtu.jpg" border="0" height="180" width="240"><!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The U coordinate is calculated from the X coordinate of the normal,
+        which will vary from -1.0 to 1.0, representing the longitude of a
+        corresponding point on a sphere.&nbsp; The value is calculated as
+        follows:
+        <dl>
+          <dd>
+            <h2><font face="Times New Roman"><i>tu = asin(Nx)/PI + 0.5</i>&nbsp;</font></h2>
+          </dd>
+        </dl>
+      <!--mstheme--></font></td>
+    </tr>
+    <tr>
+      <td width="240"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><img src="Spherical%20Texture%20Mapping_tiedostot/sptv.jpg" border="0" height="180" width="240"><!--mstheme--></font></td>
+      <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">The V coordinate is calculated from the Y coordinate of the normal,
+        which will vary from -1.0 to 1.0, representing the latitude of a
+        corresponding point on a sphere.&nbsp; The value is calculated as
+        follows:
+        <dl>
+          <dd>
+            <h2><font face="Times New Roman"><i>tv = asin(Ny)/PI + 0.5</i>&nbsp;</font></h2>
+          </dd>
+        </dl>
+        &nbsp;<!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+
+<p>As a faster alternative the following equations can be used:</p>
+
+<p><font color="#000080">&nbsp;&nbsp;&nbsp;<font face="Times New Roman" size="4"><b><i>
+tu = Nx/2 + 0.5<br>
+&nbsp;&nbsp;&nbsp; tv = Ny/2 + 0.5&nbsp;</i></b></font></font></p>
+<p>The result is that the coordinates are non-linear, tending to stretch the
+texture around the Y and Z poles while compressing it around the X poles.</p>
+
+<p>Below is an example of how to implement sphere mapping on a sphere generated
+with D3DX:</p>
+<p><font face="Fixedsys">struct _VERTEX<br>
+{<br>
+&nbsp;&nbsp;&nbsp; D3DXVECTOR3 pos;&nbsp;&nbsp;&nbsp;&nbsp; // vertex position<br>
+&nbsp;&nbsp;&nbsp; D3DXVECTOR3 norm;&nbsp;&nbsp;&nbsp; // vertex normal<br>
+&nbsp;&nbsp;&nbsp; float
+tu;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // texture
+coordinates<br>
+&nbsp;&nbsp;&nbsp; float tv;<br>
+} VERTEX,*LPVERTEX;</font></p>
+<p><font face="Fixedsys">#define FVF_VERTEX&nbsp;&nbsp;&nbsp;
+D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1</font></p>
+<p><font face="Fixedsys">LPD3DXMESH CreateMappedSphere(LPDIRECT3DDEVICE8
+pDev,float fRad,UINT slices,UINT stacks)<br>
+{<br>
+&nbsp;&nbsp;&nbsp; // create the sphere<br>
+&nbsp;&nbsp;&nbsp; LPD3DXMESH mesh;<br>
+&nbsp;&nbsp;&nbsp; if
+(FAILED(D3DXCreateSphere(pDev,fRad,slices,stacks,&amp;mesh,NULL)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return NULL;</font></p>
+<p><font face="Fixedsys">&nbsp;&nbsp;&nbsp; // create a copy of the mesh with
+texture coordinates,<br>
+&nbsp;&nbsp;&nbsp; // since the D3DX function doesn't include them<br>
+&nbsp;&nbsp;&nbsp; LPD3DXMESH texMesh;<br>
+&nbsp;&nbsp;&nbsp; if
+(FAILED(mesh-&gt;CloneMeshFVF(D3DXMESH_SYSTEMMEM,FVF_VERTEX,pDev,&amp;texMesh)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // failed, return un-textured mesh<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return mesh;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // finished with the original mesh, release it<br>
+&nbsp;&nbsp;&nbsp; mesh-&gt;Release();<br>
+<br>
+&nbsp;&nbsp;&nbsp; // lock the vertex buffer<br>
+&nbsp;&nbsp;&nbsp; LPVERTEX  pVerts;<br>
+&nbsp;&nbsp;&nbsp; if (SUCCEEDED(texMesh-&gt;LockVertexBuffer(0,(BYTE **)
+&amp;pVerts))) {<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // get vertex count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int
+numVerts=texMesh-&gt;GetNumVertices();<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // loop through the vertices<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (int i=0;i&lt;numVerts;i++) {<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // calculate
+texture coordinates<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pVerts-&gt;tu=asinf(pVerts-&gt;norm.x)/D3DX_PI+0.5f;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+pVerts-&gt;tv=asinf(pVerts-&gt;norm.y)/D3DX_PI+0.5f;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // go to next
+vertex<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pVerts++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // unlock the vertex buffer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; texMesh-&gt;UnlockVertexBuffer();<br>
+&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; // return pointer to caller<br>
+&nbsp;&nbsp;&nbsp; return texMesh;<br>
+}</font></p>
+<h2>Positional Spherical Mapping</h2>
+</font><div align="left"><font face="Trebuchet MS, Arial, Helvetica">
+  <!--mstheme--></font><table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody><tr>
+      <td width="100%"><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+<p><img src="Spherical%20Texture%20Mapping_tiedostot/spherenorm.jpg" align="right" border="3" height="180" hspace="4" width="240">In
+some cases, using normals to calculate spherical texture coordinates may not be
+appropriate.&nbsp; For example, objects which use face normals, such as the cube
+illustrated on the right, would have the same coordinates applied to each vertex
+of a face.&nbsp; Also, regions that are relatively flat on one or more axis will
+cause the texture to appear stretched.</p>
+<p><img src="Spherical%20Texture%20Mapping_tiedostot/spherepos.jpg" align="left" border="3" height="180" hspace="4" width="240"></p>
+<p>An alternative to this is to project a vector from the center of the object
+outward through each vertex, and use the normalized X and&nbsp; Y coordinates to
+calculate the texture coordinates.&nbsp; This has the effect of projecting each
+vertex onto a theoretical sphere.&nbsp; An example of this technique is shown in
+the following code snippet:</p><!--mstheme--></font></td>
+    </tr>
+  </tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+</font></div><font face="Trebuchet MS, Arial, Helvetica">
+<p><font face="Fixedsys">// determine extents<br>
+D3DXVECTOR3 vMin,vMax;<br>
+D3DXComputeBoundingBox(pVerts,numVerts,FVF_VERTEX,&amp;vMin,&amp;vMax);<br>
+<br>
+// calculate center<br>
+D3DXVECTOR3 vCent;<br>
+vCent=(vMax+vMin)*0.5f;<br>
+<br>
+// loop through the vertices<br>
+for (i=0;i&lt;numVerts;i++) {<br>
+<br>
+&nbsp;&nbsp;&nbsp; // calculate normalized offset from center<br>
+&nbsp;&nbsp;&nbsp; D3DXVECTOR3 v;<br>
+&nbsp;&nbsp;&nbsp; v=pVerts-&gt;pos-vCent;<br>
+&nbsp;&nbsp;&nbsp; D3DXVec3Normalize(&amp;v,&amp;v);<br>
+<br>
+&nbsp;&nbsp;&nbsp; // calculate texture coordinates<br>
+&nbsp;&nbsp;&nbsp; pVerts-&gt;tu=asinf(v.x)/D3DX_PI+0.5f;<br>
+&nbsp;&nbsp;&nbsp; pVerts-&gt;tv=asinf(v.y)/D3DX_PI+0.5f;<br>
+<br>
+&nbsp;&nbsp;&nbsp; // go to next vertex<br>
+&nbsp;&nbsp;&nbsp; pVerts++;<br>
+ }</font></p>
+</font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><a href="#thetop">Back to The Top</a></b><!--mstheme--></font><!--msnavigation--></p></td></tr><!--msnavigation--></tbody></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"></font><center><font face="Trebuchet MS, Arial, Helvetica"><!--msthemeseparator--><p align="center"><img src="Spherical%20Texture%20Mapping_tiedostot/indhorsa.gif" height="10" width="600"></p><!--mstheme--></font><table border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+    <p align="center"><b><font size="2">This site, created by DirectX MVP Robert 
+    Dunlop and aided by the work of other volunteers, provides a free on-line 
+    resource for DirectX programmers. </font></b></p>
+    </font><p align="center"><font face="Trebuchet MS, Arial, Helvetica"><b><font size="2">Special thanks to
+    <a href="http://www.mvps.org/" target="_blank">WWW.MVPS.ORG</a>, for 
+    providing a permanent home for this site.</font></b><!--mstheme--></font></p></td>
+    <td><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica">
+    <h5>
+    <a target="_blank" title="Click for information on Microsoft MVP program" href="http://support.microsoft.com/support/mvp/">
+    <img src="Spherical%20Texture%20Mapping_tiedostot/mvplogo.gif" border="0" height="131" width="147"></a></h5>
+    <!--mstheme--></font></td>
+  </tr>
+</tbody></table><!--mstheme--><font face="Trebuchet MS, Arial, Helvetica"><!--msthemeseparator--><p align="center"><img src="Spherical%20Texture%20Mapping_tiedostot/indhorsa.gif" height="10" width="600"></p>
+<p><small>Visitors Since 1/1/2000: </small>
+<img src="Spherical%20Texture%20Mapping_tiedostot/a.html" alt="Hit Counter"><small><br>
+Last updated: 07/26/05.
+</small></p>
+</font></center><font face="Trebuchet MS, Arial, Helvetica">
+<p>&nbsp;</p>
+
+<!--mstheme--></font></td></tr><!--msnavigation--></tbody></table></body></html>
