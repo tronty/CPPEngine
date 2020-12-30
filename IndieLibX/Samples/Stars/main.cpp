@@ -268,6 +268,13 @@ enum PARTICLES
 	NUM_PARTICLE_TYPES
 };
 
+struct CatalogElement
+{
+	char name[11];
+	char varname[11];
+//	char remark[128];
+	float ra,dec,mag;
+};
 // Vertex structure for vertex-shader particles
 #if ASM
 typedef struct {
@@ -314,13 +321,6 @@ class cParticle
 class cParticleEmitter
 {
   public:
-struct CatalogElement
-{
-	char name[11];
-	char varname[11];
-//	char remark[128];
-	float ra,dec,mag;
-};
     sShaderVertex *Ptr;
     sShaderVertex *Ptr0;
 	__WORD__ *Ptri;
@@ -1047,7 +1047,8 @@ if(0)
 
 }
 
-cParticleEmitter::CatalogElement catalog[NSTARS];
+//cParticleEmitter::
+CatalogElement catalog[NSTARS];
 D3DXFROMWINEVECTOR3 catalogV3[NSTARS];
 D3DXFROMWINEVECTOR3 catalogV3_[NSTARS];
 
@@ -1555,36 +1556,51 @@ void cParticleEmitter::RenderStars()
 }
 void DrawBorders()
 {
+	return; // ???
 	D3DXFROMWINEVECTOR4 color(1.0f, 1.0f, 1.0f, 1.0f);
 	const float lineWidth=1.0f;
-	for(unsigned int i=0;i<1565;i++)
+	unsigned int NN=0;
+	for(unsigned int figureFileID=0;figureFileID<NCONSTELLATIONS;figureFileID++)
 	{
-		D3DXFROMWINEVECTOR3 pos1=GetPosition3(constellationBorders[i].ra, constellationBorders[i].dec, 0.0f);
-		D3DXFROMWINEVECTOR3 pos2=GetPosition3(constellationBorders[i+1].ra, constellationBorders[i+1].dec, 0.0f);
-		#if 0
-		STX_PRINT("pos1.x=%f\npos1.y=%f\npos1.z=%f\n", pos1.x, pos1.y, pos1.z);
-		STX_PRINT("pos2.x=%f\npos2.y=%f\npos2.z=%f\n", pos2.x, pos2.y, pos2.z);
-		#endif
-		IRenderer::GetRendererInstance()->drawLine(pos1.x, pos1.y, pos2.x, pos2.y, color,  lineWidth);
+		int N=constellationBorderNum[figureFileID];
+		for(unsigned int i=0;i<N;i++)
+		{
+			D3DXFROMWINEVECTOR3 pos1=GetPosition3(constellationBorders[NN+i].ra, constellationBorders[NN+i].dec, 0.0f);
+			D3DXFROMWINEVECTOR3 pos2=GetPosition3(constellationBorders[NN+i+1].ra, constellationBorders[NN+i+1].dec, 0.0f);
+			#if 0
+			STX_PRINT("pos1.x=%f\npos1.y=%f\npos1.z=%f\n", pos1.x, pos1.y, pos1.z);
+			STX_PRINT("pos2.x=%f\npos2.y=%f\npos2.z=%f\n", pos2.x, pos2.y, pos2.z);
+			#endif
+			IRenderer::GetRendererInstance()->drawLine(pos1.x, pos1.y, pos2.x, pos2.y, color,  lineWidth);
+			pos1=pos2;
+			NN+=N;
+		}
 	}
 }
 
 void DrawFigures()
 {
+	return; // ???
 	line_vertex3 line[2];
 	line[0].colour=D3DXFROMWINEVECTOR4(1.0f,1.0f,1.0f,1.0f);
 	line[1].colour=D3DXFROMWINEVECTOR4(1.0f,1.0f,1.0f,1.0f);
 
+	for(unsigned int figureFileID=0;figureFileID<NCONSTELLATIONS;figureFileID++)
+	{
 	int cmd0=constellationFigures[constellationFigureStart[figureFileID]+0].cmd;
 	int id0=constellationFigures[constellationFigureStart[figureFileID]+0].id;
-	line[0].pos=GetPosition3(catalog[id0].ra,catalog[id0].dec);
 
 	if(cmd0==0)
 	{
+	line[0].pos=GetPosition3(catalog[id0].ra,catalog[id0].dec);
+	}
+	else
 	for(unsigned int i=1;i<constellationFigureNum2[figureFileID];i++)
 	{
 		int cmd=constellationFigures[constellationFigureStart[figureFileID]+i].cmd;
 		int id=constellationFigures[constellationFigureStart[figureFileID]+i].id;
+		if(id>=NSTARS)
+			continue;
 
 		if(cmd==0)
 		{
