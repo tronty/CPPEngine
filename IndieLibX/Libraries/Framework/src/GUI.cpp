@@ -331,6 +331,10 @@ MenuItemID Menu::getCheckedRadioButton(const unsigned int group) const {
 }
 
 void Menu::checkItem(const MenuItemID menuItem, const bool value){
+	if(menuItem<0)
+		return;
+	if(menuItem>=items.getCount())
+		return;
 	if (value){
 		items[menuItem].flags |= MENU_CHECKED;
 	} else {
@@ -356,7 +360,9 @@ void Menu::toggleItemCheck(const MenuItemID menuItem){
 }
 
 void Menu::enableItem(const MenuItemID menuItem, const bool value){
-	if(menuItem>items.size())
+	if(menuItem<0)
+		return;
+	if(menuItem>=items.getCount())
 		return;
 	if (value){
 		items[menuItem].flags &= ~MENU_DISABLED;
