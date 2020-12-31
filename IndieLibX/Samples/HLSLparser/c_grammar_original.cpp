@@ -1034,10 +1034,13 @@ int ApplicationLogic()
 c_grammar g;
 
     if (2 == argc)
-        //parse(g, argv[1]);
-	parse(g, prog1);
-    else
-        LOG_PRINT("No filename given\n");
+{
+    std::string& contents;
+        std::string txt=STX_Service::LoadTxtFile(argv[1], contents);
+        parse(g, txt.c_str());
+    }else
+	    parse(g, prog1);
+    //else LOG_PRINT("No filename given\n");
 
     return 0;
 }
