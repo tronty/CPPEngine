@@ -377,7 +377,7 @@ vCent=(_max+_min)*0.5f;
 	return aTex;
 }
 
-void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
+void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors)
 {
     std::string line;
     unsigned int N = 0;
@@ -447,6 +447,9 @@ void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
 					float f2=atof(v_[1].c_str());
 					float f3=atof(v_[2].c_str());
 					D3DXFROMWINEVECTOR3 v3(f1, f2, f3);
+                    if(bSwapNormalsAndColors)
+					aMeshes[aMeshes.size()-1].vertices[i].Color=v3;
+                    else
 					aMeshes[aMeshes.size()-1].vertices[i].Normal=v3;
 				}
 			}
@@ -501,7 +504,7 @@ void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
 	 }
 }
 
-void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
+void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors)
 {
 	std::string fileName=stx_convertpath(aFileName);
 	FILE * pFile = fopen (fileName.c_str(),"w");
@@ -514,8 +517,12 @@ void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
 	{
 		fprintf (pFile, "o %9.6f %9.6f %9.6f\n", 
 		aMeshes[m].vertices[aMeshes[m].indices[j]].Position.x, aMeshes[m].vertices[aMeshes[m].indices[j]].Position.y, aMeshes[m].vertices[aMeshes[m].indices[j]].Position.z );
+        if(bSwapNormalsAndColors){
 		fprintf (pFile, "on %9.6f %9.6f %9.6f\n", 
-		aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.x, aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.y, aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.z );
+		aMeshes[m].vertices[aMeshes[m].indices[j]].Color.x, aMeshes[m].vertices[aMeshes[m].indices[j]].Color.y, aMeshes[m].vertices[aMeshes[m].indices[j]].Color.z );
+        }else{
+		fprintf (pFile, "on %9.6f %9.6f %9.6f\n", 
+		aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.x, aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.y, aMeshes[m].vertices[aMeshes[m].indices[j]].Normal.z );}
 		fprintf (pFile, "ot %9.6f %9.6f\n", 
 		aMeshes[m].vertices[aMeshes[m].indices[j]].Tex.x, aMeshes[m].vertices[aMeshes[m].indices[j]].Tex.y );
 	}
@@ -523,7 +530,7 @@ void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
    	fclose (pFile);
 }
 
-void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
+void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors)
 {
 	std::string fileName=stx_convertpath(aFileName);
 	FILE * pFile = fopen (fileName.c_str(),"r");
@@ -548,6 +555,9 @@ void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
 			v3.x=atof(v[1].c_str());
 			v3.y=atof(v[2].c_str());
 			v3.z=atof(v[3].c_str());
+            if(bSwapNormalsAndColors)
+			aMeshes[0].vertices[aMeshes[0].vertices.size()-1].Color=v3;
+            else
 			aMeshes[0].vertices[aMeshes[0].vertices.size()-1].Normal=v3;
 		}
 		else if(v.size()==3 && v[0]=="ot")
@@ -564,7 +574,7 @@ void stx_writeXFile(	const char* aFileName,
 			std::vector<stx_VertexPositionNormalTexture>& vertices, 
 			std::vector<__WORD__>& indices, 
 			std::vector<std::string>& textureNames, 
-			std::vector<__WORD__>& faces)
+			std::vector<__WORD__>& faces, bool bSwapNormalsAndColors)
 {
 	#if 1
 	std::string fileName=stx_convertpath(aFileName);
@@ -621,14 +631,20 @@ if(faces.size())
 	fprintf (pFile, "%d;\n", vertices.size());
 	for(i=0;i<vertices.size()-1;i++)
 	{
+        if(bSwapNormalsAndColors){
 		fprintf (pFile, "%9.6f; %9.6f; %9.6f;,\n", 
-		vertices[i].Normal.x, vertices[i].Normal.y, vertices[i].Normal.z );
+		vertices[i].Color.x, vertices[i].Color.y, vertices[i].Color.z );
+        }else{
+		fprintf (pFile, "%9.6f; %9.6f; %9.6f;,\n", 
+		vertices[i].Normal.x, vertices[i].Normal.y, vertices[i].Normal.z );}
 	}
 	i=vertices.size()-1;
+    if(bSwapNormalsAndColors){
 	fprintf (pFile, "%9.6f; %9.6f; %9.6f;;\n", 
-		vertices[i].Normal.x, vertices[i].Normal.y, vertices[i].Normal.z );
-
-	
+		vertices[i].Color.x, vertices[i].Color.y, vertices[i].Color.z );
+    }else{
+	fprintf (pFile, "%9.6f; %9.6f; %9.6f;;\n", 
+		vertices[i].Normal.x, vertices[i].Normal.y, vertices[i].Normal.z );}
 
 	if(indices.size())
 	{
@@ -701,7 +717,7 @@ for(unsigned int i=0;i<textureNames.size();i++)
 	#endif
 }
 
-void stx_writeXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
+void stx_writeXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors)
 {
 	#if 1
 	std::string fileName=stx_convertpath(aFileName);
@@ -762,12 +778,20 @@ for(unsigned int zz=0;zz<aMeshes.size();zz++)
 	fprintf (pFile, "%d;\n", aMeshes[zz].vertices.size());
 	for(i=0;i<aMeshes[zz].vertices.size()-1;i++)
 	{
+        if(bSwapNormalsAndColors){
 		fprintf (pFile, "%9.6f; %9.6f; %9.6f;,\n", 
-		aMeshes[zz].vertices[i].Normal.x, aMeshes[zz].vertices[i].Normal.y, aMeshes[zz].vertices[i].Normal.z );
+		aMeshes[zz].vertices[i].Color.x, aMeshes[zz].vertices[i].Color.y, aMeshes[zz].vertices[i].Color.z );
+        }else{
+		fprintf (pFile, "%9.6f; %9.6f; %9.6f;,\n", 
+		aMeshes[zz].vertices[i].Normal.x, aMeshes[zz].vertices[i].Normal.y, aMeshes[zz].vertices[i].Normal.z );}
 	}
 	i=aMeshes[zz].vertices.size()-1;
+    if(bSwapNormalsAndColors){
 	fprintf (pFile, "%9.6f; %9.6f; %9.6f;;\n", 
-		aMeshes[zz].vertices[i].Normal.x, aMeshes[zz].vertices[i].Normal.y, aMeshes[zz].vertices[i].Normal.z );
+		aMeshes[zz].vertices[i].Color.x, aMeshes[zz].vertices[i].Color.y, aMeshes[zz].vertices[i].Color.z );}
+    else{
+	fprintf (pFile, "%9.6f; %9.6f; %9.6f;;\n", 
+		aMeshes[zz].vertices[i].Normal.x, aMeshes[zz].vertices[i].Normal.y, aMeshes[zz].vertices[i].Normal.z );}
 
 	
 
@@ -1704,7 +1728,7 @@ std::vector<unsigned int> stx_SearchList(const std::vector<std::string>& theArra
     return indexes;
 }
 #if 0
-void stx_readXFile_(const char* aFileName, std::vector<stx_Mesh>& aMeshes)
+void stx_readXFile_(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors)
 {	
 	const char* symbols[] =
 	{

@@ -387,6 +387,19 @@ void Draw(const std::vector<stx_Rule>& arules, const std::vector<std::string>& v
 				mesh3D.CreateOcta(aShader);
 			else if(v[i+2]=="Tetra")
 				mesh3D.CreateTetra(aShader);
+			else if(v[i+2]=="HalfSphere")
+				mesh3D.CreateHalfSphere(aradius, aShader);
+		  //else if(v[i+2]=="Grid,
+			else if(v[i+2]=="Icosahedron")
+				mesh3D.CreateIcosahedron(aShader);
+			else if(v[i+2]=="Dodecahedron")
+				mesh3D.CreateDodecahedron(aShader);
+			else if(v[i+2]=="Prism")
+				mesh3D.CreatePrism(aShader);
+          //else if(v[i+2]=="Hexahedron (cube)
+		  //else if(v[i+2]=="Tetrahedron
+		  //else if(v[i+2]=="Octahedron
+		  //else if(v[i+2]=="Dodecahedron
 
 			//if(!g_bColor)texID=mesh3D.texID;
 			if(mesh3D.indices.size())

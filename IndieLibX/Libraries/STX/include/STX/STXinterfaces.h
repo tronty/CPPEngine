@@ -1972,6 +1972,11 @@ struct line_vertex4{
 		pos=D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 0.0f);
 		colour=D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
+	line_vertex4(const line_vertex4& rhs)
+	{
+		pos=rhs.pos;
+		colour=rhs.colour;
+	}
     D3DXFROMWINEVECTOR4 pos;  // The transformed(screen space) position for the vertex.
     D3DXFROMWINEVECTOR4 colour;	 // The vertex colour.
 };
@@ -1980,6 +1985,11 @@ struct line_vertex3{
 	{
 		pos=D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f);
 		colour=D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	line_vertex3(const line_vertex3& rhs)
+	{
+		pos=rhs.pos;
+		colour=rhs.colour;
 	}
     D3DXFROMWINEVECTOR3 pos;  // The transformed(screen space) position for the vertex.
     D3DXFROMWINEVECTOR4 colour;	 // The vertex colour.
@@ -2276,18 +2286,18 @@ struct stx_Texture
 	}
 };
 
-void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes);
-void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes);
+void stx_readXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors=false);
+void stx_writeOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors=false);
 
-void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes);
+void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors=false);
 
-void stx_writeXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes);
+void stx_writeXFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool bSwapNormalsAndColors=false);
 
 void stx_writeXFile(	const char* aFileName, 
 			std::vector<stx_VertexPositionNormalTexture>& vertices, 
 			std::vector<__WORD__>& indices, 
 			std::vector<std::string>& textureNames, 
-			std::vector<__WORD__>& faces);
+			std::vector<__WORD__>& faces, bool bSwapNormalsAndColors=false);
 
 D3DXFROMWINEVECTOR3 stx_Vec3Transform(const D3DXFROMWINEMATRIX& aM, const D3DXFROMWINEVECTOR3& av);
 
