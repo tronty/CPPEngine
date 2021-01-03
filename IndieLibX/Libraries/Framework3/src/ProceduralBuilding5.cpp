@@ -5,6 +5,13 @@
 */
 #include <Framework3/IRenderer.h>
 
+#define defaultshader eSimpleShader
+//define alternativeshader eSimpleShader
+//define alternativeshader eAmbientLighting
+//define alternativeshader eDiffuseLighting
+//define alternativeshader ePhongLighting1
+#define alternativeshader ePhongLighting2
+
 #undef __ANISO__ 
 
 #define USEMESH 1
@@ -182,7 +189,7 @@ void GetMeshVertices(const char* afn, std::vector<Vertex332>& aVertices, std::ve
 	aVertices.clear();
 	aIndices.clear();
 	MeshRenderer2 mesh_;
-	mesh_.Load(afn, eSimpleShader, false, true);
+	mesh_.Load(afn, defaultshader, false, true);
 	if(mesh_.meshes.size())
 	{
 		for(unsigned int i=0;i<mesh_.meshes[0].vertices.size();i++)
@@ -856,9 +863,9 @@ if(m_bUseLua){
 	#endif
 	
 	#if 0
-	FW3::GetInstance()->GetMesh( mesh, afiletosave.c_str(), eSimpleShader);
+	FW3::GetInstance()->GetMesh( mesh, afiletosave.c_str(), defaultshader);
 	#else
-	mesh.Load(afiletosave.c_str(), eSimpleShader, true, true);
+	mesh.Load(afiletosave.c_str(), defaultshader, true, true);
 	#endif
 	}
 	return 0;
