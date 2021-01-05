@@ -1,3 +1,4 @@
+#ifdef LINUX
 //-----------------------------------------------------------------------------
 // File: Framework\GUI.cpp
 // Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
@@ -1282,5 +1283,6 @@ bool DropDownList::onMouseWheel(const int x, const int y, const int scroll){
 bool DropDownList::onKeyPress(const unsigned int key, const bool pressed){
 	return false;
 }
+#endif
 #endif
 

@@ -1,8 +1,56 @@
-#include "Main.h"
-#include "../Framework2/Util/OrderedSet.h"
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+#include <STX/OrderedSet.h>
 
-void MainApp::resetCamera(){
-	position = vec3(60, 10, 85);
+struct Edge {
+	Edge(){
+		count = 0;
+	}
+	Edge(const unsigned int ii0, const unsigned int ii1, const D3DXFROMWINEVECTOR3 &normal){
+		i0 = min(ii0, ii1);
+		i1 = max(ii0, ii1);
+		normal0 = normal;
+		count = 0;
+	}
+
+	unsigned int i0, i1;
+	D3DXFROMWINEVECTOR3 normal0, normal1;
+	unsigned int count;
+};
+
+bool operator != (const Edge &e0, const Edge &e1){
+	return (e0.i0 != e1.i0 || e0.i1 != e1.i1);
+}
+
+bool operator < (const Edge &e0, const Edge &e1){
+	if (e0.i0 < e1.i0) return true;
+	if (e0.i0 > e1.i0) return false;
+	return (e0.i1 < e1.i1);
+}
+
+struct Vertex {
+	D3DXFROMWINEVECTOR3 vertex;
+	D3DXFROMWINEVECTOR3 normal0;
+	D3DXFROMWINEVECTOR3 normal1;
+};
+
+class MainApp {
+protected:
+	//OpenGLModel *model, *edgeModel;
+
+	ShaderID outline, shading;
+	TextureID celShade;
+
+	int edgeThreshold, lineWidth;
+	bool drawOutline, drawEdge;
+
+public:
+void resetCamera(){
+	position = D3DXFROMWINEVECTOR3(60, 10, 85);
 	wx = 0.28f;
 	wy = 2.47f;
 	wz = 0;
@@ -22,7 +70,7 @@ void findEdge(const Edge &edge){
 	}
 }
 
-void MainApp::initMenu(){
+void initMenu(){
 	drawOutline = true;
 	drawEdge = true;
 	edgeThreshold = 71;
@@ -37,23 +85,19 @@ void MainApp::initMenu(){
 	App::initMenu();
 }
 
-bool MainApp::init(){
-	model = new OpenGLModel();
-	model->loadFromFile("../Models/64thundr.hmdl");
-	model->getBatch(0)->optimize(0x7FFFFFFF);
+bool init(){
 
 	unsigned int nIndices = model->getBatch(0)->getIndexCount();
 	unsigned short *indices = (unsigned short *) model->getBatch(0)->getIndices();
-	//unsigned int *indices = (unsigned int *) model->getBatch(0)->getIndices();
-	vec3 *vertices = (vec3 *) model->getBatch(0)->getVertices();
+	D3DXFROMWINEVECTOR3 *vertices = (D3DXFROMWINEVECTOR3 *) model->getBatch(0)->getVertices();
 
 	unsigned int i;
 	for (i = 0; i < nIndices; i += 3){
-		vec3 v0 = vertices[indices[i]];
-		vec3 v1 = vertices[indices[i + 1]];
-		vec3 v2 = vertices[indices[i + 2]];
+		D3DXFROMWINEVECTOR3 v0 = vertices[indices[i]];
+		D3DXFROMWINEVECTOR3 v1 = vertices[indices[i + 1]];
+		D3DXFROMWINEVECTOR3 v2 = vertices[indices[i + 2]];
 
-		vec3 normal = normalize(cross(v1 - v0, v2 - v0));
+		D3DXFROMWINEVECTOR3 normal = normalize(cross(v1 - v0, v2 - v0));
 
 		findEdge(Edge(indices[i    ], indices[i + 1], normal));
 		findEdge(Edge(indices[i + 1], indices[i + 2], normal));
@@ -88,41 +132,21 @@ bool MainApp::init(){
 	edgeModel = new OpenGLModel();
 	OpenGLBatch *batch = new OpenGLBatch();
 	batch->addFormat(ATT_VERTEX,   ATT_FLOAT, 3, 0);
-	batch->addFormat(ATT_TEXCOORD, ATT_FLOAT, 3, sizeof(vec3),     0);
-	batch->addFormat(ATT_TEXCOORD, ATT_FLOAT, 3, sizeof(vec3) * 2, 1);
+	batch->addFormat(ATT_TEXCOORD, ATT_FLOAT, 3, sizeof(D3DXFROMWINEVECTOR3),     0);
+	batch->addFormat(ATT_TEXCOORD, ATT_FLOAT, 3, sizeof(D3DXFROMWINEVECTOR3) * 2, 1);
 	batch->setPrimitiveType(PRIM_LINES);
 	batch->setVertices(newVertices, 2 * c, sizeof(Vertex));
 	edgeModel->addBatch(batch);
 
-//	edgeModel->saveToFile("../Models/64thundrEdge.hmdl");
-
-	delete model;
-	model = new OpenGLModel();
-	model->loadFromFile("../Models/64thundr.hmdl");
-	model->getBatch(0)->addNormals();
-
 	return true;
 }
 
-bool MainApp::exit(){
-	delete edgeModel;
-	delete model;
+bool load(){
 
-	return true;
-}
+	if ((shading = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/shading.shd")) == SHADER_NONE) return false;
+	if ((outline = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/outline.shd")) == SHADER_NONE) return false;
 
-bool MainApp::load(){
-	if (!GL_ARB_shader_objects_supported || !GL_ARB_vertex_shader_supported || !GL_ARB_fragment_shader_supported || !GL_ARB_shading_language_100_supported){
-		addToLog("No GLSL support (GL_ARB_shader_objects, GL_ARB_vertex_shader, GL_ARB_fragment_shader, GL_ARB_shading_language_100)\n");
-		return false;
-	}
-
-	setDefaultFont("../Textures/Fonts/Future.font", "../Textures/Fonts/Future.dds");
-
-	if ((shading = renderer->addShader("shading.shd")) == SHADER_NONE) return false;
-	if ((outline = renderer->addShader("outline.shd")) == SHADER_NONE) return false;
-
-	if ((celShade = renderer->addTexture("../Textures/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
+	if ((celShade = IRenderer::GetRendererInstance()->addTexture("/CelShading/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
 
 	model->uploadToVertexBuffer();
 	edgeModel->uploadToVertexBuffer();
@@ -130,15 +154,10 @@ bool MainApp::load(){
 	return true;
 }
 
-bool MainApp::unload(){
-	return true;
-}
-
-
-bool MainApp::drawFrame(){
+bool drawFrame(){
 	glEnable(GL_CULL_FACE);
 
-	renderer->changeMask(ALL);
+	IRenderer::GetRendererInstance()->changeMask(ALL);
 	glClearColor(0.7f, 0.7f, 0.7f, 0.5f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -157,11 +176,10 @@ bool MainApp::drawFrame(){
 	glEnable(GL_POLYGON_OFFSET_FILL);
 	glPolygonOffset(3, 3);
 
-	renderer->setShader(shading);
-	renderer->setTexture("CelShade", celShade);
-	renderer->apply();
+	IRenderer::GetRendererInstance()->setShader(shading);
+	IRenderer::GetRendererInstance()->setTexture("CelShade", celShade);
 
-	renderer->changeShaderConstant3f("lightPos", position);
+	IRenderer::GetRendererInstance()->setShaderConstant3f("lightPos", position);
 
 	model->draw();
 	
@@ -169,18 +187,47 @@ bool MainApp::drawFrame(){
 
 
 	if (drawOutline || drawEdge){
-		renderer->setShader(outline);
-		renderer->setMask(COLOR);
-		renderer->apply();
+		IRenderer::GetRendererInstance()->setShader(outline);
+		IRenderer::GetRendererInstance()->setMask(eCOLOR);
 
-		renderer->changeShaderConstant3f("camPos", position);
-		renderer->changeShaderConstant1f("outlineThreshold", drawOutline? 0.0f : -100000000.0f);
-		renderer->changeShaderConstant1f("edgeThreshold", drawEdge? edgeThreshold * 0.01f * 2 - 1 : -1.0f);
+		IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", position);
+		IRenderer::GetRendererInstance()->setShaderConstant1f("outlineThreshold", drawOutline? 0.0f : -100000000.0f);
+		IRenderer::GetRendererInstance()->setShaderConstant1f("edgeThreshold", drawEdge? edgeThreshold * 0.01f * 2 - 1 : -1.0f);
 
 		edgeModel->draw();
 	}
 
 	return true;
 }
+};
 
-App *app = new MainApp();
+MainApp app;
+int init(const char* aTitle)
+{
+    app.init();
+    app.load();
+}
+
+void render()
+{
+	float f=128.0f/256.0f;
+	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
+	IRenderer::GetRendererInstance()->BeginScene();
+	app.drawFrame();
+	IRenderer::GetRendererInstance()->EndScene();
+	IRenderer::GetRendererInstance()->Present( );
+}
+
+int ApplicationLogic()
+{
+	IRenderer* r=IRenderer::GetRendererInstance("CelShading");
+	IInput*    i=STX_Service::GetInputInstance();
+	init("");
+	while (!i->OnKeyPress (STX_KEY_ESCAPE) && !i->Quit())
+	{
+		i->Update();
+		render();
+	}
+	return 0;
+}
+

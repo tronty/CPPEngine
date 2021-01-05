@@ -1,3 +1,4 @@
+#ifdef LINUX
 //-----------------------------------------------------------------------------
 // File: Framework\GUI.h
 // Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
@@ -531,4 +532,5 @@ protected:
 };
 #endif
 #endif // _GUI_H_
+#endif
 
