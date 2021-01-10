@@ -11,6 +11,7 @@
 # 	Linux Mint 19.2 "Tina" 	 - Cinnamon (32-bit and 64-bit) also now available should do equally well
 # 	Linux Mint 19.3 "Tricia" - Cinnamon (32-bit and 64-bit) also now available should do equally well
 # 	Linux Mint 20 	"Ulyana" - Cinnamon (64-bit) also now available should do equally well
+# 	Linux Mint 20.1 "Ulyssa" - Cinnamon (64-bit) also now available should do equally well
 # 	I use currently mainly Linux Mint 19.1 "Tessa" - Cinnamon where there is the lightdm as a display manager
 # 	and system snapshots are available on update manager
 # 	(may save time if the system breaks and must be restored to a some previous state)
