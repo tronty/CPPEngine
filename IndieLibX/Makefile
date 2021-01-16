@@ -118,10 +118,10 @@ diff3:
 diff:
 	diff /home/tronty/IndieLibX_NSGUI_ei_toimi/Libraries/Framework3/src/RendererGLSLGL_1_1.cpp ./Libraries/Framework3/src/RendererGLSLGL_1_1.cpp
 	diff /home/tronty/IndieLibX_NSGUI_ei_toimi/Libraries/Framework3/src/RendererGL_1_1.cpp ./Libraries/Framework3/src/RendererGL_1_1.cpp
-
+	
 GPUInfo:
-    lspci | grep -i --color 'vga\|3d\|2d'
-
+	lspci | grep -i --color 'vga\|3d\|2d'
+    
 IndieLibX_AllLibs_LNX32_ZIP:
 	rm -fr ~/IndieLibX_AllLibs_LNX32
 	mkdir ~/IndieLibX_AllLibs_LNX32
