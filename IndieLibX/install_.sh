@@ -555,6 +555,7 @@ removetmpfiles()
 	rm -fr ./android-ndk-$NDK_VERSION-darwin-$bitness.tar.bz2
 	rm -fr ./android-ndk-$NDK_VERSION-linux-$bitness.tar
 	rm -fr ./android-ndk-$NDK_VERSION-darwin-$bitness.tar
+	rm -fr ./android-ndk-$NDK_VERSION
 	rm -fr ./$AMDVLK_DRIVER
 	rm -fr ./$NVIDIA_DRIVER
 	rm -fr ./SDL2-$SDL2_VERSION
