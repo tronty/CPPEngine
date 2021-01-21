@@ -2324,12 +2324,12 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
 	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
 
 	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, D3DXFROMWINEVECTOR2(  1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  1, 1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
 
 	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  1, 1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, 1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
 #else
 #endif
         D3DXFROMWINEMATRIX S, SH;

@@ -2898,7 +2898,7 @@ std::vector<float> MeshRenderer2::computeFaceNormal(float x1, float y1, float z1
         {
 		Clear();
 	m_Shape=eSphere;
-#if 1
+#if 0
         const __WORD__ SPHERE_MERIDIAN_SLICES_NUM=64;
 	const __WORD__ SPHERE_PARALLEL_SLICES_NUM=64;
 #elif 0
@@ -2937,7 +2937,7 @@ std::vector<float> MeshRenderer2::computeFaceNormal(float x1, float y1, float z1
 		Clear();
 		
 	m_Shape=eHalfSphere;
-	CreateEllipsoid__(32, 64, radius, radius, radius, 0.0f, 1.0f, aShader_);
+	CreateEllipsoid__(slices, stacks, radius, radius, radius, 0.0f, 1.0f, aShader_);
         }
         /// <summary>
         /// Fills vertices std::vector  with <see cref="stx_VertexPositionNormalTexture"/> vertices forming a cylinder.
