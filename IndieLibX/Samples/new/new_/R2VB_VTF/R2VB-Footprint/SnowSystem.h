@@ -39,5 +39,5 @@ private:
 	int currRT, otherRT;
 	int rtWidth, rtHeight;
 };
-
 #endif
+

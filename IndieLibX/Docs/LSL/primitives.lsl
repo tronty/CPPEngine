@@ -1,0 +1,106 @@
+
+/* * * * * * * * * * * * * Author's note * * * * * * * * * * * *\
+*   _       _   _       _   _       _   _       _     _ _ _ _   *
+*  |_|     |_| |_|     |_| |_|_   _|_| |_|     |_|  _|_|_|_|_|  *
+*  |_|_ _ _|_| |_|     |_| |_|_|_|_|_| |_|     |_| |_|_ _ _     *
+*  |_|_|_|_|_| |_|     |_| |_| |_| |_| |_|     |_|   |_|_|_|_   *
+*  |_|     |_| |_|_ _ _|_| |_|     |_| |_|_ _ _|_|  _ _ _ _|_|  *
+*  |_|     |_|   |_|_|_|   |_|     |_|   |_|_|_|   |_|_|_|_|    *
+*                                                               *
+*                     http://www.humus.name                     *
+*                                                                *
+* This file is a part of the work done by Humus. You are free to   *
+* use the code in any way you like, modified, unmodified or copied   *
+* into your own work. However, I expect you to respect these points:  *
+*  - If you use this file and its contents unmodified, or use a major *
+*    part of this file, please credit the author and leave this note. *
+*  - For use in anything commercial, please request my approval.     *
+*  - Share your work and ideas too as much as you can.             *
+*                                                                *
+\* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#ifdef GLSL
+	#define float4 vec4
+	#define float4x4 mat4
+	#define Texture2D texture2D
+	#define SamplerState sampler
+#endif
+
+[Rootsig]
+
+struct PS_IN
+{
+#ifdef GLSL
+	vec2 Tex;
+#else
+	float4 Pos : SV_Position;
+	float2 Tex : TexCoord;
+#endif
+};
+
+[Vertex: ColoredVS]
+
+#ifdef GLSL
+layout (location = 0) in vec4 Pos;
+void main()
+{
+	gl_Position = Constants.WVP * Pos;
+}
+#else
+void main(out float4 Out : SV_Position, float4 Pos : Vertex)
+{
+	Out = mul(Constants.WVP, Pos);
+}
+#endif
+
+[Pixel: ColoredPS]
+
+#ifdef GLSL
+layout(location = 0) out vec4 Out;
+void main()
+{
+	Out = Color;
+}
+#else
+void main(out float4 Out : SV_Target)
+{
+	Out = Color;
+}
+#endif
+
+
+[Vertex: TexturedVS]
+
+#ifdef GLSL
+layout(location = 0) in vec4 Pos;
+layout(location = 1) in vec2 Tex;
+layout(location = 0) out PS_IN Out;
+void main()
+{
+	gl_Position = Constants.WVP * Pos;
+	Out.Tex = Tex;
+}
+#else
+void main(out PS_IN Out, float4 Pos : Vertex, float2 Tex : TexCoord)
+{
+	Out.Pos = mul(Constants.WVP, Pos);
+	Out.Tex = Tex;
+}
+#endif
+
+[Pixel: TexturedPS]
+
+#ifdef GLSL
+layout(location = 0) out vec4 Out;
+layout(location = 0) in PS_IN In;
+void main()
+{
+	Out = Color * texture(sampler2D(Texture, Filter), In.Tex);
+}
+#else
+void main(out float4 Out : SV_Target, PS_IN In)
+{
+	Out = Color * Texture.Sample(Filter, In.Tex);
+}
+#endif
+

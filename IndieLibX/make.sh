@@ -293,7 +293,7 @@ echo "Usage: $0 [< solutionname >] [<LNX|NDK|MW|OSX|iOS|WIN>] [<GNUMAKE|NDK|NMAK
 echo "Example: ./make.sh Test LNX GNUMAKE GLSL1_1";
 echo "Example: ./make.sh Test LNX GNUMAKE GLCG1_1";
 echo "Example: ./make.sh Test LNX GNUMAKE VULKAN";
-echo "Example: ./make.sh Test NDK NDK GLES2";
+echo "Example: ./make.sh NDK NDK NDK GLES2";
 echo "Example: ./make.sh Test OSX GNUMAKE GLSL1_1";
 echo "Example: ./make.sh Test iOS GNUMAKE GLES2";
 

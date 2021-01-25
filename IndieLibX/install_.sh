@@ -16,6 +16,8 @@
 # 	and system snapshots are available on update manager
 # 	(may save time if the system breaks and must be restored to a some previous state)
 
+cd $HOME
+
 OS="Windows"
 platform="WIN"
 UbuntuBased="N"
@@ -62,6 +64,8 @@ SDL2_VERSION="2.0.9"
 SDL2_IMAGE_VERSION="2.0.5"
 NDK_VERSION="r9d"
 ANDROID_NDK_URL="http://dl.google.com/android/ndk/android-ndk-$NDK_VERSION-$OS_-$bitness.tar.bz2"
+INDIELIBX_URL="http://tommironty.fi/IndieLibX.zip"
+INDIELIB_RESOURCES_URL="http://tommironty.fi/IndieLib_resources.zip"
 AMDVLK_DRIVER="amdvlk_2019.Q3.2_amd64.deb"
 AMDVLK_DRIVER_URL="https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2019.Q3.2/$AMDVLK_DRIVER"
 NVIDIA_DRIVER="NVIDIA-Linux-$bitness-390.129.run"
@@ -157,7 +161,7 @@ installNDK()
 		fi
     		tar xvf ./android-ndk-$NDK_VERSION-$OS_-$bitness.tar
 		#rm -fr $HOME/android-ndk-$NDK_VERSION-$OS_-$bitness
-		mv ./android-ndk-$NDK_VERSION-$OS_-$bitness $HOME/android-ndk-$NDK_VERSION-$OS_-$bitness
+		#mv ./android-ndk-$NDK_VERSION-$OS_-$bitness $HOME/android-ndk-$NDK_VERSION-$OS_-$bitness
 		if [[ $OSTYPE == linux* ]]; then
     			echo 'export NDK=android-ndk-$NDK_VERSION-$OS_-$bitness' >>$HOME/.bashrc
 		fi		
@@ -166,6 +170,35 @@ installNDK()
 		fi
 	fi
 }
+
+installIndieLibX()
+{
+	echo ""
+	echo "Installing IndieLibX."
+	echo ""
+
+	if [ ! -e "$HOME/IndieLibX" ]; then
+		if [ ! -f "./IndieLibX.zip" ]; then
+			curl -O $INDIELIBX_URL
+    			unzip -x ./IndieLibX.zip
+		fi
+	fi
+}
+
+installIndieLib_resources()
+{
+	echo ""
+	echo "Installing IndieLib_resources."
+	echo ""
+
+	if [ ! -e "$HOME/IndieLib_resources" ]; then
+		if [ ! -f "./IndieLib_resources.zip" ]; then
+			curl -O $INDIELIB_RESOURCES_URL
+    			unzip -x ./IndieLib_resources.zip
+		fi
+	fi
+}
+
 installAMDdriver()
 {
 	if [[ "$bitness" == "x86_64" ]]; then
@@ -654,6 +687,34 @@ if [[ $OSTYPE == darwin* ]]; then
 	if [ -f "/opt/X11/include/libpng16/png.h" ]; then
 		mv /opt/X11/include/libpng16/png.h /opt/X11/include/libpng16/png_.h
 	fi
+fi
+if [[ $OS != "Windows" ]]; then
+	if [[ "Y" == "Y" ]]; then
+		yn4="Y"
+		while true; do
+			read -p "Do you wish to install IndieLibX [YyNn]?" yn4
+			case $yn4 in
+				[Yy]* ) installIndieLibX; break;;
+		  		[Nn]* ) break;;
+		  		* ) echo "Please answer yes or no.";;
+			esac
+		done
+	fi
+fi
+if [[ $OS != "Windows" ]]; then
+	if [[ "Y" == "Y" ]]; then
+		yn4="Y"
+		while true; do
+			read -p "Do you wish to install IndieLib_resources [YyNn]?" yn4
+			case $yn4 in
+				[Yy]* ) installIndieLib_resources; break;;
+		  		[Nn]* ) break;;
+		  		* ) echo "Please answer yes or no.";;
+			esac
+		done
+	fi
+fi
+if [[ $OSTYPE == darwin* ]]; then
 	OSXinfo
 fi
 echo "Removing unneeded files:"

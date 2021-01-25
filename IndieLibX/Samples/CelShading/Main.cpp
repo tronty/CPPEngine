@@ -48,6 +48,9 @@ protected:
 	int edgeThreshold, lineWidth;
 	bool drawOutline, drawEdge;
 
+    D3DXFROMWINEVECTOR3 position;
+    float wx, wy, wz, speed;
+
 public:
 void resetCamera(){
 	position = D3DXFROMWINEVECTOR3(60, 10, 85);
@@ -143,10 +146,10 @@ bool init(){
 
 bool load(){
 
-	if ((shading = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/shading.shd")) == SHADER_NONE) return false;
-	if ((outline = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/outline.shd")) == SHADER_NONE) return false;
+	if ((shading = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/shading.shd")) == SHADER_NONE) return false;
+	if ((outline = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/outline.shd")) == SHADER_NONE) return false;
 
-	if ((celShade = IRenderer::GetRendererInstance()->addTexture("/CelShading/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
+	if ((celShade = IRenderer::GetRendererInstance()->addTexture("/CelShading/NVIDIA/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
 
 	model->uploadToVertexBuffer();
 	edgeModel->uploadToVertexBuffer();
@@ -155,39 +158,40 @@ bool load(){
 }
 
 bool drawFrame(){
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
-	IRenderer::GetRendererInstance()->changeMask(ALL);
-	glClearColor(0.7f, 0.7f, 0.7f, 0.5f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//IRenderer::GetRendererInstance()->changeMask(ALL);
 
-	glMatrixMode(GL_PROJECTION);
-	projection = projectionMatrixX(1.5f, float(height) / float(width), 0.1f, 1000);
-	glLoadMatrixf(transpose(projection));
+	D3DXFROMWINEMATRIX mvp, R, T;
+	D3DXFROMWINEMATRIX projection;
+    D3DXFROMWINEMatrixPerspectiveFovLH( &projection, 1.5f, IRenderer::GetRendererInstance()->GetAspect(), 0.1f, 1000.0f);
 
-    glMatrixMode(GL_MODELVIEW);
-	modelView = rotateZXY(-wx, -wy, -wz);
-	modelView.translate(-position);
-	glLoadMatrixf(transpose(modelView));
+    D3DXFROMWINEMATRIX modelView = rotateZXY(-wx, -wy, -wz);
+		D3DXFROMWINEMatrixRotationYawPitchRoll( &R, -wx, -wy, -wz);
+		D3DXFROMWINEMatrixTranslation(&T, -position.x, -position.y, -position.z);
+
+	modelView=R*T
+	mvp=projection*modelView;
 
 
-	glLineWidth((float) lineWidth);
+	//glLineWidth((float) lineWidth);
 
-	glEnable(GL_POLYGON_OFFSET_FILL);
-	glPolygonOffset(3, 3);
+	//glEnable(GL_POLYGON_OFFSET_FILL);
+	//glPolygonOffset(3, 3);
 
 	IRenderer::GetRendererInstance()->setShader(shading);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("mvp", mvp);
 	IRenderer::GetRendererInstance()->setTexture("CelShade", celShade);
 
 	IRenderer::GetRendererInstance()->setShaderConstant3f("lightPos", position);
 
 	model->draw();
 	
-	glDisable(GL_POLYGON_OFFSET_FILL);
-
+	//glDisable(GL_POLYGON_OFFSET_FILL);
 
 	if (drawOutline || drawEdge){
 		IRenderer::GetRendererInstance()->setShader(outline);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("mvp", mvp);
 		IRenderer::GetRendererInstance()->setMask(eCOLOR);
 
 		IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", position);
@@ -210,8 +214,7 @@ int init(const char* aTitle)
 
 void render()
 {
-	float f=128.0f/256.0f;
-	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
+	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4(0.7f, 0.7f, 0.7f, 0.5f));
 	IRenderer::GetRendererInstance()->BeginScene();
 	app.drawFrame();
 	IRenderer::GetRendererInstance()->EndScene();
