@@ -1345,6 +1345,10 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
   	if (in)
     		contents=(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
 #if 0//def _MSC_VER
+	#define __HLSL5__ 1
+	#define ROW_MAJOR row_major
+	#define MVPSEMANTIC
+	#define WSIGN +
 	#define int2 ivec2
 	#define int3 ivec3
 	#define int4 ivec4
@@ -1372,6 +1376,13 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)
 	#define SAMPLER2D Texture2D<float4>
 #elif 0
+	#define __GLSL__ 1
+	#define WSIGN +
+	#define ROW_MAJOR
+	#define MVPSEMANTIC
+	#define fract frac
+	#define mix lerp
+	#define atan(x,y) atan2(y,x)
 	#define TextureSample(T,S,uv) T.Sample(S, uv)
 	#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod(TEX, float4(TEXCOORD.x, TEXCOORD.y, 0.0, 0.0))
 	#define SAMPLER2D sampler2D
