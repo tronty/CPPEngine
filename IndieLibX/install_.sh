@@ -7,6 +7,7 @@
 # Commands below in this file were tested on following operating systems:
 # 	macOS High Sierra (64-bit) (any other version of 64-bit macOS may also do as well)
 # 	Ubuntu 18.04.2 LTS Bionic Beaver (64-bit)
+#	Ubuntu 20.04.2 LTS Focal Fossa (64-bit)
 # 	Linux Mint 19.1 "Tessa"  - Cinnamon (32-bit and 64-bit)
 # 	Linux Mint 19.2 "Tina" 	 - Cinnamon (32-bit and 64-bit) also now available should do equally well
 # 	Linux Mint 19.3 "Tricia" - Cinnamon (32-bit and 64-bit) also now available should do equally well
@@ -50,6 +51,13 @@ fi
 OS_="linux"
 if [[ $OSTYPE == darwin* ]]; then
 	OS_="darwin"
+fi
+
+
+if [[ $OSTYPE == linux* ]]; then
+	update
+	apt-get -y install curl
+	update
 fi
 
 bitness="x86"
