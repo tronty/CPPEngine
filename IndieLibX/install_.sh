@@ -22,30 +22,7 @@ platform="WIN"
 UbuntuBased="N"
 OS_="linux"
 bitness="x86"
-init;
-DISPLAY_MANAGER="lightdm"
-SDL2_VERSION="2.0.9"
-SDL2_IMAGE_VERSION="2.0.5"
-NDK_VERSION="r9d"
-ANDROID_NDK_URL="http://dl.google.com/android/ndk/android-ndk-$NDK_VERSION-$OS_-$bitness.tar.bz2"
-INDIELIBX_URL="http://tommironty.fi/IndieLibX.zip"
-INDIELIB_RESOURCES_URL="http://tommironty.fi/IndieLib_resources.zip"
-AMDVLK_DRIVER="amdvlk_2019.Q3.2_amd64.deb"
-AMDVLK_DRIVER_URL="https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2019.Q3.2/$AMDVLK_DRIVER"
-NVIDIA_DRIVER="NVIDIA-Linux-$bitness-390.129.run"
-NVIDIA_DRIVER_URL="http://us.download.nvidia.com/XFree86/Linux-$bitness/390.129/$NVIDIA_DRIVER"
-SDL2_URL="https://www.libsdl.org/release/SDL2-$SDL2_VERSION.tar.gz"
-SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$SDL2_IMAGE_VERSION.tar.gz"
-HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
-CG="Cg-3.1_April2012.dmg"
-CG_URL="http://developer.download.nvidia.com/cg/Cg_3.1/$CG"
-XQUARTZ="XQuartz-2.7.11.dmg"
-XQUARTZ_URL="https://dl.bintray.com/xquartz/downloads/$XQUARTZ"
 
-cd $HOME
-
-init()
-{
 	if [ -f "/etc/lsb-release" ]; then
 		DINFO=$(cat /etc/lsb-release | grep DISTRIB_ID | sed s/.*=//)
 		if [ $DINFO == "Ubuntu" ]; then
@@ -81,13 +58,27 @@ init()
 	elif [[ "$arch" == "i386" ]]; then
 		bitness="x86_64"
 	fi
-}
 
-if [[ $OSTYPE == linux* ]]; then
-	update
-	apt-get -y install curl
-	update
-fi
+DISPLAY_MANAGER="lightdm"
+SDL2_VERSION="2.0.9"
+SDL2_IMAGE_VERSION="2.0.5"
+NDK_VERSION="r9d"
+ANDROID_NDK_URL="http://dl.google.com/android/ndk/android-ndk-$NDK_VERSION-$OS_-$bitness.tar.bz2"
+INDIELIBX_URL="http://tommironty.fi/IndieLibX.zip"
+INDIELIB_RESOURCES_URL="http://tommironty.fi/IndieLib_resources.zip"
+AMDVLK_DRIVER="amdvlk_2019.Q3.2_amd64.deb"
+AMDVLK_DRIVER_URL="https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2019.Q3.2/$AMDVLK_DRIVER"
+NVIDIA_DRIVER="NVIDIA-Linux-$bitness-390.129.run"
+NVIDIA_DRIVER_URL="http://us.download.nvidia.com/XFree86/Linux-$bitness/390.129/$NVIDIA_DRIVER"
+SDL2_URL="https://www.libsdl.org/release/SDL2-$SDL2_VERSION.tar.gz"
+SDL2_IMAGE_URL="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-$SDL2_IMAGE_VERSION.tar.gz"
+HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+CG="Cg-3.1_April2012.dmg"
+CG_URL="http://developer.download.nvidia.com/cg/Cg_3.1/$CG"
+XQUARTZ="XQuartz-2.7.11.dmg"
+XQUARTZ_URL="https://dl.bintray.com/xquartz/downloads/$XQUARTZ"
+
+cd $HOME
 
 update()
 {
@@ -95,6 +86,12 @@ update()
 	apt-get upgrade
 	#apt-get dist-upgrade
 }
+
+if [[ $OSTYPE == linux* ]]; then
+	update
+	apt-get -y install curl
+	update
+fi
 
 installXQUARTZ()
 {
