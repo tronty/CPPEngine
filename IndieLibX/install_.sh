@@ -17,56 +17,12 @@
 # 	and system snapshots are available on update manager
 # 	(may save time if the system breaks and must be restored to a some previous state)
 
-cd $HOME
-
 OS="Windows"
 platform="WIN"
 UbuntuBased="N"
-if [ -f "/etc/lsb-release" ]; then
-	DINFO=$(cat /etc/lsb-release | grep DISTRIB_ID | sed s/.*=//)
-	if [ $DINFO == "Ubuntu" ]; then
-		OS="Ubuntu"
-		platform="LNX"
-		UbuntuBased="Y"
-	fi
-	if [ $DINFO == "LinuxMint" ]; then
-		OS="LinuxMint"
-		platform="LNX"
-		UbuntuBased="Y"
-	fi
-elif [ -f "/etc/debian_version" ]; then
-	OS="Debian"
-	platform="LNX"
-	UbuntuBased="N"
-elif [ -d "/Applications/Xcode.app" ]; then
-	OS="Darwin"
-	platform="OSX"
-	UbuntuBased="N"
-elif [ -d "/Applications/Xcode-Beta.app" ]; then
-	OS="Darwin"
-	platform="OSX"
-	UbuntuBased="N"
-fi
-
 OS_="linux"
-if [[ $OSTYPE == darwin* ]]; then
-	OS_="darwin"
-fi
-
-
-if [[ $OSTYPE == linux* ]]; then
-	update
-	apt-get -y install curl
-	update
-fi
-
 bitness="x86"
-if [[ "$arch" == "x86_64" ]]; then
-	bitness="x86_64"
-elif [[ "$arch" == "i386" ]]; then
-	bitness="x86_64"
-fi
-
+init;
 DISPLAY_MANAGER="lightdm"
 SDL2_VERSION="2.0.9"
 SDL2_IMAGE_VERSION="2.0.5"
@@ -85,6 +41,53 @@ CG="Cg-3.1_April2012.dmg"
 CG_URL="http://developer.download.nvidia.com/cg/Cg_3.1/$CG"
 XQUARTZ="XQuartz-2.7.11.dmg"
 XQUARTZ_URL="https://dl.bintray.com/xquartz/downloads/$XQUARTZ"
+
+cd $HOME
+
+init()
+{
+	if [ -f "/etc/lsb-release" ]; then
+		DINFO=$(cat /etc/lsb-release | grep DISTRIB_ID | sed s/.*=//)
+		if [ $DINFO == "Ubuntu" ]; then
+			OS="Ubuntu"
+			platform="LNX"
+			UbuntuBased="Y"
+		fi
+		if [ $DINFO == "LinuxMint" ]; then
+			OS="LinuxMint"
+			platform="LNX"
+			UbuntuBased="Y"
+		fi
+	elif [ -f "/etc/debian_version" ]; then
+		OS="Debian"
+		platform="LNX"
+		UbuntuBased="N"
+	elif [ -d "/Applications/Xcode.app" ]; then
+		OS="Darwin"
+		platform="OSX"
+		UbuntuBased="N"
+	elif [ -d "/Applications/Xcode-Beta.app" ]; then
+		OS="Darwin"
+		platform="OSX"
+		UbuntuBased="N"
+	fi
+
+	if [[ $OSTYPE == darwin* ]]; then
+		OS_="darwin"
+	fi
+
+	if [[ "$arch" == "x86_64" ]]; then
+		bitness="x86_64"
+	elif [[ "$arch" == "i386" ]]; then
+		bitness="x86_64"
+	fi
+}
+
+if [[ $OSTYPE == linux* ]]; then
+	update
+	apt-get -y install curl
+	update
+fi
 
 update()
 {
