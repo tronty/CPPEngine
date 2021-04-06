@@ -697,6 +697,7 @@ if [[ $OSTYPE == darwin* ]]; then
 	fi
 fi
 if [[ $OS != "Windows" ]]; then
+if [ ! -e "$HOME/IndieLibX" ]; then
 	if [[ "Y" == "Y" ]]; then
 		yn4="Y"
 		while true; do
@@ -709,7 +710,9 @@ if [[ $OS != "Windows" ]]; then
 		done
 	fi
 fi
+fi
 if [[ $OS != "Windows" ]]; then
+if [ ! -e "$HOME/IndieLib_resources" ]; then
 	if [[ "Y" == "Y" ]]; then
 		yn4="Y"
 		while true; do
@@ -721,6 +724,7 @@ if [[ $OS != "Windows" ]]; then
 			esac
 		done
 	fi
+fi
 fi
 if [[ $OSTYPE == darwin* ]]; then
 	OSXinfo
