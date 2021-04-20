@@ -207,6 +207,18 @@ installIndieLib_resources()
 	fi
 }
 
+installGraphicsdriver()
+{
+	sudo ubuntu-drivers autoinstall
+	sudo reboot
+}
+
+installGraphicsdriver_()
+{
+	sudo apt install nvidia-driver-460
+	sudo reboot
+}
+
 installAMDdriver()
 {
 	if [[ "$bitness" == "x86_64" ]]; then
@@ -240,6 +252,7 @@ installNVIDIAdriver()
 	echo "sudo apt-get -y install libvulkan1 vulkan-utils"
 	#update
 }
+
 installNVIDIAdriver_()
 {
 	if [ ! -f "./$NVIDIA_DRIVER" ]; then
@@ -696,9 +709,9 @@ if [[ $OSTYPE == darwin* ]]; then
 		mv /opt/X11/include/libpng16/png.h /opt/X11/include/libpng16/png_.h
 	fi
 fi
+if [[ "N" == "Y" ]]; then
 if [[ $OS != "Windows" ]]; then
 if [ ! -e "$HOME/IndieLibX" ]; then
-	if [[ "Y" == "Y" ]]; then
 		yn4="Y"
 		while true; do
 			read -p "Do you wish to install IndieLibX [YyNn]?" yn4
@@ -708,12 +721,12 @@ if [ ! -e "$HOME/IndieLibX" ]; then
 		  		* ) echo "Please answer yes or no.";;
 			esac
 		done
-	fi
 fi
 fi
+fi
+if [[ "N" == "Y" ]]; then
 if [[ $OS != "Windows" ]]; then
 if [ ! -e "$HOME/IndieLib_resources" ]; then
-	if [[ "Y" == "Y" ]]; then
 		yn4="Y"
 		while true; do
 			read -p "Do you wish to install IndieLib_resources [YyNn]?" yn4
@@ -723,7 +736,7 @@ if [ ! -e "$HOME/IndieLib_resources" ]; then
 		  		* ) echo "Please answer yes or no.";;
 			esac
 		done
-	fi
+fi
 fi
 fi
 if [[ $OSTYPE == darwin* ]]; then

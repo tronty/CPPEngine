@@ -26,8 +26,8 @@ public:
     CPU_Physics();
     ~CPU_Physics();
     void ComputeWaves(float windSpeed, float windDirection, float time);
-    TextureID GetNormalMap() {return m_pHighNormalTex;}
-    float* GetDisplacementMap() {return (float*)&m_LowSpatialWaterImage[0][0];}
+    float* GetNormalMap();
+    float* GetDisplacementMap();
 private:
     void GenerateFFTWFourierSpectrum(float fTime);
     void ComputeWaterNormals();

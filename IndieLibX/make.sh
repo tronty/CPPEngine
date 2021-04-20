@@ -163,6 +163,10 @@ fi;
 
 touchX()
 {
+	mkdir -p ../IndieLibX_Libraries
+	cd ../IndieLibX_Libraries
+	find  -type d -exec touch {} +
+	find  -type f -exec touch {} +
 	cd ../IndieLib_resources
 	find  -type d -exec touch {} +
 	find  -type f -exec touch {} +

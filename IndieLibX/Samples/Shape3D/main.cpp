@@ -37,14 +37,16 @@ int init(const char* aTitle)
         shape3D[6].CreateOcta(defaultshader);
         shape3D[7].CreateTetra(defaultshader);
         shape3D[8].CreateEllipsoid(1.0f, 1.5f, 2.0f, defaultshader);
-#if 1
         shape3D[9].CreateCone(1.0f, 1.0f, defaultshader);
         shape3D[10].CreateHemis(defaultshader);
         shape3D[11].CreateTorus(0.1f, 1.0f, defaultshader);
         shape3D[12].CreateTorus2(0.1f, 1.0f, defaultshader);
         shape3D[13].CreateTire(0.25f, 0.75f, defaultshader);
-#endif
+#if 0
         shape3D[14].CreateIcosahedron(defaultshader);
+#else
+        shape3D[14].CreateIcosahedron_(1.0f, defaultshader);
+#endif
         shape3D[15].CreateDodecahedron(defaultshader);
         shape3D[16].CreatePrism(defaultshader);
 

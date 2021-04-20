@@ -47,6 +47,9 @@ bool CIndieLib::Init(const char* title, tRenderer rtb)
 	char **argv=0;
 	if(!init) return true;
 	init=false;
+	
+	STX_PRINT("CIndieLib::Init::title=%s\n", title);
+	m_title=title;
 	ResetCurrentDirectory_W();
 
 	// IndieLib Initialization, a debug.log file will be created.

@@ -113,7 +113,7 @@ This function returns 1 (true) if the render is initialized sucessfully,
 
 bool IND_Render::Init	(
 						 //LPDIRECT3D9 pDirect3d, IDirect3DDevice9 *pD3dDevice
-//RendererHLSLCg*
+//SLCg*
 IRenderer *r
 						 )
 {
@@ -388,7 +388,7 @@ Init Direct3D
 
 bool IND_Render::Init(int pWidth, int pHeight, int argc, char *argv[])
 {
-	mInfo.mDevice=IRenderer::GetRendererInstance(STX_Service::GetWindowInstance()->GetCaption());
+	mInfo.mDevice=IRenderer::GetRendererInstance(CIndieLib::m_title.c_str());
 	return true;
 }
 
@@ -532,7 +532,7 @@ bool IND_Render::Direct3DInit (int pWidth,
     stx_snprintf(buf, 1024, "mInfo.mDevice=%x",int(mInfo.mDevice));
 	GetDebugAPI()->Header (buf,5);
     */
-    mInfo.mDevice=IRenderer::GetRendererInstance("");
+    mInfo.mDevice=IRenderer::GetRendererInstance(CIndieLib::m_title.c_str());
 
 #if 0
 	char buf[1024];

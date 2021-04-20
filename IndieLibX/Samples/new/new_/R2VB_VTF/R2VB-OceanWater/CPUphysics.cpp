@@ -12,6 +12,21 @@
 
 #include "CPUphysics.h"
 
+float* CPU_Physics::GetNormalMap()
+    {
+	int pitch=0;
+        float* p=(float*)IRenderer::GetRendererInstance()->lockTexture(m_pHighNormalTex, 0, pitch);
+        //IRenderer::GetRendererInstance()->unlockTexture(m_pHighNormalTex, 0);
+    	return p;
+    } // ??? Lock/Unlock/Image3::getPixels
+float* CPU_Physics::GetDisplacementMap()
+    {
+	int pitch=0;
+        float* p=(float*)IRenderer::GetRendererInstance()->lockTexture(m_pHighNormalTex, 0, pitch);
+        //IRenderer::GetRendererInstance()->unlockTexture(m_pHighNormalTex, 0);
+    	return p;
+    } // ??? Lock/Unlock/Image3::getPixels
+
 //-----------------------------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------------------------

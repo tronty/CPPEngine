@@ -4426,6 +4426,92 @@ else
 }
 #endif
 
+    // draw as an icosahedral geodesic sphere
+void MeshRenderer2::CreateIcosahedron_(	float radius,
+					tShader aShader_)
+{  
+		Clear();
+	m_Shape=eIcosahedron;
+        // Geometry based on Paul Bourke's excellent article:
+        //   Platonic Solids (Regular polytopes in 3D)
+        //   http://astronomy.swin.edu.au/~pbourke/polyhedra/platonic/
+        const float sqrt5 = sqrt (5.0f);
+        const float phi = (1.0f + sqrt5) * 0.5f; // "golden ratio"
+        // ratio of edge length to radius
+        const float ratio = sqrt (10.0f + (2.0f * sqrt5)) / (4.0f * phi);
+        const float a = (radius / ratio) * 0.5;
+        const float b = (radius / ratio) / (2.0f * phi);
+        const D3DXFROMWINEVECTOR3 center = D3DXFROMWINEVECTOR3 ( 0,  0, 0);
+
+        // define the icosahedron's 12 vertices:
+        const D3DXFROMWINEVECTOR3 v1  = center + D3DXFROMWINEVECTOR3 ( 0,  b, -a);
+        const D3DXFROMWINEVECTOR3 v2  = center + D3DXFROMWINEVECTOR3 ( b,  a,  0);
+        const D3DXFROMWINEVECTOR3 v3  = center + D3DXFROMWINEVECTOR3 (-b,  a,  0);
+        const D3DXFROMWINEVECTOR3 v4  = center + D3DXFROMWINEVECTOR3 ( 0,  b,  a);
+        const D3DXFROMWINEVECTOR3 v5  = center + D3DXFROMWINEVECTOR3 ( 0, -b,  a);
+        const D3DXFROMWINEVECTOR3 v6  = center + D3DXFROMWINEVECTOR3 (-a,  0,  b);
+        const D3DXFROMWINEVECTOR3 v7  = center + D3DXFROMWINEVECTOR3 ( 0, -b, -a);
+        const D3DXFROMWINEVECTOR3 v8  = center + D3DXFROMWINEVECTOR3 ( a,  0, -b);
+        const D3DXFROMWINEVECTOR3 v9  = center + D3DXFROMWINEVECTOR3 ( a,  0,  b);
+        const D3DXFROMWINEVECTOR3 v10 = center + D3DXFROMWINEVECTOR3 (-a,  0, -b);
+        const D3DXFROMWINEVECTOR3 v11 = center + D3DXFROMWINEVECTOR3 ( b, -a,  0);
+        const D3DXFROMWINEVECTOR3 v12 = center + D3DXFROMWINEVECTOR3 (-b, -a,  0);
+	vertices.push_back(v1);
+	vertices.push_back(v2);
+	vertices.push_back(v3);
+	vertices.push_back(v4);
+	vertices.push_back(v5);
+	vertices.push_back(v6);
+	vertices.push_back(v7);
+	vertices.push_back(v8);
+	vertices.push_back(v9);
+	vertices.push_back(v10);
+	vertices.push_back(v11);
+	vertices.push_back(v12);
+	
+        // draw the icosahedron's 20 triangular faces:
+        indices.push_back(1);indices.push_back(2);indices.push_back(3);
+        indices.push_back(4);indices.push_back(3);indices.push_back(2);
+        indices.push_back(4);indices.push_back(5);indices.push_back(6);
+        indices.push_back(4);indices.push_back(9);indices.push_back(5);
+        indices.push_back(1);indices.push_back(7);indices.push_back(8);
+        indices.push_back(1);indices.push_back(10);indices.push_back(7);
+        indices.push_back(5);indices.push_back(11);indices.push_back(12);
+        indices.push_back(7);indices.push_back(12);indices.push_back(11);
+        indices.push_back(3);indices.push_back(6);indices.push_back(10);
+        indices.push_back(12);indices.push_back(10);indices.push_back(6);
+        indices.push_back(2);indices.push_back(8);indices.push_back(9);
+        indices.push_back(11);indices.push_back(9);indices.push_back(8);
+        indices.push_back(4);indices.push_back(6);indices.push_back(3);
+        indices.push_back(4);indices.push_back(2);indices.push_back(9);
+        indices.push_back(1);indices.push_back(3);indices.push_back(10);
+        indices.push_back(1);indices.push_back(8);indices.push_back(2);
+        indices.push_back(7);indices.push_back(10);indices.push_back(12);
+        indices.push_back(7);indices.push_back(11);indices.push_back(8);
+        indices.push_back(5);indices.push_back(12);indices.push_back(6);
+        indices.push_back(5);indices.push_back(9);indices.push_back(11);
+        for (unsigned int i = 0; i < indices.size();i++)
+        	indices[i]=indices[i]-1;
+        for (unsigned int i = 0; i < vertices.size();i++)
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+		D3DXFROMWINEVECTOR3 aiVecs[2];
+		D3DXFROMWINEMATRIX m;
+	D3DXFROMWINEMatrixScaling(&m, 2.0f, 2.0f, 2.0f); // comment this line out to avoid a bug ???
+	D3DXFROMWINEMatrixIdentity(&m);
+		CalculateBounds(&aiVecs[0], 0, 1);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	    
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;//vertices.clear();
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();//indices.clear();
+
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+}
+
 void MeshRenderer2::CreateIcosahedron(	//int recursionLevel,
 					tShader aShader_)
 {

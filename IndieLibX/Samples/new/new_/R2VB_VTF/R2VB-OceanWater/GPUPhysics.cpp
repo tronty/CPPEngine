@@ -21,7 +21,21 @@ struct QUAD_VERTEX
     //static const __DWORD__ FVF;
 };
 //const __DWORD__ QUAD_VERTEX::FVF = D3DFVF_XYZ | D3DFVF_TEX1;
-
+    float* GPU_Physics::GetDisplacementMap()
+    {
+	int pitch=0;
+        float* p=(float*)IRenderer::GetRendererInstance()->lockTexture(m_pDisplacementMapTex, 0, pitch);
+        //IRenderer::GetRendererInstance()->unlockTextureVrtl(m_pDisplacementMapTex, 0);
+    	return p;
+    } // ??? Lock/Unlock/Image3::getPixels
+    float* GPU_Physics::GetNormalMap()
+    {
+	int pitch=0;
+        float* p=(float*)IRenderer::GetRendererInstance()->lockTexture(//m_pNormalMapTex
+        								m_pDisplacementMapTex, 0, pitch);
+        //IRenderer::GetRendererInstance()->unlockTextureVrtl(m_pNormalMapTex, 0);
+    	return p;
+    } // ??? Lock/Unlock/Image3::getPixels
 //-----------------------------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------------------------

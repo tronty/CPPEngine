@@ -25,7 +25,7 @@ public:
     Physics();
     virtual ~Physics();
     virtual void ComputeWaves(float windSpeed, float windDirection, float time) = 0;
-    virtual TextureID GetNormalMap() = 0;
+    virtual float* GetNormalMap() = 0;
     virtual float* GetDisplacementMap() = 0;
     virtual void FillWaterUtilityBuffers(float windSpeed, float windDirection);
 protected:

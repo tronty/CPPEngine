@@ -25,11 +25,8 @@ public:
     GPU_Physics();
     ~GPU_Physics();
     void ComputeWaves(float windSpeed, float windDirection, float time);
-    TextureID GetNormalMap(){return m_pHighNormalTex;}
-    float* GetDisplacementMap()
-    {
-    	return m_pDisplacementMapTex;
-    } // ??? Lock/Unlock/Image3::getPixels
+    float* GetNormalMap();
+    float* GetDisplacementMap();
     void FillWaterUtilityBuffers(float windSpeed, float windDirection);
 private:
     int FillFFTUtilityTextures(int iResolution, int iLog2Resolution, 

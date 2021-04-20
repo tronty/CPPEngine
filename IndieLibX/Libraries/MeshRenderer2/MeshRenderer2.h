@@ -413,8 +413,10 @@ public:
 	void CreateTorus2_(float radMajor=1.0f, float radMinor=1.0f, int slices=20, int stacks=20, tShader aShader=eShaderNone);
 	void CreateTire(float radMajor=1.0f, float radMinor=1.0f, tShader aShader=eShaderNone);
 	void CreateTire_(float radMajor=1.0f, float radMinor=1.0f, int slices=20, int stacks=20, tShader aShader=eShaderNone);
-    void CreateIcosahedron(	//int recursionLevel=0, 
-    				tShader aShader=eShaderNone);
+    	void CreateIcosahedron(	//int recursionLevel=0, 
+    				tShader aShader=eShaderNone);			
+	void CreateIcosahedron_( float radius=1.0f,
+				 tShader aShader=eShaderNone);
 #endif
 	void CreateOcta(tShader aShader=eShaderNone);
 	void CreateTetra(tShader aShader=eShaderNone);

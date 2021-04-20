@@ -25,6 +25,13 @@ help:
 
 all: help
 
+ntpserviceoff:
+	sudo timedatectl set-ntp 0
+	sudo date --set "12 Apr 2021 20:00:00"
+
+ntpserviceon:
+	sudo timedatectl set-ntp 1
+
 version:
 	cat /etc/issue
 
