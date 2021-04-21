@@ -3239,14 +3239,11 @@ inline const char* GetShaderName(tShader aShader_)
 		eHemis,
 		eTorus,
 		eTire,
-		eIcosahedron,
+		eTetrahedron,
+		eHexahedron,
+		eOctahedron,
 		eDodecahedron,
-/*
-		Hexahedron (cube)
-		Tetrahedron
-		Octahedron
-		Dodecahedron
-*/
+		eIcosahedron,
 		eMesh
 	};
 

@@ -413,10 +413,18 @@ public:
 	void CreateTorus2_(float radMajor=1.0f, float radMinor=1.0f, int slices=20, int stacks=20, tShader aShader=eShaderNone);
 	void CreateTire(float radMajor=1.0f, float radMinor=1.0f, tShader aShader=eShaderNone);
 	void CreateTire_(float radMajor=1.0f, float radMinor=1.0f, int slices=20, int stacks=20, tShader aShader=eShaderNone);
+	#if 0
     	void CreateIcosahedron(	//int recursionLevel=0, 
     				tShader aShader=eShaderNone);			
 	void CreateIcosahedron_( float radius=1.0f,
 				 tShader aShader=eShaderNone);
+	#endif
+	void CreateTetrahedron(float sideLength=1.0f, tShader aShader=eShaderNone);
+	void CreateHexahedron(float sideLength=1.0f, tShader aShader=eShaderNone);
+	void CreateOctahedron(float sideLength=1.0f, tShader aShader=eShaderNone);
+	void CreateDodecahedron(float sideLength=1.0f, tShader aShader=eShaderNone);
+	void CreateIcosahedron(float sideLength=1.0f, tShader aShader=eShaderNone);
+		
 #endif
 	void CreateOcta(tShader aShader=eShaderNone);
 	void CreateTetra(tShader aShader=eShaderNone);
@@ -434,10 +442,11 @@ protected:
 	void AddPolygon(std::string point_names, std::vector<D3DXFROMWINEVECTOR3> points);
         void AddPolygon(std::vector<D3DXFROMWINEVECTOR3> points);
 public:
+	#if 0
         void CreateDodecahedron(	tShader aShader_=eShaderNone,
 				const D3DXFROMWINEVECTOR3 SizeCoefficient=D3DXFROMWINEVECTOR3(1.0f, 1.0f, 1.0f),
 				const D3DXFROMWINEVECTOR2 TextureRepeatCoefficient=D3DXFROMWINEVECTOR2(1.0f, 1.0f));
-						
+	#endif				
 	int Load(const char* aFilename=0, tShader aShader=eSimpleShader, bool scaleasset=true, bool a_bMeshRenderer2Simpler_ProceduralBuilding=false);
 	int LoadFile(const char* aFilename=0, tShader aShader=eSimpleShader, bool scaleasset=true, bool a_bMeshRenderer2Simpler_ProceduralBuilding=false);
 

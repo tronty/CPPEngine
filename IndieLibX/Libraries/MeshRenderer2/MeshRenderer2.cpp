@@ -3974,7 +3974,7 @@ void MeshRenderer2::CreateTetra(tShader aShader_)
 	texID=-1;
 }
 /*
-const D3DXFROMWINEVECTOR3 SizeCoefficient=D3DXFROMWINEVECTOR3(1.0f, 1.0f, 1.0f);
+const D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
 const D3DXFROMWINEVECTOR2 TextureRepeatCoefficient=D3DXFROMWINEVECTOR2(5.0f, 5.0f);
 void CreateTexturedBox(float width=2.0f, float height=2.0f, float depth=2.0f, tShader aShader=eShaderNone);
 void CreateTetra(tShader aShader=eShaderNone);
@@ -4425,7 +4425,7 @@ else
 #endif
 }
 #endif
-
+#if 0
     // draw as an icosahedral geodesic sphere
 void MeshRenderer2::CreateIcosahedron_(	float radius,
 					tShader aShader_)
@@ -4623,7 +4623,7 @@ void MeshRenderer2::CreateIcosahedron(	//int recursionLevel,
 		InitShader(aShader_);
 	texID=-1;
 }
-
+#endif
 // Find a point's index from its letter.
 int MeshRenderer2::ToIndex(char ch)
 {
@@ -4663,7 +4663,7 @@ void MeshRenderer2::AddPolygon(std::string point_names, std::vector<D3DXFROMWINE
                 indices.push_back(index1 + i + 1);
             }
         }
-
+#if 0
         void MeshRenderer2::CreateDodecahedron(	tShader aShader_,
         					const D3DXFROMWINEVECTOR3 aSizeCoefficient,
 						const D3DXFROMWINEVECTOR2 aTextureRepeatCoefficient)
@@ -4772,4 +4772,334 @@ void MeshRenderer2::AddPolygon(std::string point_names, std::vector<D3DXFROMWINE
 		InitShader(aShader_);
 	texID=-1;
         }
+#endif
+		void MeshRenderer2::CreateTetrahedron(float sideLength, tShader aShader_)
+		{
+		Clear();
+		m_Shape=eTetrahedron;
+			float X = sideLength/(2*sqrt(2));
+			float Y = -X;
+			
+			D3DXFROMWINEVECTOR3 a(X,X,X);
+			D3DXFROMWINEVECTOR3 b(Y,Y,X);
+			D3DXFROMWINEVECTOR3 c(Y,X,Y);
+			D3DXFROMWINEVECTOR3 d(X,Y,Y);
+            
+            		std::vector<D3DXFROMWINEVECTOR3> v;
+            		v.push_back(a);
+            		v.push_back(b);
+            		v.push_back(c);
+            		v.push_back(d);
+			
+			AddPolygon("ABC", v);
+			AddPolygon("ABD", v);
+			AddPolygon("ACD", v);
+			AddPolygon("BCD", v);
+			
+			D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
+        D3DXFROMWINEMATRIX S_, SH;
+        D3DXFROMWINEMatrixScaling(&S_, aSizeCoefficient.x, aSizeCoefficient.y, aSizeCoefficient.z);
+        D3DXFROMWINEMatrixScaling(&SH, 0.5f, 0.5f, 0.5f);
+
+	for(unsigned int i=0;i<vertices.size();i++)
+	{
+		D3DXFROMWINEVec3Normalize(&vertices[i].Normal, &vertices[i].Position);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &S_);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &SH);
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+	}
+		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+	}
+	void MeshRenderer2::CreateHexahedron(float sideLength, tShader aShader_)
+		{
+		Clear();
+		m_Shape=eHexahedron;
+			float X = 0.5*sideLength;
+			float Y = -0.5*sideLength;
+			
+			D3DXFROMWINEVECTOR3 a(Y,Y,Y);
+			D3DXFROMWINEVECTOR3 b(X,Y,Y);
+			D3DXFROMWINEVECTOR3 c(Y,X,Y);
+			D3DXFROMWINEVECTOR3 d(Y,Y,X);
+			D3DXFROMWINEVECTOR3 e(X,X,Y);
+			D3DXFROMWINEVECTOR3 f(X,Y,X);
+			D3DXFROMWINEVECTOR3 g(Y,X,X);
+			D3DXFROMWINEVECTOR3 h(X,X,X);
+            
+            		std::vector<D3DXFROMWINEVECTOR3> v;
+            		v.push_back(a);
+            		v.push_back(b);
+            		v.push_back(c);
+            		v.push_back(d);
+            		v.push_back(e);
+            		v.push_back(f);
+            		v.push_back(g);
+            		v.push_back(h);
+
+			AddPolygon("ABEC", v);
+			AddPolygon("ABFD", v);
+			AddPolygon("ACGD", v);
+			AddPolygon("HFDG", v);
+			AddPolygon("HEBF", v);
+			AddPolygon("HECG", v);
+			
+			D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
+        D3DXFROMWINEMATRIX S_, SH;
+        D3DXFROMWINEMatrixScaling(&S_, aSizeCoefficient.x, aSizeCoefficient.y, aSizeCoefficient.z);
+        D3DXFROMWINEMatrixScaling(&SH, 0.5f, 0.5f, 0.5f);
+	for(unsigned int i=0;i<vertices.size();i++)
+	{
+		D3DXFROMWINEVec3Normalize(&vertices[i].Normal, &vertices[i].Position);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &S_);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &SH);
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+	}
+		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+	}
+	void MeshRenderer2::CreateOctahedron(float sideLength, tShader aShader_)
+		{
+		Clear();
+		m_Shape=eOctahedron;
+			float X = sideLength / sqrt(2);
+			float Y = -X;
+
+			D3DXFROMWINEVECTOR3 a(X, 0, 0);
+			D3DXFROMWINEVECTOR3 b(0, X, 0);
+			D3DXFROMWINEVECTOR3 c(0, 0, X);
+			D3DXFROMWINEVECTOR3 d(Y, 0, 0);
+			D3DXFROMWINEVECTOR3 e(0, Y, 0);
+			D3DXFROMWINEVECTOR3 f(0, 0, Y);
+            
+            		std::vector<D3DXFROMWINEVECTOR3> v;
+            		v.push_back(a);
+            		v.push_back(b);
+            		v.push_back(c);
+            		v.push_back(d);
+            		v.push_back(e);
+            		v.push_back(f);
+
+			AddPolygon("BAC", v);
+			AddPolygon("BAF", v);
+			AddPolygon("BCD", v);
+			AddPolygon("BDF", v);
+			AddPolygon("EFD", v);
+			AddPolygon("EFA", v);
+			AddPolygon("ECA", v);
+			AddPolygon("ECD", v);
+			
+			D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
+        D3DXFROMWINEMATRIX S_, SH;
+        D3DXFROMWINEMatrixScaling(&S_, aSizeCoefficient.x, aSizeCoefficient.y, aSizeCoefficient.z);
+        D3DXFROMWINEMatrixScaling(&SH, 0.5f, 0.5f, 0.5f);
+	for(unsigned int i=0;i<vertices.size();i++)
+	{
+		D3DXFROMWINEVec3Normalize(&vertices[i].Normal, &vertices[i].Position);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &S_);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &SH);
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+	}
+		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+	}
+			
+		void MeshRenderer2::CreateDodecahedron(float sideLength, tShader aShader_)
+		{
+		Clear();
+		m_Shape=eDodecahedron;
+		float root5 = sqrt(5);
+		float phi = (1 + root5) / 2;
+		float phibar = (1 - root5) / 2;
+			float X = sideLength/(root5-1);
+			float Y = X*phi;
+			float Z = X*phibar;
+			float S = -X;
+			float T = -Y;
+			float W = -Z;
+			std::vector<D3DXFROMWINEVECTOR3> v;
+            		{			
+			D3DXFROMWINEVECTOR3 a(X,X,X); // 0	a
+			D3DXFROMWINEVECTOR3 b(X,X,S); // 1	b
+			D3DXFROMWINEVECTOR3 c(X,S,X); // 2	c
+			D3DXFROMWINEVECTOR3 d(X,S,S); // 3	d
+			D3DXFROMWINEVECTOR3 e(S,X,X); // 4	e
+			D3DXFROMWINEVECTOR3 f(S,X,S); // 5	f
+			D3DXFROMWINEVECTOR3 g(S,S,X); // 6	g
+			D3DXFROMWINEVECTOR3 h(S,S,S); // 7	h
+			D3DXFROMWINEVECTOR3 i(W,Y,0); // 8	i
+			D3DXFROMWINEVECTOR3 j(Z,Y,0); // 9	j
+			D3DXFROMWINEVECTOR3 k(W,T,0); // 10	k
+			D3DXFROMWINEVECTOR3 l(Z,T,0); // 11	l
+			D3DXFROMWINEVECTOR3 m(Y,0,W); // 12	m
+			D3DXFROMWINEVECTOR3 n(Y,0,Z); // 13	n
+			D3DXFROMWINEVECTOR3 o(T,0,W); // 14	o
+			D3DXFROMWINEVECTOR3 p(T,0,Z); // 15	p
+			D3DXFROMWINEVECTOR3 q(0,W,Y); // 16	q
+			D3DXFROMWINEVECTOR3 r(0,Z,Y); // 17	r
+			D3DXFROMWINEVECTOR3 s(0,W,T); // 18	s
+			D3DXFROMWINEVECTOR3 t(0,Z,T); // 19	t
+            
+            		v.push_back(a);
+            		v.push_back(b);
+            		v.push_back(c);
+            		v.push_back(d);
+            		v.push_back(e);
+            		v.push_back(f);
+            		v.push_back(g);
+            		v.push_back(h);
+            		v.push_back(i);
+            		v.push_back(j);
+            		v.push_back(k);
+            		v.push_back(l);
+            		v.push_back(m);
+            		v.push_back(n);
+            		v.push_back(o);
+            		v.push_back(p);
+            		v.push_back(q);
+            		v.push_back(r);
+            		v.push_back(s);
+            		v.push_back(t);
+}			
+			AddPolygon("BIAMN", v);
+			AddPolygon("EJFPO", v);
+			AddPolygon("CKDNM", v);
+			AddPolygon("HLGOP", v);
+			AddPolygon("CMAQR", v);
+			AddPolygon("BNDTS", v);
+			AddPolygon("EOGRQ", v);
+			AddPolygon("HPFST", v);
+			AddPolygon("EQAIJ", v);
+			AddPolygon("CRGLK", v);
+			AddPolygon("BSFJI", v);
+			AddPolygon("HTDKL", v);
+			
+			D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
+        D3DXFROMWINEMATRIX S_, SH;
+        D3DXFROMWINEMatrixScaling(&S_, aSizeCoefficient.x, aSizeCoefficient.y, aSizeCoefficient.z);
+        D3DXFROMWINEMatrixScaling(&SH, 0.5f, 0.5f, 0.5f);
+	for(unsigned int i=0;i<vertices.size();i++)
+	{
+		D3DXFROMWINEVec3Normalize(&vertices[i].Normal, &vertices[i].Position);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &S_);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &SH);
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+	}
+		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+	}
+		
+		void MeshRenderer2::CreateIcosahedron(float sideLength, tShader aShader_)
+		{
+		Clear();
+		m_Shape=eIcosahedron;
+			float root5 = sqrt(5);
+			float n = sideLength/2;
+			float X = n*(1+root5)/2;
+			float Y = -X;
+			float Z = n;
+			float W = -n;
+			
+			D3DXFROMWINEVECTOR3 a(X,Z,0);
+			D3DXFROMWINEVECTOR3 b(Y,Z,0);
+			D3DXFROMWINEVECTOR3 c(X,W,0);
+			D3DXFROMWINEVECTOR3 d(Y,W,0);
+			D3DXFROMWINEVECTOR3 e(Z,0,X);
+			D3DXFROMWINEVECTOR3 f(Z,0,Y);
+			D3DXFROMWINEVECTOR3 g(W,0,X);
+			D3DXFROMWINEVECTOR3 h(W,0,Y);
+			D3DXFROMWINEVECTOR3 i(0,X,Z);
+			D3DXFROMWINEVECTOR3 j(0,Y,Z);
+			D3DXFROMWINEVECTOR3 k(0,X,W);
+			D3DXFROMWINEVECTOR3 l(0,Y,W);
+            
+            		std::vector<D3DXFROMWINEVECTOR3> v;
+            		v.push_back(a);
+            		v.push_back(b);
+            		v.push_back(c);
+            		v.push_back(d);
+            		v.push_back(e);
+            		v.push_back(f);
+            		v.push_back(g);
+            		v.push_back(h);
+            		v.push_back(i);
+            		v.push_back(j);
+            		v.push_back(k);
+            		v.push_back(l);
+			
+			AddPolygon("AIE", v);
+			AddPolygon("AFK", v);
+			AddPolygon("CEJ", v);
+			AddPolygon("CLF", v);
+			AddPolygon("BGI", v);
+			AddPolygon("BKH", v);
+			AddPolygon("DJG", v);
+			AddPolygon("DHL", v);
+			AddPolygon("AKI", v);
+			AddPolygon("BIK", v);
+			AddPolygon("CJL", v);
+			AddPolygon("DLJ", v);
+			AddPolygon("ECA", v);
+			AddPolygon("FAC", v);
+			AddPolygon("GBD", v);
+			AddPolygon("HDB", v);
+			AddPolygon("IGE", v);
+			AddPolygon("JEG", v);
+			AddPolygon("KFH", v);
+			AddPolygon("LHF", v);
+			
+			D3DXFROMWINEVECTOR3 aSizeCoefficient(1.0f, 1.0f, 1.0f);
+        D3DXFROMWINEMATRIX S_, SH;
+        D3DXFROMWINEMatrixScaling(&S_, aSizeCoefficient.x, aSizeCoefficient.y, aSizeCoefficient.z);
+        D3DXFROMWINEMatrixScaling(&SH, 0.5f, 0.5f, 0.5f);
+	for(unsigned int i=0;i<vertices.size();i++)
+	{
+		D3DXFROMWINEVec3Normalize(&vertices[i].Normal, &vertices[i].Position);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &S_);
+		D3DXFROMWINEVec3TransformCoord(&vertices[i].Position, &vertices[i].Position, &SH);
+		stx_CalculatePositionalSphericalMapping(vertices[i]);
+	}
+		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
+	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	stx_Mesh mesh;
+	meshes.push_back(mesh);
+	meshes[0].vertices=vertices;
+	meshes[0].indices=indices;
+	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();
+	if(aShader_!=eShaderNone)
+		InitShader(aShader_);
+	texID=-1;
+	}
 

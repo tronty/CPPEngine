@@ -19,7 +19,7 @@ class _Shape3D: public STXGUI
 	ShaderID shd;
 	VertexFormatID vf;
 	TextureID texID, tileTexID, windowTexID;
-	MeshRenderer2 shape3D[17];
+	MeshRenderer2 shape3D[20];
 	unsigned int m_i, m_s;
 public:
 int init(const char* aTitle)
@@ -41,14 +41,21 @@ int init(const char* aTitle)
         shape3D[10].CreateHemis(defaultshader);
         shape3D[11].CreateTorus(0.1f, 1.0f, defaultshader);
         shape3D[12].CreateTorus2(0.1f, 1.0f, defaultshader);
-        shape3D[13].CreateTire(0.25f, 0.75f, defaultshader);
+        shape3D[13].CreateTire(0.25f, 0.75f, defaultshader);       
+        shape3D[14].CreatePrism(defaultshader);
 #if 0
-        shape3D[14].CreateIcosahedron(defaultshader);
+#if 0
+        shape3D[15].CreateIcosahedron(defaultshader);
 #else
-        shape3D[14].CreateIcosahedron_(1.0f, defaultshader);
+        shape3D[16].CreateIcosahedron_(1.0f, defaultshader);
 #endif
-        shape3D[15].CreateDodecahedron(defaultshader);
-        shape3D[16].CreatePrism(defaultshader);
+        shape3D[16].CreateDodecahedron(defaultshader);
+#endif
+        shape3D[15].CreateTetrahedron(1.0f, defaultshader);
+        shape3D[16].CreateHexahedron(1.0f, defaultshader);
+        shape3D[17].CreateOctahedron(1.0f, defaultshader);
+        shape3D[18].CreateDodecahedron(1.0f, defaultshader);
+        shape3D[19].CreateIcosahedron(1.0f, defaultshader); 
 
 	STXGUI::init("/MeshRenderer2/GUILayout.xml");
 
@@ -215,17 +222,29 @@ virtual void actionPerformed(GUIEvent &evt)
       		{
 			m_i = 13;
 		}
-		if(callbackString == "Icosahedron")
+		if(callbackString == "Prism")
       		{
 			m_i = 14;
 		}
-		if(callbackString == "Prism")
+		if(callbackString == "Tetrahedron")
+      		{
+			m_i = 15;
+		}
+		if(callbackString == "Hexahedron")
       		{
 			m_i = 16;
 		}
+		if(callbackString == "Octahedron")
+      		{
+			m_i = 17;
+		}
 		if(callbackString == "Dodecahedron")
       		{
-			m_i = 15;
+			m_i = 18;
+		}
+		if(callbackString == "Icosahedron")
+      		{
+			m_i = 19;
 		}
          	if(callbackString == "Simple")
       		{
