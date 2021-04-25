@@ -5,6 +5,8 @@
 #
 source ../make.cnf
 
+git clone https://github.com/alecmce/ptolemy3D.git
+
 git clone https://github.com/coin3d/coin.git
 git clone https://github.com/aumuell/open-inventor.git
 
