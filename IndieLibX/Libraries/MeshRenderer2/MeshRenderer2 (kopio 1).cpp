@@ -147,26 +147,21 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eTire:
                 STX_PRINT("eTire\n");
 			    break;
-			case eIcosahedron:
-                STX_PRINT("eIcosahedron\n");
-			    break;
-			case eDodecahedron:
-                STX_PRINT("eDodecahedron\n");
-			    break;
-/*
-			case eHexahedron:
-                STX_PRINT("eHexahedron\n");
-			    break;// (cube)
 			case eTetrahedron:
                 STX_PRINT("eTetrahedron\n");
 			    break;
+			case eHexahedron:
+                STX_PRINT("eHexahedron\n");
+			    break;// (cube)
 			case eOctahedron:
                 STX_PRINT("eOctahedron\n");
 			    break;
 			case eIcosahedron:
                 STX_PRINT("eIcosahedron\n");
 			    break;
-*/
+			case eDodecahedron:
+                STX_PRINT("eDodecahedron\n");
+			    break;
 			case eMesh:
                 STX_PRINT("eMesh\n");
 			    break;
