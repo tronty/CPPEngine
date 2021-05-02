@@ -4,6 +4,10 @@
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
+
+#MESA_GL_VERSION_OVERRIDE=3.3
+MESA_GL_VERSION_OVERRIDE=4.3
+
 source ./make.cnf
 
 PYTHON=`which python`

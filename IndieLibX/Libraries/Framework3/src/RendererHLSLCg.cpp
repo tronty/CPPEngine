@@ -1165,12 +1165,13 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 		m_Texture_cache.insert ( std::pair<std::string,TextureID>(fileName, id) );
 }
 
+//define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps
 										  , const SamplerStateID samplerState, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
 {
-
+STX_FNLN;
 	std::string f=fileName0;
 
 	std::string f2=stx_convertpath(f);

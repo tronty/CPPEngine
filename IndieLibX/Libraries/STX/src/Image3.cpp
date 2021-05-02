@@ -1326,13 +1326,13 @@ height=viewport[3];
     	g_X11_display=wmInfo.info.x11.display;
     	g_X11_window=wmInfo.info.x11.window;
 
-	LOG_PRINT("m_dpy=%x\n", m_dpy);
-	LOG_PRINT("m_win=%x\n", m_win);
+	STX_PRINT("m_dpy=%x\n", m_dpy);
+	STX_PRINT("m_win=%x\n", m_win);
 
-	LOG_PRINT("g_X11_display=%x\n", g_X11_display);
-	LOG_PRINT("g_X11_window=%x\n", g_X11_window);
+	STX_PRINT("g_X11_display=%x\n", g_X11_display);
+	STX_PRINT("g_X11_window=%x\n", g_X11_window);
 
-	LOG_PRINT("SDL_window_=%x\n", SDL_Window_);
+	STX_PRINT("SDL_window_=%x\n", SDL_Window_);
 
 #endif
 #endif

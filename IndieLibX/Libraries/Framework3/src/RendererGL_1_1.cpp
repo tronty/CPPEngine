@@ -37,7 +37,7 @@ extern LuaScript _IRenderer_script;
 
 #if !defined(GLCG1_1)
 #define STX_FNLN
-#define STX_PRINT
+#define STX_PRINT(...) printf(__VA_ARGS__);
 #define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN_NONE
@@ -46,7 +46,7 @@ extern LuaScript _IRenderer_script;
 #define LOG_PRINT_X
 #else
 #define LOG_PRINT(...) STX_PRINT(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_FNLN STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -213,13 +213,29 @@ void RendererGL_1_1::BeginSceneVrtl(bool aB)
 			,int argc, char *argv[]
 		): RendererHLSLCg(argc, argv)
 {
-{
-	const char *version = (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
+{	
+	#if 1
+	int major=1;
+	int minor=1;
+	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
 	{
-		SHADING_LANGUAGE_VERSION_MAJOR=atoi(version);
-		SHADING_LANGUAGE_VERSION_MINOR=atoi(stx_strchr(version, '.') + 1);
+		major = atoi(version);
+		minor = atoi(stx_strchr(version, '.') + 1);
 	}
+	version = (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
+	if (version)
+	{
+		SHADING_LANGUAGE_VERSION_MAJOR = atoi(version);
+		SHADING_LANGUAGE_VERSION_MINOR = atoi(stx_strchr(version, '.') + 1);
+	}
+	#endif
+
+	#if 1
+	STX_PRINT("GL_VERSION: %d.%d\n", major, minor);
+	STX_PRINT("GL_SHADING_LANGUAGE_VERSION: %d.%d\n", SHADING_LANGUAGE_VERSION_MAJOR, SHADING_LANGUAGE_VERSION_MINOR);
+	#endif
+	#if 0
 	GLint N;
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &N);
 	STX_PRINT("GL_MAX_TEXTURE_IMAGE_UNITS=%d\n", N);
@@ -242,6 +258,7 @@ void RendererGL_1_1::BeginSceneVrtl(bool aB)
 	STX_PRINT("GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT=%f\n", F);
 	glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &F);//  2.0
 	STX_PRINT("GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT=%f\n", F);
+	#endif
 }
 	// GL cannot use palettes anyway, so convert early.
 	//ilEnable (IL_CONV_PAL);
@@ -1544,11 +1561,37 @@ bool GL_EXT_texture_compression_s3tc_Flag   = false;
 //GL_EXT_texture_compression_s3tc_Flag   = isExtensionSupported("GL_EXT_texture_compression_s3tc");
 bool GL_ARB_texture_compression_Flag  = false;
 
+#if 1
+#define checkGlError { \
+    GLint errGL = glGetError(); \
+    if (errGL != GL_NO_ERROR) { \
+        STX_PRINT("GL error:\nfile=%s:\nfn=%s:\nline=%d:\n 0x%08x\n", __FILE__, __FUNCTION__, __LINE__, errGL); \
+    } \
+}
+
+#define glerror { \
+    GLint errGL = glGetError(); \
+    if (errGL != GL_NO_ERROR) { \
+        STX_PRINT("GL error:\nfile=%s:\nfn=%s:\nline=%d:\n 0x%08x\n", __FILE__, __FUNCTION__, __LINE__, errGL); \
+    } \
+}
+#endif
 		TextureID RendererGL_1_1::addTexture(Image3* img, const bool useMips, const SamplerStateID samplerState, unsigned int flags)
 		{
 			TextureGL tex;
 			stx_memset(&tex, 0, sizeof(TextureGL));
 	bool m_bGL_TEXTURE_RECTANGLE_EXT=false;
+	
+if(0)
+{
+	STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	ubyte* p=img->getPixels();
+	STX_PRINT("p[0]:%x\n", *(p+0));
+	STX_PRINT("p[1]:%x\n", *(p+1));
+	STX_PRINT("p[2]:%x\n", *(p+2));
+	STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+}
+
 if(flags!=0xFFFF)
 {
 	// Turn a 2D texture formatted as a cross into a proper cubemap if requested
@@ -1670,6 +1713,39 @@ if(flags!=0xFFFF)
 			m_bTexImage=true;
 	}
 }
+
+if(0)
+{
+	STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	ubyte* p=img->getPixels();
+	STX_PRINT("p[0]:%x\n", *(p+0));
+	STX_PRINT("p[1]:%x\n", *(p+1));
+	STX_PRINT("p[2]:%x\n", *(p+2));
+	STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+}
+
+if(0)
+{ /*
+	GLuint _textureID = 0;
+
+    glGenTextures( 1, & _textureID );
+    glBindTexture( GL_TEXTURE_2D, _textureID );
+*/
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+
+    glTexImage2D( GL_TEXTURE_2D, 0, 3, img->getWidth(), img->getHeight(), 
+                  0, GL_RGB, GL_UNSIGNED_BYTE, img->getPixels() );
+	//STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+			return textures.add(tex);
+}
+#if 0
+	STX_PRINT("srcTypes_[%x]=%s\n", format, srcTypes_[format]);
+	STX_PRINT("srcFormats_[%x]=%s\n", format, srcFormats_[getChannelCount(format)]);
+	STX_PRINT("getChannelCount(%x)=%d\n", format, getChannelCount(format));
+	STX_PRINT("internalFormats_[%x]=%s\n", (destFormat? destFormat : format), internalFormats_[destFormat? destFormat : format]);
+#endif
+
 if(!m_bTexImage)
 {
 	while ((src = img->getPixels(mipMapLevel)) != 0){
@@ -1690,16 +1766,24 @@ if(!m_bTexImage)
 		} else if (img->is2D()){
 			if (isCompressedFormat(format)){
 				glCompressedTexImage2D(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), img->getHeight(mipMapLevel), 0, img->getMipMappedSize(mipMapLevel, 1), src);
+	//STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			} else {
 				glTexImage2D(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), img->getHeight(mipMapLevel), 0, srcFormat, srcType, src);
+	//STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			}
 		} else {
 			glTexImage1D(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), 0, srcFormat, srcType, src);
 		}
 		mipMapLevel++;
+		break;
 	}
 } else {
 	while ((src = img->getPixels(mipMapLevel)) != 0){
+	#if 0
+	STX_PRINT("img->getPixels(%d)=%x\n", mipMapLevel, img->getPixels(mipMapLevel));
+	STX_PRINT("img->getWidth(%d)=%x\n", mipMapLevel, img->getWidth(mipMapLevel));
+	STX_PRINT("img->getHeight(%d)=%x\n", mipMapLevel, img->getHeight(mipMapLevel));
+	#endif
 		if (img->isCube()){
 			int size = img->getMipMappedSize(mipMapLevel, 1) / 6;
 			for (unsigned int i = 0; i < 6; i++){
@@ -1718,13 +1802,16 @@ if(!m_bTexImage)
 		} else if (img->is2D()){
 			if (isCompressedFormat(format)){
 				glCompressedTexImage2DARB(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), img->getHeight(mipMapLevel), 0, img->getMipMappedSize(mipMapLevel, 1), src);
+	//STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			} else {
 				glTexImage2D(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), img->getHeight(mipMapLevel), 0, srcFormat, srcType, src);
+	//STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			}
 		} else {
 			glTexImage1D(tex.glTarget, mipMapLevel, internalFormat, img->getWidth(mipMapLevel), 0, srcFormat, srcType, src);
 		}
 		mipMapLevel++;
+		break;
 	}
 }
 #if 0

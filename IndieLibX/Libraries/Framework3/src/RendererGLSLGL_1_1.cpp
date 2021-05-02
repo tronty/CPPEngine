@@ -46,7 +46,7 @@
 #define LOG_PRINT_X
 #else
 #define LOG_PRINT(...) STX_PRINT(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_FNLN STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -792,16 +792,23 @@ LOG_FNLN;
 	std::string csText="";
 	std::string hsText="";
 	std::string dsText="";
-	const char *version = (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
 	char versionString[16];
+	#if 0
+	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
 	{
 		int major = atoi(version);
 		int minor = atoi(stx_strchr(version, '.') + 1);
-		stx_snprintf(versionString, 16, "#version %d%d\n", major, minor);
-		SHADING_LANGUAGE_VERSION_MAJOR=3;
-		SHADING_LANGUAGE_VERSION_MINOR=0;
+		STX_PRINT("GL_VERSION: %d.%d\n", major, minor);
 	}
+	version = (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
+	if (version)
+	{
+		int major = atoi(version);
+		int minor = atoi(stx_strchr(version, '.') + 1);
+		STX_PRINT("GL_SHADING_LANGUAGE_VERSION: %d.%d\n", major, minor);
+	}
+	#endif
 
 	const char * def=versionString;
 	if (def) vsText.append(def);
@@ -1246,6 +1253,11 @@ LOG_FNLN;
 	if(!rFS)
 		return -1;
 LOG_FNLN;
+#if 0
+	{FILE * pFile = fopen ("shd.txt","w");
+	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
+   	fclose (pFile);}
+#endif
 		id=addGLSLShader(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
