@@ -651,7 +651,7 @@ bool load()
 	FormatDesc skyboxAttribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	if ((skyboxVF = IRenderer::GetRendererInstance()->addVertexFormat(skyboxAttribs, elementsOf(skyboxAttribs), -1)) == VF_NONE) return false;
 	#else
-    	sb.init("Mountains", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/MountainsGL.dds");
 	#endif
 
 

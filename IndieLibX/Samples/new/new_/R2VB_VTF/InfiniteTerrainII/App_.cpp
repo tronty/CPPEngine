@@ -239,7 +239,7 @@ LOG_FNLN;
 	};
 	if ((env = addCubemap(files, true, IRenderer::GetRendererInstance()->GetbilinearClamp());
 */
-    	sb.init("Dragonfire", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/DragonfireGL.dds");
 LOG_FNLN;
 	skyBox = -1;
 	env = -1;

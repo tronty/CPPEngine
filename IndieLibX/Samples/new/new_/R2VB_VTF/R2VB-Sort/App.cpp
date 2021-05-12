@@ -389,7 +389,7 @@ int init(const char* aTitle)
 	firePalette = IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB-Sort/FirePalette.png", false, IRenderer::GetRendererInstance()->GetlinearClamp());
 
 #endif
-    sb.init("Mountains", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/MountainsGL.dds");
 	return true;
 }
 

@@ -316,7 +316,7 @@ bool load()
 	#if 0
 	env = IRenderer::GetRendererInstance()->addCubemap("Olympus", "jpg");
 	#else
-    	sb.init("Olympus", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
 	#endif
 
 	//FormatDesc skyboxAttribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };

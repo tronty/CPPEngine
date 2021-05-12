@@ -125,7 +125,7 @@ bool load(){
 	#if 0
 	env = IRenderer::GetRendererInstance()->addCubemap("Mountains", "jpg");
 	#else
-    	sb.init("Mountains", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/MountainsGL.dds");
 	#endif
 
 

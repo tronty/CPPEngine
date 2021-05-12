@@ -413,7 +413,8 @@ if(-1==m_pDecl) {
 
   }
 	//m_pSkyBox.Load("/Billboard/skybox2.x", eSimpleShader);
-    sb.init("Billboard", "bmp");
+    //sb.init("Billboard", "bmp");
+    sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
     #if 1
 	     //m_pTerrain.CreateMesh("/Billboard/seafloor.x");
          m_pTerrain.Load("/Billboard/seafloor.x", eSimpleShader, true, true);

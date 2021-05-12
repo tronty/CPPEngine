@@ -29,7 +29,7 @@ int init(const char* aTitle)
 	proceduralBuilding.SetDoorTexture("/RadeonTerrainDemo/CastleDoor.bmp");
 
 	proceduralBuilding.SetTitle("ProceduralBuilding5");
-    	sb.init("Olympus", "jpg");
+    sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
 	return 0;
 }
 

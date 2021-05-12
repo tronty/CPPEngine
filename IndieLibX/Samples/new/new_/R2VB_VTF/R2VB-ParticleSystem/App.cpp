@@ -115,7 +115,7 @@ bool load(){
 	#if 0
 	env = IRenderer::GetRendererInstance()->addCubemap("Mountains", "jpg");
 	#else
-    	sb.init("Mountains", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/MountainsGL.dds");
 	#endif
 
 	floorTex=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/bump_normal/fieldstone.dds", false, IRenderer::GetRendererInstance()->GettrilinearAniso());

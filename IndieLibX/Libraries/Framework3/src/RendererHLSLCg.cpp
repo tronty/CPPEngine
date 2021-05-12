@@ -1169,7 +1169,7 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps
-										  , const SamplerStateID samplerState, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
+										  , const SamplerStateID samplerState, bool bFlipY, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
 {
 STX_FNLN;
 	std::string f=fileName0;
@@ -1203,6 +1203,8 @@ STX_FNLN;
         	LOG_PRINT("IRenderer::addImageLibTexture:::%s\n", path.c_str());
 		if (img.loadImageLibImage(path.c_str(), useMipMaps))
 	{
+		if(bFlipY) 
+			img.flipY();
 		/*
 		#if 1
 		std::string Alpha = "False";

@@ -37,6 +37,8 @@ void _spAtlasPage_createTexture (spAtlasPage* self, const char* path)
 		,false,
 		//IRenderer::GetRendererInstance()->GetbilinearClamp());
 		IRenderer::GetRendererInstance()->Getlinear());
+	#elif 1
+	id=IRenderer::GetRendererInstance()->addImageLibTexture(path, false, IRenderer::GetRendererInstance()->Getlinear(), true);
 	#else
 	Image3 img;
 	img.loadImageLibImage(path, false);

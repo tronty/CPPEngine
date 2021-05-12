@@ -43,7 +43,7 @@ int init(const char* aTitle)
 	skyboxVF = IRenderer::GetRendererInstance()->addVertexFormat(skyboxFmt, elementsOf(skyboxFmt), skyBox);
 	env = IRenderer::GetRendererInstance()->addCubemap("Olympus", "jpg");
 	#else
-    	sb.init("Olympus", "jpg");
+    sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
 	#endif
 
 	return 0;

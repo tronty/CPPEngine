@@ -103,7 +103,7 @@ int init(const char* aTitle)
 			break;
 	
 		stx_snprintf(fileName, 128, "%s%s", res.c_str(), filename[j]);
-		env[j] = addTexture(fileName, true, IRenderer::GetRendererInstance()->Gettrilinear());
+		env[j] = addTexture(fileName, false, IRenderer::GetRendererInstance()->Getlinear()); // tri
 		j++;
 	}
 
@@ -141,9 +141,9 @@ void render( )
 	IRenderer::GetRendererInstance()->setVertexFormat(skyboxVF);
 
 #if defined(CUBEMAPS)
-	IRenderer::GetRendererInstance()->setTexture("Env", env[m_i], IRenderer::GetRendererInstance()->Gettrilinear());
+	IRenderer::GetRendererInstance()->setTexture("Env", env[m_i], IRenderer::GetRendererInstance()->Getlinear()); // tri
 #else
-	IRenderer::GetRendererInstance()->setTexture("Env", env[m_i], IRenderer::GetRendererInstance()->GetbilinearClamp());
+	IRenderer::GetRendererInstance()->setTexture("Env", env[m_i], IRenderer::GetRendererInstance()->GetlinearClamp()); // bi
 #endif
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthWrite());
 	#if 0

@@ -15,7 +15,7 @@ int init(const char* aTitle)
 #else
 	proceduralBuilding.init("/ProceduralBuilding/ProceduralBuilding.lua", "/ProceduralBuilding.x", false);
 #endif
-    sb.init("Olympus", "jpg");
+    sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
 	return 0;
 }
 

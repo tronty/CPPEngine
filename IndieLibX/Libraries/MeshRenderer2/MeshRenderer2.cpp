@@ -4401,9 +4401,9 @@ else
 	IRenderer::GetRendererInstance()->setVertexFormat(skyboxVF);
 
 #if defined(CUBEMAPS)
-	IRenderer::GetRendererInstance()->setTexture("Env", env, IRenderer::GetRendererInstance()->Gettrilinear());
+	IRenderer::GetRendererInstance()->setTexture("Env", env, IRenderer::GetRendererInstance()->Getlinear()); // tri
 #else
-	IRenderer::GetRendererInstance()->setTexture("Env", env, IRenderer::GetRendererInstance()->GetbilinearClamp());
+	IRenderer::GetRendererInstance()->setTexture("Env", env, IRenderer::GetRendererInstance()->GetlinearClamp()); // bi
 #endif
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthWrite());
 	#if 0

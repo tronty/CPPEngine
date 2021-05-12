@@ -301,7 +301,7 @@ bool load()
 	#if 0
 	env = IRenderer::GetRendererInstance()->addCubemap("Olympus", "jpg");
 	#else
-    	sb.init("Olympus", "jpg");
+    	sb.init("/SkyBox/cubemaps/x/OlympusGL.dds");
 	#endif
 
 	// Save terrain map dimensions

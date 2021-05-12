@@ -1070,7 +1070,7 @@ public:
 	inline int SetTransform(TS State,CONST D3DFROMWINEMATRIX* pMatrix){return 0;}
 #endif
 #endif
-	TextureID addImageLibTexture(const char *fileName, const bool useMipMaps, const SamplerStateID samplerState = SS_NONE, unsigned int flags = 0, ubyte R=0, ubyte G=0, ubyte B=0, ubyte A=255);
+	TextureID addImageLibTexture(const char *fileName, const bool useMipMaps, const SamplerStateID samplerState = SS_NONE, bool bFlipY = false, unsigned int flags = 0, ubyte R=0, ubyte G=0, ubyte B=0, ubyte A=255);
 	virtual bool IsOK()=0;
 	virtual BlendStateID getBlendState(const TextureID texture)=0;
 #if 0
@@ -1877,7 +1877,7 @@ TextureID addCubemap_(const char **fileNames, const bool useMipMaps, const Sampl
 		//if (img.getFormat() == FORMAT_RGBE8) img.unpackImage();
 		if (useMipMaps && img.getMipMapCount() <= 1) img.createMipMaps();
 		//LOG_FNLN;
-		TextureID id=IRenderer::GetRendererInstance()->addTexture(&img,true, samplerState, flags);
+		TextureID id=IRenderer::GetRendererInstance()->addTexture(&img,false, samplerState, flags);
 		//LOG_FNLN;
 		return id;
 	}
