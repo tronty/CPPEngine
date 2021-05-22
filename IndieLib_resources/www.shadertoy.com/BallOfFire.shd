@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -27,7 +28,6 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-
 float3 mod(float3 x, float y)
 {
   return x - y * floor(x / y); // ???
@@ -40,7 +40,7 @@ float snoise(float3 uv, float res)
 	uv *= res;
 	
 	float3 uv0 = floor(mod(uv, res))*s;
-	float3 uv1 = floor(mod(uv+float3(1.), res))*s;
+	float3 uv1 = floor(mod(uv+float3(1,1,1), res))*s;
 	
 	float3 f = fract(uv); f = f*f*(3.0-2.0*f);
 
@@ -60,7 +60,7 @@ float2 iResolution;
 float iTime;
 float4 main(VsOut IN): COLOR 
 {
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
 	float2 p = -.5 + fragCoord.xy / iResolution.xy;
 	p.x *= iResolution.x/iResolution.y;
 	

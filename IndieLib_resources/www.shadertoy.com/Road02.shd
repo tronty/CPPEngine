@@ -4,6 +4,22 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+
+#if 0
+struct VsIn {
+	float2 position: POSITION;
+	float2 uv: TEXCOORD0;
+};
+VsOut mainVS(VsIn In){
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position.x, In.position.y, 0.0, 1.0));
+	Out.uv = In.uv;
+	return Out;
+}
+#else
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -12,13 +28,7 @@ struct VsIn {
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
 };
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
 
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 VsOut main(VsIn In)
 {
 	VsOut Out=(VsOut)0;
@@ -26,9 +36,9 @@ VsOut main(VsIn In)
 	Out.uv = In.uv;
 	return Out;
 }
+#endif
 
 [Fragment shader]
-
 float3 mod(float3 x, float y)
 {
   return x - y * floor(x / y); // ???
@@ -41,7 +51,7 @@ float snoise(float3 uv, float res)
 	uv *= res;
 	
 	float3 uv0 = floor(mod(uv, res))*s;
-	float3 uv1 = floor(mod(uv+float3(1.), res))*s;
+	float3 uv1 = floor(mod(uv+float3(1,1,1), res))*s;
 	
 	float3 f = fract(uv); f = f*f*(3.0-2.0*f);
 
@@ -104,7 +114,7 @@ float3 col_road_map(float3 pos)
 	float mix_light = clamp(dot(normal, dir_light), 0.0, 1.0);
 	float3 col_light = float3(0.9, 0.75, 0.3);
 
-	float3 col_stripe = float3(0.2);
+	float3 col_stripe = float3(0.2, 0.2, 0.2);
 	float mix_stripe = step(2.0, mod(pos.z, 4.0)) * 0.1;
 
 	float3 col_ground = float3(0.135, 0.2, 0.1) +

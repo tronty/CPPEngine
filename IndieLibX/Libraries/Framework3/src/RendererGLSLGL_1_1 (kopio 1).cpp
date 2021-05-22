@@ -36,26 +36,17 @@
 #endif
 
 #if 1
-#define STX_PRINT 
-#define STX_FNLN 
-#define LOG_PRINT 
-#define LOG_FNLN 
-#define LOG_FNLN_NONE
-#define LOG_PRINT_NONE
-#define LOG_FNLN_X
-#define LOG_PRINT_X
-#elif 0
-#define STX_PRINT(...) printf(__VA_ARGS__);
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-#define LOG_PRINT(...) printf(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define STX_PRINT(...) printf(__VA_ARGS__);
+#define LOG_FNLN
+#define LOG_PRINT
 #define LOG_FNLN_NONE
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #else
-#define LOG_PRINT(...) printf(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_PRINT(...) STX_PRINT(__VA_ARGS__);
+#define LOG_FNLN STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -67,107 +58,57 @@ typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboo
 //void RendererGL_1_1::
 		void RendererGLSLGL_1_1::changeVertexBufferVrtl(const int stream, const VertexBufferID vertexBuffer, const intptr offset)
 		{
-#ifdef __LOG_glDrawElements__
-	LOG_FNLN;
-#endif	
-	if(vertexBuffer==-1)
-	{
-		#if 0
-		currentVertexBuffers[stream] = -1;
-		currentOffsets[stream] = 0;
-		activeVertexFormat[stream] = -1;
-		#endif
-		return;
-	}
+			VertexFormatGL cvf = vertexFormats[selectedVertexFormat];
+			char *base = (char *)vertexBuffers[vertexBuffer].data;
+
 			const GLsizei glTypes[] =
 			{
 				GL_FLOAT,
 				0, GL_UNSIGNED_BYTE,
-			};
-#if !defined(USE_HLSL_SHADERS)
-			VertexFormatGL cvf = vertexFormats[selectedVertexFormat];
-			int vertexSize = cvf.vertexSize[stream];
-			if(!vertexSize) return;
-			int nGeneric=cvf.maxGeneric;
-			int nAttribs=cvf.maxGeneric;
-			int nTexCoord=cvf.maxTexCoord;
-			char *base = (char *)&vertexBuffers[vertexBuffer].data;//(char *) offset;
-			for (unsigned int i = 0; i < nAttribs; i++)
-			{
-				unsigned int location=shaders[selectedShader].attribs[i].location;
-				glVertexAttribPointer(location, cvf.generic[i].size, glTypes[cvf.generic[i].format], GL_FALSE, vertexSize, base + cvf.generic[i].offset);
-				checkGlError("");
-				glEnableVertexAttribArray (location);
-				checkGlError("");
 			}
-			currentVertexBuffers[stream] = vertexBuffer;
-			currentOffsets[stream] = offset;
-			activeVertexFormat[stream] = currentVertexFormat;
-#else
+			;
 			GLuint vbo = 0;
+
 			if (vertexBuffer != VB_NONE) vbo = (vertexBuffers[vertexBuffer]).vboVB;
 
-
-	if(1){
-	if(m_bDebug)
-	{
-		LOG_FNLN;
-		LOG_PRINT("changeVertexBufferVrtl(%d, %d %d)\n", stream, vertexBuffer, offset);
-	}}
-
-#if defined(LINUX)
-			if (vbo != currentVBO)
-#endif
-			{
-				glBindBufferARB(GL_ARRAY_BUFFER_ARB, currentVBO = vbo);
-				checkGlError("");
-			}
-#if defined(LINUX)
-			//if (vertexBuffer != currentVertexBuffers[stream] || offset != currentOffsets[stream] || currentVertexFormat != activeVertexFormat[stream])
-#endif
 			{
 				if (currentVertexFormat != VF_NONE)
 				{
-					char *base = (char *) offset;
 					VertexFormatGL cvf = vertexFormats[currentVertexFormat];
+
 					int vertexSize = cvf.vertexSize[stream];
-					if (cvf.vertex.stream == stream && cvf.vertex.size)
-					{
-						glVertexPointer(cvf.vertex.size, glTypes[cvf.vertex.format], vertexSize, base + cvf.vertex.offset);
-				checkGlError("");
-					}
-					if (cvf.normal.stream == stream && cvf.normal.size)
-					{
-						glNormalPointer(glTypes[cvf.normal.format], vertexSize, base + cvf.normal.offset);
-				checkGlError("");
-					}
-// glColorPointer(3, glTypes[cvf.color.format], vertexSize, base + cvf.color.offset);
-// glColorPointer(4, glTypes[cvf.color.format], vertexSize, base + cvf.color.offset);
+					int ii=0;
+					for (int i = 0; i < MAX_GENERIC; i++)
+						if (cvf.generic[i].stream == stream && cvf.generic[i].size) ii++;
+					ii--;
 					for (int i = 0; i < MAX_GENERIC; i++)
 					{
+
 						if (cvf.generic[i].stream == stream && cvf.generic[i].size)
 						{
-							glVertexAttribPointerARB(i, cvf.generic[i].size, glTypes[cvf.generic[i].format], GL_TRUE, vertexSize, base + cvf.generic[i].offset);
-				checkGlError("");
-						}
-					}
-					for (int i = 0; i < MAX_TEXCOORD; i++)
-					{
-						if (cvf.texCoord[i].stream == stream && cvf.texCoord[i].size)
-						{
-							glClientActiveTexture(GL_TEXTURE0 + i);
-				checkGlError("");
-							glTexCoordPointer(cvf.texCoord[i].size, glTypes[cvf.texCoord[i].format], vertexSize, base + cvf.texCoord[i].offset);
-				checkGlError("");
+
+                            glVertexAttribPointer(ii, cvf.generic[i].size, glTypes[cvf.generic[i].format], GL_FALSE, vertexSize, base + cvf.generic[i].offset);
+LOG_FNLN_X;
+LOG_PRINT_X("glVertexAttribPointer:\n");
+LOG_PRINT_X("index=%d\n",ii);
+LOG_PRINT_X("size=%d,%d\n",i, cvf.generic[i].size);
+LOG_PRINT_X("type=%d\n",glTypes[cvf.generic[i].format]);
+LOG_PRINT_X("stride=%d\n", vertexSize);
+LOG_PRINT_X("base=%x\n", base);
+LOG_PRINT_X("pointer=%x\n", base + cvf.generic[i].offset);
+
+							checkGlError("");
+							ii--;
 						}
 					}
 				}
+
 				currentVertexBuffers[stream] = vertexBuffer;
+
 				currentOffsets[stream] = offset;
+
 				activeVertexFormat[stream] = currentVertexFormat;
 			}
-#endif
-
 		}
 
 void RendererGLSLGL_1_1::applyConstants(){
@@ -272,14 +213,14 @@ unsigned int RendererGLSLGL_1_1::DrawPrimitive(Primitives PrimitiveType,UINT Sta
 	apply();
 
 	if(1){
-	if(m_bDebug)
+	//if(m_bDebug)
 	{
-		LOG_FNLN;
-		LOG_PRINT("glDrawArrays:\n");
-		LOG_PRINT("PrimitiveType=%d\n", PrimitiveType);
-		LOG_PRINT("glPrimRendererGL_1_1[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
-		LOG_PRINT("firstVertex=%d\n", StartVertex);
-		LOG_PRINT("nVertices=%d\n", getVertexCount(PrimitiveType,PrimitiveCount));
+		STX_FNLN;
+		STX_PRINT("glDrawArrays:\n");
+		STX_PRINT("PrimitiveType=%d\n", PrimitiveType);
+		STX_PRINT("glPrimRendererGL_1_1[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
+		STX_PRINT("firstVertex=%d\n", StartVertex);
+		STX_PRINT("nVertices=%d\n", getVertexCount(PrimitiveType,PrimitiveCount));
 	}}
 	glDrawArrays(	glPrimRendererGLSLGL_1_1[PrimitiveType], StartVertex,
 #if 0
@@ -495,6 +436,16 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 	      return true;
        return false;
 		}
+		bool attributeCompGL2std(const AttribShaderGLSLGL3 & s0, const AttribShaderGLSLGL3 &s1)
+		{
+       if(!(s0.name.c_str()&& s1.name.c_str()))return false;
+       int i=strcmp(s0.name.c_str(), s1.name.c_str());
+       if(i>0)
+	      return false;
+       if(i<0)
+	      return true;
+       return false;
+		}
 #if 0
 		bool attribCompGL2std(const AttribShaderGLSLGL3 & s0, const AttribShaderGLSLGL3 &s1)
 		{
@@ -658,6 +609,8 @@ void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderG
 	if(!(vsResult && fsResult))
 		return;
 	#endif
+		//for (int i = 0; i < numActiveAttribs; i++){if (attributeNames[i]) glBindAttribLocationARB(shader.program, i, attributeNames[i]);}
+
 	GLint linkResult;
 	GLint len = 0;
 #ifdef __APPLE__
@@ -693,18 +646,34 @@ void RendererGLSLGL_1_1::reflectGLSLShader(std::vector<std::string>& sText, GLui
 
 					GLint uniformCount, maxLength;
 			GLint numActiveAttribs,maxAttribNameLength = 0;
+			glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_ATTRIBUTES_ARB, &numActiveAttribs);			
+
 			glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &uniformCount);
 				checkGlError("");
 					glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORM_MAX_LENGTH_ARB, &maxLength);
 				checkGlError("");
 			shaderGL1_1.samplers.resize(uniformCount);
 			shaderGL1_1.uniforms.resize(uniformCount);
-			//shaderGL1_1.attribs.resize(uniformCount);
 			int nSamplers = 0;
 			int nUniforms = 0;
-			//int nAttribs = 0;
 			std::vector<char> bbuf(maxLength);	
-			char *name = (char *)&bbuf[0];	
+			char *name = (char *)&bbuf[0];
+		#if 1
+			shaderGL1_1.attribs.resize(numActiveAttribs);	
+		for (int i = 0; i < numActiveAttribs; i++){
+						GLenum type;
+						GLint length, size;
+#ifdef __APPLE__
+glGetActiveAttrib(handle_to_uint(shaderGL1_1.program), i, maxLength, &length, &size, &type, name);
+#else
+glGetActiveAttrib(shaderGL1_1.program, i, maxLength, &length, &size, &type, name);
+#endif					
+				checkGlError("");
+			shaderGL1_1.attribs[i].name=std::string( name);
+			shaderGL1_1.attribs[i].location=i;
+        		shaderGL1_1.attribs[i].unit=i;
+		}
+		#endif	
 			for (int i = 0; i < uniformCount; i++)
 					{
 						GLenum type;
@@ -776,9 +745,10 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 
 			shaderGL1_1.samplers.resize(nSamplers);
 			shaderGL1_1.uniforms.resize(nUniforms);
-			//shaderGL1_1.attribs.resize(nAttribs);	
+			
 			if(shaderGL1_1.samplers.size()>1) std::sort(shaderGL1_1.samplers.begin(), shaderGL1_1.samplers.end(), samplerCompGL2std);	
 			if(shaderGL1_1.uniforms.size()>1) std::sort(shaderGL1_1.uniforms.begin(), shaderGL1_1.uniforms.end(), constantCompGL2std);	
+			if(shaderGL1_1.attribs.size()>1) std::sort(shaderGL1_1.attribs.begin(), shaderGL1_1.attribs.end(), attributeCompGL2std);	
 			for (int i = 0; i < nUniforms; i++)
 					{
 						int constantSize = constantTypeSizes[shaderGL1_1.uniforms[i].type] * shaderGL1_1.uniforms[i].nElements;
@@ -1025,7 +995,6 @@ LOG_FNLN;
 				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
-				STX_PRINT("\n%s\n", infoLog);
 			}
 			else vsResult = GL_TRUE;
 			if (fsText.length())
@@ -1062,7 +1031,6 @@ LOG_FNLN;
 				else
 				{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Fragment shader error:\n");
-				STX_PRINT("\n%s\n", infoLog);
 			}
 			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
@@ -1077,6 +1045,8 @@ if (fsResult)
 			if (1)//(vsResult && fsResult)
 			{
 LOG_FNLN;
+		// ??? for (int i = 0; i < numActiveAttribs; i++){if (attributeNames[i]) glBindAttribLocationARB(shaderGL1_1.program, i, attributeNames[i]);}
+
 			glLinkProgramARB(shaderGL1_1.program);
 				checkGlError("");
 				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
@@ -1102,19 +1072,33 @@ glUseProgram(shaderGL1_1.program);
 #endif
 				checkGlError("");
 					GLint uniformCount, maxLength;
+				checkGlError("");
 			GLint numActiveAttribs,maxAttribNameLength = 0;
+			glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_ATTRIBUTES_ARB, &numActiveAttribs);
+			std::vector<char> bbuf(maxLength);	
+			char *name = (char *)&bbuf[0];	
 			glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &uniformCount);
 				checkGlError("");
 					glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORM_MAX_LENGTH_ARB, &maxLength);
 				checkGlError("");
 			shaderGL1_1.samplers.resize(uniformCount);
 			shaderGL1_1.uniforms.resize(uniformCount);
-			//shaderGL1_1.attribs.resize(uniformCount);
+			shaderGL1_1.attribs.resize(numActiveAttribs);	
+		for (int i = 0; i < numActiveAttribs; i++){
+						GLenum type;
+						GLint length, size;
+#ifdef __APPLE__
+glGetActiveAttrib(handle_to_uint(shaderGL1_1.program), i, maxLength, &length, &size, &type, name);
+#else
+glGetActiveAttrib(shaderGL1_1.program, i, maxLength, &length, &size, &type, name);
+#endif					
+				checkGlError("");
+			shaderGL1_1.attribs[i].name=std::string( name);
+			shaderGL1_1.attribs[i].location=i;
+        		shaderGL1_1.attribs[i].unit=i;
+		}
 			int nSamplers = 0;
 			int nUniforms = 0;
-			//int nAttribs = 0;
-			std::vector<char> bbuf(maxLength);	
-			char *name = (char *)&bbuf[0];	
 			for (int i = 0; i < uniformCount; i++)
 					{
 						GLenum type;
@@ -1192,9 +1176,10 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 
 			shaderGL1_1.samplers.resize(nSamplers);
 			shaderGL1_1.uniforms.resize(nUniforms);
-			//shaderGL1_1.attribs.resize(nAttribs);	
+			shaderGL1_1.attribs.resize(numActiveAttribs);
 			if(shaderGL1_1.samplers.size()>1) std::sort(shaderGL1_1.samplers.begin(), shaderGL1_1.samplers.end(), samplerCompGL2std);	
 			if(shaderGL1_1.uniforms.size()>1) std::sort(shaderGL1_1.uniforms.begin(), shaderGL1_1.uniforms.end(), constantCompGL2std);	
+			if(shaderGL1_1.attribs.size()>1) std::sort(shaderGL1_1.attribs.begin(), shaderGL1_1.attribs.end(), attributeCompGL2std);	
 			for (int i = 0; i < nUniforms; i++)
 					{
 						int constantSize = constantTypeSizes[shaderGL1_1.uniforms[i].type] * shaderGL1_1.uniforms[i].nElements;
@@ -1264,7 +1249,7 @@ LOG_FNLN;
 	if(!rFS)
 		return -1;
 LOG_FNLN;
-#if 0
+#if 1
 	{FILE * pFile = fopen ("shd.txt","w");
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
    	fclose (pFile);}

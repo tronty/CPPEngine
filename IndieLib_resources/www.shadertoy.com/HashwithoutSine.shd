@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -65,7 +66,7 @@ float iTime;
 //  1 out, 1 in...
 float hash11(float p)
 {
-	float3 p3  = fract(float3(p) * HASHSCALE1);
+	float3 p3  = fract(float3(p, p, p) * HASHSCALE1);
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }
@@ -74,7 +75,7 @@ float hash11(float p)
 //  1 out, 2 in...
 float hash12(float2 p)
 {
-	float3 p3  = fract(float3(p.xyx) * HASHSCALE1);
+	float3 p3  = fract(float3(p.xyx, p.xyx, p.xyx) * HASHSCALE1);
     p3 += dot(p3, p3.yzx + 19.19);
     return fract((p3.x + p3.y) * p3.z);
 }

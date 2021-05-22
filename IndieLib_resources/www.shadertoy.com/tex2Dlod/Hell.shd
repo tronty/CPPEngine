@@ -44,7 +44,7 @@ float noise_( in float3 x )
 	f = f*f*(3.0-2.0*f);
 	
 	float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
-	float2 rg = tex2Dlod( iChannel0, (uv+ 0.5)/256.0, 0.0 ).yx;
+	float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0).yx;
 	return mix( rg.x, rg.y, f.z );
 }
 
@@ -83,7 +83,7 @@ float3 raymarch( in float3 ro, in float3 rd, in float2 pixel )
 	float t = 0.0;
 
     // dithering	
-	t += 0.05*tex2Dlod( iChannel0, pixel.xy/iChannelResolution[0].x, 0.0 ).x;
+	t += 0.05*tex2D( iChannel0, pixel.xy/iChannelResolution[0].x).x;
 	
 	for( int i=0; i<100; i++ )
 	{
@@ -124,8 +124,8 @@ float4 main(VsOut IN): COLOR
 	float cr = 0.5*cos(0.7*iTime);
 	
     // shake		
-	ro += 0.1*(-1.0+2.0*tex2Dlod( iChannel0, iTime*float2(0.010,0.014), 0.0 ).xyz);
-	ta += 0.1*(-1.0+2.0*tex2Dlod( iChannel0, iTime*float2(0.013,0.008), 0.0 ).xyz);
+	ro += 0.1*(-1.0+2.0*tex2D( iChannel0, iTime*float2(0.010,0.014)).xyz);
+	ta += 0.1*(-1.0+2.0*tex2D( iChannel0, iTime*float2(0.013,0.008)).xyz);
 	
 	// build ray
     float3 ww = normalize( ta - ro);

@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -52,8 +53,8 @@ float3 camera(float2 fragCoord)
 	float3 ray = normalize(float3( fragCoord.xy-iResolution.xy*.5, iResolution.x));
     float2 angle = float2(3. + iTime * -0.01, 10. + iTime * 0.10);
     float4 cs = float4(cos(angle.x), sin(-angle.x), cos(angle.y), sin(angle.y));
-    ray.yz *= float2x2(cs.xy,-cs.y,cs.x); 
-    ray.xz *= float2x2(cs.zw,-cs.w,cs.z); 
+    ray.yz = mul(float2x2(cs.xy,-cs.y,cs.x), ray.yz); 
+    ray.xz = mul(float2x2(cs.zw,-cs.w,cs.z), ray.xz); 
     return ray;
 }
 

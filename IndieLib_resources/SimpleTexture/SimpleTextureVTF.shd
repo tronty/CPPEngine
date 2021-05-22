@@ -17,11 +17,21 @@ struct VsOut {
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 SAMPLER2D Base;
+float pixel=0.001953;
+float halfPixel=0.000977;
 VsOut mainVS(VsIn In){
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position.x, In.position.y, 0.0, 1.0));
 	Out.texCoord = In.texCoord;
-    Out.Color=SAMPLE2D(Base, In.texCoord).xyz;
+    	Out.Color=SAMPLE2D(Base, In.texCoord).xyz;
+	return Out;
+}
+
+VsOut mainVS2(float2 position: POSITION){
+	VsOut Out=(VsOut)0;
+	Out.position = float4(position.x, position.y, 0, 1);
+	Out.texCoord = position.xy * float2(0.5, -0.5) + 0.5 + halfPixel;
+    	Out.Color=SAMPLE2D(Base, Out.texCoord).xyz;
 	return Out;
 }
 

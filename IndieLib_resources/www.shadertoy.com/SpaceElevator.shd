@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -75,7 +76,7 @@ float CageDf (float3 p, float pAng, float dMin)
   float d;
   q = p;
   qs = float2 (mod (float2 (16. * pAng, 0.25 * q.z) + 0.5, 1.) - 0.5);
-  d = max (PrCylAnDf (p, cgRad, 0.1, cgLen), - PrBox2Df (qs, float2 (0.45)));
+  d = max (PrCylAnDf (p, cgRad, 0.1, cgLen), - PrBox2Df (qs, float2 (0.45, 0.45)));
   if (d < dMin) { dMin = d;  idObj = idCage;  qHit = q; }
   q.z = abs (q.z) - cgLen;
   d = max (max (PrSphDf (q, cgRad + 0.1), cbRad + 0.1 - length (q.xy)), - q.z);

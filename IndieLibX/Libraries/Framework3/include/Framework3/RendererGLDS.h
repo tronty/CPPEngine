@@ -169,7 +169,7 @@ struct ShaderGLSLGL3 : public Shader
         mvGLSLText=rhs.mvGLSLText;
         mvMain=rhs.mvMain;
         mvType=rhs.mvType;
-	//attribs=rhs.attribs;
+	attribs=rhs.attribs;
 	uniforms=rhs.uniforms;
 	samplers=rhs.samplers;
     }
@@ -182,7 +182,7 @@ struct ShaderGLSLGL3 : public Shader
 	GLuint program;
     std::vector<GLuint> shader;
 #endif
-        //std::vector<AttribShaderGLSLGL3  > attribs;
+        std::vector<AttribShaderGLSLGL3  > attribs;
 	    std::vector<ConstantShaderGLSLGL3 > uniforms;
         std::vector<XSampler> samplers;
 		std::vector<std::string> mvHLSLText;

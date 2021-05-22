@@ -4,6 +4,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -30,7 +31,6 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-
 float time;
 float2 mouse;
 float2 resolution;
@@ -81,15 +81,15 @@ float3 sky(float2 uv)
 float3 car(float2 uv)
 {
 	if (uv.y > -0.3)
-		return float3(0.);
+		return float3(0, 0, 0);
 	float carpos = (mouse.x * 2.0) - 1.0;
 	if (abs(uv.x-carpos) < 0.15)
 	{
 		if (abs(carpos) > 0.4)
 			return (float3(1.,0.,0.));
-		return float3(1.);
+		return float3(1, 1, 1);
 	}
-	return float3(0.);
+	return float3(0, 0, 0);
 }
 
 float insidecar(float3 col)
@@ -112,7 +112,7 @@ float4 main(VsOut IN) : COLOR0
 
 	float3 pos = float3(uv.x/abs(uv.y),1.0/abs(uv.y),step(0.0,uv.y)*2.0-1.0);
 	
-	float3 color = float3(0.0);
+	float3 color = float3(0, 0, 0);
 	
 	color = mix(road(pos),sky(uv),step(.0,pos.z));
 	
@@ -176,7 +176,7 @@ float3 col_road_map(float3 pos)
 	float mix_light = clamp(dot(normal, dir_light), 0.0, 1.0);
 	float3 col_light = float3(0.9, 0.75, 0.3);
 
-	float3 col_stripe = float3(0.2);
+	float3 col_stripe = float3(0.2, 0.2, 0.2);
 	float mix_stripe = step(2.0, mod(pos.z, 4.0)) * 0.1;
 
 	float3 col_ground = float3(0.135, 0.2, 0.1) +
@@ -234,7 +234,7 @@ bool intersect_ray_road(float3 pos_origin, float3 dir, out float3 pos_intersect)
 	return false;
 }
 
-float4 main(VsOut IN): COLOR 
+float4 main2(VsOut IN): COLOR 
 {
 	float4 fragColor;
 	float2 fragCoord=IN.uv;

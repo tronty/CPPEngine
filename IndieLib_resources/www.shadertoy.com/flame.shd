@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -27,7 +28,6 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-
 float noise_(float3 p) //Thx to Las^Mercury
 {
 	float3 i = floor(p);
@@ -90,7 +90,7 @@ float4 main(VsOut IN): COLOR
 	
 	float4 col = mix(float4(1.,.5,.1,1.), float4(0.1,.5,1.,1.), p.y*.02+.4);
 	
-	return mix(float4(0.), col, pow(glow*2.,4.));
+	return mix(float4(0, 0, 0, 0), col, pow(glow*2.,4.));
 	//fragColor = mix(float4(1.), mix(float4(1.,.5,.1,1.),float4(0.1,.5,1.,1.),p.y*.02+.4), pow(glow*2.,4.));
 
 }

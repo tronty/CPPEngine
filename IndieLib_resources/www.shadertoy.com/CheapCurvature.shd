@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -127,15 +128,16 @@ float curv2(in float3 p, in float w)
 float4 main(VsOut IN): COLOR 
 {
 	float4 fragColor;
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
 	float2 p = fragCoord.xy/iResolution.xy-0.5;
 	p.x*=iResolution.x/iResolution.y;
 	float2 mo = iMouse.xy / iResolution.xy-.5;
 	mo.x *= iResolution.x/iResolution.y;
 	
     float3 ro = float3(0.,0.,4.);
-    ro.xz *= mm2(time*0.05+mo.x*3.);
-	float3 ta = float3(0);
+    // CheapCurvature.shd(161,11): error X3020: type mismatch
+    // ro.xz *= mm2(time*0.05+mo.x*3.);
+	float3 ta = float3(0, 0, 0);
     float3 ww = normalize(ta - ro);
     float3 uu = normalize(cross(float3(0.,1.,0.), ww));
     float3 vv = normalize(cross(ww, uu));
@@ -143,7 +145,7 @@ float4 main(VsOut IN): COLOR
 	
 	float rz = march(ro,rd);
 	
-    float3 col = texture(iChannel0, rd).rgb;
+    float3 col = tex2D(iChannel0, rd.xy).rgb;
     
     if ( rz < FAR )
     {
@@ -157,11 +159,12 @@ float4 main(VsOut IN): COLOR
         float spe = pow(clamp( dot( reflect(rd,nor), ligt ), 0.0, 1.0 ),400.);
         float fre = pow( clamp(1.0+dot(nor,rd),0.0,1.0), 2.0 );
         float3 brdf = float3(0.10,0.11,0.13);
-        brdf += bac*float3(0.1);
+        brdf += bac*float3(0.1, 0.1, 0.1);
         brdf += dif*float3(1.00,0.90,0.60);
         col = abs(sin(float3(0.2,0.5,.9)+clamp(crv*80.,0.,1.)*1.2));
-        col = mix(col,texture(iChannel0,reflect(rd,nor)).rgb,.5);
-        col = col*brdf + col*spe +.3*fre*mix(col,float3(1),0.5);
+        // ??? col = mix(col,tex2D(iChannel0,reflect(rd,nor)).rgb,.5);
+        col = mix(col,tex2D(iChannel0,reflect(rd,nor).xy).rgb,.5);
+        col = col*brdf + col*spe +.3*fre*mix(col,float3(1,1,1),0.5);
         col *= smoothstep(-1.,-.9,sin(crv*200.))*0.15+0.85;
     }
 	

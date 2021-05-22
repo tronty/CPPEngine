@@ -31,7 +31,7 @@ VsOut main(VsIn In)
 float2      iChannelResolution;
 float2      iResolution;                  // viewport resolution (in pixels)
 float     iTime;                        // shader playback time (in seconds)
-float2 iMouse;
+float3 iMouse; // ??? float2 iMouse
 sampler2D iChannel0;
 sampler2D iChannel1;
 
@@ -46,8 +46,8 @@ sampler2D iChannel1;
 // the bounding sphere of the nebula. this is less general but means that
 // ray cast is only performed for nearby pixels, and raycast can begin from the sphere
 // (instead of walking out from the camera)
-const float expRadius = 2.7;
-const float3 expCenter = float3(0.,expRadius,0.);
+float expRadius = 2.7;
+#define expCenter float3(0.,expRadius,0.)
 
 /* original
 float3 mod289(float3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -114,7 +114,8 @@ float noise_( in float3 x )
     float3 f = fract(x);
 	f = f*f*(3.0-2.0*f);
 	float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
-	float2 rg = tex2D( iChannel1, (uv+ 0.5)/256.0, -100.0 ).yx;
+	// float2 rg = tex2D( iChannel1, (uv+ 0.5)/256.0, -100.0 ).yx;
+	float2 rg = tex2D( iChannel1, (uv+ 0.5)/256.0 /*, -100.0 */ ).yx;
 	return -1.0+2.0*mix( rg.x, rg.y, f.z );
 }
 
@@ -174,7 +175,7 @@ float densityFn( in float3 p, in float r, out float rawDens, in float rayAlpha )
 
 float4 raymarch( in float3 rayo, in float3 rayd, in float expInter, in float2 fragCoord )
 {
-    float4 sum = float4( 0.0 );
+    float4 sum = float4(0, 0, 0, 0);
      
     float step = 0.075;
      
@@ -269,7 +270,7 @@ float3 computePixelRay( in float2 p, out float3 cameraPos )
 
 float4 main(VsOut IN): COLOR 
 {
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
 	// get aspect corrected normalized pixel coordinate
     float2 q = fragCoord.xy / iResolution.xy;
     float2 p = -1.0 + 2.0*q;
@@ -279,7 +280,7 @@ float4 main(VsOut IN): COLOR
 	
     rayDir = computePixelRay( p, cameraPos );
 	
-	float4 col = float4(0.);
+	float4 col = float4(0, 0, 0, 0);
 	
     // does pixel ray intersect with exp bounding sphere?
 	float boundingSphereInter = iSphere( cameraPos, rayDir, float4(expCenter,expRadius) );

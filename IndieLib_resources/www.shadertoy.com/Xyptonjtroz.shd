@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -236,7 +237,7 @@ float4 main(VsOut IN): COLOR
     float2 q = fragCoord.xy/iResolution.xy;
 	p.x*=iResolution.x/iResolution.y;
     float2 mo = iMouse.xy / iResolution.xy-.5;
-    mo = (mo==float2(-.5))?mo=float2(-0.1,0.07):mo;
+    mo = (mo==float2(-.5, -.5))?mo=float2(-0.1,0.07):mo;
 	mo.x *= iResolution.x/iResolution.y;
 	
 	float3 ro = float3(smoothstep(0.,1.,tri(time*.45)*2.)*0.1, smoothstep(0.,1.,tri(time*0.9)*2.)*0.07, -time*0.6);
@@ -281,10 +282,10 @@ float4 main(VsOut IN): COLOR
     col = fog(col, ro, rd, rz);
     
     //post
-    col = pow(col,float3(0.8));
+    col = pow(col,float3(0.8, 0.8, 0.8));
     col *= 1.-smoothstep(0.1,2.,length(p));
     
-	fragColor = float4( col, 1.0 );
+	fragColor = float4( col.x, col.y, col.z, 1.0 );
 	return fragColor;
 }
 

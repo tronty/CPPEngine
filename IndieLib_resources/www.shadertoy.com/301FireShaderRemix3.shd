@@ -45,7 +45,7 @@ float rand(float2 n) {
 
 float noise_(float2 n) {
     const float2 d = float2(0.0, 1.0);
-    float2 b = floor(n), f = smoothstep(float2(0.0), float2(1.0), fract(n));
+    float2 b = floor(n), f = smoothstep(float2(0, 0), float2(1, 1), fract(n));
     return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);
 }
 
@@ -62,13 +62,13 @@ float fbm(float2 n) {
 
 float4 main(VsOut IN): COLOR 
 {
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
     const float3 c1 = float3(0.5, 0.0, 0.1);
     const float3 c2 = float3(0.9, 0.1, 0.0);
     const float3 c3 = float3(0.2, 0.1, 0.7);
     const float3 c4 = float3(1.0, 0.9, 0.1);
-    const float3 c5 = float3(0.1);
-    const float3 c6 = float3(0.9);
+    const float3 c5 = float3(0.1, 0.1, 0.1);
+    const float3 c6 = float3(0.9, 0.9, 0.9);
 
     float2 speed = float2(0.1, 0.9);
     float shift = 1.327+sin(iTime*2.0)/2.4;
@@ -90,10 +90,11 @@ float4 main(VsOut IN): COLOR
     q = (q + qb - .4 * q2 -2.0*q3  + .6*q4)/3.8;
     float2 r = float2(fbm(p + q /2.0 + iTime * speed.x - p.x - p.y), fbm(p + q - iTime * speed.y));
     float3 c = mix(c1, c2, fbm(p + r)) + mix(c3, c4, r.x) - mix(c5, c6, r.y);
-    float3 color = float3(1.0/(pow(c+1.61,float3(4.0))) * cos(shift * fragCoord.y / iResolution.y));
+    float fff=1.0/(pow(c+1.61,float3(4, 4, 4))) * cos(shift * fragCoord.y / iResolution.y);
+    float3 color = float3(fff, fff, fff);
     
     color=float3(1.0,.2,.05)/(pow((r.y+r.y)* max(.0,p.y)+0.1, 4.0));;
     color += (tex2D(iChannel0,uv*0.6+float2(.5,.1)).xyz*0.01*pow((r.y+r.y)*.65,5.0)+0.055)*mix( float3(.9,.4,.3),float3(.7,.5,.2), uv.y);
-    color = color/(1.0+max(float3(0),color));
+    color = color/(1.0+max(float3(0, 0, 0),color));
     return float4(color.x, color.y, color.z, alpha);
 }

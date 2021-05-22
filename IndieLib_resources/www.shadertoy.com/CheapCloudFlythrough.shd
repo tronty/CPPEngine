@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -89,7 +90,8 @@ float3 hash33(float3 p){
 float pn( in float3 p ){
     
     float3 i = floor(p); p -= i; p *= p*(3. - 2.*p);
-	p.xy = texture(iChannel0, (p.xy + i.xy + float2(37, 17)*i.z + .5)/256., -100.).yx;
+	// ???  p.xy = tex2D(iChannel0, (p.xy + i.xy + float2(37, 17)*i.z + .5)/256., -100.).yx;
+		p.xy = tex2D(iChannel0, (p.xy + i.xy + float2(37, 17)*i.z + .5)/256. /* , -100. */ ).yx;
 	return mix(p.x, p.y, p.z);
 }
 
@@ -114,10 +116,10 @@ float trigNoise3D(in float3 p){
     
     float3 t = sin(p.yzx*3.14159265 + cos(p.zxy*3.14159265+1.57/2.))*0.5 + 0.5;
     p = p*1.5 + (t - 1.5); //  + iTime*0.1
-    res += (dot(t, float3(0.333)));
+    res += (dot(t, float3(0.333, 0.333, 0.333)));
 
     t = sin(p.yzx*3.14159265 + cos(p.zxy*3.14159265+1.57/2.))*0.5 + 0.5;
-    res += (dot(t, float3(0.333)))*0.7071;    
+    res += (dot(t, float3(0.333, 0.333, 0.333)))*0.7071;    
 	 
 	return ((res/1.7071))*0.85 + n*0.15;
 }
@@ -139,7 +141,7 @@ float map(float3 p) {
 float4 main(VsOut IN): COLOR 
 {
 	float4 fragColor;
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
 
     // Unit direction ray vector: Note the absence of a divide term. I came across
     // this via a comment Shadertoy user "coyote" made. I'm pretty easy to please,

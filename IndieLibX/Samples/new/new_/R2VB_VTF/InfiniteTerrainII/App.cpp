@@ -232,7 +232,7 @@ bool load(){
 	};
 	if ((env = addCubemap(files, true, IRenderer::GetRendererInstance()->GetbilinearClamp());
 */
-    	sb.init("/SkyBox/cubemaps/x/DragonfireGL.dds");
+    	sb.init("/SkyBox/cubemaps/x/DragonFireGL.dds");
 
 	skyBox = -1;
 	env = -1;

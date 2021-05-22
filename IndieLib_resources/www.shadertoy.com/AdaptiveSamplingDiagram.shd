@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -118,7 +119,7 @@ bool fn2( float x, out float y, out float4 col )
     return false;
     //y = pow( 2., 1.+floor(log2(MOUSEY*RANGEY)) );
     y = MOUSEY*RANGEY;
-	col = float4(inten);
+	col = float4(inten, inten, inten, inten);
 	return true;
 }
 
@@ -236,7 +237,7 @@ float4 graph( float2 p, float xmin, float xmax, float ymin, float ymax, float wi
 float4 main(VsOut IN): COLOR 
 {
 	float4 fragColor;
-	float2 fragCoord=IN.uv;
+	float2 fragCoord=IN.texCoord;
     float2 uv = fragCoord.xy / iResolution.xy;
 
     // uv minx maxx miny maxy thickness
@@ -259,13 +260,13 @@ float3 graph_bg(float2 thisPt)
     float lowcoord = exp2(floor(log2(1./thisPt.y)));
     float i = 1.-boundary(thisPt.x,lowcoord);
     i = mix( 0.2,1.,i);
-    return float3(i);
+    return float3(i,i,i);
 }
 
 // p is in [0,1]. 
 float4 graph( float2 p, float xmin, float xmax, float ymin, float ymax, float width )
 {
-	float4 result = float4(1.);
+	float4 result = float4(1,1,1,1);
 	
 	float thisx = xmin + (xmax-xmin)*p.x;
 	float thisy = ymin + (ymax-ymin)*p.y;

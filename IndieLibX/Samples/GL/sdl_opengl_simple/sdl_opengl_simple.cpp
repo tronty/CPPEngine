@@ -202,7 +202,7 @@ void render()
 
 int ApplicationLogic()
 {
-	IRenderer* r=IRenderer::GetRendererInstance("opengl_simple_GL");
+	IRenderer* r=IRenderer::GetRendererInstance("opengl_simple_GL 3D");
 	IInput*    i=STX_Service::GetInputInstance();
 	init("");
 	while (!i->OnKeyPress (STX_KEY_ESCAPE))

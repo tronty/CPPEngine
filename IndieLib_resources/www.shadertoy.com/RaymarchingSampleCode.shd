@@ -3,6 +3,7 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -57,7 +58,7 @@ const float clip_far = 1000.0;
 
 // math
 const float PI = 3.14159265359;
-const float DEG_TO_RAD = PI / 180.0;
+#define DEG_TO_RAD PI / 180.0;
 
 // iq's distance function
 float sdSphere( float3 pos, float r ) {
@@ -108,7 +109,7 @@ float dist_field( float3 p ) {
 //  p = sdRep( p, float3( 4.0 ) );
 //  p = sdTwist( p, 3.0 );
     
-    float d0 = sdBox( p, float3(0.5) );
+    float d0 = sdBox( p, float3(0.5, 0.5, 0.5) );
     float d1 = sdSphere( p, 0.6 );
     
     float d = sdInter( d1, d0 );
@@ -142,12 +143,12 @@ float3 shading( float3 v, float3 n, float3 dir, float3 eye ) {
 	
 	float shininess = 16.0;
 	
-	float3 final = float3( 0.0 );
+	float3 final = float3( 0, 0, 0 );
 	
 	float3 ref = reflect( dir, n );
     
-    float3 Ks = float3( 0.5 );
-    float3 Kd = float3( 1.0 );
+    float3 Ks = float3( 0.5, 0.5, 0.5 );
+    float3 Kd = float3( 1.0, 1.0, 1.0 );
 	
 	// light 0
 	{

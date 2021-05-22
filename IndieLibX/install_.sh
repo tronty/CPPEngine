@@ -91,6 +91,7 @@ update()
 if [[ $OSTYPE == linux* ]]; then
 	update
 	apt-get -y install curl
+	apt-get -y install audacious
 	update
 fi
 

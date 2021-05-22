@@ -65,12 +65,12 @@ float4 main(VsOut IN): COLOR
     
     float2 uv = fragCoord.xy / iResolution.xy;
     float2 _uv = uv;
-    uv -= float2(0.5);
+    uv -= float2(0.5, 0.5);
     uv.y /= iResolution.x / iResolution.y;
     float2 centerUV = uv;
     
     // height variation from fbm
-    float variationH = fbm(float2(iTime * .3)) * 1.1;
+    float variationH = fbm(float2(iTime * .3, iTime * .3)) * 1.1;
     
     // flame "speed"
     float2 offset = float2(0.0, -iTime * 0.15);

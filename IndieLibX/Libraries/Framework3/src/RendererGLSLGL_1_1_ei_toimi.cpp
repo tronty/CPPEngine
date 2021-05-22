@@ -36,15 +36,6 @@
 #endif
 
 #if 1
-#define STX_PRINT 
-#define STX_FNLN 
-#define LOG_PRINT 
-#define LOG_FNLN 
-#define LOG_FNLN_NONE
-#define LOG_PRINT_NONE
-#define LOG_FNLN_X
-#define LOG_PRINT_X
-#elif 0
 #define STX_PRINT(...) printf(__VA_ARGS__);
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #define LOG_PRINT(...) printf(__VA_ARGS__);
@@ -859,6 +850,70 @@ LOG_FNLN;
 	shaderGL1_1.shader[eDomainShader] = 0;
 	shaderGL1_1.program = glCreateProgramObjectARB();
 	checkGlError("");
+#if 1
+{
+	const char* vss=vsText.c_str();
+	const char* fss=fsText.c_str();
+	int           status;
+	int           logLength;
+	GLcharARB *  log;
+	GLint         location;
+	GLhandleARB vertShader = glCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
+	GLhandleARB fragShader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
+	shaderGL1_1.shader[eVertexShader]=vertShader;
+	shaderGL1_1.shader[ePixelShader]=fragShader;
+	glShaderSourceARB( vertShader, 1, &vss, NULL );
+	glCompileShaderARB( vertShader );
+	checkGlError( "Vertex Shader 1" );
+	glGetObjectParameterivARB( vertShader, GL_OBJECT_COMPILE_STATUS_ARB, &status );
+	if( status == GL_FALSE )
+	{
+		STX_PRINT("Vertex shader compilation failed.\n");
+		glGetObjectParameterivARB( vertShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength );
+		log = new GLcharARB [logLength];
+		glGetInfoLogARB( vertShader, logLength, NULL, log );
+		STX_PRINT("\n%s\n", log );
+		delete [] log;
+		stx_exit( 1 );
+	}
+	checkGlError( "Vertex Shader 2" );
+	glShaderSourceARB( fragShader, 1, &fss, NULL );
+	glCompileShaderARB( fragShader );
+	checkGlError( "Fragment Shader 1" );
+	glGetObjectParameterivARB( fragShader, GL_OBJECT_COMPILE_STATUS_ARB, &status );
+	if( status == GL_FALSE )
+	{
+		STX_PRINT("Fragment shader compilation failed.\n");
+		glGetObjectParameterivARB( fragShader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength );
+		log = new GLcharARB [logLength];
+		glGetInfoLogARB( fragShader, logLength, NULL, log );
+		STX_PRINT("\n%s\n", log );
+		delete [] log;
+		stx_exit( 1 );
+	}
+	checkGlError( "Fragment Shader 2" ); 
+	GLhandleARB program = glCreateProgramObjectARB();
+	glAttachObjectARB( program, vertShader );
+	glAttachObjectARB( program, fragShader );
+	glLinkProgram( program );
+	checkGlError( "Shader Program 1" );
+	glGetObjectParameterivARB( program, GL_OBJECT_LINK_STATUS_ARB, &status );
+	if( status == GL_FALSE )
+	{
+		STX_PRINT("Link failed.\n");
+		glGetObjectParameterivARB( program, GL_OBJECT_INFO_LOG_LENGTH_ARB, &logLength );
+		log = new GLcharARB [logLength];
+		glGetInfoLogARB( fragShader, logLength, NULL, log );
+		STX_PRINT("\n%s\n", log );
+		delete [] log;
+		stx_exit( 1 );
+	}
+	linkResult=status;
+	checkGlError( "Shader Program 2" );
+	glUseProgramObjectARB( program ); 
+}
+#endif
+#if 0
 #if 0 // ???
     std::vector<std::string> sText;
     sText.push_back(fsText0);
@@ -1021,11 +1076,34 @@ LOG_FNLN;
 				else
 				{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Vertex shader error:\n");
+			{
+				GLint blen = 0;
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[eVertexShader], GL_INFO_LOG_LENGTH , &blen);
+				if (blen > 1)
+				{
+					GLchar* compiler_log = (GLchar*)malloc(blen);
+					glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], blen, &slen, compiler_log);
+					STX_PRINT("Vertex shader error:\ncompiler_log:\n%s\n", compiler_log);
+					free (compiler_log);
+				}
 			}
-				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
-				checkGlError("");
-				infoLogPos += len;
-				STX_PRINT("\n%s\n", infoLog);
+			}
+			{
+				GLint blen = 0;
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[eVertexShader], GL_INFO_LOG_LENGTH , &blen);
+				if (blen > 1)
+				{
+					GLchar* compiler_log = (GLchar*)malloc(blen);
+					glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], blen, &slen, compiler_log);
+					STX_PRINT("Vertex shader error:\ncompiler_log:\n%s\n", compiler_log);
+					free (compiler_log);
+				}
+			}
+				//checkGlError("");
+				//infoLogPos += len;
+				//STX_PRINT("\n%s\n", infoLog);
 			}
 			else vsResult = GL_TRUE;
 			if (fsText.length())
@@ -1062,11 +1140,33 @@ LOG_FNLN;
 				else
 				{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Fragment shader error:\n");
-				STX_PRINT("\n%s\n", infoLog);
+			{
+				GLint blen = 0;
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[ePixelShader], GL_INFO_LOG_LENGTH , &blen);
+				if (blen > 1)
+				{
+					GLchar* compiler_log = (GLchar*)malloc(blen);
+					glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], blen, &slen, compiler_log);
+					STX_PRINT("Fragment shader error:\ncompiler_log:\n%s\n", compiler_log);
+					free (compiler_log);
+				}
 			}
-			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
-				checkGlError("");
-				infoLogPos += len;
+			}
+			{
+				GLint blen = 0;
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[ePixelShader], GL_INFO_LOG_LENGTH , &blen);
+				if (blen > 1)
+				{
+					GLchar* compiler_log = (GLchar*)malloc(blen);
+					glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], blen, &slen, compiler_log);
+					STX_PRINT("Fragment shader error:\ncompiler_log:\n%s\n", compiler_log);
+					free (compiler_log);
+				}
+			}
+				//checkGlError("");
+				//infoLogPos += len;
 			}
 			else fsResult = GL_TRUE;
 LOG_FNLN;
@@ -1085,7 +1185,8 @@ LOG_FNLN;
 				checkGlError("");
 				infoLogPos += len;
 LOG_FNLN;
-			if (linkResult)
+#endif
+			{if (linkResult)
 				{
 LOG_FNLN;
 			GLuint currProgram = 
