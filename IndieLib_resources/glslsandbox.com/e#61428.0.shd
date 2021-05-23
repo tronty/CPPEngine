@@ -31,9 +31,26 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+
 float time;
 float2 mouse;
 float2 resolution;
+
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 
 // roadfucks
 float3 road(float3 pos)
@@ -81,15 +98,15 @@ float3 sky(float2 uv)
 float3 car(float2 uv)
 {
 	if (uv.y > -0.3)
-		return float3(0, 0, 0);
+		return float3(0,0,0);
 	float carpos = (mouse.x * 2.0) - 1.0;
 	if (abs(uv.x-carpos) < 0.15)
 	{
 		if (abs(carpos) > 0.4)
 			return (float3(1.,0.,0.));
-		return float3(1, 1, 1);
+		return float3(1,1,1);
 	}
-	return float3(0, 0, 0);
+	return float3(0,0,0);
 }
 
 float insidecar(float3 col)
@@ -112,7 +129,7 @@ float4 main(VsOut IN) : COLOR0
 
 	float3 pos = float3(uv.x/abs(uv.y),1.0/abs(uv.y),step(0.0,uv.y)*2.0-1.0);
 	
-	float3 color = float3(0, 0, 0);
+	float3 color = float3(0,0,0);
 	
 	color = mix(road(pos),sky(uv),step(.0,pos.z));
 	
@@ -121,7 +138,7 @@ float4 main(VsOut IN) : COLOR0
 	//color = mix(color, carcolor, insidecar(carcolor));
 //	color = carcolor;
 	
-	return float4(color, 1.0 );
+	return float4(color.x, color.y, color.z, 1.0 );
 }
 
 /*
