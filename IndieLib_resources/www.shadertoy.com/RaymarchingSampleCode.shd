@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 // https://www.shadertoy.com/view/XsB3Rm
 float3      iResolution;                  // viewport resolution (in pixels)
 float4      iMouse;                       // mouse pixel coords
@@ -58,7 +73,7 @@ const float clip_far = 1000.0;
 
 // math
 const float PI = 3.14159265359;
-#define DEG_TO_RAD PI / 180.0;
+#define DEG_TO_RAD PI / 180.0
 
 // iq's distance function
 float sdSphere( float3 pos, float r ) {
@@ -156,12 +171,15 @@ float3 shading( float3 v, float3 n, float3 dir, float3 eye ) {
 		float3 light_color = float3( 1.0, 0.7, 0.7 );
 	
 		float3 vl = normalize( light_pos - v );
+		
+		float f31  = max( 0.0, dot( vl, n ) );
+		float f32 = max( 0.0, dot( vl, ref ) );
 	
-		float3 diffuse  = Kd * float3( max( 0.0, dot( vl, n ) ) );
-		float3 specular = float3( max( 0.0, dot( vl, ref ) ) );
+		float3 diffuse  = Kd * float3(f31, f31, f31);
+		float3 specular = float3(f32, f32, f32);
 		
         float3 F = fresnel( Ks, normalize( vl - dir ), vl );
-		specular = pow( specular, float3( shininess ) );
+		specular = pow( specular, float3( shininess, shininess, shininess ) );
 		
 		final += light_color * mix( diffuse, specular, F ); 
 	}
@@ -173,11 +191,14 @@ float3 shading( float3 v, float3 n, float3 dir, float3 eye ) {
 	
 		float3 vl = normalize( light_pos - v );
 	
-		float3 diffuse  = Kd * float3( max( 0.0, dot( vl, n ) ) );
-		float3 specular = float3( max( 0.0, dot( vl, ref ) ) );
+		float f31  = max( 0.0, dot( vl, n ) );
+		float f32 = max( 0.0, dot( vl, ref ) );
+	
+		float3 diffuse  = Kd * float3(f31, f31, f31);
+		float3 specular = float3(f32, f32, f32);
         
         float3 F = fresnel( Ks, normalize( vl - dir ), vl );
-		specular = pow( specular, float3( shininess ) );
+		specular = pow( specular, float3( shininess, shininess, shininess ) );
 		
 		final += light_color * mix( diffuse, specular, F );
 	}
@@ -242,10 +263,10 @@ bool ray_marching( float3 o, float3 dir, inout float depth, inout float3 n ) {
 float3 ray_dir( float fov, float2 size, float2 pos ) {
 	float2 xy = pos - size * 0.5;
 
-	float cot_half_fov = tan( ( 90.0 - fov * 0.5 ) * DEG_TO_RAD );	
+	float cot_half_fov = tan( ( 90.0 - fov * 0.5 ) * DEG_TO_RAD ); // ???	
 	float z = size.y * 0.5 * cot_half_fov;
 	
-	return normalize( float3( xy, -z ) );
+	return normalize( float3( xy.x, xy.y, -z ) );
 }
 
 // camera rotation : pitch, yaw
@@ -276,7 +297,7 @@ float4 main( float4 vertexin: POSITION, float2 fragCoord: TEXCOORD0 ) : COLOR
 	
 	// ray marching
     float depth = clip_far;
-    float3 n = float3( 0.0 );
+    float3 n = float3( 0, 0, 0 );
 	if ( !ray_marching( eye, dir, depth, n ) ) {
 		return tex2D( iChannel0, dir );
         return float4(0,0,0,0);
@@ -286,6 +307,7 @@ float4 main( float4 vertexin: POSITION, float2 fragCoord: TEXCOORD0 ) : COLOR
 	float3 pos = eye + dir * depth;
     
     float3 color = shading( pos, n, dir, eye );
-	return float4( pow( color, float3(1.0/1.2) ), 1.0 );
+    float3 f3=float3(1.0/1.2, 1.0/1.2, 1.0/1.2);
+	return float4( pow( color, f3 ), 1.0 );
 }
 

@@ -28,6 +28,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+#endif
 float3      iResolution;                  // viewport resolution (in pixels)
 float     iTime;                        // shader playback time (in seconds)
 float4      iMouse;                       // mouse pixel coords
@@ -220,7 +221,7 @@ float2 RotateCamera(float2 p, float a)
 {
 	float si = sin(a);
 	float co = cos(a);
-	return float2x2(si, co, -co, si) * p;
+	return mul(float2x2(si, co, -co, si) , p);
 }
 
 //=================================================================================================
@@ -266,7 +267,7 @@ float4 main(VsOut IN): COLOR
 	
 	int hit = 0;
 	float4 ret = Raymarch(origin, ray, hit, fragCoord);
-	float3 col = float3(0.3);
+	float3 col = float3(0.3, 0.3, 0.3);
 	float flicker = Noise(iTime*8.0);
 	float3 light = float3(0.0, 3.25 + flicker, 0.0);
 	float3 nor, ldir;
@@ -295,12 +296,13 @@ float4 main(VsOut IN): COLOR
 		float bri = max(dot(ldir, nor), 0.05);
 		float spe = max(dot(ldir, ref), 0.0);
 		spe = pow(abs(spe), 10.0);
-		float3 mat = float3(Bump(ret.xyz * 12.3)*.5+.5) * float3(1.0, .2+tex2D(iChannel0, ret.xz*.002).x*.5, .12);
+		float f3=Bump(ret.xyz * 12.3)*.5+.5;
+		float3 mat = float3(f3, f3, f3) * float3(1.0, .2+tex2D(iChannel0, ret.xz*.002).x*.5, .12);
 		col = mat * bri + float3(.9, .6, .3) * spe;
 	}else
 	{
 		// Grab the forest tex2D...
-		float3 frst = tex2D(iChannel1, ray-float3(0.0, .08, 0.0), -100.0).xyz;
+		float3 frst = tex2D(iChannel1, ray-float3(0.0, .08, 0.0) /* , -100.0 */ ).xyz;
 		frst = frst*frst;
 		col = frst * float3(.13, .13, .13);
 //		// Is ray looking at ground area?...
@@ -308,9 +310,9 @@ float4 main(VsOut IN): COLOR
 		{
 //			// Dodgy re-projection onto floor...
 			float3 pos = origin+float3(0.0, -7.0, 0.0) + ray * (-origin.y / ray.y);
-			float3 mat = tex2D(iChannel1, pos, -100.0).xyz;
+			float3 mat = tex2D(iChannel1, pos /* , -100.0 */ ).xyz;
 			// Rudimentary bump map...
-			float2 bmp = tex2D(iChannel0, pos.xz*.02, -100.0).xy;
+			float2 bmp = tex2D(iChannel0, pos.xz*.02 /* , -100.0 */ ).xy;
 			
 			nor = normalize(float3(bmp.x-.5, 1.0, bmp.y-.5));
 			ldir = normalize(light - pos);

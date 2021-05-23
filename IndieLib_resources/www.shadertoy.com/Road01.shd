@@ -4,27 +4,18 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
 struct VsOut {
-	float4 position: POSITION;
-	float2 uv: TEXCOORD0;
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
 };
-
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-
-#if 0
-struct VsIn {
-	float2 position: POSITION;
-	float2 uv: TEXCOORD0;
-};
-VsOut main(VsIn In){
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position.x, In.position.y, 0.0, 1.0));
-	Out.uv = In.uv;
-	return Out;
-}
-#else
+#if 1
+#define WSIGN +
+#define ROW_MAJOR
+#define MVPSEMANTIC
+#define fract frac
+#define mix lerp
+#define atan(x,y) atan2(y,x)
+#elif 0
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -34,6 +25,8 @@ struct VsIn {
     float2 uv		: TEXCOORD1;
 };
 
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 VsOut main(VsIn In)
 {
 	VsOut Out=(VsOut)0;
@@ -41,9 +34,9 @@ VsOut main(VsIn In)
 	Out.uv = In.uv;
 	return Out;
 }
-#endif
 
 [Fragment shader]
+#endif
 float3 mod(float3 x, float y)
 {
   return x - y * floor(x / y); // ???

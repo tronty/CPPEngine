@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 #define int2 float2
 sampler2D iChannel0;
 float     iTime;                        // shader playback time (in seconds)
@@ -172,13 +187,13 @@ float4 main(VsOut IN): COLOR
 	float3 ta = float3(0.0, -1.0, 0.0);
     float3x3 ca = setCamera( ro, ta, 0.0 );
     // ray
-    float3 rd = ca * normalize( float3(p.xy,1.5));
+    float3 rd = mul(ca , normalize( float3(p.x, p.y, 1.5)));
     
-    fragColor = render( ro, rd, int2(fragCoord-0.5) );
+    fragColor = render( ro, rd, int2(fragCoord-0.5, fragCoord-0.5) ); // ???
 	return fragColor;
 }
 
 void mainVR( out float4 fragColor, in float2 fragCoord, in float3 fragRayOri, in float3 fragRayDir )
 {
-    fragColor = render( fragRayOri, fragRayDir, int2(fragCoord-0.5) );
+    fragColor = render( fragRayOri, fragRayDir, int2(fragCoord-0.5, fragCoord-0.5) );
 }

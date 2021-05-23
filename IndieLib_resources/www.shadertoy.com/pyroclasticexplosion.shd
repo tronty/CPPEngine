@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +28,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+#endif
 float2 iMouse;
 float2 iResolution;
 float iTime;
@@ -84,11 +85,11 @@ float noise_( in float3 x )
 float fbm( float3 p )
 {
     float f;
-    f = 0.5000*noise_( p ); p = m*p*2.02;
-    f += 0.2500*noise_( p ); p = m*p*2.03;
-    f += 0.1250*noise_( p ); p = m*p*2.01;
+    f = 0.5000*noise_( p ); p = mul(m,p)*2.02;
+    f += 0.2500*noise_( p ); p = mul(m,p)*2.03;
+    f += 0.1250*noise_( p ); p = mul(m,p)*2.01;
     f += 0.0625*noise_( p );
-    p = m*p*2.02; f += 0.03125*abs(noise_( p ));	
+    p = mul(m,p)*2.02; f += 0.03125*abs(noise_( p ));	
     return f/0.9375;
 }
 

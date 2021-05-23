@@ -3,7 +3,18 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+#if 1
+#define WSIGN +
+#define ROW_MAJOR
+#define MVPSEMANTIC
+#define fract frac
+#define mix lerp
+#define atan(x,y) atan2(y,x)
+#elif 0
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +22,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +35,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+#endif
 const int ITERATIONS = 20;
 const float STEP = 0.08;
 const float DURATION = 5.0;
@@ -204,7 +212,7 @@ float2 iResolution;
 float iTime;
 float4 main(VsOut IN): COLOR 
 {
-	float2 fragCoord=IN.texCoord;
+	float2 fragCoord=IN.uv;
     float2 uv = fragCoord.xy / iResolution.xy;
     uv = uv * 2.0 - 1.0;
     uv.x *= iResolution.x / iResolution.y;

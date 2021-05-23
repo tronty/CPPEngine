@@ -3,7 +3,10 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +14,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +27,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 sampler2D iChannel0;
 float3      iResolution;                  // viewport resolution (in pixels)
 float     iTime;                        // shader playback time (in seconds)
@@ -141,7 +155,7 @@ float map(float3 p) {
 float4 main(VsOut IN): COLOR 
 {
 	float4 fragColor;
-	float2 fragCoord=IN.texCoord;
+	float2 fragCoord=IN.uv;
 
     // Unit direction ray vector: Note the absence of a divide term. I came across
     // this via a comment Shadertoy user "coyote" made. I'm pretty easy to please,
@@ -157,14 +171,14 @@ float4 main(VsOut IN): COLOR
     // This one came courtesy of Shadertoy user, "Fabrice Neyret."
     float2 a = sin(float2(1.5707963, 0) + iTime*0.1875); 
     float2x2 rM = float2x2(a, -a.y, a.x);
-    rd.xy = rd.xy*rM; // Apparently, "rd.xy *= rM" doesn't work on some setups. Crazy.
-    rd.xz = rd.xz*rM;
+    rd.xy = mul(rM, rd.xy); // Apparently, "rd.xy *= rM" doesn't work on some setups. Crazy.
+    rd.xz = mul(rM, rd.xz);
 
     // Placing a light in front of the viewer and up a little, then rotating it in sync
     // with the camera. I guess a light beam from a flying vehicle would do this.
     float3 lp = float3( 0, 1, 4);
-    lp.xy = lp.xy*rM;
-    lp.xz = lp.xz*rM;
+    lp.xy = mul(rM, lp.xy);
+    lp.xz = mul(rM, lp.xz);
     lp += ro;
 
     // The ray is effectively marching through discontinuous slices of noise_, so at certain
@@ -188,7 +202,7 @@ float4 main(VsOut IN): COLOR
 
 
     // Initializing the scene color to black, and declaring the surface position vector.
-    float3 col = float3(0), sp;
+    float3 col = float3(0, 0, 0), sp;
 
 
 
@@ -262,8 +276,8 @@ float4 main(VsOut IN): COLOR
     col = max(col, 0.);
 
     // trigNoise3D(rd*1.)
-    col = mix(pow(float3(1.5, 1, 1)*col,  float3(1, 2, 8)), col, dot(cos(rd*6. +sin(rd.yzx*6.)), float3(.333))*.35 + .65);
-    col = mix(col.zyx, col, dot(cos(rd*9. +sin(rd.yzx*9.)), float3(.333))*.15 + .85);//xzy
+    col = mix(pow(float3(1.5, 1, 1)*col,  float3(1, 2, 8)), col, dot(cos(rd*6. +sin(rd.yzx*6.)), float3(.333, .333, .333))*.35 + .65);
+    col = mix(col.zyx, col, dot(cos(rd*9. +sin(rd.yzx*9.)), float3(.333, .333, .333))*.15 + .85);//xzy
     
 
     //col = mix(col.zyx, col, dot(rd, float3(.5))+.5);

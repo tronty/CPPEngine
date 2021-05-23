@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 sampler2D iChannel0;
 sampler2D iChannel1;
 float     iTime;                        // shader playback time (in seconds)
@@ -112,7 +127,8 @@ float smin( float a, float b, float k )
 float map(float3 p)
 {
     float t=0.7*iTime;
-	float d1 = Disk(p,float3(2.0,1.,0.05)) + fpn(float3(Spin(t*0.25+p.z*.10)*p.xy*20.,p.z*20.-t)*5.0) * 0.545;
+    float2 f2=mul(Spin(t*0.25+p.z*.10), p.xy)*20.;
+	float d1 = Disk(p,float3(2.0,1.,0.05)) + fpn(float3(f2.x, f2.y, p.z*20.-t)*5.0) * 0.545;
     float d2 = Ring(p);
     return smin(d1,d2,1.0);
 
@@ -183,9 +199,9 @@ float4 main(VsOut IN): COLOR
 	const float KEY_2 = 50.5/256.0;
 	const float KEY_3 = 51.5/256.0;
     float key = 0.0;
-    key += 0.7*texture(iChannel1, float2(KEY_1,0.25)).x;
-    key += 0.7*texture(iChannel1, float2(KEY_2,0.25)).x;
-    key += 0.7*texture(iChannel1, float2(KEY_3,0.25)).x;
+    key += 0.7* tex2D(iChannel1, float2(KEY_1,0.25)).x;
+    key += 0.7* tex2D(iChannel1, float2(KEY_2,0.25)).x;
+    key += 0.7* tex2D(iChannel1, float2(KEY_3,0.25)).x;
 
 	// ro: ray origin
 	// rd: direction of the ray
@@ -219,7 +235,7 @@ float4 main(VsOut IN): COLOR
 	// d: distance function
 	float d=1., t=0.;
    
-	float4 sum = float4(0.0);
+	float4 sum = float4(0, 0, 0, 0);
    
     float min_dist=0.0, max_dist=0.0;
 
@@ -243,7 +259,7 @@ float4 main(VsOut IN): COLOR
 		d = map(pos); 
        
 		// direction to center
-		float3 stardir = normalize(float3(0.0)-pos);
+		float3 stardir = normalize(float3(0, 0, 0)-pos);
       
 		// change this string to control density 
 		d = max(d,0.08);
@@ -264,7 +280,7 @@ float4 main(VsOut IN): COLOR
 			// accumulate density
 			td += w + 1./200.;
 		
-			float radiusFromCenter = length(pos - float3(0.0));
+			float radiusFromCenter = length(pos - float3(0, 0, 0));
 			float4 col = float4( computeColor(td,radiusFromCenter), td );
 		
 			// uniform scale density
@@ -278,7 +294,7 @@ float4 main(VsOut IN): COLOR
 		td += 1./70.;
        
         // point light calculations
-        float3 ldst = float3(0.0)-pos;
+        float3 ldst = float3(0, 0, 0)-pos;
         float lDist = max(length(ldst), 0.001);
 
         // star in center
@@ -295,7 +311,7 @@ float4 main(VsOut IN): COLOR
       
         #ifdef DITHERING
         // add in noise_ to reduce banding and create fuzz
-        d=abs(d)*(1.+0.28*rand(seed*float2(i)));
+        d=abs(d)*(1.+0.28*rand(seed*float2(i, i)));
         #endif 
 	  
         t +=  max(d * 0.3, 0.02);
@@ -315,9 +331,10 @@ float4 main(VsOut IN): COLOR
     // stars background
     if (td<.8)
     {
-        float3 stars = float3(pn(rd*300.0)*0.4+0.5);
-        float3 starbg = float3(0.0);
-        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0.0),rd)+0.75,0.0,1.0));
+    	float f=pn(rd*300.0)*0.4+0.5;
+        float3 stars = float3(f, f, f);
+        float3 starbg = float3(0, 0, 0);
+        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0, 0, 0),rd)+0.75,0.0,1.0));
         starbg = clamp(starbg, 0.0, 1.0);
         sum.xyz += starbg; 
     }

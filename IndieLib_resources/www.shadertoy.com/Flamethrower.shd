@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 float2 iMouse;
 float2 iResolution;
 float iTime;
@@ -137,9 +152,9 @@ const float rmb = 0.8;
 void init()
 {
     // The lamps
-    lamps[0] = Lamp(float3(-1.5, 3., 1.), float3(1., 1., 1.), 1.2, 0.01); // 1.2
-    lamps[1] = Lamp(float3(-5., 12., 15.), float3(0.65, 0.75, 1.), 1.05, 0.01); // 0.9
-    lamps[2] = Lamp(flamePos*2., 1.2*flameColor, 0., 0.01);
+    lamps[0] = Lamp(float3(-1.5, 3., 1.), float3(1., 1., 1.), 1.2, 0.01); // 1.2 // ???
+    lamps[1] = Lamp(float3(-5., 12., 15.), float3(0.65, 0.75, 1.), 1.05, 0.01); // 0.9 // ???
+    lamps[2] = Lamp(flamePos*2., 1.2*flameColor, 0., 0.01); // ???
     
     rms = 0.28 + 0.003*iTime;
     

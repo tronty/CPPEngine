@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 float2 iMouse;
 float2 iResolution;
 float iTime;
@@ -78,7 +93,7 @@ float4 main(VsOut IN): COLOR
     // flame turbulence
     float f = fbm(uv * 0.1 + offset); // rotation from fbm
     float l = max(0.1, length(uv)); // rotation amount normalized over distance
-	uv += rotz( ((f - 0.5) / l) * smoothstep(-0.2, .4, _uv.y) * 0.45) * uv;    
+	uv += rotz( ((f - 0.5) / l) * smoothstep(-0.2, .4, _uv.y) * 0.45) * uv; // ???    
     
     // flame thickness
     float flame = 1.3 - length(uv.x) * 5.0;

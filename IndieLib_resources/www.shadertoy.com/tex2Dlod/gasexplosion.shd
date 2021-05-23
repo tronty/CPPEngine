@@ -3,11 +3,18 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
 struct VsOut {
     float4 position	: POSITION;
     float2 uv		: TEXCOORD0;
 };
+#if 1
+#define WSIGN +
+#define ROW_MAJOR
+#define MVPSEMANTIC
+#define fract frac
+#define mix lerp
+#define atan(x,y) atan2(y,x)
+#elif 0
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -28,6 +35,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+#endif
 float3      iResolution;                  // viewport resolution (in pixels)
 float     iTime;                        // shader playback time (in seconds)
 float4      iMouse;                       // mouse pixel coords
@@ -331,7 +339,7 @@ float2 hash21(float p) {
 //----------------------------------------------------------------------------------------
 ///  2 out, 2 in...
 float2 hash22(float2 p) {
-	float3 p3 = fract(float3(p.xyx,p.xyx,p.xyx) * HASHSCALE3);
+	float3 p3 = fract(float3(p.xyx,p.xyx,p.xyx) * HASHSCALE3); // ???
 	p3 += dot(p3, p3.yzx + 19.19);
 	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }

@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +28,21 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 float2      iChannelResolution;
 float2      iResolution;                  // viewport resolution (in pixels)
 float     iTime;                        // shader playback time (in seconds)
@@ -270,7 +285,7 @@ float3 computePixelRay( in float2 p, out float3 cameraPos )
 
 float4 main(VsOut IN): COLOR 
 {
-	float2 fragCoord=IN.texCoord;
+	float2 fragCoord=IN.uv;
 	// get aspect corrected normalized pixel coordinate
     float2 q = fragCoord.xy / iResolution.xy;
     float2 p = -1.0 + 2.0*q;

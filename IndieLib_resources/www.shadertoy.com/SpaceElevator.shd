@@ -3,7 +3,18 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+#if 1
+#define WSIGN +
+#define ROW_MAJOR
+#define MVPSEMANTIC
+#define fract frac
+#define mix lerp
+#define atan(x,y) atan2(y,x)
+#elif 0
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +22,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -28,6 +35,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
+#endif
 float     iTime;                        // shader playback time (in seconds)
 float3      iResolution;                  // viewport resolution (in pixels)
 float mod(float x, float y)
@@ -77,7 +85,7 @@ float CageDf (float3 p, float pAng, float dMin)
   q = p;
   qs = float2 (mod (float2 (16. * pAng, 0.25 * q.z) + 0.5, 1.) - 0.5);
   d = max (PrCylAnDf (p, cgRad, 0.1, cgLen), - PrBox2Df (qs, float2 (0.45, 0.45)));
-  if (d < dMin) { dMin = d;  idObj = idCage;  qHit = q; }
+  if (d < dMin) { dMin = d;  idObj = idCage;  qHit = q; } // ???
   q.z = abs (q.z) - cgLen;
   d = max (max (PrSphDf (q, cgRad + 0.1), cbRad + 0.1 - length (q.xy)), - q.z);
   if (d < dMin) { dMin = d;  idObj = idCage;  qHit = q; }
