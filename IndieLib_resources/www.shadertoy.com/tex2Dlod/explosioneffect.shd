@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -272,7 +272,7 @@ struct Ball
 
 Ball balls[MAX_MULT_EXPLOSIONS];
 
-float tmax = 1.0 + delay_range;
+#define tmax 1.0 + delay_range
 float getTime()
 {
 #if defined (ALTERNATE_MOUSE) && !defined (SHADERTOY_APP)
@@ -434,7 +434,9 @@ float4 computeColour( float density, float radius, float bright )
 	// the media
 	//float4 result = float4( mix( float3(1.0,0.9,0.8), float3(.7,0.3,0.2), density ), density );
 	//float4 result = float4( mix( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), density ), density );
-	float4 result = float4( float3(mix( 1.0, color_low, density )), density );
+	float f=mix( 1.0, color_low, density );
+	float3 v3=float3(f,f,f);
+	float4 result = float4( v3.x, v3.y, v3.z, density );
     //float4 result = float4( mix( 1.1*float3(1.0,0.9,0.8), 0.9*float3(0.4,0.15,0.1), density ), density );
     //float4 result = float4(1.,1.,1.,density);
 
@@ -519,7 +521,7 @@ void calcDens( in float3 pos, out float rad, out float r, out float rawDens, in 
 
     r = 0.0;
     rawDens = 0.0;
-    col = float4(0.0);
+    col = float4(0,0,0,0);
 
     for ( int k = 0; k < mult_explosions; ++k )
     {
@@ -652,7 +654,7 @@ void contributeColor( in float4 col, inout float4 sum )
 
 float4 raymarch( in float3 rayo, in float3 rayd, in float2 expInter, in float t, out float d )
 {
-    float4 sum = float4( 0.0 );
+    float4 sum = float4( 0,0,0,0 );
     
     float step = 1.5 / float(steps);
      
@@ -733,7 +735,7 @@ float2 iSphere(in float3 ro, in float3 rd, in float rad)
 	float c = dot(ro, ro) - rad * rad;		//=dot(oc, oc) - sph.w * sph.w; //sph.w is radius
 	float h = b*b - c; // delta
 	if(h < 0.0) 
-		return float2(-1.0);
+		return float2(-1.0, -1.0);
     //h = sqrt(h);
     h *= 0.5;		// just some rough approximation to prevent sqrt.
     return float2(-b-h, -b+h);
@@ -767,7 +769,7 @@ float3 computePixelRay( in float2 p, out float3 cameraPos )
     cameraPos = float3(xoff,yoff,zoff);
      
     // camera target
-    float3 target = float3(0.);
+    float3 target = float3(0,0,0);
      
     // camera frame
     float3 fo = normalize(target-cameraPos);
@@ -787,7 +789,7 @@ void setup()
 {
     // first expl ball always centered looking up
     balls[0] = Ball(
-        float3(0.),
+        float3(0,0,0),
         float3(0.,.7,0.),		// not normalized so that expl ball 0 rolls somewhat slower
         0.0
     );

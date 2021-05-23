@@ -3,6 +3,11 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -10,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -78,8 +79,9 @@ float4 main(VsOut IN): COLOR
     
     // tonemapping
     col = col / (1.0+col);
-    col = pow(col, float3(1.0/2.2));
+    float f=1.0/2.2;
+    col = pow(col, float3(f,f,f));
     col = clamp(col, 0.0, 1.0);
 	
-	return float4(col, 1.0);
+	return float4(col.x, col.y, col.z, 1.0);
 }

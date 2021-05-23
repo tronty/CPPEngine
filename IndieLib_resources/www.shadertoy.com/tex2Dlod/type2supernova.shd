@@ -3,7 +3,6 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +10,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -34,6 +29,21 @@ float4      iMouse;                       // mouse pixel coords
 sampler2D iChannel0;
 sampler2D iChannel1;
 sampler2D iChannel2;
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 // "Type 2 Supernova" by Duke
 // https://www.shadertoy.com/view/lsyXDK
 // VR ready version of this shader is here https://www.shadertoy.com/view/XdKSDV (thanks RavenWorks for help)
@@ -84,7 +94,8 @@ float Sphere( float3 p, float r )
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise_ functions if you're ok with some repetition.
 const float nudge = 4.;	// size of perpendicular vector
-float normalizer = 1.0 / sqrt(1.0 + nudge*nudge);	// pythagorean theorem on that perpendicular to maintain scale
+// pythagorean theorem on that perpendicular to maintain scale
+#define normalizer 1.0 / sqrt(1.0 + nudge*nudge)
 float SpiralNoiseC(float3 p)
 {
     float n = 1.-mod(iTime * 0.1,-1.); // noise_ amount
@@ -156,9 +167,9 @@ bool RaySphereIntersect(float3 org, float3 dir, out float near, out float far)
 // More details at : http://filmicgames.com/archives/75
 float3 ToneMapFilmicALU(float3 _color)
 {
-	_color = max(float3(0), _color - float3(0.004));
-	_color = (_color * (6.2*_color + float3(0.5))) / (_color * (6.2 * _color + float3(1.7)) + float3(0.06));
-	return pow(_color, float3(2.2));
+	_color = max(float3(0,0,0), _color - float3(0.004,0.004,0.004));
+	_color = (_color * (6.2*_color + float3(0.5,0.5,0.5))) / (_color * (6.2 * _color + float3(1.7,1.7,1.7)) + float3(0.06,0.06,0.06));
+	return pow(_color, float3(2.2,2.2,2.2));
 }
 
 float4 main(VsOut IN): COLOR 
@@ -189,7 +200,7 @@ float4 main(VsOut IN): COLOR
     
     const float h = 0.1;
    
-	float4 sum = float4(0.0);
+	float4 sum = float4(0,0,0,0);
    
     float min_dist=0.0, max_dist=0.0;
 
@@ -211,7 +222,7 @@ float4 main(VsOut IN): COLOR
         float d = map(pos);
         
         // point light calculations
-        float3 ldst = float3(0.0)-pos;
+        float3 ldst = float3(0,0,0)-pos;
         float lDist = max(length(ldst), 0.001);
 
         // the color of light 
@@ -273,9 +284,10 @@ float4 main(VsOut IN): COLOR
     // stars background
     if (td<.8)
     {
-        float3 stars = float3(noise_(rd*500.0)*0.5+0.5);
-        float3 starbg = float3(0.0);
-        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0.0),rd)+0.75,0.0,1.0));
+    	float f=noise_(rd*500.0)*0.5+0.5;
+        float3 stars = float3(f,f,f);
+        float3 starbg = float3(0,0,0);
+        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0,0,0),rd)+0.75,0.0,1.0));
         starbg = clamp(starbg, 0.0, 1.0);
         sum.xyz += starbg; 
     }
@@ -284,6 +296,6 @@ float4 main(VsOut IN): COLOR
     #ifdef TONEMAPPING
     return float4(ToneMapFilmicALU(sum.xyz),1.0);
 	#else
-    return float4(sum.xyz,1.0);
+    return float4(sum.x,sum.y,sum.z,1.0);
 	#endif
 }

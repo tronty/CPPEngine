@@ -3,6 +3,11 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -10,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -27,10 +28,25 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-float3      iResolution;                  // viewport resolution (in pixels)
+float3      iResolution;                  // viewport resolution (in pixels
 float     iTime;                        // shader playback time (in seconds)
 float4      iMouse;                       // mouse pixel coords
 sampler2D iChannel0;
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 /*
 The MIT License (MIT)
 
@@ -126,7 +142,7 @@ float4 map( in float3 p )
 
     d = clamp( d, 0.0, 1.0 );
     
-    float4 res = float4( d );
+    float4 res = float4( d,d,d,d );
     
     float3 col = 1.15 * float3(1.0,0.95,0.8);
     col += float3(1.,0.,0.) * exp2(res.x*10.-10.);
@@ -238,7 +254,7 @@ float4 raymarch( in float3 ro, in float3 rd )
 
 float3 sky( float3 rd )
 {
-    float3 col = float3(0.);
+    float3 col = float3(0,0,0);
     
     float hort = 1. - clamp(abs(rd.y), 0., 1.);
     col += 0.5*float3(.99,.5,.0)*exp2(hort*8.-8.);
@@ -254,8 +270,8 @@ float3 sky( float3 rd )
     
     float ax = atan(rd.y,length(rd.xz))/1.;
     float ay = atan(rd.z,rd.x)/2.;
-    float st = texture( iChannel0, float2(ax,ay) ).x;
-    float st2 = texture( iChannel0, .25*float2(ax,ay) ).x;
+    float st = tex2D( iChannel0, float2(ax,ay) ).x;
+    float st2 = tex2D( iChannel0, .25*float2(ax,ay) ).x;
     st *= st2;
     st = smoothstep(0.65,.9,st);
     col = mix(col,col+1.8*st,clamp(1.-1.1*length(col),0.,1.));
@@ -268,8 +284,8 @@ float4 main(VsOut IN): COLOR
 {
 	float4 fragColor;
 	float2 fragCoord=IN.uv;
-    if( iMouse.z > 0. )
-        useNewApproach = false;
+    //if( iMouse.z > 0. ) // ???
+    //    useNewApproach = false;
     
     float2 q = fragCoord.xy / iResolution.xy;
     float2 p = -1.0 + 2.0*q;

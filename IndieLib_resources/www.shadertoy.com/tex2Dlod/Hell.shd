@@ -3,6 +3,11 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -10,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -58,7 +59,7 @@ float4 map( float3 p )
     // twist space	
 	float co = cos(den - 0.25*iTime);
 	float si = sin(den - 0.25*iTime);
-	p.xz = float2x2(co,-si,si,co)*p.xz;
+	p.xz = mul(float2x2(co,-si,si,co),p.xz);
 
     // smoke	
 	float f;
@@ -78,7 +79,7 @@ float4 map( float3 p )
 
 float3 raymarch( in float3 ro, in float3 rd, in float2 pixel )
 {
-	float4 sum = float4( 0.0 );
+	float4 sum = float4( 0,0,0,0 );
 
 	float t = 0.0;
 
@@ -116,7 +117,7 @@ float4 main(VsOut IN): COLOR
     p.x *= iResolution.x/ iResolution.y;
 	
     float2 mo = iMouse.xy / iResolution.xy;
-    if( iMouse.w<=0.00001 ) mo=float2(0.0);
+    if( iMouse.w<=0.00001 ) mo=float2(0,0);
 	
     // camera
     float3 ro = 4.0*normalize(float3(cos(3.0*mo.x), 1.4 - 1.0*(mo.y-.1), sin(3.0*mo.x)));

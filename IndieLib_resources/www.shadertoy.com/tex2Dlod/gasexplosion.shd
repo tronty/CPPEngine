@@ -4,6 +4,10 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -11,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -34,6 +34,21 @@ float4      iMouse;                       // mouse pixel coords
 sampler2D iChannel0;
 sampler2D iChannel1;
 sampler2D iChannel2;
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
 // Based on https://www.shadertoy.com/view/lsySzd
 //
 // "Volumetric explosion" by Duke
@@ -123,7 +138,8 @@ float veSphere(float3 p, float r) {
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise_ functions if you're ok with some repetition.
 const float veNudge = 100.3 * 4.;	// size of perpendicular vector
-float veNormalizer = 1.0 / sqrt(1.0 + veNudge * veNudge);	// pythagorean theorem on that perpendicular to maintain scale
+// pythagorean theorem on that perpendicular to maintain scale
+#define veNormalizer 1.0 / sqrt(1.0 + veNudge * veNudge)
 float veSpiralNoiseC(float3 p) {
 	float n = 1.5 - 6. * veProgress; // noise_ amount
 	float iter = 2.0;
@@ -191,9 +207,9 @@ bool veRaySphereIntersect(float3 org, float3 dir, out float near, out float far)
 // Applies the filmic curve from John Hable's presentation
 // More details at : http://filmicgames.com/archives/75
 float3 veToneMapFilmicALU(float3 _color) {
-	_color = max(float3(0), _color - float3(0.004));
-	_color = (_color * (6.2 * _color + float3(0.5)))
-			/ (_color * (6.2 * _color + float3(1.7)) + float3(0.06));
+	_color = max(float3(0,0,0), _color - float3(0.004,0.004,0.004));
+	_color = (_color * (6.2 * _color + float3(0.5,0.5,0.5)))
+			/ (_color * (6.2 * _color + float3(1.7,1.7,1.7)) + float3(0.06,0.06,0.06));
 	return _color;
 }
 
@@ -255,7 +271,7 @@ float veFbm3(float3 p) {
 float veFbmn(float3 p, float3 n) {
 	float3 s;
 	float a;
-	s = float3(0.);
+	s = float3(0,0,0);
 	a = 1.;
 	for (int i = 0; i < 5; i++) {
 		s += a * float3(veNoisefv2(p.yz), veNoisefv2(p.zx), veNoisefv2(p.xy));
@@ -283,7 +299,7 @@ float3 veSpaceCol(float3 ro, float3 rd) {
 //----------------------------------------------------------------------------------------
 //  1 out, 1 in...
 float hash11(float p) {
-	float3 p3 = fract(float3(p) * HASHSCALE1);
+	float3 p3 = fract(float3(p,p,p) * HASHSCALE1);
 	p3 += dot(p3, p3.yzx + 19.19);
 	return fract((p3.x + p3.y) * p3.z);
 }
@@ -307,7 +323,7 @@ float hash13(float3 p3) {
 //----------------------------------------------------------------------------------------
 //  2 out, 1 in...
 float2 hash21(float p) {
-	float3 p3 = fract(float3(p) * HASHSCALE3);
+	float3 p3 = fract(float3(p,p,p) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
 	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
@@ -315,7 +331,7 @@ float2 hash21(float p) {
 //----------------------------------------------------------------------------------------
 ///  2 out, 2 in...
 float2 hash22(float2 p) {
-	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	float3 p3 = fract(float3(p.xyx,p.xyx,p.xyx) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
 	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
@@ -331,7 +347,7 @@ float2 hash23(float3 p3) {
 //----------------------------------------------------------------------------------------
 //  3 out, 1 in...
 float3 hash31(float p) {
-	float3 p3 = fract(float3(p) * HASHSCALE3);
+	float3 p3 = fract(float3(p,p,p) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
 	return fract(
 			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));

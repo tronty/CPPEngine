@@ -3,6 +3,11 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -10,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -27,7 +28,7 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-#define ivec2 float2
+#define int2 float2
 sampler2D iChannel0;
 float     iTime;                        // shader playback time (in seconds)
 float2      iResolution;                  // viewport resolution (in pixels)
@@ -48,12 +49,12 @@ float noise_( in float3 x )
     float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0 ).yx;
 #else
     ivec3 q = ivec3(p);
-	ivec2 uv = q.xy + ivec2(37,17)*q.z;
+	int2 uv = q.xy + int2(37,17)*q.z;
 
 	float2 rg = mix( mix( texelFetch( iChannel0, (uv           )&255, 0 ),
-				        texelFetch( iChannel0, (uv+ivec2(1,0))&255, 0 ), f.x ),
-				   mix( texelFetch( iChannel0, (uv+ivec2(0,1))&255, 0 ),
-				        texelFetch( iChannel0, (uv+ivec2(1,1))&255, 0 ), f.x ), f.y ).yx;
+				        texelFetch( iChannel0, (uv+int2(1,0))&255, 0 ), f.x ),
+				   mix( texelFetch( iChannel0, (uv+int2(0,1))&255, 0 ),
+				        texelFetch( iChannel0, (uv+int2(1,1))&255, 0 ), f.x ), f.y ).yx;
 #endif    
     
 	return -1.0+2.0*mix( rg.x, rg.y, f.z );
@@ -116,9 +117,9 @@ float4 integrate( in float4 sum, in float dif, in float den, in float3 bgcol, in
 
 #define MARCH(STEPS,MAPLOD) for(int i=0; i<STEPS; i++) { float3  pos = ro + t*rd; if( pos.y<-3.0 || pos.y>2.0 || sum.a > 0.99 ) break; float den = MAPLOD( pos ); if( den>0.01 ) { float dif =  clamp((den - MAPLOD(pos+0.3*sundir))/0.6, 0.0, 1.0 ); sum = integrate( sum, dif, den, bgcol, t ); } t += max(0.05,0.02*t); }
 
-float4 raymarch( in float3 ro, in float3 rd, in float3 bgcol, in ivec2 px )
+float4 raymarch( in float3 ro, in float3 rd, in float3 bgcol, in int2 px )
 {
-	float4 sum = float4(0.0);
+	float4 sum = float4(0, 0, 0, 0);
 
 	float t = 0.0;//0.05*texelFetch( iChannel0, px&255, 0 ).x;
 
@@ -139,7 +140,7 @@ float3x3 setCamera( in float3 ro, in float3 ta, float cr )
     return float3x3( cu, cv, cw );
 }
 
-float4 render( in float3 ro, in float3 rd, in ivec2 px )
+float4 render( in float3 ro, in float3 rd, in int2 px )
 {
     // background sky     
 	float sun = clamp( dot(sundir,rd), 0.0, 1.0 );
@@ -173,11 +174,11 @@ float4 main(VsOut IN): COLOR
     // ray
     float3 rd = ca * normalize( float3(p.xy,1.5));
     
-    fragColor = render( ro, rd, ivec2(fragCoord-0.5) );
+    fragColor = render( ro, rd, int2(fragCoord-0.5) );
 	return fragColor;
 }
 
 void mainVR( out float4 fragColor, in float2 fragCoord, in float3 fragRayOri, in float3 fragRayDir )
 {
-    fragColor = render( fragRayOri, fragRayDir, ivec2(fragCoord-0.5) );
+    fragColor = render( fragRayOri, fragRayDir, int2(fragCoord-0.5) );
 }

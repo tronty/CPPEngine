@@ -3,6 +3,11 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -10,10 +15,6 @@ struct VsIn {
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
 };
 
 [Vertex shader]
@@ -80,7 +81,8 @@ float rand(float2 co)
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise_ functions if you're ok with some repetition.
 const float nudge = 0.739513;	// size of perpendicular vector
-float normalizer = 1.0 / sqrt(1.0 + nudge*nudge);	// pythagorean theorem on that perpendicular to maintain scale
+// pythagorean theorem on that perpendicular to maintain scale
+#define normalizer 1.0 / sqrt(1.0 + nudge*nudge)
 float SpiralNoiseC(float3 p)
 {
     float n = 0.0;	// noise_ amount
@@ -169,8 +171,8 @@ bool RaySphereIntersect(float3 org, float3 dir, out float near, out float far)
 // More details at : http://filmicgames.com/archives/75
 float3 ToneMapFilmicALU(float3 _color)
 {
-	_color = max(float3(0), _color - float3(0.004));
-	_color = (_color * (6.2*_color + float3(0.5))) / (_color * (6.2 * _color + float3(1.7)) + float3(0.06));
+	_color = max(float3(0,0,0), _color - float3(0.004,0.004,0.004));
+	_color = (_color * (6.2*_color + float3(0.5,0.5,0.5))) / (_color * (6.2 * _color + float3(1.7,1.7,1.7)) + float3(0.06,0.06,0.06));
 	return _color;
 }
 
@@ -184,9 +186,9 @@ float4 main(VsOut IN): COLOR
 	const float KEY_2 = 50.5/256.0;
 	const float KEY_3 = 51.5/256.0;
     float key = 0.0;
-    key += 0.7*texture(iChannel1, float2(KEY_1,0.25)).x;
-    key += 0.7*texture(iChannel1, float2(KEY_2,0.25)).x;
-    key += 0.7*texture(iChannel1, float2(KEY_3,0.25)).x;
+    key += 0.7*tex2D(iChannel1, float2(KEY_1,0.25)).x;
+    key += 0.7*tex2D(iChannel1, float2(KEY_2,0.25)).x;
+    key += 0.7*tex2D(iChannel1, float2(KEY_3,0.25)).x;
 
 	// ro: ray origin
 	// rd: direction of the ray
@@ -220,7 +222,7 @@ float4 main(VsOut IN): COLOR
     
     const float h = 0.1;
    
-	float4 sum = float4(0.0);
+	float4 sum = float4(0,0,0,0);
    
     float min_dist=0.0, max_dist=0.0;
 
@@ -245,7 +247,7 @@ float4 main(VsOut IN): COLOR
 		d = max(d,0.08);
         
         // point light calculations
-        float3 ldst = float3(0.0)-pos;
+        float3 ldst = float3(0,0,0)-pos;
         float lDist = max(length(ldst), 0.001);
 
         // star in center
@@ -281,7 +283,7 @@ float4 main(VsOut IN): COLOR
       
         #ifdef DITHERING
         // add in noise_ to reduce banding and create fuzz
-        d=abs(d)*(.8+0.2*rand(seed*float2(i)));
+        d=abs(d)*(.8+0.2*rand(seed*float2(i,i)));
         #endif 
 		
         // trying to optimize step size near the camera and near the light source
@@ -302,9 +304,10 @@ float4 main(VsOut IN): COLOR
     // stars background
     if (td<.8)
     {
-        float3 stars = float3(noise_(rd*500.0)*0.5+0.5);
-        float3 starbg = float3(0.0);
-        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0.0),rd)+0.75,0.0,1.0));
+    	float f=noise_(rd*500.0)*0.5+0.5;
+        float3 stars = float3(f,f,f);
+        float3 starbg = float3(0,0,0);
+        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0,0,0),rd)+0.75,0.0,1.0));
         starbg = clamp(starbg, 0.0, 1.0);
         sum.xyz += starbg; 
     }
