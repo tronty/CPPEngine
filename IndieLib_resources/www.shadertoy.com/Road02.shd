@@ -8,14 +8,6 @@ struct VsOut {
     float4 position	: POSITION;
     float2 uv		: TEXCOORD0;
 };
-#if 1
-#define WSIGN +
-#define ROW_MAJOR
-#define MVPSEMANTIC
-#define fract frac
-#define mix lerp
-#define atan(x,y) atan2(y,x)
-#elif 0
 struct VsIn {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
@@ -36,7 +28,6 @@ VsOut main(VsIn In)
 }
 
 [Fragment shader]
-#endif
 float3 mod(float3 x, float y)
 {
   return x - y * floor(x / y); // ???
