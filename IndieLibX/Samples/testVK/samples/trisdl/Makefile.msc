@@ -1,0 +1,30 @@
+COMPILER_VERSION = 8
+COMPILER_VERSION = 9.0
+COMPILER_VERSION = 14.0
+TARGET_NAME	 = trisdl
+INCLUDEDIRECTORIES = /I"C:\Program Files (x86)\Windows Kits\8.1\Include\shared" /I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt" /I"C:\Program Files (x86)\Windows Kits\8.1\Include\um" /I"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include" /I"..\..\external\vulkan\include" /I"..\..\external\SDL2\include"
+LIBRARIES	= /LIBPATH:"C:\Program Files (x86)\Microsoft Visual Studio $(COMPILER_VERSION)\VC\lib" /LIBPATH:"C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x86" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.10240.0\ucrt\x86" /LIBPATH:"..\..\..\..\Dependencies\SDL2-2.0.10\lib\x86" /LIBPATH:"..\..\..\..\Dependencies\vulkan" vulkan-1.lib SDL2.lib GDI32.lib ole32.lib Winmm.lib Ws2_32.lib Advapi32.lib User32.lib ComCtl32.lib d3d11.lib D3dcompiler.lib dxguid.lib d2d1.lib dxgi.lib dwrite.lib windowscodecs.lib
+FLAGS		=	/D _MSC_VER=1600 /D WIN32 /D _WIN32 /D _DEBUG /D PROFILE /D D3DXFX_LARGEADDRESS_HANDLE /D _MBCS /D VK_USE_PLATFORM_WIN32_KHR
+
+.\$(TARGET_NAME).obj: .\$(TARGET_NAME).cpp
+	"C:\Program Files (x86)\Microsoft Visual Studio $(COMPILER_VERSION)\VC\bin"\cl.exe $(INCLUDEDIRECTORIES) $(FLAGS) /Od /Zi /EHsc /MDd /Fo".\\" /c .\$(TARGET_NAME).cpp
+
+CPPSRCS	= 		.\$(TARGET_NAME).cpp
+CSRCS	= 
+
+OBJ_FILES = $(CPPSRCS:.cpp=.obj) $(CSRCS:.c=.obj)
+
+$(TARGET_NAME).exe: $(OBJ_FILES)
+	"C:\Program Files (x86)\Microsoft Visual Studio $(COMPILER_VERSION)\VC\bin"\link.exe /out:$(TARGET_NAME).exe /debug $(OBJ_FILES) $(LIBRARIES) 
+
+clean:
+	@echo clean
+	del $(OBJ_FILES)
+	del SDL2.dll
+	del vulkan-1.dll
+
+all:	$(TARGET_NAME).exe
+	COPY ..\..\external\SDL2\lib\x86\SDL2.dll .
+	COPY ..\..\external\vulkan\lib\vulkan-1.dll .
+	CALL $(TARGET_NAME).exe
+

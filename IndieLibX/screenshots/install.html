@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>IndieLibX installation</title>
+</head>
+<body>
+<br>
+<h1>IndieLibX installation</h1>
+<br>
+<br>
+<table>
+
+<tr><td><img src="http://laskuri.omasivu.fi/d9f733a08be955e367037b7025f73ad2aa67ec9f/1141.gif" alt="IndieLibX installation"></td></tr>
+
+<tr><td>The old commandline version of installation:</td></tr>
+<tr><td>Ubuntu and debian:</td></tr>
+
+<tr><td><b>sudo apt-get update</b></td></tr>
+<tr><td><b>sudo apt-get upgrade</b></td></tr>
+<tr><td><b>sudo apt-get dist-upgrade</b></td></tr>
+<tr><td><b>sudo apt-get install gedit cvs git subversion mercurial gcc g++ build-essential mesa-common-dev libglu1-mesa-dev valgrind filezilla cmake nvidia-cg-toolkit rar libsdl1.2-dev libsdl-image1.2-dev python bison flex libtool autoconf swig mypaint pencil blender curl libjpeg-dev libpng12-dev libdevil-dev libassimp-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev libtinyxml-dev libsdl2-dev libsdl2-image-dev openjdk-7-jdk mono-mcs lmms libusb-dev asunder python-dev libz-dev flashplugin-installer libcgal-dev libcgal-demo</b></td></tr>
+<tr><td><b>sudo pip install PyOpenGL PyOpenGL_accelerate</b></td></tr>
+<tr><td><b>sudo apt-get install libeigen3-dev libgmp-dev libgmpxx4ldbl libmpfr-dev libboost-dev libboost-thread-dev libtbb-dev python3-dev</b></td></tr>
+
+
+
+<tr><td>OSX:</td></tr>
+
+<tr><td><b>ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</b></td></tr>
+<tr><td><b>brew install cvs git subversion mercurial gcc valgrind cmake python bison flex libtool autoconf swig curl</b></td></tr>
+
+
+<tr><td></td><td><b>cd $HOME</b></td></tr>
+<tr><td></td><td><b>curl -O http://www.tommironty.fi/IndieLibX.zip</b></td></tr>
+<tr><td></td><td><b>curl -O http://www.tommironty.fi/IndieLib_resources.zip</b></td></tr>
+<tr><td></td><td><b>unzip -x ./IndieLibX.zip -d ./IndieLibX</b></td></tr>
+<tr><td></td><td><b>unzip -x ./IndieLib_resources.zip -d ./IndieLib_resources</b></td></tr>
+
+<tr><td>On mac you need install at least XCode, ADT-bundle and NDK:</td></tr>
+<tr><td>NDK:</td><td></td</tr>
+<tr><td><b>curl -O http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86_64.tar.bz2
+</b></td></tr>
+<tr><td><b>bunzip2 -d ./android-ndk-r9d-darwin-x86_64.tar.bz2</b></td></tr>
+<tr><td><b>tar -xf ./android-ndk-r9d-darwin-x86_64.tar</b></td></tr>
+<tr><td>ADT-bundle: <b>curl -O http://dl.google.com/android/adt/adt-bundle-mac-x86_64-20131030.zip</b></td></tr>
+<tr><td><b>unzip -x ./adt-bundle-mac-x86_64-20131030.zip -d ./adt-bundle</b></td></tr>
+<tr><td><b>echo "export ANDROID_NDK=\$HOME/android-ndk-r9d" >> .bash_profile</b></td></tr>
+<tr><td><b>echo "export ANDROID_SDK=\$HOME/adt-bundle/sdk" >> .bash_profile</b></td></tr>
+
+<tr><td>On Ubuntu and Debian:</td></tr>
+<tr><td>NDK:        <b>curl -O http://dl.google.com/android/ndk/android-ndk-r9d-linux-x86.tar.bz2</b></td></tr>
+<tr><td><b>bunzip2 -d ./android-ndk-r9d-linux-x86.tar.bz2</b></td></tr>
+<tr><td><b>tar -xf ./android-ndk-r9d-linux-x86.tar</b></td></tr>
+<tr><td>ADT-bundle: <b>curl -O http://dl.google.com/android/adt/adt-bundle-linux-x86-20131030.zip</b></td></tr>
+<tr><td><b>unzip -x ./adt-bundle-linux-x86-20131030.zip -d ./adt-bundle</b></td></tr>
+<tr><td><b>echo "export ANDROID_NDK=\$HOME/android-ndk-r9d" >> .bashrc</b></td></tr>
+<tr><td><b>echo "export ANDROID_SDK=\$HOME/adt-bundle/sdk" >> .bashrc</b></td></tr>
+
+<tr><td><b>$ANDROID_SDK/tools/android update sdk --no-ui</b></td></tr>
+<tr><td>Open Android SDK Manager window and mark checkbox Android SDK Build-tools 19.1 to be installed:</td></tr>
+<tr><td><b>$ANDROID_SDK/tools/android update sdk --filter tools,platform-tools,build-tools-19.1.0</b></td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>For OSX builds it may be necessary to build the SDL2 and SDL2_image from sources:</td></tr>
+<tr><td><b>cd $HOME</b></td></tr>
+<tr><td><b>curl -O https://www.libsdl.org/release/SDL2-2.0.10.tar.gz</b></td></tr>
+<tr><td><b>gunzip ./SDL2-2.0.10.tar.gz</b></td></tr>
+<tr><td><b>tar -xf ./SDL2-2.0.10.tar</b></td></tr>
+<tr><td><b>cd ./SDL2-2.0.10</b></td></tr>
+<tr><td><b>./configure</b></td></tr>
+<tr><td><b>make</b></td></tr>
+<tr><td><b>sudo make install</b></td></tr>
+<tr><td><b>cd ..</b></td></tr>
+<tr><td><b>curl -O https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz</b></td></tr>
+<tr><td><b>gunzip ./SDL2_image-2.0.0.tar.gz</b></td></tr>
+<tr><td><b>tar -xf ./SDL2_image-2.0.0.tar</b></td></tr>
+<tr><td><b>cd ./SDL2_image-2.0.0</b></td></tr>
+<tr><td><b>./configure</b></td></tr>
+<tr><td><b>make</b></td></tr>
+<tr><td><b>sudo make install</b></td></tr>
+<tr><td><b>cd ..</b></td></tr>
+</table>
+</body>
+</html>
+

@@ -1,0 +1,159 @@
+<html>
+<head>
+<title>IndieLibX</title>
+</head>
+<body>
+<br>
+<h1>IndieLibX</h1>
+<br>
+<br>
+<table>
+
+<tr><td><img src="http://laskuri.omasivu.fi/4b78c45467428492bf137f66f832cfd2bbb37cc9/2003.gif" alt="IndieLibX"></td></tr>
+
+<tr><td>To get started you can try <A TARGET="_blank" HREF="install.sh">./install.sh</A> on linuxes and on OSX:</td></tr>
+<tr><td></td><td><b>cd $HOME</b></td></tr>
+<tr><td></td><td><b>chmod a+x ./install.sh</b></td></tr>
+<tr><td></td><td><b>./install.sh</b></td></tr>
+<br>
+<tr><td>./install.sh installs (tested on 32-bit Ubuntu 16.04 and 64-bit Debian 8.4) all the compiled libraries from the <a target="_blank" href="../IndieLibX_AllLibs_LNX32.zip">IndieLibX_AllLibs_LNX32.zip</a> or <a target="_blank" href="../IndieLibX_AllLibs_LNX64.zip">IndieLibX_AllLibs_LNX64.zip</a> or <a target="_blank" href="../IndieLibX_AllLibs_OSX.zip">IndieLibX_AllLibs_OSX.zip</a> or <a target="_blank" href="../IndieLibX_AllLibs_NDK.zip">IndieLibX_AllLibs_NDK.zip</a> or <a target="_blank" href="../IndieLibX_AllLibs_iOS.zip">IndieLibX_AllLibs_iOS.zip</a> or <a target="_blank" href="../IndieLibX_AllLibs_WIN64.zip">IndieLibX_AllLibs_WIN64.zip</a> packages.</td></tr>
+<tr><td>If this does not work install.sh compiles and links all the libraries from scratch.</td></tr>
+<tr><td>Compilation may take considerable amount of time particularly in 32-bit linuxes.</td></tr>
+<tr><td>Compilation is faster in 64-bit linuxes.</td></tr>
+<br>
+<tr><td>Or alternatively:</td></tr>
+<tr><td><A TARGET="_blank" HREF="install.html">The old commandline version of installation</A>.</td></tr>
+
+<!-- tr><td>On Windows I use <A TARGET="_blank" HREF="http://www.microsoft.com/en-us/download/details.aspx?id=6812">Microsoft DirectX SDK (June 2010)</A> and <b>Microsoft Visual Studio 9.0 Express</b> where the NMake build tool can be found.</td></tr -->
+
+<tr><td>The nmake is the preferred build tool for the Windows.</td></tr>
+<tr><td>The make is the preferred build tool for the iOS and OSX.</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>Place folders IndieLibX and IndieLib_resources to same folder.
+<tr><td>On linuxes and Darwin the folders are:</td></tr>
+<tr><td><b>$HOME/IndieLibX</b> and <b>$HOME/IndieLibX_resources</b></td></tr>
+<tr><td>On windows the folders are:</td></tr>
+<tr><td><b>C:\\IndieLibX</b> and <b>C:\\IndieLibX_resources</b></td></tr>
+<!-- tr><td>On android device the resource folder is:</td></tr>
+<tr><td><b>/mnt/sdcard/IndieLib_resources</b></td></tr>
+<tr><td>Copy with adb the resource folder to android device:</td></tr>
+<tr><td><b>$ANDROID_SDK/sdk/platform-tools/adb push $HOME/IndieLib_resources /mnt/sdcard/IndieLib_resources</b></td></tr -->
+<tr><td>The iOS (<b>Documents/IndieLibX_resources</b>) and NDK (<b>/mnt/sdcard/IndieLibX_resources</b>) build system places automatically the resource folder and the builded application to the application bundle.</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td></td><td>For a NDK build two console windows are needed:</td></tr>
+
+<tr><td></td><td>On first console window:</td></tr>
+
+<tr><td></td><td><b>cd $HOME/IndieLibX</b></td></tr>
+<tr><td></td><td><b>#android create avd -n Android4.4 -t 1 </b></td></tr>
+<tr><td></td><td><b>make emulator</b> =&gt; starts an emulator instance and writes log messages from application to $HOME/IndieLibX/NDK.log</td></tr>
+
+<tr><td></td><td>On second console window:</td></tr>
+
+<!-- "Usage: $0 [<Test|SampleApps|TerrainApps|Tanks|IndieLibApps|AllLibs>] [<NDK|iOS|LNX|OSX|NMAKE|VC|MW|PRO|CMake|BAT>]" -->
+
+<tr><td></td><td><b>cd $HOME/IndieLibX</b></td></tr>
+<tr><td></td><td><b>./make.sh Test NDK</b> =&gt; NDK short test build.</td></tr>
+<tr><td></td><td><b>./make.sh SampleApps NDK</b> =&gt; Some NDK samples.</td></tr>
+<tr><td></td><td><b>./make.sh TerrainApps NDK</b> =&gt; Some 3D terrain NDK samples.</td></tr>
+<tr><td></td><td><b>./make.sh IndieLibApps NDK</b> =&gt; NDK full IndieLibX build.</td></tr>
+
+<tr><td>The NDK solutions are now built without compilation errors. More about SimpleTexture on NDK is documented in <A TARGET="_blank" HREF="SimpleTexture_on_NDK.html">SimpleTexture_on_NDK</A>.</td></tr>
+<tr><td></td></tr>
+</table>
+<br>
+<pre>
+
+$HOME/IndieLibX/Libraries/SDL2-2.0.10/android-project/jni/Application.mk:
+APP_ABI := armeabi mips x86 # works in the emulator
+APP_ABI := x86 # does not work in the emulator
+</pre>
+<table>
+<tr><td></td></tr>
+
+<tr><td><b>./make.sh Test iOS</b> =&gt; iOS short test build.</td></tr>
+<tr><td><b>./make.sh SampleApps iOS</b> =&gt; Some iOS samples.</td></tr>
+<tr><td><b>./make.sh TerrainApps iOS</b> =&gt; Some 3D terrain iOS samples.</td></tr>
+<tr><td><b>./make.sh IndieLibApps iOS</b> =&gt; iOS full IndieLibX.</td></tr>
+
+<tr><td>After resetting mac back to factory settings and reinstalling Xcode I was able to compile and run <A TARGET="_blank" HREF="https://developer.apple.com/library/mac/samplecode/GLEssentials/GLEssentials.zip">GLEssentials sample</A> in OSX and iOS simulator.</td></tr>
+
+<tr><td>The iOS solutions are now built without compilation errors. More about SimpleTexture on iOS is documented in <A TARGET="_blank" HREF="SimpleTexture_on_iOS.html">SimpleTexture_on_iOS</a>.</td></tr>
+
+</table>
+<pre>
+</pre>
+<table>
+<tr><td></td></tr>
+
+<tr><td><b>./make.sh Test</b> =&gt; LNX/OSX short test build.</td></tr>
+<tr><td><b>./make.sh SampleApps</b> =&gt; Some LNX/OSX samples.</td></tr>
+<tr><td><b>./make.sh TerrainApps</b> =&gt; Some 3D terrain LNX/OSX samples.</td></tr>
+<tr><td><b>./make.sh IndieLibApps</b> =&gt; LNX/OSX full IndieLibX.</td></tr>
+
+<tr><td><b>./run.sh</b> =&gt; test script for the desktop projects</td></tr>
+
+<tr><td><b>./make.sh</b> =&gt; Removes temporary files.</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>Windows build:</td></tr>
+<tr><td></td><td><b>cd C:\\IndieLibX</b></td></tr>
+<tr><td></td><td><b>Make.bat Test</b> =&gt; a short test build.</td></tr>
+<tr><td></td><td><b>Make.bat SampleApps</b> =&gt; Some samples.</td></tr>
+<tr><td></td><td><b>Make.bat TerrainApps</b> =&gt; Some terrain samples.</td></tr>
+<tr><td></td><td><b>Make.bat IndieLibApps</b>  =&gt; a full IndieLibX build.</td></tr>
+
+<tr><td></td><td><b>run.bat</b> =&gt; test script for the desktop projects</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>Additionally you can try script programming with SWIG and python:</td></tr>
+<tr><td></td><td><b>cd $HOME/IndieLibX/scripting</b></td></tr>
+<tr><td></td><td><b>make all</b></td></tr>
+
+<tr><td>./test.sh: combines various builds and tests to a single script:</td></tr>
+<tr><td>1: Test, SampleApps, TerrainApps and IndieLibApps solutions are build and tested.</td></tr>
+<tr><td>2: IndieLibX python scripts are tested.</td></tr>
+<tr><td>3: Test solution for NDK or iOS (linux/OSX-platforms respectively) is built.</td></tr>
+<tr><td></td><td><b>cd $HOME/IndieLibX</b></td></tr>
+<tr><td></td><td><b>./make.sh AllLibs</b></td></tr>
+<tr><td></td><td><b>sudo cp $HOME/IndieLibX/lib/*.a /usr/local/lib/.</b></td></tr>
+<tr><td></td><td><b>./make.sh</b></td></tr>
+<tr><td></td><td><b>./test.sh</b> =&gt; Builds and tests all important solutions.</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>$HOME/IndieLibX/Libraries/STX/src/Image3.cpp:</td></tr>
+
+<tr><td>The STX library is built without SDL_INIT_EVENTTHREAD in SDL_Init function call. Otherwise _totally strange_ things can start to happen!</td></tr>
+
+<tr><td>SDL_Init(SDL_INIT_TIMER|</td></tr>
+<tr><td>SDL_INIT_AUDIO|</td></tr>
+<tr><td>//SDL_INIT_EVENTTHREAD|</td></tr>
+<tr><td>SDL_INIT_JOYSTICK|</td></tr>
+<tr><td>SDL_INIT_VIDEO);</td></tr>
+
+<tr><td>$HOME/IndieLibX/Libraries/aras-p-hlsl2glslfork-de4cd58/README.md:</td></tr>
+<tr><td>* On Windows, the hlsl2glsl library is built with `_HAS_ITERATOR_DEBUGGING=0,_SECURE_SCL=0` defines, which affect MSVC's STL behavior. If this does not match defines in your application, _totally strange_ things can start to happen!</td></tr>
+
+<tr><td></td></tr>
+
+<tr><td>Note that if you managed to build the static libraries (Linux, OSX, Windows, android and iPhoneSimulator builds)</td></tr>
+<tr><td>you can speed up the future build times by copying the built static libraries to a special library folder.</td></tr>
+<tr><td>Build system will then use the static libraries in the special folder in linking phase instead of building them from scratch.</td></tr>
+<tr><td>On linux or OSX: <b>sudo cp $HOME/IndieLibX/lib/*.a /usr/local/lib/.</b></td></tr>
+<tr><td>On Windows: <b>copy C:\\IndieLibX\\lib\\*.lib %USERPROFILE%\\Documents\\lib</b></td></tr>
+<tr><td>For NDK: <b>cp $HOME/IndieLibX/Libraries/MVC/NDK/build/$(mainphoneproject)/obj/local/armeabi/*.a $HOME/android-ndk-r9d/platforms/android-19/arch-arm/usr/lib/.</b></td></tr>
+<tr><td>For iPhoneSimulator: <b>cp -fr $HOME/IndieLibX/lib/*.framework $HOME/lib/iPhoneSimulator/.</b></td></tr>
+
+<!-- pactl load-module module-bluetooth-discover -->
+
+</table>
+</body>
+</html>
+

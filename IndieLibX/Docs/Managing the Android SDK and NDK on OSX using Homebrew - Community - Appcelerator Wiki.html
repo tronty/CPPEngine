@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+                    <title>Managing the Android SDK and NDK on OSX using Homebrew - Community - Appcelerator Wiki</title>
+    
+        
+
+                        
+    
+                        
+    
+
+                
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=IE7">
+<meta charset="UTF-8">
+<meta id="confluence-context-path" name="confluence-context-path" content="">
+<meta id="confluence-base-url" name="confluence-base-url" content="https://wiki.appcelerator.org">
+
+<meta id="atlassian-token" name="atlassian-token" content="fff86b7ee49a9d33005ced4e5cb6867bf0e55fe7">
+
+
+<meta id="confluence-space-key" name="confluence-space-key" content="community">
+
+
+    
+
+    <meta name="confluence-request-time" content="1460219493551">
+        
+    
+        
+            <meta name="ajs-is-confluence-admin" content="false">
+            <meta name="ajs-connection-timeout" content="10000">
+            <meta name="ajs-discovered-plugin-features" content="$discoveredList">
+            <meta name="ajs-use-keyboard-shortcuts" content="true">
+            <meta name="ajs-keyboardshortcut-hash" content="ffa8a6b0de84ac26ca6b02bc6b1ca370">
+            
+            
+
+
+            <meta id="team-calendars-has-jira-link" content="true">
+            <meta name="ajs-team-calendars-display-time-format" content="displayTimeFormat12">
+            <meta id="team-calendars-user-timezone" content="America/Los_Angeles">
+            
+
+            <style>.ia-fixed-sidebar, .ia-splitter-left {width: 285px;}.theme-default .ia-splitter #main {margin-left: 285px;}.ia-fixed-sidebar {visibility: hidden;}</style>
+            
+
+    
+            
+    
+    
+            <meta name="ajs-page-id" content="30086309">
+            <meta name="ajs-latest-page-id" content="30086309">
+            <meta name="ajs-content-type" content="page">
+            <meta name="ajs-page-title" content="Managing the Android SDK and NDK on OSX using Homebrew">
+            <meta name="ajs-parent-page-title" content="Tips and Best Practices">
+            <meta name="ajs-parent-page-id" content="30086012">
+            <meta name="ajs-space-key" content="community">
+            <meta name="ajs-space-name" content="Community">
+            <meta name="ajs-jira-metadata-count" content="-1">
+            <meta name="ajs-from-page-title" content="">
+            <meta name="ajs-can-remove-page" content="false">
+            <meta name="ajs-browse-page-tree-mode" content="view">
+            <meta name="ajs-editor.loader.comment.resources" content="&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/ef827945e35bf3299c34e03a5abeb435/_/download/contextbatch/css/comment-editor/batch.css&quot; media=&quot;all&quot;&gt;
+">
+            <meta name="ajs-context-path" content="">
+            <meta name="ajs-base-url" content="https://wiki.appcelerator.org">
+            <meta name="ajs-version-number" content="5.6.4">
+            <meta name="ajs-build-number" content="5637">
+            <meta name="ajs-remote-user" content="">
+            <meta name="ajs-current-user-fullname" content="">
+            <meta name="ajs-current-user-avatar-url" content="">
+            <meta name="ajs-static-resource-url-prefix" content="/s/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/_">
+            <meta name="ajs-global-settings-attachment-max-size" content="41943040">
+            <meta name="ajs-user-locale" content="en_GB">
+            <meta name="ajs-enabled-dark-features" content="notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.page.async.PageEditedEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.blogpost.BlogPostCreateEvent,notification.plugin.api.enabled.com.atlassian.confluence.plugins.tasklist.event.SendTaskEmailEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.comment.CommentUpdateEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.comment.CommentCreateEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.page.async.PageMovedEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.follow.FollowEvent,notification.plugin.api.enabled.com.atlassian.confluence.plugins.sharepage.api.ShareContentEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.blogpost.BlogPostUpdateEvent,notification.plugin.api.enabled.com.atlassian.confluence.plugins.mentions.api.ConfluenceMentionEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.attachment.AttachmentBatchUploadCompletedEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.security.ForgotPasswordEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.page.async.PageCreatedEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.like.LikeCreatedEvent,notification.plugin.api.enabled.com.atlassian.confluence.event.events.content.blogpost.BlogPostMovedEvent">
+            <meta name="ajs-atl-token" content="fff86b7ee49a9d33005ced4e5cb6867bf0e55fe7">
+            <meta name="ajs-confluence-flavour" content="VANILLA">
+            <meta name="ajs-user-date-pattern" content="dd MMM yyyy">
+            <meta name="ajs-editor.loader.resources" content="&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/css/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.css&quot; media=&quot;all&quot;&gt;
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/css/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.css?media=%28max-width%3A+1450px%29&quot; media=&quot;(max-width: 1450px)&quot;&gt;
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/css/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.css?media=print&quot; media=&quot;print&quot;&gt;
+&lt;!--[if lt IE 9]&gt;
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/css/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.css?conditionalComment=lt+IE+9&quot; media=&quot;all&quot;&gt;
+&lt;![endif]--&gt;
+&lt;!--[if IE]&gt;
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/css/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.css?ieonly=true&quot; media=&quot;all&quot;&gt;
+&lt;![endif]--&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;/s/6098ebb27ffb3d1f8f46eb5d83ae7c0c-T/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/0af3f0bcb182e2f5ac542b43cac9ac9a/_/download/contextbatch/js/editor,macro-browser,fullpage-editor,-viewcontent,-atl.general,-page/batch.js?locale=en-GB&quot; &gt;&lt;/script&gt;
+">
+            <meta name="ajs-date.format" content="MMM dd, yyyy">
+    
+    <link rel="shortcut icon" href="https://wiki.appcelerator.org/s/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/_/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://wiki.appcelerator.org/s/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/_/favicon.ico">
+
+<link rel="search" type="application/opensearchdescription+xml" href="https://wiki.appcelerator.org/opensearch/osd.action" title="Appcelerator Wiki">
+    
+                    
+            <meta name="ajs-create-issue-metadata-show-discovery" content="false">
+            
+
+
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/batch_003.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/batch_002.css" media="print">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/103/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 8]>
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/103/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+8" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/103/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/batch_004.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/6c0981174e94142364564819dc0d1413-T/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/e7f120163b467a97348050b640e7e94e/_/download/contextbatch/css/page,viewcontent,atl.general,main/batch.css?conditionalComment=lt+IE+9&amp;highlightactions=true&amp;locale=en-GB&amp;flavour=VANILLA&amp;hostenabled=true" media="all">
+<![endif]-->
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/s/6c0981174e94142364564819dc0d1413-T/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/e7f120163b467a97348050b640e7e94e/_/download/contextbatch/css/page,viewcontent,atl.general,main/batch.css?ieonly=true&amp;highlightactions=true&amp;locale=en-GB&amp;flavour=VANILLA&amp;hostenabled=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/batch.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/com_005.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/com_002.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/com_004.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/com_003.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/com.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/en_GB/5637/e1ef10868e8fe2f234a1a0b171b01cde1d9717c4.31/8.3/_/download/batch/com.atlassian.confluence.plugins.confluence-space-ia:spacesidebar/com.atlassian.confluence.plugins.confluence-space-ia:spacesidebar.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/confluence.css" media="all">
+
+<!--[if lte IE 8]>
+
+<![endif]-->
+
+<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{display:none;}ng\:form{display:block;}</style><style type="text/css"></style>
+
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/colors.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/default-theme.css" media="all">
+<link type="text/css" rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/custom.css" media="all">
+
+
+        
+        <link rel="stylesheet" href="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/appcelerator-custom.css" type="text/css">
+
+
+    
+                <link rel="canonical" href="https://wiki.appcelerator.org/display/community/Managing+the+Android+SDK+and+NDK+on+OSX+using+Homebrew">
+        <link rel="shortlink" href="https://wiki.appcelerator.org/x/pRTLAQ">
+    <meta name="wikilink" content="[community:Managing the Android SDK and NDK on OSX using Homebrew]">
+    <meta name="page-version" content="2">
+
+</head>
+
+<body data-aui-version="5.4.4-CONFDEV-21873" onload="placeFocus()" id="com-atlassian-confluence" class=" theme-default  aui-layout aui-theme-default">
+
+        
+            <div id="stp-licenseStatus-banner"></div>
+            <fieldset class="parameters hidden">
+    <input id="workflowStatsUAKey" value="UA-11679828-12" type="hidden">
+</fieldset>
+    <ul id="assistive-skip-links" class="assistive">
+    <li><a href="#title-heading">Skip to content</a></li>
+    <li><a href="#breadcrumbs">Skip to breadcrumbs</a></li>
+    <li><a href="#header-menu-bar">Skip to header menu</a></li>
+    <li><a href="#navigation">Skip to action menu</a></li>
+    <li><a href="#quick-search-query">Skip to quick search</a></li>
+</ul>
+<div id="page">
+<div id="full-height-container">
+    <div id="header-precursor">
+        <div class="cell">
+            
+                            </div>
+    </div>
+    
+
+
+
+<header id="header" role="banner">
+    <nav data-aui-responsive="true" class="aui-header aui-dropdown2-trigger-group" role="navigation"><div class="aui-header-inner"><div class="aui-header-before"><a class="aui-dropdown2-trigger app-switcher-trigger" aria-owns="app-switcher" aria-haspopup="true" tabindex="0"><span class="aui-icon aui-icon-small aui-iconfont-appswitcher">Linked Applications</span></a><div id="app-switcher" class="aui-dropdown2 aui-style-default"><div class="aui-dropdown2-section"><ul class="nav-links"><li class="nav-link"><a href="https://jira.appcelerator.org/" class="aui-dropdown2-radio interactive" title="https://jira.appcelerator.org/"><span class="nav-link-label">Appcelerator JIRA</span></a></li><li class="nav-link nav-link-local"><a href="https://wiki.appcelerator.org/" class="aui-dropdown2-radio interactive checked" title="https://wiki.appcelerator.org/"><span class="nav-link-label">Appcelerator Wiki</span></a></li></ul></div></div></div><div class="aui-header-primary"><h1 id="logo" class="aui-header-logo aui-header-logo-custom"><a href="https://wiki.appcelerator.org/"><img data-aui-responsive-header-index="0" src="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/confluence-logo.png" alt="Appcelerator Wiki"></a></h1><ul style="width: auto;" class="aui-nav">
+                            <li>
+            
+        
+        
+<a id="space-menu-link" class="aui-nav-link aui-dropdown2-trigger" href="#" aria-haspopup="true" aria-owns="space-menu-link-content" title="Spaces"><span class="browse">Spaces</span><span class="aui-icon-dropdown"></span></a><div id="space-menu-link-content" class="aui-dropdown2 aui-style-default aui-dropdown2-in-header" aria-hidden="false"></div>
+        </li>
+                        <li style="display: none;"><a id="aui-responsive-header-dropdown-trigger-0" class="aui-dropdown2-trigger" aria-owns="aui-responsive-header-dropdown-content-0" aria-haspopup="true" href="#">More<span class="icon aui-icon-dropdown"></span></a><div id="aui-responsive-header-dropdown-content-0" class="aui-dropdown2 aui-style-default"><div class="aui-dropdown2-section"><ul id="aui-responsive-header-dropdown-list-0"></ul></div></div></li></ul>
+</div><div class="aui-header-secondary"><ul class="aui-nav">
+                        <li>
+        <form id="quick-search" class="aui-quicksearch dont-default-focus header-quicksearch" action="/dosearchsite.action" method="get"><fieldset><label for="quick-search-query" class="assistive">Quick Search</label><input id="quick-search-query" class="text app-search search quick-search-query" accesskey="q" autocomplete="off" name="queryString" title="Quick Search (/or g , g)" placeholder="Search" type="text"><input id="quick-search-submit" class="quick-search-submit" value="Search" type="submit"><div class="aui-dd-parent quick-nav-drop-down"></div></fieldset></form>
+    </li>
+        <li>
+            
+        <a id="help-menu-link" class="aui-nav-link aui-dropdown2-trigger" href="#" aria-haspopup="true" aria-owns="help-menu-link-content" title="Help">
+        <span class="aui-icon aui-icon-small aui-iconfont-help">Help</span>
+    </a>
+    <nav id="help-menu-link-content" class="aui-dropdown2 aui-style-default" aria-hidden="true">
+                    <div class="aui-dropdown2-section">
+                                    <strong></strong>
+                                <ul id="help-menu-link-leading" class="aui-list-truncate section-leading first">
+                                            <li>
+        
+            
+<a id="confluence-help-link" href="https://docs.atlassian.com/confluence/docs-56/Getting+Help+And+Support" class="interactive" title="Visit the Confluence documentation home" target="_blank">
+        Online Help
+</a>
+</li>
+                                            <li>
+    
+                
+<a id="keyboard-shortcuts-link" href="#" class="interactive" title="View available keyboard shortcuts (?)">
+        Keyboard Shortcuts
+</a>
+</li>
+                                            <li>
+    
+            
+<a id="feed-builder-link" href="https://wiki.appcelerator.org/dashboard/configurerssfeed.action" class="interactive" title="Create your custom RSS feed.">
+        Feed Builder
+</a>
+</li>
+                                            <li>
+    
+            
+<a id="whats-new-menu-link" href="https://docs.atlassian.com/confluence/docs-56/whatsnew/iframe" class="interactive" title="">
+        What’s new
+</a>
+</li>
+                                            <li>
+    
+                
+<a id="gadget-directory-link" href="#" class="user-item administration-link  interactive" title="Browse gadgets provided by Confluence">
+        Available Gadgets
+</a>
+</li>
+                                            <li>
+    
+            
+<a id="confluence-about-link" href="https://wiki.appcelerator.org/aboutconfluencepage.action" class="interactive" title="Get more information about Confluence">
+        About Confluence
+</a>
+</li>
+                                    </ul>
+            </div>
+                    <div class="aui-dropdown2-section">
+                                <ul id="help-menu-link-user-profile-plugin-section" class="aui-list-truncate section-user-profile-plugin-section">
+                                            <li>
+    
+                
+<a id="user-profile-plugin-webitem-templates-link" href="#" class="interactive" title="">
+        <style>
+	#browse-menu-link-user-profile-plugin-section,
+	.section-user-profile-plugin-section,
+	#user-profile-plugin-webitem-templates-link {
+		display: none !important;
+	}
+</style>
+
+<table>
+    <tbody><tr>
+        <td>
+            <div id="user-profile-plugin-content-container">
+				
+				    
+				
+				
+					
+												
+				            </div>
+        </td>
+    </tr>
+</tbody></table>
+
+</a>
+</li>
+                                    </ul>
+            </div>
+                    <div class="aui-dropdown2-section">
+                                <ul id="help-menu-link-subspace-section" class="aui-list-truncate section-subspace-section">
+                                            <li>
+    
+                
+<a id="subspace-webitem-template-link" href="#" class="interactive" title="">
+        <style>
+
+    #browse-menu-link-subspace-section,
+    #subspace-webitem-template-link {
+    	display: none !important;
+    }
+
+</style>
+
+<table>
+    <tbody><tr>
+        <td>
+			<div id="subspace-configuration">
+                
+
+
+
+			</div>
+        </td>
+    </tr>
+</tbody></table>
+
+</a>
+</li>
+                                    </ul>
+            </div>
+            </nav>
+    
+    </li>
+        <li>
+                
+    
+    </li>
+        <li>
+            
+    </li>
+        <li>
+                                            </li><li>
+        
+            
+<a id="login-link" href="https://wiki.appcelerator.org/login.action?os_destination=%2Fdisplay%2Fcommunity%2FManaging%2Bthe%2BAndroid%2BSDK%2Band%2BNDK%2Bon%2BOSX%2Busing%2BHomebrew" class="   user-item login-link " title="">
+        Log in
+</a>
+</li>
+                        <li>
+    
+            
+<a id="signup-link" href="https://wiki.appcelerator.org/signup.action" class="   user-item signup-link " title="">
+        Sign up
+</a>
+</li>
+                        
+    
+    </ul>
+</div></div><!-- .aui-header-inner--></nav><!-- .aui-header -->
+    <br class="clear">
+</header>
+
+    
+    	<div class="ia-splitter">
+    		<div class="ia-splitter-left">
+    			<div style="width: 285px; visibility: visible; top: 41px; left: 0px;" class="ia-fixed-sidebar">
+    				
+	    	<div class="acs-side-bar ia-scrollable-section"><div class="acs-side-bar-space-info tipsy-enabled" data-configure-tooltip="Edit space details"><div class="avatar"><div class="space-logo " data-key="community" data-name="Community" data-entity-type="confluence.space"><div class="avatar-img-container"><div class="avatar-img-wrapper"><a href="https://wiki.appcelerator.org/display/community?src=sidebar" title="Community"><img class="avatar-img" src="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/global.png" alt="Community"></a></div></div></div></div><div class="name"><a href="https://wiki.appcelerator.org/display/community?src=sidebar" title="Community">Community</a></div><div class="flyout-handle icon"></div></div><div class="acs-side-bar-content"><div class="acs-nav-wrapper"><div class="acs-nav" data-has-create-permission="false" data-quick-links-state="null" data-nav-type="pages"><div class="acs-nav-sections"><div class="main-links-section "><ul class="acs-nav-list"><li class="acs-nav-item wiki current-item" data-collector-key="spacebar-pages"><a class="acs-nav-item-link tipsy-enabled" href="https://wiki.appcelerator.org/collector/pages.action?key=community&amp;src=sidebar" data-collapsed-tooltip="Pages"><span class="icon"></span><span class="acs-nav-item-label">Pages</span></a></li><li class="acs-nav-item blog" data-collector-key="spacebar-blogs"><a class="acs-nav-item-link tipsy-enabled" href="https://wiki.appcelerator.org/pages/viewrecentblogposts.action?key=community&amp;src=sidebar" data-collapsed-tooltip="Blog"><span class="icon"></span><span class="acs-nav-item-label">Blog</span></a></li></ul></div><div class="quick-links-wrapper"><h5 class="ia-quick-links-header-title">Space shortcuts</h5><div data-collapsed-tooltip="Space shortcuts" class="quick-links-section tipsy-enabled "><ul class="acs-nav-list"><li class="acs-nav-item pinned_page blueprint decisions"><a class="acs-nav-item-link tipsy-enabled" href="https://wiki.appcelerator.org/display/community/Decision+log?src=spaceshortcut" data-collapsed-tooltip="null"><span class="icon"></span><span class="acs-nav-item-label">Decision log</span></a></li><li class="acs-nav-item pinned_page blueprint file-list"><a class="acs-nav-item-link tipsy-enabled" href="https://wiki.appcelerator.org/display/community/File+lists?src=spaceshortcut" data-collapsed-tooltip="null"><span class="icon"></span><span class="acs-nav-item-label">File lists</span></a></li></ul></div></div></div></div></div><div data-collapsed-tooltip="Child pages" class="ia-secondary-container tipsy-enabled" data-tree-type="pages"><div class="ia-secondary-header"><h5 class="ia-secondary-header-title pages"><span class="label">Child pages</span></h5></div><div class="ia-secondary-parent-content"><ul class="parent ia-secondary-header-title wiki"><li class="parent-item"><a class="parent-item-link" href="https://wiki.appcelerator.org/display/community/Tips+and+Best+Practices?src=contextnavchildmode" title="Tips and Best Practices"><span class="icon"></span><span class="label">Tips and Best Practices</span></a></li></ul></div><div class="ia-secondary-current-content"><ul class="ia-secondary-currentPage-title wiki current-item"><li><span class="icon"></span><span class="label">Managing the Android SDK and NDK on OSX using Homebrew</span></li></ul></div><div class="ia-secondary-content"><div class="contextual-nav-child-pages"></div></div></div></div><div class="hidden"><a title=" (g , s)" href="https://wiki.appcelerator.org/collector/pages.action?key=community&amp;src=sidebar" id="space-pages-link"></a></div></div><div class="space-tools-section"><div id="space-tools-menu-additional-items" class="hidden"><div data-label="Browse pages" data-class="" data-href="/pages/reorderpages.action?key=community">Browse pages</div></div><div id="space-tools-dd-dummy"></div><a data-collapsed-tooltip="Space tools" id="space-tools-menu-trigger" class="aui-button aui-button-subtle aui-dropdown2-trigger tipsy-enabled" aria-owns="space-tools-dd-dummy"><span class="aui-icon aui-icon-small aui-iconfont-configure">Configure</span><span class="label">Space tools</span></a><a data-tooltip="Collapse sidebar ( [ )" class="expand-collapse-trigger"></a></div>
+    
+    			<div title=" ([)" data-tooltip="Collapse sidebar ( [ )" class="ia-splitter-handle tipsy-enabled"><div class="ia-splitter-handle-highlight"></div></div></div>
+    		</div>
+        <!-- \#header -->
+
+        
+        <div style="margin-left: 285px;" id="main" class=" aui-page-panel">
+                <div id="main-header">
+            
+    <div id="navigation" class="content-navigation view">
+                    <ul class="ajs-menu-bar">
+                                    
+                    
+        <li class="normal ajs-menu-item">
+        <a id="action-menu-link" class="action ajs-menu-title aui-dropdown2-trigger" href="#" aria-haspopup="true" aria-owns="action-menu" data-container="#navigation"><span><span>Tools</span></span></a>         <div id="action-menu" class="aui-dropdown2 aui-style-default most-right-menu-item">
+                            <ul id="action-menu-primary" class="section-primary first aui-dropdown2-section">
+                                            <li>
+
+    
+        
+                            
+    
+    
+    <a id="view-attachments-link" href="https://wiki.appcelerator.org/pages/viewpageattachments.action?pageId=30086309" rel="nofollow" class="action-view-attachments" accesskey="t" title="View Attachments (t)">
+                <span>A<u>t</u>tachments (0)</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="action-view-history-link" href="https://wiki.appcelerator.org/pages/viewpreviousversions.action?pageId=30086309" rel="nofollow" class="action-view-history" title="">
+                <span>Page History</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="action-page-permissions-link" href="https://wiki.appcelerator.org/pages/viewinfo.action?pageId=30086309" rel="nofollow" class="action-page-permissions" title="Edit restrictions">
+                <span>Restrictions</span>    </a>
+</li>
+                                </ul>
+                            <ul id="action-menu-workflowToolsActions" class="section-workflowToolsActions aui-dropdown2-section">
+                                            <li>
+
+    
+            
+                            
+    
+    
+    <a id="addPageTaskLink" href="#" rel="nofollow" class="notTaskable" title=" (a , t)">
+                <span>Add Task</span>    </a>
+</li>
+                                </ul>
+                            <ul id="action-menu-secondary" class="section-secondary aui-dropdown2-section">
+                                            <li>
+
+    
+        
+                            
+    
+    
+    <a id="view-page-info-link" href="https://wiki.appcelerator.org/pages/viewinfo.action?pageId=30086309" rel="nofollow" class="action-view-info" title="">
+                <span>Page Information</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="link-to-page-link" href="https://wiki.appcelerator.org/pages/viewinfo.action?pageId=30086309" rel="nofollow" class="" title="Link to this Page (k)">
+                <span>Link to this Page…</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="view-in-hierarchy-link" href="https://wiki.appcelerator.org/pages/reorderpages.action?key=community&amp;openId=30086309#selectedPageInHierarchy" rel="nofollow" class="" title="">
+                <span>View in Hierarchy</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="action-view-source-link" href="https://wiki.appcelerator.org/plugins/viewsource/viewpagesrc.action?pageId=30086309" rel="nofollow" class="action-view-source popup-link" title="">
+                <span>View Source</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="org.randombits.confluence.metadata.viewmetadata" href="https://wiki.appcelerator.org/pages/metadata/viewxml.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>View Scaffolding XML</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="action-export-pdf-link" href="https://wiki.appcelerator.org/spaces/flyingpdf/pdfpageexport.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>Export to PDF</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="com-k15t-confluence-scroll-eclipsehelp-launcher" href="https://wiki.appcelerator.org/pages/viewpage.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>Export to EclipseHelp</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="com-k15t-confluence-scroll-docbook-launcher" href="https://wiki.appcelerator.org/pages/viewpage.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>Export to DocBook</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="com-k15t-confluence-scroll-epub-launcher" href="https://wiki.appcelerator.org/pages/viewpage.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>Export to EPUB</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a id="action-export-word-link" href="https://wiki.appcelerator.org/exportword?pageId=30086309" rel="nofollow" class="action-export-word" title="">
+                <span>Export to Word</span>    </a>
+</li>
+                                        <li>
+
+    
+        
+                            
+    
+    
+    <a href="https://wiki.appcelerator.org/pages/favourites/pagefavourites.action?pageId=30086309" rel="nofollow" class="" title="">
+                <span>Favourites</span>    </a>
+</li>
+                                </ul>
+                    </div>
+    </li>
+            </ul>
+    </div>
+
+            
+            <div id="title-heading" class="pagetitle with-breadcrumbs">
+                
+                                    <div id="breadcrumb-section">
+                        
+    
+    
+    <ol id="breadcrumbs">
+                    
+                
+        <li class="first">
+                
+
+                    <span class=""><a href="https://wiki.appcelerator.org/collector/pages.action?key=community&amp;src=breadcrumbs-collector">Pages</a></span>
+                            
+                
+        </li><li>
+                
+
+                    <span class=""><a href="https://wiki.appcelerator.org/display/community/Home?src=breadcrumbs">Home</a></span>
+                            
+                
+        </li><li>
+                
+
+                    <span class=""><a href="https://wiki.appcelerator.org/display/community/Tips+and+Best+Practices?src=breadcrumbs-parent">Tips and Best Practices</a></span>
+                </li></ol>
+
+
+                    </div>
+                
+                
+        <a href="#page-banner-end" class="assistive">Skip to end of banner</a>
+<div id="page-banner-start" class="assistive"></div>
+
+                    
+            <div style="visibility: visible;" id="page-metadata-banner"><ul class="banner"><li id="system-content-items" class="noprint hidden"><a href="" title="Restrictions apply" id="content-metadata-page-restrictions" class="hidden"><img class="page-banner-item-icon" src="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/red_padlock.png" style="height: 16px; width: 16px;"></a></li><li class="page-metadata-item noprint has-button" id="content-metadata-jira-wrapper"><a href="" title="" id="content-metadata-jira" class="aui-button aui-button-subtle content-metadata-jira tipsy-disabled hidden"><img class="page-banner-item-icon" src="Managing%20the%20Android%20SDK%20and%20NDK%20on%20OSX%20using%20Homebrew%20-%20Community%20-%20Appcelerator%20Wiki_tiedostot/icon-jira-link.png" style="height: 16px; width: 16px;"><span>JIRA links</span></a></li></ul></div>
+            
+
+<a href="#page-banner-start" class="assistive">Go to start of banner</a>
+<div id="page-banner-end" class="assistive"></div>
+    
+
+                <h1 id="title-text" class="with-breadcrumbs">
+                                                <a href="https://wiki.appcelerator.org/display/community/Managing+the+Android+SDK+and+NDK+on+OSX+using+Homebrew">Managing the Android SDK and NDK on OSX using Homebrew</a>
+                                    </h1>
+            </div>
+        </div><!-- \#main-header -->
+        
+        
+
+        <div id="sidebar-container">
+                                                </div><!-- \#sidebar-container -->
+
+        
+    
+
+        
+
+
+
+
+        
+
+    
+    
+        
+    
+    
+                    
+    
+
+                        
+    
+    
+
+    
+
+
+
+
+<div id="content" class="page view">
+    
+
+<div id="action-messages">
+                        </div>
+
+
+
+        
+
+
+        
+    
+            
+
+        
+                            
+    
+
+                    
+
+        
+        <a href="#page-metadata-end" class="assistive">Skip to end of metadata</a>
+<div id="page-metadata-start" class="assistive"></div>
+
+    <div class="page-metadata">
+        <ul>
+            <li class="page-metadata-modification-info">
+                
+        
+    
+        
+    
+        
+        
+            Created by <span class="author">     <a href="https://wiki.appcelerator.org/display/%7Epegli" class="url fn">Paul Mietz Egli</a></span>, last modified on <a original-title="Mar 27, 2012 08:52" class="last-modified" href="https://wiki.appcelerator.org/pages/diffpagesbyversion.action?pageId=30086309&amp;selectedPageVersions=1&amp;selectedPageVersions=2">Mar 27, 2012</a>
+                </li>
+        </ul>
+    </div>
+
+
+<a href="#page-metadata-start" class="assistive">Go to start of metadata</a>
+<div id="page-metadata-end" class="assistive"></div>
+
+        
+                                
+        <div id="main-content" class="wiki-content">
+                           
+        <p>The <a href="https://github.com/mxcl/homebrew/wiki" class="external-link" rel="nofollow">Homebrew</a>
+ package manager is a convenient, clean way to install and update 
+software that isn't part of the basic OSX environment.  Homebrew can be 
+used to manage the Android SDK and NDK for use with Titanium Studio and 
+the command line tools:</p>
+
+<ol>
+	<li>Install Homebrew according to the instructions on the web site (<a class="external-link" href="http://mxcl.github.com/homebrew/" rel="nofollow">http://mxcl.github.com/homebrew/</a>).</li>
+	<li>Open Terminal and run <code>brew install android-sdk</code>, then <code>brew install android-ndk</code>.</li>
+	<li>Edit <code>~/.bash_profile</code> and add the following exports:
+<div class="code panel pdl" style="border-width: 1px;"><div class="codeContent panelContent pdl">
+<div><div id="highlighter_427230" class="syntaxhighlighter nogutter  jscript"><div class="toolbar"><span><a href="#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="code"><div class="container" title="Hint: double-click to select code"><div class="line number1 index0 alt2"><code class="jscript preprocessor">##</code></div><div class="line number2 index1 alt1"><code class="jscript preprocessor">## Android SDK</code></div><div class="line number3 index2 alt2"><code class="jscript preprocessor">##</code></div><div class="line number4 index3 alt1"><code class="jscript plain">export ANDROID_SDK=/usr/local/Cellar/android-sdk/r17</code></div><div class="line number5 index4 alt2"><code class="jscript plain">export ANDROID_NDK=/usr/local/Cellar/android-ndk/r7b</code></div></div></td></tr></tbody></table></div></div>
+</div></div>
+You may need to change the paths depending on the current version of the SDK or NDK.</li>
+	<li>In the terminal, run <code>source ~/.bash_profile</code> to get the new variables into your environment.</li>
+	<li>Run <code>android</code> to start the Android SDK Manager.</li>
+	<li>Follow the <a href="http://wiki.appcelerator.org/display/guides/Installing+and+Updating+Android+SDK" class="external-link" rel="nofollow">instructions</a> on the Appcelerator wiki for installing the required SDK components.</li>
+	<li>Launch Titanium Studio and open the Preferences.  Select Titanium Studio &gt; Titanium, and set the Android SDK Directory to <code>/usr/local/Cellar/android-sdk/r17/</code>.  The trailing slash is significant; I found that the SDKs won't be found without it.</li>
+</ol>
+
+
+<p>As new Android SDK and NDK releases come out, simply run <code>brew upgrade</code> to get the latest version.  You will need to edit your <code>.bash_profile</code>
+ and Titanium Studio settings for each release as the Homebrew formula 
+for these packages installs them to a path that contains the SDK version
+ number.  For example, the previous release of the SDK was in <code>/usr/local/Cellar/android-sdk/r16</code>.</p>
+
+                
+        
+    
+        </div>
+
+        <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+         <rdf:Description
+    rdf:about="https://wiki.appcelerator.org/display/community/Managing+the+Android+SDK+and+NDK+on+OSX+using+Homebrew"
+    dc:identifier="https://wiki.appcelerator.org/display/community/Managing+the+Android+SDK+and+NDK+on+OSX+using+Homebrew"
+    dc:title="Managing the Android SDK and NDK on OSX using Homebrew"
+    trackback:ping="https://wiki.appcelerator.org/rpc/trackback/30086309"/>
+</rdf:RDF>
+-->
+
+                        
+    
+
+
+
+<div id="likes-and-labels-container"><div style="display: none;" id="likes-section"><span class="like-summary"></span></div><div id="labels-section" class="pageSection group">
+    <div class="labels-section-content content-column" entityid="30086309" entitytype="page">
+	<div class="labels-content">
+		
+    <ul class="label-list label-list-right ">
+            
+
+<li class="aui-label " data-label-id="30343179">
+    <a class="aui-label-split-main" href="https://wiki.appcelerator.org/label/community/tips">tips</a>
+    </li>             </ul>
+
+    </div>
+</div></div></div>
+        
+		
+            
+
+
+
+
+            
+    
+
+
+
+
+
+
+
+
+                    
+    
+<div id="comments-section" class="pageSection group">
+        
+    
+    
+    
+            <div class="bottom-comment-panels comment-panels">
+                                    
+    
+
+
+    
+            </div>
+    
+    </div>
+
+
+                
+    
+            
+</div>
+
+
+    
+
+
+
+
+    
+    
+
+    
+    
+    
+
+
+    
+<div id="space-tools-web-items" class="hidden">
+                <div data-label="Overview" data-href="/spaces/viewspacesummary.action?key=community">Overview</div>
+            <div data-label="Content Tools" data-href="/pages/reorderpages.action?key=community">Content Tools</div>
+            <div data-label="Add-ons" data-href="/communardo_plugins/createsubspace/createspacehierarchy-start.action?key=community">Add-ons</div>
+            <div data-label="Tasks" data-href="/spaces/tasksreport.action?key=community">Tasks</div>
+            <div data-label="Forums" data-href="/spaces/forums/spaceForums.action?key=community">Forums</div>
+    </div>
+
+
+
+
+    </div><!-- \#main -->
+        
+    
+        
+            
+
+<div style="margin-left: 285px;" id="footer" role="contentinfo">
+    <section class="footer-body">
+
+                                                <p class="license license-opensource">
+                    Powered by a free <b>Atlassian Confluence Open Source Project License</b> granted to Appcelerator Titanium. <a href="http://www.atlassian.com/c/conf/11461">Evaluate Confluence today</a>.<br>
+                </p>
+                    
+        
+
+        
+        <div class="gliffy-webpanel-footer"><span>This Confluence installation runs a Free Gliffy License - Evaluate the <a href="http://www.gliffy.com/products/confluence-plugin/">Gliffy Confluence Plugin</a> for your Wiki!</span></div>
+<ul id="poweredby">
+            <li class="noprint">Powered by <a href="http://www.atlassian.com/software/confluence" class="hover-footer-link">Atlassian Confluence</a> <span id="footer-build-information">5.6.4</span>, <a href="http://www.atlassian.com/software/confluence/overview/team-collaboration-software?utm_source=confluence-footer" class="hover-footer-link">Team Collaboration Software</a></li>
+            <li class="print-only">Printed by Atlassian Confluence 5.6.4, Team Collaboration Software.</li>
+            <li class="noprint"><a href="https://jira.atlassian.com/browse/CONF" class="hover-footer-link">Report a bug</a></li>
+            <li class="noprint"><a href="http://www.atlassian.com/about/connected.jsp?s_kwcid=Confluence-stayintouch" class="hover-footer-link">Atlassian News</a></li>
+        </ul>
+
+        
+
+        <div id="footer-logo"><a href="http://www.atlassian.com/">Atlassian</a></div>
+
+                    <p class="license license-opensource">
+      Appcelerator <a href="http://www.appcelerator.com/privacy/">privacy policy</a>.<br>
+</p>
+
+        
+    </section>
+</div>
+
+            
+    
+</div>
+
+ 
+ 
+<!-- Start Quantcast tag -->
+
+
+<noscript>
+<img src="http://pixel.quantserve.com/pixel/p-4aHbaizUurMCQ.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/>
+</noscript>
+<!-- End Quantcast tag -->
+
+</div><!-- \#full-height-container -->
+</div><!-- \#page -->
+
+
+<div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div style="display: none;" id="content-hover-shadow"><div class="tl"></div><div class="tr"></div><div class="l"></div><div class="r"></div><div class="bl"></div><div class="br"></div><div class="b"></div></div><div id="cw-notification-container"></div><div style="margin-top: -110px; margin-left: -175px; width: 350px; height: 220px; z-index: 3002; display: none;" id="addWorkflowDialog" class="aui-popup aui-dialog"><div class="dialog-components"><ul style="height: 220px;" class="dialog-page-menu"></ul><div class="dialog-page-body"></div></div></div><div style="margin-top: -225px; margin-left: -300px; width: 600px; height: 450px; z-index: 3004; display: none;" id="feedbackPopup" class="aui-popup aui-dialog"><div class="dialog-components"><ul style="height: 450px;" class="dialog-page-menu"></ul><div class="dialog-page-body"></div></div></div><div class="qr-notice aui-message warning"></div><div style="position: relative; z-index: 0;" id="fileuploadShim"></div><div class="plupload html5" style="position: absolute; background: transparent none repeat scroll 0% 0%; width: 1009px; height: 0px; overflow: hidden; z-index: -1; opacity: 0; top: 641px; left: 0px;" id="p1afttqb571hbo13rjuqe1l7p1q30_html5_container"><input id="p1afttqb571hbo13rjuqe1l7p1q30_html5" style="font-size: 999px; position: absolute; width: 100%; height: 100%;" accept="" multiple="multiple" type="file"></div></body></html>

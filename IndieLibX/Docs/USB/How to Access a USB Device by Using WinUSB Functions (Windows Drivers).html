@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+
+
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" />
+    <title>How to Access a USB Device by Using WinUSB Functions (Windows Drivers)</title>
+
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/windows/hardware/ff540174(d=default,l=en-us,v=vs.85).aspx" />
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(d=default,l=en-us,v=vs.85).aspx" />
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(d=default,l=en-us,v=vs.85).aspx" />
+
+<meta name="AmbientContext" content="{&quot;layout.limit_max_width&quot;:false,&quot;AmbientContextId&quot;:&quot;AF8E257A-0D1C-4660-889B-2E3010056854&quot;,&quot;display.use_large_font&quot;:true,&quot;AmbientContextDownstream&quot;:{},&quot;display.high_contrast&quot;:false}" />
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(d=default,l=en-us,v=vs.85).aspx" />
+
+<meta name="MN" content="FB361397-10:37:09 PM" />
+
+<meta name="Search.ShortId" content="ff540174" />
+
+<meta name="ms.shortidmsdn" content="ff540174" />
+
+<meta name="Ms.Locale" content="en-us" />
+
+<meta name="ms.prodver" content="VS.85" />
+
+<meta name="ms.contentlang" content="EN" />
+
+<meta name="ms.lang" content="EN" />
+
+<meta name="ms.loc" content="US" />
+
+<meta name="ms.sitever" content="2015.10.05.2" />
+
+<meta name="ms.assetid" content="969ebed3-84f5-4ce0-97c5-35a6d229c8b3" />
+
+<meta name="ms.auth" content="0" />
+    
+
+
+
+
+
+
+
+
+
+    
+
+    
+    
+    <link rel="shortcut icon" href="/Areas/Epx/Themes/Windows/Content/Winlogo_favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="https://assets.onestore.ms/cdnfiles/onestorerolling-1510-18000/shell/v1_4/scss/shell.min.css" /><link rel="stylesheet" type="text/css" href="https://i-msdn.sec.s-msft.com/Combined.css?resources=0:Topic,0:CodeSnippet,0:ProgrammingSelector,0:ExpandableCollapsibleArea,1:CommunityContent,0:TopicNotInScope,0:FeedViewerBasic,0:ImageSprite,2:Header,2:sprite,0:Breadcrumbs,3:Breadcrumbs,1:Toc,1:NavigationResize,0:NavSidebar,1:LibraryMemberFilter,2:Footer,4:LinkList,4:SelectLocaleFromPopUp,3:Windows;/Areas/Epx/Content/Css:0,/Areas/Library/Content:1,/Areas/Epx/Themes/Windows/Content:2,/Areas/Library/Themes/Windows/Content:3,/Areas/Epx/Themes/Base/Content:4&amp;amp;v=D99172AF165FE092187C5A14284F3E50" /></head>
+<body class="library Chrome">
+    <div id="page">
+
+        
+
+        
+
+        
+
+    
+
+
+
+
+        <link rel="stylesheet" type="text/css" href="https://i-msdn.sec.s-msft.com/Areas/Epx/Themes/Windows/Content/UhfHeader.css?v=635796176150153759" data-do-not-move="true" />
+        <link rel="stylesheet" type="text/css" href="https://i-msdn.sec.s-msft.com/Areas/Epx/Themes/Windows/Content/UhfHeaderHardware.css" data-do-not-move="true" />
+        <div id="uhf-header-wrapper" ms.pgarea="header">
+             
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+<div id="shell-header" class=" shell-bottomborder shell-header " lang="en">
+    <div class="shell-header-L1-bar"></div>
+    <div class="shell-header-wrapper">
+        <div class="shell-header-top" data-bi-area="HeaderL0" data-bi-view="L0V1">
+            <div class="shell-header-topfix">
+                <div class="shell-header-brand">
+                    <a id="srv_shellHeaderMicrosoftLogo" href="https://www.microsoft.com" title="Microsoft" data-bi-name="BrandLogo">
+                        <img src="https://assets.onestore.ms/cdnfiles/onestorerolling-1510-18000/shell/v1_4/images/logo/microsoft.png" alt="Microsoft" />
+                    </a>
+                </div>
+
+                <ul class="shell-header-toggle">
+                        <li>
+                            <button class="shell-header-toggle-search" type="button" data-bi-name="Toggle Search Icon">
+                                <i class="shell-icon-search"></i>
+                            </button>
+                        </li>
+                                        <li>
+                        <button class="shell-header-toggle-menu" type="button" data-bi-name="Toggle Menu">
+                            <i class="shell-icon-menu"></i>
+                        </button>
+                    </li>
+                </ul>
+
+                    <h2 class="shell-header-subtitle shell-header-mtop">
+                        <span class="shell-header-vertical-bar"></span>
+                        <a href="https://msdn.microsoft.com/windows/hardware/gg236587.aspx" data-bi-name="Segment Title">Hardware Dev Center</a>
+                    </h2>
+            </div>
+            <div class="shell-header-actions">
+                    <form id="srv_shellHeaderSearchForm" class="shell-header-search" action="https://social.msdn.microsoft.com/search/windows/hardware" method="GET" autocomplete="off" onsubmit=" return window.msCommonShell.onSearch(this) ">
+                        <label for="cli_shellHeaderSearchInput" class="sr-only">Search Microsoft</label>
+                        <input id="cli_shellHeaderSearchInput" type="search" name="query" data-bi-dnt="" placeholder="" maxlength="200" />
+
+                            <input type="hidden" name="Refinement" data-bi-dnt="" value="182" />
+
+                        <button type="submit" title="Search" data-bi-dnt="">
+                            <i class="shell-icon-search"></i>
+                            <span class="sr-only">Search</span>
+                        </button>
+                        <div id="cli_searchSuggestionsContainer" class="shell-header-search-dropdown-container">
+                            <div class="search-dropdown">
+                                <div class="dropdown-item">
+                                    <ul id="cli_searchSuggestionsResults"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                
+
+                <dl class="shell-header-user">
+                    <dt>
+                        <span id="meControl"></span>
+                    </dt>
+                </dl>
+            </div>
+
+                <h2 class="shell-header-subtitle shell-header-dtop">
+                    <span class="shell-header-vertical-bar"></span>
+                    <a href="https://msdn.microsoft.com/windows/hardware/gg236587.aspx" data-bi-name="Segment Title">Hardware Dev Center</a>
+                </h2>
+
+        </div>
+
+        <ul class="shell-header-nav" id="srv_shellHeaderNav" data-bi-area="L1" data-bi-view="Hovermenus">
+                            <li id="home" class="shell-header-dropdown-label  ">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://msdn.microsoft.com/windows/hardware/gg236587.aspx" role="menuitem" data-bi-name="Home" data-bi-slot="1">
+
+                                    Home
+                                </a>
+                            </li>
+                            <li class="shell-header-dropdown   " data-navcontainer="explore_NavContainer">
+                                <h2 id="explore" class="shell-header-dropdown-label">
+                                    <a href="javascript:void(0)" role="menu" data-bi-name="Explore" data-bi-slot="2">
+
+                                        Explore
+                                        <i class="shell-icon-dropdown"></i>
+                                    </a>
+                                </h2>
+
+
+
+
+
+<div class="shell-header-dropdown-content " role="menu">
+    <dl class="shell-header-dropdown-tab   active ">
+
+            <dt id="explore_NewDevices" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    New device experiences
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+
+
+        <a href="https://msdn.microsoft.com/library/windows/hardware/dn915057(v=vs.85).aspx" class="shell-header-dropdown-tab-spotlight" data-bi-name="Explore_New_Devices_TabImage">
+                <img data-src="http://compass.microsoft.com/assets/66/a2/66a206c5-3745-4b70-9b55-6106c7b1e027.jpg?n=explore_hw-new-devices.jpg%202" alt=""></img>
+                <div class="shell-header-dropdown-tab-spotlight-caption">
+                            <h4>Start building devices for Windows</h4>
+                    
+                            <p>Light up Windows 10 features</p>
+  
+                </div>
+
+        </a>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab    ">
+
+            <dt id="explore_UWD" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Universal Windows drivers
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+
+
+        <a href="https://msdn.microsoft.com/library/windows/hardware/dn941241(v=vs.85).aspx" class="shell-header-dropdown-tab-spotlight" data-bi-name="Explore_UWD_TabImage">
+                <img data-src="http://compass.xboxlive.com/assets/5d/79/5d79a06f-9a1d-4dce-86ca-275ac95f423d.jpg?n=exploreMenu-universal-drivers.jpg" alt=""></img>
+                <div class="shell-header-dropdown-tab-spotlight-caption">
+                            <h4>One driver for all devices</h4>
+                    
+                            <p>Develop drivers that work across all devices</p>
+  
+                </div>
+
+        </a>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab    ">
+
+            <dt id="explore_hardwareCompatibility" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Hardware Compatibility Program
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+
+
+        <a href="https://msdn.microsoft.com/windows/hardware/mt269773.aspx" class="shell-header-dropdown-tab-spotlight" data-bi-name="Explore_Hardware_Compatibility_TabImage">
+                <img data-src="http://compass.microsoft.com/assets/a6/2d/a62dfcb8-76e3-4a99-9081-c1507031ed0f.jpg?n=Explore_hw-hardware-compat.jpg%202" alt=""></img>
+                <div class="shell-header-dropdown-tab-spotlight-caption">
+                            <h4>Test for compatibility with Windows</h4>
+                    
+                            <p>Deliver products that run reliably on Windows 10</p>
+  
+                </div>
+
+        </a>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab    ">
+
+            <dt id="explore_iotCore" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Windows IoT Core
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+
+
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=526369 " class="shell-header-dropdown-tab-spotlight" data-bi-name="Explore_iotCore_TabImage">
+                <img data-src="https://compass-ssl.microsoft.com/assets/14/0c/140c526f-ad9d-4372-9c00-7b6cd39993f5.jpg?n=explore-iot.jpg" alt=""></img>
+                <div class="shell-header-dropdown-tab-spotlight-caption">
+                            <h4>Build what matters most to you</h4>
+                    
+                            <p>The Internet of your things</p>
+  
+                </div>
+
+        </a>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab    ">
+
+            <dt id="explore_3dPrint" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    3D printing
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+
+
+        <a href="https://msdn.microsoft.com/windows/hardware/bg183398.aspx" class="shell-header-dropdown-tab-spotlight" data-bi-name="Explore_3DPrint_TabImage">
+                <img data-src="https://compass-ssl.microsoft.com/assets/62/a8/62a861c8-9ac2-4b1e-914b-c1de557a2c2d.jpg?n=explore-3Dprinting.jpg" alt=""></img>
+                <div class="shell-header-dropdown-tab-spotlight-caption">
+                            <h4>3D printing support for Windows 10</h4>
+                    
+                            <p>Create and print 3D objects</p>
+  
+                </div>
+
+        </a>
+
+
+
+            </dd>
+
+    </dl>
+
+</div>
+
+                            </li>
+                            <li class="shell-header-dropdown   " data-navcontainer="docs_NavContainer">
+                                <h2 id="docs" class="shell-header-dropdown-label">
+                                    <a href="javascript:void(0)" role="menu" data-bi-name="Docs" data-bi-slot="3">
+
+                                        Docs
+                                        <i class="shell-icon-dropdown"></i>
+                                    </a>
+                                </h2>
+
+
+
+
+
+<div class="shell-header-dropdown-content " role="menu">
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol active ">
+
+            <dt id="docs_getstarted" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Get started
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_apps_new_in_kits_tools" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn927348.aspx" role="menuitem" data-bi-name="Docs_Apps_New_KitsTools">
+                        New in kits and tools
+                    </a>
+                </li>
+                <li id="docs_apps_new_driver_dev" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn927349.aspx" role="menuitem" data-bi-name="Docs_Apps_NewDriverDev">
+                        New in driver development
+                    </a>
+                </li>
+                <li id="docs_apps_write_first_driver" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/Library/Windows/Hardware/ff554811.aspx " role="menuitem" data-bi-name="Docs_Apps_WriteFirstDriver">
+                        Write your first driver
+                    </a>
+                </li>
+                <li id="docs_universal_drivers" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn941241.aspx" role="menuitem" data-bi-name="Docs_Apps_UniversalDrivers">
+                        Universal Windows drivers
+                    </a>
+                </li>
+                <li id="docs_apps_provisioning_framework" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898375.aspx" role="menuitem" data-bi-name="Docs_Apps_ProvisioningFramework">
+                        Provisioning framework
+                    </a>
+                </li>
+                <li id="docs_apps_dashboard" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/br230803.aspx" role="menuitem" data-bi-name="docs_apps_Dashboard">
+                        Dashboard services
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_apps_hlk_desktop" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915002.aspx " role="menuitem" data-bi-name="Docs_Apps_HLK_Desktop">
+                        Get started with HLK for desktop
+                    </a>
+                </li>
+                <li id="docs_apps_desktop_manufacture" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898436.aspx" role="menuitem" data-bi-name="Docs_Apps_DesktopManufacture">
+                        Desktop manufacturing step-by-step
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_apps_mobile_manufacturing" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757545.aspx" role="menuitem" data-bi-name="Docs_Apps_MobileManufacturing">
+                        Mobile manufacturing
+                    </a>
+                </li>
+                <li id="docs_apps_build_and_sell_mobile_devices" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=624707" role="menuitem" data-bi-name="Docs_Apps_BuildAndSellMobileDevices">
+                        Build and sell mobile devices
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_apps_getstarted_win8-1" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/windows/hardware/gg507680.aspx" role="menuitem" data-bi-name="Docs_Apps_GetStartedWin8-1">
+                        Get started with Windows 8.1 
+                    </a>
+                </li>
+                <li id="docs_apps_winphone8-1" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615593" role="menuitem" data-bi-name="Docs_Apps_Winphone8-1">
+                        Get started with Windows Phone 8.1 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_getstarted" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Design
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_apps_minhardware_req" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915086.aspx" role="menuitem" data-bi-name="Docs_Apps_MinHardwareReq">
+                        Minimum hardware requirements
+                    </a>
+                </li>
+                <li id="docs_apps_device_experiences" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915057.aspx" role="menuitem" data-bi-name="Docs_Apps_DeviceExperiences">
+                        Device experiences
+                    </a>
+                </li>
+                <li id="docs_apps_formfactors" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915070.aspx" role="menuitem" data-bi-name="Docs_Apps_FormFactors">
+                        Form factors
+                    </a>
+                </li>
+                <li id="docs_apps_component_guide" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915049.aspx" role="menuitem" data-bi-name="Docs_Apps_ComponentGuide">
+                        Component guidelines
+                    </a>
+                </li>
+                <li id="docs_apps_hardware_compat" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn922588.aspx" role="menuitem" data-bi-name="Docs_Apps_HardwareCompat">
+                        Compatibility program
+                    </a>
+                </li>
+                <li id="docs_apps_compat_req" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn932845.aspx" role="menuitem" data-bi-name="Docs_Apps_CompatReq">
+                        Compatibility requirements
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_apps_pc" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915054.aspx" role="menuitem" data-bi-name="Docs_Apps_PC">
+                        PC
+                    </a>
+                </li>
+                <li id="docs_apps_pctablet" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915113.aspx" role="menuitem" data-bi-name="Docs_Apps_PCTablet">
+                        PC Tablet
+                    </a>
+                </li>
+                <li id="docs_apps_2in1" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915037.aspx" role="menuitem" data-bi-name="Docs_Apps_2in1">
+                        2-in-1
+                    </a>
+                </li>
+                <li id="docs_apps_notebook" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915092.aspx" role="menuitem" data-bi-name="Docs_Apps_Notebook">
+                        Notebook
+                    </a>
+                </li>
+                <li id="docs_apps_allinone" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn917882.aspx" role="menuitem" data-bi-name="docs_apps_All_InOne">
+                        All-in-one
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_apps_smartphone" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915112.aspx" role="menuitem" data-bi-name="Docs_Apps_Smartphone">
+                        Smartphone
+                    </a>
+                </li>
+                <li id="docs_apps_mobiletablet" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915113.aspx" role="menuitem" data-bi-name="Docs_Apps_MobileTablet">
+                        Mobile tablet
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_apps_win8-1hardwaredesign" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/windows/hardware/gg462970.aspx" role="menuitem" data-bi-name="Docs_Apps_Win8-1HardwareDesign">
+                        Windows 8.1 hardware design
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_develop" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Develop
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_develop_debugtools" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/ff551063.aspx" role="menuitem" data-bi-name="Docs_Develop_DebugTools">
+                        Debugging tools
+                    </a>
+                </li>
+                <li id="docs_develop_driverconverge" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/Library/Windows/Hardware/dn941239.aspx" role="menuitem" data-bi-name="Docs_Develop_DriverConverge">
+                        Driver convergence model
+                    </a>
+                </li>
+                <li id="docs_develop_universaldrivers" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn941241.aspx" role="menuitem" data-bi-name="Docs_Develop_UniversalDrivers">
+                        Universal Windows drivers
+                    </a>
+                </li>
+                <li id="docs_develop_universalinf" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/Library/Windows/Hardware/dn941087.aspx" role="menuitem" data-bi-name="Docs_Develop_UniversalINF">
+                        Universal INF file
+                    </a>
+                </li>
+                <li id="docs_develop_devicedriverinstall" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/ff549731.aspx" role="menuitem" data-bi-name="Docs_Develop_DeviceDriverInstall">
+                        Device and driver installation
+                    </a>
+                </li>
+                <li id="docs_develop_troubleshootdriverconfig" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/Library/Windows/Hardware/jj863657.aspx" role="menuitem" data-bi-name="Docs_Develop_TroubleshootDriverConfig">
+                        Troubleshoot driver configuration 
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_desktop_desktopdevicetech" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/ff557557.aspx" role="menuitem" data-bi-name="Docs_Desktop_DesktopDeviceDriverTech">
+                        Desktop device and driver technologies
+                    </a>
+                </li>
+                <li id="docs_desktop_mobilebroadband" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn706054.aspx" role="menuitem" data-bi-name="Docs_Desktop_MobileBroadband">
+                        Mobile broadband for desktops
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_desktop_mobiledrivertech" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/ff557557.aspx" role="menuitem" data-bi-name="Docs_Desktop_MobileDriverTech">
+                        Mobile device and driver technologies
+                    </a>
+                </li>
+                <li id="docs_desktop_mobilepackages" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn756642.aspx" role="menuitem" data-bi-name="Docs_Desktop_MobilePackages">
+                        Creating mobile packages
+                    </a>
+                </li>
+                <li id="docs_desktop_mobilecodesigning" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn756634.aspx" role="menuitem" data-bi-name="Docs_Desktop_MobileCodeSigning">
+                        Mobile code signing
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_desktop_win8-1driverdev" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/windows/hardware/ff960953.aspx" role="menuitem" data-bi-name="Docs_Desktop_Win8-1DriverDev">
+                        Windows 8.1 driver development
+                    </a>
+                </li>
+                <li id="docs_desktop_winphone8-1dev" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615594" role="menuitem" data-bi-name="Docs_Desktop_WinPhone8-1Dev">
+                        Windows Phone 8.1 driver development 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_customize" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Customize
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_iot_winprovisionframe" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898375.aspx" role="menuitem" data-bi-name="Docs_IoT_WinProvisionFrame">
+                        Windows Provisioning framework
+                    </a>
+                </li>
+                <li id="docs_iot_provisiopackages" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/mt147447.aspx" role="menuitem" data-bi-name="Docs_IoT_Register">
+                        Provisioning packages
+                    </a>
+                </li>
+                <li id="docs_iot_winicd" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn916113(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_IoT_WinICD">
+                        Windows ICD
+                    </a>
+                </li>
+                <li id="docs_iot_preinstallapps" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/mt269740(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_IoT_PreinstallApps">
+                        Preinstalled apps
+                    </a>
+                </li>
+                <li id="docs_iot_mdm" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn914769.aspx" role="menuitem" data-bi-name="Docs_IoT_MDM">
+                        Mobile Device Management (MDM)
+                    </a>
+                </li>
+                <li id="docs_iot_deviceenrollment" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn925033.aspx" role="menuitem" data-bi-name="docs_iot_DeviceEnrollment">
+                        Device enrollment
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_iot_unattendframework" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898376.aspx" role="menuitem" data-bi-name="Docs_IoT_UnattendFramework">
+                        Unattend framework
+                    </a>
+                </li>
+                <li id="docs_iot_startlayoutdesktop" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/mt171092(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_IoT_StartLayoutDesktop">
+                        Start layout for desktop
+                    </a>
+                </li>
+                <li id="docs_iot_preinstalled_apps_desktop" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn707969.aspx" role="menuitem" data-bi-name="Docs_IoT_PreinstalledAppsDesktop">
+                        Preinstalled apps for desktop
+                    </a>
+                </li>
+                <li id="docs_iot_builddeploy_winicd" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn916113(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_IoT_BuildDeployWinICD">
+                        Build and deploy a desktop image with Windows ICD
+                    </a>
+                </li>
+                <li id="docs_iot_desktopmfsteps" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898436.aspx" role="menuitem" data-bi-name="docs_iot_DesktopMFSteps">
+                        Desktop manufacturing step-by-step
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_iot_updatescenarios" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757433.aspx" role="menuitem" data-bi-name="Docs_IoT_UpdateScenarios">
+                        MCSF framework
+                    </a>
+                </li>
+                <li id="docs_iot_layoutmobile" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/mt171093(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_Iot_startlayoutmobile">
+                        Start layout for mobile
+                    </a>
+                </li>
+                <li id="docs_iot_preinstalledappsmobile" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn707972.aspx" role="menuitem" data-bi-name="Docs_Iot_PreinstalledAppsMobile">
+                        Preinstalled apps for mobile devices
+                    </a>
+                </li>
+                <li id="docs_iot_mobileicd" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn916106.aspx" role="menuitem" data-bi-name="docs_Iot_MobileICDimg">
+                        Build and deploy a mobile image with Windows ICD 
+                    </a>
+                </li>
+                <li id="docs_iot_mobilecmdimgs" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn756628.aspx" role="menuitem" data-bi-name="Docs_Iot_MobileCMDimgs">
+                        Build and flash mobile images with command line
+                    </a>
+                </li>
+                <li id="docs_iot_optmobileimg" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn756780.aspx" role="menuitem" data-bi-name="Docs_Iot_OptMobileImg">
+                        Optional features for building mobile images
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_iot_win8-1customtools" data-mobile="0">
+                    <a href="https://technet.microsoft.com/library/dn621900.aspx" role="menuitem" data-bi-name="Docs_IoT_Win8-1CustomTools">
+                        Windows 8.1 customization tools
+                    </a>
+                </li>
+                <li id="docs_iot_customswp8-1" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615595" role="menuitem" data-bi-name="Docs_IoT_CustomWP8-1">
+                        Windows Phone 8.1 customization 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_test" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Test
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_desktop_hlk" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn930814.aspx" role="menuitem" data-bi-name="Docs_Desktop_HLK">
+                        Windows Hardware Lab Kit (HLK)
+                    </a>
+                </li>
+                <li id="docs_desktop_hardwarecert" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/br230796.aspx" role="menuitem" data-bi-name="Docs_Desktop_HardwareCert">
+                        Submit hardware for certification
+                    </a>
+                </li>
+                <li id="docs_desktop_troubleshoothlk" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn939955(v=vs.85).aspx" role="menuitem" data-bi-name="Docs_Desktop_TroubleshootHLK">
+                        Troubleshooting HLK
+                    </a>
+                </li>
+                <li id="docs_desktop_wpt" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn927310.aspx" role="menuitem" data-bi-name="Docs_Desktop_wpt">
+                        Windows Performance Toolkit (WPT)
+                    </a>
+                </li>
+                <li id="docs_desktop_wat" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn923543.aspx" role="menuitem" data-bi-name="docs_desktop_WAT">
+                        Windows Assessment Toolkit 
+                    </a>
+                </li>
+                <li id="docs_desktop_validateuwd" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/Library/Windows/Hardware/dn941247.aspx" role="menuitem" data-bi-name="docs_desktop_ValidateUWD">
+                        Validate Universal Windows drivers
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_desktop_hlkdesktop" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn915002.aspx" role="menuitem" data-bi-name="Docs_Desktop_HLKDesktop">
+                        Get started with the HLK for desktop
+                    </a>
+                </li>
+                <li id="docs_desktop_analyzedesktopperformance" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn927306.aspx" role="menuitem" data-bi-name="Docs_Desktop_AnalyzeDesktopPerformance">
+                        Analyze desktop performance issues
+                    </a>
+                </li>
+                <li id="docs_desktop_eventtracing" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn938554.aspx" role="menuitem" data-bi-name="Docs_Desktop_EventTracing">
+                        Event tracing
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_test_analyzemobileperformance" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn927306.aspx" role="menuitem" data-bi-name="Docs_Desktop_AnalyzeMobilePerformance">
+                        Analyze mobile performance issues
+                    </a>
+                </li>
+                <li id="docs_test_mobilesoftwaretracing" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757514.aspx" role="menuitem" data-bi-name="Docs_Desktop_MobileSoftwareTracing">
+                        Mobile software tracing
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_test_win8-1cert" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/windows/hardware/gg463010.aspx" role="menuitem" data-bi-name="Docs_Test_Win8-1Cert">
+                        Windows 8.1 certification
+                    </a>
+                </li>
+                <li id="docs_test_wp8-1test" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615596" role="menuitem" data-bi-name="Docs_Test_WP8-1Test">
+                        Windows Phone 8.1 testing 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_manufacture" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Manufacture
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_manufacture_submithardwarecert" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn962267.aspx" role="menuitem" data-bi-name="Docs_Manufacture_SubmitHardwareCert">
+                        Submit hardware for certification 
+                    </a>
+                </li>
+                <li id="docs_manufacture_ffusupport" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn940130.aspx" role="menuitem" data-bi-name="Docs_Manufacture_FFUSupport">
+                        FFU support
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_manufacture_desktopmanufacturesteps" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898436.aspx" role="menuitem" data-bi-name="Docs_manufacture_DesktopManufactureSteps">
+                        Desktop manufacturing step-by-step
+                    </a>
+                </li>
+                <li id="docs_manufacture_deploytoolsdesktop" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn938361.aspx" role="menuitem" data-bi-name="Docs_Manufacture_DeployToolsDesktop">
+                        Deployment tools for desktop
+                    </a>
+                </li>
+                <li id="docs_manufacture_pushreset" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn938307.aspx" role="menuitem" data-bi-name="Docs_Manufacture_PushReset">
+                        Push-button reset
+                    </a>
+                </li>
+                <li id="docs_manufacture_langpacks" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898584.aspx" role="menuitem" data-bi-name="Docs_Manufacture_LangPacks">
+                        Language packs
+                    </a>
+                </li>
+                <li id="docs_manufacture_winpe" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn938389.aspx" role="menuitem" data-bi-name="docs_manufacture_WinPE">
+                        Windows PE
+                    </a>
+                </li>
+                <li id="docs_manufacture_dism" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn898558.aspx" role="menuitem" data-bi-name="docs_manufacture_DISM">
+                        DISM
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_manufacture_mobile" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757545.aspx" role="menuitem" data-bi-name="Docs_manufacture_Mobile">
+                        Mobile manufacturing
+                    </a>
+                </li>
+                <li id="docs_manufacture_deploytoolsmobile" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757542.aspx" role="menuitem" data-bi-name="Docs_Manufacture_DeployToolsMobile">
+                        Deployment tools for mobile
+                    </a>
+                </li>
+                <li id="docs_manufacture_buildmobileimgs" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn756628.aspx" role="menuitem" data-bi-name="Docs_manufacture_BuildMobileImgs">
+                        Build and flash mobile images
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_manufacture_win8-1deployassess" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/windows/hardware/dn593619.aspx" role="menuitem" data-bi-name="Docs_manufacture_Win8-1DeployAssess">
+                        Windows 8.1 deployment and assessment
+                    </a>
+                </li>
+                <li id="docs_manufacture_wp8-1manufacturing" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615597" role="menuitem" data-bi-name="Docs_manufacture_WP8-1Manufacturing">
+                        Windows Phone 8.1 manufacturing 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+    <dl class="shell-header-dropdown-tab  shell-tab-mcol  ">
+
+            <dt id="docs_service" class="shell-header-dropdown-tab-label">
+                <a href="javascript:void(0)" role="menuitem" data-bi-dnt="">
+                    Service
+                </a>
+            </dt>
+            <dd class="shell-header-dropdown-tab-content" data-col="4">
+
+
+
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+All devices                </h3>
+            </li>
+                <li id="docs_apps_dashboard" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/br230803.aspx" role="menuitem" data-bi-name="Docs_Apps_Dashboard">
+                        Dashboard services
+                    </a>
+                </li>
+                <li id="docs_service_driverdistribute" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn962251.aspx" role="menuitem" data-bi-name="Docs_service_DriverDistribute">
+                        Driver distribution
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Desktop                </h3>
+            </li>
+                <li id="docs_service_refurbishpcs" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn946570.aspx" role="menuitem" data-bi-name="Docs_Service_RefurbishPCs">
+                        Refurbishing PCs
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Mobile                </h3>
+            </li>
+                <li id="docs_service_updatescenarios" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757528.aspx" role="menuitem" data-bi-name="Docs_Apps_Win8">
+                        Update scenarios
+                    </a>
+                </li>
+                <li id="docs_service_refurbishmobile" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757542.aspx" role="menuitem" data-bi-name="Docs_Service_RefurbishMobile">
+                        Refurbishing mobile devices 
+                    </a>
+                </li>
+                <li id="docs_service_fieldscenarios" data-mobile="1">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/dn757540.aspx" role="menuitem" data-bi-name="Docs_Service_FieldScenarios">
+                        Field service scenarios
+                    </a>
+                </li>
+
+        </ul>
+        <ul class="shell-header-dropdown-tab-list shell-l3-group">
+            <li>
+                <h3>
+Previous versions                </h3>
+            </li>
+                <li id="docs_service_win8-1recovery" data-mobile="0">
+                    <a href="https://msdn.microsoft.com/library/windows/hardware/hh825051.aspx" role="menuitem" data-bi-name="Docss_Service_Win8-1Recovery">
+                        Windows 8.1 recovery
+                    </a>
+                </li>
+                <li id="docs_service_toolswp8-1" data-mobile="0">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615598 " role="menuitem" data-bi-name="Docs_Service_ToolsWP8-1">
+                        Service Center tools for Windows Phone 8.1 
+                    </a>
+                </li>
+                <li id="docs_service_wp8-1update" data-mobile="1">
+                    <a href="http://go.microsoft.com/fwlink/p/?LinkId=615599" role="menuitem" data-bi-name="Docs_Service_WP8-1Update">
+                        Windows Phone 8.1 update 
+                    </a>
+                </li>
+
+        </ul>
+
+
+
+            </dd>
+
+    </dl>
+
+</div>
+
+                            </li>
+                            <li id="downloads" class="shell-header-dropdown-label  ">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://msdn.microsoft.com/windows/hardware/dn913721.aspx" role="menuitem" data-bi-name="Downloads" data-bi-slot="4">
+
+                                    Downloads
+                                </a>
+                            </li>
+                            <li id="samples" class="shell-header-dropdown-label  ">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://msdn.microsoft.com/windows/hardware/mt238339.aspx" role="menuitem" data-bi-name="Samples" data-bi-slot="5">
+
+                                    Samples
+                                </a>
+                            </li>
+                            <li id="community" class="shell-header-dropdown-label  ">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://msdn.microsoft.com/windows/hardware/dn913720.aspx" role="menuitem" data-bi-name="community" data-bi-slot="6">
+
+                                    Community
+                                </a>
+                            </li>
+                            <li id="programs" class="shell-header-dropdown-label  ">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://msdn.microsoft.com/windows/hardware/mt238276.aspx" role="menuitem" data-bi-name="Programs" data-bi-slot="7">
+
+                                    Programs
+                                </a>
+                            </li>
+                            <li id="dashboard" class="shell-header-dropdown-label  rightAlignedMenu">
+                                <a class="top-level-link-text ctl_headerNavLink" href="https://sysdev.microsoft.com/en-us/hardware" role="menuitem" data-bi-name="Dashboard" data-bi-slot="8">
+
+                                    Dashboard
+                                </a>
+                            </li>
+
+        </ul>
+
+
+    </div>
+</div>
+
+
+
+
+ 
+        </div>
+    <input type="hidden" id="UhfSignInOutLink" value="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1445319429&amp;rver=6.0.5276.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-us%2flibrary%2fwindows%2fhardware%2fff540174%2528v%3dvs.85%2529.aspx&amp;lc=1033&amp;id=254354&amp;mkt=en-US" />
+    
+    
+
+
+
+
+
+
+  <div class="breadCrumb">
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/mt297477.aspx" title="Windows hardware">Windows hardware</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/mt269767(v=vs.85).aspx" title="Develop">Develop</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557573(v=vs.85).aspx" title="Drivers">Drivers</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557557(v=vs.85).aspx" title="Device and Driver Technologies">Device and Driver Technologies</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557547(v=vs.85).aspx" title="Bus and Port Drivers">Bus and Port Drivers</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff538930(v=vs.85).aspx" title="Universal Serial Bus (USB)">Universal Serial Bus (USB)</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn303342(v=vs.85).aspx" title="Developing Windows applications for USB devices">Developing Windows applications for USB devices</a></span>
+        <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376885(v=vs.85).aspx" title="Windows desktop app for a USB device">Windows desktop app for a USB device</a></span>
+
+    <span><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" title="How to Access a USB Device by Using WinUSB Functions">How to Access a USB Device by Using WinUSB Functions</a></span>
+  </div>
+
+
+        <div id="body">
+            <span id="tabletView_large"></span>
+            <span id="tabletView_small"></span>
+            <span id="mobileView"></span>
+            
+
+
+
+
+
+
+
+        <div id="leftNav">
+
+
+
+
+<div id="tocnav" class="hide-archive">
+
+
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/mt297477.aspx" id="dn623406_VS.85_en-us" mtpsaliasid="" mtpsassetid="197bd91c-785c-459e-945f-ab9b1fed60e9_VS.85_en-us" mtpsshortid="mt297477_MSDN.10_en-us" title="Windows hardware">Windows hardware</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/mt269767(v=vs.85).aspx" id="dn623408_VS.85_en-us" mtpsaliasid="" mtpsassetid="e15779bc-5187-48c7-a086-d1ebc51ed804_VS.85_en-us" mtpsshortid="mt269767_VS.85_en-us" title="Develop">Develop</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557573(v=vs.85).aspx" id="mt228283_VS.85_en-us" mtpsaliasid="" mtpsassetid="2ef9f140-d609-4d62-a54e-ec627510d509_VS.85_en-us" mtpsshortid="ff557573_VS.85_en-us" title="Drivers">Drivers</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557557(v=vs.85).aspx" id="mt228284_VS.85_en-us" mtpsaliasid="" mtpsassetid="1ef3e216-1322-42c3-b070-94cddfb2133c_VS.85_en-us" mtpsshortid="ff557557_VS.85_en-us" title="Device and Driver Technologies">Device and Driver Technologies</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff557547(v=vs.85).aspx" id="mt228285_VS.85_en-us" mtpsaliasid="" mtpsassetid="5cefa114-cec1-4058-a7a9-08e0b13fe412_VS.85_en-us" mtpsshortid="ff557547_VS.85_en-us" title="Bus and Port Drivers">Bus and Port Drivers</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff538930(v=vs.85).aspx" id="mt228286_VS.85_en-us" mtpsaliasid="" mtpsassetid="45ba2638-b1b9-409d-bd23-78e75a3515be_VS.85_en-us" mtpsshortid="ff538930_VS.85_en-us" title="Universal Serial Bus (USB)">Universal Serial Bus (USB)</a>            </div>
+            <div class="toclevel0 " data-toclevel="0">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn303342(v=vs.85).aspx" id="dn379397_VS.85_en-us" mtpsaliasid="" mtpsassetid="B3F1A1A6-0908-4144-8454-76A2FB70619B_VS.85_en-us" mtpsshortid="dn303342_VS.85_en-us" title="Developing Windows applications for USB devices">Developing Windows applications for USB devices</a>            </div>
+            <div class="toclevel1 " data-toclevel="1">
+<a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376885(v=vs.85).aspx" id="dn720356_VS.85_en-us" mtpsaliasid="" mtpsassetid="CECFF842-73BD-4FB2-9FC5-E531D10E74EC_VS.85_en-us" mtpsshortid="dn376885_VS.85_en-us" title="Windows desktop app for a USB device">Windows desktop app for a USB device</a>            </div>
+            <div class="toclevel2 " data-toclevel="2">
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376872(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Write a Windows desktop app based on the WinUSB template">Write a Windows desktop app based on the WinUSB template</a>            </div>
+            <div class="toclevel2 current " data-toclevel="2">
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="How to Access a USB Device by Using WinUSB Functions">How to Access a USB Device by Using WinUSB Functions</a>            </div>
+            <div class="toclevel2 " data-toclevel="2">
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376866(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Send USB isochronous transfers from a WinUSB desktop app">Send USB isochronous transfers from a WinUSB desktop app</a>            </div>
+            <div class="toclevel2 " data-toclevel="2">
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff728833(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="WinUSB Functions for Pipe Policy Modification">WinUSB Functions for Pipe Policy Modification</a>            </div>
+            <div class="toclevel2 " data-toclevel="2">
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff728834(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="WinUSB Power Management">WinUSB Power Management</a>            </div>
+</div>                <div style="display:none">
+                    <div id="CollapseLocalizeString">Collapse the table of content</div>
+                    <div id="ExpandLocalizeString">Expand the table of content</div>
+                </div>
+
+            
+
+            
+
+            
+
+            <div id="toc-resizable-ew" class="toc-resizable-ew"></div>
+            
+
+<a id="NavigationResize" href="javascript:void(0)">
+    <img class="cl_nav_resize_open" src="https://i-msdn.sec.s-msft.com/Areas/Epx/Content/Images/ImageSprite.png?v=635796165088758771" title="Expand" alt="Expand" />
+    <img class="cl_nav_resize_close" src="https://i-msdn.sec.s-msft.com/Areas/Epx/Content/Images/ImageSprite.png?v=635796165088758771" title="Minimize" alt="Minimize" />
+</a>
+
+
+
+        </div>
+    <div id="content" class="content">
+
+
+
+
+
+
+
+
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">How to Access a USB Device by Using WinUSB Functions</h1>
+  
+  <div id="mainSection">
+<div class="clsServerSDKContent">
+
+</div>
+<div class="Nav_Sidebar" xmlns=""><span class="sidebar_heading" xmlns="http://www.w3.org/1999/xhtml">Summary</span>
+<div class="sidebar_summary" xmlns="http://www.w3.org/1999/xhtml">
+<p>
+</p><ul>
+<li>Opening the device and obtaining WinUSB handle.</li>
+<li>Getting information about the device, configuration, and interface settings of all interfaces,, and their endpoints.</li>
+<li>Reading and writing data to bulk and interrupt endpoints.</li>
+</ul>
+
+</div>
+<span class="sidebar_heading" xmlns="http://www.w3.org/1999/xhtml">In this article</span>
+<div class="sidebar_toc" xmlns="http://www.w3.org/1999/xhtml">
+<p>
+</p><ul>
+<li><a href="#pre">Prerequisites</a></li>
+<li><a href="#setup">Step 1: Create a skeleton app based on the WinUSB template</a></li>
+<li><a href="#query">Step 2: Query the Device for USB Descriptors</a></li>
+<li><a href="#control">Step 3: Send Control Transfer to the Default Endpoint</a></li>
+<li><a href="#IO">Step 4: Issue I/O Requests</a></li>
+<li><a href="#step_5__release_the_device_handles">Step 5: Release the Device Handles</a></li>
+<li><a href="#step_6__implement_main">Step 6: Implement Main</a></li>
+<li><a href="#next_steps">Next steps</a></li>
+<li><a href="#related_topics">Related topics</a></li>
+</ul>
+
+</div>
+<span class="sidebar_heading" xmlns="http://www.w3.org/1999/xhtml">Important APIs</span>
+<div class="sidebar_summary" xmlns="http://www.w3.org/1999/xhtml">
+<p>
+</p><ul>
+<li>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff550855(v=vs.85).aspx">SetupAPI Functions</a>
+</li>
+<li><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540046(v=vs.85).aspx#winusb">WinUSB Functions</a></li>
+</ul>
+
+</div>
+</div>
+<p>This topic includes a detailed walkthrough of how to use <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540046(v=vs.85).aspx#winusb">WinUSB Functions</a> to communicate with a USB device that is using Winusb.sys as its function driver. </p><p>If you are using Microsoft Visual Studio 2013, create your skeleton app by using the WinUSB template. In that case, skip steps 1 through 3 and proceed from step 4 in this topic. The template opens a file handle to the device and obtains the WinUSB handle required for subsequent operations. That handle is stored in the app-defined DEVICE_DATA structure in device.h.</p>
+<p>For more information about the template, see Write a Windows desktop app based on the WinUSB template. </p>
+
+<p><strong>Note</strong>  WinUSB functions require Windows XP or later. You can use these functions in your C/C++ application to communicate with your USB device. Microsoft does not provide a managed API for WinUSB.</p>
+<p></p>
+<h2><a id="pre"></a><a id="PRE"></a>Prerequisites</h2>
+<p>The following items apply to this walkthrough:</p>
+<ul>
+<li>This information applies to Windows 8.1, Windows 8, Windows 7,
+	Windows Server 2008, Windows Vista, and
+	Windows XP
+versions of Windows.</li>
+<li>You have installed Winusb.sys as the device's function driver. For more information about this process, see <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540283(v=vs.85).aspx">WinUSB (Winusb.sys) Installation</a>.</li>
+<li>The examples in this topic are based on the <a href="http://www.osronline.com/">OSR USB FX2 Learning Kit device</a>. You can use these examples to extend the procedures to other USB devices. </li>
+</ul>
+<h2><a id="setup"></a><a id="SETUP"></a>Step 1: Create a skeleton app based on the WinUSB template</h2>
+<p>To access a USB device, start by creating a skeleton app based on the WinUSB template included in the integrated environment of Windows Driver Kit (WDK) (with  Debugging Tools for Windows) and  Microsoft Visual Studio.You can use the template as a starting point. </p>
+<p>For information about the template code, how to create, build, deploy, and debug the skeleton app, see <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376872(v=vs.85).aspx">Write a Windows desktop app based on the WinUSB template</a>.</p>
+<p>The template enumerates devices by using <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff550855(v=vs.85).aspx">SetupAPI</a> routines, opens a file handle for the device, and creates a WinUSB interface handle required for subsequent tasks. 
+For example code that gets the device handle and opens the device, see  <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376872(v=vs.85).aspx#code">Template code discussion</a>. </p>
+<h2><a id="query"></a><a id="QUERY"></a>Step 2: Query the Device for USB Descriptors</h2>
+<p>Next, query the device for USB-specific information such as device speed, interface descriptors, related endpoints, and their pipes. The procedure is similar to the one that USB device drivers use. However, the application completes device queries by calling <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540257(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_GetDescriptor</strong></a>.</p>
+<p>The following list shows the WinUSB functions that you can call to get USB-specific information:</p>
+<ul>
+<li>Additional device information.<p>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540290(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_QueryDeviceInformation</strong></a> to request information from the device descriptors for the device. To get the device's speed, set DEVICE_SPEED (0x01) in the <em>InformationType</em> parameter. The function returns LowSpeed (0x01) or HighSpeed (0x03).
+</p>
+</li>
+<li>Interface descriptors<p>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540292(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_QueryInterfaceSettings</strong></a> and pass the device's interface handles to obtain the corresponding interface descriptors. The WinUSB interface handle corresponds to the first interface. Some USB devices, such as the OSR Fx2 device, support only one interface without any alternative setting. Therefore, for these devices the  <em>AlternateSettingNumber</em> parameter is set to zero and the function is called only one time. <strong>WinUsb_QueryInterfaceSettings</strong> fills the  caller-allocated <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540065(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">USB_INTERFACE_DESCRIPTOR</strong></a> structure (passed in the  <em>UsbAltInterfaceDescriptor</em> parameter) with information about the interface. For example, the number of endpoints in the interface is set in the <strong>bNumEndpoints</strong> member  of <strong>USB_INTERFACE_DESCRIPTOR</strong>.
+</p>
+<p>For devices that support multiple interfaces, call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540245(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_GetAssociatedInterface</strong></a> to obtain interface handles for associated interfaces by specifying the alternative settings in the <em>AssociatedInterfaceIndex</em> parameter.
+</p>
+</li>
+<li>Endpoints<p>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540293(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_QueryPipe</strong></a> to obtain information about each endpoint on each interface. <strong>WinUsb_QueryPipe</strong> populates the caller-allocated <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540285(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WINUSB_PIPE_INFORMATION</strong></a> structure with information about the specified endpoint's pipe. The endpoints' pipes are identified by a zero-based index, and must be less than the value in the <strong>bNumEndpoints</strong> member of the interface descriptor that is retrieved in the previous call to <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540292(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_QueryInterfaceSettings</strong></a>.
+The OSR Fx2 device has one interface that has three endpoints. For this device, the function's <em>AlternateInterfaceNumber</em> parameter is set to 0, and the value of the <em>PipeIndex</em> parameter varies from 0 to 2.</p>
+<p> To determine the pipe type, examine the <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540285(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WINUSB_PIPE_INFORMATION</strong></a> structure's <strong>PipeInfo</strong> member. This member is set to one of the <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff539119(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">USBD_PIPE_TYPE</strong></a> enumeration values: UsbdPipeTypeControl, UsbdPipeTypeIsochronous, UsbdPipeTypeBulk, or UsbdPipeTypeInterrupt.
+The OSR USB FX2 device supports an interrupt pipe, a bulk-in pipe, and a bulk-out pipe, so <strong>PipeInfo</strong> is set to either UsbdPipeTypeInterrupt or UsbdPipeTypeBulk.
+The UsbdPipeTypeBulk value identifies bulk pipes, but does not provide the pipe's direction. The direction information is encoded in the high bit of the pipe address, which is stored in the <strong>WINUSB_PIPE_INFORMATION</strong> structure's <strong>PipeId</strong> member. The simplest way to determine the direction of the pipe is to pass the <strong>PipeId</strong> value to one of the following macros from Usb100.h:</p><ul>
+<li>The <code>USB_ENDPOINT_DIRECTION_IN (PipeId)</code> macro returns <strong>TRUE</strong> if the direction is in.</li>
+<li>The <code>USB_ENDPOINT_DIRECTION_OUT(PipeId)</code> macro returns <strong>TRUE</strong> if the direction is out.</li>
+</ul>
+The application uses the <strong>PipeId</strong> value to identify which pipe to use for data transfer in calls to WinUSB functions, such as <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540297(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_ReadPipe</strong></a> (described in the "Issue I/O Requests" section of this topic), so the example stores all three <strong>PipeId</strong> values for later use.
+</li>
+</ul>
+<p>The following example code gets the speed of the device that is specified by the WinUSB interface handle. </p>
+
+<div id="code-snippet-1" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_780eea8b-c392-4f12-b86f-5b63bdb1a0d3');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_780eea8b-c392-4f12-b86f-5b63bdb1a0d3" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+BOOL GetUSBDeviceSpeed(WINUSB_INTERFACE_HANDLE hDeviceHandle, UCHAR* pDeviceSpeed)
+{
+    <span style="color:Blue;">if</span> (!pDeviceSpeed || hDeviceHandle==INVALID_HANDLE_VALUE)
+    {
+        <span style="color:Blue;">return</span> FALSE;
+    }
+
+    BOOL bResult = TRUE;
+
+    ULONG length = <span style="color:Blue;">sizeof</span>(UCHAR);
+
+    bResult = WinUsb_QueryDeviceInformation(hDeviceHandle, DEVICE_SPEED, &amp;length, pDeviceSpeed);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        printf(<span style="color:#A31515;">"Error getting device speed: %d.\n"</span>, GetLastError());
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    <span style="color:Blue;">if</span>(*pDeviceSpeed == LowSpeed)
+    {
+        printf(<span style="color:#A31515;">"Device speed: %d (Low speed).\n"</span>, *pDeviceSpeed);
+        <span style="color:Blue;">goto</span> done;
+    }
+    <span style="color:Blue;">if</span>(*pDeviceSpeed == FullSpeed)
+    {
+        printf(<span style="color:#A31515;">"Device speed: %d (Full speed).\n"</span>, *pDeviceSpeed);
+        <span style="color:Blue;">goto</span> done;
+    }
+    <span style="color:Blue;">if</span>(*pDeviceSpeed == HighSpeed)
+    {
+        printf(<span style="color:#A31515;">"Device speed: %d (High speed).\n"</span>, *pDeviceSpeed);
+        <span style="color:Blue;">goto</span> done;
+    }
+
+done:
+    <span style="color:Blue;">return</span> bResult;
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>The following example code queries the various descriptors for the USB device that is specified by the WinUSB interface handle. The example function retrieves the types of supported endpoints and their pipe identifiers. The example stores all three PipeId values for later use. </p>
+
+<div id="code-snippet-2" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_d47f2e2c-8cf1-4870-a9db-434d422c4cc3');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_d47f2e2c-8cf1-4870-a9db-434d422c4cc3" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+<span style="color:Blue;">struct</span> PIPE_ID
+{
+    UCHAR  PipeInId;
+    UCHAR  PipeOutId;
+};
+
+BOOL QueryDeviceEndpoints (WINUSB_INTERFACE_HANDLE hDeviceHandle, PIPE_ID* pipeid)
+{
+    <span style="color:Blue;">if</span> (hDeviceHandle==INVALID_HANDLE_VALUE)
+    {
+        <span style="color:Blue;">return</span> FALSE;
+    }
+
+    BOOL bResult = TRUE;
+
+    USB_INTERFACE_DESCRIPTOR InterfaceDescriptor;
+    ZeroMemory(&amp;InterfaceDescriptor, <span style="color:Blue;">sizeof</span>(USB_INTERFACE_DESCRIPTOR));
+
+    WINUSB_PIPE_INFORMATION  Pipe;
+    ZeroMemory(&amp;Pipe, <span style="color:Blue;">sizeof</span>(WINUSB_PIPE_INFORMATION));
+
+    
+    bResult = WinUsb_QueryInterfaceSettings(hDeviceHandle, 0, &amp;InterfaceDescriptor);
+
+    <span style="color:Blue;">if</span> (bResult)
+    {
+        <span style="color:Blue;">for</span> (<span style="color:Blue;">int</span> index = 0; index &lt; InterfaceDescriptor.bNumEndpoints; index++)
+        {
+            bResult = WinUsb_QueryPipe(hDeviceHandle, 0, index, &amp;Pipe);
+
+            <span style="color:Blue;">if</span> (bResult)
+            {
+                <span style="color:Blue;">if</span> (Pipe.PipeType == UsbdPipeTypeControl)
+                {
+                    printf(<span style="color:#A31515;">"Endpoint index: %d Pipe type: Control Pipe ID: %d.\n"</span>, index, Pipe.PipeType, Pipe.PipeId);
+                }
+                <span style="color:Blue;">if</span> (Pipe.PipeType == UsbdPipeTypeIsochronous)
+                {
+                    printf(<span style="color:#A31515;">"Endpoint index: %d Pipe type: Isochronous Pipe ID: %d.\n"</span>, index, Pipe.PipeType, Pipe.PipeId);
+                }
+                <span style="color:Blue;">if</span> (Pipe.PipeType == UsbdPipeTypeBulk)
+                {
+                    <span style="color:Blue;">if</span> (USB_ENDPOINT_DIRECTION_IN(Pipe.PipeId))
+                    {
+                        printf(<span style="color:#A31515;">"Endpoint index: %d Pipe type: Bulk Pipe ID: %c.\n"</span>, index, Pipe.PipeType, Pipe.PipeId);
+                        pipeid-&gt;PipeInId = Pipe.PipeId;
+                    }
+                    <span style="color:Blue;">if</span> (USB_ENDPOINT_DIRECTION_OUT(Pipe.PipeId))
+                    {
+                        printf(<span style="color:#A31515;">"Endpoint index: %d Pipe type: Bulk Pipe ID: %c.\n"</span>, index, Pipe.PipeType, Pipe.PipeId);
+                        pipeid-&gt;PipeOutId = Pipe.PipeId;
+                    }
+
+                }
+                <span style="color:Blue;">if</span> (Pipe.PipeType == UsbdPipeTypeInterrupt)
+                {
+                    printf(<span style="color:#A31515;">"Endpoint index: %d Pipe type: Interrupt Pipe ID: %d.\n"</span>, index, Pipe.PipeType, Pipe.PipeId);
+                }
+            }
+            <span style="color:Blue;">else</span>
+            {
+                <span style="color:Blue;">continue</span>;
+            }
+        }
+    }
+
+done:
+    <span style="color:Blue;">return</span> bResult;
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="control"></a><a id="CONTROL"></a>Step 3: Send Control Transfer to the Default Endpoint</h2>
+<p>Next, communicate with the device by issuing control request to the default endpoint. </p>
+<p>All USB devices have a default endpoint in addition to the endpoints that are associated with interfaces. The primary purpose of the default endpoint is to provide the host with information that it can use to configure the device. However, devices can also use the default endpoint for device-specific purposes. For example, the OSR USB FX2 device uses the default endpoint to control the light bar and seven-segment digital display.</p>
+<p>Control commands consist of an 8-byte setup packet, which includes a request code that specifies the particular request, and an optional data buffer. The request codes and buffer formats are vendor defined. In this example, the application sends data to the device to control the light bar. The code to set the light bar is 0xD8, which is defined for convenience as SET_BARGRAPH_DISPLAY. For this request, the device requires a 1-byte data buffer that specifies which elements should be lit by setting the appropriate bits. </p>
+<p>The application can set this through the user interface (UI), such as by providing a set of eight check box controls to specify which elements of the light bar should be lit. The specified elements correspond to the appropriate bits in the buffer.
+To avoid UI code, the example code in this section sets the bits so that alternate lights get lit up.</p>
+<p>
+</p><p class="proch"><img id="wedge" alt="Ff540174.wedge(en-us,VS.85).gif" src="https://i-msdn.sec.s-msft.com/areas/global/content/clear.gif" title="Ff540174.wedge(en-us,VS.85).gif" xmlns="" class="cl_IC153696" /><strong>Use the following steps to issue a control request.</strong></p>
+<ol>
+<li>Allocate a 1-byte data buffer and load the data into the buffer that specifies the elements that should be lit by setting the appropriate bits. </li>
+<li>Construct a setup packet in a caller-allocated <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540313(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WINUSB_SETUP_PACKET</strong></a> structure. Initialize the members to represent the request type and data as follows:<ul>
+<li>The <strong>RequestType</strong> member specifies request direction. It is set to 0, which indicates host-to-device data transfer. For device-to-host transfers, set RequestType to 1.</li>
+<li>The <strong>Request</strong> member is set to the vendor-defined code for this request, 0xD8. It is defined for convenience as SET_BARGRAPH_DISPLAY.</li>
+<li>The <strong>Length</strong> member is set to the size of the data buffer.
+
+</li>
+<li>The <strong>Index</strong> and <strong>Value</strong> members are not required for this request, so they are set to zero.</li>
+</ul>
+</li>
+<li>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540219(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_ControlTransfer</strong></a> to transmit the  request to the default endpoint by passing the device's WinUSB interface handle, the setup packet, and the data buffer. The function receives the number of bytes that were transferred to the device in the <em>LengthTransferred</em> parameter.
+</li>
+</ol>
+
+<p>The following  code example sends a control request to the specified USB device to control the lights on the light bar.</p>
+
+<div id="code-snippet-3" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_58237d63-8e86-4811-ae17-3398140456a8');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_58237d63-8e86-4811-ae17-3398140456a8" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+
+BOOL SendDatatoDefaultEndpoint(WINUSB_INTERFACE_HANDLE hDeviceHandle)
+{
+    <span style="color:Blue;">if</span> (hDeviceHandle==INVALID_HANDLE_VALUE)
+    {
+        <span style="color:Blue;">return</span> FALSE;
+    }
+
+    BOOL bResult = TRUE;
+
+    
+    UCHAR bars = 0;
+
+    WINUSB_SETUP_PACKET SetupPacket;
+    ZeroMemory(&amp;SetupPacket, <span style="color:Blue;">sizeof</span>(WINUSB_SETUP_PACKET));
+    ULONG cbSent = 0;
+
+    <span style="color:Green;">//Set bits to light alternate bars</span>
+    <span style="color:Blue;">for</span> (<span style="color:Blue;">short</span> i = 0; i &lt; 7; i+= 2)
+    {
+        bars += 1 &lt;&lt; i;
+    }
+
+    <span style="color:Green;">//Create the setup packet</span>
+    SetupPacket.RequestType = 0;
+    SetupPacket.Request = 0xD8;
+    SetupPacket.Value = 0;
+    SetupPacket.Index = 0; 
+    SetupPacket.Length = <span style="color:Blue;">sizeof</span>(UCHAR);
+
+    bResult = WinUsb_ControlTransfer(hDeviceHandle, SetupPacket, &amp;bars, <span style="color:Blue;">sizeof</span>(UCHAR), &amp;cbSent, 0);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    printf(<span style="color:#A31515;">"Data sent: %d \nActual data transferred: %d.\n"</span>, <span style="color:Blue;">sizeof</span>(bars), cbSent);
+
+
+done:
+    <span style="color:Blue;">return</span> bResult;
+
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="IO"></a><a id="io"></a>Step 4: Issue I/O Requests</h2>
+<p>Next, send data to the device's bulk-in and bulk-out endpoints that can be used for read and write requests, respectively. On the OSR USB FX2 device, these two endpoints are configured for loopback, so the device moves data from the bulk-in endpoint to the bulk-out endpoint. It does not change the value of the data or add any new data. For loopback configuration, a read request reads the data that was sent by the most recent write request. WinUSB provides the following functions for sending write and read requests: </p><ul>
+<li>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540322(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_WritePipe</strong></a>
+</li>
+<li>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540297(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_ReadPipe</strong></a>
+</li>
+</ul>
+<p class="proch"><img id="wedge" alt="Ff540174.wedge(en-us,VS.85).gif" src="https://i-msdn.sec.s-msft.com/areas/global/content/clear.gif" title="Ff540174.wedge(en-us,VS.85).gif" xmlns="" class="cl_IC153696" /><strong>To send a write request</strong></p>
+<ol>
+<li>Allocate a buffer and fill it with the data that you want to write to the device. There is no limitation on the buffer size if the application does not set RAW_IO as the pipe's policy type. WinUSB divides the buffer into appropriately sized chunks, if necessary. If RAW_IO is set, the size of the buffer is limited by the maximum transfer size supported by WinUSB. </li>
+<li>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540322(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_WritePipe</strong></a> to write the buffer to the device. Pass the WinUSB interface handle for the device, the pipe identifier for the bulk-out pipe (as described in the <a href="#query">Query the Device for USB Descriptors</a> section of this topic), and the buffer. The function returns the number of bytes that are actually written to the device in the <em>bytesWritten</em> parameter.
+The <em>Overlapped</em>   parameter is set to <strong>NULL</strong> to request a synchronous operation. To perform an asynchronous write request, set <em>Overlapped</em> to a pointer to an <strong>OVERLAPPED</strong> structure.
+</li>
+</ol>Write requests that contain zero-length data are forwarded down the USB stack. If the transfer length is greater than a maximum transfer length, WinUSB divides the request into smaller requests of maximum transfer length and submits them serially.
+<p>The following  code example allocates a string and sends it  to the bulk-out endpoint of the device.
+</p>
+
+<div id="code-snippet-4" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_c65ba640-75aa-4923-80e6-d1783289ecdd');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_c65ba640-75aa-4923-80e6-d1783289ecdd" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+BOOL WriteToBulkEndpoint(WINUSB_INTERFACE_HANDLE hDeviceHandle, UCHAR* pID, ULONG* pcbWritten)
+{
+    <span style="color:Blue;">if</span> (hDeviceHandle==INVALID_HANDLE_VALUE || !pID || !pcbWritten)
+    {
+        <span style="color:Blue;">return</span> FALSE;
+    }
+
+    BOOL bResult = TRUE;
+
+    UCHAR szBuffer[] = <span style="color:#A31515;">"Hello World"</span>;
+    ULONG cbSize = strlen(szBuffer);
+    ULONG cbSent = 0;
+
+    bResult = WinUsb_WritePipe(hDeviceHandle, *pID, szBuffer, cbSize, &amp;cbSent, 0);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    printf(<span style="color:#A31515;">"Wrote to pipe %d: %s \nActual data transferred: %d.\n"</span>, *pID, szBuffer, cbSent);
+    *pcbWritten = cbSent;
+
+
+done:
+    <span style="color:Blue;">return</span> bResult;
+
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>
+</p><p class="proch"><img id="wedge" alt="Ff540174.wedge(en-us,VS.85).gif" src="https://i-msdn.sec.s-msft.com/areas/global/content/clear.gif" title="Ff540174.wedge(en-us,VS.85).gif" xmlns="" class="cl_IC153696" /><strong>To send a read request</strong></p>
+<ul>
+<li>Call <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540297(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_ReadPipe</strong></a> to read data from the bulk-in endpoint of the device. Pass the WinUSB interface handle of the device, the pipe identifier for the bulk-in endpoint, and an appropriately sized empty buffer. When the function returns, the buffer contains the data that was read from the device. The number of bytes that were read is returned in the function's <em>bytesRead</em> parameter. For read requests, the buffer must be a multiple of the maximum packet size.
+</li>
+</ul>Zero-length read requests complete immediately with success and are not sent down the stack. If the transfer length is greater than a maximum transfer length, WinUSB divides the request into smaller requests of maximum transfer length and submits them serially. If the transfer length is not a multiple of the endpoint's <strong>MaxPacketSize</strong>, WinUSB increases the size of the transfer to the next multiple of MaxPacketSize. If a device returns more data than was requested, WinUSB saves the excess data. If data remains from a previous read request, WinUSB copies it to the beginning of the next read request and completes the request, if necessary.
+<p>The following  code example reads data from the bulk-in endpoint of the device.</p>
+
+<div id="code-snippet-5" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_bc26e011-20d2-4f01-8f1d-9bb0cd300409');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_bc26e011-20d2-4f01-8f1d-9bb0cd300409" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+BOOL ReadFromBulkEndpoint(WINUSB_INTERFACE_HANDLE hDeviceHandle, UCHAR* pID, ULONG cbSize)
+{
+    <span style="color:Blue;">if</span> (hDeviceHandle==INVALID_HANDLE_VALUE)
+    {
+        <span style="color:Blue;">return</span> FALSE;
+    }
+
+    BOOL bResult = TRUE;
+
+    UCHAR* szBuffer = (UCHAR*)LocalAlloc(LPTR, <span style="color:Blue;">sizeof</span>(UCHAR)*cbSize);
+    
+    ULONG cbRead = 0;
+
+    bResult = WinUsb_ReadPipe(hDeviceHandle, *pID, szBuffer, cbSize, &amp;cbRead, 0);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    printf(<span style="color:#A31515;">"Read from pipe %d: %s \nActual data read: %d.\n"</span>, *pID, szBuffer, cbRead);
+
+
+done:
+    LocalFree(szBuffer);
+    <span style="color:Blue;">return</span> bResult;
+
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="Step_5__Release_the_Device_Handles"></a><a id="step_5__release_the_device_handles"></a><a id="STEP_5__RELEASE_THE_DEVICE_HANDLES"></a>Step 5: Release the Device Handles</h2>
+<p>After you have completed all the required calls to the device, release the file handle and the WinUSB interface handle for the device. 
+
+For this, call the following functions:</p>
+<ul>
+<li><strong>CloseHandle</strong> to release the handle that was created by <strong>CreateFile</strong>, as described in the step 1.</li>
+<li>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540233(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_Free</strong></a> to release the WinUSB interface handle for the device, which is returned by <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540277(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">WinUsb_Initialize</strong></a>. </li>
+</ul>
+<h2><a id="Step_6__Implement_Main"></a><a id="step_6__implement_main"></a><a id="STEP_6__IMPLEMENT_MAIN"></a>Step 6: Implement Main</h2>
+<p>The following code example shows the main function of your console application.</p>
+
+<div id="code-snippet-6" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if (window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_10376d15-00da-4ca8-b819-067bc7bf68a0');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_10376d15-00da-4ca8-b819-067bc7bf68a0" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+
+<span style="color:Blue;">int</span> _tmain(<span style="color:Blue;">int</span> argc, _TCHAR* argv[])
+{
+
+    GUID guidDeviceInterface = OSR_DEVICE_INTERFACE; <span style="color:Green;">//in the INF file</span>
+
+    BOOL bResult = TRUE;
+
+    PIPE_ID PipeID;
+
+    HANDLE hDeviceHandle = INVALID_HANDLE_VALUE;
+    WINUSB_INTERFACE_HANDLE hWinUSBHandle = INVALID_HANDLE_VALUE;
+    
+    UCHAR DeviceSpeed;
+    ULONG cbSize = 0;
+
+    bResult = GetDeviceHandle(guidDeviceInterface, &amp;hDeviceHandle);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = GetWinUSBHandle(hDeviceHandle, &amp;hWinUSBHandle);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = GetUSBDeviceSpeed(hWinUSBHandle, &amp;DeviceSpeed);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = QueryDeviceEndpoints(hWinUSBHandle, &amp;PipeID);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = SendDatatoDefaultEndpoint(hWinUSBHandle);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = WriteToBulkEndpoint(hWinUSBHandle, &amp;PipeID.PipeOutId, &amp;cbSize);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+    bResult = ReadFromBulkEndpoint(hWinUSBHandle, &amp;PipeID.PipeInId, cbSize);
+    <span style="color:Blue;">if</span>(!bResult)
+    {
+        <span style="color:Blue;">goto</span> done;
+    }
+
+
+    system(<span style="color:#A31515;">"PAUSE"</span>);
+
+done:
+    CloseHandle(hDeviceHandle);
+    WinUsb_Free(hWinUSBHandle);
+
+    <span style="color:Blue;">return</span> 0;
+}
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="Next_steps"></a><a id="next_steps"></a><a id="NEXT_STEPS"></a>Next steps</h2>
+<p>If your device supports isochronous endpoints, you can use <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540046(v=vs.85).aspx#winusb">WinUSB Functions</a> to send transfers. This feature is only supported in Windows 8.1.</p>
+<p>For more information, see <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376866(v=vs.85).aspx">Send USB isochronous transfers from a WinUSB desktop app</a>.</p>
+<h2><a id="related_topics"></a>Related topics</h2>
+<dl>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540196(v=vs.85).aspx">WinUSB</a>
+</dt>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540207(v=vs.85).aspx">WinUSB Architecture and Modules</a>
+</dt>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540283(v=vs.85).aspx">WinUSB (Winusb.sys) Installation</a>
+</dt>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff728833(v=vs.85).aspx">WinUSB Functions for Pipe Policy Modification</a>
+</dt>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff728834(v=vs.85).aspx">WinUSB Power Management</a>
+</dt>
+<dt><a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff540046(v=vs.85).aspx#winusb">WinUSB Functions</a></dt>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn376872(v=vs.85).aspx">Write a Windows desktop app based on the WinUSB template</a>
+</dt>
+</dl>
+<p> </p>
+<p> </p>
+<p><a href="mailto:wsddocfb@microsoft.com?subject=Documentation%20feedback [usbcon\buses]:%20How to Access a USB Device by Using WinUSB Functions%20 RELEASE:%20(9/9/2015)&amp;body=%0A%0APRIVACY STATEMENT%0A%0AWe use your feedback to improve the documentation. We don't use your email address for any other purpose, and we'll remove your email address from our system after the issue that you're reporting is fixed. While we're working to fix this issue, we might send you an email message to ask for more info. Later, we might also send you an email message to let you know that we've addressed your feedback.%0A%0AFor more info about Microsoft's privacy policy, see http://privacy.microsoft.com/en-us/default.aspx." title="Send comments about this topic to Microsoft">Send comments about this topic to Microsoft</a></p>
+</div>
+</div>
+
+
+    
+
+
+
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Show:</span>
+        <label>
+            <input type="checkbox" class="libraryFilterInherited" checked="checked" value="Inherit" />Inherited
+        </label>
+        <label>
+            <input type="checkbox" class="libraryFilterProtected" checked="checked" value="Protected" />Protected
+        </label>
+    </div>
+</div>
+    
+<input type="hidden" id="libraryMemberFilterEmptyWarning" value="There are no members available with your current filter settings." />
+
+
+
+    </div>
+
+
+
+
+        </div>
+        <div class="clear"></div>
+
+        
+    
+<input name="__RequestVerificationToken" type="hidden" value="yQAaj_kEcQpM-joAYuR-zMMXxaVuwJ9-5jV2_NobsTgXfIjkHO8_6R1ziD7U0XQ8qUd9uMKRnt34-f5Xrtcv2QQo_rw1" />
+<input id="ratingSubmitUrl" type="hidden" value="https://msdn.microsoft.com/en-us/library/feedback/add/ff540174(v=vs.85).aspx" />
+<input id="isTopicRated" type="hidden" value="false" />
+
+
+    
+
+
+
+        <div id="ux-footer" class="ltr">
+            
+                <div id="footerSock">
+                    <div id="footerSockInner">
+                        <a name="feedback"></a>
+                        <div data-fragmentName="Survey" id="Fragment_Survey" xmlns="http://www.w3.org/1999/xhtml"></div>
+
+<div class="rating">
+    <div id="ratingSection1">
+        <div class="title">
+            Was this page helpful?
+        </div>
+        <div class="description">
+            Your feedback about this content is important.<br />Let us know what you think.
+        </div>
+        <div class="buttons">
+            <button class="button" id="ratingYes" aria-label="Yes, this page was helpful">Yes</button>
+            <button class="button" id="ratingNo" aria-label="No, this page was not helpful">No</button>
+        </div>
+        <input id="ratingValue" type="hidden" value="" />
+    </div>
+    <div id="ratingSection2">
+        <div class="title">
+            Additional feedback?
+        </div>
+        <textarea id="ratingText" rows="6" cols="" maxlength="1500"></textarea>
+        <div class="counter right">
+            <span id="feedbackTextCounter">1500</span> characters remaining
+        </div>
+        <div class="buttons left">
+            <button class="button" id="ratingSubmit" aria-label="Submit my additional feedback">Submit</button>
+            <button class="button" id="ratingSkipThis" aria-label="Skip additional feedback">Skip this</button>
+        </div>
+    </div>
+    <div id="ratingSection3">
+        <div class="title">
+            Thank you!
+        </div>
+        <div class="description">
+            We appreciate your feedback.
+        </div>
+    </div>
+    
+    
+    <div id="contentFeedbackQAContainer" style="display: none;"></div>
+</div>
+    
+
+                        <div data-fragmentName="SockLinks" id="Fragment_SockLinks" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links">
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=317805" id="SockLinks_727_11" xmlns="http://www.w3.org/1999/xhtml">Find us on Facebook</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=317806" id="SockLinks_727_12" xmlns="http://www.w3.org/1999/xhtml">Follow us on Twitter</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=285656" id="SockLinks_727_40" xmlns="http://www.w3.org/1999/xhtml">Read the blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            <div id="footerContainer">
+                <div id="fourColumnFooter">
+                    <div data-fragmentName="Column1" id="Fragment_Column1" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">What's new</div>
+        <ul class="links">
+          <li>
+            <a href="https://dev.windows.com/" id="Column1_727_13" xmlns="http://www.w3.org/1999/xhtml">Windows Dev Center</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=534186" id="Column1_727_52" xmlns="http://www.w3.org/1999/xhtml">Windows IoT</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=534187" id="Column1_727_15" xmlns="http://www.w3.org/1999/xhtml">Microsoft Edge</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=534188" id="Column1_727_17" xmlns="http://www.w3.org/1999/xhtml">Windows Hardware</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285636" id="Column1_727_53" xmlns="http://www.w3.org/1999/xhtml">Windows Enterprise</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                    <div data-fragmentName="Column2" id="Fragment_Column2" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Related developer sites</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285634" id="Column2_727_18" xmlns="http://www.w3.org/1999/xhtml">Microsoft Connect</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=282089" id="Column2_727_42" xmlns="http://www.w3.org/1999/xhtml">Visual Studio</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285623" id="Column2_727_19" xmlns="http://www.w3.org/1999/xhtml">.NET Framework</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=282087" id="Column2_727_43" xmlns="http://www.w3.org/1999/xhtml">Windows Server</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=394423" id="Column2_727_54" xmlns="http://www.w3.org/1999/xhtml">Microsoft Azure</a>
+          </li>
+          <li>
+            <a href="https://msdn.microsoft.com/enable/" id="Column2_727_55" xmlns="http://www.w3.org/1999/xhtml">Accessibility hub</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                    <div data-fragmentName="Column3" id="Fragment_Column3" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Downloads and tools</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=526729" id="Column3_727_29" xmlns="http://www.w3.org/1999/xhtml">Visual Studio</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=536682" id="Column3_727_56" xmlns="http://www.w3.org/1999/xhtml">Windows SDK</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=526733" id="Column3_727_25" xmlns="http://www.w3.org/1999/xhtml">Windows Driver Kit</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkID=404112" id="Column3_727_27" xmlns="http://www.w3.org/1999/xhtml">Windows Hardware Lab Kit</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?LinkId=526740" id="Column3_727_26" xmlns="http://www.w3.org/1999/xhtml">Windows Assessment and Deployment Kit</a>
+          </li>
+          <li>
+            <a href="https://msdn.microsoft.com/windows/hardware/dn913721.aspx" id="Column3_727_30" xmlns="http://www.w3.org/1999/xhtml">More downloads</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                    <div data-fragmentName="Column4" id="Fragment_Column4" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Essentials</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285653" id="Column4_727_49" xmlns="http://www.w3.org/1999/xhtml">Dashboard</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285651" id="Column4_727_47" xmlns="http://www.w3.org/1999/xhtml">Debugging</a>
+          </li>
+          <li>
+            <a href="https://msdn.microsoft.com/windows/hardware/mt238339.aspx" id="Column4_727_48" xmlns="http://www.w3.org/1999/xhtml">Samples</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=317804" id="Column4_727_50" xmlns="http://www.w3.org/1999/xhtml">Partner with Microsoft</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285664" id="Column4_727_57" xmlns="http://www.w3.org/1999/xhtml">Forums</a>
+          </li>
+          <li>
+            <a href="https://msdn.microsoft.com/windows/hardware/dn913720.aspx" id="Column4_727_58" xmlns="http://www.w3.org/1999/xhtml">Community and support</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                </div>
+
+                <div id="baseFooterLogos">
+                    <span class="microsoftlogo" title="Microsoft"></span>
+                    <a href="https://msdn.microsoft.com/en-us" class="msdnlogo" title="MSDN"></a>
+                </div>
+        
+                <div id="baseFooter">
+                    <div id="FooterCopyright">© 2015 Microsoft</div>
+                    <div data-fragmentName="BaseFooter" id="Fragment_BaseFooter" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links horizontal">
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=521839" id="BaseFooter_35351_3" xmlns="http://www.w3.org/1999/xhtml">Privacy and Cookies</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=248155" id="BaseFooter_35351_1" xmlns="http://www.w3.org/1999/xhtml">Terms of Use</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=248154" id="BaseFooter_35351_2" xmlns="http://www.w3.org/1999/xhtml">Trademarks</a>
+      </li>
+    </ul>
+  </div>
+</div>  
+                      
+                            
+    
+    <span id="selectLocaleFromPopUp">
+        <div class="locale-selector" style="position: relative">
+            <a class="current-locale" href="javascript:void(0)">
+                <span class="text">English</span>
+                <span class="gear"></span>
+            </a>
+            <div class="locale-selection-panel site-flag site-flag-lang" style="top: -245px; display: none;">
+                <div class="content">
+                    <table class="all-locales" cellspacing="0" autogeneratecolumns="false" allowpaging="false" allowsorting="false" style="border-collapse: collapse;">
+                        <tbody>
+                            <tr>
+
+
+                                    <td><a title="Deutsch" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=de-de&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Deutsch</a></td>
+                                    <td><a title="English" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=en-us&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link selected">English</a></td>
+                                    <td><a title="Español" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=es-es&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Español</a></td>
+                                    <td><a title="Français" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=fr-fr&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Français</a></td>
+                                        </tr><tr>
+                                    <td><a title="Italiano" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=it-it&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Italiano</a></td>
+                                    <td><a title="日本語" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ja-jp&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">日本語</a></td>
+                                    <td><a title="한국어" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ko-kr&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">한국어</a></td>
+                                    <td><a title="Português" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=pt-br&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Português</a></td>
+                                        </tr><tr>
+                                    <td><a title="Pусский" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ru-ru&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">Pусский</a></td>
+                                    <td><a title="简体中文" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-cn&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">简体中文</a></td>
+                                    <td><a title="繁體中文" href="https://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-tw&amp;fromPage=/en-us/library/windows/hardware/ff540174(v=vs.85).aspx" class="locale-link">繁體中文</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="arrow">
+                         </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+  
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footerPrintView">
+            <div class="footerCopyrightPrintView">© 2015 Microsoft</div>
+        </div>
+
+        
+        
+    
+
+
+
+        <input id="MtpsDevice" type="hidden" value="Default" />
+
+
+<![CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]>
+
+        
+        
+        
+            
+        
+
+
+
+
+
+
+<noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="https://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No" /></div></noscript>
+
+
+
+
+
+
+
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" type="hidden" value="TmLjPwlKmF-v5wb9xtMJmpnLDKhiHePRoI15dJtDleYcSJv26caxsbwO_uycc1AkZ3Jc4A_CrGP4ZC_1zY13a6A6d6Q1" />
+</div>
+
+
+    </div>
+
+    
+    
+
+    
+</body>
+
+
+
+
+
+
+
+</html>
