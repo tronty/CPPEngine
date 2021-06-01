@@ -215,14 +215,14 @@ installIndieLib_resources()
 
 installGraphicsdriver()
 {
-	sudo ubuntu-drivers autoinstall
-	sudo reboot
+	echo "sudo ubuntu-drivers autoinstall"
+	echo "sudo reboot"
 }
 
 installGraphicsdriver_()
 {
-	sudo apt install nvidia-driver-460
-	sudo reboot
+	echo "sudo apt install nvidia-driver-460"
+	echo "sudo reboot"
 }
 
 installAMDdriver()
