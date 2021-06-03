@@ -17,30 +17,37 @@ IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2023\\Community\\VC\
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2023\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2021\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2021\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2015\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2015\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2013\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2013\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2012\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2012\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
 )
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2010\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2010\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
@@ -48,14 +55,15 @@ IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2010\\Community\\VC\
 IF "%ok%"=="1" GOTO EndSymLoop
 SET mscver=9
 :SymLoop
-IF EXIST "C:\\Program Files\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat" (
-	call "C:\\Program Files\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat"
-	SET ok=1
-)
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat"
 	SET ok=1
 	SET x86=" (x86)"
+)
+IF "%ok%"=="1" GOTO EndSymLoop
+IF EXIST "C:\\Program Files\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat" (
+	call "C:\\Program Files\\Microsoft Visual Studio %mscver%.0\\VC\\bin\\vcvars32.bat"
+	SET ok=1
 )
 IF "%ok%"=="1" GOTO EndSymLoop
 SET mscver+=1
