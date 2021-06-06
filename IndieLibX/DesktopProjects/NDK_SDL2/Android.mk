@@ -45,7 +45,7 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/src/video/*.c) \
 	$(wildcard $(LOCAL_PATH)/src/video/android/*.c) \
 	$(wildcard $(LOCAL_PATH)/src/test/*.c) \
-	$(wildcard $(LOCAL_PATH)/../Libraries/SDL2-2.0.10/src/core/android/android_fopen.c))
+	$(wildcard $(LOCAL_PATH)/../Libraries/SDL2-$SDL2/src/core/android/android_fopen.c))
 
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 LOCAL_CFLAGS += -include "android_fopen.h"

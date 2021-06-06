@@ -127,7 +127,7 @@ ifeq ($(OS), "Darwin")
 CFLAGS += -Dx86_64
 #endif
 
-FRAMEWORKS+=-F ../../../Dependencies/SDL2-2.0.10 -framework SDL2
+FRAMEWORKS+=-F ../../../Dependencies/SDL2-2.0.14 -framework SDL2
 LDFLAGS += -L ../../../Dependencies/Molten-0.18.0/MoltenVK/macOS
 endif
 

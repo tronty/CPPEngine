@@ -33,6 +33,6 @@ rm -fr ./DesktopProjects/projectsX &&
 mkdir ./DesktopProjects/projectsX &&
 rm -fr ./Libraries/MVC/NDK/build &&
 mkdir ./Libraries/MVC/NDK/build &&
-rm -fr ./Libraries/SDL2-2.0.10/build &&
-mkdir  ./Libraries/SDL2-2.0.10/build
+rm -fr ./Libraries/SDL2-$SDL2/build &&
+mkdir  ./Libraries/SDL2-$SDL2/build
 

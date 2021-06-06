@@ -7,7 +7,7 @@
 <h1>SimpleTexture_on_NDK</h1>
 <br>
 <br>
-<p>The NDK solutions are now built without compilation errors. It is uncertain if the files $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES.cpp and $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES2.cpp work properly. The NDK solutions are now built with SDL2 and main dynamic libraries. With testgles2.sh the test project started succesfully in the emulator <A TARGET="_blank" HREF="testgles2.sh">testgles2.sh</A> The android_fopen function seems to work properly in the NDK project $HOME/IndieLibX/Samples/NDKfiles. I added similar android_fopen functionality to the SDL2 project ($HOME/IndieLibX/Libraries/SDL2-2.0.10) and the android_fopen function seems to work properly with SimpleTexture sample. Also the GLES2 shaders seem to be created properly with the SimpleTexture sample. The SimpleTexture sample application exits with message: The application may be doing too much work on its main thread. This means probably that the SimpleTexture sample application needs an separate worker thread for the resources initialization.</p>
+<p>The NDK solutions are now built without compilation errors. It is uncertain if the files $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES.cpp and $HOME/IndieLibX/Libraries/Framework3/src/RendererGLES2.cpp work properly. The NDK solutions are now built with SDL2 and main dynamic libraries. With testgles2.sh the test project started succesfully in the emulator <A TARGET="_blank" HREF="testgles2.sh">testgles2.sh</A> The android_fopen function seems to work properly in the NDK project $HOME/IndieLibX/Samples/NDKfiles. I added similar android_fopen functionality to the SDL2 project ($HOME/IndieLibX/Libraries/SDL2-) and the android_fopen function seems to work properly with SimpleTexture sample. Also the GLES2 shaders seem to be created properly with the SimpleTexture sample. The SimpleTexture sample application exits with message: The application may be doing too much work on its main thread. This means probably that the SimpleTexture sample application needs an separate worker thread for the resources initialization.</p>
 <pre>
 03-14 05:01:56.468   369   545 I ActivityManager: Start proc com.Test.SimpleTexture for activity com.Test.SimpleTexture/.SimpleTextureActivity: pid=1152 uid=10054 gids={50054, 1028, 1015}
 03-14 05:01:56.678  1152  1152 I dalvikvm: CheckJNI enabled: not enabling JNI app bug workarounds.
@@ -32,12 +32,12 @@
 </pre>
 <tr><td>The messages (Choreographer: Skipped N frames!  The application may be doing too much work on its main thread.) disappeared from the NDK log after adding sleep(5) to numerous places in the C++ code. So the UI thread is not now starved. Still the ActivityManager seem to kill the SimpleTexture application for some reason. May be the memory is exhausted?</td></tr>
 <pre>
-03-17 17:34:49.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1215
+03-17 17:34:49.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1215
 03-17 17:34:54.180  2020  2036 I libIndieLibX: 
 03-17 17:34:54.180  2020  2036 I libIndieLibX: 
-03-17 17:34:59.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1217
-03-17 17:35:04.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addHLSLShaderVrtl:1263
-03-17 17:35:09.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-2.0.10/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererHLSLCg.cpp:addHLSLShaderVrtl:1149
+03-17 17:34:59.180  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addGLSLShader:1217
+03-17 17:35:04.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererGLES2.cpp:addHLSLShaderVrtl:1263
+03-17 17:35:09.190  2020  2036 I libIndieLibX: /home/tronty/IndieLibX/DesktopProjects/NDK/../../Libraries/SDL2-/build/com.Test.SimpleTexture/jni/Framework3/../Libraries/Framework3/src/RendererHLSLCg.cpp:addHLSLShaderVrtl:1149
 03-17 17:35:14.310   367   379 I ActivityManager: Process com.Test.SimpleTexture (pid 2020) has died.
 03-17 17:35:14.330    56    56 D Zygote  : Process 2020 exited cleanly (255)
 </pre>
@@ -251,7 +251,7 @@ After correcting RendererGLES.cpp file, there remains only one error message in 
 </pre>
 <br>
 <pre>
-$HOME/IndieLibX/Libraries/SDL2-2.0.10/android-project/jni/Application.mk:
+$HOME/IndieLibX/Libraries/SDL2-/android-project/jni/Application.mk:
 APP_ABI := armeabi mips x86 # works in the emulator
 APP_ABI := x86 # does not work in the emulator
 </pre>

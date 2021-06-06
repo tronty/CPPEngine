@@ -36,5 +36,5 @@ COPY Libraries\\Framework3\\aras-p-hlsl2glslfork-de4cd58\\tools\\bison.exe.bak L
 COPY Libraries\\Framework3\\aras-p-hlsl2glslfork-de4cd58\\tools\\flex.exe.bak Libraries\\Framework3\\aras-p-hlsl2glslfork-de4cd58\\tools\\flex.exe
 DEL /S /Q .\\DesktopProjects\\projectsX\\*.*
 DEL /S /Q .\\Libraries\\MVC\\NDK\\build\\*.*
-DEL /S /Q .\\Libraries\\SDL2-2.0.10\\build\\*.*
+DEL /S /Q .\\Libraries\\SDL2-2.0.14\\build\\*.*
 

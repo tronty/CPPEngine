@@ -6,6 +6,8 @@
 export shell = /bin/bash
 
 include make.cnf
+export SDL2
+export SDL2_VERSION
 
 help:
 	@echo "Usage:	make RadeonTerrainDemo -> Runs original RadeonTerrainDemo.exe with wine"
@@ -99,7 +101,7 @@ recursivefiletouch2:
 	find  -type d  -exec touch -a -m -t 202002142020.00 {} +
 
 recursivefilereplace:
-	grep -rli 'SDL2-2.0.10' * | xargs -i@ sed -i 's/SDL2-2.0.10/SDL2-2.0.10/g' @
+	grep -rli 'SDL2-$SDL2' * | xargs -i@ sed -i 's/SDL2-$SDL2/SDL2-$SDL2/g' @
 
 findzerosizedfiles:
 	sudo find . -xdev -type f -size 0

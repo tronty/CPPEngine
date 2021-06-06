@@ -18,6 +18,8 @@
 # 	and system snapshots are available on update manager
 # 	(may save time if the system breaks and must be restored to a some previous state)
 
+source ./make.cnf
+
 OS="Windows"
 platform="WIN"
 UbuntuBased="N"
@@ -80,10 +82,44 @@ XQUARTZ="XQuartz-2.7.11.dmg"
 XQUARTZ_URL="https://dl.bintray.com/xquartz/downloads/$XQUARTZ"
 
 cd $HOME
+include make.cnf
+export SDL2
+export SDL2_VERSION
+
+replace()
+{
+	if [ ! -z "$SDL2" ]; then
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./Samples/testVK/samples/helloVK/Makefile
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./Samples/testVK/samples/helloVK/Makefile.msc
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./Samples/testVK/samples/trisdl/Makefile
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./Samples/testVK/samples/trisdl/Makefile.msc
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./clean.bat
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./Make.bat
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./NOTES.txt
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./DesktopProjects/download.php
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./download.php
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./screenshots/NOTES1.html
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./screenshots/README.html
+		sed -i "s/SDL2-2.0.14/$SDL2/" ./screenshots/install.html
+	fi
+	if [ ! -z "$SDL2_VERSION" ]; then
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./clean.bat
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./Make.bat
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./NOTES.txt
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./download.php
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./DesktopProjects/download.php
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./NOTES1.html
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./README.html
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./install.html
+
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./screenshots/NOTES1.html
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./screenshots/README.html
+		sed -i "s/2.0.14/$SDL2_VERSION/" ./screenshots/install.html		
+	fi
+}
 
 update()
-{
-	apt-get update
+{	apt-get update
 	apt-get upgrade
 	#apt-get dist-upgrade
 }
@@ -174,11 +210,15 @@ installNDK()
 		#mv ./android-ndk-$NDK_VERSION-$OS_-$bitness $HOME/android-ndk-$NDK_VERSION-$OS_-$bitness
 		if [[ $OSTYPE == linux* ]]; then
     			echo 'export NDK=android-ndk-$NDK_VERSION-$OS_-$bitness' >>$HOME/.bashrc
+    			echo 'export SDL2=2.0.14' >>$HOME/.bashrc
+    			echo 'export SDL2_VERSION=SDL2-2.0.14' >>$HOME/.bashrc
     			echo 'export MESA_GL_VERSION_OVERRIDE=3.3' >>$HOME/.bashrc
     			echo 'export MESA_GL_VERSION_OVERRIDE=4.3' >>$HOME/.bashrc
 		fi		
 		if [[ $OSTYPE == darwin* ]]; then
     			echo 'export NDK=android-ndk-$NDK_VERSION-$OS_-$bitness' >>$HOME/.bash_profile
+    			echo 'export SDL2=2.0.14' >>$HOME/.bash_profile
+    			echo 'export SDL2_VERSION=SDL2-2.0.14' >>$HOME/.bash_profile
     			echo 'export MESA_GL_VERSION_OVERRIDE=3.3' >>$HOME/.bash_profile
     			echo 'export MESA_GL_VERSION_OVERRIDE=4.3' >>$HOME/.bash_profile
 		fi
@@ -640,6 +680,7 @@ fixaptget()
 	apt-get install -f
 }
 
+replace
 if [[ $OSTYPE == linux* ]]; then
 
 	linuxinfo

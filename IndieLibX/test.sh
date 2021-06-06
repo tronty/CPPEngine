@@ -8,12 +8,12 @@ source ./make.cnf
 
 testOSX()
 {
-xcrun --sdk iphoneos10.3 g++ -arch armv7 -miphoneos-version-min=7.0 -std=gnu++0x -g3 -O0 -D_DEBUG -DDEBUG -DGLES2 -DUSE_GLES_SHADERS -DOS_IPHONE -stdlib=libc++ -fvisibility-inlines-hidden -isysroot "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk" -I. -I/usr/X11R6/include -I./Libraries/SDL2-2.0.10/include -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -Wno-comment -Wno-import   -ferror-limit=100 -Wno-write-strings -Wno-unused-value -Wno-c++11-narrowing -Wno-address-of-packed-member -DGLES2 -I./Libraries/BoostWorkaround -I./Libraries/STX/include -I./Libraries/Image3 -I./Libraries/openal-soft-1.15.1/include -I./Libraries/lua-5.3.4/src -o ./Libraries/STX/src/stxCPP2.o -c ./Libraries/STX/src/stxCPP2.cpp
+xcrun --sdk iphoneos10.3 g++ -arch armv7 -miphoneos-version-min=7.0 -std=gnu++0x -g3 -O0 -D_DEBUG -DDEBUG -DGLES2 -DUSE_GLES_SHADERS -DOS_IPHONE -stdlib=libc++ -fvisibility-inlines-hidden -isysroot "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk" -I. -I/usr/X11R6/include -I./Libraries/SDL2-$SDL2/include -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100 -Wno-comment -Wno-import   -ferror-limit=100 -Wno-write-strings -Wno-unused-value -Wno-c++11-narrowing -Wno-address-of-packed-member -DGLES2 -I./Libraries/BoostWorkaround -I./Libraries/STX/include -I./Libraries/Image3 -I./Libraries/openal-soft-1.15.1/include -I./Libraries/lua-5.3.4/src -o ./Libraries/STX/src/stxCPP2.o -c ./Libraries/STX/src/stxCPP2.cpp
 
 ls -al ./Libraries/STX/src/stxCPP2.o
 rm ./Libraries/STX/src/stxCPP2.o
 
-/usr/bin/g++ -g3 -O0  -fexceptions -fnon-call-exceptions  -std=gnu++0x -DLINUX -D_LINUX -Wno-enum-compare -rdynamic  --trigraphs -Wno-comment -Wno-format -Wno-write-strings   -fpermissive -fmax-errors=100 -fvisibility=hidden -fvisibility-inlines-hidden -D_DEBUG -DDEBUG -DGLSL1_1 -DUSE_HLSL_SHADERS -I./Libraries/BoostWorkaround -I./Libraries/Vulkan/external -I./Libraries/SDL2-2.0.10/include -I./Libraries/Molten-0.18.0/MoltenVK/include -I./Libraries/STX/include -I./Libraries/Image3 -I./Libraries/openal-soft-1.15.1/include -I./Libraries/lua-5.3.4/src -w -o ./Libraries/STX/src/stxCPP2.o -c ./Libraries/STX/src/stxCPP2.cpp
+/usr/bin/g++ -g3 -O0  -fexceptions -fnon-call-exceptions  -std=gnu++0x -DLINUX -D_LINUX -Wno-enum-compare -rdynamic  --trigraphs -Wno-comment -Wno-format -Wno-write-strings   -fpermissive -fmax-errors=100 -fvisibility=hidden -fvisibility-inlines-hidden -D_DEBUG -DDEBUG -DGLSL1_1 -DUSE_HLSL_SHADERS -I./Libraries/BoostWorkaround -I./Libraries/Vulkan/external -I./Libraries/SDL2-$SDL2/include -I./Libraries/Molten-0.18.0/MoltenVK/include -I./Libraries/STX/include -I./Libraries/Image3 -I./Libraries/openal-soft-1.15.1/include -I./Libraries/lua-5.3.4/src -w -o ./Libraries/STX/src/stxCPP2.o -c ./Libraries/STX/src/stxCPP2.cpp
 
 ls -al ./Libraries/STX/src/stxCPP2.o
 rm ./Libraries/STX/src/stxCPP2.o

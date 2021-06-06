@@ -13,6 +13,11 @@ rem cd ..
 SET x86=""
 SET mscver=16
 SET ok=0
+IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2025\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
+	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2025\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
+	SET ok=1
+)
+IF "%ok%"=="1" GOTO EndSymLoop
 IF EXIST "C:\\Program Files (x86)\\Microsoft Visual Studio\\2023\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat" (
 	call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2023\\Community\\VC\\Auxiliary\\Build\\vcvars32.bat"
 	SET ok=1
@@ -167,7 +172,7 @@ GOTO all
 	rem copy "Dependencies\\D3DCompiler_43.dll.bak" "bin\\D3DCompiler_43.dll"
 	rem copy "Dependencies\\d3dcompiler_47_x64.dll.bak" "bin\\d3dcompiler_47.dll"
 	rem copy "Dependencies\\openal-soft-1.16.0-bin\\bin\\Win64\\soft_oal.dll
-	copy "Dependencies\\SDL2-2.0.10\\lib\\x86\\SDL2.dll" "bin\\SDL2.dll"
+	copy "Dependencies\\SDL2-2.0.14\\lib\\x86\\SDL2.dll" "bin\\SDL2.dll"
 	copy "Dependencies\\vulkan\\vulkan-1.dll" "bin\\vulkan-1.dll"
 	cd .\\DesktopProjects
 	CALL C:\\Python27\\python.exe Projects.py --solution %solution% --buildtool %makesystem% --platform %eplatform% --renderer %erenderer%
@@ -186,7 +191,7 @@ GOTO all
 	del /S /Q ..\\tmp
 	rmdir /S /Q ..\\tmp
 	mkdir ..\\tmp
-	copy "Dependencies\\SDL2-2.0.10\\lib\\x86\\SDL2.dll" "bin\\SDL2.dll"
+	copy "Dependencies\\SDL2-2.0.14\\lib\\x86\\SDL2.dll" "bin\\SDL2.dll"
 	del /S /Q .\\DesktopProjects\\projectsX\\Makefile.%EXT%
 	del /S /Q .\\build.log
 	rmdir .\\DesktopProjects\\projectsX

@@ -24,7 +24,7 @@ if (file_exists($filename)) {
 
 $filename = './IndieLibX.zip';
 if (file_exists($filename)) {
-    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD><P>3D models loaded with assimp-5.0.1 static library. Build depends on SDL2-2.0.10.</P></TD><TD><P></P></TD></TR>";
+    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD><P>3D models loaded with assimp-5.0.1 static library. Build depends on SDL2-2.0.14.</P></TD><TD><P></P></TD></TR>";
 }
 
 $filename = './IndieLib_resources.zip';
