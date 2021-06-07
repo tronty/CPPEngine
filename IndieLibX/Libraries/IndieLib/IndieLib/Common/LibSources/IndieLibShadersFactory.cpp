@@ -6,6 +6,7 @@
 #include <string>
 #include <Framework3/IRenderer.h>
 
+#ifndef _MSC_VER
 struct IndieLibShadersFactory
 {
 	static std::string GetShader(const char* aShaderName);
@@ -48,4 +49,4 @@ std::string IndieLibShadersFactory::GetShader(const char* aShaderName)
 	contents=buf;
 	return contents;
 }
-
+#endif

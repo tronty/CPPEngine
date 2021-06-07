@@ -68,6 +68,8 @@ typedef void* HANDLE;
 #elif 1//!defined(__MINGW32__) && !defined(__MINGW64__)
 #include <windows.h>
 #include <mmsystem.h>
+typedef WORD       __WORD__;
+typedef DWORD       __DWORD__;
 #else
 typedef void* HANDLE;
 typedef HANDLE HWND;
@@ -95,11 +97,6 @@ typedef struct _RECT {
   LONG bottom;
 } RECT, *PRECT, *LPRECT;
 
-#ifdef _MSC_VER
-typedef unsigned int       __DWORD__;
-#else
-typedef unsigned int        __DWORD__;
-#endif
 typedef unsigned short __WORD__;
 typedef unsigned int __DWORD__;
 typedef unsigned int __D3DCOLOR__;
@@ -296,7 +293,9 @@ STXEXTERN STXDECLSPEC size_t STXCALL stx_strlen(const char *str);
 STXEXTERN STXDECLSPEC size_t STXCALL stx_strlcat(char *dst, const char *src, size_t maxlen);
 STXEXTERN STXDECLSPEC size_t STXCALL stx_strlcpy(char *dst, const char *src, size_t maxlen);
 STXEXTERN STXDECLSPEC int STXCALL stx_strcmp(const char *str1, const char *str2);
+#ifndef _MSC_VER
 STXEXTERN STXDECLSPEC int STXCALL stx_min(int x, int y);
+#endif
 #if 0
 STXEXTERN STXDECLSPEC void STXCALL CloseSTXWindow();
 STXEXTERN STXDECLSPEC void STXCALL STXSwapBuffers();
@@ -330,8 +329,10 @@ STXEXTERN STXDECLSPEC void STXCALL stx_qsort(void *base, size_t nmemb, size_t si
 
 STXEXTERN STXDECLSPEC int STXCALL stx_abs(int x);
 
+#ifndef _MSC_VER
 STXEXTERN STXDECLSPEC int STXCALL stx_min(int x, int y);
 STXEXTERN STXDECLSPEC int STXCALL stx_max(int x, int y);
+#endif
 
 STXEXTERN STXDECLSPEC int STXCALL stx_isdigit(int x);
 STXEXTERN STXDECLSPEC int STXCALL stx_isspace(int x);
@@ -476,11 +477,13 @@ typedef            enum _inttype2 {
 //define MAX_BUF_SIZE 65535
 
 typedef unsigned char       BYTE;
+#ifndef _MSC_VER
 typedef unsigned short      __WORD__;
 #if 0
 typedef unsigned int       __DWORD__;
 #else
 typedef unsigned int        __DWORD__;
+#endif
 #endif
 typedef const char*         LPCSTR;
 typedef unsigned int        UINT;
@@ -510,12 +513,12 @@ void deinit();
 
 #if !defined(SWIG)
 #ifdef __cplusplus
-   extern "C" 
+   extern "C"
 #endif
 int main(int argc, char *argv[]);
 
 #ifdef __cplusplus
-   extern "C" 
+   extern "C"
 #endif
 int SDL_main(int argc, char *argv[]);
 
@@ -531,7 +534,7 @@ int SDL_main(int argc, char *argv[]);
 #define ApplicationLogic() WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 #elif !defined(_MSC_VER)
 #define ApplicationLogic() main(int argc, char *argv[])
-#endif 
+#endif
 #endif
 
 #if !defined(_MSC_VER)
@@ -681,7 +684,7 @@ inline STXEXTERN STXAPI std::string& replaceAll(std::string & data, std::string 
 {
 	// Get the first occurrence
 	size_t pos = data.find(toSearch);
- 
+
 	// Repeat till end is reached
 	while( pos != std::string::npos)
 	{
@@ -696,7 +699,7 @@ inline STXEXTERN STXAPI void stx_ReplaceAll(std::string & data, std::string toSe
 {
 	// Get the first occurrence
 	size_t pos = data.find(toSearch);
- 
+
 	// Repeat till end is reached
 	while( pos != std::string::npos)
 	{

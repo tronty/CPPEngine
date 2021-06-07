@@ -32,14 +32,14 @@ if (file_exists($filename)) {
     echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD></TD><TD><P></P></TD></TR>";
 }
 
-$filename = './__IndieLibX_AllLibs_LNX32__.zip';
+$filename = './IndieLibX_AllLibs_LNX32.zip';
 if (file_exists($filename)) {
     echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (GLSL1_1: OpenGL 3.1 / GLSL 1.40) fails. Some textures colored incorrectly as white or black.</TD><TD></TD></TR>";
 }
 
 $filename = './IndieLibX_AllLibs_LNX64.zip';
 if (file_exists($filename)) {
-    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (GLSL1_1: OpenGL 4.30 / GLSL 4.3) fails (DDS skybox textures, stx_SkyBox struct and testspine2 PNG textures).</TD><TD></TD></TR>";
+    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (GLSL1_1: OpenGL 4.30 / GLSL 4.3) succeeds.</TD><TD></TD></TR>";
 }
 
 $filename = './IndieLibX_AllLibs_NDK.zip';
@@ -49,7 +49,7 @@ if (file_exists($filename)) {
 
 $filename = './IndieLibX_AllLibs_OSX.zip';
 if (file_exists($filename)) {
-    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (GLSL1_1: OpenGL 2.1 / GLSL 1.2) fails (DDS skybox textures, stx_SkyBox struct and testspine2 PNG textures).</TD><TD></TD></TR>";
+    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (GLSL1_1: OpenGL 2.1 / GLSL 1.2) succeeds.</TD><TD></TD></TR>";
 }
 
 $filename = './IndieLibX_AllLibs_iOS.zip';
@@ -64,7 +64,7 @@ if (file_exists($filename)) {
 
 $filename = './IndieLibX_AllLibs_WIN64.zip';
 if (file_exists($filename)) {
-    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (D3D11: DirectX11) succeeds. Virtual function RendererHLSLCg::drawText disabled.</TD><TD></TD></TR>";
+    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (D3D11: DirectX11) fails.</TD><TD></TD></TR>";
 }
 
 $filename = './HLSL330toGLSL4.py';

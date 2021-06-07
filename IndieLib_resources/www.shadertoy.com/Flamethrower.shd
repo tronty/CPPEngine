@@ -80,21 +80,20 @@ Contact: tamby@tambako.ch
 #define heat_refraction
 //#define antialias
 
-struct Lamp
-{
-  	float3 position;
-  	float3 color;
-  	float intensity;
-  	float attenuation;
-};
+float3 Lamp_position[3];
+float3 Lamp_color[3];
+float Lamp_intensity[3];
+float Lamp_attenuation[3];
 
-struct RenderData
-{
-  	float3 col;
-  	float3 pos;
-  	float3 norm;
-  	int objnr;
-};
+float3 RenderData_col;
+float3 RenderData_pos;
+float3 RenderData_norm;
+int RenderData_objnr;
+
+float3 RenderData__col;
+float3 RenderData__pos;
+float3 RenderData__norm;
+int RenderData__objnr;
    
 // Every object of the scene has its ID
 #define SKY_OBJ        0
@@ -104,7 +103,7 @@ struct RenderData
 #define WALL_1_OBJ     4
 #define WALL_2_OBJ     5
 
-Lamp lamps[3];
+//Lamp lamps[3];
 
 // Campera options
 float3 campos = float3(0.5, -0.4, 10.);
@@ -624,7 +623,7 @@ float3 combFlameCol(float3 col1, float3 col2)
 
 // Tracing and rendering a ray
 float3 flamecol = float3(0.);
-RenderData trace0(float3 tpos, float3 ray, float maxdist, bool ref)
+void trace0(float3 tpos, float3 ray, float maxdist, bool ref)
 {
     traceFlame = true;
     float2 tr = trace(tpos, ray, maxdist);
@@ -691,7 +690,11 @@ RenderData trace0(float3 tpos, float3 ray, float maxdist, bool ref)
         objnr = SKY_OBJ;
         col = float3(0.);
     }
-    return RenderData(col, pos, norm, objnr);
+    RenderData_col=col;
+    RenderData_pos=pos;
+    RenderData_norm=norm;
+    RenderData_objnr=objnr;
+    return;
 }
 
 // Main render function with reflections and refractions
@@ -703,23 +706,30 @@ float4 render(float2 fragCoord)
 
   	float3 ray0 = GetCameraRayDir(uv, camdir, fov);
     float3 ray = ray0;
-  	RenderData traceinf0 = trace0(campos, ray, maxdist, false);
-    RenderData traceinf = traceinf0;
-  	float3 col = traceinf.col;
+  	//RenderData traceinf0 = 
+  	trace0(campos, ray, maxdist, false);  	
+    //RenderData traceinf = traceinf0;
+    float3 RenderData__col=RenderData_col;
+    float3 RenderData__pos=RenderData_pos;
+    float3 RenderData__norm=RenderData_norm;
+    int RenderData__objnr=RenderData_objnr;
+   
+  	float3 col = RenderData__col;
     float3 refray;
     
     #ifdef reflections
     float3 flamecol0 = flamecol;
-    if (traceinf.objnr==FLOOR_OBJ)
+    if (RenderData__objnr==FLOOR_OBJ)
     {	               
-        refray = reflect(ray, traceinf.norm);
+        refray = reflect(ray, RenderData__norm);
 
-        RenderData traceinf_ref = trace0(traceinf.pos, refray, maxdist, true);
-        float rf = getFloorReflection(traceinf.pos);
+        //RenderData traceinf_ref = 
+        trace0(RenderData__pos, refray, maxdist, true);
+        float rf = getFloorReflection(RenderData__pos);
 
-        col = combFlameCol(mix(col, traceinf_ref.col, rf), rf*flamecol0);
-        //col = combFlameCol(traceinf_ref.col, flamecol0);
-        //col = traceinf_ref.col;
+        col = combFlameCol(mix(col, RenderData_ref.col, rf), rf*flamecol0);
+        //col = combFlameCol(RenderData_ref.col, flamecol0);
+        //col = RenderData_ref.col;
     }
     #endif
 

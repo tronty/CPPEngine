@@ -105,7 +105,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 		bool   mipmap	 = true);
 
 
-
+#ifndef _MSC_VER
     bool load2DImage3(const Image3 &image,
 
 		     unsigned int clampS    = 0,//D3DTADDRESS_WRAP,
@@ -237,7 +237,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 			 unsigned int minFilter = 0//D3DTEXF_LINEAR
 );
 
-
+#endif
 
     bool createNoise3D(NSString name,
 
@@ -344,11 +344,11 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
     int 		   currUnit;
 
-
+#ifndef _MSC_VER
 
     bool loadTextureFace(const Image3 &image, TextureType target, bool	mipmap);
 
-
+#endif
 
     bool finalizeLoading(NSString string);
 

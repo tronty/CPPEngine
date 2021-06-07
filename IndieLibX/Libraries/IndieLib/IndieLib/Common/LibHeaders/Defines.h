@@ -318,6 +318,17 @@ VertexFormatID& GetCUSTOMVertexFormat2DW();
 ShaderID& GetCUSTOMShader2D();
 ShaderID& GetCUSTOMShader2DW();
 
+#ifdef _MSC_VER
+#include <string>
+#include <map>
+#include <vector>
+typedef int TextureID;
+typedef int BlendStateID;
+typedef int SamplerStateID;
+#define LOG_PRINT printf
+#define stx_memset memset
+#endif
+
 struct IndieLibShadersFactory
 {
 	static std::string GetShader(const char* aShaderName);

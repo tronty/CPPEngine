@@ -60,6 +60,10 @@
 //???include <Shlobj.h>
 #endif
 
+#define stx_rand rand
+#define stx_memcpy memcpy
+#define __DWORD__ DWORD
+#define __WORD__ WORD
 #else
 #ifndef BASETYPES
 #define BASETYPES
@@ -289,6 +293,14 @@ typedef struct _D3DFROMWINEVIEWPORT9 {
      customViewports[0].MinDepth = 0.0f;
      customViewports[0].MaxDepth = 1.0f;
 */
+#ifdef _MSC_VER
+    __DWORD__       X;
+    __DWORD__       Y;
+__DWORD__       Width;
+__DWORD__       Height;
+float       MinZ;
+    float       MaxZ;
+#else
 union {
 	__DWORD__       X;
 	__DWORD__       TopLeftX;
@@ -307,6 +319,7 @@ union {
     float       MaxZ;
 	float MaxDepth;
 	};
+#endif
 } D3DFROMWINEVIEWPORT9;
 
 typedef struct  D3DXFROMWINEVECTOR2

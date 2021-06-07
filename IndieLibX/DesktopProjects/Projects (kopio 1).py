@@ -6773,6 +6773,7 @@ adt=\"'''+ccc.getADT()+'''\"
 assimp5version=\"'''+assimp5version+'''\"
 ndk=\"'''+NDK+'''\"
 sdl2version='''+SDL2version+'''
+sdl2=SDL2-'''+SDL2version+'''
 sdlimage2version=\"'''+ccc.getSDLIMAGE2version()+'''\"
 OSXversion=\"'''+ccc.getOSXversion()+'''\"
 Debianversion=\"'''+ccc.getDebianversion()+'''\"

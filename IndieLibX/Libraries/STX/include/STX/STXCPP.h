@@ -47,7 +47,8 @@
 
 // This is from Win32's <windef.h>
 #if (_MSC_VER >= 800) || defined(_STDCALL_SUPPORTED) || defined(__BORLANDC__) || defined(__LCC__)
-	#define STXCPPAPIENTRY __cdecl
+	#define STXCPPAPIENTRY
+	// __cdecl
 	#define STXCPP_PACKSTRUCT
 //#elif defined(linux) || defined(MACOSX) || defined(__CYGWIN__) //fix bug 840364
 #elif defined( __GNUC__ )
@@ -73,9 +74,11 @@
 	#else
 		#ifdef BUILD_SHARED
 		#ifdef _STXCPP_BUILD_LIBRARY
-			#define STXAPI __declspec(dllexport)
+			#define STXAPI
+			// __declspec(dllexport)
 		#else
-			#define STXAPI __declspec(dllimport)
+			#define STXAPI
+			// __declspec(dllimport)
 		#endif
 		#else
 			#define STXAPI
