@@ -287,7 +287,7 @@ bool load(){
 	grabbed = false;
 
 	grabCoordSurface.create(FORMAT_RGBA16, 1, 1, 1, 1);
-	grabPosSurface.create(FORMAT_RGBA32f, CLOTH_SIZE, CLOTH_SIZE, 1, 1);
+	grabPosSurface.create(/* FORMAT_RGBA32f */ FORMAT_RGBA16f, CLOTH_SIZE, CLOTH_SIZE, 1, 1);
 
 	initPerlin();
 	

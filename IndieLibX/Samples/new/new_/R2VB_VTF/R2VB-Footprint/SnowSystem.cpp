@@ -23,7 +23,7 @@ bool SnowSystem::load(__DWORD__ maxtexwidth,__DWORD__ maxtexheight, bool debugru
 		Since this render target will be used as vertex buffers we need to
 		signal this special usage to the driver with the D3DUSAGE_DMAP flag.
 	*/
-	r2vbRT = IRenderer::GetRendererInstance()->addRenderTarget(4*rtWidth, rtHeight, supportsHalf? FORMAT_RGBA16F : FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+	r2vbRT = IRenderer::GetRendererInstance()->addRenderTarget(4*rtWidth, rtHeight, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	// Load shaders
 	if ((particleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/particle.shd", "main", "main"   )) == SHADER_NONE) return false;

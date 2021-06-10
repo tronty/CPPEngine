@@ -219,7 +219,7 @@ bool load(){
 	// Height render target
 	heightRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_R32F, IRenderer::GetRendererInstance()->GetnearestClamp());
 	// R2VB render target
-	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 /*
 	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/skybox.shd", "main", "main")) == SHADER_NONE) return false;

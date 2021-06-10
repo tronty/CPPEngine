@@ -164,7 +164,7 @@ int init(const char* aTitle)
 	
     particlesRT = IRenderer::GetRendererInstance()->addRenderTarget(
 		4 * SIZE_X, SIZE_Y,
-		supportsHalf? FORMAT_RGBA16F : FORMAT_RGBA32F, 
+		FORMAT_RGBA16F, 
 		IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	// Index buffer for the particles

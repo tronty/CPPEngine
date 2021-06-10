@@ -16,7 +16,7 @@
 // volume extrusion.
 //-----------------------------------------------------------------------------
 
-#undef __USE_HALF__
+#define __USE_HALF__ 1
 
 #ifdef __USE_HALF__
 	#define VERTEX_FORMAT					FORMAT_RGBA16F
@@ -607,7 +607,7 @@ bool generateShadowVolume()
 
 	// Create R2VB vertex buffer. Since the render target will be used as vertex buffer
 	// we need to signal this special usage to the driver with the D3DUSAGE_DMAP flag.
-	model.R2VB_ShadowVolumeNormal_VBO = IRenderer::GetRendererInstance()->addRenderTarget(shadowVolumeTexWidth*2, shadowVolumeTexHeight, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+	model.R2VB_ShadowVolumeNormal_VBO = IRenderer::GetRendererInstance()->addRenderTarget(shadowVolumeTexWidth*2, shadowVolumeTexHeight, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 	/*
 		We need a dummy vertex buffer when we specify stride and offset when calling setVertexBuffer()
 		for R2VB. Usually we can just pass any buffer we have laying around, but the debug runtime does

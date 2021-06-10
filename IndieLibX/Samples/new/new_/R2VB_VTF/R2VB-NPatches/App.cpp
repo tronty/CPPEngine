@@ -66,9 +66,9 @@ void changeNPatchLevel(const int level){
 		Since this render target will be used as vertex buffers we need to
 		signal this special usage to the driver with the D3DUSAGE_DMAP flag.
 	*/
-	rtVertex = IRenderer::GetRendererInstance()->addRenderTarget(vertexFactor * texWidth, texHeight, FORMAT_RGBA32f, IRenderer::GetRendererInstance()->GetnearestClamp());
+	rtVertex = IRenderer::GetRendererInstance()->addRenderTarget(vertexFactor * texWidth, texHeight, /* FORMAT_RGBA32f */ FORMAT_RGBA16f, IRenderer::GetRendererInstance()->GetnearestClamp());
 
-	rtNormal = IRenderer::GetRendererInstance()->addRenderTarget(vertexFactor * texWidth, texHeight, FORMAT_RGBA32f, IRenderer::GetRendererInstance()->GetnearestClamp());
+	rtNormal = IRenderer::GetRendererInstance()->addRenderTarget(vertexFactor * texWidth, texHeight, /* FORMAT_RGBA32f */ FORMAT_RGBA16f, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 
 	/*

@@ -112,22 +112,22 @@ GPU_Physics::GPU_Physics() : Physics()
 
 
     // Create the floating point renderable ping-pong textures
-    m_pLowTexPing = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-    m_pLowTexPong = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-    m_pHighTexPing = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-    m_pHighTexPong = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pLowTexPing = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pLowTexPong = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pHighTexPing = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pHighTexPong = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 
     // Create the floating point frequency domain and spatial domain surfaces
-    m_pLowFreqWaterTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-    m_pHighFreqWaterTex = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pLowFreqWaterTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pHighFreqWaterTex = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
     m_pHighDisplacementMapTex = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, FORMAT_R32F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 
     // Get the surfaces for subsequent rendering
     // Now for water wave synthesis utility maps
-    m_pLowAmplitudeTTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-    m_pHighAmplitudeTTex = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pLowAmplitudeTTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GRID_RESOLUTION, WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pHighAmplitudeTTex = IRenderer::GetRendererInstance()->addRenderTarget(HIGH_FREQ_WATER_GRID_RESOLUTION, HIGH_FREQ_WATER_GRID_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 
     // Get the surfaces for subsequent rendering
@@ -137,7 +137,7 @@ GPU_Physics::GPU_Physics() : Physics()
 
 
     // Scalar output of GPU IFFT
-    m_pDisplacementMapTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GEOM_RESOLUTION, WATER_GEOM_RESOLUTION, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+    m_pDisplacementMapTex = IRenderer::GetRendererInstance()->addRenderTarget(WATER_GEOM_RESOLUTION, WATER_GEOM_RESOLUTION, /* FORMAT_RGBA32F */ FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 
     // initialize the vertex buffers for the off screen render targets
@@ -268,8 +268,8 @@ int GPU_Physics::FillFFTUtilityTextures(int iResolution, int iLog2Resolution,
     delete []wImage;}
 
     // Create both Butterfly textures (16 rows just to be safe/flexible)
-    float* fImage = (float*)fimg.create(FORMAT_RGBA32f, iResolution, 16, 1, 1 /* ??? 0 */);
-    float* wImage = (float*)wimg.create(FORMAT_RGBA32f, iResolution, 16, 1, 1 /* ??? 0 */);
+    float* fImage = (float*)fimg.create(/* FORMAT_RGBA32f */ FORMAT_RGBA16f, iResolution, 16, 1, 1 /* ??? 0 */);
+    float* wImage = (float*)wimg.create(/* FORMAT_RGBA32f */ FORMAT_RGBA16f, iResolution, 16, 1, 1 /* ??? 0 */);
 
     float angle;
     float wre, wim, wpre, wpim;

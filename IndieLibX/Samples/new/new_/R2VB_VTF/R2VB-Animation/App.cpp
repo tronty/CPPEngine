@@ -18,7 +18,7 @@
 
 #define SCALE							0.02f
 
-#undef __USE_HALF__
+#define __USE_HALF__ 1
 
 #ifdef __USE_HALF__
 	#define VERTEX_FORMAT					FORMAT_RGBA16F

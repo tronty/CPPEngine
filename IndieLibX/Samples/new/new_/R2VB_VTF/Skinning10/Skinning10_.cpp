@@ -164,7 +164,7 @@ int  OnCreateDevice()
     // Create a bone texture
     // It will be updated more than once per frame (in a typical game) so make it dynamic ???
 	Image3 img;
-	img.create(FORMAT_RGBA32f, MAX_BONE_MATRICES * 4, 1, 1, 1);
+	img.create(/* FORMAT_RGBA32f */ FORMAT_RGBA16f, MAX_BONE_MATRICES * 4, 1, 1, 1);
 	g_pBoneTexture=IRenderer::GetRendererInstance()->addTexture(&img, false, IRenderer::GetRendererInstance()->Getlinear());
 
     // Create a bone matrix buffer

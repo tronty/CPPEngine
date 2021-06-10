@@ -109,7 +109,7 @@ bool load(){
 		Since this render target will be used as a vertex buffer we need to
 		signal this special usage to the driver with the D3DUSAGE_DMAP flag.
 	*/
-	r2vbRT = IRenderer::GetRendererInstance()->addRenderTarget(rtWidth, rtHeight, supportsHalf? FORMAT_RGBA16F : FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+	r2vbRT = IRenderer::GetRendererInstance()->addRenderTarget(rtWidth, rtHeight, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	// Load textures
 	#if 0
