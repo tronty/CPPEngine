@@ -93,12 +93,15 @@ bool App::load(){
 	// Height render target
 	if ((heightRT = renderer->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_R32F, nearestClamp)) == TEXTURE_NONE) return false;
 	// R2VB render target
+	#if 0
 	if (useR2VB){
 		if ((terrainRT = renderer->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, supportsHalf? FORMAT_RGBA16F : FORMAT_RGBA32F, nearestClamp, R2VB)) == TEXTURE_NONE) return false;
 	} else {
 		if ((terrainRT = renderer->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA32F, nearestClamp)) == TEXTURE_NONE) return false;
 	}
-
+	#else
+	if ((terrainRT = renderer->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA16F, nearestClamp)) == TEXTURE_NONE) return false;
+	#endif
 
 	// Shaders
 	if ((terrain = renderer->addShader("terrain.shd", useR2VB? "#define R2VB\n" : "#define VTF\n")) == SHADER_NONE) return false;

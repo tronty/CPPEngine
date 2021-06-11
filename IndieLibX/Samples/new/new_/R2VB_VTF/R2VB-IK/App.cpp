@@ -186,7 +186,7 @@ bool createLinksVBO()
 	linkVertexTexture = IRenderer::GetRendererInstance()->addTexture(&tex, false, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	// 1 pixels can store 1 vertex positions, 1 pixel can store 4 transform matrix indices, so 1 vertex == 2 pixels
-	lpC = (float*)tex.getPixels();
+	lpC = (half*)tex.getPixels();
 	{
 		for (int i=0; i<NUM_LINKS-1; i++)
 		{

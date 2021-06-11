@@ -23,7 +23,7 @@ int init(const char* aTitle)
 	vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
 	heightRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_R32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 	return 0;
 }
 

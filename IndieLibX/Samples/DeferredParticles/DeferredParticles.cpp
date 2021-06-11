@@ -675,7 +675,7 @@ VertexFormatID                   g_pMeshLayout = NULL; 3 3 1
     g_pOffscreenParticleTex = IRenderer::GetRendererInstance()->addRenderTarget(
 		IRenderer::GetRendererInstance()->GetViewportWidth(),
 		IRenderer::GetRendererInstance()->GetViewportHeight(),
-		supportsHalf? FORMAT_RGBA16F : FORMAT_RGBA32F, 
+		FORMAT_RGBA16F, 
 		IRenderer::GetRendererInstance()->Getlinear/*Aniso*/());
 
     return 0;
