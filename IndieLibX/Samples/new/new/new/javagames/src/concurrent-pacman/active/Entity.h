@@ -1,30 +1,36 @@
-package pacman.active;
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+//package pacman.active;
 
-import pacman.passive.GameController;
-import pt.ua.concurrent.CThread;
+//import pacman.passive.GameController;
+//import pt.ua.concurrent.CThread;
 
-import java.awt.*;
-import java.util.Collections;
-import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
+//import java.awt.*;
+//import java.util.Collections;
+//import java.util.std::stack;
+//import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Entity is an abstract class that can represent an active entity in the map
+ * Entity is an  struct that can represent an active entity in the map
  * Shared algorithms already implemented
  */
-public abstract class Entity extends CThread {
+  struct Entity :  CThread {
 
-    public final Point initPos;
-    public final int initialSpeed;
-    public final char initialSymbol;
-    final GameController gc;
-    final char markedStartSymbol;
-    private final char startSymbol;
-    private final char markedPositionSymbol = '+';
-    private final char actualPositionSymbol = 'o';
-    public volatile Point lastPos;
-    public char symbol;
-    protected boolean underAttack = false;
+     const Point initPos;
+     const int initialSpeed;
+     const char initialSymbol;
+    const GameController gc;
+    const char markedStartSymbol;
+     const char startSymbol;
+     const char markedPositionSymbol = '+';
+     const char actualPositionSymbol = 'o';
+     volatile Point lastPos;
+     char symbol;
+     bool underAttack = false;
     ConcurrentHashMap<Point, Character> pathLog;
     int speed;
 
@@ -40,26 +46,26 @@ public abstract class Entity extends CThread {
      */
     Entity(String name, char symbol, GameController gc, Point pos, int speed) {
         super(name);
-        assert gc != null;
-        assert pos != null;
-        assert speed > 0;
+        //assert gc != null;
+        //assert pos != null;
+        //assert speed > 0;
 
-        this.symbol = symbol;
+        this->symbol = symbol;
         initialSymbol = symbol;
-        this.gc = gc;
+        this->gc = gc;
         lastPos = pos;
-        this.initPos = pos;
-        this.speed = speed;
+        this->initPos = pos;
+        this->speed = speed;
         initialSpeed = speed;
 
-        this.startSymbol = symbol;
-        this.markedStartSymbol = symbol;
+        this->startSymbol = symbol;
+        this->markedStartSymbol = symbol;
 
         pathLog = new ConcurrentHashMap<>();
     }
 
-    @Override
-    public abstract void run();
+    
+      void run();
 
     /**
      * Randomly walks around the map
@@ -68,12 +74,12 @@ public abstract class Entity extends CThread {
      * @param pos      position to travel to
      * @return true if a objective was found
      */
-    boolean searchPath(int distance, Point pos) {
-        assert distance > 0;
-        assert pos != null;
-        assert super.isAlive();
+    bool searchPath(int distance, Point pos) {
+        //assert distance > 0;
+        //assert pos != null;
+        //assert super.isAlive();
 
-        boolean result = false;
+        bool result = false;
 
         if (freePosition(pos) && !isInterrupted()) {
             CThread.pause(speed);
@@ -82,14 +88,14 @@ public abstract class Entity extends CThread {
 
             Point lp = (Point) pos.clone();
             pos = gc.reportPosition(pos);
-            assert gc.isRoad(pos);
+            //assert gc.isRoad(pos);
 
             if (!lp.equals(pos)) {
                 markPosition(lastPos);
                 markPosition(pos);
             }
 
-            Stack<Point> shuffleDirections = shuffleDirections();
+            std::stack<Point> shuffleDirections = shuffleDirections();
 
             while (!shuffleDirections.isEmpty()) {
                 if (searchPath(distance + 1, getDirection(pos, shuffleDirections.pop()))) {
@@ -100,7 +106,7 @@ public abstract class Entity extends CThread {
 
             unmarkPosition(pos);
             pos = gc.reportPosition(pos);
-            assert gc.isRoad(pos);
+            //assert gc.isRoad(pos);
             unmarkPosition(pos);
         }
 
@@ -112,12 +118,12 @@ public abstract class Entity extends CThread {
      *
      * @return directions shuffled
      */
-    private Stack<Point> shuffleDirections() {
-        Stack<Point> directions = new Stack<>();
-        directions.push(new Point(-1, 0));
-        directions.push(new Point(0, +1));
-        directions.push(new Point(0, -1));
-        directions.push(new Point(+1, 0));
+     std::stack<Point> shuffleDirections() {
+        std::stack<Point> directions = new std::stack<>();
+        directions.push( Point(-1, 0));
+        directions.push( Point(0, +1));
+        directions.push( Point(0, -1));
+        directions.push( Point(+1, 0));
         Collections.shuffle(directions);
         return directions;
     }
@@ -129,8 +135,8 @@ public abstract class Entity extends CThread {
      * @param b direction of the movement
      * @return position of the desired movement
      */
-    private Point getDirection(Point a, Point b) {
-        return new Point(a.x + b.x, a.y + b.y);
+     Point getDirection(Point a, Point b) {
+        return  Point(a.x + b.x, a.y + b.y);
     }
 
     /**
@@ -139,9 +145,9 @@ public abstract class Entity extends CThread {
      * @param pos to check
      * @return if valid
      */
-    boolean freePosition(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+    bool freePosition(Point pos) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         char rs = roadSymbol(pos);
 
@@ -158,9 +164,9 @@ public abstract class Entity extends CThread {
      *
      * @param pos position to mark
      */
-    private void markPosition(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+     void markPosition(Point pos) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         if (isStartPosition(pos)) {
             putRoadSymbol(pos, markedStartSymbol);
@@ -175,9 +181,9 @@ public abstract class Entity extends CThread {
      *
      * @param pos position to unmark
      */
-    private void unmarkPosition(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+     void unmarkPosition(Point pos) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         if (!isStartPosition(pos)) {
             putRoadSymbol(pos, markedPositionSymbol);
@@ -190,9 +196,9 @@ public abstract class Entity extends CThread {
      * @param pos position to check
      * @return true if is the start
      */
-    private boolean isStartPosition(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+     bool isStartPosition(Point pos) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         return roadSymbol(pos) == startSymbol
                 || roadSymbol(pos) == markedStartSymbol;
@@ -206,8 +212,8 @@ public abstract class Entity extends CThread {
      * @return symbol of the road
      */
     char roadSymbol(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         return pathLog.computeIfAbsent(pos, (t) -> gc.CachedRoadSymbol(pos));
     }
@@ -218,9 +224,9 @@ public abstract class Entity extends CThread {
      * @param pos    position to mark
      * @param symbol symbol to use in the mark
      */
-    private void putRoadSymbol(Point pos, char symbol) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+     void putRoadSymbol(Point pos, char symbol) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         pathLog.put(pos, symbol);
     }
@@ -228,14 +234,14 @@ public abstract class Entity extends CThread {
     /**
      * When pacman is attacking what behaviour to have
      */
-    public abstract void attackMode();
+      void attackMode();
 
     /**
      * Returns the entity speed
      *
      * @return speed of the entity
      */
-    public int getInitialSpeed() {
+     int getInitialSpeed() {
         return initialSpeed;
     }
 
@@ -244,7 +250,7 @@ public abstract class Entity extends CThread {
      *
      * @return true if ghost.
      */
-    public boolean isGhost() {
+     bool isGhost() {
         return this instanceof Ghost;
     }
 
@@ -253,8 +259,10 @@ public abstract class Entity extends CThread {
      *
      * @return true if under attack
      */
-    public boolean underAttack() {
+     bool underAttack() {
         return underAttack;
     }
 
 }
+#endif
+

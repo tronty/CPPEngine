@@ -1,63 +1,69 @@
-package pacman.passive;
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+//package pacman.passive;
 
-import pacman.active.Entity;
-import pacman.active.Ghost;
-import pacman.active.Pacman;
-import pacman.other.AttackTimer;
-import pt.ua.concurrent.CObject;
-import pt.ua.concurrent.CThread;
-import pt.ua.gboard.*;
-import pt.ua.gboard.games.Labyrinth;
-import pt.ua.gboard.games.LabyrinthGelem;
+//import pacman.active.Entity;
+//import pacman.active.Ghost;
+//import pacman.active.Pacman;
+//import pacman.other.AttackTimer;
+//import pt.ua.concurrent.CObject;
+//import pt.ua.concurrent.CThread;
+//import pt.ua.gboard.*;
+//import pt.ua.gboard.games.Labyrinth;
+//import pt.ua.gboard.games.LabyrinthGelem;
 
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+//import java.awt.*;
+//import java.io.File;
+//import java.util.std::vector;
+//import java.util.concurrent.ConcurrentHashMap;
 
-import static java.lang.System.out;
+//import  java.lang.System.out;
 
 /**
  * Central game controller.
- * This class is responsible for, and not limited to:
+ * This struct is responsible for, and not limited to:
  * - Count Pacman points, pacmanLives, etc
  * - Kill and spawn entities
  * - Enable/Disable attack mode
  * - Synchronization of GBoard
  */
-public class GameController extends CObject {
+ struct GameController :  CObject {
 
-    private final Labyrinth labyrinth;
-    private final Point[] portalPoints, portalDst;
-    //private final CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<>();
-    private final ArrayList<Entity> entities = new ArrayList<>();
-    private final ConcurrentHashMap<Point, Entity> entityTracker = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Point, Character> mapCache = new ConcurrentHashMap<>();
-    private final boolean GodMode;
-    private final int attackModeDuration;
-    private final boolean endless;
-    //private final ReentrantLock lock = new ReentrantLock();
-    //private final Condition attackEnded = lock.newCondition();
-    //private final Condition hasGameEnded = lock.newCondition();
-    private int totalNumberOfPoints;
-    private AttackTimer timer;
-    private int points = 0;
-    private boolean attackInProgress = false;
-    private int pacmanLives;
-    private boolean gameInProgress = true;
+     const Labyrinth labyrinth;
+     const Point[] portalPoints, portalDst;
+    // const CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<>();
+     const std::vector<Entity> entities = new std::vector<>();
+     const ConcurrentHashMap<Point, Entity> entityTracker = new ConcurrentHashMap<>();
+     const ConcurrentHashMap<Point, Character> mapCache = new ConcurrentHashMap<>();
+     const bool GodMode;
+     const int attackModeDuration;
+     const bool endless;
+    // const ReentrantLock lock = new ReentrantLock();
+    // const Condition attackEnded = lock.newCondition();
+    // const Condition hasGameEnded = lock.newCondition();
+     int totalNumberOfPoints;
+     AttackTimer timer;
+     int points = 0;
+     bool attackInProgress = false;
+     int pacmanLives;
+     bool gameInProgress = true;
 
 
     /**
      * Initializes a new game controller.
      */
-    public GameController(int numberPacmanLives,
+     GameController(int numberPacmanLives,
                           int attackModeDuration,
-                          boolean endless) {
+                          bool endless) {
 
         pacmanLives = numberPacmanLives;
-        this.GodMode = numberPacmanLives == -1;
-        this.attackModeDuration = attackModeDuration;
-        this.endless = endless;
+        this->GodMode = numberPacmanLives == -1;
+        this->attackModeDuration = attackModeDuration;
+        this->endless = endless;
 
         LabyrinthGelem.setShowRoadBoundaries();
 
@@ -137,12 +143,12 @@ public class GameController extends CObject {
      * @param pos to move the entity to
      * @return new position, if teleported by the portal
      */
-    public synchronized Point reportPosition(Point pos) {
-        assert pos != null;
-        assert isRoad(pos);
+     synchronized Point reportPosition(Point pos) {
+        //assert pos != null;
+        //assert isRoad(pos);
 
         Entity entity = (Entity) CThread.currentThread();
-        assert entity.isAlive();
+        //assert entity.isAlive();
 
         // portal
         if (pos.equals(portalPoints[0]) || pos.equals(portalPoints[1])) {
@@ -228,10 +234,10 @@ public class GameController extends CObject {
     /**
      * Draw points in the GBoard
      */
-    private synchronized void drawPoints() {
-        assert points <= totalNumberOfPoints;
-        assert points >= 0;
-        assert labyrinth.numberOfLines >= 32; // TODO remove hardcoded point positions
+     synchronized void drawPoints() {
+        //assert points <= totalNumberOfPoints;
+        //assert points >= 0;
+        //assert labyrinth.numberOfLines >= 32; // TODO remove hardcoded point positions
 
         String sPoints = new StringBuilder(String.valueOf(points)).reverse().toString();
         labyrinth.board.draw(new FilledGelem(Color.blue, 100), 32, 5, 1);
@@ -249,11 +255,11 @@ public class GameController extends CObject {
      *
      * @param entity to clone
      */
-    private synchronized void spawnNewEntity(Entity entity) {
-        assert entity != null;
-        assert entity.isAlive();
-        assert !entity.isInterrupted();
-        assert entities.contains(entity);
+     synchronized void spawnNewEntity(Entity entity) {
+        //assert entity != null;
+        //assert entity.isAlive();
+        //assert !entity.isInterrupted();
+        //assert entities.contains(entity);
 
         entities.remove(entity);
         entity.interrupt();
@@ -282,8 +288,8 @@ public class GameController extends CObject {
     /**
      * End the game, interrupts all entities and signals who's waiting for the end of the game.
      */
-    private synchronized void endGame() {
-        assert gameInProgress;
+     synchronized void endGame() {
+        //assert gameInProgress;
 
         entities.forEach(Thread::interrupt);
         gameInProgress = false;
@@ -295,8 +301,8 @@ public class GameController extends CObject {
      *
      * @return true if pacman won, false otherwise
      */
-    public synchronized boolean waitingForGameToEnd() {
-        assert gameInProgress;
+     synchronized bool waitingForGameToEnd() {
+        //assert gameInProgress;
 
         while (gameInProgress)
             await();
@@ -310,9 +316,9 @@ public class GameController extends CObject {
      *
      * @param pos to paint
      */
-    private synchronized void paintPosition(Point pos) {
-        assert pos != null;
-        assert isRoad(pos);
+     synchronized void paintPosition(Point pos) {
+        //assert pos != null;
+        //assert isRoad(pos);
 
         Entity entity = (Entity) CThread.currentThread();
 
@@ -329,8 +335,8 @@ public class GameController extends CObject {
      * Starts a timer counting the duration of an attack.
      * An attack is when pacman eats a bonus and ghosts can be killed by pacman.
      */
-    private synchronized void startAttackTimer() {
-        assert attackInProgress;
+     synchronized void startAttackTimer() {
+        //assert attackInProgress;
 
         if (timer == null || !timer.isAlive()) {
             timer = new AttackTimer(this, attackModeDuration);
@@ -346,16 +352,16 @@ public class GameController extends CObject {
      * @param pos to get the road symbol
      * @return char road symbol
      */
-    private synchronized char RealRoadSymbol(Point pos) {
-        assert pos != null;
-        assert isRoad(pos);
+     synchronized char RealRoadSymbol(Point pos) {
+        //assert pos != null;
+        //assert isRoad(pos);
 
         return labyrinth.roadSymbol(pos.y, pos.x);
     }
 
-    public synchronized char CachedRoadSymbol(Point pos) {
-        assert pos != null;
-        assert isRoad(pos);
+     synchronized char CachedRoadSymbol(Point pos) {
+        //assert pos != null;
+        //assert isRoad(pos);
 
         return mapCache.computeIfAbsent(pos, t -> RealRoadSymbol(pos));
     }
@@ -366,8 +372,8 @@ public class GameController extends CObject {
      * @param pos to check if is road
      * @return true if it is a road position, otherwise it returns false
      */
-    public synchronized boolean isRoad(Point pos) {
-        assert pos != null;
+     synchronized bool isRoad(Point pos) {
+        //assert pos != null;
 
         return labyrinth.isRoad(pos.y, pos.x);
     }
@@ -378,8 +384,8 @@ public class GameController extends CObject {
      * @param pos to check if valid
      * @return true if position is valid, otherwise it returns false
      */
-    public synchronized boolean validPosition(Point pos) {
-        assert pos != null;
+     synchronized bool validPosition(Point pos) {
+        //assert pos != null;
 
         return labyrinth.validPosition(pos.y, pos.x);
     }
@@ -390,7 +396,7 @@ public class GameController extends CObject {
      * @param symbol to road
      * @return array of positions
      */
-    public synchronized Point[] getPositions(char symbol) {
+     synchronized Point[] getPositions(char symbol) {
 
         return labyrinth.roadSymbolPositions(symbol);
     }
@@ -398,8 +404,8 @@ public class GameController extends CObject {
     /**
      * Disables attack mode and broadcasts signal to everyone waiting for its end
      */
-    public synchronized void disableAttackMode() {
-        assert attackInProgress;
+     synchronized void disableAttackMode() {
+        //assert attackInProgress;
 
         attackInProgress = false;
         broadcast();
@@ -409,8 +415,8 @@ public class GameController extends CObject {
     /**
      * Waiting point for the end of an attack
      */
-    public synchronized void hasAttackModeEnded() {
-        assert attackInProgress;
+     synchronized void hasAttackModeEnded() {
+        //assert attackInProgress;
 
         while (attackInProgress)
             await();
@@ -422,7 +428,7 @@ public class GameController extends CObject {
      *
      * @param entity to attach
      */
-    public synchronized void attachExtraEntity(Entity entity) {
+     synchronized void attachExtraEntity(Entity entity) {
 
         labyrinth.putRoadSymbol(entity.initPos.y, entity.initPos.x, entity.symbol);
         mapCache.put(entity.initPos, ' ');
@@ -437,7 +443,7 @@ public class GameController extends CObject {
      * @param symbol to check
      * @return true if active entity
      */
-    public synchronized boolean symbolIsEntity(char symbol) {
+     synchronized bool symbolIsEntity(char symbol) {
         return symbol == 'C' // inky
                 || symbol == 'P' // pinky
                 || symbol == 'O' // clyde
@@ -449,3 +455,5 @@ public class GameController extends CObject {
     }
 
 }
+#endif
+

@@ -1,23 +1,29 @@
-package pacman;
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+    ////package pacman;
 
-import pacman.active.Entity;
-import pacman.active.Ghost;
-import pacman.active.Pacman;
-import pacman.passive.GameController;
-import pt.ua.concurrent.CThread;
+////import pacman.active.Entity;
+////import pacman.active.Ghost;
+////import pacman.active.Pacman;
+////import pacman.passive.GameController;
+////import pt.ua.concurrent.CThread;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
+////import java.awt.*;
+////import java.util.std::vector;
+////import java.util.concurrent.ThreadLocalRandom;
 
-import static java.lang.System.out;
+////import  java.lang.System.out;
 
-public class Game {
+ struct Game {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+      void main(String[] args) {
 
         if (args.length != 1) {
             printHelp();
@@ -30,8 +36,8 @@ public class Game {
         int blinkSpeed = 500;
         int extraGhots = 0;
         int extraPacmans = 0;
-        boolean endless = false;
-        ArrayList<Entity> entities = new ArrayList<>();
+        bool endless = false;
+        std::vector<Entity> entities = new std::vector<>();
 
         switch (args[0].charAt(0)) {
             case '1': {
@@ -128,13 +134,13 @@ public class Game {
         entities.forEach(gc::attachExtraEntity);
         entities.forEach(CThread::start);
 
-        boolean won = gc.waitingForGameToEnd();
+        bool won = gc.waitingForGameToEnd();
         out.println("Game Ended! " + "Pacman as " + (won ? "won!" : "lost"));
 
 
     }
 
-    private static void printHelp() {
+      void printHelp() {
         out.println("PCOO Pacman Simulation 2016/2017");
         out.println("Guilherme Cardoso <gjc@ua.pt>");
         out.println("");
@@ -158,3 +164,4 @@ public class Game {
     }
 
 }
+#endif

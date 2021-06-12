@@ -1,30 +1,35 @@
-package pacman.active;
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+//package pacman.active;
 
-import pacman.passive.GameController;
-import pt.ua.concurrent.ThreadInterruptedException;
+//import pacman.passive.GameController;
+//import pt.ua.concurrent.ThreadInterruptedException;
 
-import java.awt.*;
-import java.util.concurrent.ConcurrentHashMap;
+//import java.awt.*;
+//import java.util.concurrent.ConcurrentHashMap;
 
-import static java.lang.System.out;
+//import  java.lang.System.out;
 
 /**
  * Implements a Pacman. Simplest active entity
  */
-public class Pacman extends Entity {
+ struct Pacman :  Entity {
 
-    private final char endSymbol = '$';
+     const char endSymbol = '$';
 
-    public Pacman(String name, GameController gc, char symbol, Point pos, int speed) {
+     Pacman(String name, GameController gc, char symbol, Point pos, int speed) {
         super(name, symbol, gc, pos, speed);
         //maze.board.draw(new CircleGelem(Color.BLACK, 100), pos.y, pos.x, 1);
 
     }
 
-    @Override
-    public void run() {
+    
+     void run() {
         //System.out.println(super.getName() + " started");
-        try {
             gc.reportPosition(initPos);
 
             while (!searchPath(1, initPos)) {
@@ -32,12 +37,9 @@ public class Pacman extends Entity {
                 searchPath(1, initPos);
                 pathLog = new ConcurrentHashMap<>();
             }
-        } catch (ThreadInterruptedException ex) {
-            out.println(super.getName() + " interrupted at position: " + lastPos);
-        }
     }
 
-    boolean searchPath(int distance, Point pos) {
+    bool searchPath(int distance, Point pos) {
 
         if (gc.validPosition(pos) && gc.isRoad(pos))
             super.searchPath(distance, pos);
@@ -48,10 +50,12 @@ public class Pacman extends Entity {
     /**
      * No special modes for pacman when attack mode.
      */
-    @Override
-    public void attackMode() {
+    
+     void attackMode() {
         throw new UnsupportedOperationException("Pacman has no attack mode implemented.");
     }
 
 
 }
+#endif
+

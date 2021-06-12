@@ -1,56 +1,58 @@
-package pacman.active;
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+#include <Framework3/IRenderer.h>
+//package pacman.active;
 
-import pacman.passive.GameController;
-import pt.ua.concurrent.CThread;
-import pt.ua.concurrent.ThreadInterruptedException;
+//import pacman.passive.GameController;
+//import pt.ua.concurrent.CThread;
+//import pt.ua.concurrent.ThreadInterruptedException;
 
-import java.awt.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+//import java.awt.*;
+//import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.ScheduledExecutorService;
+//import java.util.concurrent.TimeUnit;
 
-import static java.lang.System.err;
-import static java.lang.System.out;
+//import  java.lang.System.err;
+//import  java.lang.System.out;
 
 /**
- * Ghost class. Special cases include trespassing ghost cages and continually running.
+ * Ghost struct. Special cases include trespassing ghost cages and continually running.
  */
-public class Ghost extends Entity {
+ struct Ghost :  Entity {
 
-    public final int attackModeSlowdownFactor;
-    public final int blinkSpeed;
-    private final boolean alive = true;
-    private ScheduledExecutorService es;
+     const int attackModeSlowdownFactor;
+     const int blinkSpeed;
+     const bool alive = true;
+     ScheduledExecutorService es;
 
-    public Ghost(String name, GameController gc, char symbol, Point pos, int speed, int slowdownFactor, int blinkSpeed) {
+     Ghost(String name, GameController gc, char symbol, Point pos, int speed, int slowdownFactor, int blinkSpeed) {
         super(name, symbol, gc, pos, speed);
         attackModeSlowdownFactor = slowdownFactor;
-        this.blinkSpeed = blinkSpeed;
+        this->blinkSpeed = blinkSpeed;
     }
 
 
     /**
-     * Ghost class runs around until killed
+     * Ghost struct runs around until killed
      */
-    @Override
-    public void run() {
+    
+     void run() {
         //out.println(super.getName() + " started");
-
-        try {
+        
             //noinspection InfiniteLoopStatement
             while (alive) {
                 searchPath(1, initPos);
                 pathLog = new ConcurrentHashMap<>();
             }
-        } catch (ThreadInterruptedException ex) {
-            out.println(super.getName() + " interrupted at position " + lastPos);
-        }
     }
 
-    @Override
-    boolean searchPath(int distance, Point pos) {
-        assert pos != null;
-        assert distance > 0;
+    
+    bool searchPath(int distance, Point pos) {
+        //assert pos != null;
+        //assert distance > 0;
 
         if (gc.validPosition(pos) && gc.isRoad(pos))
             super.searchPath(distance, pos);
@@ -64,10 +66,10 @@ public class Ghost extends Entity {
      * @param pos to check
      * @return true if valid path to wander
      */
-    @Override
-    boolean freePosition(Point pos) {
-        assert pos != null;
-        assert gc.isRoad(pos);
+    
+    bool freePosition(Point pos) {
+        //assert pos != null;
+        //assert gc.isRoad(pos);
 
         return super.freePosition(pos)
                 || roadSymbol(pos) == '%'; // allow passing though ghost cage gate
@@ -76,8 +78,8 @@ public class Ghost extends Entity {
     /**
      * Schedule threads at a fixed rate that toggle black and white ghost representation
      */
-    @Override
-    public void attackMode() {
+    
+     void attackMode() {
 
         if (es == null || es.isTerminated()) {
 
@@ -106,25 +108,18 @@ public class Ghost extends Entity {
 
     }
 
-    private void disableAttackMode() {
-        assert !es.isTerminated();
+     void disableAttackMode() {
+        //assert !es.isTerminated();
 
-        try {
             out.println("Ending " + super.getName() + " attack mode");
             speed = speed / attackModeSlowdownFactor;
             underAttack = false;
             es.shutdown();
             es.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            // was blinking stuck? this should never happen
-            err.println("Forcing stop of a blinking Executor");
-            System.exit(1);
-        } finally {
-            // deal with the fault and force shutdown of blinking service
-            es.shutdownNow();
-        }
 
         symbol = markedStartSymbol;
     }
 
 }
+#endif
+
