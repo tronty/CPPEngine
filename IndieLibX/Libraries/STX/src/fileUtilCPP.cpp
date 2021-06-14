@@ -233,6 +233,8 @@ std::string stx_convertpath(const std::string& szPath_)
 
 #if defined(__APPLE__) && !defined(OS_IPHONE) && !defined(IPHONE_SIMULATOR)
 	stx_ReplaceAll(str, "../../../../../IndieLib_resources/../../../../../IndieLib_resources/", "../../../../../IndieLib_resources/"); // ???
+#elif defined(_MSC_VER)
+	stx_ReplaceAll(str, "..\\\\..\\\\IndieLib_resources\\\\..\\\\..\\\\IndieLib_resources\\\\", "..\\\\..\\\\IndieLib_resources\\\\"); 
 #else
 	stx_ReplaceAll(str, "../../IndieLib_resources/../../IndieLib_resources/", "../../IndieLib_resources/"); // ???
 #endif

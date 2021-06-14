@@ -11,11 +11,13 @@ def replaceStringInFile(filePath):
     outtext=re.sub(r'\bnew Point', ' Point', outtext)
     outtext=re.sub(r'\bnew Rectangle', ' Rectangle', outtext)
     outtext=re.sub(r'\bnew Window', ' Window', outtext)
+    outtext=re.sub(r'////', '//', outtext)
 
-    '''
+    
     outtext=re.sub(r'\bclass\b', 'struct', outtext)
     outtext=re.sub(r'\bpackage\b', '//package', outtext)
     outtext=re.sub(r'\bimport\b', '//import', outtext)
+    outtext=re.sub(r'\bassert\b', '//assert', outtext)
     outtext=re.sub(r'\bpublic\s*?', '', outtext)
     outtext=re.sub(r'\bprotected\s*?', '', outtext)
     outtext=re.sub(r'\bprivate\s*?', '', outtext)
@@ -33,9 +35,9 @@ def replaceStringInFile(filePath):
     outtext=re.sub(r'\bthis\s*-\s*>\s*getClass\s*\(\s*\)\s*\.\s*getResource\s*\(\s*\"/', 'IRenderer::GetRendererInstance()->addImageLibTexture(\"/', outtext)
 
     outtext=re.sub(r'/resources/images/', '/', outtext)
-    '''
+    
     outtext1='''/*
-  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -56,7 +58,7 @@ def myfun(dummy, dirr, filess):
 			replaceStringInFile(dirr+'/'+child)
 			#print child
 
-files=['./src']
+files=['./src/concurrent-pacman/']
 for i in files:
 	os.path.walk(i, myfun, 13)
 

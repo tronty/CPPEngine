@@ -27,6 +27,10 @@ ccc=0
 g_node=0
 g_solution=''
 drive,tail=os.path.splitdrive(os.path.expanduser("~"))
+# C:\Users\tommi\OneDrive\Tiedostot\lib
+# drive, tail
+# C: \Users\tommi\Documents\lib
+msdocspath=os.path.expanduser("~")+'\\Documents\\lib'
 
 SDL2version=''
 assimp5version=''

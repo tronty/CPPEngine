@@ -19,6 +19,9 @@
 # 	(may save time if the system breaks and must be restored to a some previous state)
 
 source ./make.cnf
+# include make.cnf
+export SDL2
+export SDL2_VERSION
 
 OS="Windows"
 platform="WIN"
@@ -82,9 +85,6 @@ XQUARTZ="XQuartz-2.7.11.dmg"
 XQUARTZ_URL="https://dl.bintray.com/xquartz/downloads/$XQUARTZ"
 
 cd $HOME
-include make.cnf
-export SDL2
-export SDL2_VERSION
 
 replace()
 {

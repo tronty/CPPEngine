@@ -2277,7 +2277,8 @@ LOG_FNLN;
 	if(currentOffsets[i]) LOG_PRINT_NONE("currentOffsets[%d]:%x\n", i, currentOffsets[i]);
 	#endif
 		//if (selectedVertexBuffers[i] != currentVertexBuffers[i]) // != DONTCARE)
-		if (_VertexBuffers[i] != DONTCARE)
+		//if (_VertexBuffers[i] != DONTCARE)
+		if (_VertexBuffers[i] != -1)
 		{
 STX_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
 			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
@@ -2850,7 +2851,7 @@ unsigned int RendererHLSLCg::drawText(const char *str, float x, float y, const f
 						const FontID& font,
 						const SamplerStateID samplerState, const BlendStateID blendState, const DepthStateID depthState, const D3DXFROMWINEVECTOR4 col_)
 {
-#ifdef _MSC_VER
+#if 0//def _MSC_VER
     return 0;
 #endif
 //	if(strcmp(str,"Visibility")==0)DBG_HALT;
@@ -2863,7 +2864,8 @@ unsigned int RendererHLSLCg::drawText(const char *str, float x, float y, const f
 #if 0
 		defaultFont = addFont(FONT_PATH"Future.dds", FONT_PATH"Future.font", linearClamp);
 #else
-		std::string fn1="/Framework3/Future.dds";
+		std::string 	fn1="/Framework3/Future.dds";
+				fn1="/Framework3/Future.png";
 		std::string fn2="/Framework3/Future.font";
 
 		defaultFont = addFont(fn1.c_str(), fn2.c_str(), linearClamp);

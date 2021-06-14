@@ -64,7 +64,7 @@ if (file_exists($filename)) {
 
 $filename = './IndieLibX_AllLibs_WIN64.zip';
 if (file_exists($filename)) {
-    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (D3D11: DirectX11) fails.</TD><TD></TD></TR>";
+    echo "<TR><TD><A TARGET='_blank' HREF='http://tommironty.fi/".$filename."'>".$filename."</A></TD><TD>".filesize($filename)."</TD><TD>".date("F d Y H:i:s", filemtime($filename))."</TD><TD>Compiles. Rendering (D3D11: DirectX11) fails. Virtual function RendererHLSLCg::drawText disabled.</TD><TD></TD></TR>";
 }
 
 $filename = './HLSL330toGLSL4.py';

@@ -822,7 +822,11 @@ AssetHelper::MeshHelper* pcMesh=apcMeshes[i_];
 			std::string f1=szPath.data;
 			std::string txfn=szPath.data;
 			if(m_szPathTex.length())
+				#ifdef _MSC_VER
+				txfn=m_szPathTex+"\\\\"+f1;
+				#else
 				txfn=m_szPathTex+"/"+f1;
+				#endif
 			//LOG_FNLN;
 			//LOG_PRINT("Assimp Mesh Texture:%s\n", txfn.c_str());
 			if(f1=="")
