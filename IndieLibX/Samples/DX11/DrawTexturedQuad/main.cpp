@@ -70,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
                                 L"03. Drawing a Textured Quad",
                                 WS_OVERLAPPEDWINDOW | WS_VISIBLE,
                                 CW_USEDEFAULT, CW_USEDEFAULT,
-                                initialWidth, 
+                                initialWidth,
                                 initialHeight,
                                 0, 0, hInstance, 0);
 
@@ -92,16 +92,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
         creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
         #endif
 
-        HRESULT hResult = D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE, 
-                                            0, creationFlags, 
-                                            featureLevels, ARRAYSIZE(featureLevels), 
-                                            D3D11_SDK_VERSION, &baseDevice, 
+        HRESULT hResult = D3D11CreateDevice(0, D3D_DRIVER_TYPE_HARDWARE,
+                                            0, creationFlags,
+                                            featureLevels, ARRAYSIZE(featureLevels),
+                                            D3D11_SDK_VERSION, &baseDevice,
                                             0, &baseDeviceContext);
         if(FAILED(hResult)){
             MessageBoxA(0, "D3D11CreateDevice() failed", "Fatal Error", MB_OK);
             return GetLastError();
         }
-        
+
         // Get 1.1 interface of D3D11 Device and Context
         hResult = baseDevice->QueryInterface(__uuidof(ID3D11Device1), (void**)&d3d11Device);
         assert(SUCCEEDED(hResult));
@@ -128,7 +128,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
         d3dDebug->Release();
     }
 #endif
-    
+
     // Create Swap Chain
     IDXGISwapChain1* d3d11SwapChain;
     {
@@ -186,12 +186,84 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
         d3d11FrameBuffer->Release();
     }
 
+    const char* str="float4 GetPixelColor_(Texture2D<float4> atex, float2 aTexCoord)\n"
+"{\n"
+"	uint width_;\n"
+"	uint height_;\n"
+"	atex.GetDimensions(width_, height_);\n"
+"	float2 dim_;\n"
+"	dim_.x=float(width_-1);\n"
+"	dim_.y=float(height_-1);\n"
+"	float4 col=atex.Load(int3(dim_.x*aTexCoord.x, dim_.y*aTexCoord.y, 0));\n"
+"	col.w=1;\n"
+"	return col;\n"
+"}\n"
+"#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)\n"
+"#define SAMPLER2D Texture2D<float4>\n"
+"\n"
+"struct VS_Input {\n"
+"    float2 pos : POS;\n"
+"    float2 uv : TEX;\n"
+"};\n"
+"\n"
+"struct VS_Output {\n"
+"    float4 pos : SV_POSITION;\n"
+"    float4 color : TEXCOORD0;\n"
+"    float2 uv : TEXCOORD1;\n"
+"};\n"
+"\n"
+"#if 1\n"
+"Texture2D    mytexture : register(t0);\n"
+"SamplerState mysampler : register(s0);\n"
+"#elif 0\n"
+"SAMPLER2D mytexture;\n"
+"#elif 0\n"
+"Texture2D    mytexture;\n"
+"SamplerState g_samPoint\n"
+"{\n"
+"    Filter = MIN_MAG_MIP_POINT;\n"
+"    AddressU = Wrap;\n"
+"    AddressV = Wrap;\n"
+"};\n"
+"#endif\n"
+"\n"
+"VS_Output vs_main(VS_Input input)\n"
+"{\n"
+"    VS_Output output;\n"
+"    output.pos = float4(input.pos, 0.0f, 1.0f);\n"
+"    output.uv = input.uv;\n"
+"    #if 1\n"
+"    output.color = float4(1,0,0,1);\n"
+"    #elif 0\n"
+"    output.color = SAMPLE2D(mytexture, input.uv);\n"
+"    #elif 0\n"
+"	//float fOffset)\n"
+"    	//float tCoord = (fOffset) / 300.0;\n"
+"    	output.color = mytexture.SampleLevel( g_samPoint, input.uv, 0 );\n"
+"    #elif 0\n"
+"    output.color = mytexture.Sample(mysampler, input.uv);\n"
+"    #endif\n"
+"    return output;\n"
+"}\n"
+"\n"
+"float4 ps_main(VS_Output input) : SV_Target\n"
+"{\n"
+"#if 0\n"
+"    return mytexture.Sample(mysampler, input.uv);\n"
+"#else\n"
+"	return input.color;\n"
+"#endif\n"
+"}\n";
    // Create Vertex Shader
     ID3DBlob* vsBlob;
     ID3D11VertexShader* vertexShader;
     {
         ID3DBlob* shaderCompileErrorsBlob;
+        #ifdef USETEXTURE
         HRESULT hResult = D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "vs_main", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        #else
+		HRESULT hResult = D3DCompile(str, strlen(str), "vs", NULL, NULL, "vs_main", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        #endif
         if(FAILED(hResult))
         {
             const char* errorString = NULL;
@@ -214,7 +286,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
     {
         ID3DBlob* psBlob;
         ID3DBlob* shaderCompileErrorsBlob;
+        #ifdef USETEXTURE
         HRESULT hResult = D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "ps_main", "ps_5_0", 0, 0, &psBlob, &shaderCompileErrorsBlob);
+        #else
+		HRESULT hResult = D3DCompile(str, strlen(str), "ps", NULL, NULL, "ps_main", "ps_5_0", 0, 0, &psBlob, &shaderCompileErrorsBlob);
+        #endif
         if(FAILED(hResult))
         {
             const char* errorString = NULL;
@@ -275,7 +351,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
         HRESULT hResult = d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexSubresourceData, &vertexBuffer);
         assert(SUCCEEDED(hResult));
     }
-
+#ifdef USETEXTURE
     // Create Sampler State
     D3D11_SAMPLER_DESC samplerDesc = {};
     samplerDesc.Filter         = D3D11_FILTER_MIN_MAG_MIP_POINT;
@@ -294,7 +370,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
     // Load Image
     int texWidth, texHeight, texNumChannels;
     int texForceNumChannels = 4;
-    unsigned char* testTextureBytes = stbi_load("test.bmp", &texWidth, &texHeight,
+    unsigned char* testTextureBytes = stbi_load("../../IndieLib_resources/test.bmp", &texWidth, &texHeight,
                                                 &texNumChannels, texForceNumChannels);
     assert(testTextureBytes);
     int texBytesPerRow = 4 * texWidth;
@@ -321,6 +397,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
     d3d11Device->CreateShaderResourceView(texture, nullptr, &textureView);
 
     free(testTextureBytes);
+#endif
 
     // Main Loop
     bool isRunning = true;
@@ -342,7 +419,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 
             HRESULT res = d3d11SwapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
             assert(SUCCEEDED(res));
-            
+
             ID3D11Texture2D* d3d11FrameBuffer;
             res = d3d11SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&d3d11FrameBuffer);
             assert(SUCCEEDED(res));
@@ -370,10 +447,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 
         d3d11DeviceContext->VSSetShader(vertexShader, nullptr, 0);
         d3d11DeviceContext->PSSetShader(pixelShader, nullptr, 0);
-
+#ifdef USETEXTURE
         d3d11DeviceContext->PSSetShaderResources(0, 1, &textureView);
         d3d11DeviceContext->PSSetSamplers(0, 1, &samplerState);
-
+#endif
         d3d11DeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 
         d3d11DeviceContext->Draw(numVerts, 0);
