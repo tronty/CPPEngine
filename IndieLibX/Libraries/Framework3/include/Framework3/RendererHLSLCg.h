@@ -1747,7 +1747,7 @@ virtual void RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROM
 #if 0
 		setShaderFlag(RESET_SHADER);
 #endif
-#ifdef __X7__
+#if defined(__X7__) || defined(_MSC_VER)
 		changeShader(shader);
 #endif
 		STX_FNLN;
@@ -1771,7 +1771,7 @@ virtual void RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROM
 #endif
 		STX_FNLN;
 		STX_PRINT("selectedVertexFormat:%x\n",selectedVertexFormat);
-#ifdef __X7__
+#if defined(__X7__) || defined(_MSC_VER)
 		changeVertexFormat(vertexFormat);
 #endif
 		STX_FNLN;

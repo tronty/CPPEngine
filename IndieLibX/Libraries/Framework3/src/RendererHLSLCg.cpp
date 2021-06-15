@@ -2240,6 +2240,7 @@ LOG_FNLN;
 		#ifndef __X7__
 			if(m_bDebug)
 					LOG_FNLN_NONE;
+		#ifndef _MSC_VER
 		changeShader(_Shader);
 		#if 0
 		changePixelShader(selectedPixelShader);
@@ -2252,6 +2253,7 @@ LOG_FNLN;
 		#ifndef GLSL1_1
 		if(_VertexFormat > -1)
 			changeVertexFormat(_VertexFormat);
+		#endif
 		#endif
 		#endif
 			if(m_bDebug)
