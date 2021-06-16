@@ -20,10 +20,10 @@
 
 source ./make.cnf
 # include make.cnf
-if [ ! -z "$SDL2" ]; then
+if [ -z "$SDL2" ]; then
 SDL2="SDL2-2.0.14"
 fi
-if [ ! -z "$SDL2_VERSION" ]; then
+if [ -z "$SDL2_VERSION" ]; then
 SDL2_VERSION="2.0.14"
 fi
 export SDL2
