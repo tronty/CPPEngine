@@ -1036,7 +1036,7 @@ unsigned int RendererHLSLCg::drawTexturedVrtl(const Primitives primitives, TexVe
 	setBlendState(blendState);
 	setDepthState(depthState);
 	setRasterizerState(cullBack);
-	setVertexFormat(GettexVF());
+	//setVertexFormat(GettexVF());
 	int pc=getPrimitiveCount(primitives, nVertices);
 	int pcR=getPrimitiveCountR(primitives, nVertices);
 	//apply();
@@ -2234,6 +2234,33 @@ STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
 		_Shader=0; // ???
  		_VertexFormat=0; // ???
 #endif
+	#ifdef _MSC_VER
+	if(_Shader > -1)
+		changeShader(_Shader);
+	if(_VertexFormat > -1)
+		changeVertexFormat(_VertexFormat);
+	applyConstants();
+	applyTextures();
+	applySamplerStates();
+	for (unsigned int i = 0; i < MAX_VERTEXSTREAM; i++)
+	{
+		//if (selectedVertexBuffers[i] != currentVertexBuffers[i]) // != DONTCARE)
+		//if (_VertexBuffers[i] != DONTCARE)
+		if (_VertexBuffers[i] != -1)
+			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
+	}
+	if (_IndexBuffer != DONTCARE)
+		changeIndexBuffer(_IndexBuffer);
+	if (_DepthState != DONTCARE)
+		changeDepthState(_DepthState, _StencilRef);
+	if (_AlphaState != DONTCARE)
+		BlendingAlphaTest::GetInstance()->SetAlphaTest(true);
+	if (_BlendState != DONTCARE)
+		changeBlendState(_BlendState, _SampleMask);
+	if (_RasterizerState != DONTCARE)
+		changeRasterizerState(_RasterizerState);
+	return;
+	#endif
 	if (_Shader > -1)
 	{
 LOG_FNLN;
@@ -2262,8 +2289,10 @@ LOG_FNLN;
 			if(m_bDebug)
 					LOG_FNLN_NONE;
 	//}
+#if 1//ndef _MSC_VER
 	applyTextures();
 	applySamplerStates();
+#endif
 		#ifndef __X7__
 		#ifdef GLSL1_1
 		if(_VertexFormat > -1)
@@ -2278,6 +2307,7 @@ LOG_FNLN;
 	if(selectedOffsets[i]) LOG_PRINT_NONE("selectedOffsets[%d]:%x\n", i, selectedOffsets[i]);
 	if(currentOffsets[i]) LOG_PRINT_NONE("currentOffsets[%d]:%x\n", i, currentOffsets[i]);
 	#endif
+#if 1//ndef _MSC_VER
 		//if (selectedVertexBuffers[i] != currentVertexBuffers[i]) // != DONTCARE)
 		//if (_VertexBuffers[i] != DONTCARE)
 		if (_VertexBuffers[i] != -1)
@@ -2285,6 +2315,7 @@ LOG_FNLN;
 STX_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
 			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
 		}
+#endif
 	}
 		#endif
 	/*
@@ -2853,7 +2884,7 @@ unsigned int RendererHLSLCg::drawText(const char *str, float x, float y, const f
 						const FontID& font,
 						const SamplerStateID samplerState, const BlendStateID blendState, const DepthStateID depthState, const D3DXFROMWINEVECTOR4 col_)
 {
-#if 0//def _MSC_VER
+#ifdef _MSC_VER
     return 0;
 #endif
 //	if(strcmp(str,"Visibility")==0)DBG_HALT;

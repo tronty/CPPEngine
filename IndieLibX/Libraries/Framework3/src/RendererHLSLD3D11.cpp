@@ -3801,11 +3801,11 @@ void RendererHLSLD3D11::PresentVrtl(bool aB)
 		//if(!((currentVertexBuffers[0]>-1)))
 		if(!((selectedVertexBuffers[0]>-1)))
 			return 0;
-		apply();
+		//apply();
 		drawArrays(		PrimitiveType,
 						StartVertex,
 						getVertexCount(PrimitiveType,PrimitiveCount));
-	resetVrtl(RESET_ALL);
+	//resetVrtl(RESET_ALL);
 	nDrawCalls++;
 	return 0;
 	}
@@ -3814,13 +3814,13 @@ void RendererHLSLD3D11::PresentVrtl(bool aB)
 //if(!((currentVertexBuffers[0]>-1)&&(currentIndexBuffer>-1)))
 if(!((selectedVertexBuffers[0]>-1)&&(selectedIndexBuffer>-1)))
 	return 0;
-		apply();
+		//apply();
 		drawElements(	PrimitiveType,
 						startIndex,
 						getIndicesCount(PrimitiveType)*primCount,
 						0,
 						NumVertices);
-	resetVrtl(RESET_ALL);
+	//resetVrtl(RESET_ALL);
 	nDrawCalls++;
 	return 0;
 	}
