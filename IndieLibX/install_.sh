@@ -20,6 +20,12 @@
 
 source ./make.cnf
 # include make.cnf
+if [ ! -z "$SDL2" ]; then
+SDL2="SDL2-2.0.14"
+fi
+if [ ! -z "$SDL2_VERSION" ]; then
+SDL2_VERSION="2.0.14"
+fi
 export SDL2
 export SDL2_VERSION
 
@@ -66,7 +72,6 @@ bitness="x86"
 	fi
 
 DISPLAY_MANAGER="lightdm"
-SDL2_VERSION="2.0.9"
 SDL2_IMAGE_VERSION="2.0.5"
 NDK_VERSION="r9d"
 ANDROID_NDK_URL="http://dl.google.com/android/ndk/android-ndk-$NDK_VERSION-$OS_-$bitness.tar.bz2"
