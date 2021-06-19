@@ -101,7 +101,6 @@ replace()
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./clean.bat
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./Make.bat
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./NOTES.txt
-		sed -i "s/SDL2-2.0.14/$SDL2/" ./DesktopProjects/download.php
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./download.php
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./screenshots/NOTES1.html
 		sed -i "s/SDL2-2.0.14/$SDL2/" ./screenshots/README.html
@@ -112,7 +111,6 @@ replace()
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./Make.bat
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./NOTES.txt
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./download.php
-		sed -i "s/2.0.14/$SDL2_VERSION/" ./DesktopProjects/download.php
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./NOTES1.html
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./README.html
 		sed -i "s/2.0.14/$SDL2_VERSION/" ./install.html

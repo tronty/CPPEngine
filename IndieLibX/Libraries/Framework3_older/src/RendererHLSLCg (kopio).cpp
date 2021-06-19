@@ -38,8 +38,6 @@ using namespace LuaUtil;
 #define USEXML 1
 
 #if 1
-#define STX_FNLN
-#define STX_PRINT
 #define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN_NONE
@@ -1036,7 +1034,7 @@ unsigned int RendererHLSLCg::drawTexturedVrtl(const Primitives primitives, TexVe
 	setBlendState(blendState);
 	setDepthState(depthState);
 	setRasterizerState(cullBack);
-	//setVertexFormat(GettexVF());
+	setVertexFormat(GettexVF());
 	int pc=getPrimitiveCount(primitives, nVertices);
 	int pcR=getPrimitiveCountR(primitives, nVertices);
 	//apply();
@@ -1165,13 +1163,12 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 		m_Texture_cache.insert ( std::pair<std::string,TextureID>(fileName, id) );
 }
 
-//define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps
-										  , const SamplerStateID samplerState, bool bFlipY, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
+										  , const SamplerStateID samplerState, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
 {
-STX_FNLN;
+
 	std::string f=fileName0;
 
 	std::string f2=stx_convertpath(f);
@@ -1203,8 +1200,6 @@ STX_FNLN;
         	LOG_PRINT("IRenderer::addImageLibTexture:::%s\n", path.c_str());
 		if (img.loadImageLibImage(path.c_str(), useMipMaps))
 	{
-		if(bFlipY) 
-			img.flipY();
 		/*
 		#if 1
 		std::string Alpha = "False";
@@ -1343,53 +1338,10 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
     if(fileName)
         fn=stx_convertpath(fileName);
 	LOG_PRINT("Shader file:%s\n", fn.c_str());
-	std::string contents, contents2;
+	std::string contents;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
     		contents=(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
-#if 0//def _MSC_VER
-	#define __HLSL5__ 1
-	#define ROW_MAJOR row_major
-	#define MVPSEMANTIC
-	#define WSIGN +
-	#define int2 ivec2
-	#define int3 ivec3
-	#define int4 ivec4
-	#define uint2 uvec2
-	#define uint3 uvec3
-	#define uint4 uvec4
-	#define float2 vec2
-	#define float3 vec3
-	#define float4 vec4
-	#define float4x4 mat4
-	#define Texture2D texture2D
-	#define SamplerState sampler
-	#define saturate(x) clamp(x, 0.0f, 1.0f)
-	#define TextureSample(T,S,uv) texture(sampler2D(T, S), uv)
-	float4 GetPixelColor_(Texture2D<float4> atex, float2 aTexCoord)
-	{
-		uint width_;
-		uint height_;
-		atex.GetDimensions(width_, height_);
-		float2 dim_;
-		dim_.x=float(width_-1);
-		dim_.y=float(height_-1);
-		return atex.Load(int3(dim_.x*aTexCoord.x, dim_.y*aTexCoord.y, 0));
-	}
-	#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)
-	#define SAMPLER2D Texture2D<float4>
-#elif 0
-	#define __GLSL__ 1
-	#define WSIGN +
-	#define ROW_MAJOR
-	#define MVPSEMANTIC
-	#define fract frac
-	#define mix lerp
-	#define atan(x,y) atan2(y,x)
-	#define TextureSample(T,S,uv) T.Sample(S, uv)
-	#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod(TEX, float4(TEXCOORD.x, TEXCOORD.y, 0.0, 0.0))
-	#define SAMPLER2D sampler2D
-#endif  		
 	ShaderID id=addShader(contents.c_str(), vsMain, fsMain, 0, flags);
 	if(!stx_fileExists(fn.c_str()))
 	{
@@ -2144,12 +2096,6 @@ void RendererHLSLCg::apply()
         _Inited=true;
     }
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
-
 	if(selectedShader>-1)
 		_Shader=selectedShader;
 	else
@@ -2225,49 +2171,14 @@ STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
             _SamplerStates[i]=-1;
 	}
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
-#if 0 // ???
-		_Shader=0; // ???
- 		_VertexFormat=0; // ???
-#endif
-	#ifdef _MSC_VER
-	if(_Shader > -1)
-		changeShader(_Shader);
-	if(_VertexFormat > -1)
-		changeVertexFormat(_VertexFormat);
-	applyConstants();
-	applyTextures();
-	applySamplerStates();
-	for (unsigned int i = 0; i < MAX_VERTEXSTREAM; i++)
-	{
-		//if (selectedVertexBuffers[i] != currentVertexBuffers[i]) // != DONTCARE)
-		//if (_VertexBuffers[i] != DONTCARE)
-		if (_VertexBuffers[i] > -1)
-			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
-	}
-	if (_IndexBuffer > -1)
-		changeIndexBuffer(_IndexBuffer);
-	if (_DepthState > -1)
-		changeDepthState(_DepthState, _StencilRef);
-	if (_AlphaState > -1)
-		BlendingAlphaTest::GetInstance()->SetAlphaTest(true);
-	if (_BlendState > -1)
-		changeBlendState(_BlendState, _SampleMask);
-	if (_RasterizerState > -1)
-		changeRasterizerState(_RasterizerState);
-	return;
-	#endif
+LOG_FNLN;
+LOG_PRINT("selectedShader:%x\n", selectedShader);
 	if (_Shader > -1)
 	{
 LOG_FNLN;
 		#ifndef __X7__
 			if(m_bDebug)
 					LOG_FNLN_NONE;
-		#ifndef _MSC_VER
 		changeShader(_Shader);
 		#if 0
 		changePixelShader(selectedPixelShader);
@@ -2282,17 +2193,14 @@ LOG_FNLN;
 			changeVertexFormat(_VertexFormat);
 		#endif
 		#endif
-		#endif
 			if(m_bDebug)
 					LOG_FNLN_NONE;
 		applyConstants();
 			if(m_bDebug)
 					LOG_FNLN_NONE;
 	//}
-#if 1//ndef _MSC_VER
 	applyTextures();
 	applySamplerStates();
-#endif
 		#ifndef __X7__
 		#ifdef GLSL1_1
 		if(_VertexFormat > -1)
@@ -2307,15 +2215,11 @@ LOG_FNLN;
 	if(selectedOffsets[i]) LOG_PRINT_NONE("selectedOffsets[%d]:%x\n", i, selectedOffsets[i]);
 	if(currentOffsets[i]) LOG_PRINT_NONE("currentOffsets[%d]:%x\n", i, currentOffsets[i]);
 	#endif
-#if 1//ndef _MSC_VER
 		//if (selectedVertexBuffers[i] != currentVertexBuffers[i]) // != DONTCARE)
-		//if (_VertexBuffers[i] != DONTCARE)
-		if (_VertexBuffers[i] != -1)
+		if (_VertexBuffers[i] != DONTCARE)
 		{
-STX_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
 			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
 		}
-#endif
 	}
 		#endif
 	/*
@@ -2605,8 +2509,6 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		flags=0;
 	#endif
 
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);
 	//const unsigned int flags=0; // ???#if 0
 	#if 1
 	if (flags & RESET_SHADER)
@@ -2619,9 +2521,6 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		selectedDomainShader = SHADER_NONE;
 		selectedComputeShader = SHADER_NONE;
 	}
-
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);	
 	if (flags & RESET_VF)
 	{
 		selectedVertexFormat = VF_NONE;
@@ -2897,8 +2796,7 @@ unsigned int RendererHLSLCg::drawText(const char *str, float x, float y, const f
 #if 0
 		defaultFont = addFont(FONT_PATH"Future.dds", FONT_PATH"Future.font", linearClamp);
 #else
-		std::string 	fn1="/Framework3/Future.dds";
-				fn1="/Framework3/Future.png";
+		std::string fn1="/Framework3/Future.dds";
 		std::string fn2="/Framework3/Future.font";
 
 		defaultFont = addFont(fn1.c_str(), fn2.c_str(), linearClamp);
@@ -4701,9 +4599,7 @@ IRenderer* IRenderer::GetRendererInstance(
 
 	m_title=atitle;
 	LOG_START;
-	#ifdef LINUX
-	printf("Title: %s\n", atitle);
-	#endif
+	STX_PRINT("Title: %s\n", atitle);
 	char path1[MAX_PATH];
 	stx_getcwd(path1);
 	LOG_PRINT_NONE("1path=%s\n", path1);
@@ -5950,10 +5846,10 @@ LOG_FNLN;
 			type=TYPE_BINORMAL;
 
 		LOG_FNLN;
-		STX_PRINT("stream=%d\n", stream); 
-		STX_PRINT("type=%d\n", type);
-		STX_PRINT("format=%d\n", format);
-		STX_PRINT("size=%d\n", size);
+		LOG_PRINT("stream=%d\n", stream); 
+		LOG_PRINT("type=%d\n", type);
+		LOG_PRINT("format=%d\n", format);
+		LOG_PRINT("size=%d\n", size);
 		pass.format_.push_back(stream);
 		pass.format_.push_back(type);
 		pass.format_.push_back(format);
@@ -6307,22 +6203,22 @@ LOG_FNLN;
     }}
 LOG_FNLN;
 	LOG_FNLN;
-	STX_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
-	STX_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
+	LOG_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
+	LOG_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
 	for(unsigned int i=0;i<m_vTechniques.size();i++){
-		STX_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
 	for(unsigned int j=0;j<m_vTechniques[i].m_vPasses.size();j++)
 	{
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
 	}}
 	for(unsigned int i=0;i<m_vTextures.size();i++)
 	{
-        	STX_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
-        	STX_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
-        	STX_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
+        	LOG_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
+        	LOG_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
+        	LOG_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
 	}
 	//stx_exit(0);
 }
@@ -6399,23 +6295,19 @@ LOG_FNLN;
 }
 void stx_Effect::BeginPass( unsigned int iPass )
 {
-STX_FNLN;
+LOG_FNLN;
 	if(m_iTechnique<0)
 		return;
-STX_FNLN;
+LOG_FNLN;
 	if((iPass+1)>m_vTechniques[m_iTechnique].m_vPasses.size())
 		return;
-STX_FNLN;
+LOG_FNLN;
 	stx_Pass pass=m_vTechniques[m_iTechnique].m_vPasses[iPass];
-STX_FNLN;
-STX_PRINT("pass.Shader=%x\n", pass.Shader);
+LOG_FNLN;
 	if(pass.Shader>-1)
 		IRenderer::GetRendererInstance()->setShader(pass.Shader);
-STX_FNLN;
-STX_PRINT("pass.VertexFormat=%x\n", pass.VertexFormat);
 	if(pass.VertexFormat>-1)
 		IRenderer::GetRendererInstance()->setVertexFormat(pass.VertexFormat);
-STX_FNLN;
 #if 0
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 #else

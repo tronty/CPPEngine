@@ -1,3 +1,4 @@
+#if defined(LINUX) || defined(__APPLE__)
 /*
   Copyright (c) 2018 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -213,5 +214,5 @@ int ApplicationLogic()
 	}
 	return 0;
 }
-
+#endif
 
