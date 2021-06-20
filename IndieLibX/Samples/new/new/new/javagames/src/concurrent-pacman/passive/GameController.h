@@ -1,3 +1,5 @@
+#ifndef __GameController__
+#define __GameController__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,10 +8,10 @@
 #include <Framework3/IRenderer.h>
 //package pacman.passive;
 
-//import pacman.active.Entity;
-//import pacman.active.Ghost;
-//import pacman.active.Pacman;
-//import pacman.other.AttackTimer;
+#include "active/Entity.h";
+#include "active/Ghost.h";
+#include "active/Pacman.h";
+#include "other/AttackTimer.h";
 //import pt.ua.concurrent.CObject;
 //import pt.ua.concurrent.CThread;
 //import pt.ua.gboard.*;
@@ -91,8 +93,8 @@
 
         File f = new File("./resources/board.txt");
         if (!f.exists()) {
-            out.println("Missing resources folder");
-            out.println("Looking at:" + f.getAbsolutePath());
+            LOG_PRINT("Missing resources folder");
+            LOG_PRINT("Looking at:" + f.getAbsolutePath());
             System.exit(1);
         }
 
@@ -130,7 +132,7 @@
 
         // check total number of points for pacman to collect
         totalNumberOfPoints = getPositions('.').length;
-        out.println("Game maximum number of points: " + totalNumberOfPoints);
+        LOG_PRINT("Game maximum number of points: " + totalNumberOfPoints);
 
         // draw "P" points on the map
         labyrinth.board.draw(new StringGelem("P:", Color.white), 32, 4, 1);
@@ -174,7 +176,7 @@
         if (entity1 != null) {
             if (entity.isGhost() && !entity1.isGhost()
                     || !entity.isGhost() && entity1.isGhost()) {
-                out.println("I am:" + entity.getName() + " killing " + entity1.getName() + " " + pos + " on cache:" + entity1.getName());
+                LOG_PRINT("I am:" + entity.getName() + " killing " + entity1.getName() + " " + pos + " on cache:" + entity1.getName());
 
                 if (!entity.isGhost()) {
                     if (entity1.underAttack() || GodMode) {
@@ -206,7 +208,7 @@
             if (RealRoadSymbol(pos) == '.') { // point counting logic
                 points++;
 
-                if ((points % 30) == 0) out.println("Points " + points + "/" + totalNumberOfPoints);
+                if ((points % 30) == 0) LOG_PRINT("Points " + points + "/" + totalNumberOfPoints);
 
                 drawPoints();
 
@@ -265,17 +267,17 @@
         entity.interrupt();
 
         if (entity.isGhost()) {
-            out.println("Spawning new " + entity.getName());
+            LOG_PRINT("Spawning new " + entity.getName());
             Ghost ghost = (Ghost) entity;
             ghost = new Ghost(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.initialSpeed, ghost.attackModeSlowdownFactor, ghost.blinkSpeed);
 
             entities.add(ghost);
             ghost.start();
-            out.println(entity.getName() + " spawned at " + entity.initPos);
+            LOG_PRINT(entity.getName() + " spawned at " + entity.initPos);
         } else {
             if(!endless) pacmanLives--;
             if (pacmanLives > 0) {
-                out.println("Pacman has " + pacmanLives + " pacmanLives left.");
+                LOG_PRINT("Pacman has " + pacmanLives + " pacmanLives left.");
                 Pacman pm = new Pacman(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.getInitialSpeed());
                 entities.add(pm);
                 pm.start();
@@ -307,7 +309,7 @@
         while (gameInProgress)
             await();
 
-        out.println("Final points:" + points);
+        LOG_PRINT("Final points:" + points);
         return points == totalNumberOfPoints;
     }
 
@@ -434,7 +436,7 @@
         mapCache.put(entity.initPos, ' ');
         entities.add(entity);
         totalNumberOfPoints = getPositions('.').length;
-        out.println("Updated maximum number of points to " + totalNumberOfPoints);
+        LOG_PRINT("Updated maximum number of points to " + totalNumberOfPoints);
     }
 
     /**

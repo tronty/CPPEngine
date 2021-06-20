@@ -1,3 +1,5 @@
+#ifndef __Entity__
+#define __Entity__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-//import pacman.passive.GameController;
+#include "passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 
 //import java.awt.*;

@@ -1,3 +1,5 @@
+#ifndef __Game__
+#define __Game__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,10 +8,10 @@
 #include <Framework3/IRenderer.h>
     ////package pacman;
 
-////import pacman.active.Entity;
-////import pacman.active.Ghost;
-////import pacman.active.Pacman;
-////import pacman.passive.GameController;
+#include "active/Entity.h";
+#include "active/Ghost.h";
+#include "active/Pacman.h";
+#include "passive/GameController.h";
 ////import pt.ua.concurrent.CThread;
 
 ////import java.awt.*;
@@ -135,32 +137,32 @@
         entities.forEach(CThread::start);
 
         bool won = gc.waitingForGameToEnd();
-        out.println("Game Ended! " + "Pacman as " + (won ? "won!" : "lost"));
+        LOG_PRINT("Game Ended! " + "Pacman as " + (won ? "won!" : "lost"));
 
 
     }
 
       void printHelp() {
-        out.println("PCOO Pacman Simulation 2016/2017");
-        out.println("Guilherme Cardoso <gjc@ua.pt>");
-        out.println("");
-        out.println("Usage: java -ea -jar Pacman.jar <preset>");
-        out.println("");
-        out.println("Available presets:");
-        out.println("");
-        out.println("1:  Normal pacman game. 3 lives, 4 ghosts.");
-        out.println("    Game whens when all points collected or no more lives");
-        out.println("");
-        out.println("2:  Aggressive mode: 100 lives, 16 ghosts");
-        out.println("    Attack duration lasts 15 seconds");
-        out.println("");
-        out.println("3:  Endless mode: infinite lives");
-        out.println("    Game doesn't end when all points are collected.");
-        out.println("");
-        out.println("4:  Crazy mode: infinite lives, 32 pacmans, 32 ghosts");
-        out.println("    Same as 3, but with more entities");
-        out.println("");
-        out.println("5:  Developer mode. 128 pacmans killing one Ghost. Tests interrupts and concurrency.");
+        LOG_PRINT("PCOO Pacman Simulation 2016/2017");
+        LOG_PRINT("Guilherme Cardoso <gjc@ua.pt>");
+        LOG_PRINT("");
+        LOG_PRINT("Usage: java -ea -jar Pacman.jar <preset>");
+        LOG_PRINT("");
+        LOG_PRINT("Available presets:");
+        LOG_PRINT("");
+        LOG_PRINT("1:  Normal pacman game. 3 lives, 4 ghosts.");
+        LOG_PRINT("    Game whens when all points collected or no more lives");
+        LOG_PRINT("");
+        LOG_PRINT("2:  Aggressive mode: 100 lives, 16 ghosts");
+        LOG_PRINT("    Attack duration lasts 15 seconds");
+        LOG_PRINT("");
+        LOG_PRINT("3:  Endless mode: infinite lives");
+        LOG_PRINT("    Game doesn't end when all points are collected.");
+        LOG_PRINT("");
+        LOG_PRINT("4:  Crazy mode: infinite lives, 32 pacmans, 32 ghosts");
+        LOG_PRINT("    Same as 3, but with more entities");
+        LOG_PRINT("");
+        LOG_PRINT("5:  Developer mode. 128 pacmans killing one Ghost. Tests interrupts and concurrency.");
     }
 
 }

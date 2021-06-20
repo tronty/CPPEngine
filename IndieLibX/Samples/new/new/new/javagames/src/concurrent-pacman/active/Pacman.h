@@ -1,3 +1,5 @@
+#ifndef __Pacman__
+#define __Pacman__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-//import pacman.passive.GameController;
+#include "passive/GameController.h";
 //import pt.ua.concurrent.ThreadInterruptedException;
 
 //import java.awt.*;
@@ -29,11 +31,11 @@
 
     
      void run() {
-        //System.out.println(super.getName() + " started");
+        //System.LOG_PRINT(super.getName() + " started");
             gc.reportPosition(initPos);
 
             while (!searchPath(1, initPos)) {
-                //out.println("no solutions"); // note that pacman levels up before
+                //LOG_PRINT("no solutions"); // note that pacman levels up before
                 searchPath(1, initPos);
                 pathLog = new ConcurrentHashMap<>();
             }

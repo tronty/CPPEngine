@@ -1,3 +1,5 @@
+#ifndef __AttackTimer__
+#define __AttackTimer__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.other;
 
-//import pacman.passive.GameController;
+#include "passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 //import pt.ua.concurrent.Metronome;
 
@@ -35,7 +37,7 @@
 
     
      void run() {
-        out.println("AttackingTimer started");
+        LOG_PRINT("AttackingTimer started");
 
         for (int i = 0; i < pause; i++) {
             metronome.sync();
@@ -50,7 +52,7 @@
      */
      void addMore(int pause) {
 
-        out.println("Added more " + pause + " seconds to timer");
+        LOG_PRINT("Added more " + pause + " seconds to timer");
         this->pause += pause;
     }
 }

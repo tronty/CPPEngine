@@ -1,3 +1,5 @@
+#ifndef __Ghost__
+#define __Ghost__
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -6,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-//import pacman.passive.GameController;
+#include "passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 //import pt.ua.concurrent.ThreadInterruptedException;
 
@@ -40,7 +42,7 @@
      */
     
      void run() {
-        //out.println(super.getName() + " started");
+        //LOG_PRINT(super.getName() + " started");
         
             //noinspection InfiniteLoopStatement
             while (alive) {
@@ -89,7 +91,7 @@
             es = java.util.concurrent.Executors.newScheduledThreadPool(1);
 
             es.scheduleAtFixedRate(() -> {
-                //out.println("Toggling " + super.getName() + " symbol");
+                //LOG_PRINT("Toggling " + super.getName() + " symbol");
                 if (symbol == 'w')
                     symbol = 'b';
                 else
@@ -111,7 +113,7 @@
      void disableAttackMode() {
         //assert !es.isTerminated();
 
-            out.println("Ending " + super.getName() + " attack mode");
+            LOG_PRINT("Ending " + super.getName() + " attack mode");
             speed = speed / attackModeSlowdownFactor;
             underAttack = false;
             es.shutdown();
