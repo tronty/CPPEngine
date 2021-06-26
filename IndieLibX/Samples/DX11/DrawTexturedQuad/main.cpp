@@ -242,6 +242,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
 "    	output.color = mytexture.SampleLevel( g_samPoint, input.uv, 0 );\n"
 "    #elif 0\n"
 "    output.color = mytexture.Sample(mysampler, input.uv);\n"
+"    #elif 0\n"
+"    output.color = tex2Dlod(mytexture, input.uv);\n"
 "    #endif\n"
 "    return output;\n"
 "}\n"

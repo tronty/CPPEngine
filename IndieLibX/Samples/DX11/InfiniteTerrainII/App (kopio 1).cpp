@@ -13,14 +13,9 @@
 *  @ Share your work and ideas too as much as you can.                *
 \*********************************************************************/
 /*
-  Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
-*/
-/*
-#include "../Framework3/Direct3D/D3DApp.h"
-#include "../Framework3/Math/Noise.h"
-#include "../Framework3/Math/Frustum.h"
 */
 
 #include <Framework3/IRenderer.h>
@@ -108,76 +103,6 @@ void fillTerrainIB(uint *iDest, const bool zDir){
 	}
 }
 
-#if 0
-bool loadSlicedImage(Image3& img, const char **fileNames, const int nImages, const int nArraySlices = 1, uint flags = 0){
-	int maxImage = nImages? nImages : 6;
-
-	Image3 *images = new Image3[maxImage * nArraySlices];
-
-	for (int i = 0; i < maxImage * nArraySlices; i++){
-
-		//if (!
-		images[i].loadImage(fileNames[i], flags);
-		if(0){
-		
-			delete [] images;
-			return false;
-		}
-		
-	}
-		
-
-	uint nMipMaps = images[0].getMipMapCount();
-	ubyte *dest = img.create(images[0].getFormat(), images[0].getWidth(), images[0].getHeight(), nImages, nMipMaps, nArraySlices);
-
-	for (int arraySlice = 0; arraySlice < nArraySlices; arraySlice++){
-		int base = arraySlice * maxImage;
-
-		for (uint level = 0; level < nMipMaps; level++){
-			int size = images[0].getMipMappedSize(level, 1);
-			for (int i = 0; i < maxImage; i++){
-				stx_memcpy(dest, images[base + i].getPixels(level), size);
-				dest += size;
-			}
-		}
-	}
-
-	delete [] images;
-		
-
-	return true;
-}
-
-TextureID addCubemap(const char **fileNames, const bool useMipMaps, const SamplerStateID samplerState = SS_NONE, const int nArraySlices = 1, uint flags = 0)
-{
-		
-	Image3 img;
-		
-	if (loadSlicedImage(img, fileNames, 0, nArraySlices))
-	{
-		
-		//if (img.getFormat() == FORMAT_RGBE8) img.unpackImage();
-		if (useMipMaps && img.getMipMapCount() <= 1) img.createMipMaps();
-		
-		TextureID id=IRenderer::GetRendererInstance()->addTexture(&img,true, samplerState, flags);
-		
-		return id;
-	}
-	else
-	{
-		
-		char str[1024];
-        int n = stx_snprintf(str,1024, "Couldn't open cubemap:\n");
-		
-		for (int i = 0; i < 6 * nArraySlices; i++)
-		{
-            n += stx_snprintf(str + n,1024, "%s\n", fileNames[i]);
-		}
-		return TEXTURE_NONE;
-	}
-		
-}
-#endif
 bool load(){
 #if 1
 	bool supportsHalf = false;// IRenderer::GetRendererInstance()->supportsHalf();
@@ -221,17 +146,6 @@ bool load(){
 	// R2VB render target
 	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
-/*
-	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/skybox.shd", "main", "main")) == SHADER_NONE) return false;
-
-	// Cubemap
-	const char *files[] = {
-		"/SkyBox/Dragonfire/posx.jpg", "/SkyBox/Dragonfire/negx.jpg",
-		"/SkyBox/Dragonfire/posy.jpg", "/SkyBox/Dragonfire/negy.jpg",
-		"/SkyBox/Dragonfire/posz.jpg", "/SkyBox/Dragonfire/negz.jpg",
-	};
-	if ((env = addCubemap(files, true, IRenderer::GetRendererInstance()->GetbilinearClamp());
-*/
     	sb.init("/SkyBox/cubemaps/x/DragonFireGL.dds");
 
 	skyBox = -1;
@@ -286,17 +200,6 @@ bool load(){
 	nUpdates = 0;
 
 #endif
-#if 0
-	ground=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false,
-		IRenderer::GetRendererInstance()->Getlinear());
-	noise=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false,
-		IRenderer::GetRendererInstance()->Getlinear());
-#elif 0
-    blue=IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false,
-		IRenderer::GetRendererInstance()->Getlinear());
-    red=IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false,
-		IRenderer::GetRendererInstance()->Getlinear());
-#endif
 	return true;
 }
 
@@ -321,30 +224,6 @@ void drawEnvironment(const D3DXFROMWINEMATRIX &mvp){
 
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLE_STRIP, 0, 4, 4, indices, indices, CONSTANT_INDEX2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR3));
 #endif
-}
-
-void drawTexture(TextureID aTexID, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize=D3DXFROMWINEVECTOR2(0.1,0.1))
-{
-
-    float xPos=0.5;
-	float yPos=0.5;
-	float height=0.5;
-	TexVertex quad[] = { MAKETEXQUAD(xPos, yPos + 0.2f * height, xPos + 0.6f * height, yPos + 0.8f * height, 3) };
-	IRenderer::GetRendererInstance()->drawTextured(PRIM_TRIANGLE_STRIP, quad, elementsOf(quad)-2, aTexID, IRenderer::GetRendererInstance()->GetblendSrcAlpha(), IRenderer::GetRendererInstance()->GetnoDepthTest());
-    return;
-
-	TexVertex dest[4];
-	float x=aposition.x;
-	float y=aposition.y;
-	dest[0].position = D3DXFROMWINEVECTOR2(x + asize.x, y);
-	dest[0].texCoord = D3DXFROMWINEVECTOR2(1.0f, 0.0f);
-	dest[1].position = D3DXFROMWINEVECTOR2(x + asize.x, y + asize.y);
-	dest[1].texCoord = D3DXFROMWINEVECTOR2(1.0f, 1.0f);
-	dest[2].position = D3DXFROMWINEVECTOR2(x, y);
-	dest[2].texCoord = D3DXFROMWINEVECTOR2(0.0f, 0.0f);
-	dest[3].position = D3DXFROMWINEVECTOR2(x, y + asize.y);
-	dest[3].texCoord = D3DXFROMWINEVECTOR2(0.0f, 1.0f);
-	IRenderer::GetRendererInstance()->drawTextured(PRIM_TRIANGLE_STRIP, dest, 4, aTexID, IRenderer::GetRendererInstance()->GetblendSrcAlpha(), IRenderer::GetRendererInstance()->GetnoDepthTest());
 }
 
 void drawTerrain(const D3DXFROMWINEMATRIX &mvp){
@@ -430,13 +309,6 @@ void drawTerrain(const D3DXFROMWINEMATRIX &mvp){
 
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLE_STRIP, 0, 0, TERRAIN_SIZE * TERRAIN_SIZE, 0, INDEX_COUNT - 2);
 #endif
-#if 0
-	drawTexture(terrainRT, D3DXFROMWINEVECTOR2(0.0f, 0.5f));
-	drawTexture(heightRT, D3DXFROMWINEVECTOR2(0.5f, 0.5f));
-#elif 0
-	drawTexture(red, D3DXFROMWINEVECTOR2(0.0f, 0.5f));
-	drawTexture(blue, D3DXFROMWINEVECTOR2(0.5f, 0.5f));
-#endif
 }
 
 void drawFrame(){
@@ -469,21 +341,6 @@ void drawFrame(){
 	drawTexture(red, D3DXFROMWINEVECTOR2(0.0f, 0.0f));
 	drawTexture(blue, D3DXFROMWINEVECTOR2(0.5f, 0.5f));
 #endif
-
-#if 0
-	if (showInfo){
-		//IRenderer::GetRendererInstance()->setup2DMode(0, (float) IRenderer::GetRendererInstance()->GetViewportWidth(), 0, (float) IRenderer::GetRendererInstance()->GetViewportHeight());
-		char str[256];
-		static __DWORD__ prev=timeGetTime();
-		__DWORD__ curr=timeGetTime();
-
-		stx_snprintf(str, 256, "%d MT/s", int(((INDEX_COUNT - 2) * 1e-3f) / (curr-prev) + 0.5f));
-		IRenderer::GetRendererInstance()->drawText(str, 10, IRenderer::GetRendererInstance()->GetViewportHeight() - 110.0f, 30, 36, IRenderer::GetRendererInstance()->GetdefaultFont(), IRenderer::GetRendererInstance()->GetlinearClamp(), IRenderer::GetRendererInstance()->GetblendSrcAlpha(), IRenderer::GetRendererInstance()->GetnoDepthTest());
-		prev=curr;
-		stx_snprintf(str, 256, "Updates: %d", nUpdates);
-		IRenderer::GetRendererInstance()->drawText(str, 10, IRenderer::GetRendererInstance()->GetViewportHeight() - 82.0f, 30, 36, IRenderer::GetRendererInstance()->GetdefaultFont(), IRenderer::GetRendererInstance()->GetlinearClamp(), IRenderer::GetRendererInstance()->GetblendSrcAlpha(), IRenderer::GetRendererInstance()->GetnoDepthTest());
-	}
-#endif
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present( );
 }
@@ -513,32 +370,4 @@ protected:
 	D3DXFROMWINEVECTOR3 camPos;
 	float wx,wy,speed;
 };
-App app;
-int init(const char* aTitle)
-{
-	//app.setup();
-	app.resetCamera();
-	app.load();//initGUI();
-	return 0;
-}
 
-void render()
-{
-	app.drawFrame();
-	//IRenderer::GetRendererInstance()->Present();
-}
-
-int ApplicationLogic()
-{
-	IRenderer* r=IRenderer::GetRendererInstance("InfiniteTerrainII");
-	IInput*    i=STX_Service::GetInputInstance();
-	STX_Service::GetAudioInstance()->Init();
-	init("");
-	STX_PRINT("Function init finished!\n");
-	while (!i->OnKeyPress (STX_KEY_ESCAPE) && !i->Quit())
-	{
-		i->Update();
-		render();
-	}
-	return 0;
-}
