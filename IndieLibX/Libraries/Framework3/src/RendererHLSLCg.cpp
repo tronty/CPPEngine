@@ -2884,7 +2884,7 @@ unsigned int RendererHLSLCg::drawText(const char *str, float x, float y, const f
 						const FontID& font,
 						const SamplerStateID samplerState, const BlendStateID blendState, const DepthStateID depthState, const D3DXFROMWINEVECTOR4 col_)
 {
-#ifdef _MSC_VER
+#if 0//def _MSC_VER
     return 0;
 #endif
 //	if(strcmp(str,"Visibility")==0)DBG_HALT;
