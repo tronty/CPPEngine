@@ -13,7 +13,11 @@ struct PCVertex {
 	D3DXFROMWINEVECTOR2 vertex;
 	//D3DXFROMWINEVECTOR4 color;
 };
-unsigned int drawRoundRect_(const float x0, const float y0, const float x1, const float y1, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth=0){
+unsigned int drawRoundRect_(const float x0, const float y0, const float x1, const float y1, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth=0)
+{
+#if 1
+	IRenderer::GetRendererInstance()->drawRoundRect(x0, y0, x1, y1, r, color, lineWidth);
+#else
 	unsigned int col = toBGRA(color);
 
 	bool lines = (lineWidth > 0);
@@ -68,6 +72,7 @@ unsigned int drawRoundRect_(const float x0, const float y0, const float x1, cons
 	} else {
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 18, vertices, vertices, sizeof(PCVertex));
 	}
+#endif
 	return 0;
 }
 

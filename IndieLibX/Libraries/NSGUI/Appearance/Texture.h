@@ -90,7 +90,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 */
 
-#if 1
+#if 0
 
     bool load2D(NSString infoEndOrPath,
 
@@ -105,7 +105,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 		bool   mipmap	 = true);
 
 
-#ifndef _MSC_VER
+#if 0//ndef _MSC_VER
     bool load2DImage3(const Image3 &image,
 
 		     unsigned int clampS    = 0,//D3DTADDRESS_WRAP,
@@ -344,7 +344,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
     int 		   currUnit;
 
-#ifndef _MSC_VER
+#if 0//ndef _MSC_VER
 
     bool loadTextureFace(const Image3 &image, TextureType target, bool	mipmap);
 

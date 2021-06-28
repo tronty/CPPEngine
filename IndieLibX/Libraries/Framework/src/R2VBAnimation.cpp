@@ -334,17 +334,35 @@ STX_PRINT("fopen:%s\n", Path);
 	animationVF = IRenderer::GetRendererInstance()->addVertexFormat(quadAttribs, elementsOf(quadAttribs), animationSH);
 	skinningVF = IRenderer::GetRendererInstance()->addVertexFormat(quadAttribs, elementsOf(quadAttribs), skinningSH);
 
+#if defined(_MSC_VER)
+	float quadV[6][6] = {
+		 1, -1, 0, 1, 1, 1,		 
+		 1,  1, 0, 1, 1, 0,
+		-1, -1, 0, 1, 0, 1,
+		-1, -1, 0, 1, 0, 1,		 
+		 1,  1, 0, 1, 1, 0,
+		-1,  1, 0, 1, 0, 0,
+	};
+#else
 	float quadV[4][6] = {
 		-1,  1, 0, 1, 0, 0,
 		 1,  1, 0, 1, 1, 0,
 		 1, -1, 0, 1, 1, 1,
 		-1, -1, 0, 1, 0, 1,
 	};
+#endif
+	float *vertices = &quadV[0][0];
+#if 0
 	// Create the quad vertex buffer
 	if ((QuadVB = IRenderer::GetRendererInstance()->addVertexBuffer(4 * 6 * (sizeof(float)))) == VB_NONE) return false;
 	float *dest = (float *) IRenderer::GetRendererInstance()->lockVertexBuffer(QuadVB);
 		stx_memcpy(dest, quadV, sizeof(float)*6*4);
 	IRenderer::GetRendererInstance()->unlockVertexBuffer(QuadVB);
+#elif defined(_MSC_VER)
+	QuadVB = IRenderer::GetRendererInstance()->addVertexBuffer(6 * 6 * sizeof(float), STATIC, vertices);
+#else
+	QuadVB = IRenderer::GetRendererInstance()->addVertexBuffer(4 * 6 * sizeof(float), STATIC, vertices);
+#endif
 
 	time = 0.0f;
 	interpolate = 0.0f;
@@ -370,7 +388,11 @@ void R2VBAnimation::psCalculateAnimation(float t, float interp)
 		IRenderer::GetRendererInstance()->setShaderConstant1f("iBoneAnimationHeight", 1.0f/numFrames);
 		IRenderer::GetRendererInstance()->setShaderConstant4x4f("TransM", transformMatrix);
 		
+		#ifndef _MSC_VER
 		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLE_FAN, 0, 2);
+		#else
+		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLES, 0, 4);
+		#endif
 }
 //-----------------------------------------------------------------------------------------
 // Use pixel shader to transform vertices of model.
@@ -390,8 +412,12 @@ void R2VBAnimation::psSkinning()
 
 		IRenderer::GetRendererInstance()->setShaderConstant1f("xBias", 0.1f/(vertexTextureWidth*2.0f));
 		IRenderer::GetRendererInstance()->setShaderConstant4f("bias", D3DXFROMWINEVECTOR4(0.1f/(numBones*4.0f), 1.1f/(numBones*4.0f), 2.1f/(numBones*4.0f), 3.1f/(numBones*4.0f)));
-
+		
+		#ifndef _MSC_VER
 		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLE_FAN, 0, 2);
+		#else
+		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLES, 0, 4);
+		#endif
 
 	IRenderer::GetRendererInstance()->changeToMainFramebuffer();
 }

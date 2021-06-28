@@ -86,16 +86,39 @@ int init(const char* aTitle)
 	split(population, ':', inst);
 	return 0;
 }
-void drawQuad(const float x0, const float y0, const float x1, const float y1){
+void drawQuad(const float x0, const float y0, const float x1, const float y1, const float s0=0.0f, const float t0=0.0f, const float s1=1.0f, const float t1=1.0f){
 	D3DXFROMWINEVECTOR4 color(1.0f, 1.0f, 1.0f, 1.0f);
 	uint col = toBGRA(color);
-
-	D3DXFROMWINEVECTOR3 vertices[4] = {
-		D3DXFROMWINEVECTOR3(x0, y0, 0.0f),
-		D3DXFROMWINEVECTOR3(x1, y0, 0.0f),
-		D3DXFROMWINEVECTOR3(x1, y1, 0.0f),
-		D3DXFROMWINEVECTOR3(x0, y1, 0.0f)
+	#ifndef _MSC_VER
+	D3DXFROMWINEVECTOR2 vertices[4*2] = {
+		D3DXFROMWINEVECTOR2(x0, y0),
+		//color,
+		D3DXFROMWINEVECTOR2(s0, t0),
+		D3DXFROMWINEVECTOR2(x1, y0),
+		//color,
+		D3DXFROMWINEVECTOR2(s1, t0),
+		D3DXFROMWINEVECTOR2(x1, y1),
+		//color,
+		D3DXFROMWINEVECTOR2(s1, t1),
+		D3DXFROMWINEVECTOR2(x0, y1),
+		//color,
+		D3DXFROMWINEVECTOR2(s0, t1),
 	};
+	#else
+	D3DXFROMWINEVECTOR2 vertices[6*2] = {
+		D3DXFROMWINEVECTOR2(x1, y0),
+		D3DXFROMWINEVECTOR2(s1, t0),
+		D3DXFROMWINEVECTOR2(x1, y1),
+		D3DXFROMWINEVECTOR2(s1, t1),
+		D3DXFROMWINEVECTOR2(x0, y0),
+		D3DXFROMWINEVECTOR2(s0, t0),
+		D3DXFROMWINEVECTOR2(x0, y0),
+		D3DXFROMWINEVECTOR2(s0, t0),
+		D3DXFROMWINEVECTOR2(x1, y1),
+		D3DXFROMWINEVECTOR2(s1, t1),
+		D3DXFROMWINEVECTOR2(x0, y1),
+		D3DXFROMWINEVECTOR2(s0, t1),
+	#endif
 	IRenderer::GetRendererInstance()->setShader(shd);
 	IRenderer::GetRendererInstance()->setVertexFormat(vf);
 
@@ -103,7 +126,12 @@ void drawQuad(const float x0, const float y0, const float x1, const float y1){
 	D3DXFROMWINEMatrixIdentity(&w);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", w);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("colorRGBA", color);
-	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR3));
+	
+	#ifndef _MSC_VER
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, 4*2*sizeof(D3DXFROMWINEVECTOR3));
+	#else
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, 6*2*sizeof(D3DXFROMWINEVECTOR3));
+	#endif	
 }
 void render()
 {

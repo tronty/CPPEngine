@@ -3786,24 +3786,46 @@ unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, const 
 
 		DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 8, vertices, vertices, sizeof(PCVertex));
 	} else {
+#ifndef _MSC_VER
 		PCVertex vertices[] = {
 			D3DXFROMWINEVECTOR2(x0, y0), //color,
 			D3DXFROMWINEVECTOR2(x1, y0), //color,
 			D3DXFROMWINEVECTOR2(x1, y1), //color,
 			D3DXFROMWINEVECTOR2(x0, y1), //color,
 		};
-
 		DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCVertex));
+#else
+		PCVertex vertices[] = {
+			D3DXFROMWINEVECTOR2(x1, y0);
+			D3DXFROMWINEVECTOR2(x1, y1);
+			D3DXFROMWINEVECTOR2(x0, y0);
+			D3DXFROMWINEVECTOR2(x0, y0);
+			D3DXFROMWINEVECTOR2(x1, y1);
+			D3DXFROMWINEVECTOR2(x0, y1);
+		};
+		DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCVertex));
+#endif
 	}
 #else
+#ifndef _MSC_VER
 	PCVertex vertices[] = {
 		D3DXFROMWINEVECTOR2(x0, y0),
 		D3DXFROMWINEVECTOR2(x1, y0),
-
 		D3DXFROMWINEVECTOR2(x1, y1),
 		D3DXFROMWINEVECTOR2(x0, y1),
 	};
 	DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCVertex));
+#else
+		PCVertex vertices[] = {
+			D3DXFROMWINEVECTOR2(x1, y0);
+			D3DXFROMWINEVECTOR2(x1, y1);
+			D3DXFROMWINEVECTOR2(x0, y0);
+			D3DXFROMWINEVECTOR2(x0, y0);
+			D3DXFROMWINEVECTOR2(x1, y1);
+			D3DXFROMWINEVECTOR2(x0, y1);
+		};
+		DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCVertex));
+#endif
 #endif
 	return 0;
 }
@@ -4314,6 +4336,7 @@ unsigned int RendererHLSLCg::drawTriangleVrtl(const float x0, const float y0, co
 unsigned int RendererHLSLCg::drawQuadVrtl(const float x0, const float y0, const float x1, const float y1, const float s0, const float t0, const float s1, const float t1, const D3DXFROMWINEVECTOR4 &color){
 	unsigned int col = toBGRA(color);
 	unsigned int ret=0;
+	#ifndef _MSC_VER
 	PCTVertex vertices[4] = {
 		D3DXFROMWINEVECTOR2(x0, y0),
 		//color,
@@ -4328,6 +4351,21 @@ unsigned int RendererHLSLCg::drawQuadVrtl(const float x0, const float y0, const 
 		//color,
 		D3DXFROMWINEVECTOR2(s0, t1),
 	};
+	#else
+	PCTVertex vertices[6] = {
+		D3DXFROMWINEVECTOR2(x1, y0),
+		D3DXFROMWINEVECTOR2(s1, t0),
+		D3DXFROMWINEVECTOR2(x1, y1),
+		D3DXFROMWINEVECTOR2(s1, t1),
+		D3DXFROMWINEVECTOR2(x0, y0),
+		D3DXFROMWINEVECTOR2(s0, t0),
+		D3DXFROMWINEVECTOR2(x0, y0),
+		D3DXFROMWINEVECTOR2(s0, t0),
+		D3DXFROMWINEVECTOR2(x1, y1),
+		D3DXFROMWINEVECTOR2(s1, t1),
+		D3DXFROMWINEVECTOR2(x0, y1),
+		D3DXFROMWINEVECTOR2(s0, t1),
+	#endif
 #if 0
 	InitPixel(texShader, texVF);
 		setShader(texShader);
@@ -4342,7 +4380,11 @@ unsigned int RendererHLSLCg::drawQuadVrtl(const float x0, const float y0, const 
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
+	#ifdef _MSC_VER
+	ret=DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCTVertex));
+	#else
 	ret=DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCTVertex));
+	#endif
 	return ret;
 }
 
