@@ -121,7 +121,11 @@ struct PCTVertex {
 	//D3DXFROMWINEVECTOR4 color;
 	D3DXFROMWINEVECTOR2 texCoord;
 };
+#ifndef _MSC_VER
 	int nvertices=7;//???
+#else
+	int nvertices=6;
+#endif
 	PCTVertex* PCTvertices=0;
 	PCVertex* PCvertices=0;
 	if(0)//texture.getID()!=-1 && drawBackground)
@@ -209,6 +213,7 @@ struct PCTVertex {
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	//IRenderer::GetRendererInstance()->setRasterizerState(IRenderer::GetRendererInstance()->GetcullFront());
 
+		#ifndef _MSC_VER
 		if(PCTvertices){
 		unsigned int ret=IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN,
 		//IRenderer::GetRendererInstance()->getPrimitiveCountR(PRIM_TRIANGLE_FAN,nvertices),
@@ -226,6 +231,13 @@ struct PCTVertex {
 			LOG_PRINT_NONE("nvertices=%x\n",nvertices);
 			LOG_PRINT_NONE("PCvertices=%x\n",PCvertices);
 		}}
+		#else
+		if(PCTvertices){
+			unsigned int ret=IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES, nvertices/3, PCTvertices, PCTvertices, sizeof(PCTVertex));
+		}else{
+			unsigned int ret=IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES, nvertices/3, PCvertices, PCvertices, sizeof(PCVertex));
+		}
+		#endif
 
 
 	//glDisable(GL_BLEND);
@@ -304,6 +316,20 @@ void  GUIClippedRectangle::computeClippedBounds(const Tuple4i &windowBounds)
 	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, &v[0], &v[0], 4*sizeof(float));
 */
 
+#ifdef _MSC_VER
+  vertices[0]=Tuple2i(windowBounds.z, windowBounds.y);
+  vertices[1]=Tuple2i(windowBounds.z, windowBounds.w);
+  vertices[2]=Tuple2i(windowBounds.x, windowBounds.y);
+  vertices[3]=Tuple2i(windowBounds.x, windowBounds.y);
+  vertices[4]=Tuple2i(windowBounds.z, windowBounds.w);
+  vertices[5]=Tuple2i(windowBounds.x, windowBounds.w);
+  texCoords[0]=D3DXFROMWINEVECTOR2(textureRectangle.z, textureRectangle.y);
+  texCoords[1]=D3DXFROMWINEVECTOR2(textureRectangle.z, textureRectangle.w);
+  texCoords[2]=D3DXFROMWINEVECTOR2(textureRectangle.x, textureRectangle.y);
+  texCoords[3]=D3DXFROMWINEVECTOR2(textureRectangle.x, textureRectangle.y);
+  texCoords[4]=D3DXFROMWINEVECTOR2(textureRectangle.z, textureRectangle.w);
+  texCoords[5]=D3DXFROMWINEVECTOR2(textureRectangle.x, textureRectangle.w);
+#else
   vertices[0]=Tuple2i(windowBounds.x, windowBounds.y + clipSize);
   vertices[1]=Tuple2i(windowBounds.x, windowBounds.w);
   vertices[2]=Tuple2i(windowBounds.z - clipSize, windowBounds.w);
@@ -319,6 +345,7 @@ void  GUIClippedRectangle::computeClippedBounds(const Tuple4i &windowBounds)
   texCoords[4]=D3DXFROMWINEVECTOR2(textureRectangle.z             , textureRectangle.w);
   texCoords[5]=D3DXFROMWINEVECTOR2(textureRectangle.x + xTexOffset, textureRectangle.w             );
   texCoords[6]=D3DXFROMWINEVECTOR2(textureRectangle.x             , textureRectangle.w - yTexOffset);
+#endif
 #if 0
 /*
 GL_TRIANGLE_STRIP:
