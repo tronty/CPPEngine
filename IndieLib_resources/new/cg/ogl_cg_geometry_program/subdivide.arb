@@ -1,0 +1,117 @@
+!!NVgp4.0
+
+#-------------------------------------------------------------------------------
+# This geometry program subdivides each triangle contained in a triangle list 
+# (GL_TRIANGLES) into 4 new triangles which are rendered as strips 
+# (GL_TRIANGLE_STRIP).
+#
+# Input triangle   = GL_TRIANGLES layout
+# Output triangles = GL_TRIANGLE_STRIP layout
+#-------------------------------------------------------------------------------
+
+PRIMITIVE_IN TRIANGLES;
+PRIMITIVE_OUT TRIANGLE_STRIP;
+VERTICES_OUT 8;
+
+ATTRIB v0 = vertex[0].position;
+ATTRIB v1 = vertex[1].position;
+ATTRIB v2 = vertex[2].position;
+
+ATTRIB c0 = vertex[0].color;
+ATTRIB c1 = vertex[1].color;
+ATTRIB c2 = vertex[2].color;
+
+ATTRIB t0 = vertex[0].texcoord;
+ATTRIB t1 = vertex[1].texcoord;
+ATTRIB t2 = vertex[2].texcoord;
+
+# Temps to hold midpoint values
+TEMP mv0, mv1, mv2; # New vertices
+TEMP mc0, mc1, mc2; # New colors
+TEMP mt0, mt1, mt2; # New texcoords
+
+#
+# Compute midpoint vertices
+#
+
+ADD mv0, v0, v1;
+MUL mv0, mv0, 0.5;
+
+ADD mv1, v1, v2;
+MUL mv1, mv1, 0.5;
+
+ADD mv2, v2, v0;
+MUL mv2, mv2, 0.5;
+
+#
+# Compute midpoint colors
+#
+
+ADD mc0, c0, c1;
+MUL mc0, mc0, 0.5;
+
+ADD mc1, c1, c2;
+MUL mc1, mc1, 0.5;
+
+ADD mc2, c2, c0;
+MUL mc2, mc2, 0.5;
+
+#
+# Compute midpoint texcoords
+#
+
+ADD mt0, t0, t1;
+MUL mt0, mt0, 0.5;
+
+ADD mt1, t1, t2;
+MUL mt1, mt1, 0.5;
+
+ADD mt2, t2, t0;
+MUL mt2, mt2, 0.5;
+
+#
+# Output the first 3 triangles as a triangle strip...
+#
+
+MOV result.color, c0;
+MOV result.texcoord, t0;
+MOV result.position, v0; EMIT;
+
+MOV result.color, mc2;
+MOV result.texcoord, mt2;
+MOV result.position, mv2; EMIT;
+
+MOV result.color, mc0;
+MOV result.texcoord, mt0;
+MOV result.position, mv0; EMIT;
+
+MOV result.color, mc1;
+MOV result.texcoord, mt1;
+MOV result.position, mv1; EMIT;
+
+MOV result.color, c1;
+MOV result.texcoord, t1;
+MOV result.position, v1; EMIT;
+
+ENDPRIM;
+
+#
+# Output the 4th triangle (top half) as a triangle strip which has only 
+# one triangle...
+#
+
+MOV result.color, c2;
+MOV result.texcoord, t2;
+MOV result.position, v2; EMIT;
+
+MOV result.color, mc1;
+MOV result.texcoord, mt1;
+MOV result.position, mv1; EMIT;
+
+MOV result.color, mc2;
+MOV result.texcoord, mt2;
+MOV result.position, mv2; EMIT;
+
+ENDPRIM;
+
+END

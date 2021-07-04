@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166865.aspx">
+    <title>GLSL-to-HLSL reference - Windows app development</title>
+
+
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/windows/apps/dn166865(d=default,l=en-us,v=win.10).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/windows/apps/dn166865(d=default,l=en-us,v=win.10).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/windows/apps/dn166865(d=default,l=en-us,v=win.10).aspx">
+
+<meta name="AmbientContext" content="{&quot;layout.limit_max_width&quot;:true,&quot;AmbientContextId&quot;:&quot;75A6274D-EC36-468A-B000-22390062790A&quot;,&quot;display.use_large_font&quot;:false,&quot;insight.perf_timing&quot;:true,&quot;AmbientContextDownstream&quot;:{&quot;LogTrace&quot;:false},&quot;display.high_contrast&quot;:false,&quot;insight.use_wedcs_vnext&quot;:true}">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/windows/apps/dn166865(d=default,l=en-us,v=win.10).aspx">
+
+<meta name="MN" content="BF1CA93B-5:19:26 PM">
+
+<meta name="Search.ShortId" content="dn166865">
+
+<meta name="ms.shortidmsdn" content="dn166865">
+
+<meta name="ms.locale" content="en-us">
+
+<meta name="ms.prodver" content="Win.10">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="EN">
+
+<meta name="ms.loc" content="GB">
+
+<meta name="ms.sitever" content="2017.04.11.2">
+
+<meta name="ms.assetid" content="302520F5-ED7E-4036-AB84-5288080EF4E9">
+
+<meta name="ms.auth" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+        
+
+
+
+
+
+
+
+
+
+    
+
+    
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://msdn.microsoft.com/Areas/Epx/Themes/Windows/Content/Winlogo_favicon.ico">
+
+<link rel="stylesheet" type="text/css" href="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/Combined.css"><link rel="stylesheet" href="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/uhf-west-european-default.css" type="text/css" media="all"><style type="text/css">
+/*<![CDATA[*/
+#uhfCookieAlert .m-alert {margin-top: 0 }
+
+        #uhfCookieAlert .m-alert {margin-top: 0 }
+
+        @media (min-width: 768px) and (max-width:1084px) {
+            #uhfCookieAlert  .m-alert[role="alert"] > div{
+                width: 98%;
+                margin: 0 auto; } }
+
+        @media (min-width: 1084px) {
+            #uhfCookieAlert  .m-alert[role="alert"] > div{
+                width: 92%;
+                margin: 0 auto; } }
+/*]]>*/
+</style><style type="text/css">
+/*<![CDATA[*/
+.msame_Header{border:1px solid transparent;border-bottom-style:none;display:inline-block;font-size:14px;height:48px;min-width:100px;width:100%}
+        .msame_Header_name{color:#505050;display:inline-block;font-size:86%;line-height:48px;max-width:160px;overflow:hidden;text-overflow:ellipsis;vertical-align:top;white-space:nowrap;padding:0 12px}
+/*]]>*/
+</style><style type="text/css">
+/*<![CDATA[*/
+.c-modal-link{cursor: pointer;}
+/*]]>*/
+</style><link href="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/PrintView.css" rel="stylesheet" type="text/css" media="print"><meta name="ms.layout_limit_max_width" content="true"><meta name="ms.AmbientContextId" content="75A6274D-EC36-468A-B000-22390062790A"><meta name="ms.display_use_large_font" content="false"><meta name="ms.insight_perf_timing" content="true"><meta name="ms.AmbientContextDownstream" content="%7B%7D"><meta name="ms.display_high_contrast" content="false"><meta name="ms.insight_use_wedcs_vnext" content="true"><meta name="ms.perf.timing" content=",,3,53,53,588,642,3474,3272,4566,4579,4990,,,"><style type="text/css">.msame_TxtTrunc{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;word-break:break-all}.msame_Header{display:inline-block;cursor:pointer;font-size:14px;border-width:1px;border-style:solid;border-bottom-style:none;border-color:transparent;width:100%}.msame_Header_name{padding-left:12px;max-width:160px;display:inline-block;line-height:64px;vertical-align:top;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:#505050}.msame_unauth .msame_Header_name{padding-right:12px}.msame_unauth .msame_Header_name:hover{color:#0078d7}.msame_Drop_AI_pic,.msame_Drop_active_pic,.msame_Header_pic{display:inline-block}.msame_Header_piccont{padding-top:14px;padding-bottom:14px;padding-right:12px;padding-left:8px}.msame_Mobile .msame_Header_piccont{padding-top:10px;padding-bottom:10px}.msame_Short .msame_Header_piccont{padding-left:12px}.msame_Header_picframe{width:36px;height:36px;border-radius:50%;overflow:hidden}.msame_Mobile .msame_Header_picframe{width:48px;height:48px}.msame_open .msame_Header_picframe{z-index:3000001;position:relative}.msame_Header_chev{display:none}.msame_Mobile .msame_Header_piccont{padding-right:8px;padding-left:10px}.msame_Mobile .msame_Header_name{line-height:3;font-size:114%;padding-left:10px;padding-right:10px;display:inline-block;vertical-align:top;padding-top:14px}.msame_Mobile.msame_3row .msame_Header_name{padding-top:6px}.msame_Mobile .msame_Header_chev{display:inline-block;line-height:64px;vertical-align:top;padding-right:16px;padding-left:8px;float:right}.msame_open .msame_Header_chev img{-moz-transform:scaleY(-1);-o-transform:scaleY(-1);-webkit-transform:scaleY(-1);transform:scaleY(-1);filter:FlipV;-ms-filter:"FlipV"}.msame_Drop_root .msame_Drop_AI:focus,.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_Drop_root a:focus,.msame_Header:focus{outline-style:dotted;outline-color:#000;outline-width:1px}.msame_Header_piccont img{width:36px;height:36px;line-height:normal;vertical-align:baseline}.msame_Mobile .msame_Header_piccont img{width:48px;height:48px}.msame_Mobile .msame_Header_fullName{font-size:100%;color:#000;line-height:1.333}.msame_Drop_AI_email,.msame_Drop_AI_status,.msame_Mobile .msame_Header_email,.msame_Mobile .msame_Header_nickName{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:rgba(0,0,0,.54);line-height:1.333333}.msaie8 .msame_Drop_AI_pic,.msaie8 .msame_Drop_AI_right,.msaie8 .msame_Drop_active_pic,.msaie8 .msame_Drop_active_right,.msaie8 .msame_Header,.msaie8 .msame_Header_name,.msaie8 .msame_Header_pic{zoom:1;*display:inline}
+</style><style type="text/css">.msame_open .msame_Header{border-color:#e6e6e6;background-color:#fff}.msame_open .msame_Header.msame_Mobile{border-color:transparent;background-color:transparent}.msame_ClickStart.msame_Drop_root .msame_Drop_AI:focus,.msame_ClickStart.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_ClickStart.msame_Drop_root a:focus{outline-style:none}.msame_Drop_root a,.msame_Drop_root a:active,.msame_Drop_root a:focus,.msame_Drop_root a:hover,.msame_Drop_root a:visited{text-decoration:none}.msame_Drop_topb{border-top-color:#e6e6e6;border-top-style:solid;border-top-width:1px}.msame_Mobile .msame_Drop_topb{width:100%!important}.msame_Drop_active{padding-bottom:8px}.msame_Drop_AI_picframe{width:44px;height:44px;border-radius:50%;overflow:hidden}.msame_Drop_AI_piccont img{width:44px;height:44px}.msame_Drop_root{border-width:1px;border-color:#e6e6e6;border-style:solid;border-top-style:none;position:absolute;width:360px;z-index:3000000;background-color:#fff;font-size:14px}.msame_Drop_sep{border-top-width:1px;border-top-color:#e6e6e6;border-top-style:solid;width:100%;height:0;display:block}.msame_Mobile.msame_Drop_root{left:0!important;right:0;bottom:0;width:100%;border-right-width:0;border-left-width:0}.msame_Mobile .msame_Drop_content{overflow-y:auto;position:absolute;left:0;right:0;bottom:0;top:0}.msame_Drop_root a{text-decoration:none}.msame_Drop_content{overflow:hidden}.msame_Mobile .msame_Drop_active{display:none}.msame_Drop_AI{cursor:pointer}.disabled .msame_Drop_AI_pic,.disabled .msame_Drop_AI_right{opacity:.4;cursor:default}.disabled .msame_Drop_AI_email,.disabled .msame_Drop_AI_name,.disabled .msame_Drop_AI_status{color:#000}.msame_Drop_active_piccont{padding:5px}.msame_Drop_AI_piccont{padding:10px}.msame_Drop_active_picframe{width:74px;height:74px;border-radius:50%;overflow:hidden}.msame_Drop_active_picborder,.msame_Drop_active_piccont a{display:block;padding:4px;border:1px dotted transparent;border-radius:50%}.msame_Drop_active_piccont a:focus{border:1px dotted #000}.msame_Drop_active_piccont img{width:64px;height:64px;border-radius:50%}.msame_Drop_active_name{display:block;line-height:1.3;font-size:150%;color:#000;font-family:"Segoe UI Light","Segoe UI Web Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol",HelveticaNeue-Light,"Helvetica Neue",Arial,sans-serif}.msame_Drop_active_email{display:block;line-height:1.42857;font-size:100%;color:rgba(0,0,0,.54);font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif}.msame_Drop_active_right{display:inline-block;width:216px;vertical-align:top;padding-top:12px;padding-right:12px;padding-left:12px}.msame_Drop_SI a{line-height:2;font-size:114%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;padding-left:12px;padding-right:12px;display:block;color:#000}.msame_Mobile .msame_Drop_SI a{line-height:2.75}.msame_Drop_AI.switch:hover,.msame_Drop_AI_remove:hover,.msame_Drop_SI a:hover{color:#000;background-color:rgba(0,0,0,.12)}.msame_Drop_AI.switch:active,.msame_Drop_AI.switch:active div,.msame_Drop_AI_remove:active,.msame_Drop_SI a:active{color:#fff!important;background-color:#000}.msame_Drop_SI a:link,.msame_Drop_SI a:visited{color:#000}.msame_Drop_active_link a,.msame_Drop_active_link a:active,.msame_Drop_active_link a:hover,.msame_Drop_active_link a:link,.msame_Drop_active_link a:visited{line-height:1.333333;font-size:86%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;color:#0078d7}.msame_Drop_AL{padding-bottom:24px}.msame_Drop_AI_right{display:inline-block;width:252px;vertical-align:top;padding-left:8px;padding-top:5px}.msame_Mobile .msame_Drop_AI_right{width:100px}.msame_Drop_AI_name{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:114%;color:#000;line-height:1.25}.msame_Drop_AI_remove{float:right;margin-top:6px;padding-top:12px;padding-bottom:12px;padding-left:12px;padding-right:12px;text-align:center;cursor:pointer}.msame_Drop_AI_remove img{display:block}.msame_auto_frame{display:none;position:absolute;top:0;left:-4000px;width:0}
+</style></head>
+<body class="library FF" style="overflow-y: auto;">
+    <div id="page">
+
+        
+
+        
+
+
+    
+
+        <link rel="stylesheet" type="text/css" href="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/UhfHeaderResponsive.css" data-do-not-move="true">
+    <div id="uhf-header-wrapper">
+            <section id="headerArea" data-m="{&quot;cN&quot;:&quot;headerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a1Body&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;Body&quot;}">
+                    <div id="headerRegion" data-region-key="headerregion" data-m="{&quot;cN&quot;:&quot;headerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a1&quot;}">
+
+    <div id="headerUniversalHeader" data-m="{&quot;cN&quot;:&quot;headerUniversalHeader&quot;,&quot;cT&quot;:&quot;Module_coreui-universalheader&quot;,&quot;id&quot;:&quot;m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a1&quot;}" data-module-id="Category|headerRegion|headerRegion|headerUniversalHeader|coreui-universalheader">
+        
+
+
+    <div id="uhfCookieAlert" class="uhfc-universal-context context-uhf" ms.cmpgrp="epb">
+
+<div class="m-alert f-information" role="alert">
+            <button class="c-action-trigger c-glyph glyph-cancel" aria-label="close alert" data-m="{&quot;cN&quot;:&quot;No thanks&quot;,&quot;id&quot;:&quot;nn1m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;m1r1a1&quot;}"></button>
+
+    <div>
+            <div class="c-glyph glyph-info" aria-label=""></div>
+        
+        <p class="c-paragraph">
+            By using this site you agree to the use of cookies for analytics, personalized content and ads.
+                    <span class="c-group">
+        <a role="button" class="c-action-trigger" href="https://go.microsoft.com/fwlink/?LinkId=248681" data-m="{&quot;cN&quot;:&quot;Learn more&quot;,&quot;id&quot;:&quot;n2m1r1a1&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;m1r1a1&quot;}">Learn more</a>
+        </span>
+
+        </p>
+    </div>
+</div>
+
+    </div>
+    
+
+
+
+
+
+
+<header role="banner" class="c-universal-header context-uhf js" itemscope="itemscope" data-header-footprint="en-gb/DEV_Windows/windowsapps-header" itemtype="http://schema.org/Organization">
+    <div class="theme-light js-global-head f-closed " ms.pgarea="Universal Header">
+        <div>
+            <button class="c-action-trigger c-glyph glyph-global-nav-button" aria-label="Toggle menu" aria-expanded="false" ms.title="Mobile menu button"></button>
+            <button class="c-action-trigger c-glyph glyph-arrow-htmllegacy" aria-label="Close search" aria-expanded="false" ms.title="Close Search"></button>
+                    <a data-m="{&quot;pid&quot;:&quot;h:32f2fa12&quot;,&quot;id&quot;:&quot;n3m1r1a1&quot;,&quot;sN&quot;:3,&quot;aN&quot;:&quot;m1r1a1&quot;}" id="uhfLogo" class="c-logo" itemprop="url" href="https://www.microsoft.com/" aria-label="Microsoft" ms.cmpgrp="logo">
+                        <img itemprop="logo" itemscope="itemscope" class="c-image" alt="Microsoft" src="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/microsoft-gray.png">
+                        <span>Microsoft</span>
+                    </a>
+            <div class="f-mobile-title">
+                <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="See more menu options" ms.title="Mobile back button"></button>
+                <span data-global-title="Microsoft home" class="js-mobile-title">Windows Dev Center</span>
+                <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="See more menu options" ms.title="Mobile forward button"></button>
+            </div>
+
+                    <nav id="uhf-g-nav" ms.cmpgrp="nav">
+            <ul>
+                        <li>
+                            <div class="c-select-menu c-uhf-menu js-nav-menu">
+
+                                <button id="Technologies-navigation" aria-expanded="false" aria-haspopup="true" ms.title="Technologies" ms.interactiontype="14" style="white-space:nowrap">Technologies</button>
+                                <ul class="c-menu" aria-labelledby="Technologies-navigation" aria-hidden="true" ms.cmpnm="Technologies">
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Windows">
+
+        <button id="Windows-navigation" aria-expanded="false" ms.title="Windows" ms.interactiontype="14">Windows</button>
+        <ul class="c-menu" aria-labelledby="Windows-navigation" aria-hidden="true" ms.cmpnm="Windows">
+    <li class="c-menu-item" ms.cmpnm="Windows_Apps">
+        <a id="shellmenu_15414425" href="https://developer.microsoft.com/windows" ms.title="Windows_Apps">Apps</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Windows_InternetofThings">
+        <a id="shellmenu_15414426" href="https://developer.microsoft.com/windows/iot" ms.title="Windows_InternetofThings">Internet of Things</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Windows_Holographic">
+        <a id="shellmenu_15414427" href="https://developer.microsoft.com/en-us/windows/mixed-reality" ms.title="Windows_Holographic">Mixed Reality</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Windows_MicrosoftEdge">
+        <a id="shellmenu_15414428" href="https://developer.microsoft.com/microsoft-edge" ms.title="Windows_MicrosoftEdge">Microsoft Edge</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Windows_Hardware ">
+        <a id="shellmenu_15414429" href="https://developer.microsoft.com/windows/hardware" ms.title="Windows_Hardware ">Hardware </a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Windows_WindowsTechCenter">
+        <a id="shellmenu_15414430" href="https://technet.microsoft.com/windows" ms.title="Windows_WindowsTechCenter">IT Centre</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="MicrosoftAzure">
+
+        <button id="MicrosoftAzure-navigation" aria-expanded="false" ms.title="MicrosoftAzure" ms.interactiontype="14">Microsoft Azure </button>
+        <ul class="c-menu" aria-labelledby="MicrosoftAzure-navigation" aria-hidden="true" ms.cmpnm="MicrosoftAzure">
+    <li class="c-menu-item" ms.cmpnm="MicrosoftAzure_WhatisAzure">
+        <a id="shellmenu_15414432" href="https://azure.microsoft.com/overview/what-is-azure/" ms.title="MicrosoftAzure_WhatisAzure">What is Azure </a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftAzure_Products">
+        <a id="shellmenu_15414433" href="https://azure.microsoft.com/services/" ms.title="MicrosoftAzure_Products">Products</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftAzure_Solutions">
+        <a id="shellmenu_15414434" href="https://azure.microsoft.com/solutions/?v=4" ms.title="MicrosoftAzure_Solutions">Solutions</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftAzure_Pricing">
+        <a id="shellmenu_15414435" href="https://azure.microsoft.com/pricing/" ms.title="MicrosoftAzure_Pricing">Pricing</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftAzure_CreateaFreeAccount">
+        <a id="shellmenu_15414436" href="https://azure.microsoft.com/free" ms.title="MicrosoftAzure_CreateaFreeAccount">Create a free account</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="MicrosoftVisualStudio">
+
+        <button id="VisualStudio-navigation" aria-expanded="false" ms.title="MicrosoftVisualStudio" ms.interactiontype="14">Visual Studio </button>
+        <ul class="c-menu" aria-labelledby="VisualStudio-navigation" aria-hidden="true" ms.cmpnm="MicrosoftVisualStudio">
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_VisualStudio">
+        <a id="shellmenu_15414438" href="https://www.visualstudio.com/" ms.title="MicrosoftVisualStudio_VisualStudio">Visual Studio</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_VisualStudioIDE">
+        <a id="shellmenu_15414439" href="https://www.visualstudio.com/vs/" ms.title="MicrosoftVisualStudio_VisualStudioIDE">Visual Studio IDE</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_VisualStudioTeamServices">
+        <a id="shellmenu_15414440" href="https://www.visualstudio.com/team-services/" ms.title="MicrosoftVisualStudio_VisualStudioTeamServices">Visual Studio Team Services</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_VisualStudioCode">
+        <a id="shellmenu_15414441" href="https://code.visualstudio.com/" ms.title="MicrosoftVisualStudio_VisualStudioCode">Visual Studio Code</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_Xamarin">
+        <a id="shellmenu_15414442" href="https://www.xamarin.com/" ms.title="MicrosoftVisualStudio_Xamarin">Xamarin</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_VisualStudioDevEssentials">
+        <a id="shellmenu_15414443" href="https://www.visualstudio.com/dev-essentials/" ms.title="MicrosoftVisualStudio_VisualStudioDevEssentials">Visual Studio Dev Essentials</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="MicrosoftVisualStudio_Subscriptions">
+        <a id="shellmenu_15414444" href="https://www.visualstudio.com/subscriptions/" ms.title="MicrosoftVisualStudio_Subscriptions">Subscriptions</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Office">
+
+        <button id="Office-navigation" aria-expanded="false" ms.title="Office" ms.interactiontype="14">Office</button>
+        <ul class="c-menu" aria-labelledby="Office-navigation" aria-hidden="true" ms.cmpnm="Office">
+    <li class="c-menu-item" ms.cmpnm="Office_OfficeDevCenter">
+        <a id="shellmenu_15414446" href="https://dev.office.com/" ms.title="Office_OfficeDevCenter">Office Dev Centre                                 </a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Office_Office365forITpros">
+        <a id="shellmenu_15414447" href="https://technet.microsoft.com/en-us/office/dn788774" ms.title="Office_Office365forITpros">Office 365 for IT pros</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Microsoft Graph">
+        <a id="shellmenu_15414448" href="https://graph.microsoft.io/en-us/docs" ms.title="Microsoft Graph">Microsoft Graph</a>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Services ">
+
+        <button id="Services-navigation" aria-expanded="false" ms.title="Services " ms.interactiontype="14">Services </button>
+        <ul class="c-menu" aria-labelledby="Services-navigation" aria-hidden="true" ms.cmpnm="Services ">
+    <li class="c-menu-item" ms.cmpnm="Services_OfficeDevCenter">
+        <a id="shellmenu_15414450" href="https://developer.microsoft.com/store" ms.title="Services_OfficeDevCenter">Store</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Services_Cortana">
+        <a id="shellmenu_15414451" href="https://developer.microsoft.com/cortana" ms.title="Services_Cortana">Cortana</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Services_Bing">
+        <a id="shellmenu_15414452" href="https://bing.com/dev/dev-center" ms.title="Services_Bing">Bing</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Services_ApplicationInsights">
+        <a id="shellmenu_15414453" href="https://azure.microsoft.com/services/application-insights" ms.title="Services_ApplicationInsights">Application Insights</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+                                    
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="c-select-menu c-uhf-menu js-nav-menu">
+
+                                <button id="Documentation-navigation" aria-expanded="false" aria-haspopup="true" ms.title="Documentation" ms.interactiontype="14" style="white-space:nowrap">Documentation</button>
+                                <ul class="c-menu" aria-labelledby="Documentation-navigation" aria-hidden="true" ms.cmpnm="Documentation">
+    <li class="c-menu-item" ms.cmpnm="Learn_MicrosoftDeveloperNetwork">
+        <a id="shellmenu_15414455" href="https://msdn.microsoft.com/" ms.title="Learn_MicrosoftDeveloperNetwork">Microsoft Developer Network</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Learn_TechNet">
+        <a id="shellmenu_15414456" href="https://technet.microsoft.com/" ms.title="Learn_TechNet">TechNet</a>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Build_DeveloperCenters">
+
+        <button id="Platforms-navigation" aria-expanded="false" ms.title="Build_DeveloperCenters" ms.interactiontype="14">Platforms</button>
+        <ul class="c-menu" aria-labelledby="Platforms-navigation" aria-hidden="true" ms.cmpnm="Build_DeveloperCenters">
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_MicrosoftAzure">
+        <a id="shellmenu_15414458" href="https://azure.microsoft.com/en-us/documentation/" ms.title="Build_DeveloperCenters_MicrosoftAzure">Microsoft Azure</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_MicrosoftGraph">
+        <a id="shellmenu_15414459" href="https://graph.microsoft.io/en-us/docs" ms.title="Build_DeveloperCenters_MicrosoftGraph">Microsoft Graph</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_VisualStudio">
+        <a id="shellmenu_15414460" href="https://www.visualstudio.com/vs/getting-started/" ms.title="Build_DeveloperCenters_VisualStudio">Visual Studio</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_Windows">
+        <a id="shellmenu_15414461" href="https://docs.microsoft.com/en-gb/windows" ms.title="Build_DeveloperCenters_Windows">Windows</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_Office">
+        <a id="shellmenu_15414462" href="https://dev.office.com/docs" ms.title="Build_DeveloperCenters_Office">Office</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_DeveloperCenters_AllDeveloperCenters">
+        <a id="shellmenu_15414463" href="https://developer.microsoft.com/en-us/" ms.title="Build_DeveloperCenters_AllDeveloperCenters">All Developer Centres</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Build_TechCenters">
+
+        <button id="ITTechCenters-navigation" aria-expanded="false" ms.title="Build_TechCenters" ms.interactiontype="14">IT TechCenters</button>
+        <ul class="c-menu" aria-labelledby="ITTechCenters-navigation" aria-hidden="true" ms.cmpnm="Build_TechCenters">
+    <li class="c-menu-item" ms.cmpnm="TechCenter_WindowsTechCenter">
+        <a id="shellmenu_15414465" href="https://technet.microsoft.com/windows" ms.title="TechCenter_WindowsTechCenter">Windows IT Center</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="TechCenter_Office365forITpros">
+        <a id="shellmenu_15414466" href="https://technet.microsoft.com/en-us/office/dn788774" ms.title="TechCenter_Office365forITpros">Office 365 for IT Pros</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="TechCenter_AllTechcenters">
+        <a id="shellmenu_15414467" href="https://technet.microsoft.com/en-us/bb421517.aspx?wt.svl=more_centers_link" ms.title="TechCenter_AllTechcenters">All IT TechCenters</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Build_Downloads">
+
+        <button id="Downloads-navigation" aria-expanded="false" ms.title="Build_Downloads" ms.interactiontype="14">Downloads</button>
+        <ul class="c-menu" aria-labelledby="Downloads-navigation" aria-hidden="true" ms.cmpnm="Build_Downloads">
+    <li class="c-menu-item" ms.cmpnm="Build_Downloads_MicrosoftDownloadCenter">
+        <a id="shellmenu_15414469" href="https://www.microsoft.com/en-us/download/developer-tools.aspx" ms.title="Build_Downloads_MicrosoftDownloadCenter">Microsoft Download Center</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_Downloads_Microsoft Azure">
+        <a id="shellmenu_15414470" href="https://azure.microsoft.com/en-us/downloads/" ms.title="Build_Downloads_Microsoft Azure">Microsoft Azure</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_Downloads_VisualStudio">
+        <a id="shellmenu_15414471" href="https://www.visualstudio.com/downloads/" ms.title="Build_Downloads_VisualStudio">Visual Studio</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_Downloads_SDKS">
+        <a id="shellmenu_15414472" href="https://msdn.microsoft.com/microsoft-sdks-msdn" ms.title="Build_Downloads_SDKS">SDKs</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Build_Downloads_Windows">
+        <a id="shellmenu_15414473" href="https://developer.microsoft.com/en-us/windows/downloads" ms.title="Build_Downloads_Windows">Windows</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Build_Samples">
+
+        <button id="Codesamples-navigation" aria-expanded="false" ms.title="Build_Samples" ms.interactiontype="14">Code samples</button>
+        <ul class="c-menu" aria-labelledby="Codesamples-navigation" aria-hidden="true" ms.cmpnm="Build_Samples">
+    <li class="c-menu-item" ms.cmpnm="CodeSamples_Office">
+        <a id="shellmenu_15414475" href="https://dev.office.com/code-samples" ms.title="CodeSamples_Office">Office</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CodeSamples_MicrosoftGraph">
+        <a id="shellmenu_15414476" href="https://graph.microsoft.io/en-us/code-samples-and-sdks" ms.title="CodeSamples_MicrosoftGraph">Microsoft Graph</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CodeSamples_MSDN">
+        <a id="shellmenu_15414477" href="https://code.msdn.microsoft.com/" ms.title="CodeSamples_MSDN">MSDN</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CodeSamples_Azure">
+        <a id="shellmenu_15414478" href="https://azure.microsoft.com/en-us/resources/samples/" ms.title="CodeSamples_Azure">Azure</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CodeSamples_Windows">
+        <a id="shellmenu_15414479" href="https://developer.microsoft.com/en-us/windows/samples" ms.title="CodeSamples_Windows">Windows</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="documentation_powershell_scripts">
+        <a id="shellmenu_15414480" href="https://technet.microsoft.com/scriptcenter" ms.title="documentation_powershell_scripts">PowerShell scripts</a>
+        
+    </li>
+                                    
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="c-select-menu c-uhf-menu js-nav-menu">
+
+                                <button id="Resources-navigation" aria-expanded="false" aria-haspopup="true" ms.title="Resources " ms.interactiontype="14" style="white-space:nowrap">Resources</button>
+                                <ul class="c-menu" aria-labelledby="Resources-navigation" aria-hidden="true" ms.cmpnm="Resources ">
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Connect_Blogs">
+
+        <button id="Blogs-navigation" aria-expanded="false" ms.title="Connect_Blogs" ms.interactiontype="14">Blogs</button>
+        <ul class="c-menu" aria-labelledby="Blogs-navigation" aria-hidden="true" ms.cmpnm="Connect_Blogs">
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_MicrosoftAzure">
+        <a id="shellmenu_15414483" href="https://azure.microsoft.com/en-gb/blog/" ms.title="Connect_Blogs_MicrosoftAzure">Microsoft Azure</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_VisualStudio">
+        <a id="shellmenu_15414484" href="https://blogs.msdn.microsoft.com/visualstudio/" ms.title="Connect_Blogs_VisualStudio">Visual Studio</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_VisualStudioTeamServices">
+        <a id="shellmenu_15414485" href="https://blogs.msdn.microsoft.com/visualstudioalm/" ms.title="Connect_Blogs_VisualStudioTeamServices">Visual Studio Team Services </a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_DevloperTools">
+        <a id="shellmenu_15414486" href="https://blogs.msdn.microsoft.com/developer-tools/" ms.title="Connect_Blogs_DevloperTools">Developer tools</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_OfficeDevBlog">
+        <a id="shellmenu_15414487" href="https://dev.office.com/blogs" ms.title="Connect_Blogs_OfficeDevBlog">Office Dev Blog</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_ServerandManagement">
+        <a id="shellmenu_15414488" href="https://blogs.technet.microsoft.com/server-management/" ms.title="Connect_Blogs_ServerandManagement">Server &amp; management</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Blogs_Windows">
+        <a id="shellmenu_15414489" href="https://blogs.windows.com/buildingapps/" ms.title="Connect_Blogs_Windows">Windows</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Resources_CommunityandForums">
+
+        <button id="Community&amp;Forums-navigation" aria-expanded="false" ms.title="Resources_CommunityandForums" ms.interactiontype="14">Community &amp; Forums</button>
+        <ul class="c-menu" aria-labelledby="Community&amp;Forums-navigation" aria-hidden="true" ms.cmpnm="Resources_CommunityandForums">
+    <li class="c-menu-item" ms.cmpnm="CommunityandForums_Developers">
+        <a id="shellmenu_15414491" href="https://social.msdn.microsoft.com/forums/en-us/home" ms.title="CommunityandForums_Developers">Developers</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CommunityandForums_Technet">
+        <a id="shellmenu_15414492" href="https://social.technet.microsoft.com/forums/en-us/home" ms.title="CommunityandForums_Technet">TechNet</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="CommunityandForums_MicrosoftTechCommunity">
+        <a id="shellmenu_15414493" href="https://techcommunity.microsoft.com/" ms.title="CommunityandForums_MicrosoftTechCommunity">Microsoft Tech Community</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Connect_CommunityandForums">
+
+        <button id="Subscriptions-navigation" aria-expanded="false" ms.title="Connect_CommunityandForums" ms.interactiontype="14">Subscriptions</button>
+        <ul class="c-menu" aria-labelledby="Subscriptions-navigation" aria-hidden="true" ms.cmpnm="Connect_CommunityandForums">
+    <li class="c-menu-item" ms.cmpnm="Subscriptions_VisualStudioMSDNSubscriptions">
+        <a id="shellmenu_15414495" href="https://my.visualstudio.com/benefits?wt.mc_id=o%7Emsft%7Euhf&amp;campaign=o%7Emsft%7Euhf" ms.title="Subscriptions_VisualStudioMSDNSubscriptions">Visual Studio (MSDN) subscriptions</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Subscriptions_ITProCloudEssentials">
+        <a id="shellmenu_15414496" href="https://www.microsoft.com/cloudessentials" ms.title="Subscriptions_ITProCloudEssentials">IT Pro Cloud Essentials</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item f-sub-menu js-nav-menu" ms.cmpnm="Resources_Training">
+
+        <button id="Training-navigation" aria-expanded="false" ms.title="Resources_Training" ms.interactiontype="14">Training</button>
+        <ul class="c-menu" aria-labelledby="Training-navigation" aria-hidden="true" ms.cmpnm="Resources_Training">
+    <li class="c-menu-item" ms.cmpnm="Training_MicrosoftVirtualAcademy">
+        <a id="shellmenu_15414498" href="https://mva.microsoft.com/" ms.title="Training_MicrosoftVirtualAcademy">Microsoft Virtual Academy </a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Training_ITProCareerCenter">
+        <a id="shellmenu_15414499" href="https://www.microsoft.com/itprocareercenter" ms.title="Training_ITProCareerCenter">IT Pro Career Center</a>
+        
+    </li>
+            
+        </ul>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Resources_TechNetEvaluationCenter">
+        <a id="shellmenu_15414500" href="https://www.microsoft.com/evalcenter/" ms.title="Resources_TechNetEvaluationCenter">TechNet Evaluation Center</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="Connect_Channel9">
+        <a id="shellmenu_15414501" href="https://channel9.msdn.com/" ms.title="Connect_Channel9">Channel 9</a>
+        
+    </li>
+                                    
+                                </ul>
+                            </div>
+                        </li>
+            </ul>
+            
+        </nav>
+
+
+                <div ms.cmpgrp="Header actions">
+                            <form class="c-search" autocomplete="off" id="searchForm" name="searchForm" role="search" action="https://social.msdn.microsoft.com/search/windows" method="GET" data-seautosuggest="" data-seautosuggestapi="https://www.microsoft.com/services/api/v3/suggest">
+            <input data-m="{&quot;cN&quot;:&quot;cli_shellHeaderSearchInput&quot;,&quot;pid&quot;:&quot;query&quot;,&quot;id&quot;:&quot;nn4m1r1a1&quot;,&quot;sN&quot;:4,&quot;aN&quot;:&quot;m1r1a1&quot;}" id="cli_shellHeaderSearchInput" aria-label="Search Dev Center" aria-controls="universal-header-search-auto-suggest-transparent" aria-haspopup="true" title="Search Dev Center" name="query" placeholder="Search Dev Center" ms.title="SearchBox" type="search">
+                <input data-m="{&quot;pid&quot;:&quot;Refinement&quot;,&quot;id&quot;:&quot;nn5m1r1a1&quot;,&quot;sN&quot;:5,&quot;aN&quot;:&quot;m1r1a1&quot;}" name="Refinement" value="183" ms.title="HiddenInput" type="hidden">
+            <button data-m="{&quot;cN&quot;:&quot;search&quot;,&quot;pid&quot;:&quot;search&quot;,&quot;id&quot;:&quot;nn6m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;m1r1a1&quot;}" id="search" name="search" aria-label="Search" class="c-glyph" title="Search" ms.title="Search" data-bi-dnt="true"><span class="x-screen-reader">Search Dev Center</span></button>
+            <div class="m-auto-suggest" id="universal-header-search-auto-suggest-transparent" role="group">
+                <ul class="c-menu" aria-hidden="true" data-js-auto-suggest-postion="default" data-js-auto-suggest-position="default" role="menu" data-tel="wedcs" ms.cmpgrp="search suggestions">
+                </ul>
+                <ul class="c-menu f-auto-suggest-no-results" aria-hidden="true" data-js-auto-suggest-postion="default" data-js-auto-suggest-position="default" tabindex="0">
+                    <li class="c-menu-item"> <span tabindex="-1">No results</span></li>
+                </ul>
+            </div>
+        
+        </form>
+
+                    
+                    
+                            <div id="meControl" class="c-me" data-signinsettings="{&quot;containerId&quot;:&quot;meControl&quot;,&quot;enabled&quot;:true,&quot;headerHeight&quot;:48,&quot;debug&quot;:false,&quot;extensibleLinks&quot;:[],&quot;userData&quot;:{&quot;idp&quot;:&quot;msa&quot;,&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;memberName&quot;:&quot;&quot;,&quot;cid&quot;:&quot;&quot;,&quot;authenticatedState&quot;:&quot;3&quot;},&quot;rpData&quot;:{&quot;preferredIdp&quot;:&quot;msa&quot;,&quot;msaInfo&quot;:{&quot;signInUrl&quot;:&quot;/en-gb/store/signin&quot;,&quot;signOutUrl&quot;:&quot;/en-gb/store/signout&quot;,&quot;meUrl&quot;:&quot;https://login.live.com/me.srf?wa=wsignin1.0&quot;},&quot;aadInfo&quot;:{&quot;signOutUrl&quot;:&quot;/en-gb/store/signout&quot;,&quot;appId&quot;:null,&quot;siteUrl&quot;:null,&quot;blockMsaFed&quot;:true}}}" ms.cmpgrp="Me Control"><div class="msame_Header msame_unauth msame_Short" tabindex="0" style="height: 48px;"><div class="msame_Header_name msame_TxtTrunc" style="line-height: 48px;">Sign in</div><div class="msame_Header_chev"></div></div></div>
+        
+
+
+                    
+                </div>
+        </div>
+        
+        
+    </div>
+            <div class="theme-dark brand-neutral js-cat-head" itemprop="brand" itemscope="itemscope" itemtype="http://schema.org/Brand" ms.cmpgrp="UHF category nav">
+
+<div>
+        <a id="uhfCatLogo" class="c-logo" href="https://developer.microsoft.com/en-us/windows" aria-label="Windows Dev Center" itemprop="url" ms.title="Windows Dev Center">
+                <span>Windows Dev Center</span>
+        </a>
+    
+        <a id="dashboard" class="c-uhf-nav-link c-hyperlink x-hidden-vp1 x-hidden-vp2" href="https://developer.microsoft.com/en-us/dashboard/apps/overview" ms.title="Dashboard">Dashboard</a>
+<button class="c-action-trigger c-glyph glyph-chevron-left" ms.title="Previous" tabindex="-1" style="display: none;"></button>
+    
+    <button class="c-action-trigger c-glyph glyph-chevron-right" ms.title="Next" tabindex="-1" style="display: block;"></button>
+            <nav id="uhf-c-nav" role="navigation">
+
+<a id="winapps_windowsapps" class="c-hyperlink c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/apps" ms.title="WinApps_WindowsApps" style="transition: margin 0.667s cubic-bezier(0.16, 1, 0.29, 0.99) 0s;">Windows apps</a><a id="winapps_getstarted" class="c-hyperlink c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/apps/getstarted" ms.title="WinApps_Getstarted">Get started</a><a id="winapps_design" class="c-hyperlink c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/apps/design" ms.title="WinApps_Design">Design</a><a id="winapps_develop" class="c-hyperlink c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/apps/develop" ms.title="WinApps_Develop">Develop</a><a id="winapps_publish" class="c-hyperlink c-uhf-nav-link f-hidden" href="https://developer.microsoft.com/en-us/store/publish-apps" ms.title="WinApps_Publish">Publish</a><div class="c-select-menu c-uhf-menu js-nav-menu">
+                    <button id="resources_apps-resources" aria-expanded="false" aria-haspopup="true" ms.title="winapps_apps-resources" class="f-hidden">Resources</button>
+                    <ul class="c-menu" aria-labelledby="resources_apps-resources" aria-hidden="true" ms.cmpnm="winapps_apps-resources">
+    <li class="c-menu-item" ms.cmpnm="resources_apps-api-reference">
+        <a id="resources_apps-api-reference" href="https://docs.microsoft.com/en-gb/uwp/api/" ms.title="resources_apps-api-reference">API reference</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="winapps_downloads">
+        <a id="resources_downloads" href="https://developer.microsoft.com/en-us/windows/downloads" ms.title="winapps_downloads">Downloads</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="winapps_samples">
+        <a id="resources_samples" href="https://developer.microsoft.com/en-us/windows/samples" ms.title="winapps_samples">Samples</a>
+        
+    </li>
+    <li class="c-menu-item" ms.cmpnm="winapps_support">
+        <a id="resources_support" href="https://developer.microsoft.com/en-us/windows/support" ms.title="winapps_support">Support</a>
+        
+    </li>
+                        
+                    </ul>
+                </div><a id="mobile-dashboard" class="c-hyperlink c-uhf-nav-link x-hidden x-visible-vp1-block x-visible-vp2-block f-hidden" href="https://developer.microsoft.com/en-us/dashboard/apps/overview" ms.title="Dashboard">Dashboard</a>                    </nav>
+
+</div>
+
+
+        
+        </div>
+
+    
+</header>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+            </div>
+
+    </section>
+
+    </div>
+    <input id="UhfSignInOutLink" value="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=13&amp;ct=1494202766&amp;rver=6.7.6640.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-GB%2flibrary%2fwindows%2fapps%2fdn166865.aspx&amp;lc=2057&amp;id=254354&amp;mkt=en-GB" type="hidden">
+    
+    
+    
+
+
+
+
+
+
+
+
+    <div id="breadcrumbs">
+        <div id="breadcrumbDesktop" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/apps/br211375.aspx" title="In-depth guidance"></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/apps/hh452744.aspx" title="Develop games"><span>Develop games</span></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166874.aspx" title="Port from OpenGL ES 2.0 to Direct3D 11.1"><span>Port from OpenGL ES 2.0 to Direct3D 11.1</span></a></span>
+                        <span class="breadcrumbDropSmall">
+                            <a id="breadcrumbDropDownButton" href="#" targethref="https://msdn.microsoft.com/en-us/library/windows/apps/dn166874.aspx" title="OpenGL ES 2.0 to Direct3D 11.1 reference" role="button" aria-expanded="false"><span>OpenGL ES 2.0 to Direct3D 11.1 reference</span></a>
+                        </span>
+        </div>
+        <div id="breadcrumbDropDownMenu" style="display: none;"></div>
+
+        <div id="breadcrumbTablet" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166874.aspx" title="Port from OpenGL ES 2.0 to Direct3D 11.1"></a></span>
+                    <span><a href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166868.aspx" title="OpenGL ES 2.0 to Direct3D 11.1 reference"><span>OpenGL ES 2.0 to Direct3D 11.1 reference</span></a></span>
+                <span class="breadcrumbDropSmall"><a id="tocDropDownButton" href="#" title="GLSL-to-HLSL reference" role="button" aria-expanded="false"><span>GLSL-to-HLSL reference</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166865%28d=printer%29.aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/en-gb/library/export/help/?returnurl=%2fen-gb%2flibrary%2fwindows%2fapps%2fdn166865.aspx">
+                <ins class="export"></ins>Export (<span class="count">0</span>)
+            </a>
+        </div></div>
+        <div id="tocDropDownMenu" style="display: none;"><div id="tocnav" class="ArchiveV2">
+    <div class="tocunselected">
+        <div id="tocExpandArea">
+            <span class="toc_empty"></span>
+            <span id="tocExpandButton"><a href="javascript:void(0)" aria-label="expand sibling toc" role="button"></a></span>
+        </div>
+        <div id="tocExpand"></div>
+    </div>
+    <div class="tocselected"><div class="toclevel current" data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166865.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="GLSL-to-HLSL reference">GLSL-to-HLSL reference</a>                </div><div class="tocPadding"></div></div>
+    <div class="tocunselected">
+                
+    </div>
+    <a id="tocMenuToggler" href="javascript:void(0)" role="button">
+        <span id="tocMenuTogglerIcon" class="tocMenuCollapse" role="button" aria-expanded="true" aria-label="Table of contents menu"></span>
+        <div id="tocMenuTogglerLabel">TOC</div>
+    </a>
+</div></div>
+        <div id="breadcrumbMobile" class="breadCrumb">
+                <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/apps/dn166868.aspx" title="OpenGL ES 2.0 to Direct3D 11.1 reference"></a></span>
+            <span class="breadcrumbDropSmall"><a id="tocPopupButton" href="#" title="GLSL-to-HLSL reference" role="button" aria-expanded="false"><span>GLSL-to-HLSL reference</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166865%28d=printer%29.aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/en-gb/library/export/help/?returnurl=%2fen-gb%2flibrary%2fwindows%2fapps%2fdn166865.aspx">
+                <ins class="export"></ins>Export (<span class="count">0</span>)
+            </a>
+        </div></div>
+    </div>
+    <div id="tocPopupMenu" style="display: none;">
+        <div id="tocPopMenuClose" class="tocCloseLarge" role="button" aria-label="Close Popup Menu" tabindex="0"></div>
+        <div id="tocTitle">GLSL-to-HLSL reference</div>
+    </div>
+
+
+
+        <div id="body" ms.pgarea="body" class="">
+            <span id="tabletView_large"></span>
+            <span id="tabletView_small"></span>
+            <span id="mobileView"></span>
+            
+
+
+
+
+
+
+
+    <div id="leftNav">
+
+    
+
+
+            <div style="display:none">
+                <div id="CollapseLocalizeString">Collapse the table of content</div>
+                <div id="ExpandLocalizeString">Expand the table of content</div>
+            </div>
+        <div>
+            <a id="isd_archiveControlResponsive" style="display:none;" href="javascript:void(0)" role="button" data-include-archive="Show Archived Versions" data-exclude-archive="Hide Archived Versions">
+            </a>
+            <div id="isd_archiveInstrument" style="display:none">This documentation is archived and is not being maintained.</div>
+        </div>
+    </div>
+    <div id="content" class="content">
+
+
+
+
+
+
+
+
+    <div id="archiveDisclaimerText" style="display:none">This documentation is archived and is not being maintained.</div>
+
+
+
+
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">GLSL-to-HLSL reference</h1>
+  
+  <div id="mainSection">
+<div class="clsServerSDKContent">
+
+</div>[This article is for Windows 8.x and Windows Phone 8.x developers 
+writing Windows Runtime apps. If you’re developing for Windows 10, see 
+the <a href="http://go.microsoft.com/fwlink/p/?linkid=619133">latest documentation</a>]<p>You port your OpenGL Shader Language (GLSL) code to Microsoft High Level Shader Language (HLSL) code when you <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166874.aspx">port your graphics architecture from OpenGL ES 2.0 to Direct3D 11</a>
+ to create a game for Windows&nbsp;8. The GLSL that is referred to 
+herein is compatible with OpenGL ES 2.0; the HLSL is compatible with 
+Direct3D 11. For info about the differences between Direct3D 11 and 
+previous versions of Direct3D, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166864.aspx">Feature mapping</a>.</p>
+<p>
+</p><ul>
+<li><a href="#compare">Comparing OpenGL ES 2.0 with Direct3D 11</a></li>
+<li><a href="#variables">Porting GLSL variables to HLSL</a></li>
+<li><a href="#types">Porting GLSL types to HLSL</a></li>
+<li><a href="#porting_glsl_pre-defined_global_variables_to_hlsl">Porting GLSL pre-defined global variables to HLSL</a></li>
+<li><a href="#example1">Examples of porting GLSL variables to HLSL</a><ul>
+<li><a href="#uniform___attribute__and_varying_in_glsl">Uniform,  attribute, and varying in GLSL</a></li>
+<li><a href="#constant_buffers_and_data_transfers_in_hlsl">Constant buffers and data transfers in HLSL</a></li>
+</ul>
+</li>
+<li><a href="#example2">Examples of porting OpenGL rendering code to Direct3D</a></li>
+<li><a href="#related_topics">Related topics</a></li>
+</ul>
+
+<h2><a id="compare"></a><a id="COMPARE"></a>Comparing OpenGL ES 2.0 with Direct3D 11</h2>
+<p>OpenGL ES 2.0 and Direct3D 11 have many similarities. They both have 
+similar rendering pipelines and graphics features.
+But Direct3D 11 is a rendering implementation and API, not a 
+specification; OpenGL ES 2.0 is a rendering specification and API, not 
+an implementation. 
+Direct3D 11 and OpenGL ES 2.0 generally differ in these ways:</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">OpenGL ES 2.0 </th><th scope="col">Direct3D 11</th></tr>
+<tr><td data-th="OpenGL ES 2.0 ">Hardware and operating system agnostic specification with vendor provided implementations</td><td data-th="Direct3D 11">Microsoft implementation of hardware abstraction and certification on Windows platforms</td></tr>
+<tr><td data-th="OpenGL ES 2.0 ">Abstracted for hardware diversity, runtime manages most resources</td><td data-th="Direct3D 11">Direct access to hardware layout; app can manage resources and processing</td></tr>
+<tr><td data-th="OpenGL ES 2.0 ">Provides higher-level modules via third-party libraries (for example, Simple DirectMedia Layer (SDL))</td><td data-th="Direct3D 11">Higher-level modules, like Direct2D, are built upon lower modules to simplify development for Windows apps</td></tr>
+<tr><td data-th="OpenGL ES 2.0 ">Hardware vendors differentiate via extensions</td><td data-th="Direct3D 11">Microsoft adds optional features to the API in a generic way so they aren't specific to any particular hardware vendor</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<p>GLSL and HLSL generally differ in these ways:</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">GLSL</th><th scope="col">HLSL</th></tr>
+<tr><td data-th="GLSL">Procedural, step-centric (C like)</td><td data-th="HLSL">Object oriented, data-centric (C++ like)</td></tr>
+<tr><td data-th="GLSL">Shader compilation integrated into the graphics API </td><td data-th="HLSL">The HLSL compiler <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509633.aspx">compiles the shader</a> to an intermediate binary representation before Direct3D passes it to the driver. <div class="alert"><strong>Note</strong>&nbsp;&nbsp;This
+ binary representation is hardware independent. It's typically compiled 
+at app build time, rather than at app run time.</div>
+<div>&nbsp;</div>
+</td></tr>
+<tr><td data-th="GLSL"><a href="#variables">Variable</a> storage modifiers</td><td data-th="HLSL">Constant buffers and data transfers via input layout declarations</td></tr>
+<tr><td data-th="GLSL">
+<p><a href="#types">Types</a></p>
+<p>Typical vector type: vec2/3/4</p>
+<p>lowp, mediump, highp</p>
+</td><td data-th="HLSL">
+<p>Typical vector type: float2/3/4</p>
+<p>min10float, min16float</p>
+</td></tr>
+<tr><td data-th="GLSL">texture2D [Function]</td><td data-th="HLSL">
+<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509695.aspx">texture.Sample</a> [datatype.Function]</td></tr>
+<tr><td data-th="GLSL">sampler2D [datatype]</td><td data-th="HLSL">
+<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff471525.aspx">Texture2D</a> [datatype]</td></tr>
+<tr><td data-th="GLSL">Row-major matrices (default)</td><td data-th="HLSL">Column-major matrices (default)<div class="alert"><strong>Note</strong>&nbsp;&nbsp;Use the <strong>row_major</strong> type-modifier to change the layout for one variable. For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509706.aspx">Variable Syntax</a>. You can also specify a compiler flag or a pragma to change the global default.</div>
+<div>&nbsp;</div>
+</td></tr>
+<tr><td data-th="GLSL">Fragment shader</td><td data-th="HLSL">Pixel shader</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<div class="alert"><strong>Note</strong>&nbsp;&nbsp;HLSL has textures 
+and samplers as two separate objects. In GLSL, like Direct3D 9, the 
+texture binding is part of the sampler state.</div>
+<div>&nbsp;</div>
+<p>In GLSL, you present much of the OpenGL state as pre-defined global variables. For example, with GLSL, you use the <strong>gl_Position</strong> variable to specify vertex position and the <strong>gl_FragColor</strong>
+ variable to specify fragment color. In HLSL, you pass Direct3D state 
+explicitly from the app code to the shader. For example, with Direct3D 
+and HLSL, the input to the vertex shader must match the data format in 
+the vertex buffer, and the structure of a constant buffer in the app 
+code must match the structure of a constant buffer (<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509581.aspx">cbuffer</a>) in shader code.</p>
+<h2><a id="variables"></a><a id="VARIABLES"></a>Porting GLSL variables to HLSL</h2>
+<p>In GLSL, you apply modifiers (qualifiers) to a global shader variable
+ declaration to give that variable a specific behavior in your shaders. 
+In HLSL, you don’t need these modifiers because you define the flow of 
+the shader with the arguments that you pass to your shader and that you 
+return from your shader. </p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">GLSL variable behavior</th><th scope="col">HLSL equivalent</th></tr>
+<tr><td data-th="GLSL variable behavior">
+<p><strong>uniform</strong></p>
+<p>You pass a uniform variable from the app code into either or both 
+vertex and fragment shaders. You must set the values of all uniforms 
+before you draw any triangles with those shaders so their values stay 
+the same throughout the drawing of a triangle mesh. These values are 
+uniform. Some uniforms are set for the entire frame and others uniquely 
+to one particular vertex-pixel shader pair.</p>
+<p>Uniform variables are per-polygon variables. </p>
+</td><td data-th="HLSL equivalent">
+<p>Use constant buffer.</p>
+<p>See <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff476896.aspx">How to: Create a Constant Buffer</a> and <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509581.aspx">Shader Constants</a>.</p>
+</td></tr>
+<tr><td data-th="GLSL variable behavior">
+<p><strong>varying</strong></p>
+<p>You initialize a varying variable inside the vertex shader and pass 
+it through to an identically named varying variable in the fragment 
+shader. Because the vertex shader only sets the value of the varying 
+variables at each vertex, the rasterizer interpolates those values (in a
+ perspective-correct manner) to generate per fragment values to pass 
+into the fragment shader. These variables vary across each triangle.</p>
+</td><td data-th="HLSL equivalent">Use the structure that you return 
+from your vertex shader as the input to your pixel shader. Make sure the
+ semantic values match. </td></tr>
+<tr><td data-th="GLSL variable behavior">
+<p><strong>attribute</strong></p>
+<p>An attribute is a part of the description of a vertex that you pass 
+from the app code to the vertex shader alone. Unlike a uniform, you set 
+each attribute’s value for each vertex, which, in turn, allows each 
+vertex to have a different value. Attribute variables are per-vertex 
+variables.</p>
+</td><td data-th="HLSL equivalent">
+<p>Define a vertex buffer in your Direct3D app code and match it to the 
+vertex input defined in the vertex shader. Optionally, define an index 
+buffer. See <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff476899.aspx">How to: Create a Vertex Buffer</a> and <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff476897.aspx">How to: Create an Index Buffer</a>.</p>
+<p>Create an input layout  in your Direct3D app code and match semantic values with those in the vertex input. See  <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb205117.aspx#Create_the_Input_Layout">Create the input layout</a>.</p>
+</td></tr>
+<tr><td data-th="GLSL variable behavior">
+<p><strong>const</strong></p>
+<p>Constants that are compiled into the shader and never change.</p>
+</td><td data-th="HLSL equivalent">Use a <strong>static const</strong>. <strong>static</strong> means the value isn't exposed to constant buffers, <strong>const</strong> means the shader can't change the value. So, the value is known at compile time based on its initializer. </td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<p>In GLSL, variables without modifiers are just ordinary global variables that are private to each shader.</p>
+<p>When you pass data to textures (<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff471525.aspx">Texture2D</a> in HLSL) and their associated samplers (<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509644.aspx">SamplerState</a> in HLSL), you typically declare them as global variables in the pixel shader.</p>
+<h2><a id="types"></a><a id="TYPES"></a>Porting GLSL types to HLSL</h2>
+<p>Use this table to port your GLSL types to HLSL. </p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">GLSL type</th><th scope="col">HLSL type</th></tr>
+<tr><td data-th="GLSL type">scalar types: float, int, bool</td><td data-th="HLSL type">
+<p>scalar types: float, int, bool</p>
+<p>also, uint, double</p>
+<p>For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509646.aspx">Scalar Types</a>.</p>
+</td></tr>
+<tr><td data-th="GLSL type">
+<p>vector type</p>
+<ul>
+<li>floating-point vector: vec2, vec3, vec4</li>
+<li>Boolean vector: bvec2, bvec3, bvec4</li>
+<li>signed integer vector: ivec2, ivec3, ivec4</li>
+</ul>
+</td><td data-th="HLSL type">
+<p>vector type</p>
+<ul>
+<li>float2, float3, float4, and float1</li>
+<li>bool2, bool3, bool4, and bool1</li>
+<li>int2, int3, int4, and int1</li>
+<li>
+<p>These types also have vector expansions similar to float, bool, and int:</p>
+<ul>
+<li>uint</li>
+<li>min10float, min16float</li>
+<li>min12int, min16int</li>
+<li>min16uint</li>
+</ul>
+</li>
+</ul>
+<p>For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509707.aspx">Vector Type</a> and <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509568.aspx">Keywords</a>.</p>
+<p>vector is also type defined as float4 (typedef vector &lt;float, 4&gt; vector;). For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509702.aspx">User-Defined Type</a>. </p>
+</td></tr>
+<tr><td data-th="GLSL type">
+<p>matrix type</p>
+<ul>
+<li>mat2: 2x2 float matrix</li>
+<li>mat3: 3x3 float matrix</li>
+<li>mat4: 4x4 float matrix</li>
+</ul>
+</td><td data-th="HLSL type">
+<p>matrix type</p>
+<ul>
+<li>float2x2</li>
+<li>float3x3</li>
+<li>float4x4</li>
+<li>also, float1x1, float1x2, float1x3, float1x4, float2x1, float2x3, 
+float2x4, float3x1, float3x2, float3x4, float4x1, float4x2, float4x3</li>
+<li>
+<p>These types also have matrix expansions similar to float:</p>
+<ul>
+<li>int, uint, bool</li>
+<li>min10float, min16float</li>
+<li>min12int, min16int</li>
+<li>min16uint</li>
+</ul>
+</li>
+</ul>
+<p>You can also use the <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509623.aspx">matrix type</a> to define a matrix.</p>
+<p>For example: matrix &lt;float, 2, 2&gt; fMatrix = {0.0f, 0.1, 2.1f, 2.2f};</p>
+<p>matrix is also type defined as float4x4 (typedef matrix &lt;float, 4, 4&gt; matrix;). For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509702.aspx">User-Defined Type</a>. </p>
+</td></tr>
+<tr><td data-th="GLSL type">
+<p>precision qualifiers for float, int, sampler</p>
+<ul>
+<li>highp<p>This qualifier provides minimum precision requirements that 
+are greater than that provided by min16float and less than a full 32-bit
+ float.  Equivalent in HLSL is:</p>
+<p>highp float -&gt; float</p>
+<p>highp int -&gt; int</p>
+</li>
+<li>mediump<p>This qualifier applied to float and int is equivalent to 
+min16float and min12int in HLSL.  Minimum 10 bits of mantissa, not like 
+min10float.</p>
+</li>
+<li>lowp<p>This qualifier applied to float provides a floating point range of -2 to 2. Equivalent  to min10float in HLSL.</p>
+</li>
+</ul>
+</td><td data-th="HLSL type">
+<p>precision types</p>
+<ul>
+<li>min16float: minimum 16-bit floating point value</li>
+<li>min10float<p>Minimum fixed-point signed 2.8 bit value (2 bits of 
+whole number and 8 bits fractional component). The 8-bit fractional 
+component can be inclusive of 1 instead of exclusive to give it the full
+ inclusive range of -2 to 2.</p>
+</li>
+<li>min16int: minimum 16-bit signed integer</li>
+<li>min12int: minimum 12-bit signed integer<p>This type is for 10Level9 (<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff476876.aspx">9_x feature levels</a>)
+ in which integers are represented by floating point numbers.  This is 
+the precision you can get when you emulate an integer with a 16-bit 
+floating point number.</p>
+</li>
+<li>min16uint: minimum 16-bit unsigned integer</li>
+</ul>
+<p>For more info, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509646.aspx">Scalar Types</a> and <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/hh968108.aspx">Using HLSL minimum precision</a>.</p>
+</td></tr>
+<tr><td data-th="GLSL type">sampler2D</td><td data-th="HLSL type">
+<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/ff471525.aspx">Texture2D</a>
+</td></tr>
+<tr><td data-th="GLSL type">samplerCube</td><td data-th="HLSL type">
+<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509700.aspx">TextureCube</a>
+</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Porting_GLSL_pre-defined_global_variables_to_HLSL"></a><a id="porting_glsl_pre-defined_global_variables_to_hlsl"></a><a id="PORTING_GLSL_PRE-DEFINED_GLOBAL_VARIABLES_TO_HLSL"></a>Porting GLSL pre-defined global variables to HLSL</h2>
+<p>Use this table to port GLSL pre-defined global variables to HLSL. </p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">GLSL pre-defined global variable</th><th scope="col">HLSL semantics</th></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_Position</strong></p>
+<p>This variable is type <strong>vec4</strong>.</p>
+<p>Vertex position</p>
+<p>for example - gl_Position = position;</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Position</p>
+<p>POSITION in Direct3D 9</p>
+<p>This semantic is type <strong>float4</strong>.</p>
+<p>Vertex shader output</p>
+<p>Vertex position</p>
+<p>for example - float4  vPosition : SV_Position;</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_PointSize</strong></p>
+<p>This variable is type <strong>float</strong>.</p>
+<p>Point size</p>
+</td><td data-th="HLSL semantics">
+<p>PSIZE</p>
+<p>No meaning unless you target Direct3D 9</p>
+<p>This semantic is type <strong>float</strong>.</p>
+<p>Vertex shader output</p>
+<p>Point size</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_FragColor</strong></p>
+<p>This variable is type <strong>vec4</strong>.</p>
+<p>Fragment color</p>
+<p>for example - gl_FragColor = vec4(colorVarying, 1.0);
+</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Target</p>
+<p>COLOR in Direct3D 9</p>
+<p>This semantic is type <strong>float4</strong>.</p>
+<p>Pixel shader output</p>
+<p>Pixel color</p>
+<p>for example - float4 Color[4] : SV_Target;</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_FragData[n]</strong></p>
+<p>This variable is type <strong>vec4</strong>.</p>
+<p>Fragment color for color attachment n</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Target[n]</p>
+<p>This semantic is type <strong>float4</strong>.</p>
+<p>Pixel shader output value that is stored in n render target, where 0 &lt;= n &lt;= 7.</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_FragCoord</strong></p>
+<p>This variable is type <strong>vec4</strong>.</p>
+<p>Fragment position within frame buffer</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Position</p>
+<p>Not available in Direct3D 9</p>
+<p>This semantic is type <strong>float4</strong>.</p>
+<p>Pixel shader input</p>
+<p>Screen space coordinates </p>
+<p>for example - float4 screenSpace : SV_Position</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_FrontFacing</strong></p>
+<p>This variable is type <strong>bool</strong>.</p>
+<p>Determines whether fragment belongs to a front-facing primitive.</p>
+</td><td data-th="HLSL semantics">
+<p> SV_IsFrontFace</p>
+<p>VFACE in Direct3D 9</p>
+<p>SV_IsFrontFace is type <strong>bool</strong>.</p>
+<p>VFACE is type <strong>float</strong>.</p>
+<p>Pixel shader input</p>
+<p> Primitive facing</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_PointCoord</strong></p>
+<p>This variable is type <strong>vec2</strong>.</p>
+<p>Fragment position within a point (point rasterization only)</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Position</p>
+<p>VPOS in Direct3D 9</p>
+<p>SV_Position is type <strong>float4</strong>.</p>
+<p>VPOS is type <strong>float2</strong>.</p>
+<p>Pixel shader input</p>
+<p>The pixel or sample position in screen space</p>
+<p>for example - float4 pos : SV_Position</p>
+</td></tr>
+<tr><td data-th="GLSL pre-defined global variable">
+<p><strong>gl_FragDepth</strong></p>
+<p>This variable is type <strong>float</strong>.</p>
+<p>Depth buffer data</p>
+</td><td data-th="HLSL semantics">
+<p>SV_Depth</p>
+<p>DEPTH in Direct3D 9</p>
+<p>SV_Depth is type <strong>float</strong>.</p>
+<p>Pixel shader output</p>
+<p>Depth buffer data</p>
+</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<p>You use semantics to specify position, color, and so on for vertex 
+shader input and pixel shader input. You must match the semantics values
+ in the input layout with the   vertex shader input. For examples, see <a href="#example1">Examples of porting GLSL variables to HLSL</a>. For more info about the HLSL semantics, see <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509647.aspx">Semantics</a>. </p>
+<h2><a id="example1"></a><a id="EXAMPLE1"></a>Examples of porting GLSL variables to HLSL</h2>
+<p>Here we show examples of using GLSL variables in OpenGL/GLSL code and then the equivalent example in Direct3D/HLSL code.</p>
+<h3><a id="Uniform___attribute__and_varying_in_GLSL"></a><a id="uniform___attribute__and_varying_in_glsl"></a><a id="UNIFORM___ATTRIBUTE__AND_VARYING_IN_GLSL"></a>Uniform,  attribute, and varying in GLSL</h3>
+<p>OpenGL app code</p>
+
+<div id="code-snippet-1" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_4bc24032-a4b8-4b2a-a5cd-2fcad5eb05de');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_4bc24032-a4b8-4b2a-a5cd-2fcad5eb05de" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>// Uniform values can be set in app code and then processed in the shader code.
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+// Incoming position of vertex
+attribute vec4 position;
+ 
+// Incoming color for the vertex
+attribute vec3 color;
+ 
+// The varying variable tells the shader pipeline to pass it  
+// on to the fragment shader.
+varying vec3 colorVarying;
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>GLSL vertex shader code</p>
+
+<div id="code-snippet-2" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_16692c4e-b33f-46dc-9cf6-3c1e28f85dba');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_16692c4e-b33f-46dc-9cf6-3c1e28f85dba" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>//The shader entry point is the main method.
+void main()
+{
+colorVarying = color; //Use the varying variable to pass the color to the fragment shader
+gl_Position = position; //Copy the position to the gl_Position pre-defined global variable
+}
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>GLSL fragment shader code</p>
+
+<div id="code-snippet-3" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_ea25d77a-60b6-45cc-b25a-870c3d4c4950');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_ea25d77a-60b6-45cc-b25a-870c3d4c4950" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>void main()
+{
+//Pad the colorVarying vec3 with a 1.0 for alpha to create a vec4 color
+//and assign that color to the gl_FragColor pre-defined global variable
+//This color then becomes the fragment's color.
+gl_FragColor = vec4(colorVarying, 1.0);
+}
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h3><a id="Constant_buffers_and_data_transfers_in_HLSL"></a><a id="constant_buffers_and_data_transfers_in_hlsl"></a><a id="CONSTANT_BUFFERS_AND_DATA_TRANSFERS_IN_HLSL"></a>Constant buffers and data transfers in HLSL</h3>
+<p>Here is an example of how you pass data to the HLSL vertex shader 
+that then flows through to the pixel shader. In your app code, define a 
+vertex and a constant buffer. Then, in your vertex shader code, define 
+the constant buffer as a <a href="https://msdn.microsoft.com/en-gb/library/windows/apps/bb509581.aspx">cbuffer</a> and store the per-vertex data and the pixel shader input data. Here we use structures called <strong>VertexShaderInput</strong> and <strong>PixelShaderInput</strong>.</p>
+<p>Direct3D app code</p>
+
+<div id="code-snippet-4" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_d617d7e2-4fbd-4dd7-a1aa-fe5677e946c1');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_d617d7e2-4fbd-4dd7-a1aa-fe5677e946c1" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+<span style="color:Blue;">struct</span> ConstantBuffer
+{
+    XMFLOAT4X4 model;
+    XMFLOAT4X4 view;
+    XMFLOAT4X4 projection;
+};
+<span style="color:Blue;">struct</span> SimpleCubeVertex
+{
+    XMFLOAT3 pos;   <span style="color:Green;">// position</span>
+    XMFLOAT3 color; <span style="color:Green;">// color</span>
+};
+
+ <span style="color:Green;">// Create an input layout that matches the layout defined in the vertex shader code.</span>
+ <span style="color:Blue;">const</span> D3D11_INPUT_ELEMENT_DESC basicVertexLayoutDesc[] =
+ {
+     { <span style="color:#A31515;">"POSITION"</span>, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+     { <span style="color:#A31515;">"COLOR"</span>,    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+ };
+
+<span style="color:Green;">// Create vertex and index buffers that define a geometry.</span>
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>HLSL vertex shader code</p>
+
+<div id="code-snippet-5" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_537195bf-d975-45c4-b5d2-2a5b1cf065d2');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_537195bf-d975-45c4-b5d2-2a5b1cf065d2" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>cbuffer ModelViewProjectionCB : register( b0 )
+{
+    matrix model; 
+    matrix view;
+    matrix projection;
+};
+// The POSITION and COLOR semantics must match the semantics in the input layout Direct3D app code.
+struct VertexShaderInput
+{
+    float3 pos : POSITION; // Incoming position of vertex 
+    float3 color : COLOR; // Incoming color for the vertex
+};
+
+struct PixelShaderInput
+{
+    float4 pos : SV_Position; // Copy the vertex position.
+    float4 color : COLOR; // Pass the color to the pixel shader.
+};
+
+PixelShaderInput main(VertexShaderInput input)
+{
+    PixelShaderInput vertexShaderOutput;
+
+    // shader source code
+
+    return vertexShaderOutput;
+}
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>HLSL pixel shader code</p>
+
+<div id="code-snippet-6" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_a2cc418c-66ec-4d3a-9ae4-5057be7849e4');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_a2cc418c-66ec-4d3a-9ae4-5057be7849e4" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>// Collect input from the vertex shader. 
+// The COLOR semantic must match the semantic in the vertex shader code.
+struct PixelShaderInput
+{
+&nbsp;&nbsp;&nbsp; float4 pos : SV_Position;
+&nbsp;&nbsp;&nbsp;&nbsp;float4 color : COLOR; // Color for the pixel
+};
+
+// Set the pixel color value for the renter target.&nbsp;
+float4 main(PixelShaderInput input) : SV_Target
+{
+&nbsp;&nbsp;&nbsp; return input.color;
+}
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="example2"></a><a id="EXAMPLE2"></a>Examples of porting OpenGL rendering code to Direct3D</h2>
+<p>Here we show an example of rendering in OpenGL ES 2.0 code and then the equivalent example in Direct3D 11 code.</p>
+<p>OpenGL rendering code</p>
+
+<div id="code-snippet-7" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_763553dd-7970-42c9-84a0-80e6b554be75');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_763553dd-7970-42c9-84a0-80e6b554be75" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>// Bind shaders to the pipeline. 
+// Both vertex shader and fragment shader are in a program.
+glUseProgram(m_shader-&gt;getProgram());
+&nbsp;
+// Input asssembly 
+// Get the position and color attributes of the vertex.
+
+m_positionLocation = glGetAttribLocation(m_shader-&gt;getProgram(), "position");
+glEnableVertexAttribArray(m_positionLocation);
+
+m_colorLocation = glGetAttribColor(m_shader-&gt;getProgram(), "color");
+glEnableVertexAttribArray(m_colorLocation);
+&nbsp;
+// Bind the vertex buffer object to the input assembler.
+glBindBuffer(GL_ARRAY_BUFFER, m_geometryBuffer);
+glVertexAttribPointer(m_positionLocation, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
+glVertexAttribPointer(m_colorLocation, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+&nbsp;
+// Draw a triangle with 3 vertices.
+glDrawArray(GL_TRIANGLES, 0, 3);
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p>Direct3D rendering code</p>
+
+<div id="code-snippet-8" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        <div class="codeSnippetContainerTabSingle" dir="ltr"><a>C++</a></div>
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_8181bb49-cf61-4fa5-91cd-1b1a0a6f231a');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_8181bb49-cf61-4fa5-91cd-1b1a0a6f231a" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+<span style="color:Green;">// Bind the vertex shader and pixel shader to the pipeline.</span>
+m_d3dDeviceContext-&gt;VSSetShader(vertexShader.Get(),<span style="color:Blue;">nullptr</span>,0);
+m_d3dDeviceContext-&gt;PSSetShader(pixelShader.Get(),<span style="color:Blue;">nullptr</span>,0);
+&nbsp;
+<span style="color:Green;">// Declare the inputs that the shaders expect.</span>
+m_d3dDeviceContext-&gt;IASetInputLayout(inputLayout.Get());
+m_d3dDeviceContext-&gt;IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &amp;stride, &amp;offset);
+
+<span style="color:Green;">// Set the primitive’s topology.</span>
+m_d3dDeviceContext-&gt;IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+<span style="color:Green;">// Draw a triangle with 3 vertices. triangleVertices is an array of 3 vertices.</span>
+m_d3dDeviceContext-&gt;Draw(ARRAYSIZE(triangleVertices),0);
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="related_topics"></a>Related topics</h2>
+<dl>
+<dt>
+<a href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166874.aspx">Port from OpenGL ES 2.0 to Direct3D 11</a>
+</dt>
+</dl>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+
+
+
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Show:</span>
+        <label>
+            <input class="libraryFilterInherited" checked="checked" value="Inherit" type="checkbox">Inherited
+        </label>
+        <label>
+            <input class="libraryFilterProtected" checked="checked" value="Protected" type="checkbox">Protected
+        </label>
+    </div>
+</div>
+    
+<input id="libraryMemberFilterEmptyWarning" value="There are no members available with your current filter settings." type="hidden">
+
+
+
+    </div>
+<div id="rightNavigationMenu" ms.cmpgrp="right nav" style="position: fixed; margin-left: 3px; top: 60px;">
+    <div id="mobileButtons">
+        
+    </div>
+    <div id="navMain">
+        <div id="closeNavigation">
+            <a class="tocCloseSmall" id="closeButton"></a>
+        </div>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-gb/library/windows/apps/dn166865%28d=printer%29.aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isdShare" href="#" role="button" aria-expanded="false">
+                <ins class="share"></ins>Share
+            </a>
+            <div id="socials" style="display: none">
+                <a class="isdFacebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fapps%2Fdn166865.aspx" aria-label="Share on Facebook">
+                    <ins class="facebook"></ins>
+                </a>
+                <a class="isdTwitter" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fapps%2Fdn166865.aspx&amp;text=GLSL-to-HLSL%20reference%20-%20Windows%20app%20development&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fapps%2Fdn166865.aspx" aria-label="Share on Twitter">
+                    <ins class="twitter"></ins>
+                </a>
+                <a class="isdGooglePlus" href="https://plus.google.com/share?url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fapps%2Fdn166865.aspx" aria-label="Share on Google+">
+                    <ins class="googlePlus"></ins>
+                </a>
+            </div>
+        </div>
+        <div id="indoc_toc" style="display: none" ms.cmpgrp="indoc toc">
+            <div id="indoc_title">IN THIS ARTICLE</div>
+            <ul id="indoc_toclist"></ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<input id="tocPaddingPerLevel" value="17" type="hidden">
+
+
+        </div>
+        <div class="clear"></div>
+
+        
+    <div style="clear: both;"></div>
+
+<input name="__RequestVerificationToken" value="wkr7HHP0VtNlzJKdLY2cgERsp7e7Mnwlj9pU57WweZqbmRZbQt09Rft_51NSoU0TIhR5m6p7B_l6lKoYlSXQx1SoGNI1" type="hidden">
+<input id="ratingValueSubmitUrl" value="https://msdn.microsoft.com/en-GB/library/feedback/rate/dn166865.aspx" type="hidden">
+<input id="ratingAdditionalSubmitUrl" value="https://msdn.microsoft.com/en-GB/library/feedback/additional/dn166865.aspx" type="hidden">
+<input id="isTopicRated" value="false" type="hidden">
+
+
+
+    
+
+
+
+        <link rel="stylesheet" type="text/css" href="GLSL-to-HLSL%20reference%20-%20Windows%20app%20development_tiedostot/UhfFooterResponsive.css" data-do-not-move="true">
+    
+    <input id="CurrentUrlLocale" value="en-GB" type="hidden">
+    <div id="ux-footer" class="ltr">
+        
+
+
+    <div id="standardRatingBefore" class="clear stdr-container-before"></div>
+    <div id="standardRating" class="stdr-container stdr-float" ms.pgarea="body" style="width: 1009px; margin-left: 0px; display: none;">
+        <div class="stdr-close" style="display: block;"></div>
+        <div class="stdr-vote stdr-content" style="display: none;">
+            <div class="stdr-content">
+                <span class="stdr-votetitle">Is this page helpful?</span>
+                <button class="stdr-yes" aria-label="Yes, this page was helpful" disabled="disabled">Yes</button>
+                <button class="stdr-no" aria-label="No, this page was not helpful" disabled="disabled">No</button>
+                <input id="s_ratingValue" value="1" type="hidden"><input id="s_ratingId" value="47600882" type="hidden">
+            </div>
+        </div>
+        <div class="stdr-feedback" style="display: none;">
+            <div class="stdr-form">
+                <div class="stdr-fieldtitle">Additional feedback?</div>
+                <textarea class="stdr-detail" rows="6" maxlength="1500"></textarea>
+                <div>
+                    <span class="stdr-count"><span class="stdr-charcnt">1500</span> characters remaining</span>
+                    <div class="stdr-buttons">
+                        <button class="stdr-provide" aria-label="Submit my additional feedback">Submit</button>
+                        <button class="stdr-skip" aria-label="Skip additional feedback">Skip this</button>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="stdr-thanks" style="">
+            <div class="stdr-content">
+                <span class="stdr-thankyou">Thank you!</span>
+                <span class="stdr-appreciate">We appreciate your feedback.</span>
+            </div>
+        </div>
+
+        
+        <div id="contentFeedbackQAContainer" style="display: none;"></div>
+    </div>
+    <div id="standardRatingPlaceholder" style="height: 60px; display: none;"></div>
+    
+        <div id="footerContainer">
+            <div id="baseFooter">
+                    <section id="footerArea" data-m="{&quot;cN&quot;:&quot;footerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a2Body&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;Body&quot;}">
+                    <div id="footerRegion" data-region-key="footerregion" data-m="{&quot;cN&quot;:&quot;footerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a2&quot;}">
+
+    <div id="footerUniversalFooter" data-m="{&quot;cN&quot;:&quot;footerUniversalFooter&quot;,&quot;cT&quot;:&quot;Module_coreui-universalfooter&quot;,&quot;id&quot;:&quot;m1r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a2&quot;}" data-module-id="Category|footerRegion|footerRegion|footerUniversalFooter|coreui-universalfooter">
+        
+
+
+
+
+<footer id="uhf-footer" class="c-universal-footer context-uhf" data-uhf-greenid="false" data-footer-footprint="en-gb/DEV_Windows/win-dev-center-footer" ms.pgarea="Uhf footer">
+        <nav ms.cmpgrp="Footer nav">
+            
+                <div>
+                        <div ms.cmpnm="Popular  ">
+                            <h6 class="c-heading-4">Popular
+
+</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://developer.microsoft.com/en-us/windows" ms.title="Popular_WindowsDevCenter">Windows Dev Center</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://azure.microsoft.com/" ms.title="Popular_MicrosoftAzure">Microsoft Azure</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.visualstudio.com/" ms.title="Popular_MicrosoftVisualStudio">Microsoft Visual Studio </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://dev.office.com/" ms.title="Popular_OfficeDevCenter">Office Dev Center</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.asp.net/" ms.title="Popular_asp.net ">ASP.NET</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.iis.net/" ms.title="Popular_IIS.net">IIS.NET</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div ms.cmpnm="Learning Resources">
+                            <h6 class="c-heading-4">Learning Resources</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://channel9.msdn.com/" ms.title="LearningResources_Channel9">Channel 9</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://developer.microsoft.com/en-us/windows/develop/app-development-video" ms.title="LearningResources_WindowsDevelopmentVideos">Windows development videos</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://mva.microsoft.com/" ms.title="LearningResources_MicrosoftVirtualAcademy">Microsoft Virtual Academy </a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div ms.cmpnm="Programs">
+                            <h6 class="c-heading-4">Programs</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://developer.microsoft.com/en-us/store/register" ms.title="Programs_AppDeveloperAgreement">Microsoft developer program</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://insider.windows.com/" ms.title="Programs_WindowsInsiderProgram">Windows Insider program</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="http://www.microsoftaffiliates.com/" ms.title="Programs_MicrosoftAffliateProgram">Microsoft Affiliate program </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/bizspark" ms.title="Programs_BizSparkforStartups">BizSpark (for startups) </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://msdn.microsoft.com/en-us/imagine/imagine-home" ms.title="Programs_MicrosoftImagineforStudents">Microsoft Imagine</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                </div>
+                <div>
+                        <div ms.cmpnm="For IT Pros">
+                            <h6 class="c-heading-4">For IT Pros</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/sql-server/sql-server-2016" ms.title="ForITPros_MicrosoftSQLServer">Microsoft SQL Server </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/cloud-platform/internet-of-things" ms.title="ForITPros_InternetofThings">Internet of Things </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/cloud-platform/operations-management-suite" ms.title="ForITPros_OperationsManagementSuite">Operations Management Suite </a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div ms.cmpnm="Values">
+                            <h6 class="c-heading-4">Values</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/education" ms.title="Values_MicrosoftinEducation">Microsoft in education</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://privacy.microsoft.com/en-gb" ms.title="Values_PrivacyatMicrosoft">Privacy at Microsoft</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div ms.cmpnm="Company">
+                            <h6 class="c-heading-4">Company</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-hyperlink" href="https://careers.microsoft.com/careers/en/gb/home.aspx" ms.title="Company_Careers">Careers</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/about/default.aspx" ms.title="Company_AboutMicrosoft">About Microsoft</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/news/" ms.title="Company_CompanyNews">Company news</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-hyperlink" href="https://www.microsoft.com/en-gb/sitemap.aspx" ms.title="Company_SiteMap">Site map</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                </div>
+        </nav>
+    <section>
+                <span id="selectLocaleFromPopUp">
+        <div class="locale-selector" style="position: relative">
+            <a class="current-locale" href="javascript:void(0)" aria-label="Change your language" aria-haspopup="true">
+                <span class="text">English</span>
+                <span class="gear"></span>
+            </a>
+            <div class="locale-selection-panel site-flag site-flag-lang" style="top: -245px; display: none;">
+                <div class="content" role="menu">
+                    <table class="all-locales" autogeneratecolumns="false" allowpaging="false" allowsorting="false" style="border-collapse: collapse;" cellspacing="0">
+                        <tbody>
+                            <tr>
+
+
+                                    <td><a title="Deutsch" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=de-de&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Deutsch</a></td>
+                                    <td><a title="English" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=en-us&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link selected" role="menuitem">English</a></td>
+                                    <td><a title="Español" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=es-es&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Español</a></td>
+                                    <td><a title="Français" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=fr-fr&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Français</a></td>
+                                        </tr><tr>
+                                    <td><a title="Italiano" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=it-it&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Italiano</a></td>
+                                    <td><a title="日本語" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=ja-jp&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">日本語</a></td>
+                                    <td><a title="한국어" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=ko-kr&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">한국어</a></td>
+                                    <td><a title="Português" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=pt-br&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Português</a></td>
+                                        </tr><tr class="last">
+                                    <td><a title="Pусский" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=ru-ru&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">Pусский</a></td>
+                                    <td><a title="简体中文" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=zh-cn&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">简体中文</a></td>
+                                    <td><a title="繁體中文" href="https://msdn.microsoft.com/en-gb/?action=selectlocale&amp;currentlocale=en-gb&amp;newlocale=zh-tw&amp;frompage=/en-gb/library/windows/apps/dn166865.aspx" class="locale-link" role="menuitem">繁體中文</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="arrow">
+                        &nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+        <ul role="contentinfo" class="c-list f-bare" ms.cmpgrp="Corp links">
+                            <li>
+                    <a class="c-hyperlink" href="https://support.microsoft.com/contactus/?ws=support" ms.title="Footer_ContactUs">Contact us</a>
+                </li>
+                <li>
+                    <a class="c-hyperlink" href="https://go.microsoft.com/fwlink/?LinkId=521839" ms.title="Footer_PrivacyandCookies">Privacy &amp; Cookies</a>
+                </li>
+                <li>
+                    <a class="c-hyperlink" href="https://go.microsoft.com/fwlink/?LinkID=206977" ms.title="Footer_TermsOfUse">Terms of use</a>
+                </li>
+                <li>
+                    <a class="c-hyperlink" href="https://www.microsoft.com/trademarks" ms.title="Trademarks">Trademarks</a>
+                </li>
+                <li>
+                    <a class="c-hyperlink" href="https://choice.microsoft.com/" ms.title="Footer_AboutAds">About our ads</a>
+                </li>
+                <li>
+                    <a class="c-hyperlink" href="https://www.microsoft.com/en-ie/eucompliancedoc/default.aspx" ms.title="Footer_EUComplianceDoCs">EU Compliance DoCs</a>
+                </li>
+
+            <li>© Microsoft 2017</li>
+            
+        </ul>
+    </section>
+    
+</footer>
+
+
+
+
+
+
+    </div>
+            </div>
+
+    </section>
+
+        
+    
+    
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footerPrintView">
+            <div class="footerCopyrightPrintView">© 2017 Microsoft</div>
+        </div>
+
+        
+        
+        
+        
+
+
+
+        <input id="MtpsDevice" value="Default" type="hidden">
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+        
+        
+        
+            
+        
+
+<!--[CDATA[ WebTrends view model not available or IncludeLegacyWebTrendsScriptInGlobal feature flag is off]]-->
+
+
+
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" value="W-nYVNWvJs2oukPBXxNzrE4ztJ_c7cXiXBhwW3ntz8vRLVAd-gJ5KxkzeeB2X31k-5gJpa-JEZwi1y_5pwe7OQiuWvk1" type="hidden">
+</div>
+
+
+    </div>
+
+    
+    
+
+    
+
+    
+
+
+<div id="meControlDropdown" class="msame_Drop_root" style="display: none;"><div class="msame_Drop_topb"></div><div class="msame_Drop_content"><div class="msame_Drop_active"></div><div class="msame_Drop_rewards" style="display: none;"></div><div class="msame_Drop_account"></div><div class="msame_Drop_links" style="display: none;"><div class="msame_Drop_links_list"></div></div><div class="msame_Drop_signIn"><div id="msame_si0" class="msame_Drop_SI"><a href="#" target="" class="msame_TxtTrunc">Sign in with another account</a></div></div><div class="msame_Drop_signOut"></div><div class="msame_Drop_accts" style="display: none;"><div class="msame_Drop_sep"></div><div class="msame_Drop_accts_list"></div></div></div></div></body></html>

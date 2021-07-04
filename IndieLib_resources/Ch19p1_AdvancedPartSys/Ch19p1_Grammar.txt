@@ -1,0 +1,53 @@
+BNF Grammar for Particle System Script:
+
+Script ::= 			<ParticleSystem>
+
+ParticleSystem ::= 		ParticleSystem <VersionNumber> <Name> "{" {<SysProperty>} {<EventSequence>} "}"
+
+VersionNumber ::=		RealNumber
+
+Name ::=			"{ --< char >-- }"
+
+Number ::=			<RealNumber> | Random(<RealNumber>,<RealNumber>)
+
+RealNumber ::=			--< float >--
+
+SysProperty ::= 		<VectorProperty> = <Vector> 
+
+SysVectorProperty ::= 		Position
+
+Vector ::= 			XYZ(<Number>,<Number>,<Number>)
+
+EventSequence ::=		EventSequence <Name> "{" {<SeqProperty>} {Event} "}"
+
+SeqProperty ::= 		<SeqNumberProperty> = <Number> | 
+				<SeqVectorProperty> = <Vector> |
+				<SysAlphaBlendModeProperty> = <AlphaBlendMode> |
+				Texture = <Name>
+
+SeqNumberProperty ::=		EmitRate | LifeTime | NumParticles
+
+SeqVectorProperty ::=		SpawnDir | EmitRadius | Gravity
+
+SeqAlphaBlendModeProperty ::= 	SourceBlendMode | DestBlendMode
+
+AlphaBlendMode ::= 		D3DBLEND_ZERO | D3DBLEND_ONE | D3DBLEND_SRCCOLOR | 
+                                D3DBLEND_INVSRCCOLOR | D3DBLEND_SRCALPHA |
+				D3DBLEND_INVSRCALPHA | D3DBLEND_DESTALPHA | 
+                                D3DBLEND_INVDESTALPHA | D3DBLEND_DESTCOLOR |
+				D3DBLEND_INVDESTCOLOR | D3DBLEND_SRCALPHASAT
+
+Event ::=			<Time> <ParticleNumericProp> = <Number> |
+				<Time> <ParticleColorProp> = <Color> |
+				<Time> <ParticleVectorProp> = <Vector> |
+
+Time ::=			[Fade so] at <Number> | initial | [Fade so] Final
+
+ParticleNumericProp ::=		Size | EventTimer | RedColor | GreenColor | BlueColor | Alpha
+				
+ParticleVectorProp ::=		Velocity
+
+ParticleColorProp ::=		Color
+
+Color ::=			RGBA(<Number>,<Number>,<Number>,<Number>)
+

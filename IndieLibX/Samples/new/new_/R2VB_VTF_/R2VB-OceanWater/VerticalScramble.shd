@@ -1,0 +1,24 @@
+//--------------------------------------------------------------------------------------
+// File: VerticalScramble.shd
+// 
+// Copyright (c) ATI Research 2006
+//--------------------------------------------------------------------------------------
+
+[Fragment shader]
+
+<compile ps_2_0 main>
+
+sampler sampScramble;
+sampler sampSourceImage;
+
+///--------------------------------------------------------------------------------------
+// Pixel shader for vertical scramble
+//--------------------------------------------------------------------------------------
+float4 main( float2 imagePos : TEXCOORD0 ) : COLOR
+{
+    float2 fromPos = imagePos;
+
+    fromPos.y = tex1D(sampScramble, imagePos.y).x;   // scramble the y coordinate
+
+    return tex2D(sampSourceImage, fromPos);
+}

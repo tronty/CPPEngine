@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" class="js" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(v=vs.85).aspx">
+    <title>Vertex Textures in vs_3_0 (DirectX HLSL) (Windows)</title>
+
+
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/windows/desktop/bb206339(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="MN" content="61C41DD0-4:27:12 PM">
+
+<meta name="Search.ShortId" content="bb206339">
+
+<meta name="ms.shortidmsdn" content="bb206339">
+
+<meta name="ms.locale" content="en-us">
+
+<meta name="ms.prodver" content="VS.85">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="EN">
+
+<meta name="ms.loc" content="US">
+
+<meta name="ms.sitever" content="2017.11.07.1">
+
+<meta name="ms.assetid" content="VS|directx_sdk|~\vertex_textures_in_vs_3_0.htm">
+
+<meta name="ms.auth" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ImageSprite.css">
+    <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/TopicResponsive_002.css">
+        <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/TopicResponsive.css">
+
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/CodeSnippet.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ProgrammingSelector.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ExpandableCollapsibleArea.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/CommunityContent.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/TopicNotInScope.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/FeedViewerBasic.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ImageSprite_002.css">
+
+    
+
+    
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://msdn.microsoft.com/Areas/Epx/Themes/Windows/Content/Winlogo_favicon.ico">
+
+
+<link href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/PrintView.css" rel="stylesheet" type="text/css" media="print"><style type="text/css">.msame_TxtTrunc{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;word-break:break-all}.msame_Header{display:inline-block;cursor:pointer;font-size:14px;border-width:1px;border-style:solid;border-bottom-style:none;border-color:transparent;width:100%}.msame_Header .msame_screen_reader{overflow:hidden;display:inline-block;width:1px;height:1px;position:absolute}.msame_Header_name{padding-left:12px;max-width:160px;display:inline-block;line-height:64px;vertical-align:top;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:#505050}.msame_unauth .msame_Header_name{padding-right:12px}.msame_unauth .msame_Header_name:hover{color:#0078d7}.msame_Drop_AI_pic,.msame_Drop_active_pic,.msame_Header_pic{display:inline-block}.msame_Header_piccont{padding-top:14px;padding-bottom:14px;padding-right:12px;padding-left:8px}.msame_Mobile .msame_Header_piccont{padding-top:10px;padding-bottom:10px}.msame_Short .msame_Header_piccont{padding-left:12px}.msame_Header_picframe{width:36px;height:36px;border-radius:50%;overflow:hidden}.msame_Mobile .msame_Header_picframe{width:48px;height:48px}.msame_open .msame_Header_picframe{z-index:3000001;position:relative}.msame_Header_chev{display:none}.msame_Mobile .msame_Header_piccont{padding-right:8px;padding-left:10px}.msame_Mobile .msame_Header_name{line-height:3;font-size:114%;padding-left:10px;padding-right:10px;display:inline-block;vertical-align:top;padding-top:14px}.msame_Mobile.msame_3row .msame_Header_name{padding-top:6px}.msame_Mobile .msame_Header_chev{display:inline-block;line-height:64px;vertical-align:top;padding-right:16px;padding-left:8px;float:right}.msame_open .msame_Header_chev img{-moz-transform:scaleY(-1);-o-transform:scaleY(-1);-webkit-transform:scaleY(-1);transform:scaleY(-1);filter:FlipV;-ms-filter:FlipV}.msame_Drop_root .msame_Drop_AI:focus,.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_Drop_root a:focus,.msame_Header:focus{border-style:dashed;border-color:#000;border-width:1px}.msame_Header .msame_Header_piccont img{width:36px;height:36px;line-height:normal;vertical-align:baseline}.msame_Mobile .msame_Header_piccont img{width:48px;height:48px}.msame_Mobile .msame_Header_fullName{font-size:100%;color:#000;line-height:1.333}.msame_Drop_AI_email,.msame_Drop_AI_status,.msame_Mobile .msame_Header_email,.msame_Mobile .msame_Header_nickName{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:rgba(0,0,0,.54);line-height:1.333333}.msaie8 .msame_Drop_AI_pic,.msaie8 .msame_Drop_AI_right,.msaie8 .msame_Drop_active_pic,.msaie8 .msame_Drop_active_right,.msaie8 .msame_Header,.msaie8 .msame_Header_name,.msaie8 .msame_Header_pic{zoom:1}</style><style type="text/css">.msame_open .msame_Header{border-color:#e6e6e6;background-color:#fff}.msame_open .msame_Header.msame_Mobile{border-color:transparent;background-color:transparent}.msame_ClickStart.msame_Drop_root .msame_Drop_AI:focus,.msame_ClickStart.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_ClickStart.msame_Drop_root a:focus{outline-style:none}.msame_Drop_root a,.msame_Drop_root a:active,.msame_Drop_root a:focus,.msame_Drop_root a:hover,.msame_Drop_root a:visited{text-decoration:none}.msame_Drop_topb{border-top-color:#e6e6e6;border-top-style:solid;border-top-width:1px}.msame_Mobile .msame_Drop_topb{width:100%!important}.msame_Drop_active{padding-bottom:8px}.msame_Drop_AI_picframe{width:44px;height:44px;border-radius:50%;overflow:hidden}.msame_Drop_AI_piccont img{width:44px;height:44px}.msame_Drop_root{border-width:1px;border-color:#e6e6e6;border-style:solid;border-top-style:none;position:absolute;width:360px;z-index:3000000;background-color:#fff;font-size:14px}.msame_Drop_sep{border-top-width:1px;border-top-color:#e6e6e6;border-top-style:solid;width:100%;height:0;display:block}.msame_Mobile.msame_Drop_root{left:0!important;right:0;bottom:0;width:100%;border-right-width:0;border-left-width:0}.msame_Mobile .msame_Drop_content{overflow-y:auto;position:absolute;left:0;right:0;bottom:0;top:0}.msame_Drop_root a{text-decoration:none}.msame_Drop_content{overflow:hidden}.msame_Mobile .msame_Drop_active{display:none}.msame_Drop_AI{cursor:pointer}.disabled .msame_Drop_AI_pic,.disabled .msame_Drop_AI_right{opacity:.4;cursor:default}.disabled .msame_Drop_AI_email,.disabled .msame_Drop_AI_name,.disabled .msame_Drop_AI_status{color:#000}.msame_Drop_active_piccont{padding:5px}.msame_Drop_AI_piccont{padding:10px}.msame_Drop_active_picframe{width:74px;height:74px;border-radius:50%;overflow:hidden}.msame_Drop_active_picborder,.msame_Drop_active_piccont a{display:block;padding:5px;border-radius:50%}.msame_Drop_active_piccont a:focus{padding:4px;border:1px dashed #000}.msame_Drop_active_piccont img{width:64px;height:64px;border-radius:50%}.msame_Drop_active_name{display:block;line-height:1.3;font-size:150%;color:#000;font-family:"Segoe UI Light","Segoe UI Web Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol",HelveticaNeue-Light,"Helvetica Neue",Arial,sans-serif}.msame_Drop_active_email{display:block;line-height:1.42857;font-size:100%;color:rgba(0,0,0,.54);font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;padding:1px}.msame_Drop_active_right{display:inline-block;width:216px;vertical-align:top;padding-top:12px;padding-right:12px;padding-left:12px}.msame_Drop_active_right a{color:rgba(0,0,0,.54)}.msame_Drop_SI a{line-height:2;font-size:114%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;padding-left:12px;padding-right:12px;display:block;color:#000}.msame_Mobile .msame_Drop_SI a{line-height:2.75}.msame_Drop_AI.switch:hover,.msame_Drop_AI_remove:hover,.msame_Drop_SI a:hover{color:#000;background-color:rgba(0,0,0,.12)}.msame_Drop_AI.switch:active,.msame_Drop_AI.switch:active div,.msame_Drop_AI_remove:active,.msame_Drop_SI a:active{color:#fff!important;background-color:#000}.msame_Drop_SI a:link,.msame_Drop_SI a:visited{color:#000}.msame_Drop_active_link a,.msame_Drop_active_link a:active,.msame_Drop_active_link a:hover,.msame_Drop_active_link a:link,.msame_Drop_active_link a:visited{line-height:1.333333;font-size:86%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;color:#0078d7}.msame_Drop_AL{padding-bottom:24px}.msame_Drop_AI_right{display:inline-block;width:252px;vertical-align:top;padding-left:8px;padding-top:5px}.msame_Mobile .msame_Drop_AI_right{width:100px}.msame_Drop_AI_name{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:114%;color:#000;line-height:1.25}.msame_Drop_AI_remove{float:right;margin-top:6px;padding-top:12px;padding-bottom:12px;padding-left:12px;padding-right:12px;text-align:center;cursor:pointer}.msame_Drop_AI_remove img{display:block}.msame_auto_frame{display:none;position:absolute;top:0;left:-4000px;width:0}</style></head>
+<body class="library FF" style="overflow-y: auto;">
+    <div id="page">
+
+        
+
+        
+
+    <link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/Header.css" xmlns="http://www.w3.org/1999/xhtml"><link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/sprite.css" xmlns="http://www.w3.org/1999/xhtml">
+
+        <link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/UhfHeaderResponsive.css" data-do-not-move="true">
+    <div id="uhf-header-wrapper">
+        <link rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/9c-3df1cf.css" type="text/css" media="all"><link rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/mscc-0.css" type="text/css">    <section id="headerArea" data-m="{&quot;cN&quot;:&quot;headerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a1Body&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;Body&quot;}">
+                    <div id="headerRegion" data-region-key="headerregion" data-m="{&quot;cN&quot;:&quot;headerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a1&quot;}">
+
+    <div id="headerUniversalHeader" data-m="{&quot;cN&quot;:&quot;headerUniversalHeader&quot;,&quot;cT&quot;:&quot;Module_coreui-universalheader&quot;,&quot;id&quot;:&quot;m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a1&quot;}" data-module-id="Category|headerRegion|headerRegion|headerUniversalHeader|coreui-universalheader">
+        
+
+
+
+        <div id="epb" class="x-hidden x-hidden-vp1 x-hidden-vp2 uhfc-universal-context context-uhf" ms.cmpgrp="epb">
+
+
+
+<div class="c-uhfh-alert f-information epb-container epb-default-color" role="alert" ms.pgarea="Epb v2">
+    <div>        
+        <p class="c-paragraph">
+                <img alt="Microsoft Edge" src="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/REZlo1.png">
+
+            <span class="c-text-group">
+                <span class="epb-launch">Try Microsoft Edge</span>
+                <span class="epb-text">A fast and secure browser that's designed for Windows 10</span>
+            </span>
+            <span class="c-group">
+                <button id="close-epb" class="c-action-trigger c-action-cancel glyph-cancel" ms.title="EPB-dismiss" aria-label="No thanks">No thanks</button>
+                <a id="epbTryNow" aria-label="A fast and secure browser that's designed for Windows 10" class="epb-launch c-action-trigger c-action-open" ms.title="EPB-launch">Get started</a>
+            </span>
+
+        </p>
+    </div>
+</div>
+
+            
+        </div>
+
+        <div ms.cmpgrp="cookiebanner">
+
+<div id="uhfCookieAlert">
+    <div id="msccBanner" dir="ltr" data-site-name="Microsoft.OneRenderFramework.Core" data-mscc-version="0.3.6" data-nver="aspnet-2.0.7" data-sver="0.1.2" class="cc-banner active" role="alert"><div class="cc-container"><svg class="cc-icon cc-v-center" x="0px" y="0px" viewBox="0 0 44 44" height="30px" fill="none" stroke="currentColor"><circle cx="22" cy="22" r="20" stroke-width="2"></circle><line x1="22" x2="22" y1="18" y2="33" stroke-width="3"></line><line x1="22" x2="22" y1="12" y2="15" stroke-width="3"></line></svg> <span class="cc-v-center cc-text">This site uses cookies for analytics, personalized content and ads. By continuing to browse this site, you agree to this use.</span> <a href="https://go.microsoft.com/fwlink/?linkid=845480" aria-label="Learn more about Microsoft's Cookie Policy" id="msccLearnMore" class="cc-link cc-v-center cc-float-right" data-mscc-ic="false">Learn more</a></div></div>
+</div>
+
+            
+        </div>
+
+
+
+<header role="banner" class="c-uhfh context-uhf js" itemscope="itemscope" data-header-footprint="en-us/DEV_Windows/windowsdesktop-header" itemtype="http://schema.org/Organization">
+    <div class="theme-light js-global-head f-closed " ms.pgarea="Universal Header">
+        <div class="c-uhfh-gcontainer">
+            <button class="c-action-trigger c-glyph glyph-global-nav-button" aria-label="Header navigation menu" aria-expanded="false" ms.title="Mobile menu button"></button>
+            <button class="c-action-trigger c-glyph glyph-arrow-htmllegacy" aria-label="Close search" aria-expanded="false" ms.title="Close Search"></button>
+                    <a data-m="{&quot;pid&quot;:&quot;h:32f2fa12&quot;,&quot;id&quot;:&quot;n1m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;m1r1a1&quot;}" id="uhfLogo" class="c-logo" itemprop="url" href="https://www.microsoft.com/" aria-label="Microsoft" ms.cmpgrp="GlobalNav_Logo">
+                        <img itemprop="logo" itemscope="itemscope" class="c-image" alt="Microsoft" src="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/microsoft-gray.png">
+                        <span>Microsoft</span>
+                    </a>
+            <div class="f-mobile-title">
+                <button class="c-action-trigger c-glyph glyph-chevron-left" aria-label="See more menu options" ms.title="Mobile back button"></button>
+                <span data-global-title="Microsoft home" class="js-mobile-title">Windows Dev Center</span>
+                <button class="c-action-trigger c-glyph glyph-chevron-right" aria-label="See more menu options" ms.title="Mobile forward button"></button>
+            </div>
+
+            
+            <button class="c-action-trigger c-glyph glyph-chevron-left js-primary-paddle" ms.title="Previous" aria-label="Show previous" tabindex="-1" style="display: none;"></button>
+            
+                    <nav id="uhf-g-nav" class="c-uhfh-gnav" aria-labelledby="uhfLogo" role="navigation" ms.cmpgrp="nav">
+            <ul class="js-paddle-items"><li style="transition: margin 0.667s cubic-bezier(0.16, 1, 0.29, 0.99) 0s;">
+                        <a id="shellmenu_0" class="c-uhf-nav-link" href="https://www.microsoft.com/en-us/microsoft-365" ms.title="Microsoft 365">Microsoft 365</a>
+                    </li><li>
+                        <a id="shellmenu_1" class="c-uhf-nav-link" href="https://azure.microsoft.com/" ms.title="Azure">Azure</a>
+                    </li><li>
+                        <a id="shellmenu_2" class="c-uhf-nav-link" href="https://products.office.com/en-us/business/office" ms.title="Office 365">Office 365</a>
+                    </li><li>
+                        <a id="shellmenu_3" class="c-uhf-nav-link" href="https://dynamics.microsoft.com/en-us/" ms.title="Dynamics 365">Dynamics 365</a>
+                    </li><li>
+                        <a id="shellmenu_4" class="c-uhf-nav-link" href="https://www.microsoft.com/sql-server/" ms.title="SQL">SQL</a>
+                    </li><li class="f-hidden">
+                        <a id="shellmenu_5" class="c-uhf-nav-link" href="https://www.microsoft.com/en-us/windowsforbusiness" ms.title="Windows 10">Windows 10</a>
+                    </li><li>
+                            <div class="c-uhf-menu js-nav-menu">
+
+                                <button id="More-navigation" aria-expanded="false" aria-haspopup="true" ms.title="More" ms.interactiontype="14" style="white-space:nowrap" class="f-hidden">More</button>
+                                <ul class="f-multi-column f-multi-column-6" aria-labelledby="More-navigation" aria-hidden="true" ms.cmpnm="More" style="">
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="Products&amp;Services-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Products &amp; Services</button>
+        <ul aria-labelledby="Products&amp;Services-navigation" aria-hidden="false" style="">
+    <li ms.cmpnm="More_ProductsandServices_WindowsServer">
+        <a id="shellmenu_8" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/cloud-platform/windows-server" ms.title="More_ProductsandServices_WindowsServer">Windows Server</a>
+        
+    </li>
+    <li ms.cmpnm="More_ProductsandServices_EnterpriseMobilityandSecurity">
+        <a id="shellmenu_9" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/cloud-platform/enterprise-mobility-security" ms.title="More_ProductsandServices_EnterpriseMobilityandSecurity">Enterprise Mobility + Security</a>
+        
+    </li>
+    <li ms.cmpnm="More_ProductsandServices_PowerBI">
+        <a id="shellmenu_10" class="js-subm-uhf-nav-link" href="https://powerbi.microsoft.com/en-us/" ms.title="More_ProductsandServices_PowerBI">Power BI</a>
+        
+    </li>
+    <li ms.cmpnm="More_ProductsandServices_Teams">
+        <a id="shellmenu_11" class="js-subm-uhf-nav-link" href="https://products.office.com/en-us/microsoft-teams/group-chat-software" ms.title="More_ProductsandServices_Teams">Teams</a>
+        
+    </li>
+    <li ms.cmpnm="DeveloperAndIT_VisualStudio">
+        <a id="shellmenu_12" class="js-subm-uhf-nav-link" href="https://www.visualstudio.com/" ms.title="DeveloperAndIT_VisualStudio">Visual Studio</a>
+        
+    </li>
+    <li ms.cmpnm="More_ProductsandServices_SurfaceforBusiness">
+        <a id="shellmenu_13" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/en-us/surface/business/overview" ms.title="More_ProductsandServices_SurfaceforBusiness">Surface for Business</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="EmergingTechnologies-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Emerging Technologies</button>
+        <ul aria-labelledby="EmergingTechnologies-navigation" aria-hidden="false">
+    <li ms.cmpnm="More_EmergingTechnologies_AI">
+        <a id="shellmenu_15" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/ai/" ms.title="More_EmergingTechnologies_AI">AI</a>
+        
+    </li>
+    <li ms.cmpnm="More_EmergingTechnologies_InternetofThings">
+        <a id="shellmenu_16" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/internet-of-things" ms.title="More_EmergingTechnologies_InternetofThings">Internet of Things</a>
+        
+    </li>
+    <li ms.cmpnm="More_EmergingTechnologies_AzureCognitiveServices">
+        <a id="shellmenu_17" class="js-subm-uhf-nav-link" href="https://azure.microsoft.com/services/cognitive-services/" ms.title="More_EmergingTechnologies_AzureCognitiveServices">Azure Cognitive Services</a>
+        
+    </li>
+    <li ms.cmpnm="More_EmergingTechnologies_Quantum">
+        <a id="shellmenu_18" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/quantum/" ms.title="More_EmergingTechnologies_Quantum">Quantum</a>
+        
+    </li>
+    <li ms.cmpnm="More_EmergingTechnologies_Research">
+        <a id="shellmenu_19" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/research/" ms.title="More_EmergingTechnologies_Research">Research</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="Developer&amp;IT-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Developer &amp; IT</button>
+        <ul aria-labelledby="Developer&amp;IT-navigation" aria-hidden="false">
+    <li ms.cmpnm="More_DeveloperAndIT_Docs.microsoft.com">
+        <a id="shellmenu_21" class="js-subm-uhf-nav-link" href="https://docs.microsoft.com/en-us/" ms.title="More_DeveloperAndIT_Docs.microsoft.com">Docs</a>
+        
+    </li>
+    <li ms.cmpnm="More_DeveloperAndIT_TechNet">
+        <a id="shellmenu_22" class="js-subm-uhf-nav-link" href="https://technet.microsoft.com/en-us/ms376608.aspx" ms.title="More_DeveloperAndIT_TechNet">TechNet</a>
+        
+    </li>
+    <li ms.cmpnm="Footer_Developer_MicrosoftDeveloperNetwork">
+        <a id="shellmenu_23" class="js-subm-uhf-nav-link" href="https://msdn.microsoft.com/en-us" ms.title="Footer_Developer_MicrosoftDeveloperNetwork">Developer Network</a>
+        
+    </li>
+    <li ms.cmpnm="More_DeveloperAndIT_WindowsDevCenter">
+        <a id="shellmenu_24" class="js-subm-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows" ms.title="More_DeveloperAndIT_WindowsDevCenter">Windows Dev Center</a>
+        
+    </li>
+    <li ms.cmpnm="More_DeveloperAndIT_Windows_IT_Pro_Center">
+        <a id="shellmenu_25" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/en-us/itpro/windows" ms.title="More_DeveloperAndIT_Windows_IT_Pro_Center">Windows IT Pro Center</a>
+        
+    </li>
+    <li ms.cmpnm="More_DeveloperAndIT_FastTrack">
+        <a id="shellmenu_26" class="js-subm-uhf-nav-link" href="https://fasttrack.microsoft.com/office" ms.title="More_DeveloperAndIT_FastTrack">FastTrack</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="Partner-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Partner</button>
+        <ul aria-labelledby="Partner-navigation" aria-hidden="false">
+    <li ms.cmpnm="More_Partner_PartnerNetwork">
+        <a id="shellmenu_28" class="js-subm-uhf-nav-link" href="https://partner.microsoft.com/" ms.title="More_Partner_PartnerNetwork">Partner Network</a>
+        
+    </li>
+    <li ms.cmpnm="More_Partner_SolutionProviders">
+        <a id="shellmenu_29" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/solution-providers/" ms.title="More_Partner_SolutionProviders">Solution Providers</a>
+        
+    </li>
+    <li ms.cmpnm="More_Partner_PartnerCenter">
+        <a id="shellmenu_30" class="js-subm-uhf-nav-link" href="https://partnercenter.microsoft.com/partner/home" ms.title="More_Partner_PartnerCenter">Partner Center</a>
+        
+    </li>
+    <li ms.cmpnm="More_Partner_CloudHosting">
+        <a id="shellmenu_31" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/en-us/cloudandhosting" ms.title="More_Partner_CloudHosting">Cloud Hosting</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="Industries-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Industries</button>
+        <ul aria-labelledby="Industries-navigation" aria-hidden="false">
+    <li ms.cmpnm="Products_ForStudentsAndEducators_Education">
+        <a id="shellmenu_33" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/en-us/education" ms.title="Products_ForStudentsAndEducators_Education">Education</a>
+        
+    </li>
+    <li ms.cmpnm="Footer_Enterprise_FinanciaServices">
+        <a id="shellmenu_34" class="js-subm-uhf-nav-link" href="https://enterprise.microsoft.com/en-us" ms.title="Footer_Enterprise_FinanciaServices">Financial services</a>
+        
+    </li>
+    <li ms.cmpnm="More_Industries_Government">
+        <a id="shellmenu_35" class="js-subm-uhf-nav-link" href="https://enterprise.microsoft.com/en-us/industries/government/" ms.title="More_Industries_Government">Government</a>
+        
+    </li>
+    <li ms.cmpnm="More_Industries_Health">
+        <a id="shellmenu_36" class="js-subm-uhf-nav-link" href="https://enterprise.microsoft.com/en-us/industries/health/" ms.title="More_Industries_Health">Health</a>
+        
+    </li>
+    <li ms.cmpnm="Footer_Enterprise_ManufacturingAndResources">
+        <a id="shellmenu_37" class="js-subm-uhf-nav-link" href="https://enterprise.microsoft.com/en-us/industries/discrete-manufacturing/" ms.title="Footer_Enterprise_ManufacturingAndResources">Manufacturing &amp; resources</a>
+        
+    </li>
+    <li ms.cmpnm="More_Industries_Retail">
+        <a id="shellmenu_38" class="js-subm-uhf-nav-link" href="https://enterprise.microsoft.com/en-us/industries/retail-and-consumer-goods/" ms.title="More_Industries_Retail">Retail</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+    <li class="f-sub-menu js-nav-menu" ms.cmpnm="Container">
+
+        <button id="Other-navigation" aria-expanded="true" ms.title="" ms.interactiontype="15" tabindex="-1">Other</button>
+        <ul aria-labelledby="Other-navigation" aria-hidden="false">
+    <li ms.cmpnm="More_Other_Security">
+        <a id="shellmenu_40" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/security/" ms.title="More_Other_Security">Security</a>
+        
+    </li>
+    <li ms.cmpnm="More_Other_TrustCenter">
+        <a id="shellmenu_41" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/TrustCenter/" ms.title="More_Other_TrustCenter">Trust Center</a>
+        
+    </li>
+    <li ms.cmpnm="More_Other_Licensing">
+        <a id="shellmenu_42" class="js-subm-uhf-nav-link" href="https://www.microsoft.com/licensing/" ms.title="More_Other_Licensing">Licensing</a>
+        
+    </li>
+    <li ms.cmpnm="More_Other_AppSource">
+        <a id="shellmenu_43" class="js-subm-uhf-nav-link" href="https://appsource.microsoft.com/" ms.title="More_Other_AppSource">AppSource</a>
+        
+    </li>
+    <li ms.cmpnm="More_Other_AzureMarketplace">
+        <a id="shellmenu_44" class="js-subm-uhf-nav-link" href="https://azuremarketplace.microsoft.com/marketplace/" ms.title="More_Other_AzureMarketplace">Azure Marketplace</a>
+        
+    </li>
+    <li ms.cmpnm="More_Other_Events">
+        <a id="shellmenu_45" class="js-subm-uhf-nav-link" href="https://events.microsoft.com/" ms.title="More_Other_Events">Events</a>
+        
+    </li>
+        </ul>
+        
+    </li>   
+                                    
+                                        <li class="f-multi-column-info"><a ms.title="View all" href="https://www.microsoft.com/en-us/sitemap.aspx" aria-label="View all" class="c-glyph">View all</a></li>
+                                    
+                                </ul>
+                            </div>
+                        </li>            </ul>
+            
+        </nav>
+
+            
+            <button class="c-action-trigger c-glyph glyph-chevron-right js-secondary-paddle" ms.title="Next" aria-label="Show next" tabindex="-1" style="display: block;"></button>
+
+                <div class="c-uhfh-actions" ms.cmpgrp="Header actions">
+                            <form class="c-search" autocomplete="off" id="searchForm" name="searchForm" role="search" action="https://social.msdn.microsoft.com/search/windows" method="GET" data-seautosuggest="" data-seautosuggestapi="https://www.microsoft.com/services/api/v3/suggest" aria-expanded="false">
+            <input data-m="{&quot;cN&quot;:&quot;cli_shellHeaderSearchInput&quot;,&quot;pid&quot;:&quot;query&quot;,&quot;id&quot;:&quot;nn2m1r1a1&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;m1r1a1&quot;}" id="cli_shellHeaderSearchInput" aria-label="Search Dev Center" role="combobox" aria-autocomplete="list" aria-controls="universal-header-search-auto-suggest-transparent" aria-owns="universal-header-search-auto-suggest-ul" name="query" placeholder="Search Dev Center" ms.title="SearchBox" type="search"><div class="x-screen-reader" aria-live="assertive"></div>
+                <input data-m="{&quot;pid&quot;:&quot;Refinement&quot;,&quot;id&quot;:&quot;nn3m1r1a1&quot;,&quot;sN&quot;:3,&quot;aN&quot;:&quot;m1r1a1&quot;}" name="Refinement" value="183" ms.title="HiddenInput" type="hidden">
+            <button id="search" aria-label="Search" class="c-glyph" ms.title="Search" data-bi-dnt="true"></button>
+            <div class="m-auto-suggest" id="universal-header-search-auto-suggest-transparent" role="group">
+                <ul class="c-menu" id="universal-header-search-auto-suggest-ul" aria-hidden="true" data-bi-dnt="true" data-js-auto-suggest-position="default" role="listbox" data-tel="wedcs" ms.cmpgrp="search suggestions"></ul>
+                <ul class="c-menu f-auto-suggest-no-results" aria-hidden="true" data-js-auto-suggest-postion="default" data-js-auto-suggest-position="default" tabindex="0">
+                    <li class="c-menu-item"> <span tabindex="-1">No results</span></li>
+                </ul>
+            </div>
+            
+        </form>
+
+                    
+                    
+                            <div id="meControl" class="c-me" data-signinsettings="{&quot;containerId&quot;:&quot;meControl&quot;,&quot;enabled&quot;:true,&quot;headerHeight&quot;:48,&quot;debug&quot;:false,&quot;extensibleLinks&quot;:[],&quot;userData&quot;:{&quot;idp&quot;:&quot;msa&quot;,&quot;firstName&quot;:&quot;&quot;,&quot;lastName&quot;:&quot;&quot;,&quot;memberName&quot;:&quot;&quot;,&quot;cid&quot;:&quot;&quot;,&quot;authenticatedState&quot;:&quot;3&quot;},&quot;rpData&quot;:{&quot;preferredIdp&quot;:&quot;msa&quot;,&quot;msaInfo&quot;:{&quot;signInUrl&quot;:&quot;/en-us/store/signin&quot;,&quot;signOutUrl&quot;:&quot;/en-us/store/signout&quot;,&quot;meUrl&quot;:&quot;https://login.live.com/me.srf?wa=wsignin1.0&quot;},&quot;aadInfo&quot;:{&quot;signOutUrl&quot;:&quot;/en-us/store/signout&quot;,&quot;appId&quot;:null,&quot;siteUrl&quot;:null,&quot;blockMsaFed&quot;:true}}}" ms.cmpgrp="GlobalNav_Account"><div class="msame_Header msame_unauth msame_Short" role="button" tabindex="0" aria-label="Sign&nbsp;in&nbsp;to&nbsp;your&nbsp;account" aria-expanded="false" aria-haspopup="true" data-mc-m="{&quot;id&quot;:&quot;headerClick&quot;,&quot;aN&quot;:&quot;Me Control Header&quot;,&quot;cT&quot;:&quot;Button&quot;}" "="" style="height: 48px;"><span class="msame_screen_reader">Sign&nbsp;in&nbsp;to&nbsp;your&nbsp;account</span><div aria-hidden="true"><div class="msame_Header_name msame_TxtTrunc" style="line-height: 48px;">Sign in</div><div class="msame_Header_chev"></div></div></div></div>
+
+                    
+                </div>
+        </div>
+        
+        
+    </div>
+            <div class="theme-dark brand-neutral js-cat-head" itemprop="brand" itemscope="itemscope" itemtype="http://schema.org/Brand" ms.cmpgrp="UHF category nav">
+
+<div>
+        <a id="uhfCatLogo" class="c-logo" href="https://developer.microsoft.com/en-us/windows" aria-label="Windows Dev Center" itemprop="url" ms.title="Windows Dev Center">
+                <span>Windows Dev Center</span>
+        </a>
+    
+        <a id="dashboard" class="c-uhf-nav-link x-hidden-vp1 x-hidden-vp2" href="https://developer.microsoft.com/dashboard" ms.title="Dashboard">Dashboard</a>
+    <button class="c-action-trigger c-glyph glyph-chevron-left js-primary-paddle" aria-label="Scroll left" title="Scroll left" ms.title="Previous" tabindex="-1" style="display: none;"></button>
+    
+    <button class="c-action-trigger c-glyph glyph-chevron-right js-secondary-paddle" aria-label="Scroll right" title="Scroll right" ms.title="Next" tabindex="-1" style="display: block;"></button>
+            <nav id="uhf-c-nav" role="navigation" aria-labelledby="uhfCatLogo" class="js-paddle-items">
+
+<a id="windesktop_windowsdesktop" class="c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/desktop" ms.title="WinDesktop_WindowsDesktop" style="transition: margin 0.667s cubic-bezier(0.16, 1, 0.29, 0.99) 0s;">Windows desktop</a><a id="windesktop_getstarted" class="c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/desktop/getstarted" ms.title="WinDesktop_Getstarted">Get started</a><a id="windesktop_design" class="c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/desktop/design" ms.title="WinDesktop_Design">Design</a><a id="windesktop_develop" class="c-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/desktop/develop" ms.title="WinDesktop_Develop">Develop</a><a id="windesktop_test" class="c-uhf-nav-link f-hidden" href="https://developer.microsoft.com/en-us/windows/desktop/test-deploy" ms.title="WinDesktop_Testdeploy">Test &amp; deploy</a><div class="c-uhf-menu js-nav-menu">
+                    <button id="resources_desktop-resources" aria-expanded="false" aria-haspopup="true" ms.title="winapps_desktop-resources" class="f-hidden">Resources</button>
+                    <ul class="" aria-labelledby="resources_desktop-resources" aria-hidden="true" ms.cmpnm="winapps_desktop-resources">
+    <li ms.cmpnm="resources_desktop-api-reference">
+        <a id="resources_desktop-api-reference" class="js-subm-uhf-nav-link" href="https://msdn.microsoft.com/library/windows/desktop/hh920508.aspx" ms.title="resources_desktop-api-reference">API reference</a>
+        
+    </li>
+    <li ms.cmpnm="winapps_downloads">
+        <a id="resources_downloads" class="js-subm-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/downloads" ms.title="winapps_downloads">Downloads</a>
+        
+    </li>
+    <li ms.cmpnm="winapps_samples">
+        <a id="resources_samples" class="js-subm-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/samples" ms.title="winapps_samples">Samples</a>
+        
+    </li>
+    <li ms.cmpnm="winapps_support">
+        <a id="resources_support" class="js-subm-uhf-nav-link" href="https://developer.microsoft.com/en-us/windows/support" ms.title="winapps_support">Support</a>
+        
+    </li>
+                        
+                    </ul>
+                </div><a id="mobile-dashboard" class="c-uhf-nav-link x-hidden x-visible-vp1-block x-visible-vp2-block f-hidden" href="https://developer.microsoft.com/dashboard" ms.title="Dashboard">Dashboard</a>                    </nav>
+
+</div>
+
+
+            
+        </div>
+
+    
+</header>
+
+
+    </div>
+            </div>
+
+    </section>
+
+    </div>
+    <input id="UhfSignInOutLink" value="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=13&amp;ct=1512347232&amp;rver=6.7.6640.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-us%2flibrary%2fwindows%2fdesktop%2fbb206339%2528v%3dvs.85%2529.aspx&amp;lc=1033&amp;id=254354&amp;mkt=en-US" type="hidden">
+    
+    
+    
+
+
+
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/Breadcrumbs.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/Breadcrumbs_002.css">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/breadcrumbs.css">
+
+
+    <div id="breadcrumbs">
+        <div id="breadcrumbDesktop" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb219837(v=vs.85).aspx" title="Direct3D 9 Graphics"></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb219838(v=vs.85).aspx" title="Programming Guide for Direct3D 9"><span>Programming Guide for Direct3D 9</span></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172247(v=vs.85).aspx" title="Advanced Topics"><span>Advanced Topics</span></a></span>
+                        <span class="breadcrumbDropSmall">
+                            <a id="breadcrumbDropDownButton" href="#" targethref="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172247(v=vs.85).aspx" title="Vertex Pipeline" role="button" aria-expanded="false"><span>Vertex Pipeline</span></a>
+                        </span>
+        </div>
+        <div id="breadcrumbDropDownMenu" style="display: none;"></div>
+
+        <div id="breadcrumbTablet" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172247(v=vs.85).aspx" title="Advanced Topics"></a></span>
+                    <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206337(v=vs.85).aspx" title="Vertex Pipeline"><span>Vertex Pipeline</span></a></span>
+                <span class="breadcrumbDropSmall"><a id="tocDropDownButton" href="#" title="Vertex Textures in vs_3_0 (DirectX HLSL)" role="button" aria-expanded="false"><span>Vertex Textures in vs_3_0 (DirectX HLSL)</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=printer,v=vs.85).aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/en-us/library/export/help/?returnUrl=%2fen-us%2flibrary%2fwindows%2fdesktop%2fbb206339(v%3dvs.85).aspx">
+                <ins class="export"></ins>Export (<span class="count">0</span>)
+            </a>
+        </div></div>
+        <div id="tocDropDownMenu" style="display: none;"><div id="tocnav" class="ArchiveV2" style="width: 255px; position: fixed; top: 60px;">
+    <div class="tocunselected">
+        <div id="tocExpandArea" style="display: block;">
+            <span class="toc_empty"></span>
+            <span id="tocExpandButton"><a href="javascript:void(0)" aria-label="expand sibling toc" role="button"></a></span>
+        </div>
+        <div id="tocExpand"><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206188(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Tessellation">Tessellation</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb219748(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Displacement Mapping">Displacement Mapping</a>                </div><div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Expand the table of content" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb173463(v=vs.85).aspx" id="ff471855_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Geometry Blending">Geometry Blending</a>                </div></div>
+    <div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Expand the table of content" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb173490(v=vs.85).aspx" id="ff471858_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Higher-Order Primitives">Higher-Order Primitives</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb147281(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Point Sprites">Point Sprites</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb147181(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Matrix Stacks">Matrix Stacks</a>                </div></div>
+    <div class="tocselected"><div class="toclevel current" data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Vertex Textures in vs_3_0 (DirectX HLSL)">Vertex Textures in vs_3_0 (DirectX HLSL)</a>                </div><div class="tocPadding"></div></div>
+    <div class="tocunselected">
+                
+                
+                
+                
+                
+                
+                
+    </div>
+    <a id="tocMenuToggler" href="javascript:void(0)" role="button">
+        <span id="tocMenuTogglerIcon" class="tocMenuCollapse" role="button" aria-expanded="true" aria-label="Table of contents menu"></span>
+        <div id="tocMenuTogglerLabel">TOC</div>
+    </a>
+</div></div>
+        <div id="breadcrumbMobile" class="breadCrumb">
+                <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206337(v=vs.85).aspx" title="Vertex Pipeline"></a></span>
+            <span class="breadcrumbDropSmall"><a id="tocPopupButton" href="#" title="Vertex Textures in vs_3_0 (DirectX HLSL)" role="button" aria-expanded="false"><span>Vertex Textures in vs_3_0 (DirectX HLSL)</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=printer,v=vs.85).aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/en-us/library/export/help/?returnUrl=%2fen-us%2flibrary%2fwindows%2fdesktop%2fbb206339(v%3dvs.85).aspx">
+                <ins class="export"></ins>Export (<span class="count">0</span>)
+            </a>
+        </div></div>
+    </div>
+    <div id="tocPopupMenu" style="display: none;">
+        <div id="tocPopMenuClose" class="tocCloseLarge" role="button" aria-label="Close Popup Menu" tabindex="0"></div>
+        <div id="tocTitle">Vertex Textures in vs_3_0 (DirectX HLSL)</div>
+    </div>
+
+
+        <div id="body" ms.pgarea="body" class="">
+            <span id="tabletView_large"></span>
+            <span id="tabletView_small"></span>
+            <span id="mobileView"></span>
+            
+
+
+
+
+
+
+
+    <div id="leftNav" ms.cmpgrp="left toc" role="navigation" aria-label="left toc" style="height: 0px;">
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ResponsiveToc_002.css">
+    <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/ResponsiveToc.css">
+
+
+            <div style="display:none">
+                <div id="CollapseLocalizeString">Collapse the table of content</div>
+                <div id="ExpandLocalizeString">Expand the table of content</div>
+            </div>
+        <div>
+            <a id="isd_archiveControlResponsive" style="display:none;" href="javascript:void(0)" role="button" aria-label="Hide Archived Versions" data-include-archive="Show Archived Versions" data-exclude-archive="Hide Archived Versions">
+            </a>
+            <div id="isd_archiveInstrument" style="display:none">This documentation is archived and is not being maintained.</div>
+        </div>
+    </div>
+     <div id="content" class="content" ms.cmpgrp="content body" role="main">
+
+
+
+
+
+
+
+
+    <div id="archiveDisclaimerText" style="display:none">This documentation is archived and is not being maintained.</div>
+
+
+
+<!--starting processing-->
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">Vertex Textures in vs_3_0 (DirectX HLSL)</h1>
+  <!--Content type: HTML. Transform: webcollection2mtps.xslt.-->
+  <div id="mainSection">
+<div class="clsServerSDKContent">
+
+</div>
+<p>The vertex shader 3.0 model supports texture lookup in the vertex shader using the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206220(v=vs.85).aspx">texldl - vs</a> texture load statement. The vertex engine contains four texture sampler stages, named <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172631(v=vs.85).aspx">D3DVERTEXTEXTURESAMPLER0</a>,
+ D3DVERTEXTEXTURESAMPLER1, D3DVERTEXTEXTURESAMPLER2, and 
+D3DVERTEXTEXTURESAMPLER3. These are distinct from the displacement map 
+sampler and texture samplers in the pixel engine.</p>
+<p>To sample textures set at those four stages, you can use the vertex engine and program the stages with the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174309(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">CheckDeviceFormat</strong></a> method. Set textures at those stages using <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174461(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">SetTexture</strong></a>, with the stage index <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172631(v=vs.85).aspx">D3DVERTEXTEXTURESAMPLER0</a>
+ through D3DVERTEXTEXTURESAMPLER3. A new register has been introduced in
+ the vertex shader, the sampler register (like in ps_2_0), which 
+represents the vertex texture sampler.  This register needs to be 
+defined in the shader before using it.</p>
+<p>An application can query if a format is supported as a vertex texture by calling <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174309(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">CheckDeviceFormat</strong></a> with <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172626(v=vs.85).aspx">D3DUSAGE_QUERY_VERTEXTEXTURE</a>.</p>
+<div class="alert"><strong>Note</strong>&nbsp;&nbsp;This is a query flag
+ so it is not accepted in any Createxxx function. A vertex texture 
+created in the default pool can be set as a pixel texture and vice 
+versa. However, to use the software vertex processing, the vertex 
+texture must be created in the scratch pool (no matter if it is a 
+mixed-mode device or a software vertex processing device).</div>
+<div>&nbsp;</div>
+<p>The functionality is identical to the pixel textures, except for the following:</p>
+<ul>
+<li>Anisotropic texture filtering is not supported, hence 
+D3DSAMP_MAXANISOTROPY is ignored and D3DTEXF_ANISOTROPIC cannot be set 
+for magnify, or minify for these stages.</li>
+<li>Rate of change information is not available, hence the application 
+has to compute the level of detail and provide that information as a 
+parameter to <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206220(v=vs.85).aspx">texldl - vs</a>.</li>
+</ul>
+<p>Restrictions include:</p>
+<ul>
+<li>As in pixel shaders, if multielement textures are supported, 
+D3DSAMP_ELEMENTINDEX is used to figure out which element to sample from.</li>
+<li>The state D3DSAMP_DMAPOFFSET is ignored for these stages.</li>
+<li>Use <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174309(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">CheckDeviceFormat</strong></a> with <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172626(v=vs.85).aspx">D3DUSAGE_QUERY_VERTEXTEXTURE"</a> to query a texture to see if it can be used as a vertex texture.</li>
+<li>VertexTextureFilterCaps indicates what kind of filters are allowed at the vertex texture samplers. <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172593(v=vs.85).aspx">D3DPTFILTERCAPS_MINFANISOTROPIC</a> and D3DPTFILTERCAPS_MAGFANISOTROPIC are disallowed.</li>
+</ul>
+<h2><a id="Sampling_Stage_Registers"><!----></a><a id="sampling_stage_registers"><!----></a><a id="SAMPLING_STAGE_REGISTERS"><!----></a>Sampling Stage Registers</h2>
+<p>A sampling stage register identifies a sampling unit that can be used
+ in texture load statements. A sampling unit corresponds to the texture 
+sampling stage, encapsulating the sampling-specific state provided in <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174456(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">SetSamplerState</strong></a>.</p>
+<p>Each sampler uniquely identifies a single texture surface that is set to the corresponding sampler using <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174461(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">SetTexture</strong></a>. However, the same texture surface can be set at multiple samplers.</p>
+<p>At draw time, a texture cannot be simultaneously set as a render target and a texture at a stage.</p>
+<p>Because vs_3_0 supports four samplers, up to four texture surfaces 
+can be read from in a single shader pass. A sampler register might 
+appear only as an argument in the texture load statement: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206220(v=vs.85).aspx">texldl - vs</a>.</p>
+<p>In vs_3_0, if you use a sampler, it must be declared at the beginning of the shader program, using the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb205571(v=vs.85).aspx">dcl_samplerType (sm3 - vs asm)</a> (as in ps_2_0).</p>
+<h2><a id="Software_Processing"><!----></a><a id="software_processing"><!----></a><a id="SOFTWARE_PROCESSING"><!----></a>Software Processing</h2>
+<p>This feature will be supported in software vertex processing. The specific filter types supported can be checked by calling <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174385(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">GetDeviceCaps</strong></a>
+ and checking VertexTextureFilterCaps. All published texture formats 
+will be supported as vertex textures in software vertex processing.</p>
+<p>Applications can check if a particular texture format is supported in the software vertex processing mode by calling <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb174309(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">CheckDeviceFormat</strong></a> and providing (D3DVERTEXTEXTURESAMPLER | <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb172625(v=vs.85).aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DUSAGE_SOFTWAREPROCESSING</strong></a>)
+ as usage. All formats are supported for software vertex processing. The
+ scratch pool is required for software vertex processing.</p>
+<h2 class="x-hidden-focus"><a id="API_Changes"><!----></a><a id="api_changes"><!----></a><a id="API_CHANGES"><!----></a>API Changes</h2>
+
+<div id="code-snippet-1" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_b99125b0-9ee8-4ea2-b3bf-effc6e402ac4');" ms.cmptyp="CodeSnippet">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_b99125b0-9ee8-4ea2-b3bf-effc6e402ac4" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+	
+// New define
+#define D3DVERTEXTEXTURESAMPLER0 (D3DDMAPSAMPLER+1)
+#define D3DVERTEXTEXTURESAMPLER1 (D3DDMAPSAMPLER+2)
+#define D3DVERTEXTEXTURESAMPLER2 (D3DDMAPSAMPLER+3)
+#define D3DVERTEXTEXTURESAMPLER3 (D3DDMAPSAMPLER+4)
+    
+
+#define D3DVERTEXTEXTURESAMPLER  (0x00100000L)
+
+// New caps field in D3DCAPS9
+DWORD VertexTextureFilterCaps;
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2><a id="related_topics"><!----></a>Related topics</h2>
+<dl>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206337(v=vs.85).aspx">Vertex Pipeline</a>
+</dt>
+</dl>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+
+
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/LibraryMemberFilter.css">
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Show:</span>
+        <label>
+            <input class="libraryFilterInherited" checked="checked" value="Inherit" type="checkbox">Inherited
+        </label>
+        <label>
+            <input class="libraryFilterProtected" checked="checked" value="Protected" type="checkbox">Protected
+        </label>
+    </div>
+</div>
+    
+<input id="libraryMemberFilterEmptyWarning" value="There are no members available with your current filter settings." type="hidden">
+
+
+
+    </div>
+<div id="rightNavigationMenu" ms.cmpgrp="right nav" style="position: fixed; margin-left: 3px; top: 60px;">
+    <div id="mobileButtons">
+        
+    </div>
+    <div id="navMain">
+        <div id="closeNavigation">
+            <a class="tocCloseSmall" id="closeButton"></a>
+        </div>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb206339(d=printer,v=vs.85).aspx" rel="nofollow"><ins class="print"></ins>Print </a>
+            <a id="isdShare" href="#" role="button" aria-expanded="false">
+                <ins class="share"></ins>Share
+            </a>
+            <div id="socials" style="display: none">
+                <a class="isdFacebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fbb206339(v%3Dvs.85).aspx" aria-label="Share on Facebook">
+                    <ins class="facebook"></ins>
+                </a>
+                <a class="isdTwitter" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fbb206339(v%3Dvs.85).aspx&amp;text=Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fbb206339(v%3Dvs.85).aspx" aria-label="Share on Twitter">
+                    <ins class="twitter"></ins>
+                </a>
+                <a class="isdGooglePlus" href="https://plus.google.com/share?url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fbb206339(v%3Dvs.85).aspx" aria-label="Share on Google+">
+                    <ins class="googlePlus"></ins>
+                </a>
+            </div>
+        </div>
+        <div id="indoc_toc" style="display: none" ms.cmpgrp="indoc toc">
+            <div id="indoc_title">IN THIS ARTICLE</div>
+            <ul id="indoc_toclist"></ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+        </div>
+        <div class="clear"></div>
+
+        
+
+<input name="__RequestVerificationToken" value="G3qtgI-NDOK_7lTqMMCsAaSwn3MWEg8J0ru6_3vOWOalEXysSaVtMw8jS9j_Z-AoP3Dfu_Q1e8Y9LoLbZNnrA_DmvjQ1" type="hidden">
+<input id="ratingValueSubmitUrl" value="https://msdn.microsoft.com/en-us/library/feedback/rate/bb206339(v=vs.85).aspx" type="hidden">
+<input id="ratingAdditionalSubmitUrl" value="https://msdn.microsoft.com/en-us/library/feedback/additional/bb206339(v=vs.85).aspx" type="hidden">
+<input id="isTopicRated" value="false" type="hidden">
+
+
+
+    <link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/Footer.css" xmlns="http://www.w3.org/1999/xhtml"><link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/sprite.css" xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+        <link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/UhfFooterResponsive.css" data-do-not-move="true">
+    
+    <input id="CurrentUrlLocale" value="en-us" type="hidden">
+    <div id="ux-footer" class="ltr">
+        
+
+<link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/StandardRating.css">
+    <div id="standardRatingBefore" class="clear stdr-container-before"></div>
+    <div id="standardRating" class="stdr-container" ms.pgarea="body" style="width: 1009px; margin-left: 0px; display: none;">
+        <div class="stdr-close x-hidden-focus" style="display: none;"></div>
+        <div class="stdr-vote stdr-content" style="display: none;">
+            <div class="stdr-content">
+                <span class="stdr-votetitle">Is this page helpful?</span>
+                <button class="stdr-yes x-hidden-focus" aria-label="Yes, this page was helpful" disabled="disabled">Yes</button>
+                <button class="stdr-no" aria-label="No, this page was not helpful" disabled="disabled">No</button>
+                <input id="s_ratingValue" value="1" type="hidden"><input id="s_ratingId" value="57496624" type="hidden">
+            </div>
+        </div>
+        <div class="stdr-feedback" style="display: none;">
+            <div class="stdr-form">
+                <div class="stdr-fieldtitle">Additional feedback?</div>
+                <textarea class="stdr-detail" rows="6" maxlength="1500"></textarea>
+                <div>
+                    <span class="stdr-count"><span class="stdr-charcnt">1500</span> characters remaining</span>
+                    <div class="stdr-buttons">
+                        <button class="stdr-provide" aria-label="Submit my additional feedback">Submit</button>
+                        <button class="stdr-skip x-hidden-focus" aria-label="Skip additional feedback">Skip this</button>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="stdr-thanks" style="">
+            <div class="stdr-content">
+                <span class="stdr-thankyou">Thank you!</span>
+                <span class="stdr-appreciate">We appreciate your feedback.</span>
+            </div>
+        </div>
+
+        
+        <div id="contentFeedbackQAContainer" style="display: none;"></div>
+    </div>
+    <div id="standardRatingPlaceholder" style="height: 60px; display: none;"></div>
+    
+        <div id="footerContainer">
+            <div id="baseFooter">
+                    <section id="footerArea" data-m="{&quot;cN&quot;:&quot;footerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a2Body&quot;,&quot;sN&quot;:2,&quot;aN&quot;:&quot;Body&quot;}">
+                    <div id="footerRegion" data-region-key="footerregion" data-m="{&quot;cN&quot;:&quot;footerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a2&quot;}">
+
+    <div id="footerUniversalFooter" data-m="{&quot;cN&quot;:&quot;footerUniversalFooter&quot;,&quot;cT&quot;:&quot;Module_coreui-universalfooter&quot;,&quot;id&quot;:&quot;m1r1a2&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a2&quot;}" data-module-id="Category|footerRegion|footerRegion|footerUniversalFooter|coreui-universalfooter">
+        
+
+<footer id="uhf-footer" class="c-uhff context-uhf" data-uhf-mscc-rq="false" data-footer-footprint="en-us/DEV_Windows/win-dev-center-footer" ms.pgarea="Uhf footer">
+        <nav class="c-uhff-nav" role="navigation" aria-label="Footer" ms.cmpgrp="Footer nav">
+            
+                <div class="c-uhff-nav-row">
+                        <div class="c-uhff-nav-group" ms.cmpnm="What" s="" new'="">
+                            <h6 class="c-heading-4">What's new</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/surface/devices/surface-book-2/overview" ms.title="Footer_WhatsNew_SurfaceBook2">Surface Book 2</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/surface/devices/surface-pro/overview" ms.title="Footer_WhatsNew_NewSurfacePro">New Surface Pro</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.xbox.com/en-us/xbox-one-x" ms.title="Footer_WhatsNew_XboxOneX">Xbox One X</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.xbox.com/en-us/xbox-one-s?xr=shellnav" ms.title="Footer_WhatsNew_XboxOneS">Xbox One S</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/b/virtualreality" ms.title="Footer_WhatsNew_VRandMixedReality">VR &amp; mixed reality</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/windows/windows-10-apps" ms.title="Footer_WhatsNew_Windows_10_apps">Windows 10 apps</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://store.office.com/en-us/appshome.aspx?" ms.title="Footer_WhatsNew_OfficeApps">Office apps</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/b/holiday-gift-guide?icid=gm_fy18_hol_gg_uhf_L0_other" ms.title="More_Other_HolidayGiftGuide">Holiday gift guide</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div class="c-uhff-nav-group" ms.cmpnm="Store &amp; Support">
+                            <h6 class="c-heading-4">Store &amp; Support</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://account.microsoft.com/" ms.title="Footer_StoreandSupport_AccountProfile">Account profile</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/download" ms.title="Footer_StoreandSupport_DownloadCenter">Download Center</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://go.microsoft.com/fwlink/p/?LinkID=824761&amp;clcid=0x409" ms.title="Footer_StoreandSupport_SalesAndSupport">Sales &amp; support</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/b/extended-holiday-returns?icid=gm_fy18_hol_uhf_footer_whatsnew_extendedreturns" ms.title="MicrosoftStore_ExtendedHolidayReturns">Extended holiday returns</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://account.microsoft.com/orders" ms.title="Footer_StoreandSupport_OrderTracking">Order tracking</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/locations/find-a-store" ms.title="Footer_StoreandSupport_StoreLocations">Store locations</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://support.microsoft.com/en-us" ms.title="Footer_StoreandSupport_Support">Support</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/b/buy-online-pick-up-in-store?icid=uhf_footer_bopuis" ms.title="StoreandSupport_BuyOnlinePickUpInStore">Buy online, pick up in store</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div class="c-uhff-nav-group" ms.cmpnm="Education">
+                            <h6 class="c-heading-4">Education</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/education" ms.title="Footer_Education_MicrosoftInEducation">Microsoft in education</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/education/products/office/default.aspx" ms.title="Footer_Education_OfficeForStudents">Office for students</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://products.office.com/en-us/academic/compare-office-365-education-plans" ms.title="Footer_Education_Office365ForSchools">Office 365 for schools</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/store/b/student" ms.title="Footer_Education_DealsForStudentsandEducators">Deals for students &amp; educators </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://azure.microsoft.com/en-us/community/education/" ms.title="Footer_MicrosoftAzureInEducation">Microsoft Azure in education</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                </div>
+                <div class="c-uhff-nav-row">
+                        <div class="c-uhff-nav-group" ms.cmpnm="Enterprise">
+                            <h6 class="c-heading-4">Enterprise</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://azure.microsoft.com/" ms.title="Footer_Enterprise_MicrosoftAzure ">Microsoft Azure </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://enterprise.microsoft.com/en-us/" ms.title="Footer_Enterprise_Enterprise">Enterprise</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/sql-server/" ms.title="Footer_Enterprise_DataPlatform">Data platform</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/solution-providers" ms.title="Footer_Enterprise_FindASolutionsProvider">Find a solutions provider</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://partner.microsoft.com/en-us/" ms.title="Footer_Enterprise_MicrosoftPartnerResources">Microsoft partner resources </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://go.microsoft.com/fwlink/?LinkID=808093" ms.title="Footer_Enterprise_MicrosoftAppSource ">Microsoft AppSource </a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://enterprise.microsoft.com/en-us/industries/discrete-manufacturing/" ms.title="Footer_Enterprise_ManufacturingAndResources">Manufacturing &amp; resources</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://enterprise.microsoft.com/en-us" ms.title="Footer_Enterprise_FinanciaServices">Financial services</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div class="c-uhff-nav-group" ms.cmpnm="Developer">
+                            <h6 class="c-heading-4">Developer</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.visualstudio.com/" ms.title="Footer_Developer_MicrosoftVisualStudio">Microsoft Visual Studio</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://developer.microsoft.com/en-us/windows" ms.title="Footer_Developer_WindowsDevCenter">Windows Dev Center</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://msdn.microsoft.com/en-us" ms.title="Footer_Developer_MicrosoftDeveloperNetwork">Developer Network</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://technet.microsoft.com/en-us" ms.title="Footer_Developer_TechNet">TechNet</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://mva.microsoft.com/" ms.title="Footer_Developer_MicrosoftVirtualAcademy">Microsoft Virtual Academy</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://developer.microsoft.com/en-us/store/register" ms.title="Footer_Developer_MicrosoftDeveloperProgram">Microsoft developer program</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://channel9.msdn.com/" ms.title="Footer_Developer_Channel9">Channel 9</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://dev.office.com/" ms.title="Footer_Developer_OfficeDevCenter">Office Dev Center</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                        <div class="c-uhff-nav-group" ms.cmpnm="Company">
+                            <h6 class="c-heading-4">Company</h6>
+                            <ul class="c-list f-bare">
+                                        <li>
+                                            <a class="c-uhff-link" href="https://careers.microsoft.com/" ms.title="Footer_Company_Careers">Careers</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/about" ms.title="Footer_Company_AboutMicrosoft">About Microsoft</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://news.microsoft.com/" ms.title="Footer_Company_CompanyNews">Company news</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://privacy.microsoft.com/en-us" ms.title="Footer_Company_PrivacyAtMicrosoft">Privacy at Microsoft</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/investor/default.aspx" ms.title="Footer_Company_Investors">Investors</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/diversity/" ms.title="Footer_Company_DiversityAndInclusion">Diversity and inclusion</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/accessibility/home" ms.title="Footer_Company_Accessibility">Accessibility</a>
+                                        </li>
+                                        <li>
+                                            <a class="c-uhff-link" href="https://www.microsoft.com/en-us/security/default.aspx" ms.title="Footer_Company_Security">Security</a>
+                                        </li>
+
+                            </ul>
+                            
+                        </div>
+                </div>
+        </nav>
+    <div class="c-uhff-base">
+                <span id="selectLocaleFromPopUp">
+        <div class="locale-selector" style="position: relative">
+            <a class="current-locale" href="javascript:void(0)" aria-label="Change your language" aria-haspopup="true">
+                <span class="text">English</span>
+                <span class="gear"></span>
+            </a>
+            <div class="locale-selection-panel site-flag site-flag-lang" style="top: -245px; display: none;">
+                <div class="content" role="menu">
+                    <table class="all-locales" autogeneratecolumns="false" allowpaging="false" allowsorting="false" style="border-collapse: collapse;" cellspacing="0">
+                        <tbody>
+                            <tr>
+
+
+                                    <td><a title="Deutsch" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=de-de&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Deutsch</a></td>
+                                    <td><a title="English" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=en-us&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link selected" role="menuitem">English</a></td>
+                                    <td><a title="Español" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=es-es&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Español</a></td>
+                                    <td><a title="Français" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=fr-fr&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Français</a></td>
+                                        </tr><tr>
+                                    <td><a title="Italiano" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=it-it&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Italiano</a></td>
+                                    <td><a title="日本語" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ja-jp&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">日本語</a></td>
+                                    <td><a title="한국어" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ko-kr&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">한국어</a></td>
+                                    <td><a title="Português" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=pt-br&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Português</a></td>
+                                        </tr><tr class="last">
+                                    <td><a title="Pусский" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ru-ru&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">Pусский</a></td>
+                                    <td><a title="简体中文" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-cn&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">简体中文</a></td>
+                                    <td><a title="繁體中文" href="http://msdn.microsoft.com/en-us/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-tw&amp;fromPage=/en-us/library/windows/desktop/bb206339(v=vs.85).aspx" class="locale-link" role="menuitem">繁體中文</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="arrow">
+                        &nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+        <ul role="contentinfo" class="c-list f-bare" ms.cmpgrp="Corp links">
+                            <li>
+                    <a class="c-uhff-link" href="https://www.microsoft.com/en-us/sitemap1.aspx" data-mscc-ic="false" ms.title="Footer_Sitemap">Sitemap</a>
+                </li>
+                <li>
+                    <a class="c-uhff-link" href="https://go.microsoft.com/?linkid=2028325" data-mscc-ic="false" ms.title="Footer_ContactUs">Contact us</a>
+                </li>
+                <li>
+                    <a class="c-uhff-link" href="https://go.microsoft.com/fwlink/?LinkId=521839" data-mscc-ic="false" ms.title="Footer_PrivacyandCookies">Privacy &amp; cookies </a>
+                </li>
+                <li>
+                    <a class="c-uhff-link" href="https://go.microsoft.com/fwlink/?LinkID=206977" data-mscc-ic="false" ms.title="Footer_TermsOfUse">Terms of use</a>
+                </li>
+                <li>
+                    <a class="c-uhff-link" href="https://www.microsoft.com/trademarks" data-mscc-ic="false" ms.title="Footer_Trademarks">Trademarks</a>
+                </li>
+                <li>
+                    <a class="c-uhff-link" href="https://choice.microsoft.com/" data-mscc-ic="false" ms.title="Footer_AboutourAds">About our ads</a>
+                </li>
+
+            <li>© Microsoft 2017</li>
+            
+        </ul>
+    </div>
+    
+</footer>
+
+
+
+
+    </div>
+            </div>
+
+    </section>
+
+        
+    <link rel="stylesheet" type="text/css" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/SelectLocaleFromPopUp.css">
+    
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footerPrintView">
+            <div class="footerCopyrightPrintView">© 2017 Microsoft</div>
+        </div>
+
+        
+        
+        <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/WindowsResponsive.css">
+        <link type="text/css" rel="stylesheet" href="Vertex%20Textures%20in%20vs_3_0%20(DirectX%20HLSL)%20(Windows)_tiedostot/Tables.css">
+
+
+
+        <input id="MtpsDevice" value="Default" type="hidden">
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+        
+        
+        
+            
+        
+
+        
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" value="QDW5TPpI5vOcW7mCRR-GJ_5WinFeIGCav8xXHQWSEERHk6xsmBA0Ar450k_Ak8TdZLTmPXxuG1aMIA3NhyiSoHDw2n01" type="hidden">
+</div>
+
+
+    </div>
+
+    
+
+    
+
+    
+
+
+<div id="meControlDropdown" class="msame_Drop_root" style="display: none;" aria-expanded="false"><div class="msame_Drop_topb"></div><div class="msame_Drop_content"><div class="msame_Drop_active"></div><div class="msame_Drop_rewards" style="display: none;"></div><div class="msame_Drop_account"></div><div class="msame_Drop_links" style="display: none;"><div class="msame_Drop_links_list"></div></div><div class="msame_Drop_signIn"><div id="msame_si0" class="msame_Drop_SI" data-mc-m="{&quot;id&quot;:&quot;signIn&quot;,&quot;aN&quot;:&quot;Me Control Dropdown&quot;,&quot;cT&quot;:&quot;Link&quot;}"><a href="#" target="_self" class="msame_TxtTrunc">Sign in with another account</a></div></div><div class="msame_Drop_signOut"></div><div class="msame_Drop_accts" style="display: none;"><div class="msame_Drop_sep"></div><div class="msame_Drop_accts_list"></div></div></div></div></body></html>

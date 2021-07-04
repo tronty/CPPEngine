@@ -1,0 +1,334 @@
+<html><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <meta name="Author" content="guru@guruware">
+  <meta name="GENERATOR" content="Notepad">
+  <title>gw::TerraNoise</title>
+  <link rel="stylesheet" href="gw::TerraNoise_tiedostot/gw.css">
+  
+  
+  
+</head>
+
+<body leftmargin="3" topmargin="3" marginwidth="6" marginheight="6" bgcolor="#00FF00">
+<table cellspacing="0" cellpadding="0" border="0" align="center">
+  <tbody><tr> 
+    <td width="6" background="gw::TerraNoise_tiedostot/t1.gif"><img src="gw::TerraNoise_tiedostot/tl.gif" width="6" height="23"></td>
+    <td width="118"><img src="gw::TerraNoise_tiedostot/terranoise_002.gif" width="118" height="23"></td>
+    <td height="23"><img src="gw::TerraNoise_tiedostot/t1.gif" width="330" height="23"></td>
+    <td width="7" height="23"><img src="gw::TerraNoise_tiedostot/tm.gif" width="7" height="23"></td>
+    <td><img src="gw::TerraNoise_tiedostot/t2.gif" width="330" height="23"></td>
+    <td width="8"><img src="gw::TerraNoise_tiedostot/tr.gif" width="8" height="23"></td>
+  </tr>
+
+  <tr> 
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;TerraNoise<br>
+      &nbsp;my sincere thanks go out to Jason Bevins and his <a href="http://libnoise.sourceforge.net/index.html" target="_new">'libnoise'</a> library,<br>
+      &nbsp;which is a portable open source, coherent noise generating library for C++<br>
+      &nbsp;scrolling this <a href="http://libnoise.sourceforge.net/examples/complexplanet/index.html" target="_new">page</a>, the initial idea was born<br><br>
+      &nbsp;I am only going to give brief descriptions here of what you can do with this application<br>
+      &nbsp;as I feel the interface is highly intuitive and self explaining<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  <tr> 
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;creating a terrain:<br>
+      &nbsp;- drag a generator from the list and drop it on the canvas<br>
+      &nbsp;- drag/drop an exporter onto the canvas<br>
+      &nbsp;- connect the 2 components by "draging" a line from the generators yellow output to the exporters green input<br>
+      &nbsp;- click the "none"-button in exporter to select a output-name and format (export a terragen-terrain)<br>
+      &nbsp;- open the terrain in terragen and render<br><br>
+      <center><img src="gw::TerraNoise_tiedostot/tn_1.jpg" width="348" height="276"></center><br>
+      &nbsp;if any value of the generator is changed, the terrain is saved for you automatically<br>
+      &nbsp;all you have to do is to play with the sliders and spinners<br>
+      &nbsp;for more complex terrains, you "only" have to create more complex networks<br><br>
+      &nbsp;creating textures works exact the same way: colorize the export with a color-component and save as tga<br><br>
+      <center><img src="gw::TerraNoise_tiedostot/tn_2.jpg" width="448" height="237"></center><br>
+      &nbsp;... but please keep in mind, that this application isn't meant to be a texture-generator<br><br>
+      &nbsp;to generate a normalmap, click the Normalmap-Checkbox and save as tga<br><br>
+      <center><img src="gw::TerraNoise_tiedostot/tn_3.jpg" width="497" height="387"></center><br>
+      &nbsp;for better results with normalmaps generate a terrain with octaves set to ~6,<br>
+      &nbsp;then generate a normalmap with same settings, but octaves set to maximum<br>
+      &nbsp;the higher the octave-values the higher the details, don't confuse this with the quality-slider!<br><br>
+      &nbsp;below a sample of using a normalmap</td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  <tr> 
+    <td width="6" background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4" align="center"><br>
+      <table cellspacing="0" cellpadding="0" border="0" align="center">
+        <tbody><tr>
+          <td valign="top" align="right"></td>
+          <td width="5"></td>
+          <td><img src="gw::TerraNoise_tiedostot/normalmap_f.jpg" name="normalmap" id="normalmap" style="filter:blendTrans(duration=2)" width="500" height="257"></td>
+          <td width="5"></td>
+          <td valign="top"></td>
+        </tr>
+      </tbody></table>
+      <br><br>
+    </td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  <tr>
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;General notes:<br>
+      &nbsp;all generators generate noise-values in 3D-space, with values below and above zero<br>
+      &nbsp;the resulting heightmap is viewed in black/white, where black is -1.0 and white is +1.0<br>
+      &nbsp;values above +1.0 are also white - but not "whiter" :)<br>
+      &nbsp;the exported terrain will not be cut off here<br>
+      &nbsp;try to stay near this -1.0/1.0 borders to have more visual control what happens<br>
+      &nbsp;the 3 output-types (cylinder/sphere/plane) are not mapping-types,<br>
+      &nbsp;it's more like cutting out a 3D-surface from the generated 3d-noise<br>
+      &nbsp;to adjust where this "cut-out" should happen, use the transform-rollouts<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Export-Settings:
+      <table cellspacing="0" cellpadding="0" border="0" align="center">
+        <tbody><tr>
+          <td valign="top" align="left"><br>here you can set how a tg-terrain file will be exported,<br>
+            most important are the Min/Max values,<br>
+            the lowest generated value will get the Min-elevation<br>
+            the highest generated value will get the Max-elevation<br>
+            default-values of are ok for 512x512 terrains,<br>
+            adjust them to get not too "spiky" terrains<br>
+            min/max values also influence the generation of normalmaps<br><br><br>
+            Targa-settings don't need explanations...<br>
+            split alpha doesn't do anything :)<br></td>
+          <td><img src="gw::TerraNoise_tiedostot/expsettings.jpg" width="329" hspace="10" height="254"></td>
+        </tr><tr>
+      </tr></tbody></table>
+      <br><br>
+    </td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Preferences (CTRL+P):<br>
+      <table cellspacing="0" cellpadding="0" border="0" align="center">
+        <tbody><tr>
+          <td valign="top" align="left">- snap to grid: snaps components to grid<br>
+            - grid spacing: sets grid-spacing of camvas<br>
+            - selection radius: if you have problems selecting<br>
+            &nbsp; &nbsp; control-points of curve components<br>
+            - autoload exit-file: if you quit TerraNoise it will exit... :)<br>
+            &nbsp; &nbsp; without asking to save your work, TerraNoise writes<br>
+            &nbsp; &nbsp; a file named "saved_on_exit.nnn"<br>
+            &nbsp; &nbsp; load it on startup or not - that's the question...<br>
+            &nbsp; &nbsp; so you can continue with your work later, exactly<br>
+            &nbsp; &nbsp; where you stopped to have a coffee-break<br>
+            - disable exporters on load: after loading a network file,<br>
+            &nbsp; &nbsp; exporters will overwrite existing files,<br>
+            &nbsp; &nbsp; leave it checked to prevent overwriting<br></td>
+          <td><img src="gw::TerraNoise_tiedostot/prefs.jpg" width="321" hspace="10" height="170"></td>
+        </tr><tr>
+      </tr></tbody></table>
+      <br><br><br></td>
+
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  <tr>
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Render controls:<br>
+      <img src="gw::TerraNoise_tiedostot/renderctrl.jpg" width="353" hspace="20" height="24"><br>
+      &nbsp;LED: shows render activity<br>
+      &nbsp;threads: number of rederthreads to use<br>
+      &nbsp;size: the output size used by exporters<br>
+      &nbsp;lock-button: locks with &amp; height (square output)<br>
+      &nbsp;cylinder-button: renders output for cylindrical mapping<br>
+      &nbsp;sphere-button: renders output for spherical mapping, for generating whole planets<br>
+      &nbsp;plane-button: renders output for planar mapping, for heightfields<br>
+      &nbsp;T-button: for generating seamless terrain tiles or textures<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Shortcuts:<br>
+      &nbsp;CTRL+O - open<br>
+      &nbsp;CTRL+S - save<br>
+      &nbsp;CTRL+SHIFT+S - save as<br>
+      &nbsp;CTRL+N - new, clears the canvas without any warning<br>
+      &nbsp;CTRL+P - preferences<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;"special" functionality:<br>
+      &nbsp;- use TAB-key to hide/show the component treeview<br>
+      &nbsp;- every mouse-drag action can be undone/canceled by pressing
+ right mouse-button while left mouse-button is still down<br>
+      &nbsp;- while spinning or paning mouse leaves screen an appears on opposite side of screen<br>
+      &nbsp;- pan: drag with middle mouse button (canvas, generator-previews, curve-components, export)<br>
+      &nbsp;- zoom: hold down CTRL+ALT and drag with middle mouse button (generator-previews and curve-components)<br><br><br>
+    </td><td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Canvas:<br>
+      &nbsp;paning with middle mouse-button (undo with right mouse-button)<br>
+      &nbsp;if you cant find you components anymore, a doubleclick with middle mouse-button will bring them back into view<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Treeviews:<br>
+      &nbsp;they have no scollbars, "scroll" by draging with middle mouse-button, mouse-wheel<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Spinners:<br>
+      &nbsp;they work like the spinners in Max<br>
+      &nbsp;holding down CTRL while spinning - speed-up by 10<br>
+      &nbsp;holding down ALT while spinning - slow-down by 10<br>
+      &nbsp;right-click on arrows sets a default value<br>
+      &nbsp;undo with right mouse-button<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Components:<br>
+      &nbsp;component-type can be changed at any time by choosing from the dropdown-list<br>
+      &nbsp;all component-types share the component-params of a component<br>
+      &nbsp;all components have max-like rollouts<br>
+      &nbsp;they can be opened/closed (click on titles of rollouts, or context-menu)<br>
+      &nbsp;componnet adjusts its size, depending on rollout-states<br>
+      &nbsp;re-arrange rollouts by drag rollout-title<br>
+      &nbsp;re-arraging rollouts will change the way generators work, rendering is done "top-down"<br>
+      &nbsp;eq. translate then scale will give a different result when scaled first and the translated<br>
+      &nbsp;only some components can be resized (curve-modifiers, exporters and color-component)<br>
+      &nbsp;zoom/pan works for curve-components<br>
+      &nbsp;controlpoints of curve-components are deleted by DEL-key (the only question my testers asked)<br><br>
+
+      &nbsp;- create: drag/drop from treeview<br>
+      &nbsp;- move: by draging on titlebar, or CTRL+drag anywhere on a component<br>
+      &nbsp;- clone: SHIFT-drag existing component, or contextmenu of component<br>
+      &nbsp;- delete: by using contextmenu<br>
+      &nbsp;- minimize/restore: doubleclick on titlebar, or via contextmenu<br>
+      &nbsp;- enable/disable: click on the green "led" in top-left corner of a component<br>
+      &nbsp; &nbsp; &nbsp; a disabled component gets rendered, but it delivers no output, no output means a value of 0.0<br>
+      &nbsp; &nbsp; &nbsp; when enabling a component, dependant components are re-rendered<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Output-Rollout:<br>
+      &nbsp;preview (of generators) can be paned and zoomed, all connected components should update in realtime<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Params-Rollout:<br>
+      &nbsp;contains component specific params<br>
+      &nbsp;when using a spinner only the components preview is rendered<br>
+      &nbsp;when releasing the spinner the final noise-map is rendered then dependant components<br>
+      &nbsp;if you're interested in what exactly all these parameters do, Jason Bevins <a href="http://libnoise.sourceforge.net/index.html" target="_new">libnoise</a> has very good documentation included<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Transform-Rollouts (generators only):<br>
+      &nbsp;translate/rotate/scale and turbulence<br>
+      &nbsp;rollout-titles are colored different to indicate their effect is position-dependent<br>
+      &nbsp;rendering is done "top-down", eq. scale-rotate vs. rotate-scale will give different results<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4">&nbsp;Connecting components:<br>
+      &nbsp;all outputs have a yellow-ish color<br>
+      &nbsp;input colors depend on component-type<br>
+      &nbsp;components without inputs deliver a outputvalue of 0.0<br>
+      &nbsp;connections can be created from output to input, or from input to output<br>
+      &nbsp;outputs can have more than one connection, inputs can only have one<br>
+      &nbsp;a cursor change indicates where it's possible to make a connection<br>
+      &nbsp;endless-loops are detected, such connections shouldn't be possible, a future version may support feedback-loops<br>
+      &nbsp;input-connections can be swaped by using ALT-key, also between different components<br>
+      &nbsp;components can be inserted between 2 connected components by using the contextmenu of the connection-line<br><br><br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+
+  
+    <tr><td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4"><br><br>&nbsp;Future plans:<br>
+      &nbsp;3D-preview of generated terrain (textured)<br>
+      &nbsp;set camera and sun positions and export a terragen world file<br>
+      &nbsp;flight-path editor for camera animation and export a terragen animation-script<br>
+      &nbsp;some more components..., craters, image and tg-terrain inputs, etc.<br>
+      &nbsp;masking to define where to apply modifications<br>
+      &nbsp;terrain erosions<br>
+      &nbsp;generating slope-dependant materials to use with Max<br>
+      &nbsp;hdri-sky generation ?<br>
+      &nbsp;all should stay 100% procedural<br>
+      &nbsp;.<br>
+      &nbsp;..<br>
+      &nbsp;...<br>
+      &nbsp;feel free to request anything you can think of<br></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+  <tr>
+    <td width="6" background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4"></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+  <tr>
+    <td width="6"><img src="gw::TerraNoise_tiedostot/bl.gif" width="6" height="13"></td>
+    <td colspan="4" height="13" background="gw::TerraNoise_tiedostot/boo.gif" align="center"></td>
+    <td><img src="gw::TerraNoise_tiedostot/br.gif" width="8" height="13"></td>
+  </tr>
+</tbody></table>
+<br>
+
+<table cellspacing="0" cellpadding="0" border="0" align="center">
+  <tbody><tr> 
+    <td width="6" background="gw::TerraNoise_tiedostot/t1.gif"><img src="gw::TerraNoise_tiedostot/tl.gif" width="6" height="23"></td>
+    <td width="79"><img src="gw::TerraNoise_tiedostot/downl.gif" width="79" height="23"></td>
+    <td height="23"><img src="gw::TerraNoise_tiedostot/t1.gif" width="140" height="23"></td>
+    <td width="7" height="23"><img src="gw::TerraNoise_tiedostot/tm.gif" width="7" height="23"></td>
+    <td><img src="gw::TerraNoise_tiedostot/t2.gif" width="140" height="23"></td>
+    <td width="8"><img src="gw::TerraNoise_tiedostot/tr.gif" width="8" height="23"></td>
+  </tr>
+  <tr> 
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4"></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+  <tr> 
+    <td background="gw::TerraNoise_tiedostot/left.gif"></td>
+    <td colspan="4" align="center"><table cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr> 
+          <td><img src="gw::TerraNoise_tiedostot/sp.gif" width="50" height="20"></td>
+          <td><a href="http://www.guruware.at/main/store/gwTerraNoise_0.01b-guruware.zip" onmouseover="ImgOn('terranoise');return true;" onmouseout="ImgOff('terranoise');return true;"> 
+            <img src="gw::TerraNoise_tiedostot/terranoise.gif" name="terranoise" width="117" height="20" border="0"></a></td>
+          <td><img src="gw::TerraNoise_tiedostot/sp.gif" width="50" height="20"><br><br></td>
+        </tr>
+      </tbody></table></td>
+    <td background="gw::TerraNoise_tiedostot/right.gif"></td>
+  </tr>
+  <tr>
+    <td width="6"><img src="gw::TerraNoise_tiedostot/bl.gif" width="6" height="13"></td>
+    <td colspan="4" height="13" background="gw::TerraNoise_tiedostot/boo.gif" align="center"></td>
+    <td><img src="gw::TerraNoise_tiedostot/br.gif" width="8" height="13"></td>
+  </tr>
+</tbody></table>
+<br>
+
+
+</body></html>

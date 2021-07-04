@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Pygame Drawing Basics</title>
+</head>
+
+<body>
+<h1>PyGame Drawing Basics</h1>
+<h2>Getting Started</h2>
+<p>You must do the following to get started with Pygame:</p>
+<pre>import pygame
+import sys
+
+
+pygame.init()
+
+</pre>
+<p>Strictly speaking, import sys is not needed for PyGame, but as we'll 
+see later, to be able to use the "close window" button on Windows or 
+Mac, we'll need to use sys.exit(), so it is helpful.</p>
+<h2>Opening a Window</h2>
+<p>To open a window of size 640,480, use the statement below. </p>
+<pre>screen = pygame.display.set_mode((640,480))
+
+</pre>
+<ul>
+  <li>This opens a window of  size 640,480, and stores it in a variable called <code>screen</code></li>
+  <li>Substitute other numbers for other sizes of screeen.</li>
+  <li>You have to pass this variable anytime you want to do something to the screen</li>
+</ul>
+<h2>The screen</h2>
+<p>If your screen is of size 640,480:</p>
+<ul>
+  <li>The point (0,0) is at the upper left hand corner of the screen.</li>
+  <li>x coordinates increase from left to right, y coordinates increase from top to bottom</li>
+  <li>So:
+    <ul>
+        <li>Upper right is (640,0)</li>
+      <li>Lower left is (0,480)</li>
+      <li>Lower right is (640,480)</li>
+    </ul>
+  </li>
+</ul>
+<h2>Updating the Screen</h2>
+<p>Changes you make to the screen—e.g. filling it with color, or drawing on it—do <em><strong>not</strong></em> show up immediately!</p>
+<p>Instead, you have to call this function </p>
+<pre>pygame.display.update()
+
+</pre>
+<ul>
+  <li>pygame.display.update() shows you all the drawing you did since  the last call to pygame.display.update()</li>
+  <li>if this is the first call to pygame.display.update(), it is all changes since the screen was created</li>
+</ul>
+<p>Why do you have to do this? </p>
+<ul>
+  <li>This implements a features called double buffering</li>
+  <li>Double buffering is a feature of PyGame (and many other game 
+programming packages) that lets you make lots of changes to the screen, 
+and then have them all show up together as a single frame.</li>
+  <li>Otherwise, when there is fast animation, the screen would "flicker" and it would be annoying to people playing the game</li>
+</ul>
+<h2>Colors</h2>
+<pre>colorName = (r,g,b)</pre>
+<ul>
+  <li>name the color anything you like.</li>
+  <li>(r,g,b) is a tuple with values for red, green, and blue<br>
+  </li>
+  <li>all three should be integers between 0 and 255, with 255 being brightest, and 0 being darkest</li>
+</ul>
+<p>Examples:</p>
+<pre>red = (255,0,0)
+green = (0,255,0)
+blue = (0,0,255)
+darkBlue = (0,0,128)
+white = (255,255,255)
+black = (0,0,0)
+pink = (255,200,200)</pre>
+<h2>Drawing</h2>
+<p>Remember that after you draw, you have to call pygame.display.update() before your changes show up.</p>
+<pre>screen.fill(color)</pre>
+<ul>
+  <li>fills the entire screen with the given color</li>
+  <li>e.g. <code>screen.fill(white)</code></li>
+</ul>
+<pre>pygame.draw.lines(screen, color, closed, pointlist, thickness)
+</pre>
+
+
+<ul>
+  <li>draws a series of lines, connecting the points specified in pointlist</li>
+  <li>pointlist is a list of tuples, specifying a series of points, e.g.
+ to draw a V you might use [(100,100), (150,200), (200,100)], with 
+closed = False</li>
+  <li>closed should be either True or False, indicating whether to connect the last point back to the first</li>
+  <li>thickness is the thickness of the line (in pixels).</li>
+  <li>Example: 
+  <code>pygame.draw.lines(screen, black, False, [(100,100), (150,200), (200,100)], 1)</code></li>
+</ul>
+<pre>
+pygame.draw.rect(screen, color, (x,y,width,height), thickness)</pre>
+<ul>
+  <li>draws a rectangle</li>
+  <li>(x,y,width,height) is a Python tuple</li>
+  <li>x,y are the coordinates of the upper left hand corner </li>
+  <li>width, height are the width and height of the rectangle</li>
+  <li>thickness is the thickness of the line. If it is zero, the rectangle is filled</li>
+</ul>
+<pre>pygame.draw.circle(screen, color, (x,y), radius, thickness)</pre>
+<ul>
+  <li>draws a circle</li>
+  <li>(x,y) is a Python tuple for the center, radius is the radius</li>
+  <li>thickness is the thickness of the line. If it is zero, the rectangle is filled</li>
+</ul>
+<pre>pygame.draw.arc(screen, color, (x,y,width,height), start_angle, stop_angle, thickness)</pre>
+<ul>
+  <li>draws an arc (portion of an ellipse)</li>
+  <li>(x,y,height,width) are the coordinates of a rectangle that the arc would fit inside if it were drawn all the way around</li>
+  <li>if height and width are equal, then the rectangle is a square, and the arc will be a portion of a circle</li>
+  <li>start_angle and stop_angle are the angle on the unit circle in radians (not degrees) where the arc stops and starts</li>
+  <li>An example is shown in this Python file:  <a href="http://www.cs.ucsb.edu/~pconrad/cs5nm/08F/ex/ex09/drawCircleArcExample.py">drawCircleArcExample.py</a></li>
+</ul>
+<h2>Writing your own drawing functions</h2>
+<p>You can use functions to help you draw in PyGame in two different ways:</p>
+<ul>
+  <li>Create your own specialized drawing functions</li>
+  <li>Create functions that return lists of points</li>
+</ul>
+<h3>Specialized Drawing Functions (as in <a href="http://www.cs.ucsb.edu/~pconrad/cs5nm/08F/ex/ex06.html">ex06</a>)</h3>
+<p>The first way is illustrated below. This function actually draws a 
+house. First it forms a list of points, and then it uses them to draw 
+the house by calling <code>pygame.draw.lines()</code></p>
+<pre>def drawHouse(x, y, width, height, screen, color):
+    points = [(x,y- ((2/3.0) * height)), (x,y), (x+width,y), (x+width,y-(2/3.0) * height), 
+        (x,y- ((2/3.0) * height)), (x + width/2.0,y-height), (x+width,y-(2/3.0)*height)]
+    lineThickness = 2
+    pygame.draw.lines(screen, color, False, points, lineThickness)</pre>
+<h3>Functions that return lists of points (as in <a href="http://www.cs.ucsb.edu/~pconrad/cs5nm/08F/ex/ex09.html">ex09</a>)</h3>
+<p>The second way is illustrated below. First, we have a function that creates the list of points:</p>
+<pre>def makeHouseFrame(x,y,width,height):
+   points = [] # start with an empty list
+   points.append((x,y- ((2/3.0) * height))) # top of 1st story, upper left
+   points.append((x,y))  # lower left corner
+   points.append((x+width,y)) # lower right corner
+   points.append((x+width,y-(2/3.0) * height)) # top of 1st story upper right
+   points.append((x,y- ((2/3.0) * height))) # top of first story, upper left
+   points.append((x + width/2.0,y-height)) # top of roof
+   points.append((x+width,y-(2/3.0)*height)) # top of 1st story, upper right
+   return points</pre>
+<p>Then, we can just use those points to draw a house like this. </p>
+<pre>def drawHouse(x,y,width,height,screen,color):
+ &nbsp;&nbsp;lineThickness = 2 
+ &nbsp;&nbsp;pygame.draw.lines(screen, color, False,
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;makeHouseFrame(x,y,height,width), lineThickness)</pre>
+<p>Note that we have a function call to <code>makeHouseFrame()</code> as the fourth argument to the <code>pygame.draw.lines()</code> function call. </p>
+<ul>
+  <li>The call to <code>makeHouseFrame()</code> returns a list of points</li>
+  <li>That list of points is what we draw whenever <code>drawHouse() </code>is called</li>
+  <li>So, a call to <code>drawHouse() </code>results in a call to <code>makeHouseFrame() </code>to return a list of points, which is then passed in to <code>pygame.draw.lines()</code></li>
+</ul>
+<h3>Comparing the two techniques</h3>
+<p>At first, it may  seem like this is <em><strong>not </strong></em>progress. We've turned a simple five line function into two functions, and fourteen lines of code—that do the very same thing.T</p>
+<p>This seems to go against the idea that "simple is better than complex".</p>
+<p>However, the second version has several advantages:</p>
+<ul>
+  <li>We list the points one at a time in the makeHouseFrame() function.
+    <ul>
+      <li>That gives us a chance to put a comment next to each point.</li>
+      <li> That can help <em><strong>a lot </strong></em>when we are having trouble figuring out what is going on.</li>
+    </ul>
+  </li>
+  <li>We can use check_expect() to write test cases for makeHouseFrame() to see if the list of points returned is correct or not
+    <ul>
+      <li>For an example of this, see the file <a href="http://www.cs.ucsb.edu/~pconrad/cs5nm/08F/ex/ex09/ex09DrawHousesWithTests.py">ex09DrawHousesWithTests.py</a></li>
+    </ul>
+  </li>
+  <li>When we add additional features to the house, like doors, windows, etc. we can put each of these in its own function.
+    <ul>
+      <li>That keeps the drawHouse function shorter and easier to understand</li>
+      <li>We might also be able to reuse some things—for example, we 
+might find a way to draw multiple windows on a single house if we define
+ our makeWindowPoints function in the correct way.</li>
+    </ul>
+  </li>
+</ul>
+<p>Restructuring our code like this is an example of "refactoring" (discussed in <a href="http://www.cs.ucsb.edu/~pconrad/thinkpython/html/book005.html#toc45">section 4.7 of the textbook</a>)</p>
+<h2>Enabling the quit button (red X on Windows, red circle on Mac)</h2>
+<p>To make the quit button work, we need two things:</p>
+<ol>
+  <li>An infinite loop, that goes around and around looking for events</li>
+  <li>Some code that looks for a QUIT event, and handles that event</li>
+</ol>
+<p>The infinite loop part is easy. Here is an infinite loop in Python:</p>
+<pre>while (True):
+&nbsp;&nbsp;&nbsp;&nbsp;# do something</pre>
+<p>Whatever we have in place of <code>#&nbsp;do&nbsp;something</code> will be done over and over again, until we exit the program.</p>
+<p>What is it that we want to do over and over? Each time through the 
+loop, we need to look for quit events and if we find one, we need to 
+quit the program:</p>
+<pre>&nbsp;&nbsp;&nbsp;for event in pygame.event.get():
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pygame.quit(); sys.exit();</pre>
+<p>This code says the following:</p>
+<ul>
+  <li>The call to pygame.event.get() returns a list of every event that 
+has happened since we called pygame.init(), or since the last call to 
+pygame.event.get().</li>
+  <li>One by one, the variable event is set to each of those events.</li>
+  <li>For each one of those, we use an if test to see if that event is equal to <code>pygame.QUIT</code> which is a value that means that the user clicked the red X (or red Circle) to close the window</li>
+  <li>If the user did that, then do two things:
+    <ul>
+      <li>Call <code>pygame.quit()</code> to shut down pygame (this includes closing the window)</li>
+      <li>Call <code>sys.exit()</code> to shut down the program (this exits the infinite loop)</li>
+    </ul>
+  </li>
+</ul>
+<p>We put this code inside a <code>while&nbsp;(True):</code> infinite 
+loop so that we can do it over and over again—we have to keep doing it, 
+because we don't know when the user will click the red X.</p>
+<h2>Animation (making drawings move)</h2>
+<p>To make a drawing move, you just put code inside your infinite loop that </p>
+<ul>
+  <li>erases the old drawing (e.g. <code>screen.fill(white)</code> or <code>screen.fill(black)</code>)</li>
+  <li>draws the new drawing (e.g. using  function calls starting with <code>pygame.draw</code>) in a <strong><em>different place</em></strong> than it was before!</li>
+  <li>calls <code>pygame.display.update() </code>to make all the changes appear</li>
+</ul>
+<p>Remember:</p>
+<ul>
+  <li> All the changes in between two to pygame.display.update() show up <em><strong>all at once</strong></em> as a new frame (just like a new frame in a movie)</li>
+  <li>So, you can create the illusion of smooth motion</li>
+</ul>
+<p>So you have something like this:</p>
+<pre>while (True):<br><br>   # check for quit events<br>   for event in pygame.event.get():
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pygame.quit(); sys.exit();<br><br>   # erase the screen<br>   screen.fill(white)<br><br>   # draw the updated picture<br><br>   updatePoints(points)  # changes the location of the points<br>   pygame.draw.lines(screen,black,false,points,1)  # redraw the points
+
+   # update the screen<br>   pygame.display.update()</pre>
+<h2 style="page-break-before:always">Making the motion go faster or slower</h2>
+<p>There are at least two ways to make the motion go faster or slower</p>
+<p>One simple way to slow things down is to insert a call to<code> pygame.time.delay(5) </code>somewhere inside the loop—the number is the number of milliseconds to delay.</p>
+<p>A better way is to use a clock.</p>
+<p>To use a clock:</p>
+<ol>
+  <li>Put the code <code>clock = pygame.time.Clock() </code>near the start of the program, somewhere after <code>pygame.init()</code> but definitely outside the main loop</li>
+  <li>Inside the loop, put the code <code>msElapsed&nbsp;=&nbsp;clock.tick(30)</code> where 30 is the frame rate you want (e.g. 30 frames per second)</li>
+</ol>
+<h2>Smoother Motion</h2>
+<p>If you want to get really fancy, and make your motion as smooth an as
+ accurate as possible, you can check the value of msElapsed, which will 
+tell you how much time elapsed since the last call to clock.tick(30).</p>
+<p>In theory, it should be close to 1000.0/30.0 milliseconds.  In 
+practice it might be more or less, depending on the load on your 
+machine.</p>
+<p>You can use to value of msElapsed to determine how far to move your drawing. </p>
+<ul>
+  <li>You can have a target speed in "pixels per second".</li>
+  <li>You use msElapsed/1000.0 to determine how many seconds have elapsed</li>
+  <li>The use that to determine how far, in pixels, your drawing should have moved during this frame.</li>
+</ul>
+<hr>
+<p>References: </p>
+<ul>
+  <li>Pygame documentation at <a href="http://www.pygame.org/">www.pygame.org</a></li>
+  <li><a href="http://apress.com/book/view/1590598725">Beginning Game Development with Python and Pygame: From Novice to Professional</a>, Will McGugan, Apress 2007.</li>
+</ul>
+<p></p>
+<p>P. Conrad, UC Santa Barbara.</p>
+<p>(end of document Pygame Drawing Basics)</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+</body></html>
