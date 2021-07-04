@@ -15,7 +15,7 @@ class GUIAlphaElement : public GUIRectangle
 
     void       modifyCurrentAlpha(float tick);
  public:
-    GUIAlphaElement(NSString callback = 0);
+    GUIAlphaElement(std::string callback = "");
 
     virtual void render(float clockTick) = 0;
     virtual bool loadXMLSettings(XMLElement *node);
@@ -30,9 +30,9 @@ class GUIAlphaElement : public GUIRectangle
     float getAlpha();
 
     void  setLabelString(const char * label);
-    void  setLabelString(const NSString &label);
+    void  setLabelString(const std::string &label);
 
-    NSString   getLabelString();
+    std::string   getLabelString();
     void  setColor(const D3DXFROMWINEVECTOR3& color);
     void  setColor(float x, float y, float z);
     const D3DXFROMWINEVECTOR4 &getColor();

@@ -8,7 +8,7 @@ class GUISlider : public GUIAlphaElement
 {
   public:
 	  D3DXFROMWINEVECTOR3 m_Translation;
-    GUISlider(NSString callback    = 0,
+    GUISlider(std::string callback    = 0,
               const int   orientation = HORIZONTAL);
 
     virtual const Tuple4i &getWindowBounds();

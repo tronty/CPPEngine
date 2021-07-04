@@ -5,8 +5,8 @@
 #include "GUIFontManager.h"
 #include "GUIFrame.h"
 
-GUITextBox::GUITextBox(NSString callback,
-                       NSString text) : GUIAlphaElement(callback)
+GUITextBox::GUITextBox(std::string callback,
+                       std::string text) : GUIAlphaElement(callback)
 
 {
   setBordersColor(0.3f, 0.3f, 0.3f);
@@ -184,7 +184,7 @@ void GUITextBox::checkKeyboardEvents(int extraInfo)
   if(evt->OnKeyPress(KEY_UNKNOWN+evt->getKeyID()))
 	  //extraInfo == KEY_PRESSED)
   {
-    int length = label.getString().getLength();
+    int length = label.getString().length();
 
 //???    if(evt->displayable())
       setupText(INSERT_CHAR, evt->getKeyChar());
@@ -210,7 +210,7 @@ void    GUITextBox::setupBlinker(int x)
     return;
 
   GUIFont *font           = GUIFontManager::getFont(label.getFontIndex());
-  const    NSString &string = label.getString();
+  const    std::string &string = label.getString();
   const    int    *spaces = 0;
   blinkerPosition         = getWindowBounds().x + padding.x;
   x -= 1;
@@ -219,9 +219,9 @@ void    GUITextBox::setupBlinker(int x)
   {
      spaces = font->getFontObject()->getCharHorizontalGlyphs();
 
-     for(size_t i = 0; i < string.getLength(); i++)
+     for(size_t i = 0; i < string.length(); i++)
      if(blinkerPosition < x)
-       blinkerPosition += spaces[int(string.getBytes()[i])];
+       blinkerPosition += spaces[int(string. /* getBytes */ c_str()[i])];
   }
 
   blinkerOn = true;
@@ -231,12 +231,12 @@ void GUITextBox::setupText(int type, char Char)
 {
   GUIFont *font           = GUIFontManager::getFont(label.getFontIndex());
   const    int    *spaces = font ? font->getFontObject()->getCharHorizontalGlyphs() : 0,
-                   length = label.getString().getLength();
+                   length = label.getString().length();
 
   LOG_FNLN_NONE;
   LOG_PRINT_NONE("spaces = %x\n", font->getFontObject()->getCharHorizontalGlyphs());
   LOG_PRINT_NONE("spaces = %d\n", *font->getFontObject()->getCharHorizontalGlyphs());
-  NSString   temp;
+  std::string   temp;
   int      start  = windowBounds.x + padding.x,
            index  = 0;
 
@@ -256,10 +256,11 @@ void GUITextBox::setupText(int type, char Char)
   {
     if(index != length && length)
     {
-      NSString leftSide;
-      leftSide.set(label.getCharString(), index);
+      std::string leftSide;
+      leftSide=label.getCharString()+index;
       leftSide += Char;
-      temp.set(label.getCharString() + index, length - index);
+      //temp.set(label.getCharString() + index, length - index);
+      temp=label.getCharString() + index;
       label.setString(leftSide + temp);
     }
     else
@@ -275,12 +276,13 @@ void GUITextBox::setupText(int type, char Char)
   {
     if(index != length)
     {
-      NSString leftSide;
+      std::string leftSide;
       setupBlinker(blinkerPosition - GUIFontManager::getCharacterWidth(label.getCharString()[index -1],
                                                                        label.getFontIndex()));
 
-      leftSide.set(label.getCharString(), index - 1);
-      temp.set(label.getCharString() + index, length - index);
+      leftSide=label.getCharString() + index - 1;
+      //temp.set(label.getCharString() + index, length - index);
+      temp=label.getCharString() + index;
       label.setString(leftSide + temp);
       return;
     }
@@ -288,8 +290,8 @@ void GUITextBox::setupText(int type, char Char)
     setupBlinker(blinkerPosition - GUIFontManager::getCharacterWidth(label.getCharString()[length -1],
                                                                      font));
 
-    temp.set(label.getCharString(), length - 1);
-    if(temp.getLength())
+    temp=label.getCharString()+ length - 1;
+    if(temp.length())
       label.setString(temp);
     else
     {
@@ -308,9 +310,10 @@ void GUITextBox::setupText(int type, char Char)
 
     if(index < length)
     {
-      NSString leftSide;
-      leftSide.set(label.getCharString(), index);
-      temp.set(label.getCharString() + index + 1, length - index - 1);
+      std::string leftSide;
+      leftSide=label.getCharString()+ index;
+      //temp.set(label.getCharString() + index + 1, length - index - 1);
+      temp=label.getCharString() + index + 1;
       label.setString(leftSide + temp);
     }
   }
@@ -334,3 +337,4 @@ const Tuple4i &GUITextBox::getWindowBounds()
   }
   return windowBounds;
 }
+

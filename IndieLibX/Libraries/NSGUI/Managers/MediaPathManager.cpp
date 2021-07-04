@@ -3,15 +3,15 @@
 
 
 
-vector<NSString> MediaPathManager::pathStack;
+vector<std::string> MediaPathManager::pathStack;
 
 
 
-NSString MediaPathManager::lookUpMediaPath(NSString path)
+std::string MediaPathManager::lookUpMediaPath(std::string path)
 
 {
 
-  if(!path)
+  if(path=="")
 
     return 0;
 
@@ -19,11 +19,11 @@ NSString MediaPathManager::lookUpMediaPath(NSString path)
 
   ifstream test;
 
-  string   buffer;
+  std::string   buffer;
 
 	LOG_FNLN_NONE;
-	LOG_PRINT_NONE("path.data:%s\n",path.data);
-  std::string fn=stx_convertpath(std::string(path.data));
+	LOG_PRINT_NONE("path.c_str():%s\n",path.c_str());
+  std::string fn=stx_convertpath(std::string(path.c_str()));
 
   //if(!fn.compare("GUILayout.xml"))
     //fn=stx_convertpath("/NatureScene/GUI/GUILayout.xml");
@@ -66,13 +66,13 @@ NSString MediaPathManager::lookUpMediaPath(NSString path)
 
 
 
-    test.open(buffer.data());
+    test.open(buffer.c_str());
 
     if(test.is_open())
 
     {
 
-      stx_strlcpy(pathBuffer, buffer.data(),buffer.length()+1);
+      stx_strlcpy(pathBuffer, buffer.c_str(),buffer.length()+1);
 
       test.close();
 
@@ -116,18 +116,18 @@ bool MediaPathManager::registerPath( XMLElement *mediaPathNode)
 
 
 
-bool MediaPathManager::registerPath(NSString path0)
+bool MediaPathManager::registerPath(std::string path0)
 
 {
 	char path[MAX_PATH];
-	NSString f=path0;
+	std::string f=path0;
 	stx_strlcpy(path, f.c_str(), MAX_PATH);
-	if(stx_strcmp("Data/", path0)==-1)
+	if(stx_strcmp("Data/", path0.c_str())==-1)
 	{
 		stx_strlcat(path, "/NatureScene/", MAX_PATH);
-		stx_strlcat(path, path0+4, MAX_PATH);
+		stx_strlcat(path, path0.c_str()+4, MAX_PATH);
 	}
-	else if(stx_strcmp("/NatureScene/", path0)==-1)
+	else if(stx_strcmp("/NatureScene/", path0.c_str())==-1)
 		stx_strlcat(path, "/", MAX_PATH);
 
   if(!stx_strlen(path))
@@ -142,9 +142,9 @@ bool MediaPathManager::registerPath(NSString path0)
 
       return true;
 	
-  NSString stringBuffer = path;
+  std::string stringBuffer = path;
 
-  LOG_PRINT_NONE("Registering data path -> %s\n", path);
+  LOG_PRINT_NONE("Registering data path -> %s\n", path.c_str());
 
   pathStack.push_back(stringBuffer);
 
@@ -174,7 +174,7 @@ void  MediaPathManager::printAllPaths()
 
   for(size_t i = 0; i < pathStack.size(); i++){
 
-    if(pathStack[i]){
+    if(pathStack[i]!=""){
 
       cout << int(i) << "-" << pathStack[i] << endl;
 

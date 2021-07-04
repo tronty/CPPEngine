@@ -10,10 +10,10 @@ class GUICheckBox : public GUIAlphaElement
 	{
 		return getItemIndex(getCallbackString());
 	}
-    int                     getItemIndex(const NSString &item);
-    void                    addItem(const NSString &item);
+    int                     getItemIndex(const std::string &item);
+    void                    addItem(const std::string &item);
 	  D3DXFROMWINEVECTOR3 m_Translation;
-    GUICheckBox(NSString callbackString = 0);
+    GUICheckBox(std::string callbackString = "");
 
     virtual void render(float clockTick);
     virtual void checkMouseEvents(int extraInfo, bool reservedBits = false);
@@ -43,8 +43,8 @@ class GUICheckBox : public GUIAlphaElement
             markOffset,
             primaryTexDesc,
             secondaryTexDesc;
-    vector<NSString> items;
-	NSString cb;
+    vector<std::string> items;
+	std::string cb;
 };
 
 #endif

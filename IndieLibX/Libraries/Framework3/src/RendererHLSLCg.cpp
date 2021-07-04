@@ -3817,12 +3817,12 @@ unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, const 
 	DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCVertex));
 #else
 		PCVertex vertices[] = {
-			D3DXFROMWINEVECTOR2(x1, y0);
-			D3DXFROMWINEVECTOR2(x1, y1);
-			D3DXFROMWINEVECTOR2(x0, y0);
-			D3DXFROMWINEVECTOR2(x0, y0);
-			D3DXFROMWINEVECTOR2(x1, y1);
-			D3DXFROMWINEVECTOR2(x0, y1);
+			D3DXFROMWINEVECTOR2(x1, y0),
+			D3DXFROMWINEVECTOR2(x1, y1),
+			D3DXFROMWINEVECTOR2(x0, y0),
+			D3DXFROMWINEVECTOR2(x0, y0),
+			D3DXFROMWINEVECTOR2(x1, y1),
+			D3DXFROMWINEVECTOR2(x0, y1),
 		};
 		DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCVertex));
 #endif
@@ -4364,7 +4364,7 @@ unsigned int RendererHLSLCg::drawQuadVrtl(const float x0, const float y0, const 
 		D3DXFROMWINEVECTOR2(x1, y1),
 		D3DXFROMWINEVECTOR2(s1, t1),
 		D3DXFROMWINEVECTOR2(x0, y1),
-		D3DXFROMWINEVECTOR2(s0, t1),
+		D3DXFROMWINEVECTOR2(s0, t1) };
 	#endif
 #if 0
 	InitPixel(texShader, texVF);

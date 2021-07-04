@@ -40,10 +40,10 @@ class GUIPanel : public GUIRectangle,
     void    correctPosition();
 
   public:
-    GUIPanel(NSString callback = 0);
+    GUIPanel(std::string callback = "");
    ~GUIPanel();
-	int getWidgetIndexByCallbackString(NSString callbackString) const;
-    GUIRectangle *getWidgetByCallbackString(NSString name);
+	int getWidgetIndexByCallbackString(std::string callbackString) const;
+    GUIRectangle *getWidgetByCallbackString(std::string name);
 
 	__DWORD__ getTime() const {return time;}
 	void setTime(__DWORD__ t2){time=t2;}
@@ -57,7 +57,7 @@ class GUIPanel : public GUIRectangle,
  
     int   getTreeHeight();
 
-    virtual bool  loadXMLSettings(NSString stackPath);
+    virtual bool  loadXMLSettings(std::string stackPath);
     virtual bool  loadXMLSettings(XMLElement *node);
  
     virtual void  notify(GUIRectangle *element);

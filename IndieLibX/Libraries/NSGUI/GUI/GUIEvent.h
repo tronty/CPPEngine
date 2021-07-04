@@ -15,14 +15,14 @@ class GUIEvent
     GUIEvent &operator= (const GUIEvent& copy);
 #endif
     GUIRectangle *getEventSource();
-    const NSString &getCallbackString();
-    NSString getCallbackCString();
+    const std::string &getCallbackString();
+    std::string getCallbackCString();
 
     int getWidgetType();
 
   private:
     GUIRectangle *eventSource;
-    NSString        callbackString;
+    std::string        callbackString;
 };
 
 class GUIFrame;

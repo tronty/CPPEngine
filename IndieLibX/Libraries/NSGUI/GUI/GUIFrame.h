@@ -24,7 +24,7 @@ class GUIFrame : public GUIPanel
     bool loadXMLSettings(XMLElement *node);
 
     void     addOrReplaceTexCoordsInfo(GUITexCoordDescriptor &info);
-    void     setElementsTexture(NSString texturePath);
+    void     setElementsTexture(std::string texturePath);
     void     setElementsTexture(const NVTexture &texture);
     void     setGUIEventListener(GUIEventListener *listener);
     //NVTexture *getElementsTexture();

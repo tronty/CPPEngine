@@ -56,9 +56,9 @@ class BlendAttributes : public IOXMLObject
 
   private:
 
-    int   getXMLDestinationFactor(const NSString &value);
+    int   getXMLDestinationFactor(const std::string &value);
 
-    int   getXMLSourceFactor(const NSString &value);
+    int   getXMLSourceFactor(const std::string &value);
 
 
 

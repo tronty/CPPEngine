@@ -6,7 +6,7 @@
 class GUIFont : public NamedObject
 {
   public:
-    GUIFont(const char* path = 0);
+    GUIFont(const char* path = "");
    ~GUIFont();
 
     CFont *getFontObject();

@@ -8,7 +8,7 @@
 class GUIMaterialSurface : public GUIAlphaElement, public GUIClippedRectangle
 {
   public:
-    GUIMaterialSurface(NSString callback = 0);
+    GUIMaterialSurface(std::string callback = "");
 
     virtual void render(float clockTick);
     virtual bool loadXMLSettings(XMLElement *node);

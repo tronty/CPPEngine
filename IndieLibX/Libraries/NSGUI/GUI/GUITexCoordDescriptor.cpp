@@ -53,9 +53,9 @@ void GUITexCoordDescriptor::setType(int type)
   }
 }
 
-void GUITexCoordDescriptor::setType(const NSString &type)
+void GUITexCoordDescriptor::setType(const std::string &type)
 {
-  if(!type.getLength())
+  if(!type.length())
   {
     LOG_PRINT_NONE("0 GUITexCoordDescriptor type");
     return;
@@ -73,7 +73,7 @@ void GUITexCoordDescriptor::setType(const NSString &type)
   if(type == "PANEL")           { widgetType = PANEL;            return; }
   if(type == "LABEL")           { widgetType = LABEL;            return; }
 
-  //Logger::writeErrorLog(NSString("Unknow GUITexCoordDescriptor type -> ") + type);
+  //Logger::writeErrorLog(std::string("Unknow GUITexCoordDescriptor type -> ") + type);
   widgetType = UNKNOWN;
 }
 

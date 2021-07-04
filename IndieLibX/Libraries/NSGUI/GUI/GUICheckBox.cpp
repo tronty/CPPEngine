@@ -4,7 +4,7 @@
 #include "GUICheckBox.h"
 #include "GUIFrame.h"
 
-GUICheckBox::GUICheckBox(NSString cbs) : GUIAlphaElement(cbs)
+GUICheckBox::GUICheckBox(std::string cbs) : GUIAlphaElement(cbs)
 {
   setMinAlphaMark(0.0f);
   setDimensions(20, 20);
@@ -182,7 +182,7 @@ const Tuple4i &GUICheckBox::getWindowBounds()
   }
   return windowBounds;
 }
-void GUICheckBox::addItem(const NSString &item)
+void GUICheckBox::addItem(const std::string &item)
 {
 
   for(size_t t = 0; t < items.size(); t++)
@@ -191,7 +191,7 @@ void GUICheckBox::addItem(const NSString &item)
 
   items.push_back(item);
 }
-int  GUICheckBox::getItemIndex(const NSString &item)
+int  GUICheckBox::getItemIndex(const std::string &item)
 {
   for(size_t t = 0; t < items.size(); t++)
     if(items[t] == item)
@@ -209,7 +209,7 @@ void GUICheckBox::checkMouseEvents(int extraInfo, bool bits)
   {
 	GUIEvent e(this);
 	GUIRectangle     *sourceRectangle = e.getEventSource();
-	NSString callbackString=sourceRectangle->getCallbackString();
+	std::string callbackString=sourceRectangle->getCallbackString();
 	int i=((GUIPanel*)parent)->getWidgetIndexByCallbackString(callbackString);
 	
 	__DWORD__ t1=((GUIPanel*)parent)->getTime();
@@ -225,7 +225,7 @@ void GUICheckBox::checkMouseEvents(int extraInfo, bool bits)
     	clicked = false;
 	//((GUIPanel*)parent)->notify(this);
 	//LOG_FNLN_NONE;
-	//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.data, i, c);
+	//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.c_str(), i, c);
 	return;
   }
 }

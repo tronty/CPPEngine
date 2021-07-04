@@ -5,7 +5,7 @@
 #include "GUIFont.h"
 #include "GUIFontManager.h"
 
-GUIText::GUIText(const NSString &text)
+GUIText::GUIText(const std::string &text)
 {
 	
   fontIndex =    -1;
@@ -45,7 +45,7 @@ GUIText &GUIText::operator =(const GUIText & copy)
   return *this;
 }
 
-GUIText &GUIText::operator =(const NSString & str)
+GUIText &GUIText::operator =(const std::string & str)
 {
   setString(str);
   return *this;
@@ -87,18 +87,18 @@ bool GUIText::loadXMLSettings(XMLElement *element)
   return true;
 }
 
-NSString   GUIText::getCharString()
+char*   GUIText::getCharString()
 {
-  return text;
+  return (char*)text.c_str();
 }
 
-const NSString& GUIText::getString(){  return text; }
+const std::string& GUIText::getString(){  return text; }
 
-void GUIText::setString(const NSString &textArg)
+void GUIText::setString(const std::string &textArg)
 {
-  if(textArg.getLength() && text != textArg)
+  if(textArg.length() && text != textArg)
   {
-	 //text.data=0;//???
+	 //text.c_str()=0;//???
     text   = textArg;
     update = true;
   }
@@ -132,10 +132,10 @@ void GUIText::setFontIndex(int index)
 
 void  GUIText::print(int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
-  endIndex   = (endIndex  < 0) ? int(text.getLength()) : endIndex;
+  endIndex   = (endIndex  < 0) ? int(text.length()) : endIndex;
   startIndex = clampNS(startIndex, 0, endIndex);
 
   GUIFontManager::setCurrentFont(fontIndex);
@@ -153,7 +153,7 @@ void  GUIText::print(int x, int y, int startIndex, int endIndex)
 
 void  GUIText::printCenteredX (int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -162,7 +162,7 @@ void  GUIText::printCenteredX (int x, int y, int startIndex, int endIndex)
 
 void  GUIText::printCenteredY (int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -171,7 +171,7 @@ void  GUIText::printCenteredY (int x, int y, int startIndex, int endIndex)
 
 void  GUIText::printCenteredXY(int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -191,7 +191,7 @@ void GUIText::computeDimensions()
     if(currentFont == GUIFontManager::getDefaultFont())
       fontIndex = GUIFontManager::findFontIndex(currentFont);
 
-    if(text.getLength())
+    if(text.length())
     {
       size = currentFont->getFontObject()->getStringDimensions(text);
       size.x = int(float(size.x)*scales.x);

@@ -4,7 +4,7 @@
 #include "GUIRadioButton.h"
 #include "GUIPanel.h"
 
-GUIRadioButton::GUIRadioButton(NSString cbs) : GUICheckBox(cbs)
+GUIRadioButton::GUIRadioButton(std::string cbs) : GUICheckBox(cbs)
 {
   secondaryTexDesc = CHECK_RB_MARK;
   primaryTexDesc   = RADIO_BUTTON;
@@ -22,7 +22,7 @@ void GUIRadioButton::checkMouseEvents(int extraInfo, bool bits)
   {
 	GUIEvent e(this);
 	GUIRectangle     *sourceRectangle = e.getEventSource();
-	NSString callbackString=sourceRectangle->getCallbackString();
+	std::string callbackString=sourceRectangle->getCallbackString();
 	int i=((GUIPanel*)parent)->getWidgetIndexByCallbackString(callbackString);
 	int c=((GUIPanel*)parent)->getCurrentElement();
 	if(c!=i)
@@ -33,7 +33,7 @@ void GUIRadioButton::checkMouseEvents(int extraInfo, bool bits)
     		clicked = false;
 		((GUIPanel*)parent)->notify(this);
 		//LOG_FNLN_NONE;
-		//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.data, i, c);
+		//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.c_str(), i, c);
 	}
 	return;
   }

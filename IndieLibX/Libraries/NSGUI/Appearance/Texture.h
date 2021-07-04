@@ -92,7 +92,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 #if 0
 
-    bool load2D(NSString infoEndOrPath,
+    bool load2D(std::string infoEndOrPath,
 
 		unsigned int clampS    = 0,//D3DTADDRESS_WRAP,
 
@@ -120,7 +120,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool loadCube(NSString infoEndOrPath,
+    bool loadCube(std::string infoEndOrPath,
 
 		  unsigned int clampS	 = 0,//D3DTADDRESS_CLAMP,
 
@@ -134,7 +134,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool create1DShell(NSString name,
+    bool create1DShell(std::string name,
 
 		       unsigned int width7     = 128,
 
@@ -153,7 +153,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool create2DShell(NSString name,
+    bool create2DShell(std::string name,
 
 		       unsigned int width7     = 128,
 
@@ -174,7 +174,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool createRectShell(NSString name,
+    bool createRectShell(std::string name,
 
 			 unsigned int width7	 = 128,
 
@@ -195,7 +195,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool create3DShell(NSString name,
+    bool create3DShell(std::string name,
 
 		       unsigned int width7     = 64,
 
@@ -220,7 +220,7 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 
 
-    bool createCubeShell(NSString name,
+    bool createCubeShell(std::string name,
 
 			 unsigned int size	= 128,
 
@@ -239,13 +239,13 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 #endif
 
-    bool createNoise3D(NSString name,
+    bool createNoise3D(std::string name,
 
 		       unsigned int size = 128);
 
 
 
-    bool createNormalizingCube(NSString name,
+    bool createNormalizingCube(std::string name,
 
 			       unsigned int size	 = 128, 
 
@@ -350,19 +350,19 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
 #endif
 
-    bool finalizeLoading(NSString string);
+    bool finalizeLoading(std::string string);
 
-    bool checkForRepeat (NSString string);
+    bool checkForRepeat (std::string string);
 
  
 
-    int getXMLMagFilter(const NSString &value);
+    int getXMLMagFilter(const std::string &value);
 
-    int getXMLMinFilter(const NSString &value);
+    int getXMLMinFilter(const std::string &value);
 
-    int getXMLWrapMode (const NSString &value);
+    int getXMLWrapMode (const std::string &value);
 
-    int getXMLType     (const NSString &value);
+    int getXMLType     (const std::string &value);
 
 
 

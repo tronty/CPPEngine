@@ -1,8 +1,8 @@
 import os, sys, re
 
 def replaceString(outtext):
-
-    outtext=re.sub(r'\bapp\.initGUI\b', 'BaseApp::initGUI', outtext)
+    outtext=re.sub(r'\bNSString\b', 'std::string', outtext)
+    return outtext
 
     #outtext=re.sub(r'\bSTX_PRINTF\b', 'printf', outtext)
     #outtext=re.sub(r'\bSTX_PRINT\b', 'printf', outtext)
@@ -668,6 +668,7 @@ def myfunmem(dummy, dirr, filess):
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
 
+'''
 os.path.walk('../Samples/new/new_/R2VB_VTF', myfun, 13)
 exit(0)
 
@@ -679,9 +680,11 @@ os.path.walk('../Libraries/otl-nightly', myfun, 13)
 exit(0)
 
 v1=['spine-2.3', 'c3dbool', 'masters-grammar-interpreter', 'STX', 'ContentStreaming', 'MeshRenderer2', 'MeshRenderer3', 'Framework', 'NatureSceneLibrary', 'Framework3', 'nova-0.15.0', 'FW3', 'NSGUI', 'otl', 'otl_', 'otl-nightly', 'RadeonTerrainDemoLibrary', 'Image3', 'sdkmesh-to-obj', 'IndieLib']
+'''
+v1=['NatureSceneLibrary']
 for i in v1:
-	os.path.walk('../Libraries/'+i, myfunmem, 13)
-os.path.walk('../Samples', myfunmem, 13)
+	os.path.walk('../Libraries/'+i, myfun, 13)
+#os.path.walk('../Samples', myfun, 13)
 exit(0)
 
 if False:

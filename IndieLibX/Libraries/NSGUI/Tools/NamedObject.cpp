@@ -5,60 +5,35 @@
 NamedObject::NamedObject(const char*  argName)
 
 {
-
-  name = argName;
+	if(argName)
+		name = argName;
+	else
+		name = "";
 
 }
 
 
 
-NamedObject::NamedObject(const NSString &argName)
+NamedObject::NamedObject(const std::string &argName)
 
 {
 
   name = argName;
 
 }
-
-
-
-NamedObject::NamedObject(const NamedObject &copy)
-
-{
-
-  if(this != &copy)
-
-    name = copy.name;
-
-}
-
-
-
-NamedObject &NamedObject::operator=(const NamedObject &copy)
-
-{
-
-  if(this != &copy)
-
-    name = copy.name;
-
-  return *this;
-
-}
-
-
 
 void NamedObject::setName(const char* nameArg)
 
 {
 
+	if(nameArg)
   name = nameArg;
 
 }
 
 
 
-void NamedObject::setName(const NSString &nameArg)
+void NamedObject::setName(const std::string &nameArg)
 
 {
 
@@ -68,7 +43,7 @@ void NamedObject::setName(const NSString &nameArg)
 
 
 
-NSString /*&*/NamedObject::getName() 
+std::string /*&*/NamedObject::getName() 
 
 {
 
@@ -82,11 +57,7 @@ NamedObject::~NamedObject()
 
 {
 
-  name.clear();
+  name="";
 
 }
-
-
-
-
 

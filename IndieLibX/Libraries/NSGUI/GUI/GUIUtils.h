@@ -1,7 +1,7 @@
 #ifndef GUI_UTILS_H
 #define GUI_UTILS_H
 
-#include "../Tools/NSString.h"
+#include <string>
 
 #include "GUITexCoordDescriptor.h"
 #include "GUIClippedRectangle.h"

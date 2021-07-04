@@ -15,16 +15,16 @@ enum TextEditionType
 class GUITextBox : public GUIAlphaElement
 {
   public:
-    GUITextBox(NSString callbackString = 0,
-               NSString fieldText      = 0);
+    GUITextBox(std::string callbackString = "",
+               std::string fieldText      = "");
 
     virtual void    render(float clockTick);
     virtual void    checkMouseEvents(int extraInfo, bool reservedBits = false);
     virtual void    checkKeyboardEvents(int extraInfo);
     virtual bool    loadXMLSettings(XMLElement *node);
     virtual const   Tuple4i &getWindowBounds();
-    void            setText(const NSString &text);
-    const   NSString &getText() const;
+    void            setText(const std::string &text);
+    const   std::string &getText() const;
 
     bool    textChanged();
 
@@ -46,7 +46,7 @@ class GUITextBox : public GUIAlphaElement
             textStartIndex,
             textEndIndex;
   private:
-    void    setupText(int type, char info = 0);
+    void    setupText(int type, char info = '\0');
     void    setupBlinker(int mouseX);
 };
 

@@ -139,7 +139,7 @@ bool Material::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -241,7 +241,7 @@ bool Material::exportXMLSettings(ofstream &xmlFile)
 
 
 
-  NSString  matAttr[4]   = { "Ambient ",  "Diffuse ", "Emissive", "Specular" };
+  std::string  matAttr[4]   = { "Ambient ",  "Diffuse ", "Emissive", "Specular" };
 
   D3DXFROMWINEVECTOR4 attributes;
 

@@ -8,7 +8,7 @@
 class GUIComboBox : public GUIRectangle, public GUIEventListener
 {
   public:
-    GUIComboBox(NSString callbackString = 0);
+    GUIComboBox(std::string callbackString = "");
    ~GUIComboBox();
 
     virtual GUIEventListener  *getEventsListener();
@@ -22,11 +22,11 @@ class GUIComboBox : public GUIRectangle, public GUIEventListener
     void                    setFontScales(const D3DXFROMWINEVECTOR2 &scales);
     const   D3DXFROMWINEVECTOR2        &getFontScales();
 
-    void                    addItem(const NSString &item);
-    const   vector<NSString> &getItems() const;
-    NSString           getSelectedItem()  const;
-    NSString           getItem(size_t index) const;
-    int                     getItemIndex(const NSString &item);
+    void                    addItem(const std::string &item);
+    const   vector<std::string> &getItems() const;
+    std::string           getSelectedItem()  const;
+    std::string           getItem(size_t index) const;
+    int                     getItemIndex(const std::string &item);
 
     void    setScrollingColor(float r, float g, float b, float alpha);
     void    setScrollingColor(const D3DXFROMWINEVECTOR4 &rgba);
@@ -41,7 +41,7 @@ class GUIComboBox : public GUIRectangle, public GUIEventListener
 
     void           finalizeSize();
 
-    vector<NSString> items;
+    vector<std::string> items;
     GUIButton      *dropMenuButton;
     GUIPanel       *upperPanel,
                    *lowerPanel;

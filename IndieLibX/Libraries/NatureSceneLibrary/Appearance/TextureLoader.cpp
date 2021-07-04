@@ -39,7 +39,7 @@ bool NVTexture::create2DShell(const char* name,
 
   //LOG_PRINT("Loading new 2D Shell: width = ") + int(width7)
 
-//		       + NSString(", height = ") + int(height7));
+//		       + std::string(", height = ") + int(height7));
 
 /*
 
@@ -99,7 +99,7 @@ bool NVTexture::create2DShell(const char* name,
 
 	//<+>Loading new 2D Shell: width = 512, height = 512
 
-	LOG_PRINT("Loading new 2D Shell: width = ")+int(width7)+NSString(", height = ")+int(height7));
+	LOG_PRINT("Loading new 2D Shell: width = ")+int(width7)+std::string(", height = ")+int(height7));
 
 
 

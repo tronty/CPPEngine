@@ -43,7 +43,7 @@ public:
 
 	virtual void actionPerformed(GUIEvent &evt)
 {
-  const NSString &callbackString  = evt.getCallbackString();
+  const std::string &callbackString  = evt.getCallbackString();
   GUIRectangle *sourceRectangle = evt.getEventSource();
   int widgetType      = sourceRectangle->getWidgetType();
 

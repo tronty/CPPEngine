@@ -7,7 +7,7 @@
 class GUITabbedPanel : public GUIRectangle, public GUIEventListener
 {
   public:
-    GUITabbedPanel(NSString callbackString = 0);
+    GUITabbedPanel(std::string callbackString = "");
    ~GUITabbedPanel();
 
     virtual GUIEventListener  *getEventsListener();

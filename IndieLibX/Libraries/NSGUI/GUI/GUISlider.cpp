@@ -3,7 +3,7 @@
 #include <STX/CInput.h>
 #include "GUISlider.h"
 #include "GUIFrame.h"
-GUISlider::GUISlider(NSString callback,
+GUISlider::GUISlider(std::string callback,
                      const int   orientation_) :
                      GUIAlphaElement(callback)
 {

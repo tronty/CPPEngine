@@ -22,7 +22,7 @@ class MediaInfo
 
   public:
 
-    MediaInfo(NSString mediaPath_= 0, MediaInfoType mediaArg = 0)
+    MediaInfo(std::string mediaPath_= 0, MediaInfoType mediaArg = 0)
 
     {
 
@@ -68,7 +68,7 @@ class MediaInfo
 
 
 
-    void setMediaPath(NSString mediaPath_)
+    void setMediaPath(std::string mediaPath_)
 
     {
 
@@ -78,7 +78,7 @@ class MediaInfo
 
 
 
-    const NSString &getMediaPath() const
+    const std::string &getMediaPath() const
 
     {
 
@@ -188,7 +188,7 @@ class MediaInfo
 
     MediaInfoType  media;
 
-    NSString         mediaPath;
+    std::string         mediaPath;
 
 
 

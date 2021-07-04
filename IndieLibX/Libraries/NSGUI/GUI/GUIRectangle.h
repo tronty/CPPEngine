@@ -37,7 +37,7 @@ class GUIRectangle
     D3DXFROMWINEVECTOR2       position,
                   dimensions;
 
-    NSString        callbackString;
+    std::string        callbackString;
 
     bool          mouseOver,
                   released,
@@ -56,16 +56,16 @@ class GUIRectangle
 	int currentElement;               
 
   public:
-    GUIRectangle(const char* callback = 0);
+    GUIRectangle(std::string callback = "");
 	virtual ~GUIRectangle(){}
 	int getCurrentElement() const {return currentElement;}
 	void setCurrentElement(int a){currentElement=a;}
 
     void setIndex(int t){index=t;}
 
-    void           setCallbackString(const NSString& callback);
+    void           setCallbackString(const std::string& callback);
     void           setCallbackString(const char*   callback);
-    const NSString & getCallbackString();   
+    const std::string & getCallbackString();   
    
     bool     loadXMLSettings(XMLElement *node);
 
@@ -84,7 +84,7 @@ class GUIRectangle
     void  setActive(bool active);
     bool  isActive();
 
-    void  setAnchorPoint(NSString anchor);
+    void  setAnchorPoint(std::string anchor);
     void  setAnchorPoint(int anchor);
     int   getAnchorPoint();
 

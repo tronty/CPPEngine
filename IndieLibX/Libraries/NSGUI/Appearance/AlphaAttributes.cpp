@@ -64,7 +64,7 @@ bool  AlphaAttributes::loadXMLSettings(XMLElement *element)
 
               *child     = 0;
 
-  NSString       path;
+  std::string       path;
 
 
 
@@ -84,7 +84,7 @@ bool  AlphaAttributes::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -274,7 +274,7 @@ void  AlphaAttributes::stop()
 
 
 
-int   AlphaAttributes::getXMLAlphaFunc(const NSString &value)
+int   AlphaAttributes::getXMLAlphaFunc(const std::string &value)
 
 {
 /*

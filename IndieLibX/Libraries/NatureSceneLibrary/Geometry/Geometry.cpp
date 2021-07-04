@@ -1693,7 +1693,7 @@ bool Geometry::loadXMLSettings(XMLElement *element)
 
     if(!node) continue;
 
-    const NSString &name = node->getName();
+    const std::string &name = node->getName();
 
 
 
@@ -2121,11 +2121,11 @@ bool Geometry::exportXMLSettings(ofstream &xmlFile)
 
 
 
-int Geometry::getXMLType(const NSString &value)
+int Geometry::getXMLType(const std::string &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 

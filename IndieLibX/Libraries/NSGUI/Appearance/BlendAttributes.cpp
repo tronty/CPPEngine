@@ -63,7 +63,7 @@ bool  BlendAttributes::loadXMLSettings(XMLElement *element)
 
               *child     = 0;
 
-  NSString       path;
+  std::string       path;
 
 
 
@@ -83,7 +83,7 @@ bool  BlendAttributes::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -323,7 +323,7 @@ void  BlendAttributes::stop()
 
 
 
-int   BlendAttributes::getXMLDestinationFactor(const NSString &value)
+int   BlendAttributes::getXMLDestinationFactor(const std::string &value)
 
 {
 /*
@@ -355,7 +355,7 @@ int   BlendAttributes::getXMLDestinationFactor(const NSString &value)
 
 
 
-int   BlendAttributes::getXMLSourceFactor(const NSString &value)
+int   BlendAttributes::getXMLSourceFactor(const std::string &value)
 
 {
 /*

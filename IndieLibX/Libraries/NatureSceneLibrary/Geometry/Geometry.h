@@ -87,7 +87,7 @@ public:
 
     void	     initialize();
 
-    int 	     getXMLType(const NSString &);
+    int 	     getXMLType(const std::string &);
 
 
 

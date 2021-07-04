@@ -28,7 +28,7 @@ class GUITexCoordDescriptor
 {
 
   private:
-    void    setType(const NSString &type);
+    void    setType(const std::string &type);
 
     D3DXFROMWINEVECTOR4 texCoords;
     int     widgetType;

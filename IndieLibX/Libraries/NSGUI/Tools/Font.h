@@ -18,23 +18,23 @@ class CFont
     void printProportional(float widthRatio , float heightRatio,
                            float width,       float height,
                            float r,  float g, float b,
-                           NSString &string);
+                           std::string &string);
 
     void print(float x,     float y,
                float width, float height,
                float r,     float g, float b,
-               NSString &string);
+               std::string &string);
 
     void printSubString(float x,     float y,
                         float width, float height,
                         float r,     float g, float b,
                         int   start, int end,
-                        NSString &string);
+                        std::string &string);
 
 
-    Tuple2i getStringDimensions(NSString &string);
-    bool    load(NSString fontPath);
-    int     getMaxFittingLength(const NSString &string, int bounds);
+    Tuple2i getStringDimensions(std::string &string);
+    bool    load(std::string fontPath);
+    int     getMaxFittingLength(const std::string &string, int bounds);
     int     getHeight();
     const   int *getCharHorizontalGlyphs() const;
 

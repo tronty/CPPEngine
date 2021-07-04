@@ -8,7 +8,7 @@ class GUIButton : public GUIAlphaElement, public GUIClippedRectangle
 {
   public:
 	  D3DXFROMWINEVECTOR3 m_Translation;
-    GUIButton(NSString callbackString = 0);
+    GUIButton(std::string callbackString = "");
 
     virtual void  render(float clockTick);
     virtual bool  loadXMLSettings(XMLElement *node);

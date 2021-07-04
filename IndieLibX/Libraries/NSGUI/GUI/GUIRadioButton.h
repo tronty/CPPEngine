@@ -6,7 +6,7 @@
 class GUIRadioButton : public GUICheckBox
 {
   public:
-    GUIRadioButton(NSString callbackString = 0);
+    GUIRadioButton(std::string callbackString = "");
     virtual void checkMouseEvents(int extraInfo, bool bits);
 	bool  isChecked(){return GUICheckBox::isChecked();}
 };

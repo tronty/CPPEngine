@@ -113,7 +113,7 @@ bool Appearance::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
     textureIndex = clampNS(textureIndex, 0, MAX_TEX_UNITS-1);
 

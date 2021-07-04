@@ -7,7 +7,7 @@
 # The L-system for the 2D-modelling.
 */
 #include <Framework3/Turtle.h>
-//include <Tools/NSString.h>
+//include <Tools/std::string.h>
 
 string axiom;
 float angle;

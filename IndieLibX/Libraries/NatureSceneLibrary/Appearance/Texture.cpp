@@ -475,7 +475,7 @@ void NVTexture::setID(TextureID texID)
 
   {
 
-    newTextureInfo = new TextureInfo(NSString("Unknown texture #") + unknown, texID);
+    newTextureInfo = new TextureInfo(std::string("Unknown texture #") + unknown, texID);
 
     unknown++;
 
@@ -623,7 +623,7 @@ bool NVTexture::loadXMLSettings(XMLElement *element)
 
 
 
-  NSString       path;
+  std::string       path;
 
   int	       aniso	 =	  0,
 
@@ -659,7 +659,7 @@ bool NVTexture::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -801,7 +801,7 @@ else
 
 
 
-int NVTexture::getXMLMagFilter(const NSString &value)
+int NVTexture::getXMLMagFilter(const std::string &value)
 
 {
 
@@ -819,7 +819,7 @@ int NVTexture::getXMLMagFilter(const NSString &value)
 
 
 
-int NVTexture::getXMLMinFilter(const NSString &value)
+int NVTexture::getXMLMinFilter(const std::string &value)
 
 {
 
@@ -845,7 +845,7 @@ int NVTexture::getXMLMinFilter(const NSString &value)
 
 
 
-int NVTexture::getXMLWrapMode(const NSString &value)
+int NVTexture::getXMLWrapMode(const std::string &value)
 
 {
 
@@ -867,7 +867,7 @@ int NVTexture::getXMLWrapMode(const NSString &value)
 
 
 
-int NVTexture::getXMLType(const NSString &value)
+int NVTexture::getXMLType(const std::string &value)
 
 {
 

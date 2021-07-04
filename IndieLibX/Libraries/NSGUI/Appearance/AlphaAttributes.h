@@ -54,7 +54,7 @@ class AlphaAttributes : public IOXMLObject
 
   private:
 
-    int   getXMLAlphaFunc(const NSString &value);
+    int   getXMLAlphaFunc(const std::string &value);
 
     float reference;
 

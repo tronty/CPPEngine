@@ -1,7 +1,11 @@
 #include <Framework3/IRenderer.h>
 #include <GUI/GUIUtils.h>
 
-GUIPanel::GUIPanel(NSString cbs) : GUIRectangle(cbs), GUIClippedRectangle()
+#define LOG_PRINT printf
+#define LOG_PRINT_NONE printf
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+
+GUIPanel::GUIPanel(std::string cbs) : GUIRectangle(cbs), GUIClippedRectangle()
 {
   setInterval(4, 4);
   widgetType = PANEL;
@@ -9,22 +13,24 @@ GUIPanel::GUIPanel(NSString cbs) : GUIRectangle(cbs), GUIClippedRectangle()
   currentElement=-1;
 }
 
-bool GUIPanel::loadXMLSettings(NSString stackPath)
+bool GUIPanel::loadXMLSettings(std::string stackPath)
 {
-  NSString xmlFile = //MediaPathManager::lookUpMediaPath(
+  bool        result = true;
+  #if 1
+  std::string xmlFile = //MediaPathManager::lookUpMediaPath(
 	  stackPath;
   XMLStack    cfgStack;
-  bool        result = false;
-  if(!xmlFile)
-    {LOG_PRINT_NONE("Failed to locate the XML GUI file");return false;}
+  if(xmlFile=="")
+    {LOG_PRINT("Failed to locate the XML GUI file");return false;}
 
 
 //LOG_PRINT_NONE("xmlFile=%s\n", xmlFile);
 
-  if(cfgStack.loadXMLFile(xmlFile) != XML_SUCCESS)
-  {LOG_PRINT_NONE("Invalid XML GUI description file");return false;}
+  if(cfgStack.loadXMLFile(xmlFile.c_str()) != XML_SUCCESS)
+  {LOG_PRINT("Invalid XML GUI description file");return false;}
 
   result = loadXMLSettings(cfgStack.getChildByName("Panel"));
+#endif
   forceUpdate(true);
 	setIndexes();
   return result;
@@ -34,11 +40,16 @@ bool GUIPanel::loadXMLSettings(XMLElement *element)
 {
   if(!element || element->getName() != "Panel")
   {
-	LOG_FNLN_NONE;
-	LOG_PRINT_NONE("Need a Panel node in the xml file\n");
-	LOG_PRINT_NONE("element=%x\n", element);
-	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().data);
-	return false;
+	LOG_FNLN;
+	LOG_PRINT_NONE("Need a Panel node in the xml file 2\n"); // ???
+	LOG_PRINT_NONE("element2=%x\n", element);
+	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().c_str());
+#ifdef _MSC_VER
+  	DBG_HALT;
+  #else
+  	//return false;
+  	stx_exit(2);
+  #endif
   }
 
   XMLElement *child    = 0,
@@ -52,7 +63,7 @@ bool GUIPanel::loadXMLSettings(XMLElement *element)
     if(!(child = element->getChild(i)))
       continue;
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
     if(childName == "Interval")
     {
@@ -63,7 +74,7 @@ bool GUIPanel::loadXMLSettings(XMLElement *element)
 
     if(childName == "layout")
     {
-      const NSString& type = child->getValue();
+      const std::string& type = child->getValue();
       layout = (type == "CEN_YAXIS") ? YAXIS_CEN_LAYOUT :
                (type == "YAXIS"    ) ? YAXIS_LAYOUT     :
                (type == "XAXIS"    ) ? XAXIS_LAYOUT     :
@@ -191,9 +202,9 @@ void GUIPanel::setIndexes()
 	}
 }
 
-int GUIPanel::getWidgetIndexByCallbackString(NSString callbackString) const
+int GUIPanel::getWidgetIndexByCallbackString(std::string callbackString) const
 {
-  if(!callbackString)
+  if(callbackString=="")
     return 0;
 
   int element = -1;
@@ -209,9 +220,9 @@ int GUIPanel::getWidgetIndexByCallbackString(NSString callbackString) const
   return element;
 }
 
-GUIRectangle *GUIPanel::getWidgetByCallbackString(NSString callbackString)
+GUIRectangle *GUIPanel::getWidgetByCallbackString(std::string callbackString)
 {
-  if(!callbackString)
+  if(callbackString=="")
     return 0;
 
   GUIRectangle *element = 0,
@@ -278,8 +289,8 @@ void  GUIPanel::render(float tick)
 	  {
 /*
 		  LOG_PRINT_NONE("cbs=%s\n",
-			elements[t]->getCallbackString().data);
-		if(stx_memcmp("Visibility",elements[t]->getCallbackString().data,10)==0)DBG_HALT;
+			elements[t]->getCallbackString().c_str());
+		if(stx_memcmp("Visibility",elements[t]->getCallbackString().c_str(),10)==0)DBG_HALT;
 */
 		elements[t]->render(tick);
 	  }
@@ -295,8 +306,8 @@ void  GUIPanel::render(float tick)
     for(size_t t = 0; t < comboBoxes.size(); t++)
       comboBoxes[t]->render(tick);
   }
-//	if(stx_memcmp("Visibility",getCallbackString().data,10)==0)DBG_HALT;
-	//if(stx_memcmp("Visibility",getCallbackString().data,10)==0)
+//	if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)DBG_HALT;
+	//if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)
 	//	visible=true;
 
 

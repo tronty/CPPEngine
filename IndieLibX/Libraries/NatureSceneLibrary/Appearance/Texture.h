@@ -356,13 +356,13 @@ typedef enum _D3DTEXTUREFILTERTYPE
 
  
 
-    int getXMLMagFilter(const NSString &value);
+    int getXMLMagFilter(const std::string &value);
 
-    int getXMLMinFilter(const NSString &value);
+    int getXMLMinFilter(const std::string &value);
 
-    int getXMLWrapMode (const NSString &value);
+    int getXMLWrapMode (const std::string &value);
 
-    int getXMLType     (const NSString &value);
+    int getXMLType     (const std::string &value);
 
 
 

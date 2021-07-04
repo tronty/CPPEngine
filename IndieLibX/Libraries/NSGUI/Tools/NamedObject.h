@@ -1,12 +1,7 @@
 #ifndef NAMEDOBJECT_H
-
 #define NAMEDOBJECT_H
 
-
-
-#include "NSString.h"
-
-
+#include <string>
 
 class NamedObject
 
@@ -16,34 +11,38 @@ class NamedObject
 
   protected:
 
-    NSString name;
+    std::string name;
 
 
 
   public:
 
-    NamedObject(const char*  argName = 0);
+    NamedObject(const char*  argName = "");
 
-    NamedObject(const NSString &argName);
+    NamedObject(const std::string &argName);
 
-    NamedObject(const NamedObject &copy);
+    NamedObject(const NamedObject &copy)
+    {
+    	name=copy.name;
+    }
 
    ~NamedObject();
 
 
 
-    NamedObject &operator=(const NamedObject &copy);
+    NamedObject &operator=(const NamedObject &copy)
+    {
+    	name=copy.name;
+    }
 
-    void   setName(const char* nameArg);
+    void   setName(const char* nameArg="");
 
-    void   setName(const NSString &name);
+    void   setName(const std::string &aname);
 
 
 
-    NSString /*&*/getName()     ;
+    std::string /*&*/getName()     ;
 
 };
-
-
-
 #endif
+

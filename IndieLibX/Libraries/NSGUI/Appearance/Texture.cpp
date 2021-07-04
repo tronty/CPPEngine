@@ -3,11 +3,11 @@
 
 //include "../Renderer/Renderer.h"
 
-
+#define LOG_PRINT printf
+#define LOG_PRINT_NONE printf
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 
 #define USETEXTURES 1//???
-
-
 
 NVTexture::NVTexture(TextureType target_) : IOXMLObject("Texture")
 
@@ -111,7 +111,7 @@ NVTexture &NVTexture::operator= (const NVTexture & copy)
 
 
 
-bool NVTexture::checkForRepeat(NSString string)
+bool NVTexture::checkForRepeat(std::string string)
 
 {
 
@@ -131,13 +131,13 @@ bool NVTexture::checkForRepeat(NSString string)
 
 
 
-bool NVTexture::finalizeLoading(NSString astring)
+bool NVTexture::finalizeLoading(std::string astring)
 
 {
 
   if(!id)
 
-    {LOG_PRINT_NONE("Failed to load texture <%s>\n",astring.data);return false;}
+    {LOG_PRINT_NONE("Failed to load texture <%s>\n",astring.c_str());return false;}
 
   else
 
@@ -475,8 +475,10 @@ void NVTexture::setID(TextureID texID)
   else
 
   {
+  	char buf[1024];
+  	stx_snprintf(buf, 1024, "Unknown texture # %d &d", unknown, texID);
 
-    newTextureInfo = new TextureInfo(NSString("Unknown texture #") + unknown, texID);
+    newTextureInfo = new TextureInfo(buf);
 
     unknown++;
 
@@ -624,7 +626,7 @@ bool NVTexture::loadXMLSettings(XMLElement *element)
 
 
 
-  NSString       path;
+  std::string       path;
 
   int	       aniso	 =	  0,
 
@@ -660,7 +662,7 @@ bool NVTexture::loadXMLSettings(XMLElement *element)
 
 
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -802,11 +804,11 @@ else
 
 
 
-int NVTexture::getXMLMagFilter(const NSString &value)
+int NVTexture::getXMLMagFilter(const std::string &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -820,11 +822,11 @@ int NVTexture::getXMLMagFilter(const NSString &value)
 
 
 
-int NVTexture::getXMLMinFilter(const NSString &value)
+int NVTexture::getXMLMinFilter(const std::string &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -846,11 +848,11 @@ int NVTexture::getXMLMinFilter(const NSString &value)
 
 
 
-int NVTexture::getXMLWrapMode(const NSString &value)
+int NVTexture::getXMLWrapMode(const std::string &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -868,11 +870,11 @@ int NVTexture::getXMLWrapMode(const NSString &value)
 
 
 
-int NVTexture::getXMLType(const NSString &value)
+int NVTexture::getXMLType(const std::string &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 

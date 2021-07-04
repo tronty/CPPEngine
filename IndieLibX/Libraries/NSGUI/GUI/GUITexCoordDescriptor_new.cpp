@@ -54,7 +54,7 @@ void GUITexCoordDescriptor::setType(int type)
   }
 }
 
-void GUITexCoordDescriptor::setType(const NSString &type)
+void GUITexCoordDescriptor::setType(const std::string &type)
 {
   if(!type.getLength())
   {

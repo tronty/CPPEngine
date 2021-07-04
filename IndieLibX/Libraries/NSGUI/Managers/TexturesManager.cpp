@@ -27,13 +27,13 @@ bool TexturesManager::addTextureInfo(TextureInfo *textureInfo)
 
 
 
-TextureInfo *TexturesManager::getTextureInfo(NSString texturePath)
+TextureInfo *TexturesManager::getTextureInfo(std::string texturePath)
 
 {
 
   flushUnusedTextures();
 
-  if(!texturePath || !textureCollection.size())
+  if(!texturePath.length() || !textureCollection.size())
 
     return 0;
 

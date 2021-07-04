@@ -21,7 +21,7 @@ class TexturesManager
 
     static bool        addTextureInfo(TextureInfo *textureInfo);
 
-    static TextureInfo *getTextureInfo(NSString texturePath);
+    static TextureInfo *getTextureInfo(std::string texturePath);
 
     static TextureInfo *getTextureInfo(TextureID textureID);
 

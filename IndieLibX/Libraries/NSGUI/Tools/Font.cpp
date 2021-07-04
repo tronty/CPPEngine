@@ -28,9 +28,9 @@ CFont::~CFont()
 //  fontTexture.destroy();
 }
 
-bool CFont::load(NSString fontPath)
+bool CFont::load(std::string fontPath)
 {
-  NSString fontlocation = //MediaPathManager::lookUpMediaPath(
+  std::string fontlocation = //MediaPathManager::lookUpMediaPath(
 	  fontPath;
   Image3 image;
   int   width  = 0,
@@ -39,7 +39,7 @@ bool CFont::load(NSString fontPath)
 	
 	//LOG_PRINT_NONE("fontPath:%s\n",fontPath);
 
-  if(!image.loadImageLibImage(fontlocation,false))
+  if(!image.loadImageLibImage(fontlocation.c_str(),false))
     return false;//LOG_PRINT_NONE("Can't load font file");
 
   if(getChannelCount(image.format) != 4)
@@ -147,25 +147,25 @@ bool CFont::load(NSString fontPath)
   return true;
 }
 
-Tuple2i CFont::getStringDimensions(NSString &string)
+Tuple2i CFont::getStringDimensions(std::string &string)
 {
   Tuple2i dimensions(0, fontHeight);
 
-  for(size_t i = 0; i < string.getLength(); i++)
+  for(size_t i = 0; i < string.length(); i++)
     dimensions.x += spaces[int(string[i])];
 
   return dimensions;
 }
 
-int  CFont::getMaxFittingLength(const NSString &string, int bounds)
+int  CFont::getMaxFittingLength(const std::string &string, int bounds)
 {
   int index         = 0,
       currentLength = 0;
 
-  if(!bounds || !string.getLength() || -1!=fontTexture)
+  if(!bounds || !string.length() || -1!=fontTexture)
     return 0;
 
-  for(size_t i = 0; i < string.getLength(); i++)
+  for(size_t i = 0; i < string.length(); i++)
     if(currentLength < bounds)
     {
       currentLength += spaces[int(string[i])];
@@ -181,12 +181,12 @@ int  CFont::getMaxFittingLength(const NSString &string, int bounds)
 void CFont::printProportional(float widthRatio, float heightRatio,
                              float width,      float height,
                              float r, float g, float b,
-                             NSString &string)
+                             std::string &string)
 {
 #if 0
   Tuple4i viewport;
 
-  if(!string.getLength())
+  if(!string.length())
     return;
 
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -205,8 +205,8 @@ void CFont::printProportional(float widthRatio, float heightRatio,
         yPosition = (viewport.Height - dimensions.y*height)*heightRatio;
 /*
 	char stringdata[1024];
-	stx_memcpy(stringdata,string.data,string.getLength());
-	stringdata[string.getLength()]='\0';
+	stx_memcpy(stringdata,string.c_str(),string.length());
+	stringdata[string.length()]='\0';
 	*/
   #ifdef __PRINT__
 	IRenderer::GetRendererInstance()->drawText(string.c_str(), xPosition, yPosition, 
@@ -223,10 +223,10 @@ void CFont::printProportional(float widthRatio, float heightRatio,
 void CFont::print(float xPosition,  float yPosition,
                  float width,      float height,
                  float r, float g, float b,
-                 NSString &string)
+                 std::string &string)
 {
 #if 0
-  int stringLength =  string.getLength();
+  int stringLength =  string.length();
   if(!stringLength || -1!=fontTexture)
     return;
 
@@ -260,8 +260,8 @@ void CFont::print(float xPosition,  float yPosition,
 #else
 	/*
 	char stringdata[1024];
-	stx_memcpy(stringdata,string.data,string.getLength());
-	stringdata[string.getLength()]='\0';*/
+	stx_memcpy(stringdata,string.c_str(),string.length());
+	stringdata[string.length()]='\0';*/
 	#ifdef __PRINT__
 	IRenderer::GetRendererInstance()->drawText(string.c_str(), xPosition, yPosition, 
 		//15, 18,
@@ -283,13 +283,13 @@ void CFont::printSubString(float xPosition,  float yPosition,
                           float width,      float height,
                           float r, float g, float b,
                           int   start, int end,
-                          NSString &string)
+                          std::string &string)
 {
 #if 0
   if(start >= end)
     return;
 
-  int stringLength =  string.getLength();
+  int stringLength =  string.length();
   if(stringLength  < end)
     return;
 
@@ -317,11 +317,11 @@ void CFont::printSubString(float xPosition,  float yPosition,
   IRenderer::GetRendererInstance()->Color3f(1,1,1);
 #else
 	/*
-	//LOG_PRINT_NONE("l=%d\n",string.getLength());
-	//LOG_PRINT_NONE("s=%s\n",string.data);
+	//LOG_PRINT_NONE("l=%d\n",string.length());
+	//LOG_PRINT_NONE("s=%s\n",string.c_str());
 	char stringdata[1024];
-	stx_memcpy(stringdata,string.data,string.getLength());
-	stringdata[string.getLength()]='\0';*/
+	stx_memcpy(stringdata,string.c_str(),string.length());
+	stringdata[string.length()]='\0';*/
 #ifdef __PRINT__
 #if 0
 	LOG_PRINT_NONE("string=%s\n", string.c_str());

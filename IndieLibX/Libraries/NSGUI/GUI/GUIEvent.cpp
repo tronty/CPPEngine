@@ -73,7 +73,7 @@ bool isClicked(GUIEvent &evt)
 
 GUIRectangle* GetGUIRectangle(GUIEvent &evt)
 {
-  const NSString &callbackString  = evt.getCallbackString();
+  const std::string &callbackString  = evt.getCallbackString();
   GUIRectangle *sourceRectangle = evt.getEventSource();
   int           widgetType      = sourceRectangle->getWidgetType();
   if(widgetType == RADIO_BUTTON)
@@ -188,8 +188,8 @@ GUIEvent &GUIEvent::operator= (const GUIEvent& copy)
 }
 
 GUIRectangle *GUIEvent::getEventSource()   { return eventSource ;   }
-const NSString &GUIEvent::getCallbackString(){ return callbackString; }
-NSString GUIEvent::getCallbackCString(){ return callbackString.data; }
+const std::string &GUIEvent::getCallbackString(){ return callbackString; }
+std::string GUIEvent::getCallbackCString(){ return callbackString.c_str(); }
 
 int GUIEvent::getWidgetType()
 {

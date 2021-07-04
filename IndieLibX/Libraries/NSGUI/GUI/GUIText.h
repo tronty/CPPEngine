@@ -1,19 +1,19 @@
 #ifndef GUI_TEXT_H
 #define GUI_TEXT_H
 
-#include "../Tools/NSString.h"
+#include <string>
 #include "GUIRectangle.h"
 
 class GUIFont;
 class GUIText
 {
   public:
-    GUIText(const NSString &text);
-    GUIText(const char* text = 0);
+    GUIText(const std::string &text);
+    GUIText(const char* text = "");
 
     GUIText(const GUIText & text);
     GUIText &operator =(const GUIText& text);
-    GUIText &operator =(const NSString & text);
+    GUIText &operator =(const std::string & text);
     GUIText &operator =(const char*    text);
 
     virtual bool loadXMLSettings(XMLElement *node);
@@ -24,10 +24,10 @@ class GUIText
     void  printCenteredY (int x, int y, int startIndex = 0, int endIndex = -1);
     void  print(int x, int y, int startIndex = 0, int endIndex = -1);
 
-    const NSString& getString();
-    NSString   getCharString();
+    const std::string& getString();
+    char*   getCharString();
 
-    void setString(const NSString &text);
+    void setString(const std::string &text);
     void setString(const char* text);
     void clear();
 
@@ -58,7 +58,7 @@ class GUIText
 
   protected:
     bool     update;
-    NSString   text;
+    std::string   text;
     Tuple2i  position,
              size;
     D3DXFROMWINEVECTOR2  scales;

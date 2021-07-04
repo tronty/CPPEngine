@@ -26,15 +26,15 @@ class MediaPathManager
 
     static bool         registerPath(XMLElement *MediaPathNode);
 
-    static bool         registerPath(NSString path);
+    static bool         registerPath(std::string path);
 
     static void         printAllPaths();
 
-    static NSString  lookUpMediaPath(NSString path);
+    static std::string  lookUpMediaPath(std::string path);
 
   public:
 
-    static vector<NSString> pathStack;
+    static vector<std::string> pathStack;
 
 };
 

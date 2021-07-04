@@ -1011,7 +1011,7 @@ bool TransformGroup::loadXMLSettings(XMLElement *element)
 
       continue;
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
 
 
@@ -1104,7 +1104,7 @@ bool TransformGroup::exportXMLSettings(ofstream &xmlFile  )
   #if 0
   xmlFile << "<Group visible = \"" << (visible ? "true\"" : "false\"")
 
-	  << (!name.getLength() ? ">\n" : (NSString("\n	     name    = \"") + name +  "\"> \n\n");
+	  << (!name.getLength() ? ">\n" : (std::string("\n	     name    = \"") + name +  "\"> \n\n");
   #endif
 
   transform.exportXMLSettings(xmlFile);
@@ -1190,7 +1190,7 @@ bool TransformGroup::loadXMLShape(XMLElement *element)
     {LOG_PRINT("Need a path child in <Shape>\n");return false;}
 
 	std::string buf;
-	buf.append(MediaPathManager::pathStack[MediaPathManager::pathStack.size()-1].data);
+	buf.append(MediaPathManager::pathStack[MediaPathManager::pathStack.size()-1]);
 	buf.append(child->getValuec());
 
   const char* verifiedPath = buf.c_str();//MediaPathManager::lookUpMediaPath(buf);

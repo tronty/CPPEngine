@@ -288,7 +288,7 @@ void SceneFrame::actionPerformed(GUIEvent &evt)
   char buf[256];
 
 
-  const NSString &callbackString  = evt.getCallbackString();
+  const std::string &callbackString  = evt.getCallbackString();
 
   GUIRectangle *sourceRectangle = evt.getEventSource();
 

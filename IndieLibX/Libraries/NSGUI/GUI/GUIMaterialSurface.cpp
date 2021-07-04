@@ -3,7 +3,7 @@
 #include <STX/CInput.h>
 #include "GUIMaterialSurface.h"
 
-GUIMaterialSurface::GUIMaterialSurface(NSString callback) :
+GUIMaterialSurface::GUIMaterialSurface(std::string callback) :
                                        GUIAlphaElement(callback), GUIClippedRectangle()
 {
   setBordersColor(0.0f, 0.75f, 0.0f);
@@ -28,7 +28,7 @@ bool GUIMaterialSurface::loadXMLSettings(XMLElement *element)
     if(!node)
       continue;
 
-    const NSString &name = node->getName();
+    const std::string &name = node->getName();
 
     if(name == "Texture")
     {

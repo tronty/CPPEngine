@@ -3,7 +3,7 @@
 #include <STX/CInput.h>
 #include "GUIAlphaElement.h"
 
-GUIAlphaElement::GUIAlphaElement(NSString cbs) :  GUIRectangle(cbs)
+GUIAlphaElement::GUIAlphaElement(std::string cbs) :  GUIRectangle(cbs)
 {
   setColor(225.0f, 225.0f, 225.0f);
   alphaFadeScale =     1.0f;
@@ -64,7 +64,7 @@ void  GUIAlphaElement::setLabelString(const char * labelArg)
   label = labelArg;
 }
 
-void  GUIAlphaElement::setLabelString(const NSString &labelArg)
+void  GUIAlphaElement::setLabelString(const std::string &labelArg)
 {
   label = labelArg;
 }
@@ -74,9 +74,9 @@ GUIText * GUIAlphaElement::getLabel()
   return &label;
 }
 
-NSString GUIAlphaElement::getLabelString()
+std::string GUIAlphaElement::getLabelString()
 {
-  return label.getString().getBytes();
+  return label.getString(). /* getBytes */ c_str();
 }
 
 void  GUIAlphaElement::setAlpha(float alphaArg)

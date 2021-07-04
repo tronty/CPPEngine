@@ -3,8 +3,8 @@
 #include <STX/CInput.h>
 #include "GUILabel.h"
 
-GUILabel::GUILabel(NSString ls,
-                   NSString cbs) : GUIAlphaElement(cbs)
+GUILabel::GUILabel(std::string ls,
+                   std::string cbs) : GUIAlphaElement(cbs)
 
 {
   setDimensions(40, 5);

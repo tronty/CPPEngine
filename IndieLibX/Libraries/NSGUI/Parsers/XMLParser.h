@@ -1,6 +1,8 @@
-#pragma once
+#ifndef XML_Parser_H
+#define XML_Parser_H
 
-
+// /Libraries/tinyxml/include/tinyxml/tinyxml.h
+#include "../../tinyxml/include/tinyxml/tinyxml.h"
 
 #include <iostream>
 
@@ -20,7 +22,7 @@ using namespace std;
 
 #include "../Tools/NamedObject.h"
 
-//include "../Tools/NSString.h"
+//#include <string>
 
 #define deleteObject(A){ if(A){ delete	 A; A = 0; } }
 
@@ -45,7 +47,7 @@ using namespace std;
 #define XML_BUFFER_OVERFLOW 0x0020
 
 
-
+#if 1
 class RawData
 
 {
@@ -60,159 +62,265 @@ class RawData
 
 
 
-    RawData();
+    RawData(){}
 
     RawData(const RawData &copy);
 
     RawData &operator=(const RawData &copy);
 
-   ~RawData();
+   ~RawData(){}
 
     void destroy();
 
 };
-
-
+#endif
 
 class XMLElement;
+class XMLAttribute;
 
-
-
-class XMLTree
-
+class XMLTree : public NamedObject
 {
-
   protected:
-
+    //std::string name;
+    std::string value;
     vector<XMLElement*> children;
 
-
-
   public:
+    XMLTree(TiXmlElement* pElement=0);
 
-   ~XMLTree();
+   ~XMLTree(){children.clear();}
 
+    virtual XMLElement* getChildByName(const char* name="");
 
+    virtual XMLElement* getChild(size_t index);
 
-    void        addChild(XMLElement *child);
+    void        addChild(XMLElement *child){children.push_back(child);}
 
-    XMLElement *getChildByName(const char *name);
+    size_t      getChildrenCount(){return children.size();}
+    
+    void        flush(){}
 
-    XMLElement *getChild(size_t index);
-
-    size_t      getChildrenCount();
-
-    void        flush();
-
-    void        print();
-
+    void        print(){}
+    
+    void setValue(const std::string& a){value=a;}
+    
+    const std::string& getValue(){return value;}
+    
+	void Dump();
 };
 
 
-
-class XMLElement : public XMLTree, public NamedObject
-
+class XMLAttribute : public NamedObject
 {
-
-  private:
-
-    NSString  value;
-
+  protected:
+    //std::string name;
+    std::string value;
   public:
+    XMLAttribute(std::string aName, std::string aValue) : NamedObject() // : NamedObject(aName)
+    {
+		name=aName;
+		value=aValue;
+    }
+    XMLAttribute(TiXmlAttribute* pAttribute=0) : NamedObject()
+    {
+	if(pAttribute)
+	{
+		LOG_FNLN;
+		LOG_PRINT("pAttribute->Name()=%s\n", pAttribute->Name());
+		LOG_PRINT("pAttribute->Value()=%s\n", pAttribute->Value());
+		if(pAttribute->Name())
+			name=pAttribute->Name();
+		else
+			name="";
+		if(pAttribute->Value())
+			value=pAttribute->Value();
+		else
+			value="";
+	}
+	else
+	{
+		name="";
+		value="";
+	}
+    }
 
-    XMLElement();
+   ~XMLAttribute(){}
 
-   ~XMLElement();
+    XMLAttribute(const XMLAttribute &copy){value=copy.value;name=copy.name;}
 
+    XMLAttribute &operator =(const XMLAttribute &copy){value=copy.value;name=copy.name;}
 
+	void setName( const std::string& _name ){name=_name;}
+	void setValue( const std::string& _value ){value=_value;}
+    
+	void Dump(){LOG_PRINT("%s=%s ", name.c_str(), value.c_str());}
+};
 
-    XMLElement(const XMLElement &copy);
+class XMLElement : public XMLTree
+{
+  public:
+    vector<XMLAttribute*> attributes;
 
-    XMLElement &operator =(const XMLElement &copy);
+    virtual XMLAttribute *getAttributeByName(const char *name="");
 
+    virtual XMLAttribute *getAttribute(size_t index);
 
+    void        addAttribute(std::string aName, std::string aValue){attributes.push_back(new XMLAttribute(aName, aValue));}
 
-    static void loadRX_GY_BZ_AWi(XMLElement &element, Tuple4i& container);
+    void        addAttribute(XMLAttribute *child){attributes.push_back(child);}
 
-    static void loadRX_GY_BZ_AWf(XMLElement &element, D3DXFROMWINEVECTOR4 &container);
+    size_t      getAttributeCount(){return attributes.size();}
 
+	void setName( const std::string& _name ){name=_name;}
+	void setValue( const std::string& _value ){value=_value;}
+	
+    XMLElement(TiXmlElement* pElement=0) : XMLTree(pElement)
+    {
+	if(pElement)
+	{
+		LOG_FNLN;
+		LOG_PRINT("pElement->Value()=%s\n", pElement->Value());
+		if(pElement->Value())
+			name=pElement->Value();
+		else
+			name="";
+		value="";
+	}
+	else
+	{
+		name="";
+		value="";
+	}
+    }
 
+   ~XMLElement(){attributes.clear();}
 
-    static void loadRX_GY_BZi(XMLElement &element, Tuple3i& container);
+    XMLElement(const XMLElement &copy){value=copy.value;name=copy.name;}
 
-    static void loadRX_GY_BZf(XMLElement &element, D3DXFROMWINEVECTOR3 &container);
+    XMLElement &operator =(const XMLElement &copy){value=copy.value;name=copy.name;}    
+    
+    static void loadRX_GY_BZ_AWi(XMLElement &element, Tuple4i& container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y"));
+    	container.z=atof(element.element->Attribute("z"));
+    	container.w=atof(element.element->Attribute("w")); */
+    }
+    static void loadRX_GY_BZ_AWf(XMLElement &element, D3DXFROMWINEVECTOR4 &container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y"));
+    	container.z=atof(element.element->Attribute("z"));
+    	container.w=atof(element.element->Attribute("w")); */
+    }
+    static void loadRX_GY_BZi(XMLElement &element, Tuple3i& container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y"));
+    	container.z=atof(element.element->Attribute("z")); */
+    }
+    static void loadRX_GY_BZf(XMLElement &element, D3DXFROMWINEVECTOR3 &container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y"));
+    	container.z=atof(element.element->Attribute("z")); */
+    }
 
+    static void loadRX_GYi(XMLElement &element, Tuple2i& container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y")); */
+    }
 
+    static void loadRX_GYf(XMLElement &element, D3DXFROMWINEVECTOR2 &container)
+    { /*
+    	container.x=atof(element.element->Attribute("x"));
+    	container.y=atof(element.element->Attribute("y")); */
+    }
 
-    static void loadRX_GYi(XMLElement &element, Tuple2i& container);
+    void setValue(std::string &val){value=val;}
 
-    static void loadRX_GYf(XMLElement &element, D3DXFROMWINEVECTOR2 &container);
+    void print(){}
 
+    void flush(){}
 
+    std::string  &getValue (){return value;}
 
-    void setValue(NSString &val);
+    const double   getValued(){ return atoi(value.c_str());}
 
-    void print();
+    const float    getValuef(){ return atof(value.c_str());}
 
-    void flush();
+    const char*    getValuec(){return value.c_str();}
 
-
-
-    NSString  &getValue ();
-
-    const double   getValued();
-
-    const float    getValuef();
-
-    const char*    getValuec();
-
-    const int      getValuei();
-
-
+    const int      getValuei(){ return atoi(value.c_str());}
 
     RawData rawData;
-
+    
+	void Dump()
+	{
+		LOG_PRINT("< %s ", name.c_str());
+    		for(unsigned int i=0;i<attributes.size();i++)
+    			attributes[i]->Dump();
+    		LOG_PRINT(">\n");	
+	}
 };
 
 
 
 class XMLStack : public XMLTree
-
 {
-
+  protected:
+  	TiXmlElement* rootPanelElement;
+  	XMLElement* rootElement;
   public:
 
-    XMLStack(char *xmlFilePath = 0, bool loggerOn = true);
+    XMLStack(char *xmlFilePath = "", bool loggerOn = true){rootPanelElement=0;rootElement=0;}
 
-    XMLStack(const XMLStack &copy);
+    XMLStack(const XMLStack &copy)
+    {
+    	rootPanelElement=copy.rootPanelElement;
+    	encoding=copy.encoding;
+        logFilePath=copy.logFilePath;
+           XMLVersion=copy.XMLVersion;
+           loggerOn=copy.loggerOn;
+	bufferProgress=copy.bufferProgress;
+           bufferSize=copy.bufferSize;
+           state=copy.state;
+    }
 
-   ~XMLStack();
+   ~XMLStack(){}
 
-    XMLStack &operator =(const XMLStack &copy);
+    XMLStack &operator =(const XMLStack &copy)
+    {
+    	rootPanelElement=copy.rootPanelElement;
+    	encoding=copy.encoding;
+        logFilePath=copy.logFilePath;
+           XMLVersion=copy.XMLVersion;
+           loggerOn=copy.loggerOn;
+	bufferProgress=copy.bufferProgress;
+           bufferSize=copy.bufferSize;
+           state=copy.state;
+    }
 
+    void   print(){}
 
+    void   flush(){}
 
-    void   print();
-
-    void   flush();
-
-    int    loadXMLFile(const char *xmlFilePath);
-
-
+    int    loadXMLFile(const char *xmlFilePath="");
 
   private:
-
+#if 0
     void   writeFatalLogInfoList(const char* format,...);
 
     void   writeFatalLogInfo(const char* string);
 
 
 
-    void   getStreamedValue(char **stream, NSString&);
+    void   getStreamedValue(char **stream, std::string&);
 
-    void   getStringValue  (char **stream, NSString&);
+    void   getStringValue  (char **stream, std::string&);
 
-    void   getIdentifier   (char **stream, NSString&);
+    void   getIdentifier   (char **stream, std::string&);
 
 
 
@@ -224,15 +332,14 @@ class XMLStack : public XMLTree
 
     bool   consumeComment(char **stream);
 
-    bool   fillRawData(char **stream, RawData *dataStruct, int count = -1);
+    //bool   fillRawData(char **stream, RawData *dataStruct, int count = -1);
 
     char*  parseXMLStream(char *stream, XMLElement *parent);
 
     int    getRemainingBytes();
+#endif
 
-
-
-    NSString encoding,
+    std::string encoding,
 
            logFilePath;
 
@@ -245,6 +352,6 @@ class XMLStack : public XMLTree
            bufferSize,
 
            state;
-
 };
+#endif
 

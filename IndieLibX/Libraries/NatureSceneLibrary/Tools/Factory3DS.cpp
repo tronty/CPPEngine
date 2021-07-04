@@ -1035,7 +1035,7 @@ void computeTangentSpace(Mesh3D *Mesh)
 
 
 
-void ReadString(char *NSString)
+void ReadString(char *std::string)
 
 {
 
@@ -1047,11 +1047,11 @@ void ReadString(char *NSString)
 
   {
 
-    fread(&NSString[i], sizeof(char), 1, File3DS);
+    fread(&std::string[i], sizeof(char), 1, File3DS);
 
 
 
-    if(NSString[i++]=='\0')
+    if(std::string[i++]=='\0')
 
       break;
 

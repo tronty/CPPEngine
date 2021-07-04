@@ -280,8 +280,8 @@ LOG_FNLN;
 
   sceneInfo.x += waterMeshTri;
 
-  if(triCounter) triCounter ->setLabelString(NSString("Triangle count: ") + sceneInfo.x*(waterMeshTri ? 2 : 1));
-  if(cellCounter)cellCounter->setLabelString(NSString("Visible Cells: ")  + sceneInfo.y + "%");
+  if(triCounter) triCounter ->setLabelString(std::string("Triangle count: ") + sceneInfo.x*(waterMeshTri ? 2 : 1));
+  if(cellCounter)cellCounter->setLabelString(std::string("Visible Cells: ")  + sceneInfo.y + "%");
   {
   float fps;
   static int n=0;
@@ -296,7 +296,7 @@ LOG_FNLN;
 	n=0;
   }
 
-  if(fpsCounter) fpsCounter ->setLabelString(NSString("Current FPS: ")    + fps);//benchmark.getFPS()));
+  if(fpsCounter) fpsCounter ->setLabelString(std::string("Current FPS: ")    + fps);//benchmark.getFPS()));
   }
 
   //Renderer::enter2DMode(IRenderer::GetRendererInstance()->GetViewportWidth() , //IRenderer::GetRendererInstance()->GetViewportHeight());
@@ -521,7 +521,7 @@ void SceneFrame::updateWaterSurface(float timer)
 #endif
 void SceneFrame::actionPerformed(GUIEvent &evt)
 {
-  const NSString &callbackString  = evt.getCallbackString();
+  const std::string &callbackString  = evt.getCallbackString();
   GUIRectangle *sourceRectangle = evt.getEventSource();
   int           widgetType      = sourceRectangle->getWidgetType();
 
@@ -559,37 +559,37 @@ void SceneFrame::actionPerformed(GUIEvent &evt)
     if(callbackString == "aReference")
     {
       terrain->setAlphaReference(slider->getProgress());
-      slider->setLabelString(NSString("Alpha Reference: ") + slider->getProgress());
+      slider->setLabelString(std::string("Alpha Reference: ") + slider->getProgress());
     }
 
     if(callbackString == "aBooster")
     {
       terrain->setAlphaBooster((slider->getProgress()*2.0f));
-      slider->setLabelString(NSString("Alpha Booster: ") + terrain->getAlphaBooster()); 
+      slider->setLabelString(std::string("Alpha Booster: ") + terrain->getAlphaBooster()); 
     }
 
     if(callbackString == "red")
     {
       skyInfo.x = slider->getProgress();
-      slider->setLabelString(NSString("Red Intensity: ") + skyInfo.x); 
+      slider->setLabelString(std::string("Red Intensity: ") + skyInfo.x); 
     }
 
     if(callbackString == "blue")
     {
       skyInfo.z = slider->getProgress();
-      slider->setLabelString(NSString("Blue Intensity: ") + skyInfo.z); 
+      slider->setLabelString(std::string("Blue Intensity: ") + skyInfo.z); 
     }
 
     if(callbackString == "green")
     {
       skyInfo.y = slider->getProgress();
-      slider->setLabelString(NSString("Green Intensity: ") + skyInfo.y); 
+      slider->setLabelString(std::string("Green Intensity: ") + skyInfo.y); 
     }
 
     if(callbackString == "sSpeed")
     {
       skyInfo.w = slider->getProgress()*2.0f;
-      slider->setLabelString(NSString("Scrolling Speed: ") + slider->getProgress()); 
+      slider->setLabelString(std::string("Scrolling Speed: ") + slider->getProgress()); 
     }
   }
 }

@@ -6,7 +6,7 @@
 #include "GUIClippedRectangle.h"
 
 
-GUIButton::GUIButton(NSString cbs) : GUIAlphaElement(cbs), GUIClippedRectangle()
+GUIButton::GUIButton(std::string cbs) : GUIAlphaElement(cbs), GUIClippedRectangle()
 
 {
   m_Translation=D3DXFROMWINEVECTOR3(0,0,0);

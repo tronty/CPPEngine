@@ -6,7 +6,7 @@
 #include "GUIButton.h"
 #include "GUIFrame.h"
 
-GUITabbedPanel::GUITabbedPanel(NSString cbs) : GUIRectangle(cbs)
+GUITabbedPanel::GUITabbedPanel(std::string cbs) : GUIRectangle(cbs)
 {
   setTabButtonsBordersColor(0.0f, 0.0f, 0.0f);
   setTabButtonsColor(100, 150, 190);
@@ -105,7 +105,7 @@ bool GUITabbedPanel::loadXMLSettings(XMLElement *element)
     if(!(child = element->getChild(i)))
       continue;
 
-    const NSString &childName = child->getName();
+    const std::string &childName = child->getName();
 
     if(childName == "Panel")
     {
@@ -129,11 +129,13 @@ bool GUITabbedPanel::addPanel(GUIPanel *panel)
 
   if(lowerPanel->addWidget(panel))
   {
+    char buf[1024];
     int count = int(lowerPanel->getWidgets().size()) - 1;
-    GUIButton *tabButton = new GUIButton(NSString(" ") + count + " tb");
+    stx_snprintf(buf, 1024, " %d tb", count);
+    GUIButton *tabButton = new GUIButton(std::string(buf));
     tabButton->setBordersColor(tabButtonsBordersColor);
     tabButton->setColor(tabButtonsColor);
-    NSString ls=NSString("  ") + panel->getCallbackString() + "  ";
+    std::string ls=std::string("  ") + panel->getCallbackString() + "  ";
     tabButton->setLabelString(ls);
     tabButton->getLabel()->setFontIndex(fontIndex);
     tabButton->getLabel()->setScales(fontScales);
@@ -186,7 +188,7 @@ void GUITabbedPanel::checkMouseEvents(int extraInfo, bool rBits)
 void GUITabbedPanel::actionPerformed(GUIEvent &evt)
 {
   GUIEventListener *eventsListener  = parent->getEventsListener();
-  const NSString     &cbs             = evt.getCallbackString();
+  const std::string     &cbs             = evt.getCallbackString();
   GUIRectangle     *sourceRectangle = evt.getEventSource();
   int               widgetType      = sourceRectangle->getWidgetType();
 
@@ -194,7 +196,7 @@ void GUITabbedPanel::actionPerformed(GUIEvent &evt)
   {
     const Widgets &widgets = lowerPanel->getWidgets(),
                   &buttons = upperPanel->getWidgets();
-    int   target = atoi(sourceRectangle->getCallbackString()),
+    int   target = atoi(sourceRectangle->getCallbackString().c_str()),
           count  = int(widgets.size());
     for(int t = 0; t < count; t++)
     {
@@ -241,8 +243,8 @@ void GUITabbedPanel::render(float clockTick)
   IRenderer::GetRendererInstance()->End();
 #endif
   IRenderer::GetRendererInstance()->Color3f(1,1,1);
-	//if(stx_memcmp("Visibility",getCallbackString().data,10)==0)DBG_HALT;
-	//if(stx_memcmp("Visibility",getCallbackString().data,10)==0)
+	//if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)DBG_HALT;
+	//if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)
 	//	visible=true;
 
 }

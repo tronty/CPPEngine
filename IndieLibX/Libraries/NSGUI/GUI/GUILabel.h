@@ -6,8 +6,8 @@
 class GUILabel : public GUIAlphaElement
 {
   public:
-    GUILabel(NSString labelString    = 0,
-             NSString callbackString = 0);
+    GUILabel(std::string labelString    = "",
+             std::string callbackString = "");
 
     virtual void  render(float clockTick);
     virtual bool  loadXMLSettings(XMLElement *node);

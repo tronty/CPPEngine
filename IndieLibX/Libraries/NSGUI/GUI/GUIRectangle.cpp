@@ -3,7 +3,7 @@
 #include <STX/CInput.h>
 #include "GUIRectangle.h"
 
-GUIRectangle::GUIRectangle(const char* callback)
+GUIRectangle::GUIRectangle(std::string callback)
 {
   setCallbackString(callback);
   setDimensions(5, 5);
@@ -96,7 +96,7 @@ void  GUIRectangle::disableGUITexture()
     
 }
 
-void  GUIRectangle::setCallbackString(const NSString& callback)
+void  GUIRectangle::setCallbackString(const std::string& callback)
 {
   callbackString = callback;
 }
@@ -106,21 +106,21 @@ void  GUIRectangle::setCallbackString(const char*   callback)
   callbackString = callback;
 }
 
-const NSString & GUIRectangle::getCallbackString()
+const std::string & GUIRectangle::getCallbackString()
 {
   return callbackString;
 }
 
-void  GUIRectangle::setAnchorPoint(NSString anchorArg)
+void  GUIRectangle::setAnchorPoint(std::string anchorArg)
 {
-  if(!anchorArg)
+  if(!anchorArg.length())
     return;
 
-  if(!strcmp(anchorArg, "CENTER")  ){ anchor = CENTER;   return; }
-  if(!strcmp(anchorArg, "CORNERLU")){ anchor = CORNERLU; return; }
-  if(!strcmp(anchorArg, "CORNERRU")){ anchor = CORNERRU; return; }
-  if(!strcmp(anchorArg, "CORNERLD")){ anchor = CORNERLD; return; }
-  if(!strcmp(anchorArg, "CORNERRD")){ anchor = CORNERRD; return; }
+  if(anchorArg=="CENTER")  { anchor = CENTER;   return; }
+  if(anchorArg=="CORNERLU"){ anchor = CORNERLU; return; }
+  if(anchorArg=="CORNERRU"){ anchor = CORNERRU; return; }
+  if(anchorArg=="CORNERLD"){ anchor = CORNERLD; return; }
+  if(anchorArg=="CORNERRD"){ anchor = CORNERRD; return; }
 }
 
 void  GUIRectangle::setAnchorPoint(int anchorArg)
