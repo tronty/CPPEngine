@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html class="whatinput-types-initial whatinput-types-mouse" prefix="og: https://ogp.me/ns#" data-whatinput="mouse" data-whatintent="mouse" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<title>Geometry Doubler and Exploder with Geometry Shaders | Geeks3D</title>
+
+		<!-- All in One SEO 4.0.6 -->
+		<meta name="description" content="Geometry Doubler and Exploder with Geometry Shaders">
+		<meta name="keywords" content="glsl hacker,glsl,opengl,demo,geometry shader,exploder,tutorial">
+		<link rel="canonical" href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/">
+		<meta name="google" content="nositelinkssearchbox">
+		<script src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/osd.js"></script><script src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/cookie.js"></script><script src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/show_ads_impl_fy2019.js" id="google_shimpl"></script><script type="application/ld+json" class="aioseo-schema">
+			{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebSite","@id":"https:\/\/www.geeks3d.com\/#website","url":"https:\/\/www.geeks3d.com\/","name":"Geeks3D","description":"3D tech news, graphics cards, graphics programming and demoscene","publisher":{"@id":"https:\/\/www.geeks3d.com\/#organization"}},{"@type":"Organization","@id":"https:\/\/www.geeks3d.com\/#organization","name":"Geeks3D","url":"https:\/\/www.geeks3d.com\/"},{"@type":"BreadcrumbList","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"https:\/\/www.geeks3d.com\/#listItem","position":1,"item":{"@type":"CollectionPage","@id":"https:\/\/www.geeks3d.com\/#item","name":"Geeks3D","description":"Welcome to Geeks3D, your source for 3D tech news and graphics programming: GPU, 3D programming, game development, demoscene, OpenGL, Vulkan, Direct3D.","url":"https:\/\/www.geeks3d.com\/"},"nextItem":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#listItem"},{"@type":"ListItem","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#listItem","position":2,"item":{"@type":"Article","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#item","name":"Geometry Doubler and Exploder with Geometry Shaders | Geeks3D","description":"Geometry Doubler and Exploder with Geometry Shaders","url":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/"},"previousItem":"https:\/\/www.geeks3d.com\/#listItem"}]},{"@type":"Person","@id":"https:\/\/www.geeks3d.com\/author\/jegx\/#author","url":"https:\/\/www.geeks3d.com\/author\/jegx\/","name":"Jerome Guinot","image":{"@type":"ImageObject","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#authorImage","url":"https:\/\/secure.gravatar.com\/avatar\/25a82cfaca5030bc879ec339cf9d6ed6?s=96&d=retro&r=g","width":96,"height":96,"caption":"Jerome Guinot"}},{"@type":"WebPage","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#webpage","url":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/","name":"Geometry Doubler and Exploder with Geometry Shaders | Geeks3D","description":"Geometry Doubler and Exploder with Geometry Shaders","inLanguage":"en-US","isPartOf":{"@id":"https:\/\/www.geeks3d.com\/#website"},"breadcrumb":{"@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#breadcrumblist"},"author":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#author","creator":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#author","datePublished":"2014-06-25T10:00:56+02:00","dateModified":"2017-11-24T14:29:00+02:00"},{"@type":"Article","@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#article","name":"Geometry Doubler and Exploder with Geometry Shaders | Geeks3D","description":"Geometry Doubler and Exploder with Geometry Shaders","headline":"Mesh Exploder with Geometry Shaders","author":{"@id":"https:\/\/www.geeks3d.com\/author\/jegx\/#author"},"publisher":{"@id":"https:\/\/www.geeks3d.com\/#organization"},"datePublished":"2014-06-25T10:00:56+02:00","dateModified":"2017-11-24T14:29:00+02:00","commentCount":2,"articleSection":"GeeXLab, Programming, demo, exploder, geometry shader, glsl, glsl hacker, opengl, tutorial","mainEntityOfPage":{"@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#webpage"},"isPartOf":{"@id":"https:\/\/www.geeks3d.com\/20140625\/mesh-exploder-with-geometry-shaders\/#webpage"},"image":{"@type":"ImageObject","@id":"https:\/\/www.geeks3d.com\/#articleImage"}}]}
+		</script>
+		<!-- All in One SEO -->
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Geeks3D » Feed" href="https://www.geeks3d.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Geeks3D » Comments Feed" href="https://www.geeks3d.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Geeks3D » Mesh Exploder with Geometry Shaders Comments Feed" href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.geeks3d.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.6"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="opensans-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="source-sans-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/css_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-syntax-css-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="fonts-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/fonts.css" type="text/css" media="all">
+<link rel="stylesheet" id="foundation-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/foundation.css" type="text/css" media="all">
+<link rel="stylesheet" id="motion_ui-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/motion-ui.css" type="text/css" media="all">
+<link rel="stylesheet" id="wpforge-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="customizer-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/customizer.css" type="text/css" media="all">
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/jquery.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/jquery-migrate.js" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.geeks3d.com/wp-json/"><link rel="alternate" type="application/json" href="https://www.geeks3d.com/wp-json/wp/v2/posts/8846"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.geeks3d.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.geeks3d.com/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.6">
+<link rel="shortlink" href="https://www.geeks3d.com/?p=8846">
+<link rel="alternate" type="application/json+oembed" href="https://www.geeks3d.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.geeks3d.com%2F20140625%2Fmesh-exploder-with-geometry-shaders%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.geeks3d.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.geeks3d.com%2F20140625%2Fmesh-exploder-with-geometry-shaders%2F&amp;format=xml">
+<style type="text/css" id="wpforge-custom-header-css"></style>
+	<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #363636; }
+</style>
+	<link rel="icon" href="https://www.geeks3d.com/wp-content/uploads/2017/10/cropped-geeks3d_favicon-32x32.png" sizes="32x32">
+<link rel="icon" href="https://www.geeks3d.com/wp-content/uploads/2017/10/cropped-geeks3d_favicon-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://www.geeks3d.com/wp-content/uploads/2017/10/cropped-geeks3d_favicon-180x180.png">
+<meta name="msapplication-TileImage" content="https://www.geeks3d.com/wp-content/uploads/2017/10/cropped-geeks3d_favicon-270x270.png">
+<style type="text/css" id="wpforge-customizer-css">.header_wrap{max-width:100rem;}.nav_wrap{max-width:100rem;}.contain-to-grid .top-bar{max-width:100rem;}.content_wrap{max-width:100rem;}.entry-meta-categories_bottom{font-size:1.2rem;}.entry-content-post a{font-weight:bold;}.widget-title{font-weight:bold;}#secondary a{font-weight:bold;}footer[role="contentinfo"]{max-width:100rem;}</style>
+
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/jscripts.js"></script> 
+<meta class="foundation-mq"><link rel="preload" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator.js"></script><link rel="preload" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator_002.js"></script><link rel="preload" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator.js"></script><link rel="preload" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/integrator_002.js"></script></head>
+<body itemtype="http://schema.org/Blog" itemscope="itemscope" class="post-template-default single single-post postid-8846 single-format-standard custom-background has-site-title has-site-tagline has-header-info full-width front-page"><a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+                        <div class="header_container">
+        <header id="header" class="header_wrap grid-container" itemtype="http://schema.org/WPHeader" itemscope="itemscope">
+            <div class="grid-x grid-padding-x">
+                <div class="site-header small-12 cell">
+                                                            <div class="header-info">
+                                                <p class="site-title">
+                            <a href="https://www.geeks3d.com/" rel="home">Geeks3D</a>
+                        </p><!-- .site-title -->
+                                                <p class="site-description">3D tech news, graphics cards, graphics programming and demoscene</p>
+                                            </div><!-- .header-info -->
+                </div><!-- .site-header -->
+            </div><!-- .grid-x .grid-margin-x -->
+        </header><!-- #header -->
+    </div><!-- end .header_container -->
+                        <div itemtype="http://schema.org/SiteNavigationElement" itemscope="itemscope" class="nav_container">
+   
+            <div class="nav_wrap grid-container">
+              <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium" style="display: none;">
+          <button class="menu-icon" type="button" data-toggle="main-menu"></button>
+          <div class="title-bar-title">Menu</div>
+        </div><!-- end title-bar -->
+        <div class="top-bar" id="main-menu">
+          <div class="top-bar-left">
+            <ul class="menu vertical medium-horizontal dropdown" data-responsive-menu="accordion medium-dropdown" data-submenu-toggle="true" data-close-on-click-inside="false" role="menubar" data-dropdown-menu="23s4q8-dropdown-menu" data-mutate="2qmiy8-responsive-menu"><li id="menu-item-9133" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-9133" role="menuitem"><a href="https://www.geeks3d.com/">Home</a></li>
+<li id="menu-item-9996" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9996" role="menuitem"><a href="https://geeks3d.com/newz/">NewZ</a></li>
+<li id="menu-item-9031" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9031" role="menuitem"><a href="https://www.geeks3d.com/softwares/">Our Softwares</a></li>
+<li id="menu-item-9096" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9096" role="menuitem"><a href="https://www.geeks3d.com/dlz/">Downloads</a></li>
+<li id="menu-item-9032" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9032" role="menuitem"><a href="https://www.geeks3d.com/reviews/">Reviews</a></li>
+<li id="menu-item-9995" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9995" role="menuitem"><a href="https://geeks3d.com/geexlab/">GeeXLab</a></li>
+<li id="menu-item-9658" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9658" role="menuitem"><a href="https://www.geeks3d.com/hacklab/">HackLab</a></li>
+<li id="menu-item-9035" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9035" role="menuitem"><a href="https://www.geeks3d.com/shader-library/">Shader Library</a></li>
+<li id="menu-item-9027" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9027" role="menuitem"><a href="https://www.geeks3d.com/programming/">Programming</a></li>
+<li id="menu-item-9033" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9033" role="menuitem"><a href="https://www.geeks3d.com/forums/">Forums</a></li>
+</ul>          </div><!-- second end top-bar -->
+        </div><!-- end top-bar -->
+      </div><!-- .row -->
+  
+  
+  
+  </div><!-- end .nav_container -->                  <div class="content_container" style="height: auto !important;">
+
+
+    <section class="content_wrap  grid-container" role="document" style="height: auto !important;">
+
+        <div class="grid-x grid-padding-x" style="height: auto !important;">
+
+	<div id="content" class="small-12 large-8 cell" role="main" style="height: auto !important;">
+    							<article id="post-8846" class="post-8846 post type-post status-publish format-standard hentry category-geexlab category-programming tag-demo tag-exploder tag-geometry-shader tag-glsl tag-glsl-hacker-2 tag-opengl tag-tutorial" itemtype="http://schema.org/CreativeWork" itemscope="itemscope" style="height: auto !important;">
+		<header class="entry-header">
+																	<h1 class="entry-title-post" itemprop="headline">Mesh Exploder with Geometry Shaders</h1>						<div class="entry-meta-header">
+									<span class="entry-date updated"><span class="genericon genericon-month"></span><a href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/" rel="bookmark"><time class="entry-date" datetime="2014-06-25T12:00:56+02:00">2014/06/25</time></a></span> <span class="byline"><span class="genericon genericon-user"></span><span class="author vcard"><a class="url fn n" href="https://www.geeks3d.com/author/jegx/" rel="author">JeGX</a></span></span>																			</div><!-- end .entry-meta-header -->
+																<a href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/" title="Mesh Exploder with Geometry Shaders"></a>							</header><!-- .entry-header -->
+											
+
+<p>
+</p><center>  
+<script async="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-5414276038817348" data-ad-slot="3718802763" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:728px;height:90px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-google-query-id="COe3gtTX8e0CFUV-GAodzGgOYw" data-load-complete="true" width="728" height="90" frameborder="0"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center> 
+<p></p>
+
+
+
+
+
+		<div class="entry-content-post" itemprop="text" style="height: auto !important;">
+			<p></p><center><p></p>
+<p><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/glslhacker-geometry-shaders-exploder-header.jpg" alt="GLSL Hacker - Geometry exploder with OpenGL geometry shaders"></p>
+<p></p></center><p></p>
+<p><span id="more-8846"></span></p>
+<p>Today, a simple but cool <b>geometry shader</b> (OpenGL 3.2) based demo: a <b>mesh exploder</b>.
+ This demo is a simple use-case of geometry shaders where geometry 
+shaders do not create (amplification) or kill vertices. They just deform
+ input vertices. If you need some explanations about GS, you can read 
+these articles:</p>
+<ul>
+<li><a href="http://www.geeks3d.com/20111111/simple-introduction-to-geometry-shaders-glsl-opengl-tutorial-part1/">Simple Introduction to Geometry Shaders in GLSL (Part 1)</a></li>
+<li><a href="http://www.geeks3d.com/20111117/simple-introduction-to-geometry-shader-in-glsl-part-2/">Simple Introduction to Geometry Shaders in GLSL (Part 2)</a></li>
+<li><a href="http://www.geeks3d.com/20130905/exploring-glsl-normal-visualizer-with-geometry-shaders-shader-library/">Normal Visualizer with Geometry Shaders</a></li>
+</ul>
+<table>
+<tbody><tr>
+<td>
+<script type="text/javascript"><!--
+google_ad_client = "pub-5414276038817348";
+/* Geeks3D-336x280-20100104 */
+google_ad_slot = "2815494915";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script><br>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</td>
+<td valign="top">
+The demo of this article has been coded with <a href="http://www.geeks3d.com/glslhacker/">GLSL Hacker</a> (Windows, OS X and Linux) and you can find the source code (Lua + GLSL) in the <a href="http://www.geeks3d.com/glslhacker/cs/">Code Sample Pack</a> in the host_api/gl-320-arb-geometry-shader_Mesh_Exploder/ folder. <p></p>
+<p>As usual, the GLSL program of this article is not specific to GLSL 
+Hacker. You can use it in any OpenGL/WebGL application with minor 
+changes only (shader inputs like transformation matrices).
+</p></td>
+</tr>
+</tbody></table>
+<p></p>
+<h2>The Geometry Exploder</h2>
+<p>The principle of the exploder is quite simple: vertices are pushed 
+along a normal vector in the geometry shader. The normal in question is 
+the normal vector of the input face (here a triangle) instead of the 
+regular vertex normal. The demo shows how to compute the normal of a 
+triangle in the geometry shader. Using the normal face, we get this <i>explode effect</i> as if each face of the mesh was separated. The amplitude of the deformation is based on the elapsed time.</p>
+<p>The original mesh is a simple sphere. The mesh sphere is rendered 
+twice: the first time in solid mode with a Phong lighting, the second 
+time in wireframe mode (yellow lines).</p>
+<p></p><center><p></p>
+<p><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/glslhacker-geometry-shaders-exploder.jpg" alt="GLSL Hacker - Geometry exploder with OpenGL geometry shaders"><br><i>The exploded sphere</i></p>
+<p></p></center><br>
+<br>
+Here is a bad quality preview:<br>
+<center><br>
+<div class="responsive-embed widescreen"><iframe src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/SWFa_iOS_cQ.html" allowfullscreen="" width="640" height="480" frameborder="0"></iframe></div><br>
+</center><p></p>
+<p>
+Here is the GLSL program (named color_exploder_prog in the demo) used to explode the mesh in the wireframe pass:</p>
+<p><b>Vertex shader</b></p>
+<pre>#version 330
+in vec4 gxl3d_Position;
+in vec4 gxl3d_Normal;
+
+out Vertex
+{
+  vec4 normal;
+  vec4 color;
+} vertex;
+
+void main()
+{
+  gl_Position = gxl3d_Position;
+  vertex.normal = gxl3d_Normal;
+  vertex.color =  vec4(1.0, 1.0, 0.0, 1.0);
+}
+</pre>
+<p>
+<b>Geometry shader</b></p>
+<pre>#version 150
+layout(triangles) in;
+layout(triangle_strip, max_vertices=3) out;
+
+uniform float normal_length;
+uniform float time;
+
+// GLSL Hacker automatic uniform
+uniform mat4 gxl3d_ModelViewProjectionMatrix;
+
+in Vertex
+{
+  vec4 normal;
+  vec4 color;
+} vertex[];
+
+out vec4 vertex_color;
+
+void main()
+{
+  //------ Face normal
+  //
+  vec3 P0 = gl_in[0].gl_Position.xyz;
+  vec3 P1 = gl_in[1].gl_Position.xyz;
+  vec3 P2 = gl_in[2].gl_Position.xyz;
+  
+  vec3 V0 = P0 - P1;
+  vec3 V1 = P2 - P1;
+  
+  // If the diff between V0 and V1 is too small, 
+  // the normal will be incorrect as well as the deformation.
+  //
+  vec3 diff = V1 - V0;
+  float diff_len = length(diff);
+  
+  vec3 N = normalize(cross(V1, V0));
+
+  //------ Generate a new face along the direction of the face normal
+  // only if diff_len is not too small.
+  //
+  if (length(diff_len) &gt; 0.001)
+  {
+    int i;
+    for(i=0; i&lt;gl_in.length(); i++)
+    {
+      vec4 P = gl_in[i].gl_Position;
+      vec3 N = normalize(cross(V1, V0));
+      float len = sqrt(P.x*P.x + P.z*P.z);
+      float scale = 2.0 + 1.0 * cos(time*2.0 + len);
+      P = vec4(P.xyz + (N * normal_length * scale) + \
+          (N * vec3(0.05, 0.05, 0.05)), 1.0);
+      gl_Position = gxl3d_ModelViewProjectionMatrix * P;
+      vertex_color = vertex[i].color;
+      EmitVertex();
+    }
+    EndPrimitive();
+  }
+}
+</pre>
+<p>
+<b>Fragment shader</b></p>
+<pre>#version 150
+in vec4 vertex_color;
+out vec4 FragColor;
+void main()
+{
+  FragColor = vertex_color;
+}
+</pre>
+			
+
+
+		<br><br>
+<center> 
+<script async="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-5414276038817348" data-ad-slot="2699553170" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1037px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1037px; background-color: transparent; overflow: visible;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:1037px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!2" data-google-query-id="CNuUypTZ8e0CFRQuGAodihEBTw" data-load-complete="true" width="1037" height="280" frameborder="0"></iframe></ins></ins></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>        
+    
+
+
+        <br><br>
+      <div class="yarpp-related">
+<p><b>Related posts:</b></p><ol>
+<li><a href="https://www.geeks3d.com/20130905/exploring-glsl-normal-visualizer-with-geometry-shaders-shader-library/" rel="bookmark" title="Exploring GLSL – Normal Visualizer with Geometry Shaders (Shader Library)">Exploring GLSL – Normal Visualizer with Geometry Shaders (Shader Library) </a></li>
+<li><a href="https://www.geeks3d.com/20111117/simple-introduction-to-geometry-shader-in-glsl-part-2/" rel="bookmark" title="Simple Introduction to Geometry Shaders in GLSL (Part 2)">Simple Introduction to Geometry Shaders in GLSL (Part 2) </a></li>
+<li><a href="https://www.geeks3d.com/20140815/particle-billboarding-with-the-geometry-shader-glsl/" rel="bookmark" title="Particle Billboarding with the Geometry Shader (GLSL)">Particle Billboarding with the Geometry Shader (GLSL) </a></li>
+<li><a href="https://www.geeks3d.com/20160531/mesh-voxelization/" rel="bookmark" title="Mesh Voxelization">Mesh Voxelization </a></li>
+<li><a href="https://www.geeks3d.com/20111111/simple-introduction-to-geometry-shaders-glsl-opengl-tutorial-part1/" rel="bookmark" title="Simple Introduction to Geometry Shaders in GLSL (Part 1)">Simple Introduction to Geometry Shaders in GLSL (Part 1) </a></li>
+</ol>
+</div>
+
+
+
+		</div><!-- .entry-content -->
+				<footer class="entry-meta">
+			<div class="entry-meta-footer">
+															<div class="entry-meta-categories_bottom"><span class="categories-links"><span class="genericon genericon-category"></span> <a href="https://www.geeks3d.com/category/softwares/geeks3d/geexlab/" rel="category tag">GeeXLab</a>, <a href="https://www.geeks3d.com/category/programming/" rel="category tag">Programming</a></span></div>																		<div class="entry-meta-tags"><span class="genericon genericon-tag"></span> <span class="tags-links"><a href="https://www.geeks3d.com/tag/demo/" rel="tag">demo</a>, <a href="https://www.geeks3d.com/tag/exploder/" rel="tag">exploder</a>, <a href="https://www.geeks3d.com/tag/geometry-shader/" rel="tag">geometry shader</a>, <a href="https://www.geeks3d.com/tag/glsl/" rel="tag">glsl</a>, <a href="https://www.geeks3d.com/tag/glsl-hacker-2/" rel="tag">glsl hacker</a>, <a href="https://www.geeks3d.com/tag/opengl/" rel="tag">opengl</a>, <a href="https://www.geeks3d.com/tag/tutorial/" rel="tag">tutorial</a></span></div>				
+
+			</div><!-- end .entry-meta-footer -->
+									</footer><!-- .entry-meta -->
+	</article><!-- #post -->
+			<nav class="nav-single">
+				<span class="nav-previous"><a href="https://www.geeks3d.com/20140625/gigabyte-brix-gaming-compact-pc-kit-with-nvidia-or-amd-gpu/" rel="prev"><span class="meta-nav">«</span> GIGABYTE BRIX Gaming Compact PC Kit with NVIDIA or AMD GPU</a></span>
+				<span class="nav-next"><a href="https://www.geeks3d.com/20140630/intel-hd-graphics-drivers-v10-18-10-3652-with-opengl-4-3-support/" rel="next">Intel HD Graphics Drivers v10.18.10.3652 with OpenGL 4.3 Support <span class="meta-nav">»</span></a></span>
+			</nav><!-- .nav-single -->
+			<div id="comments" class="comments-area">
+		<h2 class="comments-title">
+		2 thoughts on “Mesh Exploder with Geometry Shaders”	</h2>
+	<ol class="comment-list">
+				<li class="comment even thread-even depth-1" id="li-comment-45338">
+			<article id="comment-45338" class="comment">
+				<header class="comment-meta comment-author vcard">
+					<img alt="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/64f0ddf95e14a22650fca1dc4ceeb4b7.png" srcset="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/64f0ddf95e14a22650fca1dc4ceeb4b7_002.png 2x" class="avatar avatar-72 photo" loading="lazy" width="72" height="72"><cite class="fn">erion </cite><a href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/#comment-45338"><time datetime="2014-06-25T18:39:36+02:00">2014/06/25 at 18:39</time></a>				</header><!-- .comment-meta -->
+								<section class="comment-content comment">
+					<p>Nice!</p>
+				</section><!-- .comment-content -->
+				<div class="reply">
+									</div><!-- .reply -->
+							</article><!-- #comment-## -->
+		</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-45567">
+			<article id="comment-45567" class="comment">
+				<header class="comment-meta comment-author vcard">
+					<img alt="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/6a69861aa79de5f10c760bf9a9d22d65.png" srcset="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/6a69861aa79de5f10c760bf9a9d22d65_002.png 2x" class="avatar avatar-72 photo" loading="lazy" width="72" height="72"><cite class="fn">Arkhivrag </cite><a href="https://www.geeks3d.com/20140625/mesh-exploder-with-geometry-shaders/#comment-45567"><time datetime="2014-06-27T08:12:13+02:00">2014/06/27 at 08:12</time></a>				</header><!-- .comment-meta -->
+								<section class="comment-content comment">
+					<p>I made similar shader (Fragmentum) for Unity DX11 contest and my project became 2nd runner up.<br>
+<a href="http://unity3d.com/contest/dx11" rel="nofollow ugc">http://unity3d.com/contest/dx11</a></p>
+<p>Now I’ve overcome DX11 limitations and managed to run it on mobile with sm2 and sm3.<br>
+<a href="http://forum.unity3d.com/threads/fragmentum-mesh-fragmentation-shader.178616/" rel="nofollow ugc">http://forum.unity3d.com/threads/fragmentum-mesh-fragmentation-shader.178616/</a></p>
+				</section><!-- .comment-content -->
+				<div class="reply">
+									</div><!-- .reply -->
+							</article><!-- #comment-## -->
+		</li><!-- #comment-## -->
+	</ol>
+			<p class="no-comments">Comments are closed.</p>
+					</div>
+			</div><!-- #content -->
+		<div id="secondary" itemtype="http://schema.org/WPSideBar" itemscope="itemscope" class="small-12 large-4 cell widget-area" role="complementary">
+			<aside id="custom_html-11" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><script async="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-5414276038817348" data-ad-slot="9847007169" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_2_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/ads_003.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!3" data-google-query-id="CKa8ytTX8e0CFYZKGAodW74AEA" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></aside><aside id="custom_html-12" class="widget_text widget widget_custom_html"><h6 class="widget-title">Quick Links</h6><div class="textwidget custom-html-widget"><b>Latest Graphics Drivers</b>
+<ul>
+<li><a style="color:#559911;" href="https://www.geeks3d.com/dl/show/10070" target="_blank" rel="noopener">NVIDIA GeForce 460.89 win10 x64</a></li>
+<li><a style="color:#888;" href="https://www.geeks3d.com/dl/show/10155" target="_blank" rel="noopener">NVIDIA GeForce 457.67 win10 x64 (Vulkan 1.2.164)</a></li>
+<li><a style="color:#c51e22;" href="https://www.geeks3d.com/dl/show/10073" target="_blank" rel="noopener">AMD Radeon Adrenalin 2020 (20.12.1) win10 x64</a></li>
+<li><a href="https://www.geeks3d.com/dl/show/10148" target="_blank" rel="noopener">Intel Graphics Driver v9030 win10 x64</a></li>
+</ul>
+
+<b>GPU Tools</b>
+<ul>
+<li><a href="https://www.geeks3d.com/furmark/downloads/" target="_blank" rel="noopener">FurMark 1.24.1</a></li>
+<li><a href="https://ozone3d.net/redirect.php?id=401" target="_blank" rel="noopener">GPU Caps Viewer 1.49.2</a></li>
+<li><a href="https://ozone3d.net/redirect.php?id=501" target="_blank" rel="noopener">GPU Shark 0.21.2</a></li>
+<li><a href="https://www.geeks3d.com/geexlab/downloads/" target="_blank" rel="noopener">GeeXLab 0.39.0</a></li>
+<li><a href="https://www.geeks3d.com/furmark/rog/downloads/" target="_blank" rel="noopener">ASUS FurMark ROG Edition 0.8.7</a></li>
+<li><a href="https://www.geeks3d.com/furmark/kombustor/downloads/" target="_blank" rel="noopener">MSI Kombustor 4.1.10</a></li>
+<li><a href="https://www.geeks3d.com/yaffplayer/downloads/" target="_blank" rel="noopener">YAFFplayer 0.4.1</a></li>
+<li><a href="https://www.geeks3d.com/glz/" target="_blank" rel="noopener">GL-Z 0.5.0</a></li>
+<li><a href="https://www.geeks3d.com/madview3d/downloads/" target="_blank" rel="noopener">MadView3D 0.4.1</a></li>
+</ul>
+</div></aside><aside id="custom_html-13" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><script async="" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-5414276038817348" data-ad-slot="3336899162" data-adsbygoogle-status="done"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_3_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/ads_004.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!4" data-google-query-id="CPSoiNXX8e0CFU_bGAod6HUJoQ" data-load-complete="true" width="300" height="600" frameborder="0"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></aside><aside id="custom_html-5" class="widget_text widget widget_custom_html"><h6 class="widget-title">⦿ Never miss a news</h6><div class="textwidget custom-html-widget"><a href="https://feeds2.feedburner.com/TheGeeksOf3d" target="_blank" rel="noopener"><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/rss-3.jpg" alt="Geeks3D RSS feed" title="Geeks3D RSS feed" width="60"></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://feeds.feedburner.com/Geeks3DTechNewsForum" target="_blank" rel="noopener"><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/rss-3.jpg" alt="News forum board RSS feed" title="News forum board RSS feed" width="60"></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://twitter.com/Geeks3D/" target="_blank" rel="noopener"><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/twitter-3.jpg" alt="Geeks3D @ Twitter" title="Geeks3D @ Twitter" width="60"></a>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.facebook.com/geeks3d" target="_blank" rel="noopener"><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/facebook-3.jpg" alt="Geeks3D @ Facebook" title="Geeks3D @ Facebook" width="60"></a>
+</div></aside><aside id="custom_html-7" class="widget_text widget widget_custom_html"><h6 class="widget-title">SEARCH</h6><div class="textwidget custom-html-widget"><form action="https://www.google.com/cse" id="cse-search-box" target="_blank">
+  <div>
+    <input type="hidden" name="cx" value="partner-pub-5414276038817348:adqsaw-po18">
+    <input type="hidden" name="ie" value="ISO-8859-1">
+    <input type="text" name="q" size="31">
+    <input type="submit" name="sa" value="Search" class="button">
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"></script></div></aside><aside id="better_rss_widget-9" class="widget widget_better_rss_widget"><h6 class="widget-title">⦿ Forums Posts</h6><ul><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6775.0.html" title="Gaming highlights Fixed crashes/hangs observed in Assassin’s Creed Valhalla* (DX12). &nbsp; Download here &nbsp; […]" target="_blank">Intel Graphics - Windows 10 DCH Drivers Version: 27.20.100.9079</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6774.0.html" title="Just rebuilding all platforms to use exactly same codebase to match version numbers.Download here […]" target="_blank">Basemark GPU 1.2.3 released</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6773.0.html" title="hello&nbsp;it is not possible to try with Furmark Test the GPU performance in virtual Box or Vmware workstationOnly runnimg GPU Stresstest starts in give information virtualBox graphic WDDM&nbsp; SVGA 3D by all others possibilities not possible to open full s... […]" target="_blank">Furmark test in virtual machines</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6772.0.html" title="Radeon™ Software Adrenalin 2020 Edition 20.12.2 Highlights&nbsp;Support For Cooler Master RGB LED utility for AMD Radeon™ RX 6800XT and RX 6900XT cards.[/li... […]" target="_blank">AMD Radeon Software Adrenalin 2020 Edition 20.12.2</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6771.0.html" title="GeForce Hotfix display driver version 460.97 is based on NVIDIA's latest Game Ready Driver 460.89.&nbsp; &nbsp;The hotfix addresses the following issues: [lis... […]" target="_blank">NVIDIA GeForce Hotfix display driver 460.97</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6770.0.html" title="===================================================GPU Caps Viewer v1.49.2.0 reporthttp://www.geeks3d.comhttp://www.ozone3d.net/gpu_caps_viewer/======================================================================================[ System / CPU ]... […]" target="_blank">P620 no GPU name issue</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6769.0.html" title="&nbsp;NVIDIA is happy to announce the release of the latest version of the preview driver with support for RTX3060Ti and fix for the installation problems observed in notebooks, including some performance optimizations. &nbsp;[url=ht... […]" target="_blank">NVIDIA CUDA on WSL driver 465.21</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6768.0.html" title="&nbsp; Windows driver version 457.67 and Linux driver version 455.46.04 contain newly released Vulkan features and bug fixes for Vulkan developers. &nbsp; &nbsp;&nbsp;Windows 457.67 &nbsp; Dow... […]" target="_blank">NVIDIA Vulkan 1.2.164 developer driver 457.67</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6767.0.html" title="CUDA Toolkit 11.2 DownloadsCUDA Toolkit Developer Tools for macOS […]" target="_blank">NVIDIA CUDA Toolkit 11.2 released</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6766.0.html" title="NVAPI is NVIDIA's core software development kit that allows direct access to NVIDIA GPUs and drivers on all windows platforms. NVAPI provides support for categories of operations that range beyond the scope... […]" target="_blank">NVIDIA NVAPI R460</a></li></ul></aside><aside id="better_rss_widget-10" class="widget widget_better_rss_widget"><h6 class="widget-title"><a class="rsswidget" href="https://geeks3d.com/newz/rss.php" title="Syndicate this content" .="" target="_blank" '=""><img style="background:orange;color:white;border:none;" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/rss.png" alt="RSS" width="14" height="14"></a> <a class="rsswidget" href="https://geeks3d.com/newz/" title="100% tech NewZ" target="_blank">⦿ NewZ</a></h6><ul><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=332" title="Tags: shadertoy, programming […]" target="_blank">Making of Moana (Shadertoy demo)</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=331" title="Tags: gamedev, raytracing, dx12 […]" target="_blank">Raytraced Shadows in Call of Duty: Modern Warfare</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=330" title="Tags: windows 10, surveillance, privacy, wfh […]" target="_blank">Microsoft's Creepy New Productivity Score Gamifies Workplace Surveillance</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=329" title="Tags: top100, website, rank […]" target="_blank">Top 100 Websites in the World</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=328" title="Tags: […]" target="_blank">Fictional Starships Size Comparison</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=327" title="Tags: procedural, raymarching, sdf, glsl, shader, programming, maths […]" target="_blank">Painting a Selfie Girl with Maths</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=326" title="Tags: amd, rdna2, radeon rx 6000, raytracing […]" target="_blank">AMD RDNA 2: Hardware-accelerated Ray Tracing in Radeon ProRender 2.0</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=325" title="Tags: ogre3d, gamedev, programming […]" target="_blank">Evolution of OGRE Engine Games 2005-2020</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=324" title="Tags: boot, pc, vinyl […]" target="_blank">PC booting from a vinyl record</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=323" title="Tags: amd, hanger21, rdna2, radeon, raytracing […]" target="_blank">AMD RDNA 2 Hangar 21 Technology Demo Video (DX12 Raytracing)</a></li></ul></aside><aside id="better_rss_widget-7" class="widget widget_better_rss_widget"><h6 class="widget-title">⦿ GeeXLab Blog</h6><ul><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20201224/vulkan-raytracing-is-coming-into-geexlab/" title="Raytracing is coming to GeeXLab. After a bunch of hours of coding and debugging (thanks to the latest Vulkan SDK!), I finally managed to see my first ray traced RGB triangle! The Hello World of... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">Vulkan Raytracing is Coming into GeeXLab</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20201212/geexlab-0-39-released-windows-linux-raspberry-pi-and-macos/" title="Downloads GeeXLab for Win64 LITE (79MB) GeeXLab for Win64 FULL (245MB) GeeXLab for Win32 (67.5MB) GeeXLab for Linux64 (150MB) GeeXLab for Raspberry Pi OS (86.9MB) GeeXLab for macOS (68.4MB) All... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">GeeXLab 0.39 Released (Windows, Linux, Raspberry Pi and macOS)</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200904/geexlab-0-38-0-released-windows-linux-raspberry-pi-and-macos/" title="Downloads GeeXLab for Win64 LITE (79MB) GeeXLab for Win64 FULL (245MB) GeeXLab for Linux64 GeeXLab for Raspberry Pi OS GeeXLab for macOS All GeeXLab Downloads Forum thread (EN) &nbsp; 1 –... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">GeeXLab 0.38.0 Released (Windows, Linux, Raspberry Pi and macOS)</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200821/demo-a-collection-of-color-map-shaders/" title="Downloads OpenGL 2.1 Demopack Demo: geexlab-demopack-gl21/d58-color-map-shaders/ GeeXLab Downloads Forum thread (EN) &nbsp; Color maps are very useful in computer graphics. They are used to improve... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">(Demo) A Collection of Color Map Shaders</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200820/demo-box2d-physics-polygon-and-chain-shapes/" title="Downloads OpenGL 2.1 Demopack Demo: geexlab-demopack-gl21/d56-box2d/03/ GeeXLab Downloads Forum thread (EN) Box2D is a nice little physics engine and it’s fun to code physics simulation with it... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">(Demo) Box2D: Polygon and Chain Shapes</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200820/geexlab-0-37-0-released-windows-linux-raspberry-pi-and-macos/" title="Downloads GeeXLab for Win64 LITE (79MB) GeeXLab for Win64 FULL (245MB) GeeXLab for Linux64 GeeXLab for Raspberry Pi OS GeeXLab for macOS All GeeXLab Downloads Forum thread (EN) &nbsp; 1 –... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">GeeXLab 0.37.0 Released (Windows, Linux, Raspberry Pi and macOS)</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200814/demo-qr-code-shaders/" title="Downloads OpenGL 2.1 Demopack Demo: geexlab-demopack-gl-21/d55-qr-code/qrcode_shader/ GeeXLab for Windows 64-bit GeeXLab for Linux 64-bit Forum thread (EN) &nbsp; For most people, QR codes are a way... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">(Demo) QR Code Shaders</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200812/demo-box2d-physics-code-samples/" title="Downloads OpenGL 2.1 Demopack Demo: geexlab-demopack-gl-21/d56-box2d/ GeeXLab Downloads Forum thread (EN) The new GeeXLab 0.36.0 comes with the support of Box2D, a 2D physics engine for games. Box2D... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">(Demo) Box2D Physics Code Samples</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200812/geexlab-0-36-0-released-for-windows-linux-and-raspberry-pi/" title="Downloads GeeXLab for Windows 64-bit GeeXLab for Linux 64-bit GeeXLab for Raspberry Pi OS 32-bit All GeeXLab Downloads Forum thread (EN) &nbsp; 1 – Release Notes GeeXLab 0.36.0 is available for... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">GeeXLab 0.36.0 released for Windows, Linux and Raspberry Pi</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/hacklab/20200807/demo-bullet-physics-collisions/" title="Downloads OpenGL 2.1 Demopack Demo: geexlab-demopack-gl-21/d26-bullet3-physics/05/ GeeXLab Downloads Forum thread (EN) Today, a small physics prototype with Bullet3 Physics and Lua. The demo is... [[ This is a content summary only. Visit my website for full links, other content, and more! ]] […]" target="_blank">(Demo) Bullet Physics Collisions</a></li></ul></aside><aside id="categories-5" class="widget widget_categories"><h6 class="widget-title">⦿ Categories</h6>
+			<ul>
+					<li class="cat-item cat-item-5222"><a href="https://www.geeks3d.com/category/catchall/">Catchall</a> (7)
+<ul class="children">
+	<li class="cat-item cat-item-2910"><a href="https://www.geeks3d.com/category/catchall/guest-posts/">Guest Posts</a> (4)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-90"><a href="https://www.geeks3d.com/category/demoscene/">Demoscene</a> (109)
+</li>
+	<li class="cat-item cat-item-340"><a href="https://www.geeks3d.com/category/general-tech/">General Tech</a> (685)
+</li>
+	<li class="cat-item cat-item-2243"><a href="https://www.geeks3d.com/category/gpu-computing/">GPU Computing</a> (279)
+<ul class="children">
+	<li class="cat-item cat-item-99"><a href="https://www.geeks3d.com/category/gpu-computing/nvidia-physx-technologies/" title="NVIDIA PhysX technology.">NVIDIA PhysX</a> (115)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-116"><a href="https://www.geeks3d.com/category/hardware/">Hardware</a> (1,122)
+<ul class="children">
+	<li class="cat-item cat-item-5259"><a href="https://www.geeks3d.com/category/hardware/asus-tinker-board/">ASUS Tinker Board</a> (3)
+</li>
+	<li class="cat-item cat-item-3"><a href="https://www.geeks3d.com/category/hardware/graphics-cards/" title="Graphics and Video Cards News and Reviews. Check out the latest graphics cards from ATI, NVIDIA, S3 Graphics (and the others) and trends in the graphics  industry.">Graphics Cards</a> (900)
+</li>
+	<li class="cat-item cat-item-498"><a href="https://www.geeks3d.com/category/hardware/overclocking/">Overclocking</a> (46)
+</li>
+	<li class="cat-item cat-item-4875"><a href="https://www.geeks3d.com/category/hardware/raspberry-pi/">Raspberry Pi</a> (35)
+</li>
+	<li class="cat-item cat-item-5184"><a href="https://www.geeks3d.com/category/hardware/unboxing/">Unboxing</a> (9)
+</li>
+	<li class="cat-item cat-item-142"><a href="https://www.geeks3d.com/category/hardware/gpu-coolers/">VGA Coolers</a> (43)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-1013"><a href="https://www.geeks3d.com/category/howto/">Howto</a> (22)
+</li>
+	<li class="cat-item cat-item-16"><a href="https://www.geeks3d.com/category/programming/">Programming</a> (721)
+<ul class="children">
+	<li class="cat-item cat-item-803"><a href="https://www.geeks3d.com/category/programming/gamedev/">Gamedev</a> (301)
+	<ul class="children">
+	<li class="cat-item cat-item-1600"><a href="https://www.geeks3d.com/category/programming/gamedev/assets/" title="Resources / assets for gamedev: textures, 3d models, audio samples, etc.">Assets</a> (4)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-5224"><a href="https://www.geeks3d.com/category/programming/lua/">Lua</a> (3)
+</li>
+	<li class="cat-item cat-item-1202"><a href="https://www.geeks3d.com/category/programming/python/">Python</a> (32)
+</li>
+	<li class="cat-item cat-item-2181"><a href="https://www.geeks3d.com/category/programming/shader-library/">Shader Library</a> (33)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-3625"><a href="https://www.geeks3d.com/category/reviews/">Reviews</a> (57)
+</li>
+	<li class="cat-item cat-item-21"><a href="https://www.geeks3d.com/category/softwares/">Softwares</a> (1,565)
+<ul class="children">
+	<li class="cat-item cat-item-22"><a href="https://www.geeks3d.com/category/softwares/benchmarks/">Benchmarks</a> (106)
+</li>
+	<li class="cat-item cat-item-18"><a href="https://www.geeks3d.com/category/softwares/drivers/">Drivers</a> (559)
+	<ul class="children">
+	<li class="cat-item cat-item-20"><a href="https://www.geeks3d.com/category/softwares/drivers/amd-radeon/">AMD Graphics Driver</a> (194)
+</li>
+	<li class="cat-item cat-item-4017"><a href="https://www.geeks3d.com/category/softwares/drivers/intel-hd-graphics/">Intel HD Graphics</a> (51)
+</li>
+	<li class="cat-item cat-item-19"><a href="https://www.geeks3d.com/category/softwares/drivers/nvidia-geforce/">NVIDIA Graphics Driver</a> (305)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-746"><a href="https://www.geeks3d.com/category/softwares/geeks3d/">Geeks3D</a> (540)
+	<ul class="children">
+	<li class="cat-item cat-item-2775"><a href="https://www.geeks3d.com/category/softwares/geeks3d/evga-ocscanner/" title="EVGA OC Scanner">EVGA OC Scanner</a> (22)
+</li>
+	<li class="cat-item cat-item-2636"><a href="https://www.geeks3d.com/category/softwares/geeks3d/fluidmark/">FluidMark</a> (17)
+</li>
+	<li class="cat-item cat-item-2635"><a href="https://www.geeks3d.com/category/softwares/geeks3d/furmark/">FurMark</a> (100)
+</li>
+	<li class="cat-item cat-item-2096"><a href="https://www.geeks3d.com/category/softwares/geeks3d/geexlab/">GeeXLab</a> (165)
+</li>
+	<li class="cat-item cat-item-4810"><a href="https://www.geeks3d.com/category/softwares/geeks3d/glz/">GL-Z</a> (5)
+</li>
+	<li class="cat-item cat-item-2637"><a href="https://www.geeks3d.com/category/softwares/geeks3d/gpucapsviewer/">GPU Caps Viewer</a> (79)
+</li>
+	<li class="cat-item cat-item-2660"><a href="https://www.geeks3d.com/category/softwares/geeks3d/gpushark/">GPU-Shark</a> (57)
+</li>
+	<li class="cat-item cat-item-4223"><a href="https://www.geeks3d.com/category/softwares/geeks3d/gputest/">GpuTest</a> (15)
+</li>
+	<li class="cat-item cat-item-5346"><a href="https://www.geeks3d.com/category/softwares/geeks3d/h4shg3n/">H4shG3n</a> (1)
+</li>
+	<li class="cat-item cat-item-4515"><a href="https://www.geeks3d.com/category/softwares/geeks3d/madshaders/">MadShaders</a> (5)
+</li>
+	<li class="cat-item cat-item-5300"><a href="https://www.geeks3d.com/category/softwares/geeks3d/madview3d/">MadView3D</a> (3)
+</li>
+	<li class="cat-item cat-item-2808"><a href="https://www.geeks3d.com/category/softwares/geeks3d/msi-kombustor/">MSI Kombustor</a> (37)
+</li>
+	<li class="cat-item cat-item-2952"><a href="https://www.geeks3d.com/category/softwares/geeks3d/shadertoymark/">ShaderToyMark</a> (7)
+</li>
+	<li class="cat-item cat-item-2880"><a href="https://www.geeks3d.com/category/softwares/geeks3d/tessmark/">TessMark</a> (20)
+</li>
+	<li class="cat-item cat-item-5029"><a href="https://www.geeks3d.com/category/softwares/geeks3d/vkz/">vkz</a> (6)
+</li>
+	<li class="cat-item cat-item-5412"><a href="https://www.geeks3d.com/category/softwares/geeks3d/yaffplayer/">YAFFplayer</a> (2)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-1943"><a href="https://www.geeks3d.com/category/softwares/gpu-tools/">GPU Tools</a> (134)
+</li>
+	<li class="cat-item cat-item-135"><a href="https://www.geeks3d.com/category/softwares/linux/">Linux</a> (61)
+</li>
+	<li class="cat-item cat-item-278"><a href="https://www.geeks3d.com/category/softwares/tech-demo/">tech demo</a> (88)
+</li>
+	<li class="cat-item cat-item-25"><a href="https://www.geeks3d.com/category/softwares/utilities/">Utilities</a> (46)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-747"><a href="https://www.geeks3d.com/category/tests/">Tests</a> (166)
+</li>
+			</ul>
+
+			</aside><aside id="custom_html-9" class="widget_text widget widget_custom_html"><h6 class="widget-title">⦿ WebGL Caps Viewer</h6><div class="textwidget custom-html-widget"><center>
+<a href="https://www.geeks3d.com/webgl/" target="_blank" rel="noopener"><img src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/webgl_logo.png"></a>
+<a href="https://www.geeks3d.com/webgl/" target="_blank" rel="noopener">[ WebGL Caps Viewer ]</a>
+</center>
+</div></aside><aside id="custom_html-8" class="widget_text widget widget_custom_html"><h6 class="widget-title">⦿ Sticky Articles</h6><div class="textwidget custom-html-widget"><ul>
+<li><a href="https://www.geeks3d.com/20160205/vulkan-programming-resources-list/">Vulkan API Programming Resources</a></li>
+<li><a href="https://www.geeks3d.com/20151122/how-to-install-nvidia-graphics-drivers-on-linux-mint-17/">How to Install NVIDIA Graphics Drivers on Linux Mint 17</a></li>
+<li><a href="https://www.geeks3d.com/20150526/how-to-control-a-led-with-raspberry-pi-gpio-and-glsl-hacker-in-lua-or-python/">Electronics: blinking LED with Raspberry Pi GPIO and GeeXLab</a></li>
+<li><a href="https://www.geeks3d.com/20140305/amd-radeon-and-nvidia-geforce-fp32-fp64-gflops-table-computing/">AMD Radeon and NVIDIA GeForce FP32/FP64 GFLOPS Table</a></li>
+<li><a href="https://www.geeks3d.com/20100504/tutorial-graphics-cards-voltage-regulator-modules-vrm-explained/">Graphics card VRM explained</a></li>
+<li><a href="https://www.geeks3d.com/20100613/tutorial-gpu-tools-and-gpu-memory-clock-real-and-effective-speeds-demystified/">Graphics memory speeds demystified</a></li>
+<li><a href="https://www.geeks3d.com/20090618/graphics-cards-thermal-design-power-tdp-database/">Graphics card TDP database</a></li>
+</ul>
+</div></aside><aside id="archives-5" class="widget widget_archive"><h6 class="widget-title">Archives</h6>		<label class="screen-reader-text" for="archives-dropdown-5">Archives</label>
+		<select id="archives-dropdown-5" name="archive-dropdown">
+			
+			<option value="" selected="selected">Select Month</option>
+				<option value="https://www.geeks3d.com/2020/12/"> December 2020 &nbsp;(10)</option>
+	<option value="https://www.geeks3d.com/2020/11/"> November 2020 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2020/10/"> October 2020 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2020/09/"> September 2020 &nbsp;(9)</option>
+	<option value="https://www.geeks3d.com/2020/08/"> August 2020 &nbsp;(9)</option>
+	<option value="https://www.geeks3d.com/2020/07/"> July 2020 &nbsp;(2)</option>
+	<option value="https://www.geeks3d.com/2020/06/"> June 2020 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2020/05/"> May 2020 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2020/04/"> April 2020 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2020/03/"> March 2020 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2020/02/"> February 2020 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2020/01/"> January 2020 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2019/12/"> December 2019 &nbsp;(3)</option>
+	<option value="https://www.geeks3d.com/2019/11/"> November 2019 &nbsp;(10)</option>
+	<option value="https://www.geeks3d.com/2019/10/"> October 2019 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2019/09/"> September 2019 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2019/08/"> August 2019 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2019/07/"> July 2019 &nbsp;(3)</option>
+	<option value="https://www.geeks3d.com/2019/06/"> June 2019 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2019/05/"> May 2019 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2019/04/"> April 2019 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2019/03/"> March 2019 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2019/02/"> February 2019 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2019/01/"> January 2019 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2018/12/"> December 2018 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2018/11/"> November 2018 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2018/10/"> October 2018 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2018/09/"> September 2018 &nbsp;(3)</option>
+	<option value="https://www.geeks3d.com/2018/08/"> August 2018 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2018/06/"> June 2018 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2018/05/"> May 2018 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2018/04/"> April 2018 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2018/03/"> March 2018 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2018/02/"> February 2018 &nbsp;(3)</option>
+	<option value="https://www.geeks3d.com/2018/01/"> January 2018 &nbsp;(14)</option>
+	<option value="https://www.geeks3d.com/2017/12/"> December 2017 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2017/11/"> November 2017 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2017/10/"> October 2017 &nbsp;(10)</option>
+	<option value="https://www.geeks3d.com/2017/09/"> September 2017 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2017/08/"> August 2017 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2017/07/"> July 2017 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2017/06/"> June 2017 &nbsp;(1)</option>
+	<option value="https://www.geeks3d.com/2017/05/"> May 2017 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2017/04/"> April 2017 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2017/03/"> March 2017 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2017/02/"> February 2017 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2016/12/"> December 2016 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2016/11/"> November 2016 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2016/10/"> October 2016 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2016/09/"> September 2016 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2016/08/"> August 2016 &nbsp;(18)</option>
+	<option value="https://www.geeks3d.com/2016/07/"> July 2016 &nbsp;(2)</option>
+	<option value="https://www.geeks3d.com/2016/06/"> June 2016 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2016/05/"> May 2016 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2016/04/"> April 2016 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2016/03/"> March 2016 &nbsp;(21)</option>
+	<option value="https://www.geeks3d.com/2016/02/"> February 2016 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2016/01/"> January 2016 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2015/12/"> December 2015 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2015/11/"> November 2015 &nbsp;(11)</option>
+	<option value="https://www.geeks3d.com/2015/10/"> October 2015 &nbsp;(10)</option>
+	<option value="https://www.geeks3d.com/2015/09/"> September 2015 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2015/08/"> August 2015 &nbsp;(9)</option>
+	<option value="https://www.geeks3d.com/2015/07/"> July 2015 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2015/06/"> June 2015 &nbsp;(22)</option>
+	<option value="https://www.geeks3d.com/2015/05/"> May 2015 &nbsp;(9)</option>
+	<option value="https://www.geeks3d.com/2015/04/"> April 2015 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2015/03/"> March 2015 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2015/02/"> February 2015 &nbsp;(6)</option>
+	<option value="https://www.geeks3d.com/2015/01/"> January 2015 &nbsp;(7)</option>
+	<option value="https://www.geeks3d.com/2014/12/"> December 2014 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2014/11/"> November 2014 &nbsp;(16)</option>
+	<option value="https://www.geeks3d.com/2014/10/"> October 2014 &nbsp;(9)</option>
+	<option value="https://www.geeks3d.com/2014/09/"> September 2014 &nbsp;(18)</option>
+	<option value="https://www.geeks3d.com/2014/08/"> August 2014 &nbsp;(16)</option>
+	<option value="https://www.geeks3d.com/2014/07/"> July 2014 &nbsp;(4)</option>
+	<option value="https://www.geeks3d.com/2014/06/"> June 2014 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2014/05/"> May 2014 &nbsp;(20)</option>
+	<option value="https://www.geeks3d.com/2014/04/"> April 2014 &nbsp;(16)</option>
+	<option value="https://www.geeks3d.com/2014/03/"> March 2014 &nbsp;(15)</option>
+	<option value="https://www.geeks3d.com/2014/02/"> February 2014 &nbsp;(17)</option>
+	<option value="https://www.geeks3d.com/2014/01/"> January 2014 &nbsp;(15)</option>
+	<option value="https://www.geeks3d.com/2013/12/"> December 2013 &nbsp;(8)</option>
+	<option value="https://www.geeks3d.com/2013/11/"> November 2013 &nbsp;(26)</option>
+	<option value="https://www.geeks3d.com/2013/10/"> October 2013 &nbsp;(25)</option>
+	<option value="https://www.geeks3d.com/2013/09/"> September 2013 &nbsp;(17)</option>
+	<option value="https://www.geeks3d.com/2013/08/"> August 2013 &nbsp;(3)</option>
+	<option value="https://www.geeks3d.com/2013/07/"> July 2013 &nbsp;(25)</option>
+	<option value="https://www.geeks3d.com/2013/06/"> June 2013 &nbsp;(19)</option>
+	<option value="https://www.geeks3d.com/2013/05/"> May 2013 &nbsp;(25)</option>
+	<option value="https://www.geeks3d.com/2013/04/"> April 2013 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2013/03/"> March 2013 &nbsp;(35)</option>
+	<option value="https://www.geeks3d.com/2013/02/"> February 2013 &nbsp;(15)</option>
+	<option value="https://www.geeks3d.com/2013/01/"> January 2013 &nbsp;(17)</option>
+	<option value="https://www.geeks3d.com/2012/12/"> December 2012 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2012/11/"> November 2012 &nbsp;(14)</option>
+	<option value="https://www.geeks3d.com/2012/10/"> October 2012 &nbsp;(14)</option>
+	<option value="https://www.geeks3d.com/2012/09/"> September 2012 &nbsp;(12)</option>
+	<option value="https://www.geeks3d.com/2012/08/"> August 2012 &nbsp;(22)</option>
+	<option value="https://www.geeks3d.com/2012/07/"> July 2012 &nbsp;(15)</option>
+	<option value="https://www.geeks3d.com/2012/06/"> June 2012 &nbsp;(23)</option>
+	<option value="https://www.geeks3d.com/2012/05/"> May 2012 &nbsp;(20)</option>
+	<option value="https://www.geeks3d.com/2012/04/"> April 2012 &nbsp;(29)</option>
+	<option value="https://www.geeks3d.com/2012/03/"> March 2012 &nbsp;(37)</option>
+	<option value="https://www.geeks3d.com/2012/02/"> February 2012 &nbsp;(5)</option>
+	<option value="https://www.geeks3d.com/2012/01/"> January 2012 &nbsp;(35)</option>
+	<option value="https://www.geeks3d.com/2011/12/"> December 2011 &nbsp;(36)</option>
+	<option value="https://www.geeks3d.com/2011/11/"> November 2011 &nbsp;(29)</option>
+	<option value="https://www.geeks3d.com/2011/10/"> October 2011 &nbsp;(24)</option>
+	<option value="https://www.geeks3d.com/2011/09/"> September 2011 &nbsp;(24)</option>
+	<option value="https://www.geeks3d.com/2011/08/"> August 2011 &nbsp;(35)</option>
+	<option value="https://www.geeks3d.com/2011/07/"> July 2011 &nbsp;(13)</option>
+	<option value="https://www.geeks3d.com/2011/06/"> June 2011 &nbsp;(37)</option>
+	<option value="https://www.geeks3d.com/2011/05/"> May 2011 &nbsp;(31)</option>
+	<option value="https://www.geeks3d.com/2011/04/"> April 2011 &nbsp;(26)</option>
+	<option value="https://www.geeks3d.com/2011/03/"> March 2011 &nbsp;(68)</option>
+	<option value="https://www.geeks3d.com/2011/02/"> February 2011 &nbsp;(37)</option>
+	<option value="https://www.geeks3d.com/2011/01/"> January 2011 &nbsp;(58)</option>
+	<option value="https://www.geeks3d.com/2010/12/"> December 2010 &nbsp;(56)</option>
+	<option value="https://www.geeks3d.com/2010/11/"> November 2010 &nbsp;(52)</option>
+	<option value="https://www.geeks3d.com/2010/10/"> October 2010 &nbsp;(84)</option>
+	<option value="https://www.geeks3d.com/2010/09/"> September 2010 &nbsp;(62)</option>
+	<option value="https://www.geeks3d.com/2010/08/"> August 2010 &nbsp;(66)</option>
+	<option value="https://www.geeks3d.com/2010/07/"> July 2010 &nbsp;(39)</option>
+	<option value="https://www.geeks3d.com/2010/06/"> June 2010 &nbsp;(49)</option>
+	<option value="https://www.geeks3d.com/2010/05/"> May 2010 &nbsp;(49)</option>
+	<option value="https://www.geeks3d.com/2010/04/"> April 2010 &nbsp;(56)</option>
+	<option value="https://www.geeks3d.com/2010/03/"> March 2010 &nbsp;(86)</option>
+	<option value="https://www.geeks3d.com/2010/02/"> February 2010 &nbsp;(52)</option>
+	<option value="https://www.geeks3d.com/2010/01/"> January 2010 &nbsp;(38)</option>
+	<option value="https://www.geeks3d.com/2009/12/"> December 2009 &nbsp;(40)</option>
+	<option value="https://www.geeks3d.com/2009/11/"> November 2009 &nbsp;(43)</option>
+	<option value="https://www.geeks3d.com/2009/10/"> October 2009 &nbsp;(53)</option>
+	<option value="https://www.geeks3d.com/2009/09/"> September 2009 &nbsp;(33)</option>
+	<option value="https://www.geeks3d.com/2009/08/"> August 2009 &nbsp;(42)</option>
+	<option value="https://www.geeks3d.com/2009/07/"> July 2009 &nbsp;(40)</option>
+	<option value="https://www.geeks3d.com/2009/06/"> June 2009 &nbsp;(45)</option>
+	<option value="https://www.geeks3d.com/2009/05/"> May 2009 &nbsp;(18)</option>
+	<option value="https://www.geeks3d.com/2009/04/"> April 2009 &nbsp;(55)</option>
+	<option value="https://www.geeks3d.com/2009/03/"> March 2009 &nbsp;(37)</option>
+	<option value="https://www.geeks3d.com/2009/02/"> February 2009 &nbsp;(23)</option>
+	<option value="https://www.geeks3d.com/2009/01/"> January 2009 &nbsp;(56)</option>
+	<option value="https://www.geeks3d.com/2008/12/"> December 2008 &nbsp;(84)</option>
+	<option value="https://www.geeks3d.com/2008/11/"> November 2008 &nbsp;(76)</option>
+	<option value="https://www.geeks3d.com/2008/10/"> October 2008 &nbsp;(91)</option>
+	<option value="https://www.geeks3d.com/2008/09/"> September 2008 &nbsp;(74)</option>
+	<option value="https://www.geeks3d.com/2008/08/"> August 2008 &nbsp;(136)</option>
+	<option value="https://www.geeks3d.com/2008/07/"> July 2008 &nbsp;(108)</option>
+	<option value="https://www.geeks3d.com/2008/06/"> June 2008 &nbsp;(144)</option>
+	<option value="https://www.geeks3d.com/2008/05/"> May 2008 &nbsp;(160)</option>
+
+		</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-5" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+			</aside>		</div><!-- #secondary -->
+	            </div><!-- .grid-x .grid-margin-x -->
+	   </section><!-- end .content-wrap -->
+    </div><!-- end .content_container -->
+	    <div class="footer_container">
+    	<footer id="footer" itemtype="http://schema.org/WPFooter" itemscope="itemscope" class="footer_wrap grid-container" role="contentinfo">
+                    <div class=" small-12 large-12 cell">
+                            <div class="table mbl"><ul id="menu-footermenu" class="menu navcntr"><li id="menu-item-9997" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9997"><a href="https://geeks3d.com/newz/">NewZ</a></li>
+<li id="menu-item-9764" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9764"><a href="https://www.geeks3d.com/dlz/">Downloads</a></li>
+<li id="menu-item-9765" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9765"><a href="https://www.geeks3d.com/reviews/">Reviews</a></li>
+<li id="menu-item-9766" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9766"><a href="https://www.geeks3d.com/softwares/">Geeks3D Softwares</a></li>
+<li id="menu-item-9768" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9768"><a title="The coolest 3D programming tool!" href="https://www.geeks3d.com/geexlab/">GeeXLab</a></li>
+<li id="menu-item-9769" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-9769"><a title="The blog of GeeXLab" href="https://www.geeks3d.com/hacklab/">HackLAB</a></li>
+<li id="menu-item-9767" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9767"><a href="https://www.geeks3d.com/about-us/">About/Contact</a></li>
+<li id="menu-item-10049" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10049"><a title="Support Geeks3D’s work" href="https://www.geeks3d.com/donate/">Donate</a></li>
+</ul></div>             
+        </div><!-- .columns -->    
+        <div id="ftxt" class="site-info small-12 large-12 cell text-center">
+                             <p>Powered by <a href="https://themeawesome.com/responsive-wordpress-theme/" rel="follow" target="_blank" title="A Responsive WordPress Theme">WP-Forge</a> &amp; <a href="http://wordpress.org/" target="_blank" title="WordPress">WordPress</a></p>
+                    </div><!-- .site-info -->
+   
+        	    	</footer><!-- .row -->
+    </div><!-- end #footer_container -->
+<div id="aioseo-admin"></div>
+<script type="text/javascript">
+/* <![CDATA[ */
+r3f5x9JS=escape(document['referrer']);
+hf4N='47caa4c5fa5fc78f82334cd0bcf5a275';
+hf4V='1228f4ce3f1a7790babec4bb4a5fad41';
+jQuery(document).ready(function($){var e="#commentform, .comment-respond form, .comment-form, #lostpasswordform, #registerform, #loginform, #login_form, #wpss_contact_form";$(e).submit(function(){$("<input>").attr("type","hidden").attr("name","r3f5x9JS").attr("value",r3f5x9JS).appendTo(e);$("<input>").attr("type","hidden").attr("name",hf4N).attr("value",hf4V).appendTo(e);return true;});$("#comment").attr({minlength:"12",maxlength:"15360"})});
+/* ]]> */
+</script> 
+<div id="backtotop" class="hvr-fade" style="display: none;"><span class="genericon genericon-collapse"></span></div><link rel="stylesheet" id="yarppRelatedCss-css" href="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/related.css" type="text/css" media="all">
+<script type="text/javascript" id="wp-postviews-cache-js-extra">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/www.geeks3d.com\/wp-admin\/admin-ajax.php","post_id":"8846"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/postviews-cache.js" id="wp-postviews-cache-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/wp-syntax.js" id="wp-syntax-js-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/jscripts-ftr-min.js" id="wpss-jscripts-ftr-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/what-input.js" id="what_input-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/foundation.js" id="foundation-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/theme-functions.js" id="load_foundation-js"></script>
+<script type="text/javascript" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/wp-embed.js" id="wp-embed-js"></script>
+
+
+
+
+
+
+<ins class="adsbygoogle adsbygoogle-noablate" style="display: none !important;" data-adsbygoogle-status="done"><ins id="aswift_4_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_4_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/ads_005.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!5" data-load-complete="true" frameborder="0"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_536446903921" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body><iframe id="google_esf" name="google_esf" src="Geometry%20Doubler%20and%20Exploder%20with%20Geometry%20Shaders%20|%20Geeks3D_tiedostot/zrt_lookup.html" style="display: none;" data-ad-client="ca-pub-5414276038817348"></iframe></html>
+<!-- Dynamic page generated in 0.625 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2020-12-29 00:05:54 -->
+<!-- Compression = gzip -->

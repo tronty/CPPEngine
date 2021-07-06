@@ -1,0 +1,238 @@
+//-----------------------------------------------------------------------------
+// File: Samples\DirectX 9.0\R2VB-Collision\particlesmath.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+[Fragment shader]
+<compile ps_3_0 main>
+
+
+struct pixelShaderOutput
+{
+	float4 Color0 : COLOR0;
+	float4 Color1 : COLOR1;
+};
+
+float	fTimeElapsed;
+float4	ClampedTerrainDimensions;
+float2	RcpTotalTerrainDimensions;
+float2	HeightMapSize;
+float2	RcpParticlesMapSize;
+float2  TexelSize;
+float2  TerrainUnitSize;
+float	BounceFactor;
+float	SnowFlakeLife;
+
+sampler2D Sampler0;	// Current particles position texture
+sampler2D Sampler1;	// Current particles position texture
+sampler2D Sampler2;	// Terrain height map
+sampler2D Sampler3;	// Noise texture
+
+
+// Given a triangle defined by three dimensional points this function returns
+// the UNNORMALIZED plane normal and height at point of coordinates (X, Z) in the triangle
+// Unnormalized normal is returned in .xyz and height in .w.
+float4 NormalAndHeightOnPlane(float3 TrianglePoint[3], float X, float Z)
+{
+	float3 AB, AC;
+	float4 NormalAndHeight;
+	
+	// Calculate AB and AC two triangle vectors
+	AB = TrianglePoint[1] - TrianglePoint[0];
+	AC = TrianglePoint[2] - TrianglePoint[0];
+	
+	// Calculate plane equation
+	NormalAndHeight.xyz = cross(AB, AC);
+	NormalAndHeight.w = - dot(NormalAndHeight.xyz, TrianglePoint[0]);
+	
+	// Feed point's XZ coordinate into equation to retrieve height
+	NormalAndHeight.w = (NormalAndHeight.x * X + NormalAndHeight.z * Z + NormalAndHeight.w) / (-NormalAndHeight.y);
+	
+	return NormalAndHeight;
+}
+
+float4 SampleNormalAndHeight( float3 Point )
+{
+	float3 InputTriangle[3];
+	float2 FractionalPart;
+	float4 NormalAndHeight = {0, 1, 0, 0};
+	float4 ParticleTexCoords = {0, 0, 0, 0};
+
+	// Calculate texture coordinates from particle's XZ position on terrain
+	ParticleTexCoords.xy = ((Point.xz * RcpTotalTerrainDimensions + 0.5f) * (HeightMapSize-1.0)) / HeightMapSize;
+
+	// Calculate fractional part. This is used to determine which one of the two quad triangles the point is on
+	FractionalPart = frac(ParticleTexCoords.xy * HeightMapSize.xy);
+
+
+#if 0
+	// Height calculation as bilinear result of surrounding heights
+	// This is extremely inaccurate as it doesn't correspond to the underlying triangle-based terrain geometry
+
+	float4 h;
+	h.x = tex2D( Sampler2, ParticleTexCoords.xy + float2(0.0,			0.0)		).y;
+	h.y = tex2D( Sampler2, ParticleTexCoords.xy + float2(TexelSize.x,	0.0)		).y;
+	h.z = tex2D( Sampler2, ParticleTexCoords.xy + float2(0.0,			TexelSize.y)).y;
+	h.w = tex2D( Sampler2, ParticleTexCoords.xy + float2(TexelSize.x,	TexelSize.y)).y;
+
+	// Return bilinearly-interpolated height
+	NormalAndHeight.w = lerp(lerp(h.x, h.y, FractionalPart.x), lerp(h.z, h.w, FractionalPart.x), FractionalPart.y);
+
+#else
+
+	// Accurate height calculation
+	// The algorithm below samples the three points forming the triangle onto which the selected
+	// point lies, then calculate the height at this point using the triangle's plane equation
+
+	// *--*
+	// |A/|
+	// |/B|
+	// *--*
+	// Determine on which triangle the point lies based on the fractional part of the texture coordinates
+	// The following code uses tex2dlod to ensure texture instructions are generated inside branching instructions
+	// This code could benefit from Fetch4 if the heights were stored separately
+	if ( FractionalPart.x < (1.0 - FractionalPart.y) )
+	{
+		// Point lies on triangle A
+		InputTriangle[0].xyz = float3(0.0, tex2Dlod( Sampler2, ParticleTexCoords + float4(0.0, 0.0, 0.0, 0.0)        ).y, 0.0);
+		InputTriangle[1].xyz = float3(0.0, tex2Dlod( Sampler2, ParticleTexCoords + float4(0.0, TexelSize.y, 0.0, 0.0)).y, TerrainUnitSize.y);
+		InputTriangle[2].xyz = float3(TerrainUnitSize.x, tex2Dlod( Sampler2, ParticleTexCoords + float4(TexelSize.x, 0.0, 0.0, 0.0)).y, 0.0);
+	}
+	else
+	{
+		// Point lies on triangle B
+		InputTriangle[0].xyz = float3(0.0, tex2Dlod( Sampler2, ParticleTexCoords + float4(0.0, TexelSize.y, 0.0, 0.0)        ).y, TerrainUnitSize.y);
+		InputTriangle[1].xyz = float3(TerrainUnitSize.x, tex2Dlod( Sampler2, ParticleTexCoords + float4(TexelSize.x, TexelSize.y, 0.0, 0.0)).y, TerrainUnitSize.y);
+		InputTriangle[2].xyz = float3(TerrainUnitSize.x, tex2Dlod( Sampler2, ParticleTexCoords + float4(TexelSize.x, 0.0, 0.0, 0.0)        ).y, 0.0);
+	}
+
+	// Calculate height of selected point inside triangle
+	NormalAndHeight = NormalAndHeightOnPlane(InputTriangle, FractionalPart.x*TerrainUnitSize.x, FractionalPart.y*TerrainUnitSize.y);
+#endif
+
+#if 0
+	// Nearest height
+	ParticleTexCoords.xy += 0.5*TexelSize;
+	NormalAndHeight.w = tex2D( Sampler2, ParticleTexCoords).y;
+#endif
+
+	// Return result
+	return NormalAndHeight;
+}
+
+// Calculate the closest intersection point between the incoming vector and the terrain using dichotomy.
+// The accuracy of the intersection point depends on the value of nMaxStep. If nMaxStep is set to 1.0
+// then no additional sampling will be performed and this function will simply return the value of the
+// new position.
+float3 DetectCollisionPoint(float3 StartPos, float3 ClosestIntersection, float TerrainHeight)
+{
+	int		nMaxStep = 5;		// This can be an externally-defined constant (default:1 = no accurate collision detection)
+	float3	Current;
+
+	// Loop through number of steps required
+	for (int nStep=1; nStep<nMaxStep; nStep++)
+	{
+		// Calculate position to test for collision: midway between start and end position
+		Current = StartPos + 0.5*(ClosestIntersection - StartPos);
+
+		// Retrieve height at this point (normal not used)
+		float4 CurrentHeight = SampleNormalAndHeight(Current);
+
+		// Test for collision with terrain, i.e. test whether height at current point is below the terrain height at this point
+		if (Current.y < CurrentHeight.w)
+		{
+			// Collision occurs
+
+			// Set new closest intersection and record terrain height at this point
+			ClosestIntersection = Current;
+			TerrainHeight = CurrentHeight.w;
+		}
+		else
+		{
+			// Collision does not occur
+			
+			// Set new StartPos
+			StartPos = Current;
+		}
+	}
+
+	// Return closest intersection (height returned is the terrain's at this point)
+	return float3(ClosestIntersection.x, TerrainHeight, ClosestIntersection.z);
+}
+
+pixelShaderOutput main( float2 Texcoord0 : TEXCOORD0, float2 vPos : VPOS)
+{
+	pixelShaderOutput	psOutput;
+	float4				NewParticlePosition, NewParticleVelocity;
+	float4				CollidedParticlePosition, CollidedParticleVelocity;
+
+	// Sample particle position and velocity
+	float4 CurrentParticlePosition = tex2D( Sampler0, Texcoord0 );
+	float4 CurrentParticleVelocity = tex2D( Sampler1, Texcoord0 );
+
+	// Clamp particle's XZ position to terrain boundaries
+	CurrentParticlePosition.xz = clamp(CurrentParticlePosition.xz, -ClampedTerrainDimensions.zw, ClampedTerrainDimensions.zw);
+
+	// Calculate new particle velocity
+	NewParticleVelocity = float4(0.0, -98.0, 0.0, 0.0) * fTimeElapsed + CurrentParticleVelocity;
+
+	// Calculate new particle position
+	NewParticlePosition.xyz = NewParticleVelocity*fTimeElapsed + CurrentParticlePosition;
+	NewParticlePosition.w = CurrentParticlePosition.w;
+
+	// Sample terrain height at particle's XZ coordinate
+	float4 TerrainNormalAndHeight = SampleNormalAndHeight(NewParticlePosition.xyz);
+
+	// Check whether particle intersects terrain at this location
+	if (NewParticlePosition.y < TerrainNormalAndHeight.w)
+	{
+		// Collision
+
+		// Determine precise collision point on terrain (precision depends on nMaxStep value)
+		CollidedParticlePosition.xyz = DetectCollisionPoint(CurrentParticlePosition, NewParticlePosition, TerrainNormalAndHeight.w);
+
+		// Calculate penetration ratio, i.e. how much the particle's new position is "buried" into the terrain:
+		// A: current particle position, B: new particle position, I: terrain surface (detected collision point) e.g:
+		// A-----I--B
+		// Penetration ratio is AI/AB; hence velocity at point I should be AI/AB times velocity at point B
+		float PenetrationRatio = length(CollidedParticlePosition.xyz - CurrentParticlePosition.xyz)/length(NewParticlePosition.xyz - CurrentParticlePosition.xyz);
+		CollidedParticleVelocity.xyz = CurrentParticleVelocity.xyz + PenetrationRatio * (NewParticleVelocity.xyz - CurrentParticleVelocity.xyz);
+
+		// Calculate new direction vector
+		NewParticleVelocity.xyz = BounceFactor * length(CollidedParticleVelocity.xyz) * normalize(reflect(CollidedParticleVelocity.xyz, TerrainNormalAndHeight.xyz));
+		NewParticlePosition.xyz = CollidedParticlePosition.xyz;
+
+		// Check whether particle is immobilized (i.e. reached a velocity below 5 units)
+		if (length(NewParticleVelocity)<=5.0)
+		{
+			// Decrease particle's life
+			NewParticlePosition.w -= fTimeElapsed;
+
+			// Check if particle has reached its end of life
+			if (NewParticlePosition.w<=0.0)
+			{
+				// It has, re-initialize its position and velocity
+
+				// Use vPos as a factor in a pseudo-random function to determine the particle's new starting position
+				NewParticlePosition.xz = (((NewParticlePosition.xz+ClampedTerrainDimensions/2.0f) + SnowFlakeLife * vPos) % (ClampedTerrainDimensions-1)) - ClampedTerrainDimensions/2.0;
+
+				// Here a noise texture is sampled with vPos to determine the particle's new starting height
+				NewParticlePosition.y = tex2Dlod(Sampler3, float4(vPos.x * RcpParticlesMapSize.x, vPos.y * RcpParticlesMapSize.y, 0, 0)).y * 250.0 + 100.0;
+
+				// Set particle's new life
+				NewParticlePosition.w = SnowFlakeLife;
+
+				// Particle's new velocity is NULL across the board
+				NewParticleVelocity = float4(0.0, 0.0, 0.0, 0.0);
+			}
+		}
+	}
+
+	// Write results into position and velocity render targets
+	psOutput.Color0 = NewParticlePosition;
+	psOutput.Color1 = NewParticleVelocity;
+
+	// Write new particle
+	return psOutput;
+}

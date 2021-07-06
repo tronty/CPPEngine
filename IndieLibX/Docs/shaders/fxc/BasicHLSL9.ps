@@ -1,0 +1,36 @@
+texture g_MeshTexture;
+
+sampler MeshTextureSampler =
+sampler_state
+{
+    Texture = <g_MeshTexture>;
+    MipFilter = LINEAR;
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
+};
+
+struct VS_OUTPUT
+{
+    float4 Position   : POSITION;
+    float4 Diffuse    : COLOR0;
+    float2 TextureUV  : TEXCOORD0;
+};
+
+struct PS_OUTPUT
+{
+    float4 RGBColor : COLOR0;
+};
+
+PS_OUTPUT RenderScenePS( VS_OUTPUT In,
+                         uniform bool bTexture ) 
+{ 
+    PS_OUTPUT Output;
+
+    if( bTexture )
+        Output.RGBColor = tex2D(MeshTextureSampler, In.TextureUV) * In.Diffuse;
+    else
+        Output.RGBColor = In.Diffuse;
+
+    return Output;
+}
+

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <!--[if IE 8 ]>
+        
+        <![endif]-->
+        <!--[if IE 9 ]>
+        
+        <![endif]-->
+        <style type="text/css">
+            html, body {
+    height: 100%;
+}
+
+body {
+    background: white;
+    border: 1px #cccccc;
+    border-radius: 2px;
+    font-family: Arial, sans-serif;
+    color: #808080;
+    margin: 0;
+    -webkit-text-size-adjust: none;
+}
+
+a {
+    font-size: 12px;
+    text-decoration: none;
+    color: #4E76C9;
+}
+
+.account {
+    display: inline-block;
+    max-width: 90px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.image-link {
+    color: white;
+}
+
+.panel {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.panel:hover .hover {
+    opacity: 0.8;
+}
+
+.post {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.video-container {
+    display: inline;
+}
+
+.embed-header {
+    min-height: 28px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+.embed-header .avatar-container {
+    height: 28px;
+}
+.embed-header .avatar {
+    width: 28px;
+    height: 28px;
+    margin: auto 10px auto 0;
+}
+.avatar {
+    border-radius: 50%;
+    background-color: #cccccc;
+    background-size: contain;
+}
+.embed-header .username {
+    font-size: 13px;
+    font-weight: bold;
+    color: #646972;
+    margin: auto 0;
+}
+.embed-header .username-container {
+    display: inline-flex;
+}
+.embed-header #action-container {
+    height: 28px;
+    overflow: hidden;
+    display: flex;
+}
+#action-container .action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 28px;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #31be7c;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Arial;
+    text-align: center;
+    cursor: pointer;
+}
+
+.action-button .share-img {
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+}
+
+#shareModal {
+    position: absolute;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    height: 100%;
+    z-index: 102;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#shareModal.hidden {
+    display: none;
+}
+
+.share-modal {
+    max-width: 611px;
+    width: 100%;
+}
+
+.share-body {
+    background-image: linear-gradient(to bottom, #2c3085, #241c5a);
+    padding-left: 51px;
+    padding-right: 60px;
+    position: relative;
+    box-shadow: 0 6px 10px 0 rgba(27, 28, 30, .31);
+    margin: auto 10px;
+    border-radius: 3px;
+}
+
+.share-header {
+    height: 52px;
+    border-bottom: solid 2px #484fb1;
+}
+.share-header .close {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 40px;
+    position: absolute;
+    right: 13px;
+    top: 5px;
+    cursor: pointer;
+}
+.share-label {
+    text-transform: uppercase;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #c6c1ff;
+}
+
+.share-header .share-label {
+    padding-top: 28px;
+    vertical-align: middle;
+}
+
+.share-content {
+    padding-bottom: 40px;
+}
+
+.share-target {
+    margin: 29px auto;
+    align-items: center;
+    text-align: center;
+}
+
+.share-target .target-item {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: auto 9px;
+}
+
+.share-target .facebook {
+    background-image: linear-gradient(to bottom, #7b8bf5, #4b58ea);
+}
+
+.share-target .twiter {
+    background-image: linear-gradient(to bottom, #5ebbe7, #3693da 100%);
+}
+
+.share-target .pinterest {
+    background-image: linear-gradient(to bottom, #e8454f, #cc2127);
+}
+
+.share-target .reddit {
+    background-image: linear-gradient(to bottom, #ff7b00, #ff4500);
+}
+
+.share-control {
+    width: 90%;
+    height: 36px;
+    border-radius: 6px;
+    background-color: #292866;
+    border: solid 2px #484fb1;
+    padding: 2px;
+    margin: auto;
+    display: flex;
+}
+
+.share-link input {
+    flex: 1;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #ffffff;
+    background: transparent;
+    margin: auto 0 auto 15px;
+    border: none;
+}
+.share-link button::before {
+    content: "";
+    width: 30px;
+    height: 35px;
+    position: relative;
+    float: left;
+    left: -40px;
+    top: 25px;
+    margin-top: -35px;
+    background: linear-gradient(to right, rgba(46, 38, 100, 0.1),  rgba(46, 38, 100, 1) 80%, rgba(46, 38, 100, 1));
+}
+.share-tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -2px;
+}
+
+.share-tab .share-label {
+    display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: solid 2px #c6c1ff;
+    margin: auto 10px;
+    cursor: pointer;
+}
+
+.share-tab .share-label:not(.isActive) {
+    color: #4a51b7;
+    border: none;
+}
+
+.share-control .btn-copy {
+    width: 63px;
+    height: 22px;
+    border-radius: 3px;
+    border: solid 2px #1bb76e;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: #1bb76e;
+    background: transparent;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: auto 5px;
+    ;
+}
+
+.share-control .btn-copy:active {
+    border: solid 2px #2b6d4e;
+}
+.share-control .btn-copy:focus {
+    outline: none;
+}
+
+.share-footer {
+    display: flex;
+    background-image: url('//s.imgur.com/images/embed/app3d.png');
+    background-position: right bottom;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    margin-left: -51px;
+    margin-right: -60px;
+}
+
+.share-footer.background-left {
+    background-position-x: 200px;
+}
+
+#shareModal.share-small .share-footer {
+    display: none;
+}
+
+.share-footer .footer-content {
+    border-top: solid 2px #484fb1;
+    width: 100%;
+    margin-left: 51px;
+    margin-right: 60px;
+    padding-top: 15px;
+}
+
+.share-footer .footer-text-0 {
+    width: 190px;
+    height: 42px;
+    font-family: Arial;
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.11;
+    letter-spacing: -0.1px;
+    text-align: left;
+    color: #ffffff;
+    margin-bottom: 7px;
+}
+
+.share-footer .footer-text-1 {
+    width: 165px;
+    height: 42px;
+    font-family: Arial;
+    font-size: 11px;
+    line-height: 1.27;
+    letter-spacing: 0;
+    text-align: left;
+    color: #c6c1ff;
+    margin-bottom: 13px;
+}
+
+.share-footer .get-imgur-app {
+    border-radius: 3px;
+    background-color: #1bb76e;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: #ffffff;
+    text-decoration: none;
+    text-align: center;
+    padding: 7px 12px;
+    margin-bottom: 32px;
+    display: inline-block;
+}
+
+.share-header .close:focus,
+.share .btn-copy:focus,
+.share-link input:focus {
+    outline: none;
+}
+
+.embed-footer {
+    padding: 16px 16px 39px 16px;
+    position: relative;
+}
+
+.embed-footer .title {
+    display: flex;
+    width: 100%;
+}
+
+.embed-footer>*:not(:last-child) {
+    margin-bottom: 16px;
+}
+
+.embed-footer #title-text {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.09;
+    text-align: left;
+    color: #242522;
+    flex: 1;
+    overflow: hidden;
+    max-height: 34px;
+    position: relative;
+}
+
+.embed-footer .text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+}
+
+.embed-footer .description,
+.embed-footer .description a,
+.descriptions {
+    font-size: 13px;
+    line-height: 1.23;
+    text-align: left;
+}
+
+.embed-footer .description,
+.descriptions {
+    color: #747a84;
+    position: relative;
+}
+
+.embed-footer #description-text,
+.descriptions>* {
+    flex: 1;
+    overflow: hidden;
+    max-height: 34px;
+}
+
+.descriptions {
+    position: absolute;
+    visibility: hidden;
+    bottom: -100%;
+    left: 16px;
+    right: 16px;
+}
+
+.embed-footer #description-text>.internal-link {
+    color: #747a84;
+    text-decoration: none;
+}
+
+.embed-footer .read-more {
+    display: none;
+    color: #747a84;
+    background-color: white;
+    padding-left: 5px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.embed-footer .ellipsis>.read-more {
+    display: flex;
+}
+
+.embed-footer .info {
+    position:absolute;
+    display: flex;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+}
+
+.embed-footer .info-items {
+    display: flex;
+}
+
+.embed-footer .info-item {
+    margin: auto;
+    white-space: nowrap;
+    display: flex;
+}
+
+.embed-footer #views:first-child img {
+   vertical-align: text-top;
+}
+
+.embed-footer .info-item img {
+    margin: auto;
+}
+
+.embed-footer .info-item .label {
+    opacity: 0.94;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    color: #747a84;
+    margin: auto 6px;
+}
+
+.embed-footer .info-item:not(:first-child) {
+    margin-left: 14px;
+}
+
+.center-container {
+    align-items: center;
+    flex: 1;
+    justify-content: space-around;
+}
+
+.embed-footer .embed-logo {
+    float: right;
+}
+
+.embed-footer .counter {
+    border-radius: 2.6px;
+    background-color: #b5b9c2;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1.19;
+    text-align: center;
+    color: #ffffff;
+    padding: 2px 8px;
+    height: 14px;
+}
+
+.embed-footer .counter>span {
+    vertical-align: middle;
+    max-width: 23px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.embed-footer .info .counter {
+    margin-right: 10px;
+}
+
+*[aria-hidden=true]{
+    display: none !important;
+}
+
+
+            .image {
+                position: relative;
+                text-align: center;
+                background-color: #3c424b;
+                height: auto;
+                width: 100%;
+                min-height: 200px;
+                overflow: hidden;
+            }
+
+            .hide {
+                display: none !important;
+            }
+
+            .hover {
+                display: none;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                height: 71px;
+                width: 32px;
+                cursor: pointer;
+                z-index: 101;
+                -webkit-transition: opacity 0.2s ease-in-out; /* Safari */
+                transition: opacity 0.2s ease-in-out;
+                -moz-transition: opacity 0.2s ease-in-out;
+            }
+
+            .prev-hover {
+                left: 0;
+                border-radius: 0 4px 4px 0;
+                background-image: url("//s.imgur.com/images/embed/prev.svg");
+            }
+
+            .next-hover {
+                right: 0;
+                border-radius: 4px 0 0 4px;
+                background-image: url("//s.imgur.com/images/embed/next.svg");
+            }
+
+            .panel .prev-hover.mobile, .panel .next-hover.mobile {
+                opacity: 1;
+            }
+
+            .panel .prev-hover:hover, .panel .next-hover:hover {
+                opacity: 1;
+            }
+
+            .image-title {
+                padding: 0 0 10px 0;
+                font-size: 14px;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .video-elements {
+                display: none;
+            }
+
+            .scale-video-element {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .arrow a:hover {
+                color: #000;
+            }
+
+            @media screen and (max-width: 300px){
+                .image-title {
+                    padding-top: 5px;
+                }
+
+                .arrow {
+                    width: 60px;
+                }
+            }
+        </style>
+        
+        
+
+    </head>
+
+    <body>
+        <div id="content">
+                            
+            
+            <div id="header" class="embed-header">
+    <div class="avatar-container">
+    
+    </div>
+    <div id="action-container">
+        <button id="share-button" class="action-button" title="Share">
+            <span>Share</span>
+            <img class="share-img" src="embed_data/share.svg">
+        </button>
+        <a class="get-app" id="getAppButton" aria-hidden="true" href="https://imgurinc.com/mobileapps" target="_blank"><div class="action-button">Get App</div></a>
+    </div>
+</div>
+
+            <div class="embed-main-image">
+                <div class="panel">
+                    
+                    
+                    
+                                            
+                    
+                    
+                    <div id="prev-hover" class="prev-hover hover hide"></div>
+                    <div id="next-hover" class="next-hover hover"></div>
+                    <a id="image-link" class="image-link" href="https://imgur.com/a/Z0WfZ#kfJQjwj" target="_blank">
+                        <div id="image" class="image" style="width: 540px; height: 294px;">
+                            <img id="image-element" class="post " src="embed_data/kfJQjwjl.jpg" style="width: 540px; height: 293.739px;">
+                            <div id="video-container" class="video-container hide">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="embed-footer" id="footer">
+        
+        <div class="description ellipsis" style="margin-bottom: 18px;">
+        <div id="description-text" data-href="//imgur.com/a/Z0WfZ#kfJQjwj" class="text-ellipsis"><a rel="noreferrer nofollow" target="_blank" href="https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds" class="description-item">https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds</a> <a class="internal-link description-item" target="_blank" href="https://imgur.com/a/Z0WfZ#kfJQjwj">/
+</a> <a rel="noreferrer nofollow" target="_blank" href="https://github.com/BSVogler/WurfelEngineSDK/blob/master/src/com/bombinggames/wurfelengine/core/lightengine/AmbientOcclusionCalculator.java" class="description-item">https://githu<br>b.com/BSVogler/WurfelEngineSDK/blob/master/src/com/bombinggames/wurfelengine/core/lightengine/AmbientOcclusionCalculator.java</a></div>
+        <a id="readMore" class="read-more" href="https://imgur.com/a/Z0WfZ#kfJQjwj" target="_blank">... [Read more]</a>
+    </div>
+    
+    
+    <div class="info">
+        
+        
+        
+        
+        <div class="center-container"></div>
+        
+        <a class="embed-logo" href="https://imgur.com/" target="_blank">
+            <img id="logo-container" src="embed_data/imgur.svg" height="20">
+        </a>
+    </div>
+</div>
+
+
+            </div>
+            <div id="shareModal" class="hidden">
+            <div class="share-modal">
+    <div class="share-body">
+        <div class="share-header">
+            <div class="share-label">Share</div>
+            <button class="close" id="cancel">×</button>
+        </div>
+        <div class="share-content">
+            <div class="share-target">
+                <a href="javascript:void(0)" class="target-item
+                    facebook" data-value="facebook" title="Facebook" style="background-image:
+                    url('//s.imgur.com/images/embed/facebook.svg')"></a>
+                <a href="javascript:void(0)" class="target-item twiter" data-value="twitter" title="Twitter" style="background-image:
+                    url('//s.imgur.com/images/embed/twitter.svg')"></a>
+                <a href="javascript:void(0)" class="target-item
+                    pinterest" data-value="pinterest" title="Pinterest" style="background-image:
+                    url('//s.imgur.com/images/embed/pinterest.svg')"></a>
+                <a href="javascript:void(0)" class="target-item reddit" data-value="reddit" title="Reddit" style="background-image:
+                    url('//s.imgur.com/images/embed/reddit.svg')"></a>
+            </div>
+            <div class="share-link">
+                <div class="share-tab">
+                    <div class="share-tab-item share-label isActive" data-value="link">Link</div>
+                    <div class="share-tab-item share-label" data-value="embed">Embed</div>
+                </div>
+                <div class="share-control">
+                    <input id="shareLink" name="share-link-input" value="https://imgur.com/a/Z0WfZ">
+                    <button class="btn-copy">Copy</button>
+                </div>
+            </div>
+        </div>
+        <div class="share-footer background-left">
+            <div class="footer-content">
+                <div class="footer-text-0">
+                    Discover the magic of the Internet
+                </div>
+                <div class="footer-text-1">
+                    The Best Dogs • GIFs • Memes • Science &amp; Tech •
+                    Videos •
+                    Pancakes • LOLz
+                </div>
+                <a class="get-app get-imgur-app" target="_blank" href="https://imgurinc.com/mobileapps">Get the Imgur App</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div>
+                        <div class="descriptions">
+                                    <div id="description-kfJQjwj" data-href="//imgur.com/a/Z0WfZ#kfJQjwj"><a rel="noreferrer nofollow" target="_blank" href="https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds">https://0fps.net/2013/07/03/ambient-occlusion-for-minecraft-like-worlds</a>/
+<a rel="noreferrer nofollow" target="_blank" href="https://github.com/BSVogler/WurfelEngineSDK/blob/master/src/com/bombinggames/wurfelengine/core/lightengine/AmbientOcclusionCalculator.java">https://github.com/BSVogler/WurfelEngineSDK/blob/master/src/com/bombinggames/wurfelengine/core/lightengine/AmbientOcclusionCalculator.java</a></div>
+                
+            </div>
+            
+        </div>
+        
+<noscript>
+    <img src="http://b.scorecardresearch.com/p?c1=2&c2=7770950&cv=2.0&cj=1" />
+</noscript>
+        <!-- Quantcast Tag -->
+
+
+<noscript>
+    <div style="display:none;"><img src="//pixel.quantserve.com/pixel/p-f8oruOqDFlMeI.gif" border="0" height="1" width="1" alt="Quantcast"/></div>
+</noscript>
+<!-- End Quantcast tag -->
+
+
+    
+
+</body></html>

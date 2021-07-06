@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en"><head cfapps-selector="head">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><cloudflare-app><style>
+@keyframes cf-a-maintenance-pulse {
+    0% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1.0;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+#cf-a-maintenance >  *{
+    all: initial;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1em;
+    color:inherit;
+}
+#cf-a-maintenance {
+    all: initial;
+    text-shadow: unset;
+    display: block;
+    z-index: 99999;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    min-width: 40vw;
+    max-width: 100%;
+    background-color: #c07302;
+    padding: 1em;
+    border-top-right-radius: 0.6em;
+    color: rgb(5, 5, 5);
+    display: flex;
+    align-items: center;
+    opacity: 0.85;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: 0 0 0.5em #3a2300;
+}
+
+#cf-a-maintenance.cf-a-maintenance-inprogress {
+    background-color: #adb900;
+    animation: cf-a-maintenance-pulse 2s infinite;
+    color: rgb(88, 25, 0);
+}
+
+#cf-a-maintenance.cf-a-maintenance-completed {
+    background-color: #91ff00;
+    color: rgb(0, 26, 97);
+}
+
+#cf-a-maintenance>img {
+    all: unset;
+    height: 1.4em;
+    padding-right: 0.5em;
+}</style>
+<script crossorigin="anonymous" integrity="sha512-4OyNDMl5KLKjS8F1ImVwUvmthM8HkXbR6vMafCmT5zBTd9I/sA3z3zM0JLBosHW6/3K2jq2RoBo/eTUNS2hOGA==" src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/later.js"></script>
+<script>
+(function () {
+    const CfAMaintenance={};
+
+    CfAMaintenance.Icons={
+        cog:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABuklEQVRYhe3Wu2sUURQG8J/GTlPETtKIiEnto0gna5Mqq4UKakBBhPTRf0awsTVgYWFjYqdg7JPSEBCbxEcjuNm1mDtkd/bOnc3NWrkfnGLO6/tm7pwzwwQT5KGFDnrBOrie0+hkpoBrmOq7nsKVfyXgCTZwqc83F8mbr8Q38DBHVD+eOnzMP3Abd7Hb5y9tJ8Qe4GfwdbGSS/4oNKgSHdW6QdiR8W4M5KWt5Qi4gL0xkH/DbI4AuDUGAYspgqYpOF3j30Ib08FuYrsm92yK4ETEt4irirFq4VyEfAHfK/4ZfDA8ol/wJtR9DjlJHEg/0qVEbbuh9k8TuYYGPZxJ1E6PUD+A3FVch9iRJhET0GmouZGItRpqu1VHTPECLit2/xLOV+LbIWe/4p/BR4PfDPiKdcVLuIm3DSIHcE/8HKtj2A7CYrn3UwSnGgTs1fjn8HqUO8DvEfOGMKtYo8fdhPu4mCNgbQzkpa3XkaTG8JXI3Gagh5e5xSsON+MvLCu+7TuG73I3xO4ofl5K/2q+9gLLeG/wl+t5RMCLvvh8qHl8XPI6rEYEPMtplLuKNxVHU+IAnzJ7TfCf4y+1kepxyfi12AAAAABJRU5ErkJggg==",
+        alert:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABV0lEQVRYhe2VP0oDQRjFfwQi0UqNpRDwAoI3MJhb6AkEGz2FnsLcQk8ggkHF0qiNYGEsLNTCMBaZgXHy7fzZ7E61D16xM+/73rc7w1toUB594FGzn9t8DZgASnOi17LhzDI3PM1lvgl8CQN8A70cAwwFc8Pzus23galngCmwU+cAlx5zw4u6zHcjzA0HVZu3gJFlcAe0rf22XjP7I11TGQ74/4ZXguba0exXZb4EjJ3m94LuwdG8AJ1Q85jPdARsOWvLgm7Fee4BhxH9vVgF3pm/ZK+C9k3QfQDriwwgRa5p7OKzQFs6oosiVwE/gv63QFs6on2Rq5gdj8FGQDtMNQ9FbiqTIzomclMZHdGDyIZdq6YbWROM6BZwE9nMRUzNLYHscSO36gEUnojuMIvP2EZljkDhieiThCaL8lga4DnjAE/G1L4Q0rlmxR7zv906ONZeDRoA8AcUklEqQcSO3AAAAABJRU5ErkJggg==",
+        check:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAABuklEQVRYhe3Wu2sUURQG8J/GTlPETtKIiEnto0gna5Mqq4UKakBBhPTRf0awsTVgYWFjYqdg7JPSEBCbxEcjuNm1mDtkd/bOnc3NWrkfnGLO6/tm7pwzwwQT5KGFDnrBOrie0+hkpoBrmOq7nsKVfyXgCTZwqc83F8mbr8Q38DBHVD+eOnzMP3Abd7Hb5y9tJ8Qe4GfwdbGSS/4oNKgSHdW6QdiR8W4M5KWt5Qi4gL0xkH/DbI4AuDUGAYspgqYpOF3j30Ib08FuYrsm92yK4ETEt4irirFq4VyEfAHfK/4ZfDA8ol/wJtR9DjlJHEg/0qVEbbuh9k8TuYYGPZxJ1E6PUD+A3FVch9iRJhET0GmouZGItRpqu1VHTPECLit2/xLOV+LbIWe/4p/BR4PfDPiKdcVLuIm3DSIHcE/8HKtj2A7CYrn3UwSnGgTs1fjn8HqUO8DvEfOGMKtYo8fdhPu4mCNgbQzkpa3XkaTG8JXI3Gagh5e5xSsON+MvLCu+7TuG73I3xO4ofl5K/2q+9gLLeG/wl+t5RMCLvvh8qHl8XPI6rEYEPMtplLuKNxVHU+IAnzJ7TfCf4y+1kepxyfi12AAAAABJRU5ErkJggg=="
+    }
+
+    CfAMaintenance.Settings={
+        scheduledMaintenance: "00 1 1 * *",
+        maintenanceDurationInHours:1,
+        maintenanceNoticeDurationInHours:2,
+        debugTimeSpeed:1
+    }
+
+    CfAMaintenance.cronToDate=function(cron){
+        later.date.UTC();
+        const s = later.parse.cron(cron, false);
+        const scheduler=  later.schedule(s);
+        return scheduler.next(0);
+    }
+
+    CfAMaintenance.showMaintenanceMessage=function(icon,type,message){
+        const body=document.querySelector("body");
+        let maintenanceEl=body.querySelector("#cf-a-maintenance");
+        if(maintenanceEl){
+            console.log("Clear maintenance message");
+            maintenanceEl.innerHTML="";
+        }else{
+            console.log("Create new maintenance message");
+            maintenanceEl=document.createElement("div");
+            maintenanceEl.setAttribute("id","cf-a-maintenance");
+            maintenanceEl.addEventListener("click",function(ev){
+                maintenanceEl.style.display="none";
+            });
+            body.appendChild(maintenanceEl);
+        }
+
+        if(type&&!maintenanceEl.className!=type){
+            maintenanceEl.className=type;
+            maintenanceEl.style.display="flex";
+        }
+
+        console.info(message);
+
+        const iconEl=document.createElement("img");
+        iconEl.setAttribute("src",icon);
+        maintenanceEl.appendChild(iconEl);        
+
+        const messageEl=document.createElement("span");
+        messageEl.innerHTML=message;
+        maintenanceEl.appendChild(messageEl);
+        
+    
+    }
+
+
+    CfAMaintenance.getTime=function(){
+        let date=Date.now();
+
+        if(CfAMaintenance.Settings.debugTimeSpeed>1){
+            if(!CfAMaintenance.prevDate)CfAMaintenance.prevDate=date;
+            let virtualDate= CfAMaintenance.prevDate+(date- CfAMaintenance.prevDate)*CfAMaintenance.Settings.debugTimeSpeed;
+            date=virtualDate;
+        }
+
+        return date;
+    }
+
+
+    CfAMaintenance.showScheduledMaintenanceMessage=function(){
+        const nextMaintenance=CfAMaintenance.cronToDate(CfAMaintenance.Settings.scheduledMaintenance);
+        const currentDate=CfAMaintenance.getTime();
+
+        
+        let delta=(nextMaintenance-currentDate)/1000;
+        const sign=Math.sign(delta);
+        delta=Math.abs(delta);
+        let deltaH=Math.floor(delta/  3600);
+        let deltaM=Math.floor((delta-(deltaH* 3600) )/ 60);
+        if(sign<=0){
+            if(deltaH<CfAMaintenance.Settings.maintenanceDurationInHours){
+                CfAMaintenance.showMaintenanceMessage(CfAMaintenance.Icons.cog,"cf-a-maintenance-inprogress","Maintenance in progress..."  );
+                if(localStorage)localStorage.setItem('cf-a-maintenance', '1');
+                setTimeout(CfAMaintenance.showScheduledMaintenanceMessage,Math.max(1,1000/CfAMaintenance.Settings.debugTimeSpeed));
+                return;
+            }else{
+                const mFlag = localStorage.getItem('cf-a-maintenance');
+                if(localStorage&&mFlag&&mFlag=="1"){
+                    CfAMaintenance.showMaintenanceMessage(CfAMaintenance.Icons.check,"cf-a-maintenance-completed","Maintenance completed! All services should be back to normal."  );
+                    localStorage.removeItem('cf-a-maintenance');
+                }  
+            }
+        }else{
+            if(deltaH<CfAMaintenance.Settings.maintenanceNoticeDurationInHours){
+                CfAMaintenance. showMaintenanceMessage(CfAMaintenance.Icons.alert,"","Scheduled unattended maintenance will start in "+  deltaH+" hours and "+deltaM+" minutes. <br />Slowdowns and hiccups are expected during this process.");
+                if(localStorage)localStorage.setItem('cf-a-maintenance', '1');
+                setTimeout(CfAMaintenance.showScheduledMaintenanceMessage,Math.max(1,(1000*60)/CfAMaintenance.Settings.debugTimeSpeed)  );
+                return;
+            }
+        }  
+        setTimeout(CfAMaintenance.showScheduledMaintenanceMessage,Math.max(1,(20*60*1000)/CfAMaintenance.Settings.debugTimeSpeed));
+    }
+
+    if (document. readyState === 'complete') {
+        CfAMaintenance.showScheduledMaintenanceMessage();
+    }else{
+        document.addEventListener("DOMContentLoaded", function(){
+            CfAMaintenance.showScheduledMaintenanceMessage();
+        });
+    }
+}())</script></cloudflare-app>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JME3 and Shaders :: jMonkeyEngine Docs</title>
+<script src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/QlnTUmLViPhRE-t9__Bd6ynp7uY.js"></script><link rel="canonical" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shaders.html">
+<link rel="prev" href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/materials_overview.html">
+<link rel="next" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shadernodes.html">
+<meta name="generator" content="Antora 2.3.3">
+<link rel="stylesheet" href="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/site.css">
+<meta property="og:image" content="https://wiki.jmonkeyengine.org/_/img/iconx128.png">
+<meta property="og:description" content="JME3 and Shaders">
+<meta property="og:title" content="jMonkeyEngine Docs">
+<link rel="stylesheet" href="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/site-extra.css">
+<link rel="stylesheet" href="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/docsearch.css">
+
+<link rel="icon" href="https://wiki.jmonkeyengine.org/_/img/favicon.ico" type="image/x-icon">
+</head>
+<body class="article">
+<header class="header">
+<nav class="navbar">
+<div class="navbar-brand">
+<a class="navbar-item" href="https://wiki.jmonkeyengine.org/">
+<img alt="" src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/jme-logo.png" type="image/x-icon" height="32">
+</a>
+<div class="navbar-item hide-for-print">
+<span class="algolia-autocomplete" style="position: relative; display: inline-block; direction: ltr;"><input id="search-input" type="text" placeholder="Search docs" class="ds-input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-label="search input" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: Roboto, sans-serif; font-size: 17.1px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: normal; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;"></pre><span class="ds-dropdown-menu" style="position: absolute; top: 100%; z-index: 100; display: none; left: 0px; right: auto;" role="listbox" id="algolia-autocomplete-listbox-0"><div class="ds-dataset-1"></div></span></span>
+</div>
+<button class="navbar-burger" data-target="topbar-nav">
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
+<div id="topbar-nav" class="navbar-menu">
+<div class="navbar-end">
+<div class="navbar-item theme-switch-wrapper">
+<label class="theme-switch" for="checkbox">
+<input type="checkbox" id="checkbox">
+<div class="slider round"></div>
+</label>
+</div>
+<a class="navbar-item" href="https://github.com/jmonkeyengine/wiki">Github</a>
+</div>
+</div>
+</nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="docs" data-version="3.4">
+<aside class="nav">
+<div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+<nav class="nav-menu">
+<h3 class="title"><a href="https://wiki.jmonkeyengine.org/docs/3.4/documentation.html">JME</a></h3>
+<ul class="nav-list">
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/documentation.html">Getting Started</a>
+</li>
+<li class="nav-item" data-depth="1">
+<a class="nav-link" href="https://javadoc.jmonkeyengine.org/v3.3.2-stable">JavaDoc</a>
+</li>
+<li class="nav-item" data-depth="1">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/release.html">Release Guide</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/beginner.html">Beginner Tutorials</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_simpleapplication.html">Hello SimpleApplication</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_node.html">Hello Node</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_asset.html">Hello Asset</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_main_event_loop.html">Hello Update Loop</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_input_system.html">Hello Input System</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_material.html">Hello Material</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_animation.html">Hello Animation</a>
+</li>
+ <li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_picking.html">Hello Picking</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_collision.html">Hello Collision</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_terrain.html">Hello Terrain</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_audio.html">Hello Audio</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_effects.html">Hello Effects</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/beginner/hello_physics.html">Hello Physics</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Key Concepts</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/best_practices.html">Best Practices</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/optimization.html">Optimization</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/faq.html">Frequently Asked Questions</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/math_for_dummies.html">Math for Dummies</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/math.html">Math overview</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/math_cheet_sheet.html">3D math "cheat sheet"</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/rotate.html">3-D Rotation</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/math_video_tutorials.html">Math video tutorial series</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/multi-media_asset_pipeline.html">Multi-Media Asset Pipeline</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/the_scene_graph.html">The Scene Graph</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/scenegraph_for_dummies.html">Scene Graph for Dummies</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/terminology.html">3D Graphics Terminology</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/concepts/transparency_sorting.html">Transparency Sorting</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Articles and How-to’s</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">How to Model</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/3dsmax/3dsmax.html">3dsmax</a>
+</li>
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/blender.html">Blender</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/blender_buffer_clearing.html">Buffer Clearing</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/blender_gltf.html">Export as GlTF</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/blender_ogre_export.html">Export as Ogre XML</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/blender_ogre_compatibility.html">Ogre Compatibility</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/makehuman.html">MakeHuman</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/makehuman_blender_ogrexml_toolchain.html">MakeHuman toolchain</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">How to Animate</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Mixamo</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/modeling/blender/mixamo.html">Blender Models</a>
+</li>
+<li class="nav-item" data-depth="4">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Video</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="5">
+<a class="nav-link" href="https://youtu.be/jHgAgTWIers?list=PLv6qR9TGkz8RcUr-fOHI2SksWA4BAU9TS">Part 1- Download Model</a>
+</li>
+<li class="nav-item" data-depth="5">
+<a class="nav-link" href="https://youtu.be/GQJSrOpNQwI?list=PLv6qR9TGkz8RcUr-fOHI2SksWA4BAU9TS">Part 2- Rig and Animate</a>
+</li>
+<li class="nav-item" data-depth="5">
+<a class="nav-link" href="https://youtu.be/JzRe2Dxbcmc?list=PLv6qR9TGkz8RcUr-fOHI2SksWA4BAU9TS">Part 3- Import to JME</a>
+</li>
+<li class="nav-item" data-depth="5">
+<a class="nav-link" href="https://youtu.be/8wwDRDJop7k?list=PLv6qR9TGkz8RcUr-fOHI2SksWA4BAU9TS">Part 4- Play Animation</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/debugging.html">Debugging with Wireframes</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/util/free_skymaps.html">How to create free skymaps</a>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Java Tips</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/java/localization.html">Localization</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/java/swing_canvas.html">Swing Canvas</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/java/logging.html">Logging</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/java/read_graphic_card_capabilites.html">Read Graphics Capabilities</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Articles</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Physically Based Rendering</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/articles/pbr/pbr_part1.html">PBR – Part one</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/articles/pbr/pbr_part2.html">PBR – Part two</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/tutorials/how-to/articles/pbr/pbr_part3.html">PBR – Part three</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item is-active is-current-path" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Core Engine</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/simpleapplication.html">SimpleApplication</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/system/appsettings.html">AppSettings</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Controlling Game Logic</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/update_loop.html">Update Loop</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/state/application_states.html">Application States</a>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/control/custom_controls.html">Custom Controls</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Video</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=MNDiZ9YHIpM">Control any scene node</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=-OzRZscLlHY">Control a character</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/Scenes/SDK-UsecaseDemo_1.zip">Video Source Code</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/multithreading.html">Multithreading</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Scene Graph</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/traverse_scenegraph.html">Traverse SceneGraph</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/spatial.html">Spatial: Node vs Geometry</a>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/mesh.html">Mesh</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/custom_meshes.html">Custom Meshes</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/shape/shape.html">Shape</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/3d_models.html">3D Models</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/asset/asset_manager.html">Asset Manager</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/export/save_and_load.html">Saving and Loading Nodes</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/collision/collision_and_intersection.html">Collision and Intersection</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/control/level_of_detail.html">Level of Detail</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Animation, Scene</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/animation/animation.html">Animation-Old</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/cinematic/cinematics.html">Cinematics (cutscenes, fake destruction physics)</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/cinematic/motionpath.html">MotionPaths and Waypoints</a>
+</li>
+</ul>
+</li>
+<li class="nav-item is-active is-current-path" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Material, Light, Shadow</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/how_to_use_materials.html">How to use Materials</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/j3m_material_files.html">.j3m Material Files</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/material_definitions.html">.j3md Material Definitions</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/materials_overview.html">.j3md Properties</a>
+</li>
+<li class="nav-item is-current-page is-active" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shaders.html">Shaders and JME3</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shadernodes.html">Shader Node System</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/shader_video_tutorials.html">Shader Video Tutorials</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/light/light_and_shadow.html">Light and Shadow</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/texture/anisotropic_filtering.html">Anisotropic Filtering</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/system/jme3_srgbpipeline.html">Gamma Correction</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Audio, Video</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/audio/audio.html">Playing Sounds</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/audio/audio_environment_presets.html">Audio Environment Presets</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/state/screenshots.html">Capture Screenshots</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/state/capture_audio_video_to_a_file.html">Capture Audio/Video</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Filter, Effect</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/effect/effects_overview.html">Overview</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/effect/bloom_and_glow.html">Bloom and Glow</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/effect/particle_emitters.html">Particle Emitters</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Landscapes</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/util/sky.html">Sky</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/terrain/terrain.html">Terrain (TerraMonkey)</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/collision/terrain_collision.html">Terrain Collision</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/effect/water.html">Simple Water</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/effect/post-processor_water.html">Post-Processor Water</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Camera</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/renderer/camera.html">Camera</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/renderer/making_the_camera_follow_a_character.html">Follow a Character</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/renderer/remote-controlling_the_camera.html">Remote-Controlling</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/renderer/multiple_camera_views.html">Multiple Camera Views</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/renderer/jme3_renderbuckets.html">Render Buckets</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">User Interaction</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/input/input_handling.html">Input Handling</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/input/combo_moves.html">Combo Moves</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/input/mouse_picking.html">Mouse Picking</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/gui/topic_gui.html">Graphical User Interface</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Nifty GUI</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/gui/nifty_gui.html">Integration Tutorial</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/gui/nifty_gui_best_practices.html">Best Practices</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/gui/nifty_gui_scenarios.html">Scenarios</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/ui/hud.html">Head-Up Display (HUD)</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Virtual Reality</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/vr/virtualreality.html">Virtual Reality</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/physics.html">Physics</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/bullet_multithreading.html">Multi-Threaded Physics</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/collision/physics_listeners.html">Collision Detection</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/joint/hinges_and_joints.html">Hinges and Joints</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/control/walking_character.html">Walking Character</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/control/ragdoll.html">Ragdoll</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/control/vehicles.html">Vehicles</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/control/softbody.html">Softbody</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/physics/bullet_pitfalls.html">Bullet Physics Pitfalls</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Networking</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/networking/networking.html">Networking (SpiderMonkey)</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/networking/headless_server.html">Headless Server</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/networking/monkey_zone.html">Multi-Player Demo Code</a>
+</li>
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/networking/networking_video_tutorials.html">Networking Video Tutorials</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">User Contributions</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/contributions.html">User Made Utilities</a>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Shader</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/shader/shaderblow_project.html">ShaderBlow Project</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Landscapes</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/lanscapes/vegetationsystem/vegetationsystem.html">Vegetation System</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Networking</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/networking/open_game_finder.html">Open Game Finder</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Entity System</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="#es/entitysystem.adoc">The Zay-ES Entity System</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Artificial Intelligence</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/ai/recast.html">Recast Navigation</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/ai/building_recast.html">Updating and building Recast Native Bindings</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/ai/monkey_brains.html">Monkey Brains</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/ai/steer_behaviours.html">Steer Behaviours</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/ai/jme3_ai.html">jME3 Artificial Intelligence</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/gui/topic_contributions_gui.html">GUI</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/contributions.html#lemur-gui-library">Lemur - a native jME3 GUI library with scene graph tools</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/contributions.html#tonegodgui">tonegodGUI - a native jME3 GUI library</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/contributions.html#immediate-graphical-user-interface">Immediate graphical user interface</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Tools</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/tools/navigation.html">Mercator Projection Tool (Marine Navigation)</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/tools/charts.html">Visualizing Maps in JME3 (Marine Charts)</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Projects</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/projects/rise_of_mutants_project.html">Rise of Mutants Project</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="0">
+<ul class="nav-list">
+<li class="nav-item" data-depth="1">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/sdk.html">SDK</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Video Tutorials</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">SDK Use Case Tutorials</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=-OzRZscLlHY">Demo 1 (Quixote demo)</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=6-YWxD3JByE">Demo 2 (Models and Materials)</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">SDK Tutorials</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=M1_0pbeyJzI">Basics</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=nL7woH40i5c">Importing Models</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=DUmgAjiNzhY">Dragging&amp;Dropping Nodes</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=ntPAmtsQ6eM">Scene Composing</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=zgPV3W6dD4s">Terrain with Collision Shape</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=Feu3-mrpolc">Working with Materials</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=MNDiZ9YHIpM">Custom Controls</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=oZnssg8TBWQ">WebStart Deployment</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=D7JM4VMKqPc">Animation and Effect TrackEditing</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Getting Started</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/update_center.html">Updating jMonkeyEngine SDK</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/troubleshooting.html">Troubleshooting</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Java Development Features</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/project_creation.html">Project Creation</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/code_editor.html">Code Editor and Palette</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/version_control.html">File Version Control</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/debugging_profiling_testing.html">Debug, Profile, Test</a>
+</li>
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/application_deployment.html">Application Deployment</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/default_build_script.html">Default Build Script</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/android.html">Android</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/android_cheat_sheet.html">Android Cheat Sheet</a>
+</li>
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/ios.html">iOS</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Unique Features</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/model_loader_and_viewer.html">Import, View, Convert Models</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/asset_packs.html">Asset Packs</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/scene_explorer.html">The SceneExplorer</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/scene_composer.html">Composing a Scene</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/terrain_editor.html">Terrain Editor</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/sample_code.html">Sample Code</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/material_editing.html">Material Editing</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/font_creation.html">Creating Bitmap Fonts</a>
+</li>
+<li class="nav-item" data-depth="3">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://hub.jmonkeyengine.org/t/effecttrack-and-audiotrack-editing-in-the-sdk/23378">Audio and Effect Track Editing</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="4">
+<a class="nav-link" href="https://www.youtube.com/watch?v=D7JM4VMKqPc">Video: Effect and AudioTrack editing in jMonkeyEngine 3 sdk</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/filters.html">Post-Processor Filter Editor and Viewer</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/app/state/application_states.html">Application States</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/core/scene/control/custom_controls.html">Custom Controls</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/vehicle_creator.html">Vehicle Creator</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Advanced Usage</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/build_platform.html">Building jMonkeyEngine SDK</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/use_own_jme.html#.adoc">Using your own (modified) version of jME3 in jMonkeyEngine SDK</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/increasing_heap_memory.html">Increasing Heap Memory</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/log_files.html">Log Files</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<span class="nav-text" style="cursor: pointer;">Available external plugins</span>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/contributions/contributions.html">Contributions</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/neotexture.html">Neo Texture Editor for procedural textures</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://www.youtube.com/watch?v=yS9a9o4WzL8">Video: Mesh Tool &amp; Physics Editor</a>
+</li>
+</ul>
+</li>
+<li class="nav-item" data-depth="2">
+<button class="nav-item-toggle"></button>
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development.html">Developing plugins for jMonkeyEngine SDK</a>
+<ul class="nav-list">
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/setup.html">Creating a plugin</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/general.html">Creating components</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/scene.html">The Main Scene</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/sceneexplorer.html">The Scene Explorer</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/projects_assets.html">Projects and Assets</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/extension_library.html">Create a library plugin from a jar file</a>
+</li>
+<li class="nav-item" data-depth="3">
+<a class="nav-link" href="https://wiki.jmonkeyengine.org/docs/3.4/sdk/development/model_loader.html">Create a new or custom model filetype and loader</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+<div class="context">
+<span class="title">JME</span>
+<span class="version">3.4</span>
+</div>
+<ul class="components">
+<li class="component is-current">
+<span class="title">JME</span>
+<ul class="versions">
+<li class="version is-current is-latest">
+<a href="https://wiki.jmonkeyengine.org/docs/3.4/documentation.html">3.4</a>
+</li>
+<li class="version">
+<a href="https://wiki.jmonkeyengine.org/docs/3.3/documentation.html">3.3</a>
+</li>
+<li class="version">
+<a href="https://wiki.jmonkeyengine.org/docs/3.2/documentation.html">3.2</a>
+</li>
+</ul>
+</li>
+<li class="component">
+<span class="title">Wiki Contribution</span>
+<ul class="versions">
+<li class="version is-latest">
+<a href="https://wiki.jmonkeyengine.org/docs-wiki/3.4/wiki_contributor.html">3.4</a>
+</li>
+</ul>
+</li>
+<li class="component">
+<span class="title">Wiki UI</span>
+<ul class="versions">
+<li class="version is-latest">
+<a href="https://wiki.jmonkeyengine.org/wiki-ui/index.html">master</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+<ul>
+<li><a href="https://wiki.jmonkeyengine.org/docs/3.4/documentation.html">JME</a></li>
+<li>Material, Light, Shadow</li>
+<li><a href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shaders.html">Shaders and JME3</a></li>
+</ul>
+</nav>
+<div class="page-versions">
+<button class="version-menu-toggle" title="Show other versions of page">3.4</button>
+<div class="version-menu">
+<a class="version is-current" href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shaders.html">3.4</a>
+<a class="version" href="https://wiki.jmonkeyengine.org/docs/3.3/core/shader/jme3_shaders.html">3.3</a>
+<a class="version" href="https://wiki.jmonkeyengine.org/docs/3.2/core/shader/jme3_shaders.html">3.2</a>
+</div>
+</div>
+<div class="edit-this-page"><a href="https://github.com/jMonkeyEngine/wiki/edit/master/docs/modules/core/pages/shader/jme3_shaders.adoc">Edit this Page</a></div>
+</div>
+<div class="content">
+<article class="doc">
+<h1 class="page">JME3 and Shaders</h1>
+<aside class="toc embedded"><div class="toc-menu"><h3>Contents</h3><ul><li data-level="1"><a href="#shaders-basics">Shaders Basics</a></li><li data-level="2"><a href="#how-does-it-work">How Does it work?</a></li><li data-level="2"><a href="#variables-scope">Variables scope</a></li><li data-level="2"><a href="#spaces-and-matrices">Spaces and Matrices</a></li><li data-level="2"><a href="#simple-example-rendering-a-solid-color-on-an-object">Simple example: rendering a solid color on an object</a></li><li data-level="1"><a href="#how-to-use-shaders-in-jme3">How to use shaders in JME3</a></li><li data-level="2"><a href="#jme3-global-uniforms">JME3 Global uniforms</a></li><li data-level="2"><a href="#jme3-lighting-global-uniforms">JME3 Lighting Global uniforms</a></li><li data-level="2"><a href="#jme3-attributes">JME3 attributes</a></li><li data-level="2"><a href="#users-uniforms">User’s uniforms</a></li><li data-level="2"><a href="#example-adding-color-keying-to-the-lighting-j3md-material-definition">Example: Adding Color Keying to the Lighting.j3md Material Definition</a></li><li data-level="2"><a href="#step-by-step">Step by step</a></li><li data-level="2"><a href="#jme3-and-opengl-3-4-compatibility">JME3 and OpenGL 3 &amp; 4 compatibility</a></li><li data-level="2"><a href="#useful-links">Useful links</a></li></ul></div></aside><div class="sect1">
+<h2 id="shaders-basics"><a class="anchor" href="#shaders-basics"></a>Shaders Basics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Shaders are sets of instructions that are executed on the GPU. They 
+are used to take advantage of hardware acceleration available on the GPU
+ for rendering purposes.</p>
+</div>
+<div class="paragraph">
+<p>This paper only covers Vertex and Fragment shaders because they are 
+the only ones supported by JME3 for the moment. Be aware that there are 
+some other types of shaders (geometry, tessellation,…).</p>
+</div>
+<div class="paragraph">
+<p>There are multiple frequently used languages that you may encounter 
+to code shaders but as JME3 is based on OpenGL, shaders in JME use GLSL 
+and any example in this paper will be written in GLSL.</p>
+</div>
+<div class="sect2">
+<h3 id="how-does-it-work"><a class="anchor" href="#how-does-it-work"></a>How Does it work?</h3>
+<div class="paragraph">
+<p>To keep it Simple: The Vertex shader is executed once for each vertex
+ in the view, then the Fragment shader (also called the Pixel shader) is
+ executed once for each pixel on the screen.</p>
+</div>
+<div class="paragraph">
+<p>The main purpose of the Vertex shader is to compute the screen 
+coordinate of a vertex (where this vertex will be displayed on screen) 
+while the main purpose of the Fragment shader is to compute the color of
+ a pixel.</p>
+</div>
+<div class="paragraph">
+<p>This is a very simplified graphic to describe the call stack:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/jme3andshaders.png" alt="jme3andshaders.png" width="" height=""></span></p>
+</div>
+<div class="paragraph">
+<p>The main program sends mesh data to the vertex shader (vertex 
+position in object space, normals, tangents, etc..). The vertex shader 
+computes the screen position of the vertex and sends it to the Fragment 
+shader. The fragment shader computes the color, and the result is 
+displayed on screen or in a texture.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="variables-scope"><a class="anchor" href="#variables-scope"></a>Variables scope</h3>
+<div class="paragraph">
+<p>There are different types of scope for variables in a shader:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>uniform: User defined variables that are passed by the main program 
+to the vertex and fragment shader, these variables are global for a 
+given execution of a shader.</p>
+</li>
+<li>
+<p>attribute: Per-vertex variables passed by the engine to the shader, like position, normal, etc (Mesh data in the graphic)</p>
+</li>
+<li>
+<p>varying: Variables passed from the vertex shader to the fragment shader.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There is a large panel of variable types to be used, for more information about it I recommend reading the GLSL specification <a href="https://www.opengl.org/registry/doc/GLSLangSpec.Full.1.20.8.pdf">here</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="spaces-and-matrices"><a class="anchor" href="#spaces-and-matrices"></a>Spaces and Matrices</h3>
+<div class="paragraph">
+<p>To understand the coming example you must know about the different 
+spaces in 3D computer graphics, and the matrices used to translate 
+coordinate from one space to another.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/jme3andshaders-1.png" alt="jme3andshaders-1.png" width="" height=""></span></p>
+</div>
+<div class="paragraph">
+<p>The engine passes the object space coordinates to the vertex shader. 
+We need to compute its position in projection space. To do that we 
+transform the object space position by the WorldViewProjectionMatrix, 
+which is a combination of the World, View, Projection matrices (who 
+would have guessed?).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="simple-example-rendering-a-solid-color-on-an-object"><a class="anchor" href="#simple-example-rendering-a-solid-color-on-an-object"></a>Simple example: rendering a solid color on an object</h3>
+<div class="paragraph">
+<p>Here is the simplest application to shaders, rendering a solid color.</p>
+</div>
+<div class="paragraph">
+<p>Vertex Shader:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-comment">//the global uniform World view projection matrix</span>
+<span class="hljs-comment">//(more on global uniforms below)</span>
+uniform mat4 g_WorldViewProjectionMatrix;
+<span class="hljs-comment">//The attribute inPosition is the Object space position of the vertex</span>
+attribute vec3 inPosition;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">//Transformation of the object space coordinate to projection space</span>
+    <span class="hljs-comment">//coordinates.</span>
+    <span class="hljs-comment">//- gl_Position is the standard GLSL variable holding projection space</span>
+    <span class="hljs-comment">//position. It must be filled in the vertex shader</span>
+    <span class="hljs-comment">//- To convert position we multiply the worldViewProjectionMatrix by</span>
+    <span class="hljs-comment">//by the position vector.</span>
+    <span class="hljs-comment">//The multiplication must be done in this order.</span>
+    gl_Position = g_WorldViewProjectionMatrix * vec4(inPosition, <span class="hljs-number">1.0</span>);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Fragment Shader :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">//returning the color of the pixel (here solid blue)</span>
+    <span class="hljs-comment">//- gl_FragColor is the standard GLSL variable that holds the pixel</span>
+    <span class="hljs-comment">//color. It must be filled in the Fragment Shader.</span>
+    gl_FragColor = vec4(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example applying this shader to a sphere would render a solid blue sphere on screen.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="how-to-use-shaders-in-jme3"><a class="anchor" href="#how-to-use-shaders-in-jme3"></a>How to use shaders in JME3</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You probably heard that JME3 is “shader oriented”, but what does that mean?<br>
+Usually, to use shaders you must create a program. This program 
+specifies the vertex shader and the fragment shader to use. JME3 
+encloses this in the material system. Every material in JME3 uses 
+shaders.</p>
+</div>
+<div class="paragraph">
+<p>For example let’s have a look at the SolidColor.j3md file :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MaterialDef Solid Color {
+    <span class="hljs-comment">//This is the complete list of user defined uniforms to be used in the</span>
+    <span class="hljs-comment">//shaders</span>
+    MaterialParameters {
+        Vector4 Color
+    }
+    Technique {
+        <span class="hljs-comment">//This is where the vertex and fragment shader files are</span>
+        <span class="hljs-comment">//specified</span>
+        VertexShader GLSL100:   Common/MatDefs/Misc/SolidColor.vert
+        FragmentShader GLSL100: Common/MatDefs/Misc/SolidColor.frag
+        <span class="hljs-comment">//This is where you specify which global uniform you need for your</span>
+        <span class="hljs-comment">//shaders</span>
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
+    }
+    Technique FixedFunc {
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more information on JME3 material system, I suggest you read <a href="https://hub.jmonkeyengine.org/t/jmonkeyengine3-material-system-full-explanation/12947">jMonkeyEngine3 material system - full explanation</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="jme3-global-uniforms"><a class="anchor" href="#jme3-global-uniforms"></a>JME3 Global uniforms</h3>
+<div class="paragraph">
+<p>JME3 can expose pre-computed global uniforms to your shaders. You 
+must specify the ones that are required for your shader in the 
+WorldParameter’s section of the material definition file (.j3md).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In the shader, the uniform names will be prefixed by a “g_”.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>In the example above, WorldViewProjectionMatrix is declared as uniform mat4 g_WorldViewProjectionMatrix in the shader.</p>
+</div>
+<div class="paragraph">
+<p>The complete list of global uniforms that can be used in JME3 can be found in <a href="https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-core/src/main/java/com/jme3/shader/UniformBinding.java">UniformBinding.java</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jme3-lighting-global-uniforms"><a class="anchor" href="#jme3-lighting-global-uniforms"></a>JME3 Lighting Global uniforms</h3>
+<div class="paragraph">
+<p>JME3 uses some global uniforms for lighting:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>g_LightDirection (vec4): the direction of the light</p>
+<div class="ulist">
+<ul>
+<li>
+<p>use for SpotLight: x,y,z contain the world direction vector of the light, the w component contains the spotlight angle cosine</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>g_LightColor (vec4): the color of the light</p>
+</li>
+<li>
+<p>g_LightPosition: the position of the light</p>
+<div class="ulist">
+<ul>
+<li>
+<p>use for SpotLight: x,y,z contain the world position of the light, the w component contains 1/lightRange</p>
+</li>
+<li>
+<p>use for PointLight: x,y,z contain the world position of the light, the w component contains 1/lightRadius</p>
+</li>
+<li>
+<p>use for DirectionalLight: strangely enough it’s used for the 
+direction of the light…this might change though. The fourth component 
+contains -1 and it’s used in the lighting shader to know if it’s a 
+directionalLight or not.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>g_AmbientLightColor: the color of the ambient light.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These uniforms are passed to the shader without having to declare 
+them in the j3md file, but you have to specify in the technique 
+definition “LightMode MultiPass” see lighting.j3md for more information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jme3-attributes"><a class="anchor" href="#jme3-attributes"></a>JME3 attributes</h3>
+<div class="paragraph">
+<p>Those are different attributes that are always passed to your shader.</p>
+</div>
+<div class="paragraph">
+<p>You can find a complete list of those attribute in the Type enum of the VertexBuffer in <a href="https://github.com/jMonkeyEngine/jmonkeyengine/blob/master/jme3-core/src/main/java/com/jme3/scene/VertexBuffer.java">VertexBuffer.java</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In the shader the attributes names will be prefixed by an “in”.</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>When the enumeration lists some usual types for each attribute (for 
+example texCoord specifies two floats) then that is the format expected 
+by all standard JME3 shaders that use that attribute. When writing your 
+own shaders though you can use alternative formats such as placing three
+ floats in texCoord simply by declaring the attribute as vec3 in the 
+shader and passing 3 as the component count into the mesh setBuffer 
+call.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="users-uniforms"><a class="anchor" href="#users-uniforms"></a>User’s uniforms</h3>
+<div class="paragraph">
+<p>At some point when making your own shader you’ll need to pass your own uniforms.</p>
+</div>
+<div class="paragraph">
+<p>Any uniform has to be declared in the material definition file (.j3md) in the “MaterialParameters” section.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    MaterialParameters {
+        Vector4 Color
+        Texture2D ColorMap
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also pass some define to your vertex/fragment programs to know if an uniform as been declared.</p>
+</div>
+<div class="paragraph">
+<p>You simply add it in the Defines section of your Technique in the definition file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    Defines {
+        COLORMAP : ColorMap
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For integer and floating point parameters, the define will contain the value that was set.</p>
+</div>
+<div class="paragraph">
+<p>For all other types of parameters, the value 1 is defined.</p>
+</div>
+<div class="paragraph">
+<p>If no value is set for that parameter, the define is not declared in the shader.</p>
+</div>
+<div class="paragraph">
+<p>Those material parameters will be sent from the engine to the shader as follows,
+there are setXXXX methods for any type of uniform you want to pass.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">   material.setColor(<span class="hljs-string">"Color"</span>, <span class="hljs-keyword">new</span> ColorRGBA(<span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>)); <span class="hljs-comment">// red color</span>
+   material.setTexture(<span class="hljs-string">"ColorMap"</span>, myTexture); <span class="hljs-comment">// bind myTexture for that sampler uniform</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To use this uniform in the shader, you need to declare it in the .frag or .vert files (depending on where you need it).
+You can make use of the defines here and later in the code: <strong>Note that the “m_” prefix specifies that the uniform is a material parameter.</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">   uniform vec4 m_Color;
+   #ifdef COLORMAP
+     uniform sampler2D m_ColorMap;
+   #endif</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The uniforms will be populated at runtime with the value you sent.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example-adding-color-keying-to-the-lighting-j3md-material-definition"><a class="anchor" href="#example-adding-color-keying-to-the-lighting-j3md-material-definition"></a>Example: Adding Color Keying to the Lighting.j3md Material Definition</h3>
+<div class="paragraph">
+<p>Color Keying is useful in games involving many players. It consists 
+of adding some player-specific color on models textures. The easiest way
+ of doing this is to use a keyMap which will contain the amount of color
+ to add in its alpha channel.</p>
+</div>
+<div class="paragraph">
+<p>We need to pass 2 new parameters to the Lighting.j3md definition, MaterialParameters section:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="hljs-comment">// Keying Map</span>
+Texture2D KeyMap
+
+<span class="hljs-comment">// Key Color</span>
+Color KeyColor</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below, add a new Define in the main Technique section:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">KEYMAP : KeyMap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the Lighting.frag file, define the new uniforms:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">#ifdef KEYMAP
+  uniform sampler2D m_KeyMap;
+  uniform vec4 m_KeyColor;
+#endif</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Further, when obtaining the diffuseColor from the DiffuseMap texture, check
+if we need to blend it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">#ifdef KEYMAP
+  vec4 keyColor = texture2D(m_KeyMap, newTexCoord);
+  diffuseColor.rgb = (<span class="hljs-number">1.0</span>-keyColor.a) * diffuseColor.rgb + keyColor.a * m_KeyColor.rgb;
+#endif</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This way, a transparent pixel in the KeyMap texture doesn’t modify 
+the color. A black pixel replaces it for the m_KeyColor and values in 
+between are blended.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="step-by-step"><a class="anchor" href="#step-by-step"></a>Step by step</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a vertex shader (.vert) file</p>
+</li>
+<li>
+<p>Create a fragment shader (.frag) file</p>
+</li>
+<li>
+<p>Create a material definition (j3md) file specifying the user defined 
+uniforms, path to the shaders and the global uniforms to use</p>
+</li>
+<li>
+<p>In your initSimpleApplication, create a material using this definition, apply it to a geometry</p>
+</li>
+<li>
+<p>That’s it!!</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    <span class="hljs-comment">// A cube</span>
+    Box box= <span class="hljs-keyword">new</span> Box(Vector3f.ZERO, <span class="hljs-number">1f</span>,<span class="hljs-number">1f</span>,<span class="hljs-number">1f</span>);
+    Geometry cube = <span class="hljs-keyword">new</span> Geometry(<span class="hljs-string">"box"</span>, box);
+    Material mat = <span class="hljs-keyword">new</span> Material(assetManager,<span class="hljs-string">"Path/To/My/materialDef.j3md"</span>);
+    cube.setMaterial(mat);
+    rootNode.attachChild(cube);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jme3-and-opengl-3-4-compatibility"><a class="anchor" href="#jme3-and-opengl-3-4-compatibility"></a>JME3 and OpenGL 3 &amp; 4 compatibility</h3>
+<div class="paragraph">
+<p>GLSL 1.0 to 1.2 comes with built in attributes and uniforms (ie, 
+gl_Vertex, gl_ModelViewMatrix, etc…). Those attributes are deprecated 
+since GLSL 1.3 (opengl 3), hence JME3 global uniforms and attributes.</p>
+</div>
+<div class="paragraph">
+<p>Here is a list of deprecated attributes and their equivalent in JME3.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">GLSL 1.2 attributes</th>
+<th class="tableblock halign-left valign-top">JME3 equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_Vertex</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>inPosition</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_Normal</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>inNormal</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_Color</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>inColor</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_MultiTexCoord0</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>inTexCoord</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_ModelViewMatrix</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>g_WorldViewMatrix</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_ProjectionMatrix</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>g_ProjectionMatrix</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_ModelViewProjectionMatrix</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>g_WorldViewProjectionMatrix</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>gl_NormalMatrix</p>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>g_NormalMatrix</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="useful-links"><a class="anchor" href="#useful-links"></a>Useful links</h3>
+<div class="paragraph">
+<p><a href="https://wiki.jmonkeyengine.org/docs/3.4/core/_attachments/GLSL-ATI-Intro.pdf">GLSL-ATI-Intro.pdf</a></p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+<span class="prev"><a href="https://wiki.jmonkeyengine.org/docs/3.4/core/material/materials_overview.html">.j3md Properties</a></span>
+<span class="next"><a href="https://wiki.jmonkeyengine.org/docs/3.4/core/shader/jme3_shadernodes.html">Shader Node System</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+<div class="toc-menu"><h3>Contents</h3><ul><li data-level="1"><a href="#shaders-basics" class="">Shaders Basics</a></li><li data-level="2"><a href="#how-does-it-work" class="">How Does it work?</a></li><li data-level="2"><a href="#variables-scope" class="">Variables scope</a></li><li data-level="2"><a href="#spaces-and-matrices" class="">Spaces and Matrices</a></li><li data-level="2"><a href="#simple-example-rendering-a-solid-color-on-an-object" class="">Simple example: rendering a solid color on an object</a></li><li data-level="1"><a href="#how-to-use-shaders-in-jme3" class="">How to use shaders in JME3</a></li><li data-level="2"><a href="#jme3-global-uniforms" class="">JME3 Global uniforms</a></li><li data-level="2"><a href="#jme3-lighting-global-uniforms" class="">JME3 Lighting Global uniforms</a></li><li data-level="2"><a href="#jme3-attributes" class="">JME3 attributes</a></li><li data-level="2"><a href="#users-uniforms" class="">User’s uniforms</a></li><li data-level="2"><a href="#example-adding-color-keying-to-the-lighting-j3md-material-definition" class="">Example: Adding Color Keying to the Lighting.j3md Material Definition</a></li><li data-level="2"><a href="#step-by-step" class="">Step by step</a></li><li data-level="2"><a href="#jme3-and-opengl-3-4-compatibility" class="">JME3 and OpenGL 3 &amp; 4 compatibility</a></li><li data-level="2"><a href="#useful-links" class="">Useful links</a></li></ul></div>
+</aside>
+</div>
+</main>
+</div>
+<footer class="footer">
+<p>Copyright 2020 jMonkeyEngine Wiki Contributors. Licensed BSD-3.</p>
+</footer>
+<script src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/docsearch.js"></script>
+
+<script>
+var search = docsearch({
+  apiKey: 'a736b6d93de805e26ec2f49b55013fbd',
+  indexName: 'jmonkeyengine',
+  inputSelector: '#search-input',
+  autocompleteOptions: { hint: false, keyboardShortcuts: ['s'] },
+  algoliaOptions: { hitsPerPage: 10 }
+}).autocomplete
+search.on('autocomplete:closed', function () { search.autocomplete.setVal() })
+function focusSearchInput () { document.querySelector('#search-input').focus() }
+if (document.querySelector('.home-link.is-current')) window.addEventListener('load', focusSearchInput)
+</script>
+<script src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/site.js"></script>
+<script async="" src="JME3%20and%20Shaders%20jMonkeyEngine%20Docs_tiedostot/highlight.js"></script>
+
+
+</body></html>

@@ -1,0 +1,145 @@
+//#extension GL_ARB_separate_shader_objects : enable
+//#extension GL_ARB_shading_language_420pack : enable
+
+
+
+#include "ShaderIncludes.h"
+
+[Rootsig]
+
+struct SConstants
+{
+	float4x4 ViewProj;
+
+	float3   LightPos;
+	uint     Padding0;
+	float3   CamPos;
+	uint     Padding1;
+};
+
+ROOT_BEGIN
+	CONSTANT	uint TextureSet;
+
+	CBUFFER		SConstants Constants;
+
+	RT_BEGIN Resources
+		TEXTURE		Texture2D Base[25];
+		TEXTURE		Texture2D Bump[25];
+
+		RWTEXTURE	layout(r32f) image2D Test;
+	RT_END
+
+	ST_BEGIN Samplers
+		SAMPLER		SamplerState Filter;
+	ST_END
+
+ROOT_END
+
+#ifdef VULKAN
+struct PS_IN
+{
+	float2 TexCoord;
+	float3 WorldPos;
+	float3 Tangent;
+	float3 Bitangent;
+	float3 Normal;
+};
+#else
+struct VS_IN
+{
+	float3 Position  : POSITION;
+	float2 TexCoord  : TEXCOORD0;
+	float3 Tangent   : TANGENT;
+	float3 Bitangent : BITANGENT;
+	float3 Normal    : NORMAL;
+};
+
+struct PS_IN
+{
+	float4 Position  : SV_Position;
+	float2 TexCoord  : TEXCOORD0;
+	float3 WorldPos  : TEXCOORD1;
+	float3 Tangent   : TEXCOORD2;
+	float3 Bitangent : TEXCOORD3;
+	float3 Normal    : TEXCOORD4;
+};
+#endif
+
+[Vertex: VS]
+
+#ifdef VULKAN
+layout(location = 0) in float3 Position;
+layout(location = 1) in float2 TexCoord;
+layout(location = 2) in float3 Tangent;
+layout(location = 3) in float3 Bitangent;
+layout(location = 4) in float3 Normal;
+
+layout(location = 0) out PS_IN Out;
+
+void main()
+{
+	gl_Position = Constants.ViewProj * float4(Position, 1.0f);
+	Out.TexCoord  = TexCoord;
+	Out.WorldPos  = Position;
+	Out.Tangent   = Tangent;
+	Out.Bitangent = Bitangent;
+	Out.Normal    = Normal;
+}
+#else
+void main(out PS_IN Out, in VS_IN In)
+{
+	Out.Position = mul(Constants.ViewProj, float4(In.Position, 1.0f));
+	Out.TexCoord  = In.TexCoord;
+	Out.WorldPos  = In.Position;
+	Out.Tangent   = In.Tangent;
+	Out.Bitangent = In.Bitangent;
+	Out.Normal    = In.Normal;
+}
+#endif
+
+[Pixel: PS_UNORM, PS_SNORM]
+
+#ifdef VULKAN
+layout(location = 0) in PS_IN In;
+layout(location = 0) out vec4 Out;
+void main()
+#else
+void main(out float4 Out : SV_Target, in PS_IN In)
+#endif
+{
+	//float4 base = Base[TextureSet].Sample(Filter, In.TexCoord);
+	float4 base = TextureSample(Base[TextureSet], Filter, In.TexCoord);
+	if (base.a < 0.5f)
+		discard;
+
+
+	//float3 bump = Bump[TextureSet].Sample(Filter, In.TexCoord).rgb;// * 2.0f - 1.0f;
+	//float3 bump = TextureSample(Bump[TextureSet], Filter, In.TexCoord).rgb * 2.0f - 1.0f;
+
+#if defined(PS_UNORM)
+	float3 bump = TextureSample(Bump[TextureSet], Filter, In.TexCoord).rgb * 2.0f - 1.0f;
+#elif defined(PS_SNORM)
+	float3 bump = TextureSample(Bump[TextureSet], Filter, In.TexCoord).rgb;
+#endif
+
+
+	float3 view_vec = normalize(Constants.CamPos - In.WorldPos);
+	float3 normal = normalize(In.Tangent * bump.x + In.Bitangent * bump.y + In.Normal * bump.z);
+
+	float3 lvec = Constants.LightPos - In.WorldPos;
+	float3 light_vec = normalize(lvec);
+	float3 half_vec = normalize(light_vec + view_vec);
+
+	float diffuse = saturate(dot(light_vec, normal));
+	float specular = 0.3f * pow(saturate(dot(half_vec, normal)), 10.0f);
+
+	float atten = 1.0f / (1.0f + 0.000001f * dot(lvec, lvec));
+
+	Out = float4(atten * (base.rgb * diffuse + specular), 1.0f);
+
+
+	Out.a = imageLoad(Test, int2(0, 0)).r;
+	imageStore(Test, int2(0, 1), vec4(atten));
+
+}
+
