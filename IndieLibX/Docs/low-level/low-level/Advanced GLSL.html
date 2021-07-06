@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+	<title>Advanced GLSL</title>
+    <link rel="shortcut icon" type="image/ico" href="https://learnopengl.com/favicon.ico">
+    <meta name="description" content="Learn OpenGL . com provides good and clear modern 3.3+ OpenGL tutorials with clear examples. A great resource to learn modern OpenGL aimed at beginners.">
+	<meta name="fragment" content="!">
+    
+	
+	
+	<link rel="stylesheet" type="text/css" href="Advanced%20GLSL_tiedostot/layout.css">
+    <link rel="stylesheet" type="text/css" href="Advanced%20GLSL_tiedostot/obsidian.css">
+        
+    
+    
+    
+    
+    
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="prefetch" href="Advanced%20GLSL_tiedostot/a_data/lounge.css"><link rel="prefetch" href="Advanced%20GLSL_tiedostot/a_data/common.js"><link rel="prefetch" href="Advanced%20GLSL_tiedostot/a_data/lounge.js"><link rel="prefetch" href="Advanced%20GLSL_tiedostot/a_data/config.js"><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="header" onclick="LoadContent('Index', true, true)">
+</div>
+<div id="container">
+<div id="loading" style="display: none"><img src="Advanced%20GLSL_tiedostot/ajax-loader.gif" class="clean" style="margin-left: auto; margin-right: auto; margin-top: 150px;"></div>
+       
+        <div id="nav">
+             <div id="social">
+                <a href="https://github.com/JoeyDeVries/LearnOpenGL" target="_blank">
+                        <img src="Advanced%20GLSL_tiedostot/github.png" class="social_ico">
+                </a>
+                  <a href="https://www.facebook.com/Learnopengl-2199631333595544/" target="_blank">
+                    <img src="Advanced%20GLSL_tiedostot/facebook.png" class="social_ico">
+                </a>
+                <a href="https://twitter.com/JoeyDeVriez" target="_blank">
+                    <img src="Advanced%20GLSL_tiedostot/twitter.png" class="social_ico">
+                </a>
+              
+            </div>
+        <ol><li id="Introduction"><span id="menu-item1">Introduction </span></li><li id="Getting-started"><span id="menu-item4" class="closed">Getting started </span><ol id="menu-items-of4" style="display:none;"><li id="Getting-started/OpenGL"><span id="menu-item49">OpenGL </span></li><li id="Getting-started/Creating-a-window"><span id="menu-item5">Creating a window </span></li><li id="Getting-started/Hello-Window"><span id="menu-item6">Hello Window </span></li><li id="Getting-started/Hello-Triangle"><span id="menu-item38">Hello Triangle </span></li><li id="Getting-started/Shaders"><span id="menu-item39">Shaders </span></li><li id="Getting-started/Textures"><span id="menu-item40">Textures </span></li><li id="Getting-started/Transformations"><span id="menu-item43">Transformations </span></li><li id="Getting-started/Coordinate-Systems"><span id="menu-item44">Coordinate Systems </span></li><li id="Getting-started/Camera"><span id="menu-item47">Camera </span></li><li id="Getting-started/Review"><span id="menu-item50">Review </span></li></ol></li><li id="Lighting"><span id="menu-item48" class="closed">Lighting </span><ol id="menu-items-of48" style="display:none;"><li id="Lighting/Colors"><span id="menu-item51">Colors </span></li><li id="Lighting/Basic-Lighting"><span id="menu-item52">Basic Lighting </span></li><li id="Lighting/Materials"><span id="menu-item53">Materials </span></li><li id="Lighting/Lighting-maps"><span id="menu-item54">Lighting maps </span></li><li id="Lighting/Light-casters"><span id="menu-item55">Light casters </span></li><li id="Lighting/Multiple-lights"><span id="menu-item58">Multiple lights </span></li><li id="Lighting/Review"><span id="menu-item57">Review </span></li></ol></li><li id="Model-Loading"><span id="menu-item56" class="closed">Model Loading </span><ol id="menu-items-of56" style="display:none;"><li id="Model-Loading/Assimp"><span id="menu-item59">Assimp </span></li><li id="Model-Loading/Mesh"><span id="menu-item60">Mesh </span></li><li id="Model-Loading/Model"><span id="menu-item61">Model </span></li></ol></li><li id="Advanced-OpenGL"><span id="menu-item63" class="open">Advanced OpenGL </span><ol id="menu-items-of63" style=""><li id="Advanced-OpenGL/Depth-testing"><span id="menu-item72">Depth testing </span></li><li id="Advanced-OpenGL/Stencil-testing"><span id="menu-item73">Stencil testing </span></li><li id="Advanced-OpenGL/Blending"><span id="menu-item74">Blending </span></li><li id="Advanced-OpenGL/Face-culling"><span id="menu-item77">Face culling </span></li><li id="Advanced-OpenGL/Framebuffers"><span id="menu-item65">Framebuffers </span></li><li id="Advanced-OpenGL/Cubemaps"><span id="menu-item66">Cubemaps </span></li><li id="Advanced-OpenGL/Advanced-Data"><span id="menu-item69">Advanced Data </span></li><li id="Advanced-OpenGL/Advanced-GLSL"><span id="menu-item67" class="selected">Advanced GLSL </span></li><li id="Advanced-OpenGL/Geometry-Shader"><span id="menu-item68">Geometry Shader </span></li><li id="Advanced-OpenGL/Instancing"><span id="menu-item70">Instancing </span></li><li id="Advanced-OpenGL/Anti-Aliasing"><span id="menu-item75">Anti Aliasing </span></li></ol></li><li id="Advanced-Lighting"><span id="menu-item100" class="closed">Advanced Lighting </span><ol id="menu-items-of100" style="display:none;"><li id="Advanced-Lighting/Advanced-Lighting"><span id="menu-item101">Advanced Lighting </span></li><li id="Advanced-Lighting/Gamma-Correction"><span id="menu-item110">Gamma Correction </span></li><li id="Advanced-Lighting/Shadows"><span id="menu-item102" class="closed">Shadows </span><ol id="menu-items-of102" style="display:none;"><li id="Advanced-Lighting/Shadows/Shadow-Mapping"><span id="menu-item103">Shadow Mapping </span></li><li id="Advanced-Lighting/Shadows/Point-Shadows"><span id="menu-item104">Point Shadows </span></li><li id="Advanced-Lighting/Shadows/CSM"><span id="menu-item105">CSM </span></li></ol></li><li id="Advanced-Lighting/Normal-Mapping"><span id="menu-item106">Normal Mapping </span></li><li id="Advanced-Lighting/Parallax-Mapping"><span id="menu-item107">Parallax Mapping </span></li><li id="Advanced-Lighting/HDR"><span id="menu-item111">HDR </span></li><li id="Advanced-Lighting/Bloom"><span id="menu-item112">Bloom </span></li><li id="Advanced-Lighting/Deferred-Shading"><span id="menu-item108">Deferred Shading </span></li><li id="Advanced-Lighting/SSAO"><span id="menu-item109">SSAO </span></li></ol></li><li id="PBR"><span id="menu-item113" class="closed">PBR </span><ol id="menu-items-of113" style="display:none;"><li id="PBR/Theory"><span id="menu-item114">Theory </span></li><li id="PBR/Lighting"><span id="menu-item115">Lighting </span></li><li id="PBR/IBL"><span id="menu-item116" class="closed">IBL </span><ol id="menu-items-of116" style="display:none;"><li id="PBR/IBL/Diffuse-irradiance"><span id="menu-item117">Diffuse irradiance </span></li><li id="PBR/IBL/Specular-IBL"><span id="menu-item118">Specular IBL </span></li></ol></li></ol></li><li id="In-Practice"><span id="menu-item78" class="closed">In Practice </span><ol id="menu-items-of78" style="display:none;"><li id="In-Practice/Debugging"><span id="menu-item79">Debugging </span></li><li id="In-Practice/Text-Rendering"><span id="menu-item80">Text Rendering </span></li><li id="In-Practice/2D-Game"><span id="menu-item81" class="closed">2D Game </span><ol id="menu-items-of81" style="display:none;"><li id="In-Practice/2D-Game/Breakout"><span id="menu-item82">Breakout </span></li><li id="In-Practice/2D-Game/Setting-up"><span id="menu-item88">Setting up </span></li><li id="In-Practice/2D-Game/Rendering-Sprites"><span id="menu-item83">Rendering Sprites </span></li><li id="In-Practice/2D-Game/Levels"><span id="menu-item84">Levels </span></li><li id="In-Practice/2D-Game/Collisions"><span id="menu-item85" class="closed">Collisions </span><ol id="menu-items-of85" style="display:none;"><li id="In-Practice/2D-Game/Collisions/Ball"><span id="menu-item95">Ball </span></li><li id="In-Practice/2D-Game/Collisions/Collision-detection"><span id="menu-item96">Collision detection </span></li><li id="In-Practice/2D-Game/Collisions/Collision-resolution"><span id="menu-item97">Collision resolution </span></li></ol></li><li id="In-Practice/2D-Game/Particles"><span id="menu-item89">Particles </span></li><li id="In-Practice/2D-Game/Postprocessing"><span id="menu-item90">Postprocessing </span></li><li id="In-Practice/2D-Game/Powerups"><span id="menu-item91">Powerups </span></li><li id="In-Practice/2D-Game/Audio"><span id="menu-item94">Audio </span></li><li id="In-Practice/2D-Game/Render-text"><span id="menu-item92">Render text </span></li><li id="In-Practice/2D-Game/Final-thoughts"><span id="menu-item93">Final thoughts </span></li></ol></li></ol></li><li id="Code-repository"><span id="menu-item99">Code repository </span></li><li id="Translations"><span id="menu-item119">Translations </span></li><li id="Offline-book"><span id="menu-item98">Offline book </span></li><li id="About"><span id="menu-item2">About </span></li></ol>           <div id="donate">
+                <a href="https://www.patreon.com/learnopengl" target="_blank">
+                    <img id="donate_img" src="Advanced%20GLSL_tiedostot/patreon.png">
+                </a>
+            </div> 
+        </div>
+
+        <div id="content" style="display: block;"><h1 id="content-title">Advanced GLSL</h1>
+<h1 id="content-url" style="display:none;">Advanced-OpenGL/Advanced-GLSL</h1>
+<p>
+  This tutorial won't really show you super advanced cool new features 
+that give an enormous boost to your scene's visual quality. This 
+tutorial goes more or less into some interesting aspects of GLSL and 
+some nice tricks that might help you in your future endeavors. Basically
+ some <em>good to knows</em> and <em>features that might make your life easier</em> when creating OpenGL applications in combination with GLSL.
+</p>
+
+<p>
+  We'll discuss some interesting <def>built-in variables</def>, new ways to organize shader's input and output and a very useful tool called <def>uniform buffer objects</def>.
+</p>
+
+<h1>GLSL's built-in variables</h1>
+<p>
+  Shaders are minimal, if we need data from any other source outside the
+ current shader we'll have to pass data around. We learned to do this 
+via vertex attributes, uniforms and samplers. There are however a few 
+extra variables defined by GLSL prefixed with <code>gl_</code> that give us an extra means to gather and/or write data. We've already seen two of them in the tutorials so far: <var>gl_Position</var> that is the output vector of the vertex shader and the fragment shader's <var>gl_FragCoord</var>.  
+</p>
+
+<p>
+  We'll discuss a few interesting built-in input and output variables 
+that are built-in in GLSL and explain how they might benefit us. Note 
+that we won't discuss all built-in variables that exist in GLSL so if 
+you want to see all built-in variables you can check OpenGL's <a href="http://www.opengl.org/wiki/Built-in_Variable_%28GLSL%29" target="_blank">wiki</a>.
+</p>
+
+<h2>Vertex shader variables</h2>
+<p>
+  We've already seen <var>gl_Position</var> which is the clip-space output position vector of the vertex shader. Setting <var>gl_Position</var> in the vertex shader is a strict requirement if you want to render anything on the screen. Nothing we haven't seen before.
+</p>
+
+<h3>gl_PointSize</h3>
+<p>
+  One of the render primitives we're able to choose from is <var>GL_POINTS</var>
+ in which case each single vertex is a primitive and rendered as a 
+point. It is possible to set the size of the points being rendered via 
+OpenGL's <fun>glPointSize</fun> function, but we can also influence this value in the vertex shader.
+</p>
+
+<p>
+  An output variable defined by GLSL is called <var>gl_PointSize</var> that is a <fun>float</fun>
+ variable where you can set the point's width and height in pixels. By 
+describing the point's size in the vertex shader you can influence this 
+point value per vertex.
+</p>
+
+<p>
+  Influencing the point sizes in the vertex shader is disabled by 
+default, but if you want to enable this you'll have to enable OpenGL's <var>GL_PROGRAM_POINT_SIZE</var>:
+</p>
+
+<pre class=" hljs "><code>
+<function id="60">glEnable</function>(GL_PROGRAM_POINT_SIZE);  
+</code></pre>
+
+<p>
+  A simple example of influencing the point sizes is by setting the 
+point size equal to the clip-space position's z value which is equal to 
+the vertex's distance to the viewer. The point size should then increase
+ the further we are from the vertices as the viewer.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">void</span> main()
+{
+    gl_Position = projection * view * model * <span class="hljs-built_in">vec4</span>(position, <span class="hljs-number">1.0f</span>);    
+    gl_PointSize = gl_Position.z;    
+}  
+</code></pre>
+
+<p>
+  The result is that the points we've drawn are rendered larger the more we move away from them:
+</p>
+
+<img src="Advanced%20GLSL_tiedostot/advanced_glsl_pointsize.png" alt="Points in OpenGL drawn with their gl_PointSize influenced in the vertex shader">
+
+<p>
+  You can imagine that varying the point size per vertex is interesting for techniques like particle generation.
+</p>
+
+<h3>gl_VertexID</h3>
+<p>
+  The <var>gl_Position</var> and <var>gl_PointSize</var> are <em>output variables</em>
+ since their value is read as output from the vertex shader; we can 
+influence the result by writing to them. The vertex shader also gives us
+ an interesting <em>input variable</em>, that we can only read from, called <var>gl_VertexID</var>.
+</p>
+
+<p>
+  The integer variable <var>gl_VertexID</var> holds the current ID of the vertex we're drawing. When doing <em>indexed rendering</em> (with <fun><function id="2">glDrawElements</function></fun>) this variable holds the current index of the vertex we're drawing. When drawing without indices (via <fun><function id="1">glDrawArrays</function></fun>) this variable holds the number of the currently processed vertex since the start of the render call.
+</p>
+
+<p>
+  Although not particularly useful right now, it's good to know that we have access to info like this.
+</p>
+
+<h2>Fragment shader variables</h2>
+<p>
+  Within the fragment shader we also have access to some interesting 
+variables. GLSL gives us two interesting input variables called <var>gl_FragCoord</var> and <var>gl_FrontFacing</var>.
+</p>
+
+<h3>gl_FragCoord</h3>
+<p>
+  We've seen the <var>gl_FragCoord</var> a couple of times during the discussion of depth testing, because the z component of the <var>gl_FragCoord</var>
+ vector is equal to the depth value of that particular fragment. 
+However, we can also use the x and y component of the vector for some 
+interesting effects.
+</p>
+
+<p>
+  The <var>gl_FragCoord</var>'s x and y component are the window-space 
+coordinates of the fragment, originating from the bottom-left of the 
+window. We have specified a window of 800x600 with <fun><function id="22">glViewport</function></fun> so the window-space coordinates of the fragment will have x values between 0 and 800, and y values between 0 and 600.
+</p>
+
+<p>
+  Using the fragment shader we can calculate a different color value 
+based on the window coordinate of the fragment. A common usage for the <var>gl_FragCoord</var>
+ variable is for comparing visual output of different fragment 
+calculations, as usually seen in tech demos. We could for example split 
+the screen in two by rendering one output to the left side of the window
+ and another output to the right side of the window. An example fragment
+ shader that outputs a different color based on the fragment's window 
+coordinates is given below:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">void</span> main()
+{             
+    <span class="hljs-keyword">if</span>(gl_FragCoord.x &lt; <span class="hljs-number">400</span>)
+        color = <span class="hljs-built_in">vec4</span>(<span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>);
+    <span class="hljs-keyword">else</span>
+        color = <span class="hljs-built_in">vec4</span>(<span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>);        
+}  
+</code></pre>
+
+<p>
+  Because the width of the window is equal to 800, whenever a pixel's 
+x-coordinate is less than 400 it must be at the left side of the window 
+and thus we give the object a different color.
+</p>
+
+<img src="Advanced%20GLSL_tiedostot/advanced_glsl_fragcoord.png" alt="Cube in OpenGL drawn with 2 colors using gl_FragCoord">
+
+<p>
+  We can now calculate two completely different fragment shader results 
+and display each of them on a different side of the window. This is 
+great for testing out different lighting techniques for example.
+</p>
+
+<h3>gl_FrontFacing</h3>
+<p>
+  Another interesting input variable in the fragment shader is the <var>gl_FrontFacing</var> variable. In the <a href="https://learnopengl.com/#%21Advanced-OpenGL/Face-culling" target="_blank">face culling</a>
+ tutorial we mentioned that OpenGL is able to figure out if a face is a 
+front or back face due to the winding order of the vertices. If we're 
+not using face culling (by enabling <var>GL_FACE_CULL</var>) then the <var>gl_FrontFacing</var>
+ variable tells us if the current fragment is part of a front-facing or a
+ back-facing face. We could then decide to calculate different colors 
+for front faces for example.
+</p>
+
+<p>
+  The <var>gl_FrontFacing</var> variable is a <fun>bool</fun> that is <code>true</code> if the fragment is part of a front face and else <code>false</code>. We could for example create a cube this way with a different texture on the inside than on the outside:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec4</span> color;
+<span class="hljs-keyword">in</span> <span class="hljs-built_in">vec2</span> TexCoords;
+
+<span class="hljs-keyword">uniform</span> sampler2D frontTexture;
+<span class="hljs-keyword">uniform</span> sampler2D backTexture;
+
+<span class="hljs-keyword">void</span> main()
+{             
+    <span class="hljs-keyword">if</span>(gl_FrontFacing)
+        color = texture(frontTexture, TexCoords);
+    <span class="hljs-keyword">else</span>
+        color = texture(backTexture, TexCoords);
+}  
+</code></pre>
+
+<p>
+  So if we take a peek inside the container we can now see a different texture being used.
+</p>
+
+<img src="Advanced%20GLSL_tiedostot/advanced_glsl_frontfacing.png" alt="OpenGL container using two different textures via gl_FrontFacing">
+
+<p>
+  Note that if you enabled face culling you won't be able to see any faces inside the container and using <var>gl_FrontFacing</var> would then be pointless.
+</p>
+
+<h3>gl_FragDepth</h3>
+<p>
+  The input variable <var>gl_FragCoord</var> is an input variable that 
+allows us to read window-space coordinates and get the depth value of 
+the current fragment, but it is a <def>read-only</def> variable. We 
+can't influence the window-space coordinates of the fragment, but it is 
+possible to actually set the depth value of the fragment. GLSL gives us 
+an output variable called <var>gl_FragDepth</var> that we can use to set the depth value of the fragment within the shader.
+</p>
+
+<p>
+  To actually set the depth value in the shader we simply write a <fun>float</fun> value between <code>0.0</code> and <code>1.0</code> to the output variable:
+</p>
+
+<pre class=" hljs cpp"><code>
+gl_FragDepth = <span class="hljs-number">0.0f</span>; <span class="hljs-comment">// This fragment now has a depth value of 0.0f</span>
+</code></pre>
+
+<p>
+  If the shader does not write a value to <var>gl_FragDepth</var> the variable will automatically take its value from <code>gl_FragCoord.z</code>.
+</p>
+
+<p>
+  Setting the depth value by our self has a major disadvantage however, because OpenGL disables all <def>early depth testing</def> (as discussed in the <a href="https://learnopengl.com/#%21Advanced-OpenGL/Depth-testing" target="_blank">depth testing</a> tutorial) as soon as we write to <var>gl_FragDepth</var> in the fragment shader. It is disabled, because OpenGL cannot know what depth value the fragment will have <em>before</em> we run the fragment shader, since the fragment shader might completely change this depth value.
+</p>
+
+<p>
+  By writing to <var>gl_FragDepth</var> you should take this performance
+ penalty into consideration. From OpenGL 4.2 however, we can still sort 
+of mediate between both sides by redeclaring the <var>gl_FragDepth</var> variable at the top of the fragment shader with a <def>depth condition</def>:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">layout</span> (depth_&lt;condition&gt;) <span class="hljs-keyword">out</span> <span class="hljs-keyword">float</span> gl_FragDepth;
+</code></pre>
+
+<p>
+  This <code>condition</code> can take the following values:
+</p>
+
+<table>
+  <tbody><tr>
+  	<th>Condition</th>
+  	<th>Description</th>
+  </tr>  
+  <tr>
+    <td><code>any</code></td>
+ 	<td>The default value. Early depth testing is disabled and you lose most performance.</td>
+  </tr>
+  <tr>
+    <td><code>greater</code></td>
+    <td>You can only make the depth value larger compared to <code>gl_FragCoord.z</code>.</td>
+  </tr>
+  <tr>
+    <td><code>less</code></td>
+ 	<td>You can only make the depth value smaller compared to <code>gl_FragCoord.z</code>.</td>
+  </tr>
+  <tr>
+    <td><code>unchanged</code></td>
+    <td>If you write to <code>gl_FragDepth</code>, you will write exactly <code>gl_FragCoord.z</code>.</td>
+  </tr>
+</tbody></table>
+
+<p>
+  By specifying <code>greater</code> or <code>less</code> as the depth 
+condition OpenGL can make the assumption that you'll only write depth 
+values larger or greater than the fragment's depth value. This way 
+OpenGL is still able to do an early depth test in cases where the depth 
+value is  smaller than the fragment's depth value.  
+</p>
+
+<p>
+  An example of where we increment the depth value in the fragment 
+shader, but still want to preserve some of the early depth testing is 
+shown in the fragment shader below:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 420 core <span class="hljs-comment">// note the GLSL version!</span></span>
+<span class="hljs-keyword">layout</span> (depth_greater) <span class="hljs-keyword">out</span> <span class="hljs-keyword">float</span> gl_FragDepth;
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec4</span> color;
+
+<span class="hljs-keyword">void</span> main()
+{             
+    color = <span class="hljs-built_in">vec4</span>(<span class="hljs-number">1.0f</span>);
+    gl_FragDepth = gl_FragCoord.z + <span class="hljs-number">0.1f</span>;
+}  
+</code></pre>
+
+<p>
+  Do note that this feature is only available from OpenGL version 4.2 or higher.
+</p>
+
+<h1>Interface blocks</h1>
+<p>
+  So far, every time we wanted to send data from the vertex to the 
+fragment shader we declared several matching input/output variables. 
+Declaring these one at a time is the easiest way to send data from one 
+shader to another, but as applications become larger you probably want 
+to send more than a few variables over which may include arrays and/or 
+structs.
+</p>
+
+<p>
+  To help us organize these variables GLSL offers us something called <def>interface blocks</def> that allows us to group together those variables. The declaration of such an interface block looks a lot like a <fun>struct</fun> declaration, except that it is now declared using an <fun>in</fun> or <fun>out</fun> keyword based on the block being an input or an output block.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">layout</span> (location = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-built_in">vec3</span> position;
+<span class="hljs-keyword">layout</span> (location = <span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> <span class="hljs-built_in">vec2</span> texCoords;
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> model;
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> view;
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> projection;
+
+<span class="hljs-keyword">out</span> VS_OUT
+{
+    <span class="hljs-built_in">vec2</span> TexCoords;
+} vs_out;
+
+<span class="hljs-keyword">void</span> main()
+{
+    gl_Position = projection * view * model * <span class="hljs-built_in">vec4</span>(position, <span class="hljs-number">1.0f</span>);    
+    vs_out.TexCoords = texCoords;
+}  
+</code></pre>
+
+<p>
+  This time we declared an interface block called <var>vs_out</var> that
+ groups together all the output variables we want to send to the next 
+shader. This is kind of a trivial example, but you can imagine that this
+ helps organize your shaders' inputs/outputs. It is also useful when we 
+want to group shader input/output into arrays as we'll see in the <a href="https://learnopengl.com/#%21Advanced-OpenGL/Geometry-shaders" target="_blank">next</a> tutorial about geometry shaders.
+</p>
+
+<p>
+  Then we also need to declare an input interface block in the next shader which is the fragment shader. The <def>block name</def> (<fun>VS_OUT</fun>) should be the same in the fragment shader, but the <def>instance name</def> (<var>vs_out</var> as used in the vertex shader) can be anything we like - avoiding confusing names like <var>vs_out</var> that actually contains input variables.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec4</span> color;
+
+<span class="hljs-keyword">in</span> VS_OUT
+{
+    <span class="hljs-built_in">vec2</span> TexCoords;
+} fs_in;
+
+<span class="hljs-keyword">uniform</span> sampler2D texture;
+
+<span class="hljs-keyword">void</span> main()
+{             
+    color = texture(texture, fs_in.TexCoords);   
+} 
+</code></pre>
+
+<p>
+  As long as both interface block names are equal, their corresponding 
+input and output is matched together. This is another useful feature 
+that helps organize your code and proves useful when crossing between 
+certain shader stages like the geometry shader.
+</p>
+
+<h1>Uniform buffer objects</h1>
+<p>
+  We've been using OpenGL for quite a while now and learned some pretty 
+cool tricks, but also a few annoyances. For example, when using more 
+than 1 shader we continually have to set uniform variables where most of
+ them are exactly the same for each shader - so why bother to even set 
+them again? 
+</p>
+
+<p>
+  OpenGL gives us a tool called <def>uniform buffer objects</def> that allow us to declare a set of <em>global</em>
+ uniform variables that remain the same over several shader programs. 
+When using uniform buffer objects we thus have to set the relevant 
+uniforms only <strong>once</strong>. We do still have to manually set 
+the uniforms that are unique per shader. Creating and configuring a 
+uniform buffer object requires a bit of work though.
+</p>
+
+<p>
+  Because a uniform buffer object is a buffer like any other buffer we can create one via <fun><function id="12">glGenBuffers</function></fun>, bind it to the <var>GL_UNIFORM_BUFFER</var>
+ buffer target and store all the relevant uniform data into the buffer. 
+There are certain rules as to how the data for uniform buffer objects 
+should be stored and we'll get to that later. First, we'll take a simple
+ vertex shader and store our <var>projection</var> and <var>view</var> matrix in a so called <def>uniform block</def>:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">layout</span> (location = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-built_in">vec3</span> position;
+
+<span class="hljs-keyword">layout</span> (std140) <span class="hljs-keyword">uniform</span> Matrices
+{
+    <span class="hljs-built_in">mat4</span> projection;
+    <span class="hljs-built_in">mat4</span> view;
+};
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> model;
+
+<span class="hljs-keyword">void</span> main()
+{
+    gl_Position = projection * view * model * <span class="hljs-built_in">vec4</span>(position, <span class="hljs-number">1.0</span>);
+}  
+</code></pre>
+
+<p>
+  In most of our samples we set a projection and view uniform matrix 
+each render iteration for each shader we're using. This is a perfect 
+example of where uniform buffer objects become useful since now we only 
+have to store these matrices once. 
+</p>
+
+<p>
+  Here we declared a uniform block called <var>Matrices</var> that 
+stores two 4x4 matrices. Variables in a uniform block can be directly 
+accessed without the block name as a prefix. Then we store these matrix 
+values in a buffer somewhere in the OpenGL code and each shader that 
+declared this uniform block has access to the matrices.
+</p> 
+
+<p>
+  You're probably wondering right now what the <code>layout</code> <code>(std140)</code>
+ statement means. What this says is that the currently defined uniform 
+block uses a specific memory layout for its content; this statement sets
+ the <def>uniform block layout</def>.
+</p>
+
+<h2>Uniform block layout</h2>
+<p>
+  The content of a uniform block is stored in a buffer object which is 
+basically nothing more than a reserved piece of memory. Because this 
+piece of memory holds no information on what kind of data it holds, we 
+need to tell OpenGL what parts of the memory corresponds to which 
+uniform variables in the shader. 
+</p>
+
+<p>
+  Imagine the following uniform block in a shader:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">layout</span> (std140) <span class="hljs-keyword">uniform</span> ExampleBlock
+{
+    <span class="hljs-keyword">float</span> value;
+    <span class="hljs-built_in">vec3</span> <span class="hljs-built_in">vector</span>;
+    <span class="hljs-built_in">mat4</span> matrix;
+    <span class="hljs-keyword">float</span> values[<span class="hljs-number">3</span>];
+    <span class="hljs-keyword">bool</span> boolean;
+    <span class="hljs-keyword">int</span> integer;
+};  
+</code></pre>
+
+<p>
+  What we want to know is the size (in bytes) and the offset (from the 
+start of the block) of each of these variables so we can place them in 
+the buffer in their respective order. The size of each of the elements 
+is clearly stated in OpenGL and directly corresponds to C++ data types; 
+vectors and matrices being (large) arrays of floats. What OpenGL doesn't
+ clearly state is the <def>spacing</def> between the variables. This allows the hardware to position variables as it sees fit. Some hardware is able to place a <fun>vec3</fun> adjacent to a <fun>float</fun> for example. Not all hardware can handle this and pads the <fun>vec3</fun> to an array of 4 floats before appending the <fun>float</fun>. A great feature, but inconvenient for us.
+</p>
+
+<p>
+  By default GLSL uses a uniform memory layout called a <def>shared</def> layout - shared because once the offsets are defined by the hardware, they are consistently <em>shared</em>
+ between multiple programs. With a shared layout GLSL is allowed to 
+reposition the uniform variables for optimization as long as the 
+variables' order remains intact. Because we don't know at what offset 
+each uniform variable will be we don't know how to precisely fill our 
+uniform buffer. We can query this information with functions like <fun>glGetUniformIndices</fun>, but that is out of the scope of this tutorial.
+</p>
+
+<p>
+  While a shared layout gives us some space-saving optimizations, we'd 
+need to query each offset for each uniform variable which translates to a
+ lot of work. The general practice is however to not use the shared 
+layout, but to use the <def>std140</def> layout. The std140 layout <strong>explicitly</strong>
+ states the memory layout for each variable type by stating their 
+respective offsets governed by a set of rules. Since this is explicitly 
+mentioned we can manually figure out the offsets for each variable. 
+</p>
+
+<p>
+  Each variable has a <def>base alignment</def> which is equal to the 
+space a variable takes (including padding) within a uniform block - this
+ base alignment is calculated using the std140 layout rules. Then, for 
+each variable, we calculate its <def>aligned offset</def> which is the byte offset of a variable from the start of the block. The aligned byte offset of a variable <strong>must</strong> be equal to a multiple of its base alignment.
+</p>
+
+<p>
+  The exact layout rules can be found at OpenGL's uniform buffer specification <a href="http://www.opengl.org/registry/specs/ARB/uniform_buffer_object.txt" target="_blank">here</a>, but we'll list the most common rules below. Each variable type in GLSL such as <fun>int</fun>, <fun>float</fun> and <fun>bool</fun> are defined to be four-byte quantities with each entity of 4 bytes being represented as <code>N</code>. 
+</p>
+
+<table>
+  <tbody><tr>
+    <th>Type</th>
+    <th>Layout rule</th>
+  </tr>
+  
+  <tr>
+    <td>Scalar e.g. <fun>int</fun> or <fun>bool</fun></td>
+    <td>Each scalar has a base alignment of N.</td>
+  </tr>
+  <tr>
+    <td>Vector</td>
+    <td>Either 2N or 4N. This means that a <fun>vec3</fun> has a base alignment of 4N.</td>
+  </tr>
+  <tr>
+    <td>Array of scalars or vectors</td>
+    <td>Each element has a base alignment equal to that of a <fun>vec4</fun>.</td>
+  </tr>
+  <tr>
+    <td>Matrices</td>
+    <td>Stored as a large array of column vectors, where each of those vectors has a base alignment of <fun>vec4</fun>.</td>
+  </tr>
+  <tr>
+    <td>Struct</td>
+    <td>Equal to the computed size of its elements according to the previous rules, but padded to a multiple of the size of a <fun>vec4</fun>.</td>
+  </tr>    
+</tbody></table>
+
+<p>
+  Like most of OpenGL's specifications it's easier to understand with an example. We're taking the uniform block called <var>ExampleBlock</var> we introduced earlier and calculate the aligned offset for each of its members using the std140 layout:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">layout</span> (std140) <span class="hljs-keyword">uniform</span> ExampleBlock
+{
+    <span class="hljs-comment">//               // base alignment  // aligned offset</span>
+    <span class="hljs-keyword">float</span> value;     <span class="hljs-comment">// 4               // 0 </span>
+    <span class="hljs-built_in">vec3</span> <span class="hljs-built_in">vector</span>;     <span class="hljs-comment">// 16              // 16  (must be multiple of 16 so 4-&gt;16)</span>
+    <span class="hljs-built_in">mat4</span> matrix;     <span class="hljs-comment">// 16              // 32  (column 0)</span>
+                     <span class="hljs-comment">// 16              // 48  (column 1)</span>
+                     <span class="hljs-comment">// 16              // 64  (column 2)</span>
+                     <span class="hljs-comment">// 16              // 80  (column 3)</span>
+    <span class="hljs-keyword">float</span> values[<span class="hljs-number">3</span>]; <span class="hljs-comment">// 16              // 96  (values[0])</span>
+                     <span class="hljs-comment">// 16              // 112 (values[1])</span>
+                     <span class="hljs-comment">// 16              // 128 (values[2])</span>
+    <span class="hljs-keyword">bool</span> boolean;    <span class="hljs-comment">// 4               // 144</span>
+    <span class="hljs-keyword">int</span> integer;     <span class="hljs-comment">// 4               // 148</span>
+}; 
+</code></pre>
+
+<p>
+  As an exercise, try to calculate the offset values yourself and 
+compare them to this table. With the calculated offset values, based on 
+the rules of the std140 layout, we can fill the buffer with the variable
+ data at each offset using functions like <fun><function id="90">glBufferSubData</function></fun>.
+ While not the most efficient, the std140 layout does guarantee us that 
+the memory layout remains the same over each program that declared this 
+uniform block.
+</p>
+
+<p>
+  By adding the statement <code>layout</code> <code>(std140)</code> 
+before the definition of the uniform block we tell OpenGL that this 
+uniform block uses the std140 layout. There are two other layouts to 
+choose from that require us to query each offset before filling the 
+buffers. We've already seen the <code>shared</code> layout and the other remaining layout being <code>packed</code>.
+ When using the packed layout, there is no guarantee that the layout 
+remains the same between programs (not shared) because it allows the 
+compiler to optimize uniform variables away from the uniform block which
+ might differ per shader.
+</p>
+
+<h2>Using uniform buffers</h2>
+<p>
+  We've discussed defining uniform blocks in the shaders and specifying 
+their memory layout, but we haven't discussed how to actually use them 
+yet.
+</p>
+
+<p>
+  First we need to create a uniform buffer object which is done via <fun><function id="12">glGenBuffers</function></fun>. Once we have a buffer object we bind it to the <var>GL_UNIFORM_BUFFER</var> target and allocate enough memory by calling <fun><function id="31">glBufferData</function></fun>.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">GLuint</span> uboExampleBlock;
+<function id="12">glGenBuffers</function>(<span class="hljs-number">1</span>, &amp;uboExampleBlock);
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, uboExampleBlock);
+<function id="31">glBufferData</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">152</span>, NULL, GL_STATIC_DRAW); <span class="hljs-comment">// allocate 150 bytes of memory</span>
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>);
+</code></pre>
+
+<p>
+  Now whenever we want to update or insert data into the buffer, we bind to <var>uboExampleBlock</var> and use <fun><function id="90">glBufferSubData</function></fun>
+ to update its memory. We only have to update this uniform buffer once, 
+and all shaders that use this buffer now use its updated data. But, how 
+does OpenGL know what uniform buffers correspond to which uniform 
+blocks?
+</p>
+
+<p>
+  In the OpenGL context there is a number of <def>binding points</def> 
+defined where we can link a uniform buffer to. Once we created a uniform
+ buffer we link it to one of those binding points and we also link the 
+uniform block in the shader to the same binding point, effectively 
+linking those to each other. The following diagram illustrates this:
+</p>
+
+<img src="Advanced%20GLSL_tiedostot/advanced_glsl_binding_points.png" class="clean" alt="Diagram of uniform binding points in OpenGL">
+
+<p>
+  As you can see we can bind multiple uniform buffers to different 
+binding points. Because shader A and shader B both have a uniform block 
+linked to the same binding point <code>0</code> their uniform blocks share the same uniform data found in <var>uboMatrices</var>; a requirement being that both shaders defined the same <var>Matrices</var> uniform block.
+</p>
+
+<p>
+  To set the uniform block to a specific binding point we call <fun><function id="95"><function id="44">glUniform</function>BlockBinding</function></fun> that takes a program object as its first argument, a uniform block index and the binding point to link to. The <def>uniform block index</def> is a location index of the defined uniform block in the shader. This can be retrieved via a call to <fun><function id="94">glGetUniformBlockIndex</function></fun> that accepts a program object and the name of the uniform block. We can set the <var>Lights</var> uniform block from the diagram to binding point <code>2</code> as follows:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">GLuint</span> lights_index = <function id="94">glGetUniformBlockIndex</function>(shaderA.Program, <span class="hljs-string">"Lights"</span>);   
+<function id="95"><function id="44">glUniform</function>BlockBinding</function>(shaderA.Program, lights_index, <span class="hljs-number">2</span>);
+</code></pre>
+
+<p>
+  Note that we have to repeat this process for <strong>each</strong> shader.
+</p>
+
+<note>
+  From OpenGL version 4.2 and onwards it is also possible to store the 
+binding point of a uniform block explicitly in the shader by adding 
+another layout specifier, saving us the calls to <fun><function id="94">glGetUniformBlockIndex</function></fun> and <fun><function id="95"><function id="44">glUniform</function>BlockBinding</function></fun>. The following code sets the binding point of the <var>Lights</var> uniform block explicitly:	
+<pre class="cpp hljs "><code>
+<span class="hljs-keyword">layout</span>(std140, binding = <span class="hljs-number">2</span>) <span class="hljs-keyword">uniform</span> Lights { ... };
+</code></pre>  
+</note>
+
+<p>
+  Then we also need to bind the uniform buffer object to the same binding point and this can be accomplished with either <fun><function id="96"><function id="32">glBindBuffer</function>Base</function></fun> or <fun><function id="97"><function id="32">glBindBuffer</function>Range</function></fun>.
+</p>
+
+<pre class=" hljs cpp"><code>
+<function id="96"><function id="32">glBindBuffer</function>Base</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">2</span>, uboExampleBlock); 
+<span class="hljs-comment">// or</span>
+<function id="97"><function id="32">glBindBuffer</function>Range</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">2</span>, uboExampleBlock, <span class="hljs-number">0</span>, <span class="hljs-number">152</span>);
+</code></pre>
+
+<p>
+  The function <fun><function id="96"><function id="32">glBindbuffer</function>Base</function></fun> expects a target, a binding point index and a uniform buffer object as its arguments. This function links <var>uboExampleBlock</var> to binding point <code>2</code> and from this point on both sides of the binding point are linked. You can also use the <fun><function id="97"><function id="32">glBindBuffer</function>Range</function></fun>
+ function that expects an extra offset and size parameter - this way you
+ can bind only a specific range of the uniform buffer to a binding 
+point. Using <fun><function id="97"><function id="32">glBindBuffer</function>Range</function></fun> you could have multiple different uniform blocks linked to a single uniform buffer object.
+</p>
+
+<p>
+  Now that everything is set up, we can start adding data to the uniform
+ buffer. We could add all the data as a single byte array or update 
+parts of the buffer whenever we feel like it using  <fun><function id="90">glBufferSubData</function></fun>. To update the uniform variable <var>boolean</var> we could update the uniform buffer object as follows:
+</p>
+
+<pre class=" hljs cpp"><code>
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, uboExampleBlock);
+<span class="hljs-keyword">GLint</span> b = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// bools in GLSL are represented as 4 bytes, so we store it in an integer</span>
+<function id="90">glBufferSubData</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">144</span>, <span class="hljs-number">4</span>, &amp;b); 
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>);
+</code></pre>
+
+<p>
+  And the same procedure applies for all the other uniform variables 
+inside the uniform block, but with different range arguments.
+</p>
+
+<h2>A simple example</h2>
+<p>
+  So let's demonstrate a real useful example of using uniform buffer 
+objects. If we look back at all the previous code samples we've 
+continually been using 3 matrices: the projection, view and model 
+matrices. Of all those matrices, only the model matrix changes 
+frequently. If we have multiple shaders that use this same set of 
+matrices, we'd probably be better off using uniform buffer objects.
+</p>
+
+<p>
+  We're going to store the projection and view matrix in a uniform block called <var>Matrices</var>.
+ We're not going to store the model matrix in there, since the model 
+matrix tends to change quite frequently between shaders so we wouldn't 
+really benefit from uniform buffer objects then.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">layout</span> (location = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-built_in">vec3</span> position;
+
+<span class="hljs-keyword">layout</span> (std140) <span class="hljs-keyword">uniform</span> Matrices
+{
+    <span class="hljs-built_in">mat4</span> projection;
+    <span class="hljs-built_in">mat4</span> view;
+};
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> model;
+
+<span class="hljs-keyword">void</span> main()
+{
+    gl_Position = projection * view * model * <span class="hljs-built_in">vec4</span>(position, <span class="hljs-number">1.0</span>);
+}  
+</code></pre>
+
+<p>
+  Not much special going on here, except that we now use a uniform block
+ with a std140 layout. What we're going to do in our sample application 
+is display 4 cubes where each cube is displayed using a different shader
+ program. Each of the 4 shader programs uses the same vertex shader, but
+ has a different fragment shader that only outputs a single color that 
+differs per shader.
+</p>
+
+<p>
+  First, we set the uniform block of the vertex shaders equal to binding point <code>0</code>. Note that we have to do this for each shader.
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">GLuint</span> uniformBlockIndexRed = <function id="94">glGetUniformBlockIndex</function>(shaderRed.Program, <span class="hljs-string">"Matrices"</span>);
+<span class="hljs-keyword">GLuint</span> uniformBlockIndexGreen = <function id="94">glGetUniformBlockIndex</function>(shaderGreen.Program, <span class="hljs-string">"Matrices"</span>);
+<span class="hljs-keyword">GLuint</span> uniformBlockIndexBlue = <function id="94">glGetUniformBlockIndex</function>(shaderBlue.Program, <span class="hljs-string">"Matrices"</span>);
+<span class="hljs-keyword">GLuint</span> uniformBlockIndexYellow = <function id="94">glGetUniformBlockIndex</function>(shaderYellow.Program, <span class="hljs-string">"Matrices"</span>);  
+  
+<function id="95"><function id="44">glUniform</function>BlockBinding</function>(shaderRed.Program, uniformBlockIndexRed, <span class="hljs-number">0</span>);
+<function id="95"><function id="44">glUniform</function>BlockBinding</function>(shaderGreen.Program, uniformBlockIndexGreen, <span class="hljs-number">0</span>);
+<function id="95"><function id="44">glUniform</function>BlockBinding</function>(shaderBlue.Program, uniformBlockIndexBlue, <span class="hljs-number">0</span>);
+<function id="95"><function id="44">glUniform</function>BlockBinding</function>(shaderYellow.Program, uniformBlockIndexYellow, <span class="hljs-number">0</span>);
+</code></pre>
+
+<p>
+  Next we create the actual uniform buffer object and also bind the buffer to binding point <code>0</code>:
+</p>
+
+<pre class=" hljs cpp"><code>
+<span class="hljs-keyword">GLuint</span> uboMatrices
+<function id="12">glGenBuffers</function>(<span class="hljs-number">1</span>, &amp;uboMatrices);
+  
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, uboMatrices);
+<function id="31">glBufferData</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">2</span> * <span class="hljs-keyword">sizeof</span>(glm::<span class="hljs-built_in">mat4</span>), NULL, GL_STATIC_DRAW);
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>);
+  
+<function id="97"><function id="32">glBindBuffer</function>Range</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>, uboMatrices, <span class="hljs-number">0</span>, <span class="hljs-number">2</span> * <span class="hljs-keyword">sizeof</span>(glm::<span class="hljs-built_in">mat4</span>));
+</code></pre>
+
+<p>
+  First we allocate enough memory for our buffer which is equal to 2 times the size of <fun>glm::mat4</fun>. The size of GLM's matrix types correspond directly to <fun>mat4</fun> in GLSL. Then we link a specific range of the buffer wich in this case is the entire buffer, to binding point <code>0</code>.
+</p>
+
+<p>
+  Now all that's left to do is actually fill the buffer. If we keep the <em>field of view</em>
+ value constant of the projection matrix (so no more camera zoom) we 
+only have to define it once in our application - this  means we only 
+have to insert this into the buffer only once as well. Because we 
+already allocated enough memory in the buffer object we can use <fun><function id="90">glBufferSubData</function></fun> to store the projection matrix before we enter the game loop:
+</p>
+
+<pre class=" hljs cpp"><code>
+glm::<span class="hljs-built_in">mat4</span> projection = <function id="58">glm::perspective</function>(<span class="hljs-number">45.0f</span>, (<span class="hljs-keyword">float</span>)width/(<span class="hljs-keyword">float</span>)height, <span class="hljs-number">0.1f</span>, <span class="hljs-number">100.0f</span>);
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, uboMatrices);
+<function id="90">glBufferSubData</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(glm::<span class="hljs-built_in">mat4</span>), glm::value_ptr(projection));
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>);  
+</code></pre>
+
+<p>
+  Here we store the first half of the uniform buffer with the projection
+ matrix. Before we draw the objects each render iteration we then update
+ the second half of the buffer with the view matrix:
+</p>
+
+<pre class=" hljs cpp"><code>
+glm::<span class="hljs-built_in">mat4</span> view = camera.GetViewMatrix();	       
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, uboMatrices);
+<function id="90">glBufferSubData</function>(
+  GL_UNIFORM_BUFFER, <span class="hljs-keyword">sizeof</span>(glm::<span class="hljs-built_in">mat4</span>), <span class="hljs-keyword">sizeof</span>(glm::<span class="hljs-built_in">mat4</span>), glm::value_ptr(view));
+<function id="32">glBindBuffer</function>(GL_UNIFORM_BUFFER, <span class="hljs-number">0</span>);  
+</code></pre>
+
+<p>
+  And that's it for uniform buffer objects. Each vertex shader that contains a <var>Matrices</var> uniform block will now contain the data stored in <var>uboMatrices</var>. So if we now were to draw 4 cubes using 4 different shaders their projection and view matrix should remain the same:
+</p>
+
+<pre class=" hljs cpp"><code>
+<function id="27">glBindVertexArray</function>(cubeVAO);
+shaderRed.Use();
+glm::<span class="hljs-built_in">mat4</span> model;
+model = <function id="55">glm::translate</function>(model, glm::<span class="hljs-built_in">vec3</span>(-<span class="hljs-number">0.75f</span>, <span class="hljs-number">0.75f</span>, <span class="hljs-number">0.0f</span>));	<span class="hljs-comment">// Move top-left</span>
+<function id="44">glUniform</function>Matrix4fv(modelLoc, <span class="hljs-number">1</span>, <span class="hljs-built_in">GL_FALSE</span>, glm::value_ptr(model));
+<function id="1">glDrawArrays</function>(GL_TRIANGLES, <span class="hljs-number">0</span>, <span class="hljs-number">36</span>);        
+<span class="hljs-comment">// ... Draw Green Cube</span>
+<span class="hljs-comment">// ... Draw Blue Cube</span>
+<span class="hljs-comment">// ... Draw Yellow Cube</span>
+<function id="27">glBindVertexArray</function>(<span class="hljs-number">0</span>);	  
+</code></pre>
+
+<p>
+  The only uniform we still need to set is the <var>model</var> uniform.
+ Using uniform buffer objects in a scenario like this saves us from 
+quite a few uniform calls per shader. The result looks something like 
+this:
+</p>
+
+<img src="Advanced%20GLSL_tiedostot/advanced_glsl_uniform_buffer_objects.png" alt="Image of 4 cubes with their uniforms set via OpenGL's uniform buffer objects">
+
+<p>
+  Each of the cube is moved to one side of the window by altering the 
+model matrix and due to the different fragment shaders their object 
+colors differ. This is a relatively simple scenario of where we might 
+use uniform buffer objects, but any large rendering application could 
+have over hundreds of shader programs active; this is where uniform 
+buffer objects really start to shine.
+</p>
+
+<p>
+  You can find the full source code of the uniform example application <a href="https://learnopengl.com/code_viewer.php?code=advanced/advanced_glsl_uniform_buffer_objects" target="_blank">here</a>.
+</p>
+
+<p>
+  Uniform buffer objects have several advantages over single uniforms. 
+First, setting a lot of uniforms at once is faster than setting multiple
+ uniforms one at a time. Second, if you want to change the same uniform 
+over several shaders, it is much easier to change a uniform once in a 
+uniform buffer. One last advantage that is not immediately apparent is 
+that you can use a lot more uniforms in shaders using uniform buffer 
+objects. OpenGL has a limit to how much uniform data it can handle that 
+can be queried with <var>GL_MAX_VERTEX_UNIFORM_COMPONENTS</var>. When 
+using uniform buffer objects, this limit is much higher. So whenever you
+ reach a maximum number of uniforms (when doing skeletal animation for 
+example) you could always use uniform buffer objects.
+</p></div>
+        
+        <div id="hover">
+            HI
+        </div>
+    <div id="disqus_thread" style="display: block;"><iframe id="dsq-app6" name="dsq-app6" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 6924px !important;" src="Advanced%20GLSL_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" frameborder="0" width="100%"></iframe><iframe id="dsq-app8" name="dsq-app8" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 0px !important;" src="Advanced%20GLSL_tiedostot/a_002.html" frameborder="0" width="100%"></iframe></div>
+
+    
+
+
+</div> <!-- Closed Container div -->
+
+<iframe style="display: none;"></iframe></body></html>

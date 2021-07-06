@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class=" js canvas canvastext geolocation crosswindowmessaging no-websqldatabase indexeddb hashchange historymanagement draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions  video audio localstorage sessionstorage webworkers no-applicationcache svg smil svgclippaths   fontface"><!--  G4P Section --><head>
+<title>Quarks Place</title>
+<meta name="description" content="G4P and Processing">
+<meta name="keywords" content="g4p, guicomponents, programming, software, Processing, Java, quark, quarks, Peter, Lager">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="Quarks%20Place_tiedostot/style.css">
+<link rel="stylesheet" href="Quarks%20Place_tiedostot/prism.css">
+<link rel="stylesheet" href="Quarks%20Place_tiedostot/prism-line-numbers.css">
+<!-- make examples menu -->
+<script type="text/javascript" src="Quarks%20Place_tiedostot/ex-menu-list.js"></script>
+<script language="javascript" type="text/javascript">
+        addEventListener('load', function(){ makeMenuList("e-menu","./"); });
+    </script>
+<!-- modernizr enables HTML5 elements and feature detects -->
+<script type="text/javascript" src="Quarks%20Place_tiedostot/modernizr-1.js"></script>
+</head>
+<body class="language-java">
+<div id="main">
+  <header>
+    <div id="logo">
+      <div id="logo_text">
+        <!-- class="logo_colour", allows you to change the colour of the text -->
+        <h1><a href="http://lagers.org.uk/index.html">Quarks<span class="logo_colour"> place</span></a></h1>
+      </div>
+    </div>
+    <nav>
+      <ul class="sf-menu" id="nav">
+        <li class="selected"><a href="http://lagers.org.uk/index.html">Home</a></li>
+        <li><a href="http://lagers.org.uk/blog/index.php" target="_blank">Blog</a></li>
+        <!--
+                <li><a href="#">Processing</a>
+                    <ul>
+                        <li><a href="#">Libraries</a>
+                            <ul>
+                                <li><a href="../g4p/index.html">G4P (GUI controls)</a></li>
+                                <li><a href="../s3d4p/index.html">Shapes 3D</a></li>
+                                <li><a href="../s4p/index.html">Sprites</a></li>
+                                <li><a href="../pfind/index.html">Path Finder (2D/3D)</a></li>
+                                <li><a href="../ai4g/index.html">AI for Games</a></li>
+								<li><a href="../qscript/index.html">QScript</a></li>
+                                <li><a href="../gamecontrol/index.html">Game Control Plus</a></li>
+                				<li><a href="../jasmine/index.html">Jasmine</a></li> 
+                 				<li><a href="../steganos/index.html">Steganos</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Tools</a>
+                            <ul>
+                                <li><a href="../g4ptool/index.html">G4P GUI builder</a></li>
+                                <li><a href="../appletutil/index.html">Applet Maker</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="how-to-ps/index.html">How To ...</a></li>
+                    </ul>
+                </li>
+        -->
+        <li><a href="#">JavaFX</a></li>
+        <li><a href="http://lagers.org.uk/contact.php">Contact Me</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="site_content">
+    <div class="banner_activity">
+      <!--    BANNER    -->
+    </div>
+    <div id="sidebar_container">
+      <div class="sidebar">
+        <ul id="e-menu"><h2>Articles</h2><li><a href="http://lagers.org.uk/javafx/core-classes.html">Core Classes</a></li>
+<li><a href="http://lagers.org.uk/javafx/usemeshview.html">Simple textured pyramid</a></li>
+<li><a href="http://lagers.org.uk/javafx/toroidclass.html">Creating a Toroid class</a></li>
+</ul>
+      </div>
+      <div class="sidebar">
+        <h2>Useful Links</h2>
+        <ul>
+          <li><a target="_blank" href="http://processing.org/">Processing</a></li>
+          <li><a target="_blank" href="http://www.openprocessing.org/">Open Processing</a></li>
+          <li><a target="_blank" href="http://www.openprocessing.org/user/1623">My OP portfolio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="content">
+      <h1>Creating Toroid Class</h1>
+      <p>We have already seen how to use the MeshView class directly to create a <a href="http://lagers.org.uk/javafx/usemeshview.html" target="_blank">3D textured pyramid</a>,
+ 
+        this page will describe a more powerful and flexible way of 
+creating user defined 3D shapes.  Rather than using an instance of 
+MeshView this 
+        program has a user-defined class called Toroid which inherits 
+(extends) MeshView so has all the capabilities of MeshView but allows us
+ to 
+        add additional methods needed to create a toroid.</p>
+      <video id="rotating textured pyramid" preload="" controls="controls" autoplay="autoplay" loop="" width="676" height="360">
+        <source src="Quarks%20Place_tiedostot/torus01.mp4">
+      </video>
+      <p align="CENTER">The Toroid class in action!</p>
+      <span class="right"><img src="Quarks%20Place_tiedostot/toroid01.png" alt="toroid wireframe" width="358" height="207"></span>
+      <p>This diagram shows the torus being split into segments. A single <em>ring segment</em> is shown in red and a single <em>tube  sgement</em>
+ is shown in green. Unless the user specifies otherwise then there will 
+be 64 ring segments and 32 tube segments. If are interested thats 64 x 
+        32 x 2 or 4096 triangles.</p>
+      <p>One of the first things our class needs to do is define the 
+mesh vertices. To simplify the algorithm used we will use a 2D array of 
+        javafx.geometry.Point3D objects to store the vertex data. 
+Alrhough there are 64 x 32 segments we will use an array of 65 x 33 
+elements because 
+        it will simplify our code. So we have an array </p>
+      <pre class=" language-java"><code class=" language-java">coord <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point3D</span><span class="token number">[65</span><span class="token punctuation">]</span><span class="token number">[33</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+      <p>Since the torus is a closed shape, the <em>array ends</em> must meet therefore - </p>
+      <pre class=" language-java"><code class=" language-java">coord<span class="token number">[0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span> <span class="token operator">=</span> coord<span class="token number">[64</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span>  <span class="token keyword">for</span> all t in the range<span class="token number"> 0</span> to<span class="token number"> 32</span> inclusive
+coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token number">[0</span><span class="token punctuation">]</span> <span class="token operator">=</span> coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token number">[32</span><span class="token punctuation">]</span> <span class="token keyword">for</span> all r in the range<span class="token number"> 0</span> to<span class="token number"> 64</span> inclusive</code></pre>
+      <h2>The Constructors</h2>
+      <p>The class has 2 constructiors both of which allow the user to 
+specify the ring radius and the tube x and y radii. Note although the 
+ring is circular the tube crossection can be elliptical.<img src="Quarks%20Place_tiedostot/toroidsize.png" alt="the ing and tube radii"></p>
+      <p>The first few lines are simply setting the size of the torus and the number of segments to use.</p>
+      <pre class="line-numbers language-java"><code class=" language-java"><span class="token keyword">public</span> <span class="token function">Toroid<span class="token punctuation">(</span></span><span class="token keyword">float</span> ringRad<span class="token punctuation">,</span> <span class="token keyword">float</span> tubeRadX<span class="token punctuation">,</span> <span class="token keyword">float</span> tubeRadY<span class="token punctuation">,</span> <span class="token keyword">float</span> zeroAngle<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">(</span>NBR_RING_SEGMENTS<span class="token punctuation">,</span> NBR_TUBE_SEGMENTS<span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // default 64 x 32
+</span>            ringRad<span class="token punctuation">,</span> tubeRadX<span class="token punctuation">,</span> tubeRadY<span class="token punctuation">,</span> zeroAngle
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token function">Toroid<span class="token punctuation">(</span></span><span class="token keyword">int</span> nbrRingSegments<span class="token punctuation">,</span> <span class="token keyword">int</span> nbrTubeSegments<span class="token punctuation">,</span> <span class="token keyword">float</span> ringRad<span class="token punctuation">,</span> <span class="token keyword">float</span> tubeRadX<span class="token punctuation">,</span> <span class="token keyword">float</span> tubeRadY<span class="token punctuation">,</span> <span class="token keyword">float</span> zeroAngle<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>nbrRingSegments <span class="token operator">=</span> nbrRingSegments<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>nbrTubeSegments <span class="token operator">=</span> nbrTubeSegments<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>ringRad <span class="token operator">=</span> ringRad<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>tubeRadX <span class="token operator">=</span> tubeRadX<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>tubeRadY <span class="token operator">=</span> tubeRadY<span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>tubeZeroPos <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">toRadians<span class="token punctuation">(</span></span>zeroAngle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    nbrRingSteps <span class="token operator">=</span> nbrRingSegments <span class="token operator">+</span><span class="token number"> 1</span><span class="token punctuation">;</span>
+    nbrTubeSteps <span class="token operator">=</span> nbrTubeSegments <span class="token operator">+</span><span class="token number"> 1</span><span class="token punctuation">;</span>
+
+    <span class="token function">setMesh<span class="token punctuation">(</span></span><span class="token keyword">new</span> <span class="token class-name">TriangleMesh</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">calcPoints<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">calcTexturePoints<span class="token punctuation">(</span></span>1<span class="token punctuation">,</span><span class="token number"> 1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">calcFacesPT<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> // Create the default texture
+</span>    PhongMaterial material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhongMaterial</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>BURLYWOOD<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setMaterial<span class="token punctuation">(</span></span>material<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> // Start with filled shape
+</span>    <span class="token function">setDrawMode<span class="token punctuation">(</span></span>DrawMode<span class="token punctuation">.</span>FILL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> // Makes it easier to see the wireframe
+</span>    <span class="token function">setCullFace<span class="token punctuation">(</span></span>CullFace<span class="token punctuation">.</span>BACK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <p>The interesting part starts at line 17 when we create the mesh 
+object that JavaFX will use to render the torus. The  lines 18, 19 and 
+20 will</p>
+      <ul>
+        <li>calculate the vertices for the torroid and store them in the mesh</li>
+        <li>calculate the texture coordinates and store them in the mesh.</li>
+        <li>calculate the trianglke faces and store them in the mesh</li>
+      </ul>
+      <p>Lines 20 and 21 will set the surface colour of the torus. The 
+torroid class includes methods to set an image as a teture and we will 
+see them later.</p>
+      <p>Line 25 sets the draw mode to fill so we have a solid torus. 
+and the last line, 27 instructs the computer to only render the faces 
+facing the viewer.</p>
+      <h2>Calculating the vertices.</h2>
+      <p>In this method the 2D array is ceated and the coordinates are calculated. It does this in two stages</p>
+      <ol>
+        <li>calculate the vertices of the torus cross-section in the plane Z=0, in other words the orange circle shown above. </li>
+        <li>calculate all the other points by rotating the points calculated in step 1 about the torus centre [0,0,0].</li>
+      </ol>
+      <pre class="line-numbers language-java"><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">calcPoints<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Point3D<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> coord <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point3D</span><span class="token punctuation">[</span>nbrRingSteps<span class="token punctuation">]</span><span class="token punctuation">[</span>nbrTubeSteps<span class="token punctuation">]</span><span class="token punctuation">;</span>
+   <span class="token comment" spellcheck="true"> // Calculate segment size in radians
+</span>    <span class="token keyword">float</span> ringDeltaAng <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> <span class="token number">(2</span> <span class="token operator">*</span> Math<span class="token punctuation">.</span>PI <span class="token operator">/</span> nbrRingSegments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">float</span> tubeDeltaAng <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> <span class="token number">(2</span> <span class="token operator">*</span> Math<span class="token punctuation">.</span>PI <span class="token operator">/</span> nbrTubeSegments<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token comment" spellcheck="true"> // Calculate the XY coordinates of the tube in the Z=0 plane
+</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> t <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> t <span class="token operator">&lt;</span> nbrTubeSteps<span class="token punctuation">;</span> t<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">float</span> angle <span class="token operator">=</span> tubeZeroPos <span class="token operator">+</span> t <span class="token operator">*</span> tubeDeltaAng<span class="token punctuation">;</span>
+        coord<span class="token number">[0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point3D</span><span class="token punctuation">(</span>
+                ringRad <span class="token operator">+</span> tubeRadX <span class="token operator">*</span> Math<span class="token punctuation">.</span><span class="token function">cos<span class="token punctuation">(</span></span>angle<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                tubeRadY <span class="token operator">*</span> Math<span class="token punctuation">.</span><span class="token function">sin<span class="token punctuation">(</span></span>angle<span class="token punctuation">)</span><span class="token punctuation">,</span>
+               <span class="token number"> 0</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> // Calculate all the points for all the other ring segments
+</span>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> r <span class="token operator">=</span><span class="token number"> 1</span><span class="token punctuation">;</span> r <span class="token operator">&lt;</span> nbrRingSteps<span class="token punctuation">;</span> r<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">float</span> angle <span class="token operator">=</span> r <span class="token operator">*</span> ringDeltaAng<span class="token punctuation">;</span>
+        <span class="token keyword">float</span> sinA <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">sin<span class="token punctuation">(</span></span>angle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">float</span> cosA <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">cos<span class="token punctuation">(</span></span>angle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> t <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> t <span class="token operator">&lt;</span> nbrTubeSteps<span class="token punctuation">;</span> t<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Point3D point0 <span class="token operator">=</span> coord<span class="token number">[0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point3D</span><span class="token punctuation">(</span>
+                    point0<span class="token punctuation">.</span><span class="token function">getX<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">*</span> cosA<span class="token punctuation">,</span>
+                    point0<span class="token punctuation">.</span><span class="token function">getY<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    point0<span class="token punctuation">.</span><span class="token function">getX<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token operator">*</span> sinA
+            <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment" spellcheck="true"> // Transfer to float array
+</span>    <span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span> points <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">float</span><span class="token punctuation">[</span>nbrRingSteps <span class="token operator">*</span> nbrTubeSteps <span class="token operator">*</span><span class="token number"> 3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> idx <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> t <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> t <span class="token operator">&lt;</span> nbrTubeSteps<span class="token punctuation">;</span> t<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> r <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> r <span class="token operator">&lt;</span> nbrRingSteps<span class="token punctuation">;</span> r<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            points<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getX<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            points<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getY<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            points<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span> coord<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getZ<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    TriangleMesh mesh <span class="token operator">=</span> <span class="token punctuation">(</span>TriangleMesh<span class="token punctuation">)</span> <span class="token function">getMesh<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mesh<span class="token punctuation">.</span><span class="token function">getPoints<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAll<span class="token punctuation">(</span></span>points<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <p>The final part (lines 30 41) is to convert the 2D array of type
+ Point3D  to a single dimension float array because this is what the 
+mesh needs.</p>
+      <h2>Calculating the texture coordinates [u,v ]</h2>
+      <p>Since we are tiling the torus surface we need a texture 
+coordinate for every vertex. When creating the toroid the program 
+assumes that the image is streched over the entire surface so is not 
+tile. This means that the coordinates will be in the range [0,0] - 
+[1,1].</p>
+      <pre class="line-numbers language-java"><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">calcTexturePoints<span class="token punctuation">(</span></span><span class="token keyword">float</span> nbrRingRepeats<span class="token punctuation">,</span> <span class="token keyword">float</span> nbrTubeRepeats<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">float</span> deltaU <span class="token operator">=</span> nbrRingRepeats <span class="token operator">/</span> nbrRingSegments<span class="token punctuation">;</span>
+        <span class="token keyword">float</span> deltaV <span class="token operator">=</span> nbrTubeRepeats <span class="token operator">/</span> nbrTubeSegments<span class="token punctuation">;</span>
+        <span class="token keyword">float</span><span class="token punctuation">[</span><span class="token punctuation">]</span> uv <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">float</span><span class="token punctuation">[</span>nbrRingSteps <span class="token operator">*</span> nbrTubeSteps <span class="token operator">*</span><span class="token number"> 2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> idx <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> t <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> t <span class="token operator">&lt;</span> nbrTubeSteps<span class="token punctuation">;</span> t<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> r <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> r <span class="token operator">&lt;</span> nbrRingSteps<span class="token punctuation">;</span> r<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                uv<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> r <span class="token operator">*</span> deltaU<span class="token punctuation">;</span>
+                uv<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> t <span class="token operator">*</span> deltaV<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        TriangleMesh mesh <span class="token operator">=</span> <span class="token punctuation">(</span>TriangleMesh<span class="token punctuation">)</span> <span class="token function">getMesh<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mesh<span class="token punctuation">.</span><span class="token function">getTexCoords<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAll<span class="token punctuation">(</span></span>uv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <p>When calling this method the parameters determine how oftenthe 
+image is tiled, in the video above there are 6 ring repeats and 2 tube 
+repeats so the texture coordinates will be in the range [0,0] - 
+[6.0,2.0].</p>
+      <h2>Calculating triangles</h2>
+      <p>The vertex data  was stored so that the array index number for ring segment <code class=" language-java">r</code> and tube segment <code class=" language-java">t</code> is given by the formula <code class=" language-java">r <span class="token operator">+</span> t <span class="token operator">*</span> nbrRingSteps</code> so we can calculate the 4 indices that make up the intersection of a ring and tube segment. <span class="center"><img src="Quarks%20Place_tiedostot/meshrect.png" alt="intersection of ring and tube segments" width="604" height="325"></span>These
+ are calculated in lines 6-9. For each triangle (pink and green) we have
+ to provide the array element indices for the vertex and texture 
+coordinate data for each of the three triangle corners. The vertices 
+must be ordered in anti-clockwise order. Since there is 1:1 
+correspondance between the vertex and texture coordinate array elements 
+which simplifies the algorithm used. For the green triangle the index 
+order is idxTL ⇒ idxBL ⇒ idxBR and for the green triangle  idxBL ⇒ idxBR
+ ⇒ idxTR.</p>
+      <pre class="line-numbers language-java"><code class=" language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">calcFacesPT<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> idx <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> faces <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>nbrRingSegments <span class="token operator">*</span> nbrTubeSegments <span class="token operator">*</span><span class="token number"> 12</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> t <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> t <span class="token operator">&lt;</span> nbrTubeSegments<span class="token punctuation">;</span> t<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> r <span class="token operator">=</span><span class="token number"> 0</span><span class="token punctuation">;</span> r <span class="token operator">&lt;</span> nbrRingSegments<span class="token punctuation">;</span> r<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">int</span> idxTL <span class="token operator">=</span> r <span class="token operator">+</span> t <span class="token operator">*</span> nbrRingSteps<span class="token punctuation">;</span>
+            <span class="token keyword">int</span> idxBL <span class="token operator">=</span> r <span class="token operator">+</span> <span class="token punctuation">(</span>t <span class="token operator">+</span><span class="token number"> 1</span><span class="token punctuation">)</span> <span class="token operator">*</span> nbrRingSteps<span class="token punctuation">;</span>
+            <span class="token keyword">int</span> idxBR <span class="token operator">=</span> r <span class="token operator">+</span><span class="token number"> 1</span> <span class="token operator">+</span> <span class="token punctuation">(</span>t <span class="token operator">+</span><span class="token number"> 1</span><span class="token punctuation">)</span> <span class="token operator">*</span> nbrRingSteps<span class="token punctuation">;</span>
+            <span class="token keyword">int</span> idxTR <span class="token operator">=</span> r <span class="token operator">+</span><span class="token number"> 1</span> <span class="token operator">+</span> t <span class="token operator">*</span> nbrRingSteps<span class="token punctuation">;</span>
+           <span class="token comment" spellcheck="true"> // Top left triangle defined in anti-clockwise order
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>           <span class="token comment" spellcheck="true"> // Bottom right triangle defined in anti-clockwise order
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBL<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxBR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Point
+</span>            faces<span class="token punctuation">[</span>idx<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> idxTR<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true"> // Texture
+</span>        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    TriangleMesh mesh <span class="token operator">=</span> <span class="token punctuation">(</span>TriangleMesh<span class="token punctuation">)</span> <span class="token function">getMesh<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mesh<span class="token punctuation">.</span><span class="token function">getFaces<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAll<span class="token punctuation">(</span></span>faces<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <p>The last two lines add the triangle data to the mesh.</p>
+      <h2>Adding functionality to the Toroid class</h2>
+      <p>One advantage of creating this class is the ease of creating 
+and manipulating Toroid shapes. For instance to create a new Toroid is 
+as simple as</p>
+      <pre class=" language-java"><code class=" language-java">torus <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Toroid</span><span class="token number">(140</span><span class="token punctuation">,</span><span class="token number"> 45</span><span class="token punctuation">,</span><span class="token number"> 45</span><span class="token punctuation">,</span><span class="token number"> 90</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+      <p>which creates a toroid with a ring radius of 140 and a tube 
+radius of 45. The last value  rotates the tube's zero degree position.</p>
+      <p><img src="Quarks%20Place_tiedostot/torusbuilddata.png" alt="texture start angle" width="677" height="284"></p>
+      <p>Another advantage of using a class is that we can easily add 
+additional functionality, for instance here are three methods used to 
+control the colour / texture of the torus.</p>
+      <pre class=" language-java"><code class=" language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setTexture<span class="token punctuation">(</span></span>Color color<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>color <span class="token operator">!</span><span class="token operator">=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        PhongMaterial material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhongMaterial</span><span class="token punctuation">(</span>color<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setMaterial<span class="token punctuation">(</span></span>material<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setTexture<span class="token punctuation">(</span></span>Image image<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>image <span class="token operator">!</span><span class="token operator">=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        PhongMaterial material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhongMaterial</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        material<span class="token punctuation">.</span><span class="token function">setDiffuseMap<span class="token punctuation">(</span></span>image<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setMaterial<span class="token punctuation">(</span></span>material<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setTexture<span class="token punctuation">(</span></span>Image image<span class="token punctuation">,</span> <span class="token keyword">float</span> nbrRingRepeats<span class="token punctuation">,</span> <span class="token keyword">float</span> nbrTubeRepeats<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>image <span class="token operator">!</span><span class="token operator">=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        PhongMaterial material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhongMaterial</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        material<span class="token punctuation">.</span><span class="token function">setDiffuseMap<span class="token punctuation">(</span></span>image<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setMaterial<span class="token punctuation">(</span></span>material<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>nbrRingRepeats &gt;<span class="token number"> 0</span> <span class="token operator">&amp;&amp;</span> nbrTubeRepeats &gt;<span class="token number"> 0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">calcTexturePoints<span class="token punctuation">(</span></span>nbrRingRepeats<span class="token punctuation">,</span> nbrTubeRepeats<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+
+      <p>The ideas and code presented here could easily be expanded on to produce a 3D shapes library.</p>
+      <p><a href="http://lagers.org.uk/javafx/downloads/ToroidClassDemo.zip">Download the NetBeans project</a></p>
+<p>&nbsp;</p>
+    </div>
+  </div>
+  <footer>
+    <p>Copyright © Peter Lager | <a href="http://www.css3templates.co.uk/">design from css3templates.co.uk</a></p>
+  </footer>
+</div>
+<p>&nbsp;</p>
+<!-- javascript at the bottom for fast page loading -->
+<script src="Quarks%20Place_tiedostot/prism.js"></script>
+<script type="text/javascript" src="Quarks%20Place_tiedostot/jquery.js"></script>
+<script type="text/javascript" src="Quarks%20Place_tiedostot/jquery_002.js"></script>
+<script type="text/javascript" src="Quarks%20Place_tiedostot/jquery_003.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('ul.sf-menu').sooperfish();
+    });
+</script>
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ?
+            "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost +
+            "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="Quarks%20Place_tiedostot/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-12109836-1");
+        pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+
+</body></html>

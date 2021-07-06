@@ -1,0 +1,2295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" id="vbulletin_html" lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta id="e_vb_meta_bburl" name="vb_meta_bburl" content="https://www.opengl.org/discussion_boards">
+<!-- base href="https://www.opengl.org/discussion_boards/" --><!--[if IE]></base><![endif]-->
+<meta name="generator" content="vBulletin 4.2.3">
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+
+	<link rel="Shortcut Icon" href="https://www.opengl.org/discussion_boards/assets/images/favicon.ico" type="image/x-icon">
+
+
+
+
+
+
+
+
+	
+		
+	
+
+
+
+
+
+
+	<link rel="alternate" type="application/rss+xml" title="OpenGL Discussion and Help Forums RSS Feed" href="https://www.opengl.org/discussion_boards/external.php?type=RSS2">
+	
+		<link rel="alternate" type="application/rss+xml" title="OpenGL Discussion and Help Forums - Math and Algorithms - RSS Feed" href="https://www.opengl.org/discussion_boards/external.php?type=RSS2&amp;forumids=10">
+	
+
+
+
+	<link rel="stylesheet" type="text/css" href="Rotation%20Matrix_tiedostot/css_003.css">
+
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="css.php?styleid=1&amp;langid=1&amp;d=1464788253&amp;td=ltr&amp;sheet=popupmenu-ie.css,vbulletin-ie.css,vbulletin-chrome-ie.css,vbulletin-formcontrols-ie.css,editor-ie.css" />
+	<![endif]-->
+
+
+
+	<meta name="keywords" content="facing, rotation, rotates, attached, rotate, glrotatef90,1,0,0, rotations, front, local, glrotateffyrot,0,1,0, diamond, yaxis, degrees, 90degress, twisted, twisting, equation, result, facedown, camera, corner, desired, produces, glrotateffrotx,v0,v1,v2, equivalent, posed, gimbal, //cause, glrotateffxrot,1,0,0, effects, matrix, trouble, drawing, glrotate, spinning, manner, glrotatef45,0,1,0, global, vector, correct, rotation/angle">
+	<meta name="description" content="I am having trouble with rotations ,  
+ 
+I am drawing a cube and want to rotate on two axis x and y. 
+ 
+glRotatef(fXrot,1,0,0); 
+glRotatef(fYrot,0,1,0); //cause gimbal lock like effects 
+ 
+If i rotate first on the x axis using glrotate , then what is the correct vector axis of rotation/angle  such that the rotation on the yaxis always rotates the cube on the global yaxis? If i use the glRotatef(fYrot,0,1,0) in the manner posed above it rotates after the x axis rotation, spinning the cube in the">
+
+	<title> Rotation Matrix</title>
+	<link rel="canonical" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+		<link rel="stylesheet" type="text/css" href="Rotation%20Matrix_tiedostot/css_002.css">
+	
+	<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="css.php?styleid=1&amp;langid=1&amp;d=1464788253&amp;td=ltr&amp;sheet=toolsmenu-ie.css,postlist-ie.css,showthread-ie.css,postbit-ie.css,poll-ie.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="Rotation%20Matrix_tiedostot/css.css">
+
+</head>
+
+<body>
+
+<div id="masthead">
+<a href="http://khronos.org/"><img src="Rotation%20Matrix_tiedostot/khronos_group_masthead.png" alt="Part of the Khronos Group" title="Part of the Khronos Group" width="287" height="20"></a>
+</div>
+
+<div id="header-frame">
+<div id="ogl_header">
+<div id="ogl_branding">
+<a href="https://www.opengl.org/"><img src="Rotation%20Matrix_tiedostot/opengl_logo.jpg" alt="OpenGL.org" title="The Industry's Foundation for High Performance Graphics" width="220" height="97"></a>
+<div>
+<h1>The Industry's Foundation for High Performance Graphics</h1>
+<h4>from games to virtual reality, mobile phones to supercomputers</h4>
+</div>
+</div>
+<div id="nav" class="clearfix">
+
+<ul id="navlist" class="clearfix">
+
+<li style="display:none"><a href="http://www.opengl.org/">Home</a></li>
+
+<li><a href="https://www.opengl.org/documentation/">Documentation</a>
+<ul>
+   <li><a href="https://www.opengl.org/documentation/current_version/">About OpenGL 4.5</a></li>
+   <li><a href="https://www.opengl.org/documentation/glsl/">OpenGL Shading Language</a></li>
+   <li><a href="https://www.opengl.org/documentation/extensions/">About OpenGL Extensions</a></li>
+   <li><a href="https://khronos.org/registry/OpenGL/index_gl.php">OpenGL Registry</a></li>
+   <li><a href="https://www.khronos.org/bugzilla/enter_bug.cgi?product=OpenGL">Spec Feedback</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man/">OpenGL 4 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man3/">OpenGL 3.3 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man2/">OpenGL 2.1 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/documentation/implementations/">OS/Platform Implementations</a></li>
+   <li><a href="https://www.khronos.org/developers/books/">OpenGL Books</a></li>
+</ul>
+</li>
+
+<li><a href="https://www.opengl.org/resources/">Coding Resources</a>
+<ul>
+    <li><a href="https://www.opengl.org/sdk/">OpenGL SDK</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Getting_Started">Getting Started</a></li>
+    <li><a href="https://khronos.org/registry/OpenGL/index_gl.php">OpenGL Registry</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/FAQ">FAQ</a></li>
+    <li><a href="https://www.opengl.org/resources/libraries/">GLUT &amp; Utility Libraries</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Language_bindings">Programming Language Bindings</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Code_Resources">Sample Code &amp; Tutorials</a></li>
+    <li><a href="https://www.opengl.org/resources/benchmarks/">Benchmarks</a></li>
+    <li><a href="https://www.opengl.org/community/newsgroups/">Mailing Lists &amp; News Groups</a></li>
+    <li><a href="http://stackoverflow.com/questions/tagged/opengl">OpenGL StackOverflow</a></li>
+    <li><a href="https://www.opengl.org/archives/">Archived Resources</a></li>
+</ul>
+</li>
+    <li><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></li>
+    <li><a href="https://www.opengl.org/discussion_boards/">Forums</a></li>
+    <li id="about"><a href="https://www.opengl.org/about/">About OpenGL</a>
+    <ul>
+        <li><a href="https://www.khronos.org/about/contact">Contact Us</a></li>
+        <li><a href="https://www.khronos.org/legal/trademarks/">OpenGL logo</a></li>
+        <li><a href="https://www.khronos.org/jobs/">Jobs</a></li>
+    </ul>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+
+<div class="above_body"> <!-- closing tag is in template navbar -->
+<div id="header" class="floatcontainer doc_header">
+	
+	<div id="toplinks" class="toplinks">
+		
+			<ul class="nouser">
+			
+				<li><a href="https://www.opengl.org/discussion_boards/register.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" rel="nofollow">Register</a></li>
+			
+				<li><a rel="help" href="https://www.opengl.org/discussion_boards/faq.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Help</a></li>
+				<li>
+			
+			<form id="navbar_loginform" action="login.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, 1)">
+				<fieldset id="logindetails" class="logindetails">
+					<div>
+						<div>
+					<input class="textbox default-value" name="vb_login_username" id="navbar_username" size="10" accesskey="u" tabindex="101" value="User Name" type="text">
+					<input class="textbox" tabindex="102" name="vb_login_password" id="navbar_password" size="10" style="display: none;" type="password">
+					<input class="textbox default-value" tabindex="102" name="vb_login_password_hint" id="navbar_password_hint" size="10" value="Password" style="display: inline;" type="text">
+					<input class="loginbutton" tabindex="104" value="Log in" title="Enter your username and password in the boxes provided to login, or click the 'register' button to create a profile for yourself." accesskey="s" type="submit">
+						</div>
+					</div>
+				</fieldset>
+				<div id="remember" class="remember">
+					<label for="cb_cookieuser_navbar"><input name="cookieuser" value="1" id="cb_cookieuser_navbar" class="cb_cookieuser_navbar" accesskey="c" tabindex="103" type="checkbox"> Remember Me?</label>
+				</div>
+
+				<input name="s" value="58ab5f7e5b9c9b614c99e1fb9d5d4ed0" type="hidden">
+				<input name="securitytoken" value="guest" type="hidden">
+				<input name="do" value="login" type="hidden">
+				<input name="vb_login_md5password" type="hidden">
+				<input name="vb_login_md5password_utf" type="hidden">
+			</form>
+			
+				</li>
+				
+			</ul>
+		
+	</div>
+	<div class="ad_global_header">
+		 
+		 
+	</div>
+	<hr>
+</div>
+<div id="navbar" class="navbar">
+	<ul id="navtabs" class="navtabs floatcontainer">
+		
+		
+	
+		<li id="vbtab_whatsnew">
+			<a class="navtab" href="https://www.opengl.org/discussion_boards/activity.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">What's New?</a>
+		</li>
+		
+		
+
+	
+		<li class="selected" id="vbtab_forum">
+			<a class="navtab" href="https://www.opengl.org/discussion_boards/forum.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Forum</a>
+		</li>
+		
+		
+			<ul class="floatcontainer">
+				
+					
+						
+							<li id="vbflink_newposts"><a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=getnew&amp;contenttype=vBForum_Post">New Posts</a></li>
+						
+					
+				
+					
+						
+							<li id="vbflink_faq"><a href="https://www.opengl.org/discussion_boards/faq.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">FAQ</a></li>
+						
+					
+				
+					
+						
+							<li id="vbflink_calendar"><a href="https://www.opengl.org/discussion_boards/calendar.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Calendar</a></li>
+						
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_actions">
+							<a href="javascript://" class="popupctrl" id="yui-gen1">Forum Actions</a>
+							<ul class="popupbody" id="yui-gen0">
+								
+									<li id="vbalink_mfr"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=markread&amp;markreadhash=guest">Mark Forums Read</a></li>
+								
+							</ul>
+						</li>
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_qlinks">
+							<a href="javascript://" class="popupctrl" id="yui-gen3">Quick Links</a>
+							<ul class="popupbody" id="yui-gen2">
+								
+									<li id="vbqlink_posts"><a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=getdaily&amp;contenttype=vBForum_Post">Today's Posts</a></li>
+								
+									<li id="vbqlink_leaders"><a href="https://www.opengl.org/discussion_boards/showgroups.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">View Site Leaders</a></li>
+								
+							</ul>
+						</li>
+					
+				
+			</ul>
+		
+
+	
+		<li id="tab_ntyx_200">
+			<a class="navtab" href="http://www.khronos.org/message_boards/">Khronos Forums</a>
+		</li>
+		
+		
+
+	
+		<li id="tab_njm3_787">
+			<a class="navtab" href="http://www.opengl.org/wiki/Getting_Started">OpenGL: Getting Started</a>
+		</li>
+		
+		
+
+		
+	</ul>
+	
+		<div id="globalsearch" class="globalsearch">
+			<form action="search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=process" method="post" id="navbar_search" class="navbar_search">
+				
+				<input name="securitytoken" value="guest" type="hidden">
+				<input name="do" value="process" type="hidden">
+				<span class="textboxcontainer"><span><input name="query" class="textbox" tabindex="99" type="text"></span></span>
+				<span class="buttoncontainer"><span><input class="searchbutton" src="Rotation%20Matrix_tiedostot/search.png" name="submit" onclick="document.getElementById('navbar_search').submit;" tabindex="100" type="image"></span></span>
+			</form>
+			<ul class="navbar_advanced_search">
+				<li><a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" accesskey="4">Advanced Search</a></li>
+				
+			</ul>
+		</div>
+	
+</div>
+</div><!-- closing div for above_body -->
+
+<div class="body_wrapper">
+<div id="breadcrumb" class="breadcrumb">
+	<ul class="floatcontainer">
+		<li class="navbithome"><a href="https://www.opengl.org/discussion_boards/index.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" accesskey="1"><img src="Rotation%20Matrix_tiedostot/navbit-home.png" alt="Home" title="Home"></a></li>
+		
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forum.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Forum</a></li>
+
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/3-OpenGL-Developers-Forum?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL Developers Forum</a></li>
+
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/10-Math-and-Algorithms?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Math and Algorithms</a></li>
+
+		
+	<li class="navbit lastnavbit"><span> Rotation Matrix</span></li>
+
+	</ul>
+	<hr>
+</div>
+
+ 
+<div id="adplacement">
+
+<a href="https://beta.opengl.org/ads/www/delivery/ck.php?oaparams=2__bannerid=108__zoneid=0__cb=681693b410__oadest=https%3A%2F%2Fwww.khronos.org%2Fdevelopers%2Fbooks" target="_blank"><img src="Rotation%20Matrix_tiedostot/a9513fe84b439ccd988d4a18ac415408.png" alt="Khronos related books" title="Khronos related books" width="728" height="90" border="0"></a><div id="beacon_681693b410" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Rotation%20Matrix_tiedostot/lg.gif" alt="" style="width: 0px; height: 0px;" width="0" height="0"></div>
+
+
+</div>
+
+
+
+	<form action="profile.php?do=dismissnotice" method="post" id="notices" class="notices">
+		<input name="do" value="dismissnotice" type="hidden">
+		<input name="s" value="s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;" type="hidden">
+		<input name="securitytoken" value="guest" type="hidden">
+		<input id="dismiss_notice_hidden" name="dismiss_noticeid" value="" type="hidden">
+		<input name="url" value="" type="hidden">
+		<ol>
+			<li class="restore" id="navbar_notice_1">
+	
+	First time visitors, please read our  <a href="https://www.opengl.org/discussion_boards/faq.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" target="_blank"><b>FAQ</b></a> and our <a href="https://www.opengl.org/discussion_boards/showthread.php/176139-Forum-Posting-Guidelines"><strong>Forum Rules and Guidelines</strong></a>. You must <a href="https://www.opengl.org/discussion_boards/register.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" target="_blank"><b>register</b></a>
+		before you can post.
+</li>
+		</ol>
+	</form>
+
+
+
+
+
+	<div id="above_postlist" class="above_postlist">
+		
+		<div id="pagination_top" class="pagination_top">
+		
+			<div id="postpagestats_above" class="postpagestats">
+				Results 1 to 10 of 10
+			</div>
+		</div>
+	</div>
+	<div id="pagetitle" class="pagetitle">
+		<h1>
+			Thread: <span class="threadtitle"><a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="Reload this Page">Rotation Matrix</a></span>
+		</h1>
+		
+			
+<span id="fb-root"></span>
+
+
+<fb:like href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix" font="tahoma" layout="standard" show_faces="false" width="300" action="like" colorscheme="light" data-share="true"></fb:like>
+		
+	</div>
+	<div id="thread_controls" class="thread_controls toolsmenu">
+		<div>
+		<ul id="postlist_popups" class="postlist_popups popupgroup">
+			
+			
+			<li class="popupmenu" id="threadtools">
+				<h6><a class="popupctrl" href="javascript://" id="yui-gen5">Thread Tools</a></h6>
+				<ul class="popupbody" id="yui-gen4">
+					<li><a href="https://www.opengl.org/discussion_boards/printthread.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;t=171651&amp;pp=10&amp;page=1" accesskey="3" rel="nofollow">Show Printable Version</a></li>
+					
+						<li><a href="https://www.opengl.org/discussion_boards/sendmessage.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=sendtofriend&amp;t=171651" rel="nofollow">Email this Page…</a></li>
+					
+					<li>
+						
+					</li>
+					
+				</ul>
+			</li>
+
+			
+
+			
+
+			
+
+			
+				<li class="popupmenu" id="displaymodes">
+					<h6><a class="popupctrl" href="javascript://" id="yui-gen7">Display</a></h6>
+					<ul class="popupbody" id="yui-gen6">
+						<li><label>Linear Mode</label></li>
+						<li><a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;mode=hybrid"> Switch to Hybrid Mode</a></li>
+						<li><a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205349&amp;mode=threaded#post1205349"> Switch to Threaded Mode</a></li>
+					</ul>
+				</li>
+			
+
+			
+			</ul>
+		</div>
+	</div>
+
+<div id="postlist" class="postlist restrain">
+	
+
+	
+		<ol id="posts" class="posts" start="1">
+			
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205349">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-28-2010,&nbsp;<span class="time">09:39 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205349" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205349&amp;viewfull=1#post1205349" class="postcounter">#1</a><a id="postcount1205349" name="1"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen8">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="yeahdixon is offline" id="yui-gen10"><strong>yeahdixon</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen9">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=19869&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=19869" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="yeahdixon is offline" title="yeahdixon is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Jul 2010</dd>
+					
+					
+					<dt>Posts</dt> <dd>4</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Rotation Matrix
+				</h2>
+				
+
+
+						
+							
+							
+						
+						
+				<div class="content">
+					<div id="post_message_1205349">
+						<blockquote class="postcontent restore ">
+							<br>
+I am having trouble with rotations , <br>
+<br>
+I am drawing a cube and want to rotate on two axis x and y.<br>
+<br>
+glRotatef(fXrot,1,0,0);<br>
+glRotatef(fYrot,0,1,0); //cause gimbal lock like effects<br>
+<br>
+If i rotate first on the x axis using glrotate , then what is the 
+correct vector axis of rotation/angle  such that the rotation on the 
+yaxis always rotates the cube on the global yaxis? If i use the 
+glRotatef(fYrot,0,1,0) in the manner posed above it rotates after the x 
+axis rotation, spinning the cube in the local axis.  <br>
+<br>
+consider the example on a front facing cube with the following rotations:<br>
+<br>
+	glRotatef(90,1,0,0);<br>
+	glRotatef(45,0,1,0);<br>
+<br>
+this actually produces a diamond because the cube is first rot 90degress
+ facing down, and then twisted in the local x axis 45 degrees twisting 
+it into a diamond (see attached)<br>
+<br>
+after doing:<br>
+glRotatef(90,1,0,0); now facing down<br>
+how would i get this equation (or the equivalent):<br>
+glRotatef(fRotX,v0,v1,v2);<br>
+so that after the sec desired result  the cube  will end up facedown but
+ the left front corner facing the into the camera (see attached)
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205349" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205365">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-28-2010,&nbsp;<span class="time">02:22 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205365" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205365&amp;viewfull=1#post1205365" class="postcounter">#2</a><a id="postcount1205365" name="2"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen11">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="Rosario Leonardi is offline" id="yui-gen13"><strong>Rosario Leonardi</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen12">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=16065&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=16065" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		<li class="left">
+			<a href="http://www.rosario3d.com/" class="siteicon_homepage">
+				Visit Homepage
+			</a>
+		</li>
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="Rosario Leonardi is offline" title="Rosario Leonardi is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			
+			<a class="postuseravatar" href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="Rosario Leonardi is offline">
+				<img src="Rotation%20Matrix_tiedostot/avatar16065_2.gif" alt="Rosario Leonardi's Avatar" title="Rosario Leonardi's Avatar">
+			</a>
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Aug 2008</dd>
+					<dt>Location</dt> <dd>Italy</dd>
+					
+					<dt>Posts</dt> <dd>356</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205365">
+						<blockquote class="postcontent restore ">
+							"produces a diamond"<br>
+Alchemical programming.. wonderful <img src="Rotation%20Matrix_tiedostot/biggrin.png" alt="" title="Big Grin" class="inlineimg" border="0"><br>
+<br>
+Ehm... sorry... let's return serious, this it's a serious forum.<br>
+You want to rotate your cube on the GLOBAL x axis, and then apply a rotation on the GLOBAL y axis.<br>
+As you notice the rotation are local, so to make a local rotation to 
+seem global you must cheat and compute the global Y axis after the X 
+rotation.<br>
+<br>
+rotate(another_angle, Xaxis);<br>
+rotate(some_angle, someAxis);<br>
+drawDiamond();<br>
+note: glRotate are applied in the opposite order<br>
+<br>
+glRotate(another_angle, 1.f, 0.f, 0.f) is like multiplying the current matrix by this matrix<br>
+<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">1   0          0           0
+0   cos(angle) -sin(angle) 0
+0   sin(angle) cos(angle)  0
+0   0          0           1</pre></div></div>
+</div>Wow, what we have here, an orthonormal matrix, gl programmers love
+ orthonormal matrix cause they have a lot of wonderful properties.<br>
+The local Y axis is the second column, but we want the inverse (so we take the second raw).<br>
+Here it is:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">float radAngle = (xAngle/180.f)*3.1415f;
+glRotatef(xAngle, 1.f, 0.f, 0.f);
+glRotatef(yAngle, 0.f, cos(radAngle), -sin(radAngle));
+drawDiamonds();</pre></div></div>
+</div>
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer">~ ~ I tell you, realtime 3D is made of blood, sweat and screams! ~ ~</div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205365" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205370">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-28-2010,&nbsp;<span class="time">03:04 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205370" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205370&amp;viewfull=1#post1205370" class="postcounter">#3</a><a id="postcount1205370" name="3"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen14">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="yeahdixon is offline" id="yui-gen16"><strong>yeahdixon</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen15">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=19869&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=19869" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="yeahdixon is offline" title="yeahdixon is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Jul 2010</dd>
+					
+					
+					<dt>Posts</dt> <dd>4</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205370">
+						<blockquote class="postcontent restore ">
+							OK TY, your right that seems to do the trick and makes sense. <br>
+<br>
+But, now  i noticed that  the same problem is happening on the opposite 
+axis. Rotation over the x-axis is always perfect but the rotation over 
+the y is now dependent on the x axis.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205370" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205371">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-28-2010,&nbsp;<span class="time">04:15 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205371" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205371&amp;viewfull=1#post1205371" class="postcounter">#4</a><a id="postcount1205371" name="4"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen17">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="Rosario Leonardi is offline" id="yui-gen19"><strong>Rosario Leonardi</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen18">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=16065&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=16065" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		<li class="left">
+			<a href="http://www.rosario3d.com/" class="siteicon_homepage">
+				Visit Homepage
+			</a>
+		</li>
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="Rosario Leonardi is offline" title="Rosario Leonardi is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			
+			<a class="postuseravatar" href="https://www.opengl.org/discussion_boards/member.php/16065-Rosario-Leonardi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="Rosario Leonardi is offline">
+				<img src="Rotation%20Matrix_tiedostot/avatar16065_2.gif" alt="Rosario Leonardi's Avatar" title="Rosario Leonardi's Avatar">
+			</a>
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Aug 2008</dd>
+					<dt>Location</dt> <dd>Italy</dd>
+					
+					<dt>Posts</dt> <dd>356</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205371">
+						<blockquote class="postcontent restore ">
+							Combing rotation are really order dependent. If you want to 
+rotate on the Y and then on the X you must do the inverse trick.<br>
+Rotating all three global axis is very painful and probably is better to
+ avoid using glRotatef and use a matrix library to make the computation 
+and then apply the matrix with glLoadMatrix
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer">~ ~ I tell you, realtime 3D is made of blood, sweat and screams! ~ ~</div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205371" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205375">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-28-2010,&nbsp;<span class="time">09:17 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205375" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205375&amp;viewfull=1#post1205375" class="postcounter">#5</a><a id="postcount1205375" name="5"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen20">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="yeahdixon is offline" id="yui-gen22"><strong>yeahdixon</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen21">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=19869&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=19869" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="yeahdixon is offline" title="yeahdixon is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Jul 2010</dd>
+					
+					
+					<dt>Posts</dt> <dd>4</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205375">
+						<blockquote class="postcontent restore ">
+							I got this to work correctly using quaternions: It seems the right way to do what i was trying to accomplish.<br>
+<br>
+first create the quaternion representation of the angles<br>
+then each frame multiple the quaternion to an accumulating quaternion , 
+then finally convert that quaternion to matrix form to multiply the 
+current matrix. Here is the main code of the loop:<br>
+<br>
+	Quaternion3D Rotation1=Quaternion3DMakeWithAxisAndAngle(Vector3  DMake(-1.0f,0,0), DEGREES_TO_RADIANS(globalRotateX));<br>
+	Quaternion3DNormalize(&amp;amp;Rotation1);<br>
+	<br>
+	Quaternion3D Rotation2=Quaternion3DMakeWithAxisAndAngle(Vector3  DMake(0.0f,-1.0f,0), DEGREES_TO_RADIANS(globalRotateY));<br>
+	Quaternion3DNormalize(&amp;amp;Rotation2);<br>
+	<br>
+	<br>
+	Matrix3D Mat;<br>
+	Matrix3DSetIdentity(Mat);<br>
+	Quaternion3DMultiply(&amp;amp;QAccum, &amp;amp;Rotation1);<br>
+<br>
+	Quaternion3DMultiply(&amp;amp;QAccum, &amp;amp;Rotation2);<br>
+<br>
+	Matrix3DSetUsingQuaternion3D(Mat, QAccum);<br>
+	globalRotateX=0;<br>
+	globalRotateY=0;<br>
+	<br>
+	glMultMatrixf(Mat);<br>
+<br>
+then draw cube
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205375" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205411">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-29-2010,&nbsp;<span class="time">10:32 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205411" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205411&amp;viewfull=1#post1205411" class="postcounter">#6</a><a id="postcount1205411" name="6"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen23">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/7626-MaxH?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="MaxH is offline" id="yui-gen25"><strong>MaxH</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen24">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/7626-MaxH?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=7626&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=7626" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="MaxH is offline" title="MaxH is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Mar 2003</dd>
+					<dt>Location</dt> <dd>Los Angeles</dd>
+					
+					<dt>Posts</dt> <dd>374</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205411">
+						<blockquote class="postcontent restore ">
+							<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="Rotation%20Matrix_tiedostot/quote_icon.png" alt="Quote" title="Quote"> Originally Posted by <strong>yeahdixon</strong>
+					
+				</div>
+				<div class="message">I got this to work correctly using quaternions: It seems the right way to do what i was trying to accomplish.<br>
+<br>
+	glMultMatrixf(Mat);</div>
+			
+		</div>
+	</div>
+</div>Congrats on finding a solution to your problem. But you made it 
+sound more complicated than it really is. Quaternions aren't the key, 
+MultMatrix is the key. Screen or object space rotations can be 
+accomplished with careful manipulation of rotation matrices and the 
+MultMatrix command.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer">Am I doing your homework for you?</div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205411" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1205436">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">07-29-2010,&nbsp;<span class="time">03:53 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1205436" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1205436&amp;viewfull=1#post1205436" class="postcounter">#7</a><a id="postcount1205436" name="7"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen26">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="yeahdixon is offline" id="yui-gen28"><strong>yeahdixon</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen27">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/19869-yeahdixon?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=19869&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=19869" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="yeahdixon is offline" title="yeahdixon is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Jul 2010</dd>
+					
+					
+					<dt>Posts</dt> <dd>4</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1205436">
+						<blockquote class="postcontent restore ">
+							yeah, true, I figured that the same can be done with matrices , 
+since you can always swap between quaternion and rotation matrices. So 
+where there is a quaternion I guess there could be the equivalent 
+matrix. But the above wasn't too much code, plus now i can use SLERP to 
+animate between them. thanks again.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1205436" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1206026">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">08-12-2010,&nbsp;<span class="time">12:32 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1206026" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1206026&amp;viewfull=1#post1206026" class="postcounter">#8</a><a id="postcount1206026" name="8"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen29">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/19943-keerthi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="keerthi is offline" id="yui-gen31"><strong>keerthi</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen30">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/19943-keerthi?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=19943&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="keerthi is offline" title="keerthi is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Email address no longer exists
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Aug 2010</dd>
+					<dt>Location</dt> <dd>India</dd>
+					
+					<dt>Posts</dt> <dd>5</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1206026">
+						<blockquote class="postcontent restore ">
+							hi even im facing such problem .. but im not so clear with the 
+solutuion .. so can u be more clear with this issue or if any example or
+ code please share it , thhnk you
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1206026" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1207925">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">09-19-2010,&nbsp;<span class="time">06:41 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1207925" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1207925&amp;viewfull=1#post1207925" class="postcounter">#9</a><a id="postcount1207925" name="9"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen32">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/20202-jmanji?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="jmanji is offline" id="yui-gen34"><strong>jmanji</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen33">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/20202-jmanji?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=20202&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=20202" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="jmanji is offline" title="jmanji is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Sep 2010</dd>
+					
+					
+					<dt>Posts</dt> <dd>15</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1207925">
+						<blockquote class="postcontent restore ">
+							I also have the same problem. Rosario Leonardi's solution does not seem to solve it...
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1207925" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1207960">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">09-19-2010,&nbsp;<span class="time">09:26 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1207960" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;p=1207960&amp;viewfull=1#post1207960" class="postcounter">#10</a><a id="postcount1207960" name="10"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen35">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/7626-MaxH?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" title="MaxH is offline" id="yui-gen37"><strong>MaxH</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen36">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/7626-MaxH?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=finduser&amp;userid=7626&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=newpm&amp;u=7626" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotation%20Matrix_tiedostot/user-offline.png" alt="MaxH is offline" title="MaxH is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Mar 2003</dd>
+					<dt>Location</dt> <dd>Los Angeles</dd>
+					
+					<dt>Posts</dt> <dd>374</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+				<h2 class="title icon">
+					Re: Rotation Matrix
+				</h2>
+				
+
+
+						
+						
+							
+						
+				<div class="content">
+					<div id="post_message_1207960">
+						<blockquote class="postcontent restore ">
+							I have a demo that may address your problem.<br>
+<br>
+The source code is at - <a href="http://www.mfwweb.com/OpenGL/Special_Rotations/Source.c" target="_blank" rel="nofollow">www.mfwweb.com/OpenGL/Special_Rotations/Source.c</a><br>
+<br>
+You'll have to compile and link it with OpenGL and GLUT.<br>
+<br>
+Look at the routine 'Keyboard' to see which keys do which rotations.<br>
+
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer">Am I doing your homework for you?</div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1207960" src="Rotation%20Matrix_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+		</ol>
+		<div class="separator"></div>
+		<div class="postlistfoot">
+			
+		</div>
+
+	
+
+</div>
+
+<div id="below_postlist" class="noinlinemod below_postlist">
+	
+	<div id="pagination_bottom" class="pagination_bottom">
+	
+		<div class="clear"></div>
+<div class="navpopupmenu popupmenu nohovermenu" id="showthread_navpopup">
+	
+		<span class="shade">Quick Navigation</span>
+		<a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" class="popupctrl" id="yui-gen39"><span class="ctrlcontainer">Math and Algorithms</span></a>
+		<a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix#top" class="textcontrol" onclick="document.location.hash='top';return false;">Top</a>
+	
+	<ul class="navpopupbody popupbody" id="yui-gen38">
+		
+		<li class="optionlabel">Site Areas</li>
+		<li><a href="https://www.opengl.org/discussion_boards/usercp.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Settings</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/private.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Private Messages</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/subscription.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Subscriptions</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/online.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Who's Online</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/search.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Search Forums</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/forum.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Forums Home</a></li>
+		
+			<li class="optionlabel">Forums</li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/3-OpenGL-Developers-Forum?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL Developers Forum</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/16-Items-of-Importance-to-the-OpenGL-Community?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Items of Importance to the OpenGL Community</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/5-User-Hardware-Software-Gaming-Help?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">User Hardware, Software, &amp; Gaming Help</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/10-Math-and-Algorithms?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Math and Algorithms</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/6-OpenGL-coding-beginners?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL coding: beginners</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/7-OpenGL-coding-advanced?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL coding: advanced</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/15-OpenGL-Shading-Language?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL Shading Language</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/13-OpenGL-under-Windows?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL under Windows</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/8-OpenGL-on-Linux?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL on Linux</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/9-OpenGL-on-Macintosh?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL on Macintosh</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/14-OpenGL-Toolkits-%28e-g-GLUT-GLFW-GLM%29?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL Toolkits (e.g. GLUT, GLFW, GLM)</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/17-OpenGL-drivers?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">OpenGL drivers</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/12-High-level-APIs-%28e-g-Inventor-Performer-Optimizer%29?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">High-level APIs (e.g. Inventor, Performer, Optimizer)</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/11-Suggestions-for-the-next-release-of-OpenGL?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Suggestions for the next release of OpenGL</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+		
+	</ul>
+</div>
+<div class="clear"></div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+	<!-- next / previous links -->
+	<div class="navlinks">
+		
+			<strong>«</strong>
+			<a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;goto=nextoldest" rel="nofollow">Previous Thread</a>
+			|
+			<a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;goto=nextnewest" rel="nofollow">Next Thread</a>
+			<strong>»</strong>
+		
+	</div>
+	<!-- / next / previous links -->
+
+<div id="thread_info" class="thread_info block">
+	
+	
+	
+	
+	
+	
+	<div class="options_block_container">
+		
+		<div class="options_block">
+			<h4 class="collapse blockhead options_correct">
+				<a class="collapse" id="collapse_posting_rules" href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix#top"><img src="Rotation%20Matrix_tiedostot/collapse_40b.png" alt=""></a>
+				Posting Permissions
+			</h4>
+			<div id="posting_rules" class="thread_info_block blockbody formcontrols floatcontainer options_correct">
+				
+<div id="forumrules" class="info_subblock">
+
+	<ul class="youcandoblock">
+		<li>You <strong>may not</strong> post new threads</li>
+		<li>You <strong>may not</strong> post replies</li>
+		<li>You <strong>may not</strong> post attachments</li>
+		<li>You <strong>may not</strong> edit your posts</li>
+		<li>&nbsp;</li>
+	</ul>
+	<div class="bbcodeblock">
+		<ul>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=bbcode" target="_blank">BB code</a> is <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=showsmilies" target="_blank">Smilies</a> are <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=bbcode#imgcode" target="_blank">[IMG]</a> code is <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=bbcode#videocode" target="_blank">[VIDEO]</a> code is <strong>Off</strong></li>
+			<li>HTML code is <strong>Off</strong></li>
+		</ul>
+	</div>
+	<p class="rules_link"><a href="https://www.opengl.org/discussion_boards/misc.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0&amp;do=showrules" target="_blank">Forum Rules</a></p>
+
+</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="clear: left">
+   
+   
+</div>
+
+<div id="footer" class="floatcontainer footer">
+
+	<form action="forum.php" method="get" id="footer_select" class="footer_select">
+
+		
+			<select name="styleid" onchange="switch_id(this, 'style')">
+				<optgroup label="Quick Style Chooser"><option class="hidden"></option></optgroup>
+				
+					
+					<optgroup label="&nbsp;Standard Styles">
+									
+					
+	<option value="1" class="" selected="selected">-- OpenGL Style</option>
+
+	<option value="4" class="">---- OpenGL Dark Style</option>
+
+					
+					</optgroup>
+										
+				
+				
+					
+					<optgroup label="&nbsp;Mobile Styles">
+					
+					
+	<option value="12" class="">-- Mobile</option>
+
+					
+					</optgroup>
+										
+				
+			</select>	
+		
+		
+		
+	</form>
+
+	<ul id="footer_links" class="footer_links">
+		<li><a href="https://www.opengl.org/discussion_boards/sendmessage.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0" rel="nofollow" accesskey="9">Contact Us</a></li>
+		<li><a href="https://www.opengl.org/">OpenGL.org</a></li>
+		
+		
+		<li><a href="https://www.opengl.org/discussion_boards/archive/index.php?s=58ab5f7e5b9c9b614c99e1fb9d5d4ed0">Archive</a></li>
+		
+		
+		
+		<li><a href="https://www.opengl.org/discussion_boards/showthread.php/171651-Rotation-Matrix#top" onclick="document.location.hash='top'; return false;">Top</a></li>
+	</ul>
+	
+	
+	
+	
+	
+        
+</div>
+</div> <!-- closing div for body_wrapper -->
+
+<div class="below_body">
+<div id="footer_time" class="shade footer_time">All times are GMT -7. The time now is <span class="time">05:11 AM</span>.</div>
+
+<div id="footer_copyright" class="shade footer_copyright">
+	<!-- Do not remove this copyright notice -->
+	Powered by <a href="https://www.vbulletin.com/" id="vbulletinlink">vBulletin®</a> Version 4.2.3 <br>Copyright © 2017 vBulletin Solutions, Inc. All rights reserved. 
+	<!-- Do not remove this copyright notice -->	
+</div>
+<div id="footer_morecopyright" class="shade footer_morecopyright">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	
+	
+</div>
+ 
+
+</div>
+
+</body></html>

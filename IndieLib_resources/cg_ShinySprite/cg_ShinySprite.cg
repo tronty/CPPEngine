@@ -1,0 +1,134 @@
+/*********************************************************************NVMH3****
+Path:  NVSDK\Common\media\programs
+File:  cg_ShinySprite.cg
+
+Copyright NVIDIA Corporation 2002
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+Comments:
+
+******************************************************************************/
+
+[Vertex shader]
+struct app2vert 
+{   
+    float4 Position     : POSITION;
+    float4 Size         : PSIZE;
+    float4 Normal       : NORMAL;
+    float4 TexCoord0    : TEXCOORD0;
+};
+
+struct lightvert2frag
+{
+    float4 HPosition    : POSITION;
+    float4 Color0       : COLOR0;
+    float4 TexCoord0    : TEXCOORD0;
+    float4 TexCoord1    : TEXCOORD1;
+};
+//
+// Light point of view calculation : we need only vertex.
+// Colors and textures are not useful
+//
+//  MTexture contains the VIEW x PROJECTION of the light
+//
+float4x4 Projection;
+float4x4 ModelView;
+float4x4 ModelViewIT;
+float3 Light;
+float  Shininess;
+float  Slices;
+float2 CSTable[30];
+lightvert2frag main(app2vert IN)
+{
+    lightvert2frag OUT;
+
+    float4 mvposition = mul(ModelView, IN.Position);
+    float4 mvnormal =   normalize(mul(ModelViewIT, IN.Normal));
+
+    float3 eyedir = -normalize(mvposition.xyz);
+
+    float3 lightdir = normalize(Light-mvposition.xyz);
+
+    // get the second point
+    float4 mvpos2;
+    mvpos2.xyz = cross(lightdir, mvnormal.xyz) + mvposition.xyz;
+    mvpos2.w = 0;
+
+    // specular vector
+    float3 HalfV = normalize(lightdir + eyedir);
+
+    //
+    //=====> compute the crystal reflection
+    //
+    float2 NLCosSin;
+    float index;
+    float NDotL;
+    float NDotH;
+    NLCosSin.x =    dot(mvnormal.xyz, lightdir);
+    NLCosSin.y =    sqrt(1-(NLCosSin.x * NLCosSin.x));
+    index =         max(NLCosSin.x * Slices, 4);
+    NLCosSin =      NLCosSin * CSTable[index];
+    NDotL =         NLCosSin.x + NLCosSin.y;
+
+    NLCosSin.x =    dot(mvnormal.xyz, HalfV);
+    NLCosSin.y =    sqrt(1-(NLCosSin.x * NLCosSin.x));
+    index =         max(NLCosSin.x * Slices, 4);
+    NLCosSin =      NLCosSin * CSTable[index];
+    NDotH =         NLCosSin.x + NLCosSin.y;
+
+    float4 lightcoefs = lit(NDotL, NDotH, Shininess);
+
+    //
+    //=====> transform the vertex
+    //
+    float4 projpos1 = mul(Projection, mvposition);
+    float4 projpos2 = mul(Projection, mvpos2);
+    float2 pos2d1 = projpos1.xy / projpos1.ww;
+    float2 pos2d2 = projpos2.xy / projpos2.ww;
+    float2 dir2d  = normalize(pos2d2 - pos2d1);
+
+    float s;
+    
+    s = ((lightcoefs.z * IN.Size.z) + IN.Size.x);
+    projpos1.xy = dir2d*s + projpos1.xy;
+
+    s = ((lightcoefs.z * IN.Size.w) + IN.Size.y);
+    projpos1.x = ( dir2d.y * s) + projpos1.x;
+    projpos1.y = (-dir2d.x * s) + projpos1.y;
+
+
+    OUT.HPosition = projpos1;
+    OUT.TexCoord0 = IN.TexCoord0;
+    OUT.TexCoord1.w = 1;
+    OUT.TexCoord1.xy = (pos2d1.xy * 0.5) + 0.5;
+    OUT.Color0 = float4(1,1,1,1);
+    return OUT;
+}
+[Fragment shader]
+
+struct lightvert2frag
+{
+    float4 HPosition    : POSITION;
+    float4 Color0       : COLOR0;
+    float4 TexCoord0    : TEXCOORD0;
+    float4 TexCoord1    : TEXCOORD1;
+};
+sampler2D texture0;
+sampler2D texture1;
+float4 main(lightvert2frag IN) : COLOR
+{
+    float4 tex0 = tex2D(texture0, IN.TexCoord0);
+    float4 tex1 = tex2D(texture1, IN.TexCoord1);
+
+    return lerp(tex0, tex1, IN.Color0);
+}
+

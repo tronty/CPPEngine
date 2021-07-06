@@ -1,0 +1,72 @@
+//-----------------------------------------------------------------------------
+// File: tangentSpace.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+[Vertex shader]
+
+struct VsOut {
+	float4 pos: POSITION;
+	float2 texCoord0: TEXCOORD0;
+	float2 texCoord1: TEXCOORD1;
+	float2 texCoord2: TEXCOORD2;
+	float2 texCoord3: TEXCOORD3;
+};
+
+float2 halfPixel;
+float pixel;
+
+VsOut main(float4 pos: POSITION){
+	VsOut Out;
+
+	Out.pos = pos;
+
+	// Compute texture coordinates for the 4 neighboring nodes
+	float2 texCoord = pos.xy * float2(0.5, -0.5) + 0.5 + halfPixel;
+	Out.texCoord0 = texCoord + float2( pixel, 0);
+	Out.texCoord1 = texCoord + float2(-pixel, 0);
+	Out.texCoord2 = texCoord + float2( 0,  pixel);
+	Out.texCoord3 = texCoord + float2( 0, -pixel);
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler2D Pos;
+
+struct PsOut {
+	float4 tangent:  COLOR0;
+	float4 binormal: COLOR1;
+	float4 normal:   COLOR2;
+};
+
+PsOut main(float2 texCoord0: TEXCOORD0, float2 texCoord1: TEXCOORD1,
+		   float2 texCoord2: TEXCOORD2, float2 texCoord3: TEXCOORD3){
+
+	PsOut Out;
+
+	// Get the position of the four neighboring nodes
+	float3 pos0 = tex2D(Pos, texCoord0).xyz;
+	float3 pos1 = tex2D(Pos, texCoord1).xyz;
+	float3 pos2 = tex2D(Pos, texCoord2).xyz;
+	float3 pos3 = tex2D(Pos, texCoord3).xyz;
+
+	// Compute the tangent vectors from the node positions
+	float3 tangent  = pos0 - pos1;
+	float3 binormal = pos2 - pos3;
+	// Compute the normal
+	float3 normal = cross(tangent, binormal);
+
+	Out.tangent.xyz = normalize(tangent);
+	Out.tangent.w = 0;
+
+	Out.binormal.xyz = normalize(binormal);
+	Out.binormal.w = 0;
+
+	Out.normal.xyz = normalize(normal);
+	Out.normal.w = 0;
+
+	return Out;
+}
+

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>Plane Equation</title>
+
+<meta charset="utf-8">
+<meta name="keywords" content="plane equation">
+<meta name="description" content="Explanation of plane equation in 3D space and distance to the plane">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Song Ho Ahn">
+<meta name="generator" content="editplus">
+<meta name="robots" content="index,follow">
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" media="screen" href="Plane%20Equation_tiedostot/screen.css">
+<link rel="stylesheet" type="text/css" media="print" href="Plane%20Equation_tiedostot/print.css">
+<link rel="stylesheet" type="text/css" media="screen" href="Plane%20Equation_tiedostot/plane.css">
+
+<!-- Javascript -->
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="prefetch" as="style" href="Plane%20Equation_tiedostot/a_data/lounge.css"><link rel="prefetch" as="script" href="Plane%20Equation_tiedostot/a_data/common.js"><link rel="prefetch" as="script" href="Plane%20Equation_tiedostot/a_data/lounge.js"><link rel="prefetch" as="script" href="Plane%20Equation_tiedostot/a_data/config.js"></head>
+
+<body>
+<div id="wrap">
+
+<div id="leftblock">
+<div class="innerblock">
+
+<!-- nav -->
+<div style="clear:both; font-size:80%">
+<a href="http://www.songho.ca/math/index.html">←Back</a>
+</div>
+
+
+<h1>Plane Equation</h1>
+
+<p>
+<b>Related Topics:</b> <a href="http://www.songho.ca/math/line/line.html">Line Equation</a>, <a href="http://www.songho.ca/opengl/gl_matrix.html">Matrix</a>
+<br>
+<b>Download:</b> <a href="http://www.songho.ca/opengl/files/plane.zip">plane.zip</a>
+</p>
+
+<ul>
+	<li><a href="#distance_origin">Distance from Origin</a></li>
+	<li><a href="#distance_point">Distance from a Point</a></li>
+	<li><a href="#intersect_3planes">Intersection of 3 Planes</a></li>
+	<li><a href="#intersect_2planes">Intersection of 2 Planes</a></li>
+	<li><a href="#example_2planes">Example: Intersection Line of 2 Planes (Interactive Demo)</a></li>
+</ul>
+
+
+<div style="float:left; text-align:center">
+<img src="Plane%20Equation_tiedostot/planeGraph01.png" alt="Graph of a plane in 3D" width="290" height="270">
+<br>
+<span class="caption">Graph of a plane in 3D</span>
+</div>
+<p>
+The equation of a plane in 3D space is defined with normal vector (perpendicular to the plane) and a known point on the plane.
+</p>
+<p>
+Let the normal vector of a plane, <img src="Plane%20Equation_tiedostot/plane03.png" alt="normal vector" width="12" height="14"> and the known point on the plane, P<sub>1</sub>. And, let any point on the plane as P.
+</p>
+<p>
+We can define a vector connecting from P<sub>1</sub> to P, which is lying on the plane.
+<br>
+<img src="Plane%20Equation_tiedostot/plane08.png" alt="" width="267" height="20">
+</p>
+<p>
+Since the vector <img src="Plane%20Equation_tiedostot/plane07.png" alt="" width="51" height="18"> and the normal vector <img src="Plane%20Equation_tiedostot/plane03.png" alt="normal vector" width="12" height="14"> are perpendicular each other, the dot product of two vector should be 0.
+<br>
+<img src="Plane%20Equation_tiedostot/plane09.png" alt="" width="303" height="20">
+</p>
+<p style="clear:both">
+This dot product of the normal vector and a vector on the plane becomes 
+the equation of the plane. By calculating the dot product, we get;
+<br>
+<img src="Plane%20Equation_tiedostot/plane10.png" alt="equation of a plane" width="312" height="78">
+</p>
+<p>
+If we substitute the constant terms to <img src="Plane%20Equation_tiedostot/plane11.png" style="vertical-align:middle;" alt="" width="194" height="20">, then the plane equation becomes simpler;
+<br>
+<img src="Plane%20Equation_tiedostot/plane12.png" alt="equation of a plane" width="174" height="18">
+</p>
+
+<h3 id="distance_origin">Distance from Origin</h3>
+<p>
+If the normal vector is normalized (unit length), then the constant term of the plane equation, <em>d</em> becomes the distance from the origin.
+</p>
+<div style="float:left; text-align:center">
+<img src="Plane%20Equation_tiedostot/planeGraph02.png" alt="Plane with unit normal" width="310" height="270">
+<br>
+<span class="caption">Plane with unit normal</span>
+</div>
+<p>
+If the unit normal vector (a<sub>1</sub>, b<sub>1</sub>, c<sub>1</sub>), then, the point P<sub>1</sub> on the plane becomes (<em>D</em>a<sub>1</sub>, <em>D</em>b<sub>1</sub>, <em>D</em>c<sub>1</sub>), where <em>D</em>
+ is the distance from the origin. The equation of the plane can be 
+rewritten with the unit vector and the point on the plane in order to 
+show the distance <em>D</em> is the constant term of the equation;
+</p>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="Plane%20Equation_tiedostot/plane13.png" alt="" width="385" height="156">
+</p>
+<p>
+Therefore, we can find the distance from the origin by dividing the 
+standard plane equation by the length (norm) of the normal vector 
+(normalizing the plane equation). For example, the distance from the 
+origin for the following plane equation with normal (1, 2, 2) is 2;
+<br>
+<img src="Plane%20Equation_tiedostot/plane14.png" alt="" width="376" height="120">
+</p>
+
+<h3 id="distance_point">Distance from a Point</h3>
+<div style="float:left; text-align:center">
+<img src="Plane%20Equation_tiedostot/planeGraph03.png" alt="Distance between Plane and Point" width="350" height="270">
+<br>
+<span class="caption">Distance between Plane and Point</span>
+</div>
+<p>
+The shortest distance from an arbitrary point P<sub>2</sub> to a plane can be calculated by the dot product of two vectors <img src="Plane%20Equation_tiedostot/plane03.png" alt="" width="12" height="14"> and <img src="Plane%20Equation_tiedostot/plane17.png" alt="" width="73" height="20">, projecting the vector <img src="Plane%20Equation_tiedostot/plane17.png" alt="" width="73" height="20"> to the normal vector <img src="Plane%20Equation_tiedostot/plane03.png" alt="" width="12" height="14"> of the plane.
+</p>
+<p>
+The distance <em>D</em> between a plane <img src="Plane%20Equation_tiedostot/plane12.png" style="vertical-align:middle" alt="equation of a plane" width="174" height="18"> and a point P<sub>2</sub> becomes;
+<br>
+<img src="Plane%20Equation_tiedostot/plane15.png" alt="" width="432" height="75">
+</p>
+<p>
+The numerator part of the above equation, <img src="Plane%20Equation_tiedostot/plane16.png" alt="" style="vertical-align:middle;" width="99" height="20"> is expanded;
+<br>
+<img src="Plane%20Equation_tiedostot/plane18.png" alt="" width="424" height="49">
+</p>
+<p>
+Finally, we put it to the previous equation to complete the distance formula;
+<br>
+<img src="Plane%20Equation_tiedostot/plane19.png" alt="distance between plane and point" width="343" height="46">
+</p>
+<p>
+Note that the distance formula looks like inserting P<sub>2</sub> into 
+the plane equation, then dividing by the length of the normal vector. 
+For example, the distance from a point (-1, -2, -3) to a plane x + 2y + 
+2z - 6 = 0 is;
+<br>
+<img src="Plane%20Equation_tiedostot/plane20.png" alt="" width="387" height="145">
+</p>
+<p>
+Notice this distance is signed; can be negative value. It is useful to 
+determine the direction of the point. For example, if the distance is 
+positive, the point is in the same side where the normal is pointing to.
+ And, a negative distance means the point is in opposite side.
+</p>
+
+<h3 id="intersect_3planes">Intersection of 3 Planes</h3>
+<p>
+Before finding the <a href="#intersect_2planes">intersection of 2 planes</a>, we discuss finding the intersection of 3 planes first. This formular will be used for 2-plane intersection.
+</p>
+<div style="float:left; text-align:center">
+<img src="Plane%20Equation_tiedostot/planeGraph04.png" alt="Intersection of 3 planes at a point" width="300" height="300">
+<br>
+<span class="caption">Intersecting 3 planes at a point</span>
+</div>
+<p>
+There are various ways to intersect 3 planes, but we will look into only
+ special case; intersecting 3 planes at a point. In order to find the 
+intersection point <strong>P</strong> (x, y, z), we solve the linear system of 3 planes.
+<br>
+<img src="Plane%20Equation_tiedostot/plane21.png" alt="Linear System of 3 Planes" width="483" height="81">
+</p>
+<p>
+Or, in matrix form;
+<br>
+<img src="Plane%20Equation_tiedostot/plane22.png" alt="Matrix form of plane equations" width="257" height="71">
+</p>
+Therefore, solving the linear system is finding the inverse matrix.
+<p>
+<img src="Plane%20Equation_tiedostot/plane23.png" alt="" width="278" height="75">
+</p>
+<p>
+Let the 3x3 matrix <strong><em>A</em></strong>, and the intesection point is computed by Cramer's rule;
+<br>
+<img src="Plane%20Equation_tiedostot/plane25.png" alt="solution for intersection point of 3 planes" width="371" height="46">
+<br>
+<br>
+where the determinants are;
+<br>
+<img src="Plane%20Equation_tiedostot/plane26.png" alt="" width="183" height="72">
+<br>
+<img src="Plane%20Equation_tiedostot/plane27.png" alt="" style="margin-top:1em;" width="695" height="72">
+</p>
+<p>
+Let's calculate <img src="Plane%20Equation_tiedostot/plane28.png" alt="" style="vertical-align:middle;" width="55" height="20"> first.
+<br>
+<img src="Plane%20Equation_tiedostot/plane29.png" alt="determinant of 3x3 matrix" width="509" height="172">
+</p>
+<p>
+Notice that the determinant can be expressed as vector notation (cross 
+product and inner product) to simplify the equation. In order to 
+intersect at a point (having only 1 solution), the determinant must be 
+not zero;
+<br>
+<img src="Plane%20Equation_tiedostot/plane34.png" alt="" width="148" height="20">
+</p>
+
+<p>
+In a similar way, other determintants can be found;
+<br>
+<img src="Plane%20Equation_tiedostot/plane30.png" alt="" width="529" height="141">
+<br>
+<img src="Plane%20Equation_tiedostot/plane31.png" alt="" style="margin-top:1em;" width="540" height="141">
+<br>
+<img src="Plane%20Equation_tiedostot/plane32.png" alt="" style="margin-top:1em;" width="539" height="141">
+</p>
+
+<p>
+Therefore, the intersection point, <em><strong>P</strong> (x, y, z)</em> can be written in matrix form;
+<br>
+<img src="Plane%20Equation_tiedostot/plane35.png" alt="solution for intersection of 3 planes in matrix form" width="555" height="71">
+</p>
+<p>
+Or, it can be expressed in simpler vector form as well;
+<br>
+<img src="Plane%20Equation_tiedostot/plane33.png" alt="solution for intersection of 3 planes" width="400" height="46">
+</p>
+
+<h3 id="intersect_2planes">Intersection of 2 Planes</h3>
+<div style="float:left; text-align:center">
+<img src="Plane%20Equation_tiedostot/planeGraph05.png" alt="Intersection of 2 planes" width="300" height="240">
+<br>
+<span class="caption">Intersection of 2 planes produces a line</span>
+</div>
+<p>
+When 2 planes are intersected, it produces a line. A <a href="http://www.songho.ca/math/line/line.html">line equation</a> can be expressed  with its direction vector <img src="Plane%20Equation_tiedostot/line_eq04.png" alt="" width="12" height="14"> and a point <img src="Plane%20Equation_tiedostot/line_eq03.png" alt="" style="vertical-align:middle;" width="19" height="17"> on the line;
+<br>
+<img src="Plane%20Equation_tiedostot/line_eq25.png" alt="line equation" width="64" height="17">
+</p>
+<p>
+The direction vector of the line is perpendicular to both normal vectors <img src="Plane%20Equation_tiedostot/plane38.png" alt="" width="19" height="17"> and <img src="Plane%20Equation_tiedostot/plane39.png" alt="" width="19" height="17">, so it is cross product of them;
+<br>
+<img src="Plane%20Equation_tiedostot/plane37.png" alt="direction vector of a line" width="98" height="17">
+</p>
+<p>
+Now, find any point on the line using the formula in the previous 
+section for the intersection of 3 planes by adding a third plane. We can
+ pick the simplest plane, which the normal of the plane is <img src="Plane%20Equation_tiedostot/line_eq04.png" alt="" width="12" height="14"> and it passes through the origin, <img src="Plane%20Equation_tiedostot/plane41.png" alt="" width="53" height="17">. Therefore, the third plane equation becomes <img src="Plane%20Equation_tiedostot/plane40.png" alt="" style="vertical-align:middle;" width="68" height="18"> or <img src="Plane%20Equation_tiedostot/plane43.png" alt="" style="vertical-align:middle;" width="169" height="20">.
+</p><p>
+Then, solve the linear system of 3 planes using the above formula;
+<br>
+<img src="Plane%20Equation_tiedostot/plane42.png" alt="" width="647" height="251">
+</p>
+<p>
+Once the point on the line is found, we can finally construct the line equation as; <img src="Plane%20Equation_tiedostot/line_eq25.png" alt="line equation" style="vertical-align:middle;" width="64" height="17">.
+</p>
+<p>
+Here is C++ implementation to find the intersection line of 2 planes. Please see <a href="http://www.songho.ca/opengl/files/plane.zip">Plane.cpp</a> for more detail.
+</p>
+<pre><code class="codeblock">
+<span class="comment">// dependency: Vector3, Line, Plane</span>
+struct Vector3
+{
+    float x;
+    float y;
+    float z;
+};
+
+class Line
+{
+    Vector3 direction;                 <span class="comment">// v</span>
+    Vector3 point;                     <span class="comment">// p</span>
+};
+
+class Plane
+{
+    Vector3 normal;                    <span class="comment">// (a, b, c)</span>
+    Vector3 d;                         <span class="comment">// constant term: d = -(a*x0 + b*y0 + c*z0)</span>
+};
+
+
+Line intersect(Plane&amp; plane1, Plane&amp; plane2)
+{
+    Vector3 n1 = plane1.normal;
+    Vector3 n2 = plane2.normal;
+    float d1 = plane1.d;
+    float d2 = plane2.d;
+
+    <span class="comment">// find direction vector of the intersection line</span>
+    Vector3 v = n1.cross(n2);                   <span class="comment">// cross product</span>
+
+    <span class="comment">// if |direction| = 0, 2 planes are parallel (no intersect)</span>
+    <span class="comment">// return a line with NaN</span>
+    if(v.x == 0 &amp;&amp; v.y == 0 &amp;&amp; v.z == 0)
+        return Line(Vector3(NAN, NAN, NAN), Vector3(NAN, NAN, NAN));
+
+    <span class="comment">// find a point on the line, which is also on both planes</span>
+    <span class="comment">// choose simplest plane where d=0: ax + by + cz = 0</span>
+    float dot = v.dot(v);                       <span class="comment">// V dot V</span>
+    Vector3 u1 =  d2 * n1;                      <span class="comment">// d2 * N1</span>
+    Vector3 u2 = -d1 * n2;                      <span class="comment">//-d1 * N2</span>
+    Vector3 p = (u1 + u2).cross(v) / dot;       <span class="comment">// (d2*N1-d1*N2) X V / V dot V</span>
+
+    return Line(v, p);
+}
+
+</code></pre>
+
+<h3 id="example_2planes">Example: Intersection line of 2 Planes (Interactive Demo)</h3>
+<p>
+The following interactive demo is finding the intersection line from 2 
+planes in 3D. Use left mouse button to rotate the view, and right button
+ to zoom in and out. It requires WebGL enabled browsers.
+</p>
+<div class="glcontent">
+<div class="glleft">
+<canvas id="glview1" width="400" height="400">
+</canvas>
+</div>
+<!-- begin WebGL right block -->
+<div class="glright">
+<fieldset class="slidergroup">
+<legend>Plane 1</legend>
+<span id="planeEq1">2.0x + 3.0y + 1.0z + 3.0 = 0</span>
+<br>
+<span class="col1">a:</span><input class="col2" id="rangeA1" min="-10" max="10" step="0.1" value="2" type="range"><label id="labelA1" class="col3">2</label>
+<br>
+<span class="col1">b:</span><input class="col2" id="rangeB1" min="-10" max="10" step="0.1" value="3" type="range"><label id="labelB1" class="col3">3</label>
+<br>
+<span class="col1">c:</span><input class="col2" id="rangeC1" min="-10" max="10" step="0.1" value="1" type="range"><label id="labelC1" class="col3">1</label>
+<br>
+<span class="col1">d:</span><input class="col2" id="rangeD1" min="-10" max="10" step="0.1" value="3" type="range"><label id="labelD1" class="col3">3</label>
+</fieldset>
+
+<fieldset class="slidergroup">
+<legend>Plane 2</legend>
+<span id="planeEq2">-1.0x + 1.0y + 1.0z + 2.0 = 0</span>
+<br>
+<span class="col1">a:</span><input class="col2" id="rangeA2" min="-10" max="10" step="0.1" value="-1" type="range"><label id="labelA2" class="col3">-1</label>
+<br>
+<span class="col1">b:</span><input class="col2" id="rangeB2" min="-10" max="10" step="0.1" value="1" type="range"><label id="labelB2" class="col3">1</label>
+<br>
+<span class="col1">c:</span><input class="col2" id="rangeC2" min="-10" max="10" step="0.1" value="1" type="range"><label id="labelC2" class="col3">1</label>
+<br>
+<span class="col1">d:</span><input class="col2" id="rangeD2" min="-10" max="10" step="0.1" value="2" type="range"><label id="labelD2" class="col3">2</label>
+</fieldset>
+
+<fieldset class="slidergroup">
+<legend>Intersection Line</legend>
+<span id="intersect">(0.316, -0.974, -0.711) + t(2.0, -3.0, 5.0)</span>
+</fieldset>
+
+<button type="reset" id="buttonReset">Reset Planes</button>
+
+</div>
+<!-- end of WebGL right block -->
+<p class="clear">
+</p>
+</div>
+<!-- end of WebGL content block -->
+
+<p>
+You can download C++ version <a href="http://www.songho.ca/opengl/files/plane.zip">plane.zip</a>.
+</p>
+
+
+<!-- footer -->
+<div id="footer">
+<div style="float:left">
+©&nbsp;2009 - 2017 <a href="mailto:song.ahn@gmail.com">Song Ho Ahn (<span lang="ko">안성호</span>)</a>
+</div>
+<div style="float:right">
+<img src="Plane%20Equation_tiedostot/html5_gray32.png" alt="HTML5 Logo" width="32" height="32">
+</div>
+<div style="float:right">
+<a href="http://validator.w3.org/check?uri=referer"><img src="Plane%20Equation_tiedostot/I_heart_validator.png" alt="HTML Validator" width="80" height="15"></a>
+</div>
+</div>
+
+<!-- nav -->
+<div style="clear:both; font-size:80%">
+<a href="http://www.songho.ca/math/index.html">←Back</a>
+</div>
+
+</div>
+</div> <!-- END OF LEFTBLOCK -->
+
+
+<!-- right content block ============================================ -->
+<div id="rightblock">
+<div class="innerblock">
+
+<!-- DISQUS block =============================== -->
+<div id="commentblock">
+<div id="buttonDisqus" class="cssbutton">Show Comments</div>
+
+<div id="disqus_thread"><iframe id="dsq-app4580" name="dsq-app4580" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 0px !important;" src="Plane%20Equation_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+
+<noscript>
+Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+</div>
+<!-- END OF DISQUS BLOCK ======================== -->
+
+<div>
+&nbsp;
+</div>
+
+</div>
+</div>
+<!-- END OF RIGHT BLOCK ============================================= -->
+
+</div>
+<!-- END OF WRAP ==================================================== -->
+
+
+
+<div id="loggerContainer" style="width: 100%; margin: 0px; padding: 0px; box-sizing: border-box; position: fixed; left: 0px; z-index: 9999; bottom: -215px; display: none;"><div id="loggerTab" style="width:40px; box-sizing:border-box; overflow:hidden; font:bold 10px verdana,helvetica,sans-serif; line-height:19px; color:#fff; position:absolute; left:20px; top:-20px; margin:0; padding:0; text-align:center; border:1px solid #aaa; border-bottom:none; background:rgba(0,0,0,0.8); -webkit-border-top-right-radius:8px; -webkit-border-top-left-radius:8px; -khtml-border-radius-topright:8px; -khtml-border-radius-topleft:8px; -moz-border-radius-topright:8px; -moz-border-radius-topleft:8px; border-top-right-radius:8px; border-top-left-radius:8px; ">LOG</div><div id="logger" style="font:12px monospace; height: 215px; box-sizing:border-box; color:#fff; overflow-x:hidden; overflow-y:scroll; visibility:hidden; position:relative; bottom:0px; margin:0px; padding:5px; background:rgba(0, 0, 0, 0.8); border-top:1px solid #aaa; "><span style="color: rgb(170, 255, 170); font-weight: bold;">===== Log Started at 2018-02-18, 04:47:41, (Logger version 1.15) =====</span><br><br><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">=====&nbsp;WebGL&nbsp;Info&nbsp;=====</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;Version:&nbsp;WebGL&nbsp;1.0</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;GLSL&nbsp;Ver:&nbsp;WebGL&nbsp;GLSL&nbsp;ES&nbsp;1.0</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;Vendor:&nbsp;Mozilla</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Renderer:&nbsp;Mozilla</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color:&nbsp;(8,&nbsp;8,&nbsp;8,&nbsp;8)&nbsp;bits</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Depth:&nbsp;24&nbsp;bits</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;Stencil:&nbsp;0&nbsp;bits</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Extentions:&nbsp;ANGLE_instanced_arrays,EXT_blend_minmax,EXT_color_buffer_half_float,EXT_frag_depth,EXT_sRGB,EXT_shader_texture_lod,EXT_texture_filter_anisotropic,EXT_disjoint_timer_query,OES_element_index_uint,OES_standard_derivatives,OES_texture_float,OES_texture_float_linear,OES_texture_half_float,OES_texture_half_float_linear,OES_vertex_array_object,WEBGL_color_buffer_float,WEBGL_compressed_texture_etc,WEBGL_compressed_texture_s3tc,WEBGL_compressed_texture_s3tc_srgb,WEBGL_debug_renderer_info,WEBGL_debug_shaders,WEBGL_depth_texture,WEBGL_draw_buffers,WEBGL_lose_context</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">=====&nbsp;Light&nbsp;=====</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;Position:&nbsp;Vector4(0,&nbsp;0,&nbsp;1,&nbsp;0)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color:&nbsp;Vector4(1,&nbsp;1,&nbsp;0.8,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Attenuations:&nbsp;Vector3(1,&nbsp;0,&nbsp;0)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">=====&nbsp;Material&nbsp;=====</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Ambient:&nbsp;(0.4,&nbsp;0.5,&nbsp;0.4,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Diffuse:&nbsp;(0.5,&nbsp;0.6,&nbsp;0.5,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;Specular:&nbsp;(0.1,&nbsp;0.2,&nbsp;0.1,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Shininess:&nbsp;32</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">=====&nbsp;Material&nbsp;=====</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Ambient:&nbsp;(0.4,&nbsp;0.4,&nbsp;0.5,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Diffuse:&nbsp;(0.5,&nbsp;0.5,&nbsp;0.6,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;Specular:&nbsp;(0.1,&nbsp;0.1,&nbsp;0.2,&nbsp;1)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Shininess:&nbsp;32</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Window&nbsp;is&nbsp;resized:&nbsp;400&nbsp;x&nbsp;400</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">WebGL&nbsp;is&nbsp;initialized.</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;window&nbsp;resize&nbsp;event&nbsp;listener,&nbsp;handleResize().</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;canvas&nbsp;mousemove&nbsp;event&nbsp;listener,&nbsp;handleMouseMove().</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;canvas&nbsp;mousedown&nbsp;event&nbsp;listener,&nbsp;handleMouseDown().</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;canvas&nbsp;mouseup&nbsp;event&nbsp;listener,&nbsp;handleMouseUp().</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;canvas&nbsp;contextmenu&nbsp;event&nbsp;listener,&nbsp;handleContextMenu().</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Added&nbsp;canvas&nbsp;mousewheel&nbsp;event&nbsp;listeners,&nbsp;handleMouseWheel()</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Loaded&nbsp;file:&nbsp;gles_flat.frag</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Loaded&nbsp;file:&nbsp;gles_flat.vert</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Loaded&nbsp;OBJ:</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">=====&nbsp;OBJ&nbsp;Model&nbsp;=====</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Triangle&nbsp;Count:&nbsp;200</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;Index&nbsp;Count:&nbsp;600</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;Group&nbsp;Count:&nbsp;2</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Vertex&nbsp;Count:&nbsp;204</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;Normal&nbsp;Count:&nbsp;204</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">TexCoord&nbsp;Count:&nbsp;204</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Center:&nbsp;Vector3(-4.76837158203125e-7,&nbsp;0,&nbsp;-4.76837158203125e-7)</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radius:&nbsp;1.4142147267263578</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;"></div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Loaded&nbsp;file:&nbsp;gles_phong.vert</div><div style="clear:both;"></div><div style="color:#999;float:left;">04:47:43&nbsp;</div><div style="word-wrap:break-word;margin-left:6.0em;">Loaded&nbsp;file:&nbsp;gles_phong.frag</div><div style="clear:both;"></div></div></div><iframe style="display: none;"></iframe></body></html>

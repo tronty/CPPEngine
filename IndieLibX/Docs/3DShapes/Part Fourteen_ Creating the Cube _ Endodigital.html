@@ -1,0 +1,681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>  Part Fourteen: Creating the Cube | Endodigital</title>
+		<meta http-equiv="imagetoolbar" content="no">
+<link rel="stylesheet" href="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/style.css" type="text/css" media="screen">
+<link rel="stylesheet" type="text/css" media="print" href="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/print.css">
+<link rel="alternate" type="application/rss+xml" title="Endodigital RSS Feed" href="http://www.endodigital.com/feed/">
+<link rel="pingback" href="http://www.endodigital.com/xmlrpc.php">
+
+<link rel="alternate" type="application/rss+xml" title="Endodigital » Part Fourteen: Creating the Cube Comments Feed" href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fourteen-creating-the-cube/feed/">
+		
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="codecolorer-css" href="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/codecolorer.css" type="text/css" media="screen">
+<link rel="https://api.w.org/" href="http://www.endodigital.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.endodigital.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.endodigital.com/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 4.4.5">
+<link rel="canonical" href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fourteen-creating-the-cube/">
+<link rel="shortlink" href="http://www.endodigital.com/?p=488">
+<link rel="alternate" type="application/json+oembed" href="http://www.endodigital.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.endodigital.com%2Fopengl-es-2-0-on-the-iphone%2Fpart-fourteen-creating-the-cube%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://www.endodigital.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.endodigital.com%2Fopengl-es-2-0-on-the-iphone%2Fpart-fourteen-creating-the-cube%2F&amp;format=xml">
+</head>
+<body>
+<div id="wrapper">
+<div id="header">
+	<div id="search2">
+		  <form method="get" id="searchform2" action="http://www.endodigital.com/">
+		  <div><input class="searchinput" onfocus="doClear(this)" value="Search" name="s" id="s" type="text">
+		  <input id="searchsubmit2" class="search_button" value="Search" type="submit">
+		  </div>
+		  </form>
+	</div>
+<!--
+		  <h1><a href="http://www.endodigital.com/">Endodigital</a></h1>
+		  <h2>Stuff I think the world might find interesting</h2>
+-->
+		  <h2><a href="http://www.endodigital.com/"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/ed_logo.png"></a></h2>
+
+</div>
+<div id="tabs">
+		<ul id="page-list" class="clearfix"><li class="page_item"><a href="http://www.endodigital.com/" title="Home">Home</a></li>
+		<li class="page_item page-item-2"><a href="http://www.endodigital.com/about/">About</a></li>
+<li class="page_item page-item-34 page_item_has_children current_page_ancestor current_page_parent"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/">OpenGL ES 2.0 on the iPhone</a>
+<ul class="children">
+	<li class="page_item page-item-39"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-one-introduction/">Part One: Introduction</a></li>
+	<li class="page_item page-item-44"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-two-opengl-basics/">Part Two: OpenGL Basics</a></li>
+	<li class="page_item page-item-49"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-three-getting-started-in-xcode/">Part Three: Getting Started in Xcode</a></li>
+	<li class="page_item page-item-73"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-four-creating-the-opengl-environment/">Part Four: Creating the OpenGL Environment</a></li>
+	<li class="page_item page-item-130"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-five-drawing-something-on-the-screen/">Part Five: Drawing Something on the Screen</a></li>
+	<li class="page_item page-item-214"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-six-making-some-changes/">Part Six: Making Some Changes</a></li>
+	<li class="page_item page-item-245"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-seven-matrices/">Part Seven: Matrices</a></li>
+	<li class="page_item page-item-256"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-eight-the-translation-matrix/">Part Eight: The Translation Matrix</a></li>
+	<li class="page_item page-item-307"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-nine-the-scale-matrix/">Part Nine: The Scale Matrix</a></li>
+	<li class="page_item page-item-330"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-ten-matrix-tools/">Part Ten: Matrix Tools</a></li>
+	<li class="page_item page-item-360"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-eleven-the-rotation-matrix/">Part Eleven: The Rotation Matrix</a></li>
+	<li class="page_item page-item-379"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-twelve-the-projection-matrix/">Part Twelve: The Projection Matrix</a></li>
+	<li class="page_item page-item-401"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-thirteen-rendering-textures/">Part Thirteen: Rendering Textures</a></li>
+	<li class="page_item page-item-488 current_page_item"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fourteen-creating-the-cube/">Part Fourteen: Creating the Cube</a></li>
+	<li class="page_item page-item-525"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fifteen-drawing-and-culling/">Part Fifteen: Drawing and Culling</a></li>
+	<li class="page_item page-item-557"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-sixteen-the-depth-buffer/">Part Sixteen: The Depth Buffer</a></li>
+	<li class="page_item page-item-584"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-seventeen-putting-it-all-together/">Part Seventeen: Putting It All Together</a></li>
+	<li class="page_item page-item-621"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/multiple-textures-on-the-cube/">Appendix A: Multiple Textures on the Cube</a></li>
+	<li class="page_item page-item-637"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/adding-a-cube-map-and-velocity/">Appendix B: Adding a Cube Map and Velocity</a></li>
+</ul>
+</li>
+<li class="page_item page-item-753 page_item_has_children"><a href="http://www.endodigital.com/touchtargets-app/">TouchTargets App</a>
+<ul class="children">
+	<li class="page_item page-item-756"><a href="http://www.endodigital.com/touchtargets-app/chapter-1-rounding-up-opengl/">Chapter 1: Rounding Up OpenGL</a></li>
+	<li class="page_item page-item-763"><a href="http://www.endodigital.com/touchtargets-app/chapter-2-pulling-out-opengl/">Chapter 2: Pulling Out OpenGL</a></li>
+	<li class="page_item page-item-767"><a href="http://www.endodigital.com/touchtargets-app/chapter-3-converting-to-the-new-edopenglprogram-class/">Chapter 3: Converting to the New EDOpenGLProgram Class</a></li>
+	<li class="page_item page-item-782"><a href="http://www.endodigital.com/touchtargets-app/say-hello-world-opengl/">Chapter 4: Say “Hello, World!”, OpenGL</a></li>
+	<li class="page_item page-item-791"><a href="http://www.endodigital.com/touchtargets-app/chapter-5-building-the-importer/">Chapter 5: Building the Importer</a></li>
+	<li class="page_item page-item-796"><a href="http://www.endodigital.com/touchtargets-app/chapter-6-using-the-importer/">Chapter 6: Using the Importer</a></li>
+	<li class="page_item page-item-799"><a href="http://www.endodigital.com/touchtargets-app/chapter-7-creating-the-text-string-class/">Chapter 7: Creating the Text String Class</a></li>
+	<li class="page_item page-item-810"><a href="http://www.endodigital.com/touchtargets-app/chapter-8-managing-our-text-strings/">Chapter 8: Managing Our Text Strings</a></li>
+	<li class="page_item page-item-818"><a href="http://www.endodigital.com/touchtargets-app/chapter-9-finally-opengl-says-hello-world-and-more/">Chapter 9: Finally, OpenGL Says “Hello, World!”, and More</a></li>
+	<li class="page_item page-item-833"><a href="http://www.endodigital.com/touchtargets-app/chapter-10-ready/">Chapter 10: Ready…</a></li>
+	<li class="page_item page-item-845"><a href="http://www.endodigital.com/touchtargets-app/chapter-11-aim/">Chapter 11: Aim…</a></li>
+	<li class="page_item page-item-848"><a href="http://www.endodigital.com/touchtargets-app/chapter-12-fire/">Chapter 12: Fire!</a></li>
+	<li class="page_item page-item-854"><a href="http://www.endodigital.com/touchtargets-app/chapter-13-whos-keeping-score/">Chapter 13: Who’s Keeping Score?</a></li>
+	<li class="page_item page-item-858"><a href="http://www.endodigital.com/touchtargets-app/chapter-14-a-little-background/">Chapter 14: A Little Background</a></li>
+	<li class="page_item page-item-864"><a href="http://www.endodigital.com/touchtargets-app/chapter-15-finishing-touches/">Chapter 15: Finishing Touches</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="tabs3">
+</div><div id="content">
+	<div id="content-inner">
+<div id="main">
+		<div class="post" id="post-488">
+	<div class="entry">
+		<h2><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fourteen-creating-the-cube/" rel="bookmark" title="Permanent Link to Part Fourteen: Creating the Cube">Part Fourteen: Creating the Cube</a></h2>
+				<p>In the last chapter, we managed to get a texture onto our square.
+ Now it’s time to add a little depth to our object and turn it into a 
+cube.</p>
+<p>We’re going to start by conceptualizing the cube that we want to 
+draw. First, think back to the flat square that was defined in the 
+vanilla template.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_001.jpg"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/t1_ch15_001.jpg" alt="" title="t1_ch15_001" class="aligncenter size-full wp-image-952" width="431" height="433"></a>
+</p>
+<p>&nbsp;</p>
+<p>Using the letters as vertices, the square was defined as ABCD, and 
+OpenGL used that in GL_TRIANGLE_STRIP mode to make two triangles, ABC 
+and BCD.</p>
+<p>Well, conceptually, it made ABC and CBD. What’s the difference, you 
+ask? In OpenGL, it’s a big difference, and it’s called “winding”.</p>
+<p>When we create a shape in OpenGL space, for example a triangle, one 
+face of that triangle is the front, and the other face is the back. When
+ we apply textures to these triangles, OpenGL will keep track of the 
+front face and the back face. The way that OpenGL determines which is 
+the front and which is the back is by looking at the direction in which 
+that triangle was drawn.</p>
+<p>Triangle ABC is wound counter-clockwise, but triangle ACB is wound 
+clockwise. Take a minute to fully understand this concept by looking at 
+the square diagram above and mentally drawing the differently-wound 
+triangles in that square.</p>
+<p>To illustrate the point, let’s image that you’re walking along one 
+day and find an amazing clock lying on the ground. The clock face is 
+completely transparent, and the hands are inside of the transparent 
+face, visible from both sides. There are no numbers, and it’s impossible
+ to tell just by looking at the clock which side is the front. From one 
+side it looks like it’s reading 3:00, but from the other it looks like 
+9:00. Which side is the front?</p>
+<p>For the sake of argument, let’s also say that you can’t tell the time
+ from just looking around. You must use the clock. What do you do?</p>
+<p>You wait until the minute hand moves. Did it go clockwise or 
+counter-clockwise? If it went clockwise, you’re looking at the front. If
+ it went counter-clockwise, you’re looking at the back.</p>
+<p>OpenGL does the same thing. It can’t tell what direction an arbitrary
+ triangle floating in space is facing, so it looks at the way it was 
+drawn. However, OpenGL considers the counter-clockwise side to the front
+ and the clockwise side to be the back.</p>
+<p>When I drew my square ABCD as the two triangles ABC and CBD, I got 
+two counter-clockwise triangles, and that became the front of my object.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_002.jpg"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/t1_ch15_002.jpg" alt="" title="Windings" class="aligncenter size-full wp-image-953" width="431" height="433"></a>
+</p>
+<p>&nbsp;</p>
+<p>If we want to draw a cube using GL_TRIANGLE_STRIP mode, there are a 
+couple of different ways to go. The first way is to look at each cube 
+face individually, make sure we’re drawing the triangles 
+counter-clockwise so the texture maps correctly, and draw each face one 
+by one.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_003.jpg"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/t1_ch15_003.jpg" alt="" title="t1_ch15_003" class="aligncenter size-full wp-image-954" srcset="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_003-296x300.jpg 296w, http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_003.jpg 500w" sizes="(max-width: 500px) 100vw, 500px" width="500" height="506"></a>
+</p>
+<p>&nbsp;</p>
+<p>A cube has eight corners, so we’re going to have eight vertices to 
+deal with. We’ll be using each one more than once as we construct the 
+six faces, but there will only be eight unique vertices in total.</p>
+<p>We’re going to assign OpenGL coordinates to each vertex, and make our
+ cube take up the entire OpenGL space. We’ll use matrices to scale it 
+down to something reasonable. Given that, our vertices would be the 
+following.</p>
+<pre>A = (-1, -1, 1)		B = (1, -1, 1)		C = (-1, 1, 1)		D = (1,1,1)
+E = (-1, -1, -1)	F = (1, -1, -1)		G = (-1, 1, -1) 	H = (1, 1, -1)
+</pre>
+<p>Now, let’s pull each of the six faces off and look at them as if we 
+were standing in front of each one from the outside of the cube.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004.jpg"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/t1_ch15_004.jpg" alt="" title="Cube Faces" class="aligncenter size-full wp-image-955" srcset="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004-300x203.jpg 300w, http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004.jpg 500w" sizes="(max-width: 500px) 100vw, 500px" width="500" height="339"></a>
+</p>
+<p>&nbsp;</p>
+<p>We already have the first face, ABCD. If we use that same drawing 
+pattern, the right face would be BFDH, the back would be FEHG, and so 
+on. The triangle strip would be ABCDBFDHFEHGEAGCEFABCDGH.</p>
+<p>In OpenGL coordinates, our cube vertices array would look like this.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeVerticesStrip<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>And since we’re following the same draw pattern on each face, out texture coordinates would look like this.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeTexCoordsStrip<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>The code to implement this would look like this.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_VERTEX, <span class="nu0">3</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeVerticesStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_VERTEX<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_TEXTURE_COORD, <span class="nu0">2</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeTexCoordsStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_TEXTURE_COORD<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">0</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">4</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">8</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">12</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">16</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">20</span>, <span class="nu0">4</span><span class="br0">)</span>;<br>
+<br>
+&nbsp; &nbsp; <span class="br0">[</span><span class="br0">(</span>EAGLView <span class="sy0">*</span><span class="br0">)</span>self.view presentFramebuffer<span class="br0">]</span>;</div></div>
+<p>Since we’ve defined each face independently, we need to call 
+glDrawArrays() once for each face, specifying the appropriate offset 
+into the vertex array for each face.</p>
+<p>A program using this logic would create a textured cube that looked pretty good (after scaling).</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/p14_08.png"><img class="aligncenter size-full wp-image-496" title="iPhone screen" src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/p14_08.png" alt="" width="257" height="500"></a>
+</p>
+<p>&nbsp;</p>
+<p>I know what you’re thinking. “But what if I had one hundred cubes? I don’t want to call glDrawArrays() six hundred times!</p>
+<p>I wonder what would happen if we just tried calling it once with this vertex array?</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_VERTEX, <span class="nu0">3</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeVerticesStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_VERTEX<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_TEXTURE_COORD, <span class="nu0">2</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeTexCoordsStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_TEXTURE_COORD<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">0</span>, <span class="nu0">24</span><span class="br0">)</span>;<br>
+<br>
+&nbsp; &nbsp; <span class="br0">[</span><span class="br0">(</span>EAGLView <span class="sy0">*</span><span class="br0">)</span>self.view presentFramebuffer<span class="br0">]</span>;</div></div>
+<p>This code would produce this.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/p14_10.png"><img class="aligncenter size-full wp-image-498" title="iPhone screen" src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/p14_10.png" alt="" width="257" height="500"></a>
+</p>
+<p>&nbsp;</p>
+<p>Well, at least it’s still a cube, of sorts.</p>
+<p>The key to making this work is to construct our triangle strip 
+properly, not by only looking at one face at a time. Let’s look at those
+ individual cube faces again.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004.jpg"><img src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/t1_ch15_004.jpg" alt="" title="Cube Faces" class="aligncenter size-full wp-image-955" srcset="http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004-300x203.jpg 300w, http://www.endodigital.com/wp-content/uploads/2011/04/t1_ch15_004.jpg 500w" sizes="(max-width: 500px) 100vw, 500px" width="500" height="339"></a>
+</p>
+<p>&nbsp;</p>
+<p>Let’s keep the first face (the front face) the same, ABCD. After 
+drawing the front face, we stopped at vertex D. Now look at the next 
+face we’re going to draw, the right face. There’s a vertex D on it, so 
+we should keep drawing from there. The front and right faces together as
+ a triangle strip would be ABCDBHF. OpenGL would interpret this as four 
+triangles, ABC, CBD, DBH, and HBF.</p>
+<p>That looks good, we have four triangles making up two faces, all wound counter-clockwise. There is, however, one small problem.</p>
+<p>In order to properly apply textures to these faces, we need four 
+vertices to apply the four corners of our texture. We have four on the 
+front face, but only three on the right face. In addition, I was 
+planning to draw the front, right, back, left, bottom, and top faces in 
+that order, but what will I do when I finish the bottom face? The bottom
+ face doesn’t share any vertices with the top face.</p>
+<p>I could be clever and draw the faces in a different order, 
+guaranteeing that I’ll always have a shared vertex, but I don’t have to.
+ There’s an easy way to solve both of my problems at once: degenerate 
+triangles.</p>
+<p>Degenerate triangles are triangles that have no area. When OpenGL 
+runs into a degenerate triangle in a triangle strip, it simply ignores 
+it and goes to the next vertex. OpenGL wont start drawing again until it
+ finds a triangle with area.</p>
+<p>For our first problem, guaranteeing four texture coordinates per 
+face, we can just throw in a degenerate triangle. The easiest way to do 
+that is to use the same vertex twice between faces, like this.</p>
+<p>Instead of ABCDBHF, let’s use ABCDDBHF. OpenGL would create the 
+following triangles: ABC, CBD, CDD, DDB, DBH, and HBF. If you remove the
+ degenerate triangles, CDD and DDB, you’re left with ABC, CBD, DBH, and 
+BHF, just like we had with only seven vertices.</p>
+<p>The cube will render the same way, and we’ll have enough vertices for all of our texture coordinates.</p>
+<p>If we fix our vertex array to take advantage of degenerate triangles, we get this.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeVerticesStrip<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// move to top</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top Face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>If you look at the first vertex of each face after the first one, you
+ can see that it’s a duplicate of the last vertex of the previous face. 
+This not only gives us that fourth vertex we need for a texture 
+coordinate, it creates a degenerate triangle that will be ignored by 
+OpenGL.</p>
+<p>Also, after the bottom face, we duplicate the last vertex of the 
+bottom face and then duplicate the first vertex of the top face. This 
+effectively moves us to the top of the cube from the bottom without 
+drawing triangles between the two.</p>
+<p>In order for our textures to be drawn correctly, we had to move the 
+texture coordinates around to match whatever vertex was specified in the
+ vertex array.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeTexCoordsStrip<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>The code that uses these new arrays is only a little different.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_VERTEX, <span class="nu0">3</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeVerticesStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_VERTEX<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_TEXTURE_COORD, <span class="nu0">2</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeTexCoordsStrip<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_TEXTURE_COORD<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">0</span>, <span class="nu0">26</span><span class="br0">)</span>;<br>
+<br>
+&nbsp; &nbsp; <span class="br0">[</span><span class="br0">(</span>EAGLView <span class="sy0">*</span><span class="br0">)</span>self.view presentFramebuffer<span class="br0">]</span>;</div></div>
+<p>Since we added a few degenerate triangles to get from the bottom face
+ to the top face, we have to make sure that the vertex size in the 
+glDrawArrays() function matches.</p>
+<p>Running this code we get a nice looking cube with only one call to the glDrawArrays() function.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/p14_14.png"><img class="aligncenter size-full wp-image-504" title="iPhone screen" src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/p14_14.png" alt="" width="257" height="500"></a>
+</p>
+<p>&nbsp;</p>
+<p>With some clever placement of degenerate triangles, we could even add
+ more cubes in different locations around the screen with the same 
+glDrawArrays() call.</p>
+<p>So how can we take advantage of this in our project? In the 
+EDCubeDemoViewController.m file, make the following changes to the 
+drawFrame method.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer"><span class="sy0">-</span> <span class="br0">(</span><span class="kw4">void</span><span class="br0">)</span>drawFrame<br>
+<span class="br0">{</span><br>
+&nbsp; &nbsp; <span class="br0">[</span><span class="br0">(</span>EAGLView <span class="sy0">*</span><span class="br0">)</span>self.view setFramebuffer<span class="br0">]</span>;<br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="coMULTI">/* ED: Removed<br>
+&nbsp; &nbsp; static const GLfloat squareVertices[] = {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; -0.5f, -0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0.5f, -0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; -0.5f, 0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0.5f, 0.5f,<br>
+&nbsp; &nbsp; };<br>
+&nbsp; &nbsp; &nbsp;*/</span><br>
+<br>
+&nbsp; &nbsp; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeVertices<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// move to top</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top Face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;<br>
+<br>
+&nbsp; &nbsp; <span class="coMULTI">/* ED: Removed<br>
+&nbsp; &nbsp; static const GLfloat squareTexCoords[] = {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0, 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 1, 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0, 1,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 1, 1<br>
+&nbsp; &nbsp; };<br>
+&nbsp; &nbsp; &nbsp;*/</span><br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeTexCoords<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;<br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">float</span> transY <span class="sy0">=</span> 0.0f;<br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">float</span> transX <span class="sy0">=</span> 0.0f;<br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; GLfloat mvpMatrix<span class="br0">[</span><span class="nu0">16</span><span class="br0">]</span>;<br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; glClearColor<span class="br0">(</span>0.5f, 0.5f, 0.5f, 1.0f<span class="br0">)</span>;<br>
+&nbsp; &nbsp; glClear<span class="br0">(</span>GL_COLOR_BUFFER_BIT<span class="br0">)</span>;<br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span><span class="br0">[</span>context API<span class="br0">]</span> <span class="sy0">==</span> kEAGLRenderingAPIOpenGLES2<span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glEnable<span class="br0">(</span>GL_TEXTURE_2D<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; glBindTexture<span class="br0">(</span>GL_TEXTURE_2D, textureName<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; glTexParameteri<span class="br0">(</span>GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; glTexParameteri<span class="br0">(</span>GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR<span class="br0">)</span>;<br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Use shader program.</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glUseProgram<span class="br0">(</span>program<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyIdentity<span class="sy0">:</span>mvpMatrix<span class="br0">]</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//[EDMatrixTools applyScale:mvpMatrix x:0.5f y:0.5f z:1.0f]; // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyScale<span class="sy0">:</span>mvpMatrix x<span class="sy0">:</span>0.25f y<span class="sy0">:</span>0.25f z<span class="sy0">:</span>0.25f<span class="br0">]</span>; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//[EDMatrixTools applyRotation:mvpMatrix x:0 y:0 z:transY]; // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyRotation<span class="sy0">:</span>mvpMatrix x<span class="sy0">:</span><span class="br0">(</span>transX <span class="sy0">/</span> <span class="nu0">4</span><span class="br0">)</span> y<span class="sy0">:</span><span class="br0">(</span>transX <span class="sy0">/</span> <span class="nu0">4</span><span class="br0">)</span> z<span class="sy0">:</span>transY<span class="br0">]</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyTranslation<span class="sy0">:</span>mvpMatrix x<span class="sy0">:</span><span class="br0">(</span>cosf<span class="br0">(</span>transX<span class="br0">)</span> <span class="sy0">/</span> 2.0f<span class="br0">)</span> y<span class="sy0">:</span><span class="br0">(</span>sinf<span class="br0">(</span>transY<span class="br0">)</span> <span class="sy0">/</span> 2.0f<span class="br0">)</span> z<span class="sy0">:</span>0.0f<span class="br0">]</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyProjection<span class="sy0">:</span>mvpMatrix aspect<span class="sy0">:</span><span class="nu0">1.5</span><span class="br0">]</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Update uniform value.</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glUniformMatrix4fv<span class="br0">(</span>uniforms<span class="br0">[</span>UNIFORM_MVP_MATRIX<span class="br0">]</span>, <span class="nu0">1</span>, <span class="nu0">0</span>, mvpMatrix<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; glUniform1i<span class="br0">(</span>uniforms<span class="br0">[</span>UNIFORM_TEXTURE<span class="br0">]</span>, <span class="nu0">0</span><span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; transY <span class="sy0">+=</span> 0.075f; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; transX <span class="sy0">+=</span> 0.075f;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Update attribute values.</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices); // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_VERTEX, <span class="nu0">3</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeVertices<span class="br0">)</span>; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_VERTEX<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//glVertexAttribPointer(ATTRIB_TEXTURE_COORD, 2, GL_FLOAT, 0, 0, squareTexCoords); // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_TEXTURE_COORD, <span class="nu0">2</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeTexCoords<span class="br0">)</span>; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glEnableVertexAttribArray<span class="br0">(</span>ATTRIB_TEXTURE_COORD<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Validate program before drawing. This is a good check, but only really necessary in a debug build.</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// DEBUG macro must be defined in your debug configurations if that's not already the case.</span><br>
+<span class="co1">#if defined(DEBUG)</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="br0">(</span><span class="sy0">!</span><span class="br0">[</span>self validateProgram<span class="sy0">:</span>program<span class="br0">]</span><span class="br0">)</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; NSLog<span class="br0">(</span><span class="co3">@</span><span class="st0">"Failed to validate program: %d"</span>, program<span class="br0">)</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">return</span>;<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">}</span><br>
+<span class="co1">#endif</span><br>
+&nbsp; &nbsp; <span class="br0">}</span><br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="co2">//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // ED: Removed</span><br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">0</span>, <span class="nu0">26</span><span class="br0">)</span>; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="br0">[</span><span class="br0">(</span>EAGLView <span class="sy0">*</span><span class="br0">)</span>self.view presentFramebuffer<span class="br0">]</span>;<br>
+<span class="br0">}</span></div></div>
+<p>Let’s look at the changes one at a time.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="coMULTI">/* ED: Removed<br>
+&nbsp; &nbsp; static const GLfloat squareVertices[] = {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; -0.5f, -0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0.5f, -0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; -0.5f, 0.5f,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0.5f, 0.5f,<br>
+&nbsp; &nbsp; };<br>
+&nbsp; &nbsp; &nbsp;*/</span><br>
+<br>
+&nbsp; &nbsp; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeVertices<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// move to top</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top Face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="nu0">1</span>, <span class="sy0">-</span><span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<span class="sy0">-</span><span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>We got rid of the old vertex array for our square and added a new vertex array for our cube.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="coMULTI">/* ED: Removed<br>
+&nbsp; &nbsp; static const GLfloat squareTexCoords[] = {<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0, 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 1, 0,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 0, 1,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; 1, 1<br>
+&nbsp; &nbsp; };<br>
+&nbsp; &nbsp; &nbsp;*/</span><br>
+&nbsp; &nbsp; <br>
+&nbsp; &nbsp; <span class="co2">// ED: Added</span><br>
+&nbsp; &nbsp; <span class="kw4">static</span> <span class="kw4">const</span> GLfloat cubeTexCoords<span class="br0">[</span><span class="br0">]</span> <span class="sy0">=</span> <span class="br0">{</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Front face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Right face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Back face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Left face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Bottom face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">0</span>,<br>
+&nbsp; &nbsp; &nbsp; &nbsp; <br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">// Top face</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="nu0">0</span>,<span class="nu0">0</span>, <span class="nu0">1</span>,<span class="nu0">0</span>, <span class="nu0">0</span>,<span class="nu0">1</span>, <span class="nu0">1</span>,<span class="nu0">1</span><br>
+&nbsp; &nbsp; <span class="br0">}</span>;</div></div>
+<p>Likewise, we got rid of our old texture coordinates and replaced them
+ with our new ones. The number of texture coordinates in your texture 
+coordinate array will usually match the number of vertices in your 
+vertex array.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//[EDMatrixTools applyScale:mvpMatrix x:0.5f y:0.5f z:1.0f]; // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyScale<span class="sy0">:</span>mvpMatrix x<span class="sy0">:</span>0.25f y<span class="sy0">:</span>0.25f z<span class="sy0">:</span>0.25f<span class="br0">]</span>; <span class="co2">// ED: Added</span></div></div>
+<p>We’ve defined our cube as being larger than the square was, so we’re 
+going to scale it down a bit more. We’re also going to scale along the Z
+ axis now, since our new object has depth.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//[EDMatrixTools applyRotation:mvpMatrix x:0 y:0 z:transY]; // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="br0">[</span>EDMatrixTools applyRotation<span class="sy0">:</span>mvpMatrix x<span class="sy0">:</span><span class="br0">(</span>transX <span class="sy0">/</span> <span class="nu0">4</span><span class="br0">)</span> y<span class="sy0">:</span><span class="br0">(</span>transX <span class="sy0">/</span> <span class="nu0">4</span><span class="br0">)</span> z<span class="sy0">:</span>transY<span class="br0">]</span>;</div></div>
+<p>Here we’ll add rotation along the X and Y axes as well as Z, so it 
+will rotate as it spins. Warning: this may make you as nauseous as it 
+made me – we’ll fix it in the next chapter.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, squareVertices); // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_VERTEX, <span class="nu0">3</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeVertices<span class="br0">)</span>; <span class="co2">// ED: Added</span></div></div>
+<p>Not only do we start using the new cubeVertices array, but we change 
+the number of values per vertex to 3 from 2, since we’re now specifying a
+ Z coordinate in addition to X and Y.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co2">//glVertexAttribPointer(ATTRIB_TEXTURE_COORD, 2, GL_FLOAT, 0, 0, squareTexCoords); // ED: Removed</span><br>
+&nbsp; &nbsp; &nbsp; &nbsp; glVertexAttribPointer<span class="br0">(</span>ATTRIB_TEXTURE_COORD, <span class="nu0">2</span>, GL_FLOAT, <span class="nu0">0</span>, <span class="nu0">0</span>, cubeTexCoords<span class="br0">)</span>; <span class="co2">// ED: Added</span></div></div>
+<p>We need to use the new cubeTexCoords array for the texture coordinates.</p>
+<div class="codecolorer-container objc default" style="overflow:auto;white-space:nowrap;width:100%;"><div class="objc codecolorer">&nbsp; &nbsp; <span class="co2">//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // ED: Removed</span><br>
+&nbsp; &nbsp; glDrawArrays<span class="br0">(</span>GL_TRIANGLE_STRIP, <span class="nu0">0</span>, <span class="nu0">26</span><span class="br0">)</span>; <span class="co2">// ED: Added</span></div></div>
+<p>And finally, we update the glDrawArrays() function call to use all 26 vertices instead of just four.</p>
+<p>After these changes, we should have a rotating cube where our square used to be.</p>
+<p>&nbsp;</p>
+<p align="center">
+<a href="http://www.endodigital.com/wp-content/uploads/2011/04/p14_23.png"><img class="aligncenter size-full wp-image-516" title="iPhone screen" src="Part%20Fourteen:%20Creating%20the%20Cube%20%7C%20Endodigital_tiedostot/p14_23.png" alt="" width="257" height="500"></a>
+</p>
+<p>&nbsp;</p>
+<p>That’s odd, what happened?</p>
+<p>We’ll find out what’s wrong and how to fix it in the next chapter, Drawing and Culling.</p>
+<p align="center">
+<a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-thirteen-rendering-textures/">Part Thirteen</a> | <a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/">Index</a> | <a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fifteen-drawing-and-culling/">Part Fifteen</a></p>
+		</div>
+		<div class="fixed"></div>
+		<div class="postmetadata2">
+			<p>By <a href="http://www.endodigital.com/author/joe/" title="Posts by Joe" rel="author">Joe</a> April 19, 2011 </p>
+		</div>
+		
+<!-- Start editing here. -->
+			<!-- If comments are open, but there are no comments. -->
+
+	 	
+
+
+
+
+
+</div>
+		</div>
+		<div id="navigation">
+			<div class="fleft"></div>
+					<div class="fright"> </div>
+	</div>
+		</div> <!-- eof main -->
+<!-- begin sidebar -->
+<div id="sidebar">
+<div id="subscribe">
+  <div align="center"><a id="feedrss" title="Subscribe to our RSS Feed!" href="http://www.endodigital.com/feed/"><abbr title="RSS"></abbr></a>
+			  </div>
+</div>
+<div class="menu">
+<ul>
+<li id="search-3" class="widget widget_search"><h3>Search</h3><form role="search" method="get" id="searchform" class="searchform" action="http://www.endodigital.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input name="s" id="s" type="text">
+					<input id="searchsubmit" value="Search" type="submit">
+				</div>
+			</form></li><li id="meta-3" class="widget widget_meta"><h3>Meta</h3>			<ul>
+						<li><a href="http://www.endodigital.com/wp-login.php">Log in</a></li>
+			<li><a href="http://www.endodigital.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://www.endodigital.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</li><li id="pages-3" class="widget widget_pages"><h3>Pages</h3>		<ul>
+			<li class="page_item page-item-2"><a href="http://www.endodigital.com/about/">About</a></li>
+<li class="page_item page-item-34 page_item_has_children current_page_ancestor current_page_parent"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/">OpenGL ES 2.0 on the iPhone</a>
+<ul class="children">
+	<li class="page_item page-item-39"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-one-introduction/">Part One: Introduction</a></li>
+	<li class="page_item page-item-44"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-two-opengl-basics/">Part Two: OpenGL Basics</a></li>
+	<li class="page_item page-item-49"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-three-getting-started-in-xcode/">Part Three: Getting Started in Xcode</a></li>
+	<li class="page_item page-item-73"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-four-creating-the-opengl-environment/">Part Four: Creating the OpenGL Environment</a></li>
+	<li class="page_item page-item-130"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-five-drawing-something-on-the-screen/">Part Five: Drawing Something on the Screen</a></li>
+	<li class="page_item page-item-214"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-six-making-some-changes/">Part Six: Making Some Changes</a></li>
+	<li class="page_item page-item-245"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-seven-matrices/">Part Seven: Matrices</a></li>
+	<li class="page_item page-item-256"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-eight-the-translation-matrix/">Part Eight: The Translation Matrix</a></li>
+	<li class="page_item page-item-307"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-nine-the-scale-matrix/">Part Nine: The Scale Matrix</a></li>
+	<li class="page_item page-item-330"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-ten-matrix-tools/">Part Ten: Matrix Tools</a></li>
+	<li class="page_item page-item-360"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-eleven-the-rotation-matrix/">Part Eleven: The Rotation Matrix</a></li>
+	<li class="page_item page-item-379"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-twelve-the-projection-matrix/">Part Twelve: The Projection Matrix</a></li>
+	<li class="page_item page-item-401"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-thirteen-rendering-textures/">Part Thirteen: Rendering Textures</a></li>
+	<li class="page_item page-item-488 current_page_item"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fourteen-creating-the-cube/">Part Fourteen: Creating the Cube</a></li>
+	<li class="page_item page-item-525"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-fifteen-drawing-and-culling/">Part Fifteen: Drawing and Culling</a></li>
+	<li class="page_item page-item-557"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-sixteen-the-depth-buffer/">Part Sixteen: The Depth Buffer</a></li>
+	<li class="page_item page-item-584"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/part-seventeen-putting-it-all-together/">Part Seventeen: Putting It All Together</a></li>
+	<li class="page_item page-item-621"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/multiple-textures-on-the-cube/">Appendix A: Multiple Textures on the Cube</a></li>
+	<li class="page_item page-item-637"><a href="http://www.endodigital.com/opengl-es-2-0-on-the-iphone/adding-a-cube-map-and-velocity/">Appendix B: Adding a Cube Map and Velocity</a></li>
+</ul>
+</li>
+<li class="page_item page-item-753 page_item_has_children"><a href="http://www.endodigital.com/touchtargets-app/">TouchTargets App</a>
+<ul class="children">
+	<li class="page_item page-item-756"><a href="http://www.endodigital.com/touchtargets-app/chapter-1-rounding-up-opengl/">Chapter 1: Rounding Up OpenGL</a></li>
+	<li class="page_item page-item-763"><a href="http://www.endodigital.com/touchtargets-app/chapter-2-pulling-out-opengl/">Chapter 2: Pulling Out OpenGL</a></li>
+	<li class="page_item page-item-767"><a href="http://www.endodigital.com/touchtargets-app/chapter-3-converting-to-the-new-edopenglprogram-class/">Chapter 3: Converting to the New EDOpenGLProgram Class</a></li>
+	<li class="page_item page-item-782"><a href="http://www.endodigital.com/touchtargets-app/say-hello-world-opengl/">Chapter 4: Say “Hello, World!”, OpenGL</a></li>
+	<li class="page_item page-item-791"><a href="http://www.endodigital.com/touchtargets-app/chapter-5-building-the-importer/">Chapter 5: Building the Importer</a></li>
+	<li class="page_item page-item-796"><a href="http://www.endodigital.com/touchtargets-app/chapter-6-using-the-importer/">Chapter 6: Using the Importer</a></li>
+	<li class="page_item page-item-799"><a href="http://www.endodigital.com/touchtargets-app/chapter-7-creating-the-text-string-class/">Chapter 7: Creating the Text String Class</a></li>
+	<li class="page_item page-item-810"><a href="http://www.endodigital.com/touchtargets-app/chapter-8-managing-our-text-strings/">Chapter 8: Managing Our Text Strings</a></li>
+	<li class="page_item page-item-818"><a href="http://www.endodigital.com/touchtargets-app/chapter-9-finally-opengl-says-hello-world-and-more/">Chapter 9: Finally, OpenGL Says “Hello, World!”, and More</a></li>
+	<li class="page_item page-item-833"><a href="http://www.endodigital.com/touchtargets-app/chapter-10-ready/">Chapter 10: Ready…</a></li>
+	<li class="page_item page-item-845"><a href="http://www.endodigital.com/touchtargets-app/chapter-11-aim/">Chapter 11: Aim…</a></li>
+	<li class="page_item page-item-848"><a href="http://www.endodigital.com/touchtargets-app/chapter-12-fire/">Chapter 12: Fire!</a></li>
+	<li class="page_item page-item-854"><a href="http://www.endodigital.com/touchtargets-app/chapter-13-whos-keeping-score/">Chapter 13: Who’s Keeping Score?</a></li>
+	<li class="page_item page-item-858"><a href="http://www.endodigital.com/touchtargets-app/chapter-14-a-little-background/">Chapter 14: A Little Background</a></li>
+	<li class="page_item page-item-864"><a href="http://www.endodigital.com/touchtargets-app/chapter-15-finishing-touches/">Chapter 15: Finishing Touches</a></li>
+</ul>
+</li>
+		</ul>
+		</li>
+</ul>
+</div>
+</div><!-- end sidebar -->
+<div style="clear:both;"></div>
+</div>
+</div> <!-- eo content -->
+	<div class="style1" id="footer">
+	   <div id="tabs4">
+       </div>
+	<div id="footer-inner">
+		<p><span class="style2">Patagonia Theme designed by</span> <a href="http://www.wpthemesplanet.com/" class="style1">Wp Themes Planet</a> <span class="style2">and proudly powered by</span> <a href="http://wordpress.org/" class="style1">WordPress</a></p>
+	</div>
+	</div>
+
+
+
+
+</body></html>

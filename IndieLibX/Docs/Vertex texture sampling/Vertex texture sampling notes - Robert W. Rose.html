@@ -1,0 +1,858 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="Movable Type 4.34-en">
+<link rel="stylesheet" href="Vertex%20texture%20sampling%20notes%20-%20Robert%20W.%20Rose_tiedostot/styles.css" type="text/css">
+<link rel="start" href="http://www.robertwrose.com/" title="Home">
+<link rel="alternate" type="application/atom+xml" title="Recent Entries" href="http://www.robertwrose.com/atom.xml">
+
+
+
+    
+    <link rel="prev bookmark" href="http://www.robertwrose.com/2005/05/mail-20-gripes.html" title="Mail 2.0 Gripes">
+    <link rel="next bookmark" href="http://www.robertwrose.com/2005/05/passing-large-arrays-of-data-to-vertex.html" title="Passing large arrays of data to vertex shaders">
+    <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html"
+    trackback:ping="http://www.robertwrose.com/mt/mt-tb.cgi/28"
+    dc:title="Vertex texture sampling notes"
+    dc:identifier="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html"
+    dc:subject=""
+    dc:description="Vertex Shader 3.0 supports texture sampling. Several books and articles I&apos;ve come across reference this feature and provide HLSL example code for how to do it, but none explain how you&apos;re supposed to set up you DirectX pipeline to be..."
+    dc:creator="Robert W. Rose"
+    dc:date="2005-05-28T18:50:00-08:00" />
+</rdf:RDF>
+-->
+
+    
+
+    <title>Vertex texture sampling notes - Robert W. Rose</title>
+</head>
+<body id="mt-blog" class="mt-entry-archive layout-wtt">
+    <div id="container">
+        <div id="container-inner">
+
+
+            <div id="header">
+    <div id="header-inner">
+        <div id="header-content">
+
+
+            <div id="header-name"><a href="http://www.robertwrose.com/" accesskey="1">Robert W. Rose</a></div>
+            <div id="header-description"></div>
+
+        </div>
+    </div>
+</div>
+
+
+
+            <div id="content">
+                <div id="content-inner">
+
+
+                    <div id="alpha">
+                        <div id="alpha-inner">
+
+
+                            <div id="entry-159" class="entry-asset asset hentry">
+                                <div class="asset-header">
+                                    <h1 id="page-title" class="asset-name entry-title">Vertex texture sampling notes</h1>
+                                    <div class="asset-meta">
+                                        <span class="byline">
+
+                                            By <span class="vcard author"><a class="fn url" href="http://robertwrose.com/">Robert W. Rose</a></span> on <abbr class="published" title="2005-05-28T18:50:00-08:00">May 28, 2005  6:50 PM</abbr>
+
+                                        </span>
+
+                                        <span class="separator">|</span> <a href="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html#comments">2 Comments</a>
+
+
+                                        <span class="separator">|</span> <a href="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html#trackbacks">No TrackBacks</a>
+
+                                    </div>
+                                </div>
+                                <div class="asset-content entry-content">
+
+                                    <div class="asset-body">
+                                        Vertex Shader 3.0 supports 
+texture sampling.  Several books and articles I've come across reference
+ this feature and provide HLSL example code for how to do it, but none 
+explain how you're supposed to set up you DirectX pipeline to be able to
+ make it work.  It's taken me hours and hours to get things working, so I
+ thought I'd share what I had to do to make it happen.<br><br>Why sample
+ a texture in a vertex shader?  Displacement mapping, passing large 
+arrays of data to a VS so you can deform geometry (something you could 
+only previously do in a pixel shader).  Why NOT sample textures in a 
+vertex shader?  The performance is much worse than it would be with a 
+pixel shader.  Beware.<br><br>The HLSL function that performs texture 
+sampling in VS is tex2Dlod().  It takes two arguments, your sampler and a
+ float4 in the format (u, v, mip1, mip2).  Set mip1 and mip2 to 0 unless
+ you want to do mipmap blending.  Most of the time you're going to call 
+this function like this:<br><br>float4 foo = tex2Dlod(DisplaceSampler, float4(vTexCoord0.x, vTexCoord0.y, 0.0, 0.0));<br><br>When
+ you declare your sampler in your HLSL file you don't need to do 
+anything special.  Typically tho you don't want to do any blending 
+between points in the texture, so specify your sample with POINT 
+sampling:<br><br>texture g_Texture; <br>sampler DisplaceSampler = sampler_state<br>{<br> texture = <g_texture>;<br>  MinFilter = POINT;<br>   MagFilter = POINT;<br>   MipFilter = NONE;<br>   AddressU = CLAMP;<br>   AddressV = CLAMP;<br>};<br><br><br>Current
+ hardware only supports floating point texture formats for vertex 
+texture sampling.  When you load the texture that you're going to sample
+ in the VS pass D3DFMT_A32B32G32R32F or D3DFMT_R16F as the format.<br><br> HRESULT hres = D3DXCreateTextureFromFileEx(<br>  d-&gt;GetDevice(),<br>  name,<br>  D3DX_DEFAULT, D3DX_DEFAULT,<br>  D3DX_DEFAULT,<br>  D3DUSAGE_RENDERTARGET, <br>  D3DFMT_A32B32G32R32F,<br>  D3DPOOL_DEFAULT,<br>  D3DX_DEFAULT,<br>  D3DX_DEFAULT,<br>  NULL,<br>  NULL,<br>  NULL,<br>  &amp;texture);<br><br>The
+ docs say to use RENDERTARGET for vertex sampled textures but I've 
+monkeyed with this value and can't get it to change anything.<br><br>I 
+could only get tex2Dlod() working by using hardware vertex processing 
+with the HAL renderer.  Software vertex processing is returning 0 for 
+the texture every time, so I guess I still have some bugs to work out.  I
+ had an email exchange with <a href="http://charlesriver.com/Books/AuthorDetail.aspx?ID=5590">Wolfgang Engel</a>
+ about this and he said that the HLSL compiler at one time had some bugs
+ with how it handled the tex2Dlod() function and that they might still 
+be in there.  In the mean time I'm just doing without vertex debugging I
+ guess.<br><br>g_pD3D-&gt;CreateDevice(<br>D3DADAPTER_DEFAULT,<br>D3DDEVTYPE_HAL,<br>hWnd,<br>D3DCREATE_HARDWARE_VERTEXPROCESSING,<br>&amp;g_d3dpp,<br>&amp;g_pd3dDevice );<br><br>To pass the texture to the vertex shader you give it to the ID3DXEffect object like you would any other texture:<br><br>hr = g_pEffect-&gt;SetTexture( "g_Texture", texture);<br><br>That's
+ about it.  The biggest sticking point for me was finally trying it on 
+the hardware, because for whatever reason my REF renderer isn't doing 
+tex2Dlod() correctly.    Usually things are the other way around right? 
+ It works in the debugger and fails outside the debugger?  Oh well. :-P
+                                    </g_texture></div>
+
+
+                                </div>
+                                <div class="asset-footer">
+<div style="text-indent: 0px; margin: 0px; padding: 0px; background: transparent none repeat scroll 0% 0%; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px;" id="___plusone_0"><iframe ng-non-bindable="" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" id="I0_1491321292220" name="I0_1491321292220" src="Vertex%20texture%20sampling%20notes%20-%20Robert%20W.%20Rose_tiedostot/fastbutton.html" data-gapiattached="true" title="+1" width="100%" frameborder="0"></iframe></div>
+<a href="http://twitter.com/share" class="twitter-share-button" data-lang="en" data-url="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html" data-count="horizontal" data-via="moof2k">Tweet</a>
+<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.robertwrose.com%2F2005%2F05%2Fvertex-texture-sampling-notes.html&amp;layout=button_count&amp;show_faces=false&amp;send=false&amp;width=&amp;height=21&amp;action=like&amp;font=arial&amp;colorscheme=light" scrolling="no" style="border:none; overflow:hidden; width:px; height: 21px;" allowtransparency="true" frameborder="0"></iframe>
+
+
+    
+
+
+                                </div>
+                            </div>
+
+
+                    <div id="trackbacks" class="trackbacks">
+    <h2 class="trackbacks-header">No TrackBacks</h2>
+
+    
+    
+    <div class="trackbacks-info">
+        <p>TrackBack URL: http://www.robertwrose.com/mt/mt-tb.cgi/28</p>
+    </div>
+    
+
+
+    
+    
+</div>
+
+
+                    <div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">2 Comments</h2>
+    
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-69" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    
+
+                    <span class="vcard author">kephrenz</span>
+
+                    | <a href="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html#comment-69"><abbr class="published" title="2007-01-17T15:32:46-08:00">January 17, 2007  3:32 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(69, 'kephrenz')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>I don't know whether REF device is problematic but if you
+ create your texture with   D3DXCreateTexture (DXUTGetD3DDevice(), 1, 1,
+ 1, 0, D3DFMT_A32B32G32R32F, D3DPOOL_SYSTEMMEM, 
+&amp;gpDebugDminRenderTarget); you can debug in the Vertex Shader. But I
+ am still having problems with texture (render target) fetch from a 
+Vertex Shader. The result is (0,0,0,1) which I suppose the problem the 
+sampler register has no  texture attached.</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-105" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <img alt="Author Profile Page" src="Vertex%20texture%20sampling%20notes%20-%20Robert%20W.%20Rose_tiedostot/google_logo.png" width="16" height="16">
+
+                    <span class="vcard author">bllana20</span>
+
+                    | <a href="http://www.robertwrose.com/2005/05/vertex-texture-sampling-notes.html#comment-105"><abbr class="published" title="2011-08-04T21:23:19-08:00">August  4, 2011  9:23 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(105, 'bllana20')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>I like your codes. Keep up the good work dude.<br>
+<a>
+"&gt;Online Trading Account Reviews</a></p><a>
+        </a></div><a>
+    </a></div><a>
+</a></div><a>
+        
+    </a></div><a>
+        
+    
+    
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">Leave a comment</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"><a href="javascript:void(0)" onclick="return mtSignInOnClick('comment-greeting')">Sign in</a> to comment.</div>
+
+            <form method="post" action="http://www.robertwrose.com/mt/mt-comments.cgi" name="comments_form" id="comments-form" onsubmit="return mtCommentOnSubmit(this)" style="display: none;">
+                <input name="static" value="1" type="hidden">
+                <input name="entry_id" value="159" type="hidden">
+                <input name="__lang" value="en" type="hidden">
+                <input name="parent_id" value="" id="comment-parent-id" type="hidden">
+                <input name="armor" value="1" type="hidden">
+                <input name="preview" value="" type="hidden">
+                <input name="sid" value="" type="hidden">
+                <div id="comments-open-data">
+                    <div id="comment-form-name">
+                        <label for="comment-author">Name</label>
+                        <input id="comment-author" name="author" size="30" onfocus="mtCommentFormOnFocus()">
+                    </div>
+                    <div id="comment-form-email">
+                        <label for="comment-email">Email Address</label>
+                        <input id="comment-email" name="email" size="30" onfocus="mtCommentFormOnFocus()">
+                    </div>
+                    <div id="comment-form-url">
+                        <label for="comment-url">URL</label>
+                        <input id="comment-url" name="url" size="30" onfocus="mtCommentFormOnFocus()">
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <input id="comment-bake-cookie" name="bakecookie" onclick="mtRememberMeOnClick(this)" value="1" accesskey="r" type="checkbox">
+                        <label for="comment-bake-cookie">Remember personal info?</label>
+                    </div>
+                </div>
+                <div id="comment-form-reply" style="display:none">
+                    <input id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" type="checkbox">
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-text">
+                    <label for="comment-text">Comments
+                    (You may use HTML tags for style)</label>
+                    <textarea id="comment-text" name="text" rows="15" cols="50" onfocus="mtCommentFormOnFocus()"></textarea>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+                    <input accesskey="v" name="preview_button" id="comment-preview" value="Preview" onclick="this.form.preview.value='1';" type="submit">
+                    <input accesskey="s" name="post" id="comment-submit" value="Submit" type="submit">
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    
+    
+
+
+</a></div><a>
+
+
+
+
+                        </a></div><a>
+                    </a></div><a>
+
+
+                    </a><div id="beta"><a>
+    </a><div id="beta-inner"><a>
+
+
+    
+    <h3 class="widget-header">Myself</h3>
+</a><div class="widget-content"><a>
+</a><ul><a>
+</a><li><a></a><a href="https://twitter.com/moof2k">@moof2k</a></li>
+<li><a href="http://www.linkedin.com/in/robertwrose">LinkedIn</a></li>
+<li><a href="http://www.facebook.com/profile.php?id=1673769078">Facebook</a></li>
+<li><a href="https://plus.google.com/115273638433929403637?rel=author">Google+</a></li>
+<li><a href="http://picasaweb.google.com/robert.w.rose">Picasa</a>
+</li>
+<li><a href="http://www.flickr.com/photos/11176567@N04/">Flickr</a>
+</li>
+</ul>
+</div>
+
+<h3 class="widget-header">Projects</h3>
+<div class="widget-content">
+
+<ul>
+       <li><a href="http://bork3d.com/">Bork3D Games</a></li>
+        <li><a href="http://robertwrose.com/cg/thesis">M.S. Thesis</a></li>
+    	<li><a href="http://robertwrose.com/cg/">Computer Graphics</a></li>
+        <li><a href="http://www.robertwrose.com/dockload/">Dockload</a></li>
+    	<li><a href="http://rudescotsman.com/">Rude Scotsman Studios</a></li>
+        <li><a href="http://www.robertwrose.com/music/">Music</a></li>
+        <li><a href="http://seq541.sourceforge.net/">SEQ541</a></li>
+        <li><a href="http://www.robertwrose.com/x-sig/">X-Sig</a></li>
+</ul>
+</div>
+<div class="widget-archive-monthly widget-archive widget">
+    <h3 class="widget-header">Monthly <a href="http://www.robertwrose.com/archives.html">Archives</a></h3>
+    <div class="widget-content">
+        <ul>
+        
+            <li><a href="http://www.robertwrose.com/2013/04/">April 2013 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2013/03/">March 2013 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2013/01/">January 2013 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/11/">November 2012 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/10/">October 2012 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/09/">September 2012 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/07/">July 2012 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/06/">June 2012 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/05/">May 2012 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2012/03/">March 2012 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/12/">December 2011 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/11/">November 2011 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/10/">October 2011 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/09/">September 2011 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/08/">August 2011 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/05/">May 2011 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/03/">March 2011 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/02/">February 2011 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2011/01/">January 2011 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/12/">December 2010 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/09/">September 2010 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/08/">August 2010 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/06/">June 2010 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/05/">May 2010 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/04/">April 2010 (6)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2010/01/">January 2010 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/12/">December 2009 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/11/">November 2009 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/10/">October 2009 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/08/">August 2009 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/07/">July 2009 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/06/">June 2009 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/05/">May 2009 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/04/">April 2009 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/02/">February 2009 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2009/01/">January 2009 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/12/">December 2008 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/11/">November 2008 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/10/">October 2008 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/09/">September 2008 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/08/">August 2008 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/07/">July 2008 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/06/">June 2008 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/05/">May 2008 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/04/">April 2008 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/03/">March 2008 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/02/">February 2008 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2008/01/">January 2008 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/12/">December 2007 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/11/">November 2007 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/10/">October 2007 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/09/">September 2007 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/08/">August 2007 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/06/">June 2007 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/05/">May 2007 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/03/">March 2007 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/02/">February 2007 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2007/01/">January 2007 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/12/">December 2006 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/10/">October 2006 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/09/">September 2006 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/08/">August 2006 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/07/">July 2006 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/06/">June 2006 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/04/">April 2006 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/03/">March 2006 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/02/">February 2006 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2006/01/">January 2006 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/12/">December 2005 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/11/">November 2005 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/10/">October 2005 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/09/">September 2005 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/08/">August 2005 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/07/">July 2005 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/06/">June 2005 (9)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/05/">May 2005 (8)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/04/">April 2005 (13)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/03/">March 2005 (10)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/02/">February 2005 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2005/01/">January 2005 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/12/">December 2004 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/11/">November 2004 (19)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/10/">October 2004 (6)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/09/">September 2004 (10)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/08/">August 2004 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/07/">July 2004 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/06/">June 2004 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/05/">May 2004 (10)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/04/">April 2004 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/03/">March 2004 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/02/">February 2004 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2004/01/">January 2004 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/12/">December 2003 (1)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/11/">November 2003 (6)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/10/">October 2003 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/09/">September 2003 (3)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/08/">August 2003 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/07/">July 2003 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/06/">June 2003 (5)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/05/">May 2003 (4)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/04/">April 2003 (9)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/03/">March 2003 (21)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/02/">February 2003 (21)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2003/01/">January 2003 (28)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2002/12/">December 2002 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2002/11/">November 2002 (2)</a></li>
+        
+    
+        
+            <li><a href="http://www.robertwrose.com/2002/10/">October 2002 (12)</a></li>
+        
+        </ul>
+    </div>
+</div>
+        
+    
+
+
+
+<div class="widget-syndication widget">
+    <div class="widget-content">
+        <ul>
+            <li><img src="Vertex%20texture%20sampling%20notes%20-%20Robert%20W.%20Rose_tiedostot/feed.gif" alt="Subscribe to feed" width="9" height="9"> <a href="http://www.robertwrose.com/atom.xml">Subscribe to this blog's feed</a></li>
+
+        </ul>
+    </div>
+</div>
+
+
+
+    </div>
+</div>
+
+
+
+    
+<div id="gamma">
+    <div id="gamma-inner">
+    <h3 class="widget-header"><a href="http://picasaweb.google.com/robert.w.rose">Photos</a></h3>
+<div class="widget-content" id="picasa-box">
+<p>
+</p>
+ 
+
+ 
+
+
+
+</div>
+<div class="widget-search widget">
+    <h3 class="widget-header">Search</h3>
+    <div class="widget-content">
+        <form method="get" action="http://www.robertwrose.com/mt/mt-search.cgi">
+            <input id="search" class="ti" name="search" type="text">
+
+            <input name="IncludeBlogs" value="1" type="hidden">
+
+            <input name="limit" value="20" type="hidden">
+            <input accesskey="4" value="Search" type="submit">
+        </form>
+    </div>
+</div>
+
+<div class="widget-about-this-page widget">
+    <h3 class="widget-header">
+
+        About this Entry
+
+
+    </h3>
+    <div class="widget-content">
+
+
+        <p class="first">This page contains a single entry by <a href="http://robertwrose.com/">Robert W. Rose</a> published on <em>May 28, 2005  6:50 PM</em>.</p>
+    
+        <p><a href="http://www.robertwrose.com/2005/05/mail-20-gripes.html">Mail 2.0 Gripes</a> was the previous entry in this blog.</p>
+    
+    
+        <p><a href="http://www.robertwrose.com/2005/05/passing-large-arrays-of-data-to-vertex.html">Passing large arrays of data to vertex shaders</a> is the next entry in this blog.</p>
+    
+
+
+
+
+
+        <p>Find recent content on the <a href="http://www.robertwrose.com/">main index</a> or look in the <a href="http://www.robertwrose.com/archives.html">archives</a> to find all content.</p>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+
+
+                </div>
+            </div>
+
+
+            <div id="footer">
+    <div id="footer-inner">
+        <div id="footer-content">
+            <div class="widget-powered widget">
+                <div class="widget-content">
+                    Powered by <a href="http://www.movabletype.com/" rel="generator">Movable Type</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+        </div>
+    </div>
+
+
+<iframe name="oauth2relay260234295" id="oauth2relay260234295" src="Vertex%20texture%20sampling%20notes%20-%20Robert%20W.%20Rose_tiedostot/postmessageRelay.html" style="width: 1px; height: 1px; position: absolute; top: -100px;" tabindex="-1" aria-hidden="true"></iframe></body></html>

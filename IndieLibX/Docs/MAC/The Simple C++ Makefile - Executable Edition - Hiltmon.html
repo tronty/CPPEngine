@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="js video maskImage placeholder" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>The Simple C++ Makefile - Executable Edition - Hiltmon</title>
+  <meta name="author" content="Hilton Lipschitz">
+
+  
+  <meta name="description" content="I develop a lot of applications in C++ using Xcode on OS X and deploy them to CentOS Linux Servers to run. I follow the Simple C++ Project Structure …">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="http://hiltmon.com/blog/2015/09/28/the-simple-c-plus-plus-makefile-executable-edition/">
+  <link href="http://hiltmon.com/favicon.png" rel="icon">
+  <link href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="http://hiltmon.com/feed" rel="alternate" title="Hiltmon" type="application/atom+xml">
+  
+  
+  
+  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/css.css" rel="stylesheet" type="text/css">
+<link rel="apple-touch-icon" href="http://hiltmon.com/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="http://hiltmon.com/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="http://hiltmon.com/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="144x144" href="http://hiltmon.com/apple-touch-icon-144x144.png"> 
+
+
+
+
+  
+  
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="prefetch" href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/a_data/lounge.css"><link rel="prefetch" href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/a_data/common.js"><link rel="prefetch" href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/a_data/lounge.js"><link rel="prefetch" href="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/a_data/config.js"><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+  <header role="banner"><hgroup>
+  <div>
+    <h1><a href="http://hiltmon.com/">Hiltmon</a></h1>
+    
+      <h2>On walkabout in life and technology</h2>
+    
+  </div>		
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://hiltmon.com/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input name="sitesearch" value="hiltmon.com" type="hidden">
+    <input class="search" name="q" results="0" placeholder="Search" type="text">
+  </fieldset>
+</form>
+  
+<fieldset class="mobile-nav"><select><option value="" selected="selected">Navigate…</option><option value="http://hiltmon.com/about/">» About</option><option value="http://hiltmon.com/code/">» Code</option><option value="http://hiltmon.com/products/">» Products</option><option value="http://hiltmon.com/">» Blog</option><option value="http://hiltmon.com/blog/archives">» Archives</option><option value="http://hiltmon.com/feed">» RSS</option></select></fieldset><ul class="main-navigation">
+  <li><a href="http://hiltmon.com/about/" title="About the Hiltmon">About</a></li>
+  <li><a href="http://hiltmon.com/code/" title="Public code or projects that you can use">Code</a></li>
+  <li><a href="http://hiltmon.com/products/" title="Some of my personal and client projects">Products</a></li>
+  <li><a href="http://hiltmon.com/" title="Words from the Hiltmon">Blog</a></li>
+  <li><a href="http://hiltmon.com/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The Simple C++ Makefile - Executable Edition</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class="entry-date" datetime="2015-09-28T22:07:23-04:00"><span class="date"><span class="date-month">Sep</span> <span class="date-day">28</span><span class="date-suffix">th</span>, <span class="date-year">2015</span></span> <span class="time">10:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I develop a lot of applications in C++ using Xcode on OS X and deploy them to CentOS Linux Servers to run. I follow the <a href="http://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/">Simple C++ Project Structure</a> (and the <a href="http://hiltmon.com/blog/2015/08/01/simple-c-plus-plus-from-makefiles-to-xcode-builds/">Xcode edition</a>) to code up each product.</p>
+
+<p>However, Xcode is not available on Linux. To compile and deploy (and to test compiles and deploys), I use standard Unix <a href="https://www.gnu.org/software/make/manual/make.html#Introduction">Makefiles</a>, available almost everywhere.</p>
+
+<p>In this post I will show you the Makefile I use for multi-platform C++ <em>executable</em> builds and explain what each line and command does in detail. <span class="light">For Library builds, I have a similar, but different Makefile, see The Simple C++ Makefile - Library Edition (Coming Soon).</span></p>
+
+<h2>The Standard Project</h2>
+
+<p>I have selected one of my real projects for this post. The project is laid out as follows <span class="light">(most of the source files have been removed to shorten the list)</span>:</p>
+
+<pre><code>.
+├── Makefile
+├── README.markdown
+├── SantaCruzServer.xcodeproj
+├── doc
+│&nbsp;&nbsp; └── SantaCruz-dev.yml
+├── include
+│&nbsp;&nbsp; ├── caches
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── session_cache.h
+│&nbsp;&nbsp; ├── components
+│&nbsp;&nbsp; ├── connections
+│&nbsp;&nbsp; ├── queues
+│&nbsp;&nbsp; ├── workers
+│&nbsp;&nbsp; └── version.h
+└── src
+    ├── caches
+    │&nbsp;&nbsp; └── session_cache.cpp
+    ├── components
+    ├── connections
+   ├── workers
+    └── main.cpp
+</code></pre>
+
+<p>As expected, the C++ source files are under the <code>src</code> folder and includes are in the <code>include</code> tree.</p>
+
+<p>And here is the Makefile, the actual one I am using. Scroll below to see the breakdown and why I did it this way.</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+</pre></td><td class="code"><pre><code class="make"><span class="line"><span class="c">#</span>
+</span><span class="line"><span class="c">#  Makefile</span>
+</span><span class="line"><span class="c">#  SantaCruzServer</span>
+</span><span class="line"><span class="c">#</span>
+</span><span class="line"><span class="c">#  Created by Hilton Lipschitz on 2015-09-01.</span>
+</span><span class="line"><span class="c">#  Copyright (c) 2015 Maritime Capital LP. All rights reserved.</span>
+</span><span class="line"><span class="c">#</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># HIL: No spaces or comments after otherwise it captures them!</span>
+</span><span class="line"><span class="c"># Determine the platform</span>
+</span><span class="line"><span class="nv">UNAME_S</span> <span class="o">:=</span> <span class="k">$(</span>shell uname -s<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># CC</span>
+</span><span class="line"><span class="cp">ifeq ($(UNAME_S),Darwin)</span>
+</span><span class="line">  CC :<span class="o">=</span> clang++ -arch x86_64
+</span><span class="line"><span class="cp">else</span>
+</span><span class="line">  CC :<span class="o">=</span> g++
+</span><span class="line"><span class="cp">endif</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Folders</span>
+</span><span class="line"><span class="nv">SRCDIR</span> <span class="o">:=</span> src
+</span><span class="line"><span class="nv">BUILDDIR</span> <span class="o">:=</span> build
+</span><span class="line"><span class="nv">TARGETDIR</span> <span class="o">:=</span> bin
+</span><span class="line">
+</span><span class="line"><span class="c"># Targets</span>
+</span><span class="line"><span class="nv">EXECUTABLE</span> <span class="o">:=</span> SantaCruzServer
+</span><span class="line"><span class="nv">TARGET</span> <span class="o">:=</span> <span class="k">$(</span>TARGETDIR<span class="k">)</span>/<span class="k">$(</span>EXECUTABLE<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Final Paths</span>
+</span><span class="line"><span class="nv">INSTALLBINDIR</span> <span class="o">:=</span> /usr/local/bin
+</span><span class="line">
+</span><span class="line"><span class="c"># Code Lists</span>
+</span><span class="line"><span class="nv">SRCEXT</span> <span class="o">:=</span> cpp
+</span><span class="line"><span class="nv">SOURCES</span> <span class="o">:=</span> <span class="k">$(</span>shell find <span class="k">$(</span>SRCDIR<span class="k">)</span> -type f -name *.<span class="k">$(</span>SRCEXT<span class="k">))</span>
+</span><span class="line"><span class="nv">OBJECTS</span> <span class="o">:=</span> <span class="k">$(</span>patsubst <span class="k">$(</span>SRCDIR<span class="k">)</span>/%,<span class="k">$(</span>BUILDDIR<span class="k">)</span>/%,<span class="k">$(</span>SOURCES:.<span class="k">$(</span>SRCEXT<span class="k">)</span><span class="o">=</span>.o<span class="k">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Folder Lists</span>
+</span><span class="line"><span class="c"># Note: Intentionally excludes the root of the include folder so the lists are clean</span>
+</span><span class="line"><span class="nv">INCDIRS</span> <span class="o">:=</span> <span class="k">$(</span>shell find include/**/* -name <span class="s1">'*.h'</span> -exec dirname <span class="o">{}</span> <span class="se">\;</span> <span class="p">|</span> sort <span class="p">|</span> uniq<span class="k">)</span>
+</span><span class="line"><span class="nv">INCLIST</span> <span class="o">:=</span> <span class="k">$(</span>patsubst include/%,-I include/%,<span class="k">$(</span>INCDIRS<span class="k">))</span>
+</span><span class="line"><span class="nv">BUILDLIST</span> <span class="o">:=</span> <span class="k">$(</span>patsubst include/%,<span class="k">$(</span>BUILDDIR<span class="k">)</span>/%,<span class="k">$(</span>INCDIRS<span class="k">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Shared Compiler Flags</span>
+</span><span class="line"><span class="nv">CFLAGS</span> <span class="o">:=</span> -c
+</span><span class="line"><span class="nv">INC</span> <span class="o">:=</span> -I include <span class="k">$(</span>INCLIST<span class="k">)</span> -I /usr/local/include
+</span><span class="line"><span class="nv">LIB</span> <span class="o">:=</span> -L /usr/local/lib -lsantacruzengine -lsantacruzlib -larcadia -lcorinth -lyaml-cpp -lzmq -lhiredis -lbondoas
+</span><span class="line">
+</span><span class="line"><span class="c"># Platform Specific Compiler Flags</span>
+</span><span class="line"><span class="cp">ifeq ($(UNAME_S),Linux)</span>
+</span><span class="line">    CFLAGS +<span class="o">=</span> -std<span class="o">=</span>gnu++11 -O2 <span class="c"># -fPIC</span>
+</span><span class="line">
+</span><span class="line"><span class="c">    # PostgreSQL Special</span>
+</span><span class="line">    PG_VER :<span class="o">=</span> 9.3
+</span><span class="line">    INC +<span class="o">=</span> -I /usr/pgsql-<span class="k">$(</span>PG_VER<span class="k">)</span>/include
+</span><span class="line">    LIB +<span class="o">=</span> -L /usr/pgsql-<span class="k">$(</span>PG_VER<span class="k">)</span>/lib
+</span><span class="line"><span class="cp">else</span>
+</span><span class="line">  CFLAGS +<span class="o">=</span> -std<span class="o">=</span>c++11 -stdlib<span class="o">=</span>libc++ -O2
+</span><span class="line"><span class="cp">endif</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">$(TARGET)</span><span class="o">:</span> <span class="k">$(</span><span class="nv">OBJECTS</span><span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>TARGETDIR<span class="k">)</span>
+</span><span class="line">  @echo <span class="s2">"Linking..."</span>
+</span><span class="line">  @echo <span class="s2">"  Linking $(TARGET)"</span><span class="p">;</span> <span class="k">$(</span>CC<span class="k">)</span> <span class="nv">$^</span> -o <span class="k">$(</span>TARGET<span class="k">)</span> <span class="k">$(</span>LIB<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">$(BUILDDIR)/%.o</span><span class="o">:</span> <span class="k">$(</span><span class="nv">SRCDIR</span><span class="k">)</span>/%.<span class="k">$(</span><span class="nv">SRCEXT</span><span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>BUILDLIST<span class="k">)</span>
+</span><span class="line">  @echo <span class="s2">"Compiling $&lt;..."</span><span class="p">;</span> <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> <span class="k">$(</span>INC<span class="k">)</span> -c -o <span class="nv">$@</span> <span class="nv">$&lt;</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">clean</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">"Cleaning $(TARGET)..."</span><span class="p">;</span> <span class="k">$(</span>RM<span class="k">)</span> -r <span class="k">$(</span>BUILDDIR<span class="k">)</span> <span class="k">$(</span>TARGET<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">install</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">"Installing $(EXECUTABLE)..."</span><span class="p">;</span> cp <span class="k">$(</span>TARGET<span class="k">)</span> <span class="k">$(</span>INSTALLBINDIR<span class="k">)</span>
+</span><span class="line">  
+</span><span class="line"><span class="nf">distclean</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">"Removing $(EXECUTABLE)"</span><span class="p">;</span> rm <span class="k">$(</span>INSTALLBINDIR<span class="k">)</span>/<span class="k">$(</span>EXECUTABLE<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<h2>Breaking the Makefile down</h2>
+
+<p>This Makefile compiles a program called <code>SantaCruzServer</code> into the local <code>bin</code> folder, and installs it into the standard shared OS X and Linux <code>/usr/local/bin</code> folder. Lets see how it does it, line by line.</p>
+
+<pre><code>UNAME_S := $(shell uname -s)
+</code></pre>
+
+<p>The first step is to determine which platform the <code>make</code> is running on. I look for <code>Darwin</code> indicating an OS X computer or <code>Linux</code> for Linux.</p>
+
+<pre><code># CC
+ifeq ($(UNAME_S),Darwin)
+    CC := clang++ -arch x86_64
+else
+    CC := g++
+endif
+</code></pre>
+
+<p>OS X uses the new LLVM Clang compiler (I choose the C++ version), but my Linux servers run GCC 4.8. The <code>$(CC)</code> variable now contains the compiler command for the current platform.</p>
+
+<pre><code># Folders
+SRCDIR := src
+BUILDDIR := build
+TARGETDIR := bin
+</code></pre>
+
+<p>These variables set the location of the Source Code (<code>src</code>), where the build object files will go (<code>build</code>) and where the target will be saved (<code>bin</code>).</p>
+
+<pre><code># Targets
+EXECUTABLE := SantaCruzServer
+TARGET := $(TARGETDIR)/$(EXECUTABLE)
+</code></pre>
+
+<p>This sets up the Makefile target to make <code>bin/SantaCruzServer</code>. Note that, by default, this Makefile builds to a local <code>bin</code> folder so it does not overwrite the running application in case of a failed compile on deploy.</p>
+
+<pre><code># Final Paths
+INSTALLBINDIR := /usr/local/bin
+</code></pre>
+
+<p>This sets where the executable will be installed.</p>
+
+<pre><code># Code Lists
+SRCEXT := cpp
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+</code></pre>
+
+<p><code>Make</code> needs a list of source code files to compile to object files. This list gets built here. I use the <code>$(SRCEXT)</code> variable to store my source code file extension. I then use a shell command to search the <code>src</code> folder (and its subfolders) for all <code>.cpp</code> files and build the <code>$(SOURCES)</code> list. I then create an <code>$(OBJECTS)</code> list from the <code>$(SOURCES)</code> substituting the source path and extension with the build path and the object extension. This makes our compile rule simpler.</p>
+
+<pre><code># Folder Lists
+# Note: Intentionally excludes the root of the include folder so the lists are clean
+INCDIRS := $(shell find include/**/* -name '*.h' -exec dirname {} \; | sort | uniq)
+INCLIST := $(patsubst include/%,-I include/%,$(INCDIRS))
+BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
+</code></pre>
+
+<p>The next set of lists are used to build the list of include folders and related lists.</p>
+
+<p><span class="light">Aside: I am one of those quirky C++ programmers that does not use pathed <code>#includes</code> (e.g. Instead of <code>#include "../caches/session_cache.h"</code> I simply use <code>#include "session_cache.h"</code>)
+ and expect the compiler to figure it where things are. This way I can 
+re-arrange the code-base by moving files around, not change anything and
+ it still compiles and runs. Xcode behaves the same way by default.</span></p>
+
+<p>So, the <code>$(INCDIRS)</code> variable contains a unique list of subfolders under the <code>include</code> folder where all my header files reside. The <code>$(INCLIST)</code> variable is a transformation of <code>$(INCDIRS)</code> into the format needed as compiler flags. For example <code>include/caches</code> is transformed into <code>-I include/caches</code>. The <code>$(BUILDLIST)</code> variable creates a list of pathed subfolders for the <code>build</code> folder, where <code>include/caches</code> becomes <code>build/caches</code> for the compile step.</p>
+
+<pre><code># Shared Compiler Flags
+CFLAGS := -c
+INC := -I include $(INCLIST) -I /usr/local/include
+LIB := -L /usr/local/lib -lsantacruzengine -lsantacruzlib -larcadia -lcorinth -lyaml-cpp -lzmq -lhiredis -lbondoas
+</code></pre>
+
+<p>Most of the compiler flags are shared across both platforms and are set here. In this case, <code>$(CFLAGS)</code> is set to tell the compiler to compile only.</p>
+
+<p>The <code>$(INC)</code> variable is set to help the compiler find include files automatically, so it adds the <code>include</code> folder where the root header files are, the list of include subfolders determined above and the system shared <code>/usr/local/include</code> folder for shared library includes. Now I no longer need to worry when I move files around the code-base.</p>
+
+<p>The <code>$(LIB)</code> variable adds the shared system <code>/usr/local/lib</code>
+ folder where the shared libraries can be found. The rest of that line 
+contains a long list of libraries that this real program needs to link 
+with (<em>and is project specific - you need to set these for each project based on that project’s needs</em>). Note that all my shared libraries are in <code>/usr/local</code>.</p>
+
+<pre><code># Platform Specific Compiler Flags
+ifeq ($(UNAME_S),Linux)
+    CFLAGS += -std=gnu++11 -O2 # -fPIC
+
+    # PostgreSQL Special
+    PG_VER := 9.3
+    INC += -I /usr/pgsql-$(PG_VER)/include
+    LIB += -L /usr/pgsql-$(PG_VER)/lib 
+else
+    CFLAGS += -std=c++11 -stdlib=libc++ -O2
+endif
+</code></pre>
+
+<p>Not all settings are the same, which is why the Makefile now adds platform-specific parameters to our variables.</p>
+
+<p>On Linux, I use the <code>gnu++11</code> system library (to go with <code>g++</code>) and this gets added to the <code>$(CFLAGS)</code>
+ variable. Also, for some unknowable reason, the PostgreSQL include and 
+library files are in a non-standard location in Linux, so they get added
+ to the <code>$(INC)</code> and <code>$(LIB)</code> variables too.</p>
+
+<p>On OS X, I set <code>clang</code> to use the <code>c++11</code> language and to link with the <code>libc++</code> system library.</p>
+
+<pre><code>$(TARGET): $(OBJECTS)
+    @mkdir -p $(TARGETDIR)
+    @echo "Linking..."
+    @echo "  Linking $(TARGET)"; $(CC) $^ -o $(TARGET) $(LIB)
+</code></pre>
+
+<p>As a habit, I set the final goal of the Makefile first. In this case, <code>make</code> needs to make the <code>$(TARGET)</code> which is <code>bin/SantaCruzServer</code> given the list of <code>$(OBJECTS)</code> we generated above.</p>
+
+<p>First it creates the <code>bin</code> folder if it does not exist, then links the objects into an executable. The <code>$^</code> represents the list of targets.</p>
+
+<p><span class="light">Aside: I am also not one of those people who has 
+to see a busy screen of detailed commands as they compile. So, for 
+Makefile rules, I prepend them with a friendly message and do not print 
+out the actual multi-line incomprehensible command. See the output later
+ on for examples.</span></p>
+
+<pre><code>$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+    @mkdir -p $(BUILDLIST)
+    @echo "Compiling $&lt;..."; $(CC) $(CFLAGS) $(INC) -c -o $@ $&lt;
+</code></pre>
+
+<p>The Makefile needs to know how to generate the <code>$(OBJECTS)</code>, and that’s where the compile step comes in. For all files in the <code>src</code> folder, it compiles to a matching object file in the <code>build</code> folder.</p>
+
+<p>That’s all we need to build the application, but the Makefile has to do more.</p>
+
+<pre><code>clean:
+    @echo "Cleaning $(TARGET)..."; $(RM) -r $(BUILDDIR) $(TARGET)
+</code></pre>
+
+<p>The <code>clean</code> target tells <code>make</code> to remove the target <code>bin/SantaCruzServer</code> and the <code>build</code> folder. This gives us the ability to force a full recompile.</p>
+
+<pre><code>install:
+    @echo "Installing $(EXECUTABLE)..."; cp $(TARGET) $(INSTALLBINDIR)
+</code></pre>
+
+<p>The <code>install</code> target copies <code>SantaCruzServer</code> to <code>/usr/local/bin</code> where it will run in production.</p>
+
+<pre><code>distclean:
+    @echo "Removing $(EXECUTABLE)"; rm $(INSTALLBINDIR)/$(EXECUTABLE)
+</code></pre>
+
+<p>And to uninstall, we have the <code>distclean</code> target.</p>
+
+<pre><code>.PHONY: clean
+</code></pre>
+
+<p>This final line of code tricks <code>make</code> into being able to run the <code>clean</code> rules. If it were not here, <code>make</code> would try to build a file called <code>clean</code> and fail.</p>
+
+<h2>Using the Makefile</h2>
+
+<p>To start</p>
+
+<pre><code>$ make clean
+</code></pre>
+
+<p>This resets the environment. The output in this project is:</p>
+
+<pre><code>Cleaning bin/SantaCruzServer...
+</code></pre>
+
+<p>To build the executable</p>
+
+<pre><code>$ make -j
+</code></pre>
+
+<p>This tells <code>make</code> to build the primary target - in this case the first and only one in the file.</p>
+
+<p><span class="light"><strong>Tip: The <code>-j</code> parameter parallelizes the build for speed. The documentation for <code>make</code> specifies that you need a number of jobs as part of this parameter, but if you set none, <code>make</code> uses all cores.</strong></span></p>
+
+<p>In my case, the output is:</p>
+
+<pre><code>Compiling src/connections/control_channel_responder.cpp...
+Compiling src/connections/request_listener.cpp...
+Compiling src/connections/response_publisher.cpp...
+Compiling src/caches/session_cache.cpp...
+Compiling src/main.cpp...
+Compiling src/sc_configuration.cpp...
+Compiling src/sc_logger.cpp...
+Compiling src/sc_server.cpp...
+Compiling src/workers/worker.cpp...
+Compiling src/workers/worker_pool.cpp...
+Linking...
+  Linking bin/SantaCruzServer
+</code></pre>
+
+<p>The executable can now be found in <code>bin/SantaCruzServer</code> and run.</p>
+
+<pre><code>$ bin/SantaCruzServer
+2015-09-28 21:50:53.999 Info: SantaCruz V0.01 Alpha Server Starting...
+2015-09-28 21:50:53.006 Debug: Using SantaCruzLIB Version 0.1 Alpha
+2015-09-28 21:50:53.013 Debug: Using SantaCruzEngine Version 0.1 Alpha
+</code></pre>
+
+<p>To install the executable in production:</p>
+
+<pre><code>sudo make install
+</code></pre>
+
+<p>This will copy the new executable into production. <span class="light">For development deploys, you do not need the <code>sudo</code>.</span></p>
+
+<p>The output is:</p>
+
+<pre><code>Installing SantaCruzServer...
+</code></pre>
+
+<p>And to uninstall:</p>
+
+<pre><code>$ make distclean
+Removing SantaCruzServer
+</code></pre>
+
+<p>And the executable is all gone.</p>
+
+<h2>Reusing this Makefile in the next project</h2>
+
+<p>The entire Makefile can be copied to the next project. Only a few changes are needed:</p>
+
+<ul>
+<li>The <code>$(EXECUTABLE)</code> name needs to change for the new project</li>
+<li>The list of libraries in the <code>$(LIB)</code> variable needs to match the libraries linked to by the new project.</li>
+<li>If PostgreSQL is  not needed, remove it from the Linux Platform Specific Compiler Flags (and remove the <code>$(INC)</code> and <code>$(LIB)</code> additions).</li>
+</ul>
+
+
+<p>And that’s all there is to it.</p>
+
+<p>I am using this same Makefile pattern across many, many projects and 
+it works well for me. I hope it can help you compile and deploy your C++
+ projects with ease.</p>
+
+<p><em>Follow the author as <a href="http://twitter.com/hiltmon">@hiltmon</a> on Twitter.</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Hilton Lipschitz</span></span>
+
+      
+
+
+
+
+<time class="entry-date" datetime="2015-09-28T22:07:23-04:00"><span class="date"><span class="date-month">Sep</span> <span class="date-day">28</span><span class="date-suffix">th</span>, <span class="date-year">2015</span></span> <span class="time">10:07 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class="category" href="http://hiltmon.com/blog/categories/c-plus-plus/">c++</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="http://hiltmon.com/blog/2015/09/20/saturday-afternoons-watching-rugby-union/" title="Previous Post: Saturday Afternoons Watching Rugby Union">« Saturday Afternoons Watching Rugby Union</a>
+      
+      
+        <a class="basic-alignment right" href="http://hiltmon.com/blog/2015/10/04/why-i-am-subscribing-to-apple-music/" title="Next Post: Why I Subscribed to Apple Music">Why I Subscribed to Apple Music »</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 983px !important;" src="The%20Simple%20C++%20Makefile%20-%20Executable%20Edition%20-%20Hiltmon_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" frameborder="0" width="100%"></iframe></div>
+  </section>
+
+</div>
+
+<aside class="sidebar thirds">
+  
+    
+<section class="first odd">
+	<div id="carbonads"></div>
+</section><section class="even">
+  <h1>The Hiltmon</h1>
+  <p><strong>Hilton Lipschitz</strong> (<a href="http://twitter.com/hiltmon">@hiltmon</a>)
+ is CTO of an up and coming Hedge Fund, who loves to craft brilliant and
+ delightful web, iPhone, iPad and Macintosh software products. Before 
+this he was an independent software consultant, designer and developer 
+at <a href="http://www.noverse.com/">Noverse LLC</a>.</p>
+</section>
+<section class="odd">
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/03/12/notification-city/">Notification City</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/03/05/coding-style-standards-in-2017/">Coding Style Standards in 2017</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/01/28/mathjax-in-markdown/">MathJax in Markdown</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/11/06/on-the-new-macbook-pros/">On the New MacBook Pros</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/10/07/the-gentleman-james-v/">The Gentleman James V</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/09/25/the-annual-dependency-library-upgrade-process/">The Annual Dependency Library Upgrade Process</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/08/28/minimal-project-management-6-months-later/">Minimal Project Management - 6 Months Later</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/26/attractive-multi-line-sql-statements-in-c-plus-plus/">Attractive Multi-Line SQL Statements in C++</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/24/apple-watch-after-1-year/">Apple Watch - After 1 Year</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/10/spotlight-only-nine-months-later/">Spotlight Only - Nine Months Later</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright © 2017 - Hilton Lipschitz -
+  <span class="credit">Powered by <a href="http://octopress.org/">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<iframe style="display: none;"></iframe></body></html>

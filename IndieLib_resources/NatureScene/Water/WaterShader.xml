@@ -1,0 +1,70 @@
+<Shaders  fragmentProcessor = "PIXEL_SHADER"
+          vertexProcessor   = "VERTEX_SHADER"
+          linkProcessors    = "true">
+
+  <VERTEX_SHADER>
+    <Uniform name = "translation" type = "float" size = "4"/>
+    <Uniform name = "camera"      type = "float" size = "4"/>
+    <Uniform name = "timer"       type = "float" size = "1" x = "0" />
+
+    <RawData>
+      uniform vec4  translation;
+      uniform vec4  camera;
+      uniform float timer;
+     
+      void main(void)
+      {
+        vec4 regularPosition    = gl_Vertex;
+             regularPosition.y += cos(timer*0.75);
+        
+        vec4 correctPosition    = regularPosition + translation;
+        
+        gl_TexCoord[0]       = gl_TextureMatrix[1] * correctPosition;
+        gl_TexCoord[1]       = gl_MultiTexCoord0*2.0;
+        gl_TexCoord[2]       = camera - correctPosition;
+        gl_TexCoord[3]       = correctPosition;
+        gl_Position          = gl_ModelViewProjectionMatrix*regularPosition;
+      }
+    </RawData>
+  </VERTEX_SHADER>
+
+
+  <PIXEL_SHADER>
+    <Uniform name = "terrainInfo" type = "float" size = "4"         />
+    <Uniform name = "depthmap"    type = "int"   size = "1" x = "2" />
+    <Uniform name = "reflection"  type = "int"   size = "1" x = "1" />
+    <Uniform name = "normalmap"   type = "int"   size = "1" x = "0" />
+    <Uniform name = "timer"       type = "float" size = "1" x = "0" />
+    
+    <RawData>
+      uniform sampler2D  reflection;
+      uniform sampler2D  normalmap;
+      uniform sampler2D  depthmap;
+
+      uniform float      timer;
+      uniform vec4       terrainInfo;
+   
+      void main(void)
+      {
+        vec4  displacement    = gl_TexCoord[1];
+        vec3  viewVector      = normalize(gl_TexCoord[2].xyz);
+        vec2  projectedCoords = gl_TexCoord[0].xy/gl_TexCoord[0].w,
+              uvDepthCoords   = vec2((gl_TexCoord[3].x - terrainInfo.x)/terrainInfo.z,
+                                     (gl_TexCoord[3].z - terrainInfo.y)/terrainInfo.w);
+             
+        float scaledTimer     = timer*0.05;
+        
+        displacement.x       += scaledTimer;
+        displacement.y       -= scaledTimer;
+        
+        float depth    = texture2D(depthmap, uvDepthCoords).x;
+        vec3  normal   = normalize(texture2D(normalmap, displacement.xy).xyz*2.0 - 1.0)*0.025;
+        gl_FragColor   = texture2D(reflection, projectedCoords + normal.xy);
+        
+        float alpha    = clamp(dot(vec3(0.0, 1.0, 0.0), viewVector), 0.0, 1.0);
+        gl_FragColor.a = 2.0 - (alpha*alpha + depth);
+      }
+    </RawData>
+  </PIXEL_SHADER>
+  
+</Shaders>

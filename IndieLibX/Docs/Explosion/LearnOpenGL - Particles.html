@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>LearnOpenGL - Particles</title>	<!--<title>Learn OpenGL, extensive tutorial resource for learning Modern OpenGL</title>-->
+    <link rel="shortcut icon" type="image/ico" href="https://learnopengl.com/favicon.ico">
+    <meta name="description" content="Learn OpenGL . com provides good and clear modern 3.3+ OpenGL tutorials with clear examples. A great resource to learn modern OpenGL aimed at beginners.">
+	<meta name="fragment" content="!">
+    
+    <!---->
+    <!---->
+    <style type="text/css">.waldo-sticky-footer{position: fixed; width: 100%; bottom: 0px; left: 0px; text-align: center; z-index: 9995;}.waldo-sticky-footer iframe {margin-left: auto;margin-right: auto;}.waldo-sticky-sidebar{position: fixed; width: 100%; top: 10px;z-index: 90}.waldo-overlay{position: fixed;height: 100%;width: 100%;top: 0;left: 0;z-index: 105;background: rgba(0,0,0,0.7);}#waldo-counter {position: absolute;bottom: 0;right: 0;color: #fff;font-size: 30px;padding: 15px;}.waldo-bfleft {position: fixed; left: 0; top: 10px;z-index:101;}.waldo-bfright {position: fixed; right: 0; top: 10px;z-index:101;}#waldo-close-button a {border: 1px solid rgba(0,0,0,.35);padding: 3px;font-size: 12px;color: #fff;font-weight: bold;background-color: #777;}</style>
+	
+	
+	<link rel="stylesheet" type="text/css" href="LearnOpenGL%20-%20Particles_files/layout.css">
+    <link rel="stylesheet" type="text/css" href="LearnOpenGL%20-%20Particles_files/obsidian.css">
+        
+    
+    
+    
+    
+    
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="prefetch" as="style" href="LearnOpenGL%20-%20Particles_files/a_data/lounge.css"><link rel="prefetch" as="script" href="LearnOpenGL%20-%20Particles_files/a_data/common.js"><link rel="prefetch" as="script" href="LearnOpenGL%20-%20Particles_files/a_data/lounge.js"><link rel="prefetch" as="script" href="LearnOpenGL%20-%20Particles_files/a_data/config.js"><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><link rel="preload" href="LearnOpenGL%20-%20Particles_files/integrator_002.js" as="script"><link rel="preload" href="LearnOpenGL%20-%20Particles_files/integrator.js" as="script"></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<a href="https://learnopengl.com/">
+<div id="header">
+</div>
+</a>
+
+<div id="supercontainer">
+    <div id="rightad_container" style="height: 5873px;">
+        <div id="rightad">
+            <div id="waldo-tag-1715" data-processed="true" style="" data-google-query-id="CLuwhdLC2d0CFY_MGQoduyID7w"><div id="google_ads_iframe_/8491498/learnopengl300x250FL_1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/8491498/learnopengl300x250FL_1_0" title="3rd party ad content" name="google_ads_iframe_/8491498/learnopengl300x250FL_1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+        </div>
+
+        <div id="admessage">
+            If you're running AdBlock, please consider whitelisting this
+ site if you'd like to support LearnOpenGL; and no worries, I won't be 
+mad if you don't :)
+        </div>
+        
+        <div id="rightonethirdad" style="">
+            <div id="waldo-tag-2246" data-processed="true" style="display: none;" data-google-query-id="CJHj7t7C2d0CFREIGQodsKkCfg"><div id="google_ads_iframe_/8491498/learnopengl300x600FL_2_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 600px;"><iframe style="border: 0px none; vertical-align: bottom;" src="LearnOpenGL%20-%20Particles_files/container_003.html" id="google_ads_iframe_/8491498/learnopengl300x600FL_2_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" data-load-complete="true" width="300" height="600" frameborder="0"></iframe></div></div>
+        </div>
+        
+        <div id="rightbottomad" style="display: block;">
+            <div id="waldo-tag-2247" data-processed="true" style="" data-google-query-id="CIWsodvC2d0CFRLYmgodp4QJRg"><div id="google_ads_iframe_/8491498/learnopengl300x600FL_3_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe style="border: 0px none; vertical-align: bottom;" src="LearnOpenGL%20-%20Particles_files/container_003.html" id="google_ads_iframe_/8491498/learnopengl300x600FL_3_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+        </div>
+    </div>
+    <div id="container">
+        <div id="loading"></div>
+   
+    <div id="nav" style="height: 5873px;">
+         <div id="social">
+            <a href="https://github.com/JoeyDeVries/LearnOpenGL" target="_blank">
+                    <img src="LearnOpenGL%20-%20Particles_files/github.png" class="social_ico">
+            </a>
+              <a href="https://www.facebook.com/Learnopengl-2199631333595544/" target="_blank">
+                <img src="LearnOpenGL%20-%20Particles_files/facebook.png" class="social_ico">
+            </a>
+            <a href="https://twitter.com/JoeyDeVriez" target="_blank">
+                <img src="LearnOpenGL%20-%20Particles_files/twitter.png" class="social_ico">
+            </a>
+          
+        </div>
+    <img src="LearnOpenGL%20-%20Particles_files/nav-button_bottom-arrow.html" style="display: none"><ol><li id="Introduction"><a id="menu-item1" href="https://learnopengl.com/Introduction">Introduction </a></li><li id="Getting-started"><span id="menu-item4" class="closed">Getting started </span><ol id="menu-items-of4" style="display:none;"><li id="Getting-started/OpenGL"><a id="menu-item49" href="https://learnopengl.com/Getting-started/OpenGL">OpenGL </a></li><li id="Getting-started/Creating-a-window"><a id="menu-item5" href="https://learnopengl.com/Getting-started/Creating-a-window">Creating a window </a></li><li id="Getting-started/Hello-Window"><a id="menu-item6" href="https://learnopengl.com/Getting-started/Hello-Window">Hello Window </a></li><li id="Getting-started/Hello-Triangle"><a id="menu-item38" href="https://learnopengl.com/Getting-started/Hello-Triangle">Hello Triangle </a></li><li id="Getting-started/Shaders"><a id="menu-item39" href="https://learnopengl.com/Getting-started/Shaders">Shaders </a></li><li id="Getting-started/Textures"><a id="menu-item40" href="https://learnopengl.com/Getting-started/Textures">Textures </a></li><li id="Getting-started/Transformations"><a id="menu-item43" href="https://learnopengl.com/Getting-started/Transformations">Transformations </a></li><li id="Getting-started/Coordinate-Systems"><a id="menu-item44" href="https://learnopengl.com/Getting-started/Coordinate-Systems">Coordinate Systems </a></li><li id="Getting-started/Camera"><a id="menu-item47" href="https://learnopengl.com/Getting-started/Camera">Camera </a></li><li id="Getting-started/Review"><a id="menu-item50" href="https://learnopengl.com/Getting-started/Review">Review </a></li></ol></li><li id="Lighting"><span id="menu-item48" class="closed">Lighting </span><ol id="menu-items-of48" style="display:none;"><li id="Lighting/Colors"><a id="menu-item51" href="https://learnopengl.com/Lighting/Colors">Colors </a></li><li id="Lighting/Basic-Lighting"><a id="menu-item52" href="https://learnopengl.com/Lighting/Basic-Lighting">Basic Lighting </a></li><li id="Lighting/Materials"><a id="menu-item53" href="https://learnopengl.com/Lighting/Materials">Materials </a></li><li id="Lighting/Lighting-maps"><a id="menu-item54" href="https://learnopengl.com/Lighting/Lighting-maps">Lighting maps </a></li><li id="Lighting/Light-casters"><a id="menu-item55" href="https://learnopengl.com/Lighting/Light-casters">Light casters </a></li><li id="Lighting/Multiple-lights"><a id="menu-item58" href="https://learnopengl.com/Lighting/Multiple-lights">Multiple lights </a></li><li id="Lighting/Review"><a id="menu-item57" href="https://learnopengl.com/Lighting/Review">Review </a></li></ol></li><li id="Model-Loading"><span id="menu-item56" class="closed">Model Loading </span><ol id="menu-items-of56" style="display:none;"><li id="Model-Loading/Assimp"><a id="menu-item59" href="https://learnopengl.com/Model-Loading/Assimp">Assimp </a></li><li id="Model-Loading/Mesh"><a id="menu-item60" href="https://learnopengl.com/Model-Loading/Mesh">Mesh </a></li><li id="Model-Loading/Model"><a id="menu-item61" href="https://learnopengl.com/Model-Loading/Model">Model </a></li></ol></li><li id="Advanced-OpenGL"><span id="menu-item63" class="closed">Advanced OpenGL </span><ol id="menu-items-of63" style="display:none;"><li id="Advanced-OpenGL/Depth-testing"><a id="menu-item72" href="https://learnopengl.com/Advanced-OpenGL/Depth-testing">Depth testing </a></li><li id="Advanced-OpenGL/Stencil-testing"><a id="menu-item73" href="https://learnopengl.com/Advanced-OpenGL/Stencil-testing">Stencil testing </a></li><li id="Advanced-OpenGL/Blending"><a id="menu-item74" href="https://learnopengl.com/Advanced-OpenGL/Blending">Blending </a></li><li id="Advanced-OpenGL/Face-culling"><a id="menu-item77" href="https://learnopengl.com/Advanced-OpenGL/Face-culling">Face culling </a></li><li id="Advanced-OpenGL/Framebuffers"><a id="menu-item65" href="https://learnopengl.com/Advanced-OpenGL/Framebuffers">Framebuffers </a></li><li id="Advanced-OpenGL/Cubemaps"><a id="menu-item66" href="https://learnopengl.com/Advanced-OpenGL/Cubemaps">Cubemaps </a></li><li id="Advanced-OpenGL/Advanced-Data"><a id="menu-item69" href="https://learnopengl.com/Advanced-OpenGL/Advanced-Data">Advanced Data </a></li><li id="Advanced-OpenGL/Advanced-GLSL"><a id="menu-item67" href="https://learnopengl.com/Advanced-OpenGL/Advanced-GLSL">Advanced GLSL </a></li><li id="Advanced-OpenGL/Geometry-Shader"><a id="menu-item68" href="https://learnopengl.com/Advanced-OpenGL/Geometry-Shader">Geometry Shader </a></li><li id="Advanced-OpenGL/Instancing"><a id="menu-item70" href="https://learnopengl.com/Advanced-OpenGL/Instancing">Instancing </a></li><li id="Advanced-OpenGL/Anti-Aliasing"><a id="menu-item75" href="https://learnopengl.com/Advanced-OpenGL/Anti-Aliasing">Anti Aliasing </a></li></ol></li><li id="Advanced-Lighting"><span id="menu-item100" class="closed">Advanced Lighting </span><ol id="menu-items-of100" style="display:none;"><li id="Advanced-Lighting/Advanced-Lighting"><a id="menu-item101" href="https://learnopengl.com/Advanced-Lighting/Advanced-Lighting">Advanced Lighting </a></li><li id="Advanced-Lighting/Gamma-Correction"><a id="menu-item110" href="https://learnopengl.com/Advanced-Lighting/Gamma-Correction">Gamma Correction </a></li><li id="Advanced-Lighting/Shadows"><span id="menu-item102" class="closed">Shadows </span><ol id="menu-items-of102" style="display:none;"><li id="Advanced-Lighting/Shadows/Shadow-Mapping"><a id="menu-item103" href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping">Shadow Mapping </a></li><li id="Advanced-Lighting/Shadows/Point-Shadows"><a id="menu-item104" href="https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows">Point Shadows </a></li></ol></li><li id="Advanced-Lighting/Normal-Mapping"><a id="menu-item106" href="https://learnopengl.com/Advanced-Lighting/Normal-Mapping">Normal Mapping </a></li><li id="Advanced-Lighting/Parallax-Mapping"><a id="menu-item107" href="https://learnopengl.com/Advanced-Lighting/Parallax-Mapping">Parallax Mapping </a></li><li id="Advanced-Lighting/HDR"><a id="menu-item111" href="https://learnopengl.com/Advanced-Lighting/HDR">HDR </a></li><li id="Advanced-Lighting/Bloom"><a id="menu-item112" href="https://learnopengl.com/Advanced-Lighting/Bloom">Bloom </a></li><li id="Advanced-Lighting/Deferred-Shading"><a id="menu-item108" href="https://learnopengl.com/Advanced-Lighting/Deferred-Shading">Deferred Shading </a></li><li id="Advanced-Lighting/SSAO"><a id="menu-item109" href="https://learnopengl.com/Advanced-Lighting/SSAO">SSAO </a></li></ol></li><li id="PBR"><span id="menu-item113" class="closed">PBR </span><ol id="menu-items-of113" style="display:none;"><li id="PBR/Theory"><a id="menu-item114" href="https://learnopengl.com/PBR/Theory">Theory </a></li><li id="PBR/Lighting"><a id="menu-item115" href="https://learnopengl.com/PBR/Lighting">Lighting </a></li><li id="PBR/IBL"><span id="menu-item116" class="closed">IBL </span><ol id="menu-items-of116" style="display:none;"><li id="PBR/IBL/Diffuse-irradiance"><a id="menu-item117" href="https://learnopengl.com/PBR/IBL/Diffuse-irradiance">Diffuse irradiance </a></li><li id="PBR/IBL/Specular-IBL"><a id="menu-item118" href="https://learnopengl.com/PBR/IBL/Specular-IBL">Specular IBL </a></li></ol></li></ol></li><li id="In-Practice"><span id="menu-item78" class="open">In Practice </span><ol id="menu-items-of78" style=""><li id="In-Practice/Debugging"><a id="menu-item79" href="https://learnopengl.com/In-Practice/Debugging">Debugging </a></li><li id="In-Practice/Text-Rendering"><a id="menu-item80" href="https://learnopengl.com/In-Practice/Text-Rendering">Text Rendering </a></li><li id="In-Practice/2D-Game"><span id="menu-item81" class="open">2D Game </span><ol id="menu-items-of81" style=""><li id="In-Practice/2D-Game/Breakout"><a id="menu-item82" href="https://learnopengl.com/In-Practice/2D-Game/Breakout">Breakout </a></li><li id="In-Practice/2D-Game/Setting-up"><a id="menu-item88" href="https://learnopengl.com/In-Practice/2D-Game/Setting-up">Setting up </a></li><li id="In-Practice/2D-Game/Rendering-Sprites"><a id="menu-item83" href="https://learnopengl.com/In-Practice/2D-Game/Rendering-Sprites">Rendering Sprites </a></li><li id="In-Practice/2D-Game/Levels"><a id="menu-item84" href="https://learnopengl.com/In-Practice/2D-Game/Levels">Levels </a></li><li id="In-Practice/2D-Game/Collisions"><span id="menu-item85" class="closed">Collisions </span><ol id="menu-items-of85" style="display:none;"><li id="In-Practice/2D-Game/Collisions/Ball"><a id="menu-item95" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Ball">Ball </a></li><li id="In-Practice/2D-Game/Collisions/Collision-detection"><a id="menu-item96" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-detection">Collision detection </a></li><li id="In-Practice/2D-Game/Collisions/Collision-resolution"><a id="menu-item97" href="https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-resolution">Collision resolution </a></li></ol></li><li id="In-Practice/2D-Game/Particles"><a id="menu-item89" href="https://learnopengl.com/In-Practice/2D-Game/Particles" class="selected">Particles </a></li><li id="In-Practice/2D-Game/Postprocessing"><a id="menu-item90" href="https://learnopengl.com/In-Practice/2D-Game/Postprocessing">Postprocessing </a></li><li id="In-Practice/2D-Game/Powerups"><a id="menu-item91" href="https://learnopengl.com/In-Practice/2D-Game/Powerups">Powerups </a></li><li id="In-Practice/2D-Game/Audio"><a id="menu-item94" href="https://learnopengl.com/In-Practice/2D-Game/Audio">Audio </a></li><li id="In-Practice/2D-Game/Render-text"><a id="menu-item92" href="https://learnopengl.com/In-Practice/2D-Game/Render-text">Render text </a></li><li id="In-Practice/2D-Game/Final-thoughts"><a id="menu-item93" href="https://learnopengl.com/In-Practice/2D-Game/Final-thoughts">Final thoughts </a></li></ol></li></ol></li><li id="Offline-book"><a id="menu-item98" href="https://learnopengl.com/Offline-book">Offline book </a></li><li id="Code-repository"><a id="menu-item99" href="https://learnopengl.com/Code-repository">Code repository </a></li><li id="Translations"><a id="menu-item119" href="https://learnopengl.com/Translations">Translations </a></li><li id="About"><a id="menu-item2" href="https://learnopengl.com/About">About </a></li></ol>       <div id="donate">
+            <a href="https://www.paypal.me/learnopengl/" target="_blank">
+                <div id="donate_img"></div>
+                <img style="display: none" src="LearnOpenGL%20-%20Particles_files/donate_button_hover.png">
+                <!--<img id="donate_img" src="img/patreon.png"/>-->
+            </a>
+        </div> 
+        <div id="ad">
+            <div id="waldo-tag-1684" data-processed="true" style="" data-google-query-id="COKG_cjC2d0CFZM_GQod45IGyw"><div id="google_ads_iframe_/8491498/learnopengl160x600FS_1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/8491498/learnopengl160x600FS_1_0" title="3rd party ad content" name="google_ads_iframe_/8491498/learnopengl160x600FS_1_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom;" srcdoc="" data-load-complete="true" width="160" height="600" frameborder="0"></iframe></div></div>
+        </div>
+        <div id="lefttwothirdad" style="">
+            <div id="waldo-tag-2245" data-processed="true" style="" data-google-query-id="CPHEv9rC2d0CFRnfmgod8WIKjQ"><div id="google_ads_iframe_/8491498/learnopengl300x600FL_1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 250px;"><iframe style="border: 0px none; vertical-align: bottom;" src="LearnOpenGL%20-%20Particles_files/container_003.html" id="google_ads_iframe_/8491498/learnopengl300x600FL_1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></div></div>
+        </div>
+    </div>
+    
+    <div id="content">
+    <h1 id="content-title">Particles</h1>
+<h1 id="content-url" style="display:none;">In-Practice/2D-Game/Particles</h1>
+<p>
+  A <def>particle</def>, as seen from OpenGL's perspective, is a tiny 2D
+ quad that is always faced at the camera (billboarding) and (usually) 
+contains a texture with large parts of the sprite being transparent. A 
+particle by itself is basically just a sprite as we've been extensively 
+using so far, but when you put together hundreds or even thousands of 
+these particles together you can create amazing effects.
+</p>
+
+<p>
+  When working with particles, there is usually an object called a <def>particle emitter</def> or <def>particle generator</def> that, from its location, continously <def>spawns</def>
+ new particles  that decay over time. If such a particle emitter would 
+for example spawn tiny particles with a smoke-like  texture, color them 
+less bright the larger the distance from the emitter and give them a 
+glowy appearance you'd get a fire-like effect:
+</p>
+
+<img src="LearnOpenGL%20-%20Particles_files/particles_example.jpg" alt="Example of particles as a fire">
+  
+<p>
+  A single particle often has a life variable that slowly decays once it
+ is spawned. Once its life is less than a certain threshold (usually <code>0</code>) we <def>kill</def>
+ the particle so it can be replaced with a new particle object when the 
+next particle spawns. A particle emitter controls all its spawned 
+particles and changes their behavior based on their attributes. A 
+particle generally has the following attributes:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">struct</span> Particle {
+    glm::<span class="hljs-built_in">vec2</span> Position, Velocity;
+    glm::<span class="hljs-built_in">vec4</span> Color;
+    <span class="hljs-keyword">GLfloat</span> Life;
+  
+    Particle() 
+      : Position(<span class="hljs-number">0.0f</span>), Velocity(<span class="hljs-number">0.0f</span>), Color(<span class="hljs-number">1.0f</span>), Life(<span class="hljs-number">0.0f</span>) { }
+};    
+</code></pre>
+  
+<p>
+  Looking at the fire example, the particle emitter probably spawns each
+ particle with a position close to the emitter and with an upwards 
+velocity so each particle moves in the positive <code>y</code> 
+direction. It seems to have 3 different regions so it probably gives 
+some particles a higher velocity than others. We can also see that the 
+higher the <code>y</code> position of the particle, the less <em>yellow</em> or <em>bright</em>
+ its color becomes. After the particles have reached a certain height, 
+their life is depleted and the particles are killed; never reaching the 
+stars.
+</p>
+  
+<p>
+  You can imagine that with systems like these we can create interesting
+ effects like fire, smoke, fog, magic effects, gunfire residue etc. In 
+Breakout we're going to add a simple particle generator following the 
+ball to make it all look more interesting. It'll look a bit like this:
+</p>
+  
+<div class="video paused" onclick="ClickVideo(this)">
+  <video loop="" width="600" height="450">
+    <source src="LearnOpenGL%20-%20Particles_files/particles.mp4" type="video/mp4">
+  </video>
+</div>
+  
+<p>
+  Here the particle generator spawns each particle at the ball's 
+position, gives it a velocity equal to a fraction of the ball's velocity
+ and changes the color of the particle based on how long it lived. 
+</p>
+  
+<p>
+  For rendering the particles we'll be using a different set of shaders:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">layout</span> (location = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-built_in">vec4</span> vertex; <span class="hljs-comment">// &lt;vec2 position, vec2 texCoords&gt;</span>
+
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec2</span> TexCoords;
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec4</span> ParticleColor;
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">mat4</span> projection;
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">vec2</span> offset;
+<span class="hljs-keyword">uniform</span> <span class="hljs-built_in">vec4</span> color;
+
+<span class="hljs-keyword">void</span> main()
+{
+    <span class="hljs-keyword">float</span> scale = <span class="hljs-number">10.0f</span>;
+    TexCoords = vertex.zw;
+    ParticleColor = color;
+    gl_Position = projection * <span class="hljs-built_in">vec4</span>((vertex.xy * scale) + offset, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>);
+}
+</code></pre>
+
+<p>
+  And the fragment shader:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-preprocessor">#version 330 core</span>
+<span class="hljs-keyword">in</span> <span class="hljs-built_in">vec2</span> TexCoords;
+<span class="hljs-keyword">in</span> <span class="hljs-built_in">vec4</span> ParticleColor;
+<span class="hljs-keyword">out</span> <span class="hljs-built_in">vec4</span> color;
+
+<span class="hljs-keyword">uniform</span> sampler2D sprite;
+
+<span class="hljs-keyword">void</span> main()
+{
+    color = (texture(sprite, TexCoords) * ParticleColor);
+}  
+</code></pre>
+
+<p>
+  We take the standard position and texture attributes per particle and also accept an <var>offset</var> and a <var>color</var> uniform for changing the outcome per particle. Note that in the vertex shader we scale the particle quad by <code>10.0f</code>; you could also set the scale as a uniform and control this individually per particle.
+</p>
+  
+<p>
+  First, we need a list of particles that we then instantiate with default <fun>Particle</fun> structs.
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">GLuint</span> nr_particles = <span class="hljs-number">500</span>;
+<span class="hljs-built_in">std</span>::<span class="hljs-stl_container"><span class="hljs-built_in">vector</span>&lt;Particle&gt;</span> particles;
+  
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">GLuint</span> i = <span class="hljs-number">0</span>; i &lt; nr_particles; ++i)
+    particles.push_back(Particle());
+</code></pre>
+  
+<p>
+  Then in each frame, we spawn several new particles with starting 
+values and then for each particle that is (still) alive we update their 
+values. 
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">GLuint</span> nr_new_particles = <span class="hljs-number">2</span>;
+<span class="hljs-comment">// Add new particles</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">GLuint</span> i = <span class="hljs-number">0</span>; i &lt; nr_new_particles; ++i)
+{
+    <span class="hljs-keyword">int</span> unusedParticle = FirstUnusedParticle();
+    RespawnParticle(particles[unusedParticle], object, offset);
+}
+<span class="hljs-comment">// Uupdate all particles</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">GLuint</span> i = <span class="hljs-number">0</span>; i &lt; nr_particles; ++i)
+{
+    Particle &amp;p = particles[i];
+    p.Life -= dt; <span class="hljs-comment">// reduce life</span>
+    <span class="hljs-keyword">if</span> (p.Life &gt; <span class="hljs-number">0.0f</span>)
+    {	<span class="hljs-comment">// particle is alive, thus update</span>
+        p.Position -= p.Velocity * dt;
+        p.Color.a -= dt * <span class="hljs-number">2.5</span>;
+    }
+}  
+</code></pre>
+  
+<p>
+  The first loop might look a little daunting. Because particles die over time we want to spawn <var>nr_new_particles</var> particles each frame, but since we've decided from the start that the total amount of particles we'll be using is <var>nr_particles</var>
+ we can't simply push the new particles to the end of the list. This way
+ we'll quickly get a list filled with thousands of particles which isn't
+ really efficient considering only a small portion of that list has 
+particles that are alive.
+</p>
+  
+<p>
+  What we want is to find the first particle that is dead (life &lt; <code>0.0f</code>) and update  that particle as a new respawned particle.
+</p>
+
+<p>
+  The function <fun>FirstUnusedParticle</fun> tries to find the first particle that is dead and returns its index to the caller.    
+  </p>
+
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">GLuint</span> lastUsedParticle = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">GLuint</span> FirstUnusedParticle()
+{
+    <span class="hljs-comment">// Search from last used particle, this will usually return almost instantly</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">GLuint</span> i = lastUsedParticle; i &lt; nr_particles; ++i){
+        <span class="hljs-keyword">if</span> (particles[i].Life &lt;= <span class="hljs-number">0.0f</span>){
+            lastUsedParticle = i;
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+    <span class="hljs-comment">// Otherwise, do a linear search</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">GLuint</span> i = <span class="hljs-number">0</span>; i &lt; lastUsedParticle; ++i){
+        <span class="hljs-keyword">if</span> (particles[i].Life &lt;= <span class="hljs-number">0.0f</span>){
+            lastUsedParticle = i;
+            <span class="hljs-keyword">return</span> i;
+        }
+    }
+    <span class="hljs-comment">// Override first particle if all others are alive</span>
+    lastUsedParticle = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}  
+</code></pre>
+  
+<p>
+  The function stores the index of the last dead particle it found, 
+since the next dead particle will most likely be right after this last 
+particle index so we first search from this stored index. If we did not 
+find any dead particles, we simply do a slower linear search. If no 
+particles are dead it will return the index <code>0</code> which results
+ in the first particle being overwritten. Note that if it reaches this 
+last case, it means your particles are alive for too long, you need to 
+spawn less particles per frame and/or you simply don't have enough 
+particles reserved.
+</p>
+  
+<p>
+  Then, once the first dead particle in the list is found, we update its values by calling <fun>RespawnParticle</fun> that takes the particle, a <fun>GameObject</fun> and an offset vector:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">void</span> RespawnParticle(Particle &amp;particle, GameObject &amp;object, glm::<span class="hljs-built_in">vec2</span> offset)
+{
+    <span class="hljs-keyword">GLfloat</span> random = ((rand() % <span class="hljs-number">100</span>) - <span class="hljs-number">50</span>) / <span class="hljs-number">10.0f</span>;
+    <span class="hljs-keyword">GLfloat</span> rColor = <span class="hljs-number">0.5</span> + ((rand() % <span class="hljs-number">100</span>) / <span class="hljs-number">100.0f</span>);
+    particle.Position = object.Position + random + offset;
+    particle.Color = glm::<span class="hljs-built_in">vec4</span>(rColor, rColor, rColor, <span class="hljs-number">1.0f</span>);
+    particle.Life = <span class="hljs-number">1.0f</span>;
+    particle.Velocity = object.Velocity * <span class="hljs-number">0.1f</span>;
+}  
+</code></pre>
+  
+<p>
+  This function simply resets the particle's life to <code>1.0f</code>, randomly gives it a brightness (via the color vector) starting from <code>0.5</code> and assigns a (slightly random) position and velocity based on the game object.
+</p>
+  
+<p>
+  The second loop within the update function loops through all the 
+particles and for each particle reduces its life by the delta time 
+variable; this way each particle's life corresponds to exactly the 
+second(s) it's allowed to live. Then we check if the particle is alive 
+and if so, update its position and color attributes. Here we slowly 
+reduce the alpha component of each particle so it looks like they're 
+slowly disappearing over time.
+</p>
+  
+<p>
+  Then what's left is to actually render the particles:
+</p>
+  
+<pre><code class=" hljs cpp">
+<function id="70">glBlendFunc</function>(GL_SRC_ALPHA, GL_ONE);
+particleShader.Use();
+<span class="hljs-keyword">for</span> (Particle particle : particles)
+{
+    <span class="hljs-keyword">if</span> (particle.Life &gt; <span class="hljs-number">0.0f</span>)
+    {
+        particleShader.SetVector2f(<span class="hljs-string">"offset"</span>, particle.Position);
+        particleShader.SetVector4f(<span class="hljs-string">"color"</span>, particle.Color);
+        particleTexture.Bind();
+        <function id="27">glBindVertexArray</function>(particleVAO);
+        <function id="1">glDrawArrays</function>(GL_TRIANGLES, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>);
+        <function id="27">glBindVertexArray</function>(<span class="hljs-number">0</span>);
+    } 
+} 
+<function id="70">glBlendFunc</function>(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+</code></pre>
+  
+<p>
+  Here, for each particle, we set their offset and color uniform values,
+ bind the texture and render the 2D quad. What is interesting to see 
+here are the two calls to <fun><function id="70">glBlendFunc</function></fun>. When rendering the particles, instead of the default destination blending mode of <code>GL_ONE_MINUS_SRC_ALPHA</code> we use the <code>GL_ONE</code> blending mode that gives the particles a very neat <def>glow effect</def>
+ when stacked upon each other. This is also likely the blending mode 
+used when rendering the fire at the top of the tutorial, since the fire 
+got glowy at the center where most of its particles were. 
+</p>
+  
+<p>
+  Because we (like most other parts of the tutorial series) like to keep things organized, another class called <fun>ParticleGenerator</fun> was created that hosts all the functionality we just talked about. You can find the source code below:
+</p>
+  
+<ul>
+  <li><a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/particle_generator.h" target="_blank">header</a>, <a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/particle_generator" target="_blank">code</a></li>
+</ul>
+  
+<p>
+  Then within the game code, we create such a particle generator and initialize it with <a href="https://learnopengl.com/img/in-practice/breakout/textures/particle.png" target="_blank">this</a> texture.
+</p>
+  
+<pre><code class=" hljs cpp">
+ParticleGenerator   *Particles; 
+
+<span class="hljs-keyword">void</span> Game::Init()
+{
+    [...]
+    ResourceManager::LoadShader(<span class="hljs-string">"shaders/particle.vs"</span>, <span class="hljs-string">"shaders/particle.frag"</span>, <span class="hljs-keyword">nullptr</span>, <span class="hljs-string">"particle"</span>);
+    [...]
+    ResourceManager::LoadTexture(<span class="hljs-string">"textures/particle.png"</span>, <span class="hljs-built_in">GL_TRUE</span>, <span class="hljs-string">"particle"</span>); 
+    [...]
+    Particles = <span class="hljs-keyword">new</span> ParticleGenerator(
+        ResourceManager::GetShader(<span class="hljs-string">"particle"</span>), 
+        ResourceManager::GetTexture(<span class="hljs-string">"particle"</span>), 
+        <span class="hljs-number">500</span>
+    );
+}
+</code></pre>
+  
+<p>
+  Then we change the game class's <fun>Update</fun> function by adding an update statement for the particle generator:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">void</span> Game::Update(<span class="hljs-keyword">GLfloat</span> dt)
+{
+    [...]
+    <span class="hljs-comment">// Update particles</span>
+    Particles-&gt;Update(dt, *Ball, <span class="hljs-number">2</span>, glm::<span class="hljs-built_in">vec2</span>(Ball-&gt;Radius / <span class="hljs-number">2</span>));
+    [...]
+}
+</code></pre>
+  
+<p>
+  Each of the particles will use the game object properties from the 
+ball object, spawn 2 particles each frame and their positions will be 
+offset towards the center of the ball. Last up is rendering the 
+particles:
+</p>
+  
+<pre><code class=" hljs cpp">
+<span class="hljs-keyword">void</span> Game::Render()
+{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>-&gt;State == GAME_ACTIVE)
+    {
+        [...]
+        <span class="hljs-comment">// Draw player</span>
+        Player-&gt;Draw(*Renderer);
+        <span class="hljs-comment">// Draw particles	</span>
+        Particles-&gt;Draw();
+        <span class="hljs-comment">// Draw ball</span>
+        Ball-&gt;Draw(*Renderer);
+    }
+}  
+</code></pre>
+  
+<p>
+  Note that we render the particles before the ball is rendered and 
+after the other item are rendered so the particles will end up in front 
+of all other objects, but stay behind the ball. You can find the updated
+ game class code <a href="https://learnopengl.com/code_viewer.php?code=in-practice/breakout/game_particles" target="_blank">here</a>.
+</p>
+    
+<p>
+  If you'd now compile and run your application you should see a trail 
+of particles following the ball, just like at the beginning of this 
+tutorial, giving the game a more modern look. The system can also easily
+ be extended to host more advanced effects so feel free to experiment 
+with the particle generation and see if you can come up with your own 
+creative effects.
+</p>       
+
+    </div>
+    
+    <div id="hover">
+        HI
+    </div>
+    <div id="disqus_thread" style="display: block;"><iframe id="dsq-app1925" name="dsq-app1925" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 1629px !important;" src="LearnOpenGL%20-%20Particles_files/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+
+    
+
+
+</div> <!-- container div -->
+</div> <!-- super container div -->
+
+<iframe style="display: none;"></iframe><iframe id="google_osd_static_frame_1315704594438" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body></html>

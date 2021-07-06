@@ -1,0 +1,137 @@
+//-----------------------------------------------------------------------------
+// File: particles.shd
+// Copyright (c) 2006 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+float4x4 mvp;
+float3 dx, dy;
+float time;
+
+struct VsOut {
+	float4 pos         : POSITION;
+	float2 texCoord    : TEXCOORD0;
+	float2 effect      : TEXCOORD1;
+	float2 groundCoord : TEXCOORD2;
+	float4 fireCoord   : TEXCOORD3;
+	float3 smokeCoord  : TEXCOORD4;
+};
+
+#define PI 3.14159265
+
+// Texture atlas pixel size
+#define pixel (1.0 / 1024.0)
+
+VsOut main(float4 vertex: POSITION, float3 texCoord: TEXCOORD0){
+	VsOut Out;
+
+	/*
+		For all the branches below we set the unused texture coordinates to 0.5. This is done to speed up the
+		pixel shader on ps2.0 hardware. Since ps2.0 doesn't have dynamic branching this means all textures will
+		be sampled and then the right value is selected. By setting the texture coordinate to a fixed location
+		in the middle of the texture we ensure that we don't waste any memory bandwidth but instead ask for the
+		exact same texels over and over, which should then constantly be in cache, and we don't pollute the cache
+		with other unused texture values.
+	*/
+	if (vertex.w < 0){
+		float3 dirX, dirY;
+		if (vertex.w > -1){
+			// Foliage
+			float cosA = cos(2 * PI * vertex.w);
+			float sinA = sin(2 * PI * vertex.w);
+			dirX = 0.04 * float3(cosA, 0, sinA);
+
+			/*
+				Since we're using a texture atlas we can't rely on clamping on the texture
+				edges as they are inside the actual texture, so instead we pad texture coordinate
+				with a pixel on both sides to ensure filtering doesn't go outside the subtexture.
+			*/
+			if (vertex.w > -0.6666){
+				if (vertex.w > -0.3333){
+					Out.texCoord.x = texCoord.x * 510.0 * pixel + pixel;
+				} else {
+					Out.texCoord.x = texCoord.x * 510.0 * pixel + pixel + 0.5;
+				}
+				Out.texCoord.y = texCoord.y * 510.0 * pixel + pixel;
+				dirY = 0.04 * float3(0, 1, 0);
+			} else {
+				// This texture has a bit of unused space at the top, so we modify texCoord and size to save a bit of fillrate.
+				Out.texCoord.x = texCoord.x * 126.0 * pixel + pixel;
+				Out.texCoord.y = (texCoord.y * 0.75 + 0.25) * 126.0 * pixel + pixel + 0.5;
+				dirY = 0.03 * float3(0, 1, 0);
+			}
+			Out.groundCoord = 0.5 + 0.5 * vertex.xz;
+			Out.fireCoord = 0.5;
+		} else {
+			// Fire
+			dirX = 1.5 * dx;
+			dirY = 0.1 * float3(0, 1, 0);
+
+			Out.texCoord = 0.5;
+			Out.groundCoord = 0.5;
+			Out.fireCoord.xy = texCoord;
+			Out.fireCoord.y += 7.0 * time;
+			Out.fireCoord.z = time;
+			Out.fireCoord.w = texCoord.y * 2.5;
+		}
+		vertex.xyz += (texCoord.x - 0.5) * dirX + (1 - texCoord.y) * dirY;
+
+		Out.smokeCoord = 0.5;
+	} else {
+		// Smoke
+		Out.texCoord = 0.5;
+		Out.groundCoord = 0.5;
+		Out.smokeCoord.xy = texCoord;
+		Out.smokeCoord.z = vertex.w * 0.2; // Scale to 0..1 range
+		Out.fireCoord = 0.5;
+	}
+
+	Out.effect.x = vertex.w;
+	Out.effect.y = vertex.w + 1;
+
+	vertex.w = 1;
+
+	Out.pos = mul(mvp, vertex);
+
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler2D Foliage;
+sampler2D Light;
+sampler3D Smoke;
+sampler3D Noise;
+sampler1D FirePalette;
+
+float4 main(float2 texCoord: TEXCOORD0, float2 effect: TEXCOORD1, float2 groundCoord: TEXCOORD2, float4 fireCoord: TEXCOORD3, float3 smokeCoord : TEXCOORD4) : COLOR {
+	if (effect.x < 0){
+		if (effect.y >= 0){
+			// Foliage
+			float4 base = tex2D(Foliage, texCoord);
+			base.xyz *= tex2D(Light, groundCoord).xyz;
+			return base;
+		} else {
+			// Fire
+			float n = tex3D(Noise, fireCoord.xyz).x;
+
+			fireCoord.x = fireCoord.w * n;
+#ifdef SM3
+			return tex1Dlod(FirePalette, fireCoord);
+#else
+			return tex1D(FirePalette, fireCoord.x);
+#endif
+		}
+	} else {
+		// Smoke
+		float4 smoke = tex3D(Smoke, smokeCoord);
+		smoke.w *= 0.4;
+		return smoke;
+	}
+}
