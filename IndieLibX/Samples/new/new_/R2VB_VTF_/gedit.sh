@@ -1,2 +1,0 @@
-gedit ./R2VB-IK/App.h ./R2VB-ShadowVolume/App.h ./R2VB-NPatches/App.h  ./R2VB-IK/App.cpp ./R2VB-ShadowVolume/App.cpp ./R2VB-NPatches/App.cpp ./R2VB-Collision/App.cpp ./R2VB-OceanWater/App.cpp ./R2VB-Animation/App.cpp ./R2VB-Cloth/App.cpp ./R2VB-ParticleSystem/App.cpp ./R2VB-Water/App.cpp ./R2VB-OceanWater/App.h ./R2VB-Animation/App.h ./R2VB-Cloth/App.h ./R2VB-ParticleSystem/App.h ./R2VB-Water/App.h&
-
