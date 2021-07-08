@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/windows/desktop/jj215820%28v=vs.85%29.aspx">
+    <title>Specifying Compiler Targets (Windows)</title>
+
+
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/windows/desktop/jj215820(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/jj215820(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/jj215820(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="AmbientContext" content="{&quot;layout.limit_max_width&quot;:true,&quot;AmbientContextId&quot;:&quot;CBBFE089-AFBA-42EF-8C6A-B64CC234F6A8&quot;,&quot;display.use_large_font&quot;:true,&quot;insight.perf_timing&quot;:true,&quot;AmbientContextDownstream&quot;:{&quot;LogTrace&quot;:false},&quot;display.high_contrast&quot;:false,&quot;insight.use_wedcs_vnext&quot;:true}">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/jj215820(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="MN" content="BF1CA939-8:43:54 AM">
+
+<meta name="Search.ShortId" content="jj215820">
+
+<meta name="ms.shortidmsdn" content="jj215820">
+
+<meta name="ms.locale" content="en-us">
+
+<meta name="ms.prodver" content="VS.85">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="FI">
+
+<meta name="ms.loc" content="FI">
+
+<meta name="ms.sitever" content="2017.01.15.1">
+
+<meta name="ms.assetid" content="594E1C14-C1D4-4207-91A1-28892CE6D821">
+
+<meta name="ms.auth" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+        
+
+
+
+
+
+
+
+
+
+    
+
+    
+    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://msdn.microsoft.com/Areas/Epx/Themes/Windows/Content/Winlogo_favicon.ico">
+
+
+<link rel="stylesheet" type="text/css" href="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/shell.css"><link rel="stylesheet" type="text/css" href="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/Combined.css"><link href="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/PrintView.css" rel="stylesheet" type="text/css" media="print"><meta name="ms.layout_limit_max_width" content="true"><meta name="ms.AmbientContextId" content="CBBFE089-AFBA-42EF-8C6A-B64CC234F6A8"><meta name="ms.display_use_large_font" content="true"><meta name="ms.insight_perf_timing" content="true"><meta name="ms.AmbientContextDownstream" content="%7B%7D"><meta name="ms.display_high_contrast" content="false"><meta name="ms.insight_use_wedcs_vnext" content="true"><meta name="ms.perf.timing" content=",,9,9,9,10,1376,1384,1387,1775,1789,1971,,,"><style type="text/css">.msame_TxtTrunc{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;word-break:break-all}.msame_Header{display:inline-block;cursor:pointer;font-size:14px;border-width:1px;border-style:solid;border-bottom-style:none;border-color:transparent;width:100%}.msame_Header_name{padding-left:12px;max-width:160px;display:inline-block;line-height:64px;vertical-align:top;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:#505050}.msame_unauth .msame_Header_name{padding-right:12px}.msame_unauth .msame_Header_name:hover{color:#0078d7}.msame_Drop_AI_pic,.msame_Drop_active_pic,.msame_Header_pic{display:inline-block}.msame_Header_piccont{padding-top:14px;padding-bottom:14px;padding-right:12px;padding-left:8px}.msame_Mobile .msame_Header_piccont{padding-top:10px;padding-bottom:10px}.msame_Short .msame_Header_piccont{padding-left:12px}.msame_Header_picframe{width:36px;height:36px;border-radius:50%;overflow:hidden}.msame_Mobile .msame_Header_picframe{width:48px;height:48px}.msame_open .msame_Header_picframe{z-index:3000001;position:relative}.msame_Header_chev{display:none}.msame_Mobile .msame_Header_piccont{padding-right:8px;padding-left:10px}.msame_Mobile .msame_Header_name{line-height:3;font-size:114%;padding-left:10px;padding-right:10px;display:inline-block;vertical-align:top;padding-top:14px}.msame_Mobile.msame_3row .msame_Header_name{padding-top:6px}.msame_Mobile .msame_Header_chev{display:inline-block;line-height:64px;vertical-align:top;padding-right:16px;padding-left:8px;float:right}.msame_open .msame_Header_chev img{-moz-transform:scaleY(-1);-o-transform:scaleY(-1);-webkit-transform:scaleY(-1);transform:scaleY(-1);filter:FlipV;-ms-filter:"FlipV"}.msame_Drop_root .msame_Drop_AI:focus,.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_Drop_root a:focus,.msame_Header:focus{outline-style:dotted;outline-color:#000;outline-width:1px}.msame_Header_piccont img{width:36px;height:36px;line-height:normal;vertical-align:baseline}.msame_Mobile .msame_Header_piccont img{width:48px;height:48px}.msame_Mobile .msame_Header_fullName{font-size:100%;color:#000;line-height:1.333}.msame_Drop_AI_email,.msame_Drop_AI_status,.msame_Mobile .msame_Header_email,.msame_Mobile .msame_Header_nickName{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:86%;color:rgba(0,0,0,.54);line-height:1.333333}.msaie8 .msame_Drop_AI_pic,.msaie8 .msame_Drop_AI_right,.msaie8 .msame_Drop_active_pic,.msaie8 .msame_Drop_active_right,.msaie8 .msame_Header,.msaie8 .msame_Header_name,.msaie8 .msame_Header_pic{zoom:1;*display:inline}
+</style><style type="text/css">.msame_open .msame_Header{border-color:#e6e6e6;background-color:#fff}.msame_open .msame_Header.msame_Mobile{border-color:transparent;background-color:transparent}.msame_ClickStart.msame_Drop_root .msame_Drop_AI:focus,.msame_ClickStart.msame_Drop_root .msame_Drop_AI_remove:focus,.msame_ClickStart.msame_Drop_root a:focus{outline-style:none}.msame_Drop_root a,.msame_Drop_root a:active,.msame_Drop_root a:focus,.msame_Drop_root a:hover,.msame_Drop_root a:visited{text-decoration:none}.msame_Drop_topb{border-top-color:#e6e6e6;border-top-style:solid;border-top-width:1px}.msame_Mobile .msame_Drop_topb{width:100%!important}.msame_Drop_active{padding-bottom:8px}.msame_Drop_AI_picframe{width:44px;height:44px;border-radius:50%;overflow:hidden}.msame_Drop_AI_piccont img{width:44px;height:44px}.msame_Drop_root{border-width:1px;border-color:#e6e6e6;border-style:solid;border-top-style:none;position:absolute;width:360px;z-index:3000000;background-color:#fff;font-size:14px}.msame_Drop_sep{border-top-width:1px;border-top-color:#e6e6e6;border-top-style:solid;width:100%;height:0;display:block}.msame_Mobile.msame_Drop_root{left:0!important;right:0;bottom:0;width:100%;border-right-width:0;border-left-width:0}.msame_Mobile .msame_Drop_content{overflow-y:auto;position:absolute;left:0;right:0;bottom:0;top:0}.msame_Drop_root a{text-decoration:none}.msame_Drop_content{overflow:hidden}.msame_Mobile .msame_Drop_active{display:none}.msame_Drop_AI{cursor:pointer}.disabled .msame_Drop_AI_pic,.disabled .msame_Drop_AI_right{opacity:.4;cursor:default}.disabled .msame_Drop_AI_email,.disabled .msame_Drop_AI_name,.disabled .msame_Drop_AI_status{color:#000}.msame_Drop_active_piccont{padding:5px}.msame_Drop_AI_piccont{padding:10px}.msame_Drop_active_picframe{width:74px;height:74px;border-radius:50%;overflow:hidden}.msame_Drop_active_picborder,.msame_Drop_active_piccont a{display:block;padding:4px;border:1px dotted transparent;border-radius:50%}.msame_Drop_active_piccont a:focus{border:1px dotted #000}.msame_Drop_active_piccont img{width:64px;height:64px;border-radius:50%}.msame_Drop_active_name{display:block;line-height:1.3;font-size:150%;color:#000;font-family:"Segoe UI Light","Segoe UI Web Light","Segoe UI Web Regular","Segoe UI","Segoe UI Symbol",HelveticaNeue-Light,"Helvetica Neue",Arial,sans-serif}.msame_Drop_active_email{display:block;line-height:1.42857;font-size:100%;color:rgba(0,0,0,.54);font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif}.msame_Drop_active_right{display:inline-block;width:216px;vertical-align:top;padding-top:12px;padding-right:12px;padding-left:12px}.msame_Drop_SI a{line-height:2;font-size:114%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;padding-left:12px;padding-right:12px;display:block;color:#000}.msame_Mobile .msame_Drop_SI a{line-height:2.75}.msame_Drop_AI.switch:hover,.msame_Drop_AI_remove:hover,.msame_Drop_SI a:hover{color:#000;background-color:rgba(0,0,0,.12)}.msame_Drop_AI.switch:active,.msame_Drop_AI.switch:active div,.msame_Drop_AI_remove:active,.msame_Drop_SI a:active{color:#fff!important;background-color:#000}.msame_Drop_SI a:link,.msame_Drop_SI a:visited{color:#000}.msame_Drop_active_link a,.msame_Drop_active_link a:active,.msame_Drop_active_link a:hover,.msame_Drop_active_link a:link,.msame_Drop_active_link a:visited{line-height:1.333333;font-size:86%;font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;color:#0078d7}.msame_Drop_AL{padding-bottom:24px}.msame_Drop_AI_right{display:inline-block;width:252px;vertical-align:top;padding-left:8px;padding-top:5px}.msame_Mobile .msame_Drop_AI_right{width:100px}.msame_Drop_AI_name{font-family:"Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,sans-serif;font-size:114%;color:#000;line-height:1.25}.msame_Drop_AI_remove{float:right;margin-top:6px;padding-top:12px;padding-bottom:12px;padding-left:12px;padding-right:12px;text-align:center;cursor:pointer}.msame_Drop_AI_remove img{display:block}.msame_auto_frame{display:none;position:absolute;top:0;left:-4000px;width:0}
+</style></head>
+<body class="library FF">
+    <div id="page">
+
+        
+
+        
+
+    
+
+        <link rel="stylesheet" type="text/css" href="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/UhfHeaderResponsive.css" data-do-not-move="true">
+    <div id="uhf-header-wrapper">
+         
+
+
+
+
+ 
+
+
+
+
+        
+
+
+
+ 
+
+
+
+
+
+
+<div id="shell-header" class="shell-header shell-responsive " ms.pgarea="header" role="banner">
+        <div id="lca-cookie-notification" class="shell-notification shell-notification-active" data-bi-area="CookieDisclaimer" data-bi-view="Header">
+            <div class="shell-notification-grid-row shell-notification-clearfix">
+                <span class="notification-txt">Käyttämällä sivustoa hyväksyt evästeiden käytön analytiikkaan, muokattuun sisältöön ja mainoksiin.</span>
+                <span class="notification-action">
+                    <a href="https://go.microsoft.com/fwlink/?LinkId=248681" data-bi-name="LearnMore">Lisätietoja</a>
+                    <a href="#" id="lca-disclaimer-close" data-bi-name="Close">
+                        <i class="shell-icon-close">Sulje</i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    
+    <div class="shell-header-wrapper">
+        <div class="shell-header-top collapse-search" data-bi-area="HeaderL0" data-bi-view="L0V1">
+                <div class="shell-header-brand" ms.cmpgrp="logo">
+                            <a id="srv_shellHeaderMicrosoftLogo" href="https://www.microsoft.com/" ms.cmpnm="MicrosoftBrandLogo" ms.title="Microsoft" title="Microsoft" data-bi-name="BrandLogo" tabindex="10">
+            <img src="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/microsoft-gray.png" alt="Microsoft">
+        </a>
+
+                </div>
+            <div class="shell-header-nav-wrapper" ms.cmpgrp="nav" role="navigation">
+                <ul class="shell-header-nav" role="menubar" id="srv_shellHeaderNav" data-bi-area="L1" data-bi-view="Hovermenus">
+                        <li class="shell-header-user-mobile-container">
+                        </li>
+                                    <li class="shell-header-dropdown" data-navcontainer="shellmenu_0_NavContainer">
+                                        <div id="shellmenu_0" class="shell-header-dropdown-label">
+                                            <a id="Tekniikat -navigation" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Tekniikat " data-bi-name="Technologies" data-bi-slot="1" tabindex="20">
+                                                Tekniikat 
+                                            </a>
+                                        </div>
+
+
+
+
+
+<div class="shell-header-dropdown-content " aria-hidden="true" role="menu" style="height: auto;">
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Tekniikat ; Windows">
+
+                            <dt id="shellmenu_1" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Windows" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Windows
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_2">
+                        <a href="https://developer.microsoft.com/windows" class="shell-l3-list-item" ms.title="sovellukset" tabindex="20" data-bi-name="Windows_Apps">
+                            sovellukset
+                        </a>
+                    </li>
+                    <li id="shellmenu_3">
+                        <a href="https://developer.microsoft.com/windows/iot" class="shell-l3-list-item" ms.title="Esineiden Internet" tabindex="20" data-bi-name="Windows_InternetofThings">
+                            Esineiden Internet
+                        </a>
+                    </li>
+                    <li id="shellmenu_4">
+                        <a href="https://developer.microsoft.com/windows/holographic" class="shell-l3-list-item" ms.title="Holographic" tabindex="20" data-bi-name="Windows_Holographic">
+                            Holographic
+                        </a>
+                    </li>
+                    <li id="shellmenu_5">
+                        <a href="https://developer.microsoft.com/microsoft-edge" class="shell-l3-list-item" ms.title="Microsoft Edge" tabindex="20" data-bi-name="Windows_MicrosoftEdge">
+                            Microsoft Edge
+                        </a>
+                    </li>
+                    <li id="shellmenu_6">
+                        <a href="https://developer.microsoft.com/windows/hardware" class="shell-l3-list-item" ms.title="Laitteisto" tabindex="20" data-bi-name="Windows_Hardware ">
+                            Laitteisto
+                        </a>
+                    </li>
+                    <li id="shellmenu_7">
+                        <a href="https://technet.microsoft.com/windows" class="shell-l3-list-item" ms.title="IT Center" tabindex="20" data-bi-name="Windows_WindowsTechCenter">
+                            IT Center
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Tekniikat ; Microsoft Azure ">
+
+                            <dt id="shellmenu_8" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Microsoft Azure " ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Microsoft Azure 
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_9">
+                        <a href="https://azure.microsoft.com/overview/what-is-azure/" class="shell-l3-list-item" ms.title="Mikä on Azure? " tabindex="20" data-bi-name="MicrosoftAzure_WhatisAzure">
+                            Mikä on Azure? 
+                        </a>
+                    </li>
+                    <li id="shellmenu_10">
+                        <a href="https://azure.microsoft.com/services/" class="shell-l3-list-item" ms.title="Tuotteet" tabindex="20" data-bi-name="MicrosoftAzure_Products">
+                            Tuotteet
+                        </a>
+                    </li>
+                    <li id="shellmenu_11">
+                        <a href="https://azure.microsoft.com/solutions/?v=4" class="shell-l3-list-item" ms.title="Ratkaisut" tabindex="20" data-bi-name="MicrosoftAzure_Solutions">
+                            Ratkaisut
+                        </a>
+                    </li>
+                    <li id="shellmenu_12">
+                        <a href="https://azure.microsoft.com/pricing/" class="shell-l3-list-item" ms.title="Hinnoittelu" tabindex="20" data-bi-name="MicrosoftAzure_Pricing">
+                            Hinnoittelu
+                        </a>
+                    </li>
+                    <li id="shellmenu_13">
+                        <a href="https://azure.microsoft.com/free" class="shell-l3-list-item" ms.title="Luo maksuton tili" tabindex="20" data-bi-name="MicrosoftAzure_CreateaFreeAccount">
+                            Luo maksuton tili
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Tekniikat ; Visual Studio ">
+
+                            <dt id="shellmenu_14" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Visual Studio " ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Visual Studio 
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_15">
+                        <a href="https://www.visualstudio.com/" class="shell-l3-list-item" ms.title="Visual Studio" tabindex="20" data-bi-name="MicrosoftVisualStudio_VisualStudio">
+                            Visual Studio
+                        </a>
+                    </li>
+                    <li id="shellmenu_16">
+                        <a href="https://www.visualstudio.com/vs/" class="shell-l3-list-item" ms.title="Visual Studio IDE" tabindex="20" data-bi-name="MicrosoftVisualStudio_VisualStudioIDE">
+                            Visual Studio IDE
+                        </a>
+                    </li>
+                    <li id="shellmenu_17">
+                        <a href="https://www.visualstudio.com/team-services/" class="shell-l3-list-item" ms.title="Visual Studio Team Services" tabindex="20" data-bi-name="MicrosoftVisualStudio_VisualStudioTeamServices">
+                            Visual Studio Team Services
+                        </a>
+                    </li>
+                    <li id="shellmenu_18">
+                        <a href="https://code.visualstudio.com/" class="shell-l3-list-item" ms.title="Visual Studio -koodi" tabindex="20" data-bi-name="MicrosoftVisualStudio_VisualStudioCode">
+                            Visual Studio -koodi
+                        </a>
+                    </li>
+                    <li id="shellmenu_19">
+                        <a href="https://www.xamarin.com/" class="shell-l3-list-item" ms.title="Xamarin" tabindex="20" data-bi-name="MicrosoftVisualStudio_Xamarin">
+                            Xamarin
+                        </a>
+                    </li>
+                    <li id="shellmenu_20">
+                        <a href="https://www.visualstudio.com/dev-essentials/" class="shell-l3-list-item" ms.title="Visual Studio Dev Essentials" tabindex="20" data-bi-name="MicrosoftVisualStudio_VisualStudioDevEssentials">
+                            Visual Studio Dev Essentials
+                        </a>
+                    </li>
+                    <li id="shellmenu_21">
+                        <a href="https://www.visualstudio.com/subscriptions/" class="shell-l3-list-item" ms.title="Tilaukset" tabindex="20" data-bi-name="MicrosoftVisualStudio_Subscriptions">
+                            Tilaukset
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Tekniikat ; Office">
+
+                            <dt id="shellmenu_22" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Office" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Office
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_23">
+                        <a href="http://dev.office.com/" class="shell-l3-list-item" ms.title="Officen kehityskeskus                                 " tabindex="20" data-bi-name="Office_OfficeDevCenter">
+                            Officen kehityskeskus                                 
+                        </a>
+                    </li>
+                    <li id="shellmenu_24">
+                        <a href="https://technet.microsoft.com/fi-fi/office/dn788774" class="shell-l3-list-item" ms.title="Office 365 for IT pros" tabindex="20" data-bi-name="Office_Office365forITpros">
+                            Office 365 for IT pros
+                        </a>
+                    </li>
+                    <li id="shellmenu_25">
+                        <a href="https://dev.office.com/getting-started/addins" class="shell-l3-list-item" ms.title="Word/Excel/PowerPoint" tabindex="20" data-bi-name="Office_WordExcelPowerPoint">
+                            Word/Excel/PowerPoint
+                        </a>
+                    </li>
+                    <li id="shellmenu_26">
+                        <a href="https://graph.microsoft.io/" class="shell-l3-list-item" ms.title="Microsoft Graph" tabindex="20" data-bi-name="Office_MicrosoftGraph">
+                            Microsoft Graph
+                        </a>
+                    </li>
+                    <li id="shellmenu_27">
+                        <a href="https://dev.outlook.com/" class="shell-l3-list-item" ms.title="Outlook" tabindex="20" data-bi-name="Office_Outlook">
+                            Outlook
+                        </a>
+                    </li>
+                    <li id="shellmenu_28">
+                        <a href="https://dev.onedrive.com/" class="shell-l3-list-item" ms.title="OneDrive/Sharepoint" tabindex="20" data-bi-name="Office_OneDriveSharepoint">
+                            OneDrive/Sharepoint
+                        </a>
+                    </li>
+                    <li id="shellmenu_29">
+                        <a href="https://dev.office.com/skype" class="shell-l3-list-item" ms.title="Skype" tabindex="20" data-bi-name="Office_Skype">
+                            Skype
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Tekniikat ; Services ">
+
+                            <dt id="shellmenu_30" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Services " ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Services 
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_31">
+                        <a href="https://developer.microsoft.com/store" class="shell-l3-list-item" ms.title="Kauppa                         " tabindex="20" data-bi-name="Services_OfficeDevCenter">
+                            Kauppa                         
+                        </a>
+                    </li>
+                    <li id="shellmenu_32">
+                        <a href="https://developer.microsoft.com/cortana" class="shell-l3-list-item" ms.title="Cortana" tabindex="20" data-bi-name="Services_Cortana">
+                            Cortana
+                        </a>
+                    </li>
+                    <li id="shellmenu_33">
+                        <a href="https://bing.com/dev/dev-center" class="shell-l3-list-item" ms.title="Bing" tabindex="20" data-bi-name="Services_Bing">
+                            Bing
+                        </a>
+                    </li>
+                    <li id="shellmenu_34">
+                        <a href="https://azure.microsoft.com/services/application-insights" class="shell-l3-list-item" ms.title="Application Insights" tabindex="20" data-bi-name="Services_ApplicationInsights">
+                            Application Insights
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+
+</div>
+                                    </li>
+                                    <li class="shell-header-dropdown" data-navcontainer="shellmenu_35_NavContainer">
+                                        <div id="shellmenu_35" class="shell-header-dropdown-label">
+                                            <a id="Dokumentaatio -navigation" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Dokumentaatio " data-bi-name="Documentation" data-bi-slot="2" tabindex="20">
+                                                Dokumentaatio 
+                                            </a>
+                                        </div>
+
+
+
+
+
+<div class="shell-header-dropdown-content " aria-hidden="true" role="menu" style="height: auto;">
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; Microsoft Developer Network">
+
+                            <dt id="shellmenu_36" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://msdn.microsoft.com/" ms.title="Microsoft Developer Network" tabindex="20" data-bi-name="Learn_MicrosoftDeveloperNetwork">Microsoft Developer Network</a>                         
+                            </dt>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; TechNet">
+
+                            <dt id="shellmenu_37" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://technet.microsoft.com/" ms.title="TechNet" tabindex="20" data-bi-name="Learn_TechNet">TechNet</a>                         
+                            </dt>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; Ympäristöt">
+
+                            <dt id="shellmenu_38" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Ympäristöt" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Ympäristöt
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_39">
+                        <a href="https://azure.microsoft.com/en-us/documentation/" class="shell-l3-list-item" ms.title="Microsoft Azure" tabindex="20" data-bi-name="Build_DeveloperCenters_MicrosoftAzure">
+                            Microsoft Azure
+                        </a>
+                    </li>
+                    <li id="shellmenu_40">
+                        <a href="https://docs.microsoft.com/fi-fi/windows" class="shell-l3-list-item" ms.title="Windows" tabindex="20" data-bi-name="Build_DeveloperCenters_Windows">
+                            Windows
+                        </a>
+                    </li>
+                    <li id="shellmenu_41">
+                        <a href="http://dev.office.com/getting-started" class="shell-l3-list-item" ms.title="Office" tabindex="20" data-bi-name="Build_DeveloperCenters_Office">
+                            Office
+                        </a>
+                    </li>
+                    <li id="shellmenu_42">
+                        <a href="https://developer.microsoft.com/en-us/" class="shell-l3-list-item" ms.title="Kaikki kehittäjäkeskukset" tabindex="20" data-bi-name="Build_DeveloperCenters_AllDeveloperCenters">
+                            Kaikki kehittäjäkeskukset
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; IT TechCenters">
+
+                            <dt id="shellmenu_43" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="IT TechCenters" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    IT TechCenters
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_44">
+                        <a href="https://technet.microsoft.com/fi-fi/windows" class="shell-l3-list-item" ms.title="Windows IT Center" tabindex="20" data-bi-name="TechCenter_WindowsTechCenter">
+                            Windows IT Center
+                        </a>
+                    </li>
+                    <li id="shellmenu_45">
+                        <a href="https://technet.microsoft.com/fi-fi/office/dn788774" class="shell-l3-list-item" ms.title="Office 365 IT-ammattilaisille           " tabindex="20" data-bi-name="TechCenter_Office365forITpros">
+                            Office 365 IT-ammattilaisille           
+                        </a>
+                    </li>
+                    <li id="shellmenu_46">
+                        <a href="https://technet.microsoft.com/fi-fi/bb421517.aspx?wt.svl=more_centers_link" class="shell-l3-list-item" ms.title="Kaikki IT TechCenterit" tabindex="20" data-bi-name="TechCenter_AllTechcenters">
+                            Kaikki IT TechCenterit
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; Lataukset">
+
+                            <dt id="shellmenu_47" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Lataukset" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Lataukset
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_48">
+                        <a href="https://www.microsoft.com/en-us/download/developer-tools.aspx" class="shell-l3-list-item" ms.title="Microsoft Download Center" tabindex="20" data-bi-name="Build_Downloads_MicrosoftDownloadCenter">
+                            Microsoft Download Center
+                        </a>
+                    </li>
+                    <li id="shellmenu_49">
+                        <a href="https://azure.microsoft.com/fi-fi/downloads/" class="shell-l3-list-item" ms.title="Microsoft Azure" tabindex="20" data-bi-name="Build_Downloads_Microsoft Azure">
+                            Microsoft Azure
+                        </a>
+                    </li>
+                    <li id="shellmenu_50">
+                        <a href="https://www.visualstudio.com/fi-fi/downloads/download-visual-studio-vs" class="shell-l3-list-item" ms.title="Visual Studio" tabindex="20" data-bi-name="Build_Downloads_VisualStudio">
+                            Visual Studio
+                        </a>
+                    </li>
+                    <li id="shellmenu_51">
+                        <a href="https://msdn.microsoft.com/fi-fi/microsoft-sdks-msdn" class="shell-l3-list-item" ms.title="Microsoft SDKs" tabindex="20" data-bi-name="Build_Downloads_SDKS">
+                            Microsoft SDKs
+                        </a>
+                    </li>
+                    <li id="shellmenu_52">
+                        <a href="https://developer.microsoft.com/en-us/windows/downloads" class="shell-l3-list-item" ms.title="Windows" tabindex="20" data-bi-name="Build_Downloads_Windows">
+                            Windows
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; Koodimallit">
+
+                            <dt id="shellmenu_53" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://code.msdn.microsoft.com/" ms.title="Koodimallit" tabindex="20" data-bi-name="Build_Samples">Koodimallit</a>                         
+                            </dt>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Dokumentaatio ; PowerShell-komentosarjat">
+
+                            <dt id="shellmenu_54" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://technet.microsoft.com/scriptcenter" ms.title="PowerShell-komentosarjat" tabindex="20" data-bi-name="documentation_powershell_scripts">PowerShell-komentosarjat</a>                         
+                            </dt>
+
+                </dl>
+
+</div>
+                                    </li>
+                                    <li class="shell-header-dropdown" data-navcontainer="shellmenu_55_NavContainer">
+                                        <div id="shellmenu_55" class="shell-header-dropdown-label">
+                                            <a id="Resurssit -navigation" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Resurssit " data-bi-name="Resources " data-bi-slot="3" tabindex="20">
+                                                Resurssit 
+                                            </a>
+                                        </div>
+
+
+
+
+
+<div class="shell-header-dropdown-content " aria-hidden="true" role="menu" style="height: auto;">
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; Blogs">
+
+                            <dt id="shellmenu_56" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Blogs" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Blogs
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_57">
+                        <a href="https://azure.microsoft.com/fi-fi/blog/" class="shell-l3-list-item" ms.title="Microsoft Azure" tabindex="20" data-bi-name="Connect_Blogs_MicrosoftAzure">
+                            Microsoft Azure
+                        </a>
+                    </li>
+                    <li id="shellmenu_58">
+                        <a href="https://blogs.msdn.microsoft.com/visualstudio/" class="shell-l3-list-item" ms.title="Visual Studio" tabindex="20" data-bi-name="Connect_Blogs_VisualStudio">
+                            Visual Studio
+                        </a>
+                    </li>
+                    <li id="shellmenu_59">
+                        <a href="https://blogs.msdn.microsoft.com/visualstudioalm/" class="shell-l3-list-item" ms.title="Visual Studio Team Services " tabindex="20" data-bi-name="Connect_Blogs_VisualStudioTeamServices">
+                            Visual Studio Team Services 
+                        </a>
+                    </li>
+                    <li id="shellmenu_60">
+                        <a href="https://blogs.msdn.microsoft.com/developer-tools/" class="shell-l3-list-item" ms.title="Kehitystyökalut" tabindex="20" data-bi-name="Connect_Blogs_DevloperTools">
+                            Kehitystyökalut
+                        </a>
+                    </li>
+                    <li id="shellmenu_61">
+                        <a href="https://blogs.technet.microsoft.com/server-management/" class="shell-l3-list-item" ms.title="Palvelin &amp; hallinta" tabindex="20" data-bi-name="Connect_Blogs_ServerandManagement">
+                            Palvelin &amp; hallinta
+                        </a>
+                    </li>
+                    <li id="shellmenu_62">
+                        <a href="https://blogs.windows.com/buildingapps/" class="shell-l3-list-item" ms.title="Windows" tabindex="20" data-bi-name="Connect_Blogs_Windows">
+                            Windows
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; Yhteisö ja keskustelupalstat">
+
+                            <dt id="shellmenu_63" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Yhteisö ja keskustelupalstat" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Yhteisö ja keskustelupalstat
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_64">
+                        <a href="https://social.msdn.microsoft.com/forums/en-us/home" class="shell-l3-list-item" ms.title="Developers" tabindex="20" data-bi-name="CommunityandForums_Developers">
+                            Developers
+                        </a>
+                    </li>
+                    <li id="shellmenu_65">
+                        <a href="https://social.technet.microsoft.com/forums/en-us/home" class="shell-l3-list-item" ms.title="TechNet" tabindex="20" data-bi-name="CommunityandForums_Technet">
+                            TechNet
+                        </a>
+                    </li>
+                    <li id="shellmenu_66">
+                        <a href="https://techcommunity.microsoft.com/" class="shell-l3-list-item" ms.title="Microsoft Tech Community" tabindex="20" data-bi-name="CommunityandForums_MicrosoftTechCommunity">
+                            Microsoft Tech Community
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; Tilaukset">
+
+                            <dt id="shellmenu_67" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Tilaukset" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Tilaukset
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_68">
+                        <a href="https://msdn.microsoft.com/subscriptions" class="shell-l3-list-item" ms.title="MSDN-tilaukset" tabindex="20" data-bi-name="Subscriptions_MSDNSubscriptions">
+                            MSDN-tilaukset
+                        </a>
+                    </li>
+                    <li id="shellmenu_69">
+                        <a href="https://www.itprocloudessentials.com/" class="shell-l3-list-item" ms.title="IT Pro Cloud Essentials" tabindex="20" data-bi-name="Subscriptions_ITProCloudEssentials">
+                            IT Pro Cloud Essentials
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; Koulutus">
+
+                            <dt id="shellmenu_70" class="shell-header-dropdown-tab-label">
+                                <a href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false" ms.title="Koulutus" ms.interactiontype="14" tabindex="20" data-bi-dnt="">
+                                    Koulutus
+                                    <i class="shell-icon-dropdown facing-right"></i>
+                                </a>
+                            </dt>
+                            <dd class="shell-header-dropdown-tab-content" data-col="0">
+
+
+
+    <ul class="shell-header-dropdown-tab-list">
+                    <li id="shellmenu_71">
+                        <a href="https://mva.microsoft.com/" class="shell-l3-list-item" ms.title="Microsoft Virtual Academy " tabindex="20" data-bi-name="Training_MicrosoftVirtualAcademy">
+                            Microsoft Virtual Academy 
+                        </a>
+                    </li>
+                    <li id="shellmenu_72">
+                        <a href="http://www.itprocareercenter.com/" class="shell-l3-list-item" ms.title="IT Pro Career Center" tabindex="20" data-bi-name="Training_ITProCareerCenter">
+                            IT Pro Career Center
+                        </a>
+                    </li>
+
+    </ul>
+
+
+
+                            </dd>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; TechNet Evaluation Center">
+
+                            <dt id="shellmenu_73" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://www.microsoft.com/evalcenter/" ms.title="TechNet Evaluation Center" tabindex="20" data-bi-name="Resources_TechNetEvaluationCenter">TechNet Evaluation Center</a>                         
+                            </dt>
+
+                </dl>
+                <dl class="shell-header-dropdown-tab" ms.cmpnm="Resurssit ; Channel 9">
+
+                            <dt id="shellmenu_74" class="shell-header-dropdown-tab-label shell-header-L2menu-direct-link">
+                                <a href="https://channel9.msdn.com/" ms.title="Channel 9" tabindex="20" data-bi-name="Connect_Channel9">Channel 9</a>                         
+                            </dt>
+
+                </dl>
+
+</div>
+                                    </li>
+
+                </ul>
+            </div>
+                <div class="shell-header-user-container">
+                    <dl class="shell-header-user">
+                        <dt>
+                            <span id="meControl"><div class="msame_Header msame_unauth msame_Short" tabindex="60" style="height: 48px;"><div class="msame_Header_name msame_TxtTrunc" style="line-height: 48px;">Sign in</div><div class="msame_Header_chev"></div></div></span>
+                        </dt>
+                    </dl>
+                </div>
+            
+            <div class="shell-header-nav-toggle " ms.cmpgrp="nav">
+                <button class="shell-header-toggle-menu" ms.cmpnm="mobile global nav toggle button" ms.title="Toggle menu" title="Näytä tai piilota valikko" type="button" data-bi-name="Toggle Menu" tabindex="55">
+                    <i class="shell-icon-menu"></i>
+                </button>
+            </div>
+
+            <ul class="shell-header-toggle" ms.cmpgrp="header actions">
+                    <li>
+                        <button class="shell-header-toggle-search" type="button" data-bi-name="Toggle Search Icon" ms.title="search toggle" title="Näytä tai&nbsp;piilota&nbsp;haku" tabindex="45">
+                            <i class="shell-icon-search"></i>
+                        </button>
+                    </li>
+                            </ul>
+
+            <div class="shell-header-actions" ms.cmpgrp="header actions">
+                    <form id="srv_shellHeaderSearchForm" class="shell-search" role="search" action="https://social.msdn.microsoft.com/search/windows" method="GET" autocomplete="off" onsubmit=" return window.msCommonShell.onSearch(this) " ms.cmpnm="search">
+                        <div class="shell-search-wrapper">
+                            <label for="cli_shellHeaderSearchInput" class="sr-only">Search Microsoft</label>
+                            <input id="cli_shellHeaderSearchInput" title="Hae kehityskeskuksesta" name="query" data-bi-dnt="" placeholder="Hae kehityskeskuksesta" maxlength="200" tabindex="30" type="search">
+
+                                <input name="Refinement" data-bi-dnt="" value="183" type="hidden">
+
+                            <button type="submit" title="Hae" data-bi-dnt="" tabindex="40">
+                                <i class="shell-icon-search"></i>
+                                <span class="sr-only">Search</span>
+                            </button>
+                            <div id="cli_searchSuggestionsContainer" class="shell-search-dropdown-container">
+                                <div class="search-dropdown">
+                                    <div class="dropdown-item">
+                                        <ul id="cli_searchSuggestionsResults" data-bi-name="Search Suggestions" data-bi-source="UnifiedSearch" ms.cmpgrp="search suggestions"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="fixed-global-nav-buffer" style="height: 75px;"></div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="shell-category-header cat-theme-gray" ms.pgarea="categoryheader">
+    
+    <div role="navigation" aria-label="Category level navigation" class="shell-category-nav" ms.cmpgrp="cat nav" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="C0">
+        <div class="c-nav-pagination c-nav-pagination-prev" style="display: none;">
+            <i class="shell-icon-dropdown facing-left"></i>
+        </div>
+        <ul class="shell-category-top-level shell-category-brand">
+            <li class="c-logo-item">
+                                <a id="shell-cat-header-logo" class="c-logo c-top-nav-link" href="https://developer.microsoft.com/fi-fi/windows" title="" ms.title="Windows Dev Center" data-bi-name="Category logo" tabindex="70">
+                    <span class="logo-text-label">Windowsin kehityskeskus</span>
+                </a>
+                <a id="shell-cat-header-logo-mobile" aria-expanded="false" role="button" aria-haspopup="true" class="c-logo-mobile c-top-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Windows Dev Center" ms.interactiontype="14" data-bi-name="Mobile category logo" tabindex="70">
+                    <span class="logo-text-label">Windowsin kehityskeskus</span>
+                    <i class="shell-icon-dropdown"></i>
+                </a>
+            <ul class="c-nav-dropdown-menu" role="menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="C1">
+
+
+
+            <li class="c-top-nav-item" id="explore-mobilelist">
+                <a id="explore-mobile" tabindex="70" aria-haspopup="true" aria-expanded="false" class="c-top-nav-link c-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Tutustuminen" role="button" ms.interactiontype="14" data-bi-name="Explore" data-bi-slot="1" data-show-cta="True">
+                    <span>Tutustuminen<i class="shell-icon-dropdown"></i></span>
+                </a>
+                <ul aria-hidden="true" class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Explore-C2" ms.cmpnm="Tutustuminen" role="menu">
+
+
+
+
+        <li class="c-nav-item ">
+            <a id="explore_why_windows-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/why-build-for-uwp" ms.title="Miksi Windows" data-bi-name="Explore_WhyWindows" data-bi-slot="1" tabindex="70">
+                <span>
+                    Miksi Windows
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_whatsnewwin10-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fl/windows/windows-10-for-developers" ms.title="Windows 10:n uudet ominaisuudet" data-bi-name="Explore_WhatsNewWin10" data-bi-slot="2" tabindex="70">
+                <span>
+                    Windows 10:n uudet ominaisuudet
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_guideuwpapps-mobile" class="c-nav-dropdown-item c-nav-link " href="https://docs.microsoft.com/fi-fi/windows/uwp/get-started/universal-application-platform-guide" ms.title="Universaalin Windows-ympäristön johdanto" data-bi-name="Explore_GuideUwpApps" data-bi-slot="3" tabindex="70">
+                <span>
+                    Universaalin Windows-ympäristön johdanto
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_dev_center_benefits-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/benefits" ms.title="Kehityskeskuksen edut" data-bi-name="Explore_DevCenterBenefits" data-bi-slot="4" tabindex="70">
+                <span>
+                    Kehityskeskuksen edut
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_Develop-for-accessibility-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/accessible-apps" ms.title="Helppokäyttötoimintoja tukevien sovellusten kehittäminen" data-bi-name="Explore_Develop-for-accessibility" data-bi-slot="5" tabindex="70">
+                <span>
+                    Helppokäyttötoimintoja tukevien sovellusten kehittäminen
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_Build-for-enterprise-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/enterprise" ms.title="Yrityssovellusten kehittäminen" data-bi-name="Explore_Build-for-enterprise" data-bi-slot="6" tabindex="70">
+                <span>
+                    Yrityssovellusten kehittäminen
+                </span>
+            </a>
+
+
+        </li>
+
+
+                </ul>
+            </li>
+            <li class="c-top-nav-item" id="Docs-mobilelist">
+                <a id="Docs-mobile" tabindex="70" aria-haspopup="true" aria-expanded="false" class="c-top-nav-link c-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Tiedostot" role="button" ms.interactiontype="14" data-bi-name="Docs" data-bi-slot="2" data-show-cta="True">
+                    <span>Tiedostot<i class="shell-icon-dropdown"></i></span>
+                </a>
+                <ul aria-hidden="true" class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs-C2" ms.cmpnm="Tiedostot" role="menu">
+
+
+
+
+        <li class="c-nav-item c-nav-link-with-dropdown">
+            <a id="docs_windowsapps-mobile" class="c-nav-dropdown-item c-nav-link c-top-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Windows-sovellukset" role="button" data-bi-name="Docs_WindowsApps" data-bi-slot="1" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Windows-sovellukset
+                        <i class="shell-icon-dropdown"></i>
+                </span>
+            </a>
+
+
+                    <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_WindowsApps-C3" ms.cmpnm="Windows-sovellukset" role="menu">
+
+
+
+            <li>
+                <a id="docs_windows-apps_getstarted-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/getstarted" ms.title="Aloitusopas" data-bi-name="DocsWindowsAppsGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_designUI-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/design" ms.title="Suunnittelu ja käyttöliittymä" data-bi-name="DocsWindowsAppsDesignUI" data-bi-slot="2" tabindex="70">
+                    <span>Suunnittelu ja käyttöliittymä</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_develop-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/develop" ms.title="Kehittäminen" data-bi-name="DocsWindowsAppsDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_api-reference-mobile" class="c-nav-dropdown-item c-nav-link" href="https://docs.microsoft.com/fi-fi/uwp/api/" ms.title="API-aineisto" data-bi-name="DocsWindowsAppsAPIreference" data-bi-slot="4" tabindex="70">
+                    <span>API-aineisto</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_publish-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/publish" ms.title="Julkaiseminen" data-bi-name="DocsWindowsAppsPublish" data-bi-slot="5" tabindex="70">
+                    <span>Julkaiseminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_monetize-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/monetize" ms.title="Muunna kassavirraksi" data-bi-name="DocsWindowsAppsMonetize" data-bi-slot="6" tabindex="70">
+                    <span>Muunna kassavirraksi</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_promote-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/store-promotion" ms.title="Mainosta" data-bi-name="DocsWindowsAppsPromote" data-bi-slot="7" tabindex="70">
+                    <span>Mainosta</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                    </ul>
+        </li>
+        <li class="c-nav-item c-nav-link-with-dropdown">
+            <a id="docs_Games-mobile" class="c-nav-dropdown-item c-nav-link c-top-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Pelit" role="button" data-bi-name="Docs_Games" data-bi-slot="2" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Pelit
+                        <i class="shell-icon-dropdown"></i>
+                </span>
+            </a>
+
+
+                    <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_Games-C3" ms.cmpnm="Pelit" role="menu">
+
+
+
+            <li>
+                <a id="docs_games_getstarted-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/getstarted" ms.title="Aloitusopas" data-bi-name="DocsGamesGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_uidesign-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/design" ms.title="Käyttöliittymän suunnittelu" data-bi-name="DocsGamesUIdesign" data-bi-slot="2" tabindex="70">
+                    <span>Käyttöliittymän suunnittelu</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_develop-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/develop" ms.title="Kehittäminen" data-bi-name="DocsGamesDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_publish-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/publish" ms.title="Julkaiseminen" data-bi-name="DocsGamesPublish" data-bi-slot="4" tabindex="70">
+                    <span>Julkaiseminen</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                    </ul>
+        </li>
+        <li class="c-nav-item c-nav-link-with-dropdown">
+            <a id="docs_desktop-apps-mobile" class="c-nav-dropdown-item c-nav-link c-top-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Perinteinen työpöytäympäristö" role="button" data-bi-name="Docs_DesktopApps" data-bi-slot="3" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Perinteinen työpöytäympäristö
+                        <i class="shell-icon-dropdown"></i>
+                </span>
+            </a>
+
+
+                    <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_DesktopApps-C3" ms.cmpnm="Perinteinen työpöytäympäristö" role="menu">
+
+
+
+            <li>
+                <a id="docs_desktop_getstarted-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/getstarted" ms.title="Aloitusopas" data-bi-name="DocsDesktopGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_design-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/design" ms.title="Suunnittelu" data-bi-name="DocsDesktopDesign" data-bi-slot="2" tabindex="70">
+                    <span>Suunnittelu</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_develop-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/develop" ms.title="Kehittäminen" data-bi-name="DocsDesktopDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_apief-mobile" class="c-nav-dropdown-item c-nav-link" href="https://msdn.microsoft.com/library/windows/desktop/hh920508.aspx" ms.title="API-aineisto " data-bi-name="DocsDesktopAPIref" data-bi-slot="4" tabindex="70">
+                    <span>API-aineisto </span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_TestDeploy-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/test-deploy" ms.title="Testaaminen ja käyttöönotto" data-bi-name="DocsDesktopTestDeploy" data-bi-slot="5" tabindex="70">
+                    <span>Testaaminen ja käyttöönotto</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_Compatibility-mobile" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/app-compatibility" ms.title="Yhteensopivuus" data-bi-name="DocsDesktopCompatibility" data-bi-slot="6" tabindex="70">
+                    <span>Yhteensopivuus</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                    </ul>
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_win-iot-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/iot" ms.title="Windows IoT" data-bi-name="Docs_WinIoT" data-bi-slot="4" tabindex="70">
+                <span>
+                    Windows IoT
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_edge-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/microsoft-edge" ms.title="Microsoft Edge" data-bi-name="Docs_Edge" data-bi-slot="5" tabindex="70">
+                <span>
+                    Microsoft Edge
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_holographic-mobile" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/holographic" ms.title="Holographic" data-bi-name="Docs_Holographic" data-bi-slot="6" tabindex="70">
+                <span>
+                    Holographic
+                </span>
+            </a>
+
+
+        </li>
+
+
+                </ul>
+            </li>
+                <li class="c-top-nav-item" id="downloads-mobilelist">
+                    <a id="downloads-mobile" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/downloads" ms.title="Ladattavat resurssit" data-bi-name="Downloads" data-bi-slot="3" data-show-cta="True">
+                        <span>Ladattavat resurssit</span>
+                    </a>
+                </li>
+                <li class="c-top-nav-item" id="samples-mobilelist">
+                    <a id="samples-mobile" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/samples" ms.title="Näytteet" data-bi-name="Samples" data-bi-slot="4" data-show-cta="True">
+                        <span>Näytteet</span>
+                    </a>
+                </li>
+                <li class="c-top-nav-item" id="support-mobilelist">
+                    <a id="support-mobile" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/support" ms.title="Tuki" data-bi-name="Support" data-bi-slot="5" data-show-cta="True">
+                        <span>Tuki</span>
+                    </a>
+                </li>
+                <li class="c-top-nav-item" id="dashboard-mobilelist">
+                    <a id="dashboard-mobile" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fl/dashboard/apps/overview" ms.title="Koontinäyttö" data-bi-name="Dashboard" data-bi-slot="6" data-show-cta="True">
+                        <span>Koontinäyttö</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            </li>
+
+        </ul>
+
+        
+        <ul class="c-menu-container shell-category-top-level shell-category-nav-wrapper" role="menu" data-bi-area="CategoryMenuItems-Windows Dev Center" data-bi-view="C1" style="max-width: 569px;">
+
+
+
+            <li class="c-top-nav-item" id="explorelist" style="margin-left: -5px;">
+                <a id="explore" tabindex="70" aria-haspopup="true" aria-expanded="false" class="c-top-nav-link c-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Tutustuminen" role="button" ms.interactiontype="14" data-bi-name="Explore" data-bi-slot="1" data-show-cta="True">
+                    <span>Tutustuminen<i class="shell-icon-dropdown"></i></span>
+                </a>
+                <ul aria-hidden="true" class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Explore-C2" ms.cmpnm="Tutustuminen" role="menu">
+
+
+
+
+        <li class="c-nav-item ">
+            <a id="explore_why_windows" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/why-build-for-uwp" ms.title="Miksi Windows" data-bi-name="Explore_WhyWindows" data-bi-slot="1" tabindex="70">
+                <span>
+                    Miksi Windows
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_whatsnewwin10" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fl/windows/windows-10-for-developers" ms.title="Windows 10:n uudet ominaisuudet" data-bi-name="Explore_WhatsNewWin10" data-bi-slot="2" tabindex="70">
+                <span>
+                    Windows 10:n uudet ominaisuudet
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_guideuwpapps" class="c-nav-dropdown-item c-nav-link " href="https://docs.microsoft.com/fi-fi/windows/uwp/get-started/universal-application-platform-guide" ms.title="Universaalin Windows-ympäristön johdanto" data-bi-name="Explore_GuideUwpApps" data-bi-slot="3" tabindex="70">
+                <span>
+                    Universaalin Windows-ympäristön johdanto
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_dev_center_benefits" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/benefits" ms.title="Kehityskeskuksen edut" data-bi-name="Explore_DevCenterBenefits" data-bi-slot="4" tabindex="70">
+                <span>
+                    Kehityskeskuksen edut
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_Develop-for-accessibility" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/accessible-apps" ms.title="Helppokäyttötoimintoja tukevien sovellusten kehittäminen" data-bi-name="Explore_Develop-for-accessibility" data-bi-slot="5" tabindex="70">
+                <span>
+                    Helppokäyttötoimintoja tukevien sovellusten kehittäminen
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="explore_Build-for-enterprise" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/enterprise" ms.title="Yrityssovellusten kehittäminen" data-bi-name="Explore_Build-for-enterprise" data-bi-slot="6" tabindex="70">
+                <span>
+                    Yrityssovellusten kehittäminen
+                </span>
+            </a>
+
+
+        </li>
+
+
+                </ul>
+            </li>
+            <li class="c-top-nav-item" id="Docslist">
+                <a id="Docs" tabindex="70" aria-haspopup="true" aria-expanded="false" class="c-top-nav-link c-nav-link c-nav-dropdown" href="javascript:void(0);" ms.title="Tiedostot" role="button" ms.interactiontype="14" data-bi-name="Docs" data-bi-slot="2" data-show-cta="True">
+                    <span>Tiedostot<i class="shell-icon-dropdown"></i></span>
+                </a>
+                <ul aria-hidden="true" class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs-C2" ms.cmpnm="Tiedostot" role="menu">
+
+
+
+
+        <li class="c-nav-item-with-dropdown c-nav-link-with-dropdown">
+            <a id="docs_windowsapps" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/apps" ms.title="Windows-sovellukset" role="button" data-bi-name="Docs_WindowsApps" data-bi-slot="1" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Windows-sovellukset
+                </span>
+            </a>
+
+                <i class="shell-icon-dropdown"></i>
+
+                    <div class="c-nav-dropdown-tab-content" data-col="1">
+                        <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_WindowsApps-C3" ms.cmpnm="Windows-sovellukset" role="menu">
+
+
+
+            <li>
+                <a id="docs_windows-apps_getstarted" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/getstarted" ms.title="Aloitusopas" data-bi-name="DocsWindowsAppsGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_designUI" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/design" ms.title="Suunnittelu ja käyttöliittymä" data-bi-name="DocsWindowsAppsDesignUI" data-bi-slot="2" tabindex="70">
+                    <span>Suunnittelu ja käyttöliittymä</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_develop" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/apps/develop" ms.title="Kehittäminen" data-bi-name="DocsWindowsAppsDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_api-reference" class="c-nav-dropdown-item c-nav-link" href="https://docs.microsoft.com/fi-fi/uwp/api/" ms.title="API-aineisto" data-bi-name="DocsWindowsAppsAPIreference" data-bi-slot="4" tabindex="70">
+                    <span>API-aineisto</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_publish" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/publish" ms.title="Julkaiseminen" data-bi-name="DocsWindowsAppsPublish" data-bi-slot="5" tabindex="70">
+                    <span>Julkaiseminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_monetize" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/monetize" ms.title="Muunna kassavirraksi" data-bi-name="DocsWindowsAppsMonetize" data-bi-slot="6" tabindex="70">
+                    <span>Muunna kassavirraksi</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_windows-apps_promote" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/store-promotion" ms.title="Mainosta" data-bi-name="DocsWindowsAppsPromote" data-bi-slot="7" tabindex="70">
+                    <span>Mainosta</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                        </ul>
+                    </div>
+        </li>
+        <li class="c-nav-item-with-dropdown c-nav-link-with-dropdown">
+            <a id="docs_Games" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/games" ms.title="Pelit" role="button" data-bi-name="Docs_Games" data-bi-slot="2" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Pelit
+                </span>
+            </a>
+
+                <i class="shell-icon-dropdown"></i>
+
+                    <div class="c-nav-dropdown-tab-content" data-col="1">
+                        <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_Games-C3" ms.cmpnm="Pelit" role="menu">
+
+
+
+            <li>
+                <a id="docs_games_getstarted" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/getstarted" ms.title="Aloitusopas" data-bi-name="DocsGamesGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_uidesign" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/design" ms.title="Käyttöliittymän suunnittelu" data-bi-name="DocsGamesUIdesign" data-bi-slot="2" tabindex="70">
+                    <span>Käyttöliittymän suunnittelu</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_develop" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/develop" ms.title="Kehittäminen" data-bi-name="DocsGamesDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_games_publish" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/games/publish" ms.title="Julkaiseminen" data-bi-name="DocsGamesPublish" data-bi-slot="4" tabindex="70">
+                    <span>Julkaiseminen</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                        </ul>
+                    </div>
+        </li>
+        <li class="c-nav-item-with-dropdown c-nav-link-with-dropdown">
+            <a id="docs_desktop-apps" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/desktop" ms.title="Perinteinen työpöytäympäristö" role="button" data-bi-name="Docs_DesktopApps" data-bi-slot="3" tabindex="70" aria-haspopup="true" aria-expanded="false">
+                <span>
+                    Perinteinen työpöytäympäristö
+                </span>
+            </a>
+
+                <i class="shell-icon-dropdown"></i>
+
+                    <div class="c-nav-dropdown-tab-content" data-col="1">
+                        <ul class="c-nav-dropdown-menu" data-bi-area="CategoryHeader-Windows Dev Center" data-bi-view="Docs_DesktopApps-C3" ms.cmpnm="Perinteinen työpöytäympäristö" role="menu">
+
+
+
+            <li>
+                <a id="docs_desktop_getstarted" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/getstarted" ms.title="Aloitusopas" data-bi-name="DocsDesktopGetstarted" data-bi-slot="1" tabindex="70">
+                    <span>Aloitusopas</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_design" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/design" ms.title="Suunnittelu" data-bi-name="DocsDesktopDesign" data-bi-slot="2" tabindex="70">
+                    <span>Suunnittelu</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_develop" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/develop" ms.title="Kehittäminen" data-bi-name="DocsDesktopDevelop" data-bi-slot="3" tabindex="70">
+                    <span>Kehittäminen</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_apief" class="c-nav-dropdown-item c-nav-link" href="https://msdn.microsoft.com/library/windows/desktop/hh920508.aspx" ms.title="API-aineisto " data-bi-name="DocsDesktopAPIref" data-bi-slot="4" tabindex="70">
+                    <span>API-aineisto </span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_TestDeploy" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/test-deploy" ms.title="Testaaminen ja käyttöönotto" data-bi-name="DocsDesktopTestDeploy" data-bi-slot="5" tabindex="70">
+                    <span>Testaaminen ja käyttöönotto</span>
+                </a>
+            </li>
+            <li>
+                <a id="docs_desktop_Compatibility" class="c-nav-dropdown-item c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/desktop/app-compatibility" ms.title="Yhteensopivuus" data-bi-name="DocsDesktopCompatibility" data-bi-slot="6" tabindex="70">
+                    <span>Yhteensopivuus</span>
+                </a>
+            </li>
+
+
+ 
+
+
+                        </ul>
+                    </div>
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_win-iot" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/iot" ms.title="Windows IoT" data-bi-name="Docs_WinIoT" data-bi-slot="4" tabindex="70">
+                <span>
+                    Windows IoT
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_edge" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/microsoft-edge" ms.title="Microsoft Edge" data-bi-name="Docs_Edge" data-bi-slot="5" tabindex="70">
+                <span>
+                    Microsoft Edge
+                </span>
+            </a>
+
+
+        </li>
+        <li class="c-nav-item ">
+            <a id="docs_holographic" class="c-nav-dropdown-item c-nav-link " href="https://developer.microsoft.com/fi-fi/windows/holographic" ms.title="Holographic" data-bi-name="Docs_Holographic" data-bi-slot="6" tabindex="70">
+                <span>
+                    Holographic
+                </span>
+            </a>
+
+
+        </li>
+
+
+                </ul>
+            </li>
+                <li class="c-top-nav-item c-top-nav-disabled" id="downloadslist">
+                    <a id="downloads" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/downloads" ms.title="Ladattavat resurssit" data-bi-name="Downloads" data-bi-slot="3" data-show-cta="True">
+                        <span>Ladattavat resurssit</span>
+                    </a>
+                </li>
+                <li class="c-top-nav-item c-top-nav-disabled" id="sampleslist">
+                    <a id="samples" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/samples" ms.title="Näytteet" data-bi-name="Samples" data-bi-slot="4" data-show-cta="True">
+                        <span>Näytteet</span>
+                    </a>
+                </li>
+                <li class="c-top-nav-item c-top-nav-disabled" id="supportlist">
+                    <a id="support" tabindex="70" class="c-top-nav-link c-nav-link" href="https://developer.microsoft.com/fi-fi/windows/support" ms.title="Tuki" data-bi-name="Support" data-bi-slot="5" data-show-cta="True">
+                        <span>Tuki</span>
+                    </a>
+                </li>
+
+        </ul>
+                <div class="shell-category-nav-featured force-right"><div class="c-nav-pagination c-nav-pagination-next" style="display: block;">
+            <i class="shell-icon-dropdown facing-right"></i>
+        </div>
+                    <a id="dashboard" class="c-nav-link c-top-nav-link" ms.title="Koontinäyttö" href="https://developer.microsoft.com/fi-fl/dashboard/apps/overview" role="menuitem" data-bi-name="Dashboard" data-bi-slot="6">
+                        <span tabindex="70">Koontinäyttö</span>
+                    </a>
+                </div>
+
+        
+    </div>
+
+</div>
+<div class="fixed-category-nav-buffer"></div>
+
+
+
+
+
+
+
+
+ 
+    </div>
+    <input id="UhfSignInOutLink" value="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=13&amp;ct=1487090634&amp;rver=6.7.6640.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2ffi-fi%2flibrary%2fwindows%2fdesktop%2fjj215820%2528v%3dvs.85%2529.aspx&amp;lc=1035&amp;id=254354&amp;mkt=fi-FI" type="hidden">
+    
+    
+    
+
+
+
+
+
+
+
+
+    <div id="breadcrumbs">
+        <div id="breadcrumbDesktop" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ee663274%28v=vs.85%29.aspx" title="DirectX Graphics and Gaming"></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh309466%28v=vs.85%29.aspx" title="Direct3D"><span>Direct3D</span></a></span>
+                        <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509561%28v=vs.85%29.aspx" title="HLSL"><span>HLSL</span></a></span>
+                        <span class="breadcrumbDropSmall">
+                            <a id="breadcrumbDropDownButton" href="#" targethref="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509561(v=vs.85).aspx" title="Programming Guide for HLSL" role="button" aria-expanded="false"><span>Programming Guide for HLSL</span></a>
+                        </span>
+        </div>
+        <div id="breadcrumbDropDownMenu" style="display: none;"></div>
+
+        <div id="breadcrumbTablet" class="breadCrumb">
+                        <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509561%28v=vs.85%29.aspx" title="HLSL"></a></span>
+                    <span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509635%28v=vs.85%29.aspx" title="Programming Guide for HLSL"><span>Programming Guide for HLSL</span></a></span>
+                <span class="breadcrumbDropSmall"><a id="tocDropDownButton" href="#" title="Specifying Compiler Targets" role="button" aria-expanded="false"><span>Specifying Compiler Targets</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/jj215820%28d=printer,v=vs.85%29.aspx" rel="nofollow"><ins class="print"></ins>Tulosta </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/fi-fi/library/export/help/?returnurl=%2ffi-fi%2flibrary%2fwindows%2fdesktop%2fjj215820%28v%3dvs.85%29.aspx">
+                <ins class="export"></ins>Vie (<span class="count">0</span>)
+            </a>
+        </div></div>
+        <div id="tocDropDownMenu" style="display: none;"><div id="tocnav" class="ArchiveV2">
+    <div class="tocunselected">
+        <div id="tocExpandArea" style="display: block;">
+            <span class="toc_empty"></span>
+            <span id="tocExpandButton"><a href="javascript:void(0)" aria-label="expand sibling toc" role="button"></a></span>
+        </div>
+        <div id="tocExpand"><div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Laajenna sisällysluettelo" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn466359%28v=vs.85%29.aspx" id="dn455072_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Using shader linking">Using shader linking</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb944006%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Writing HLSL Shaders in Direct3D 9">Writing HLSL Shaders in Direct3D 9</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509704%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Using Shaders in Direct3D 9">Using Shaders in Direct3D 9</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509703%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Using Shaders in Direct3D 10">Using Shaders in Direct3D 10</a>                </div></div>
+    <div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/cc627119%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Optimizing HLSL Shaders">Optimizing HLSL Shaders</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb943994%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Debugging Shaders in Visual Studio">Debugging Shaders in Visual Studio</a>                </div><div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509633%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Compiling Shaders">Compiling Shaders</a>                </div></div>
+    <div class="tocselected"><div class="toclevel current" data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/jj215820%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Specifying Compiler Targets">Specifying Compiler Targets</a>                </div><div class="tocPadding"></div></div>
+    <div class="tocunselected">
+                
+                
+                
+                
+                
+                
+                
+                
+                <div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728749%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Unpacking and Packing DXGI_FORMAT for In-Place Image Editing">Unpacking and Packing DXGI_FORMAT for In-Place Image Editing</a>                </div>
+                <div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Laajenna sisällysluettelo" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh968108%28v=vs.85%29.aspx" id="jj215846_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Using HLSL minimum precision">Using HLSL minimum precision</a>                </div>
+                <div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Laajenna sisällysluettelo" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff471419%28v=vs.85%29.aspx" id="jj635765_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="HLSL Shader Model 5">HLSL Shader Model 5</a>                </div>
+                <div class="toclevel " data-toclevel="1">
+<a class="toc_collapsed" href="javascript:void(0)" role="button" aria-label="Laajenna sisällysluettelo" aria-expanded="false"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn933267%28v=vs.85%29.aspx" id="dn455073_VS.85_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="HLSL Shader Model 5.1">HLSL Shader Model 5.1</a>                </div>
+                <div class="toclevel " data-toclevel="1">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/mt733232%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="HLSL Shader Model 6.0">HLSL Shader Model 6.0</a>                </div>
+    </div>
+    <a id="tocMenuToggler" href="javascript:void(0)" role="button">
+        <span id="tocMenuTogglerIcon" class="tocMenuCollapse" role="button" aria-expanded="true" aria-label="Table of contents menu"></span>
+        <div id="tocMenuTogglerLabel">TOC</div>
+    </a>
+</div></div>
+        <div id="breadcrumbMobile" class="breadCrumb">
+                <span class="breadcrumbEllipsis"><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509635%28v=vs.85%29.aspx" title="Programming Guide for HLSL"></a></span>
+            <span class="breadcrumbDropSmall"><a id="tocPopupButton" href="#" title="Specifying Compiler Targets" role="button" aria-expanded="false"><span>Specifying Compiler Targets</span></a></span>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/jj215820%28d=printer,v=vs.85%29.aspx" rel="nofollow"><ins class="print"></ins>Tulosta </a>
+            <a id="isd_printABook" href="https://msdn.microsoft.com/fi-fi/library/export/help/?returnurl=%2ffi-fi%2flibrary%2fwindows%2fdesktop%2fjj215820%28v%3dvs.85%29.aspx">
+                <ins class="export"></ins>Vie (<span class="count">0</span>)
+            </a>
+        </div></div>
+    </div>
+    <div id="tocPopupMenu" style="display: none;">
+        <div id="tocPopMenuClose" class="tocCloseLarge" role="button" aria-label="Close Popup Menu" tabindex="0"></div>
+        <div id="tocTitle">Specifying Compiler Targets</div>
+    </div>
+
+
+        <div id="body" ms.pgarea="body" class="">
+            <span id="tabletView_large"></span>
+            <span id="tabletView_small"></span>
+            <span id="mobileView"></span>
+            
+
+
+
+
+
+
+
+    <div id="leftNav" ms.cmpgrp="left toc" role="navigation" aria-label="left toc">
+
+    
+
+
+            <div style="display:none">
+                <div id="CollapseLocalizeString">Kutista sisällysluettelo</div>
+                <div id="ExpandLocalizeString">Laajenna sisällysluettelo</div>
+            </div>
+        <div>
+            <a id="isd_archiveControlResponsive" style="display:none;" href="javascript:void(0)" role="button" aria-label="Hide Archived Versions" data-include-archive="Show Archived Versions" data-exclude-archive="Hide Archived Versions">
+            </a>
+            <div id="isd_archiveInstrument" style="display:none">This documentation is archived and is not being maintained.</div>
+        </div>
+    </div>
+     <div id="content" class="content" ms.cmpgrp="content body" role="main">
+
+
+
+
+<div id="ContentFallback" class="ContentFallback">
+    <div class="ContentFallbackHead"><span>EN</span></div>
+    <div class="ContentFallbackText">Tätä sisältöä ei ole saatavilla kielelläsi. Tässä on englanninkielinen versio.</div>
+</div>
+
+
+
+
+
+
+    <div id="archiveDisclaimerText" style="display:none">This documentation is archived and is not being maintained.</div>
+
+
+
+
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">Specifying Compiler Targets</h1>
+  
+  <div id="mainSection">
+<div class="clsServerSDKContent">
+
+</div>
+<p>You need to specify the shader target — set of shader features — to compile against when you call the <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/dd607324%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DCompile</strong></a>, <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/hh446869%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DCompile2</strong></a>, or  <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/hh446872%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DCompileFromFile</strong></a> function. Here we list the targets for various profiles that the <strong>D3DCompile*</strong> functions and the HLSL compiler support.</p>
+<p>
+</p><ul>
+<li><a href="#direct3d_11.0_and_11.1_feature_levels">Direct3D 11.0 and 11.1 feature levels</a></li>
+<li><a href="#direct3d_10.1_feature_level">Direct3D 10.1 feature level</a></li>
+<li><a href="#direct3d_10.0_feature_level">Direct3D 10.0 feature level</a></li>
+<li><a href="#direct3d_9.1__9.2__and_9.3_feature_levels">Direct3D 9.1, 9.2, and 9.3 feature levels</a></li>
+<li><a href="#Legacy_D3D9_Shader_Model_3">Legacy Direct3D 9 Shader Model 3.0</a></li>
+<li><a href="#legacy_direct3d_9_shader_model_2.0">Legacy Direct3D 9 Shader Model 2.0</a></li>
+<li><a href="#legacy_direct3d_9_shader_model_1.x">Legacy Direct3D 9 Shader Model 1.x</a></li>
+<li><a href="#legacy_effects">Legacy Effects</a></li>
+<li><a href="#notes">Notes</a></li>
+<li><a href="#related_topics">Related topics</a></li>
+</ul>
+
+<h2><a id="Direct3D_11.0_and_11.1_feature_levels"></a><a id="direct3d_11.0_and_11.1_feature_levels"></a><a id="DIRECT3D_11.0_AND_11.1_FEATURE_LEVELS"></a>Direct3D 11.0 and 11.1 feature levels</h2>
+<p>Here are the shader targets that Direct3D 11.0 and 11.1 <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">feature levels</a> support.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">cs_5_0</td><td data-th="Description">DirectCompute 5.0 (<a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476331%28v=vs.85%29.aspx">compute shader</a>) </td></tr>
+<tr><td data-th="Target">ds_5_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476340%28v=vs.85%29.aspx#Domain_Shader_Stage">Domain shader</a></td></tr>
+<tr><td data-th="Target">gs_5_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Geometry_Shader_Stage">Geometry shader</a></td></tr>
+<tr><td data-th="Target">hs_5_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476340%28v=vs.85%29.aspx#Hull_Shader_Stage">Hull shader</a></td></tr>
+<tr><td data-th="Target">ps_5_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a></td></tr>
+<tr><td data-th="Target">vs_5_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a></td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Direct3D_10.1_feature_level"></a><a id="direct3d_10.1_feature_level"></a><a id="DIRECT3D_10.1_FEATURE_LEVEL"></a>Direct3D 10.1 feature level</h2>
+<p>Here are the shader targets that the Direct3D 10.1 <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">feature level</a> supports.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">cs_4_1</td><td data-th="Description">DirectCompute 4.1 (<a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476331%28v=vs.85%29.aspx">compute shader</a>)¹</td></tr>
+<tr><td data-th="Target">gs_4_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Geometry_Shader_Stage">Geometry shader</a></td></tr>
+<tr><td data-th="Target">ps_4_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a></td></tr>
+<tr><td data-th="Target">vs_4_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a></td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Direct3D_10.0_feature_level"></a><a id="direct3d_10.0_feature_level"></a><a id="DIRECT3D_10.0_FEATURE_LEVEL"></a>Direct3D 10.0 feature level</h2>
+<p>Here are the shader targets that the Direct3D 10.0 <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">feature level</a> supports.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">cs_4_0</td><td data-th="Description">DirectCompute 4.0 (<a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476331%28v=vs.85%29.aspx">compute shader</a>)¹</td></tr>
+<tr><td data-th="Target">gs_4_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Geometry_Shader_Stage">Geometry shader</a></td></tr>
+<tr><td data-th="Target">ps_4_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a></td></tr>
+<tr><td data-th="Target">vs_4_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a></td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Direct3D_9.1__9.2__and_9.3_feature_levels"></a><a id="direct3d_9.1__9.2__and_9.3_feature_levels"></a><a id="DIRECT3D_9.1__9.2__AND_9.3_FEATURE_LEVELS"></a>Direct3D 9.1, 9.2, and 9.3 feature levels</h2>
+<p>Here are the shader targets that Direct3D 9.1, 9.2 and 9.3 <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">feature levels</a> support.</p>
+<div class="alert"><strong>Note</strong>&nbsp;&nbsp;When you use the *_4_0_level_9_x HLSL shader profiles, you implicitly use of the <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb509655%28v=vs.85%29.aspx">Shader Model 2.x</a>
+ profiles to support Direct3D&nbsp;9 capable hardware. Shader Model 2.x 
+profiles support more limited flow control behavior than the <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb509657%28v=vs.85%29.aspx">Shader Model 4.x</a> and later profiles.
+</div>
+<div>&nbsp;</div>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">ps_4_0_level_9_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> for 9.1 and 9.2 (similar limits to ps_2_0) <ul>
+<li>64 arithmetic and 32 texture instructions</li>
+<li>12 temporary registers</li>
+<li>4 levels of dependent reads</li>
+</ul>
+</td></tr>
+<tr><td data-th="Target">ps_4_0_level_9_3</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> for 9.3 (similar limits to ps_2_x² with additional shader features)<ul>
+<li>512 instructions</li>
+<li>32 temporary registers</li>
+<li>Static flow control (max depth of 4)</li>
+<li>Dynamic flow control (max depth of 24)</li>
+<li>D3DPS20CAPS_ARBITRARYSWIZZLE</li>
+<li>D3DPS20CAPS_GRADIENTINSTRUCTIONS</li>
+<li>D3DPS20CAPS_PREDICATION</li>
+<li>D3DPS20CAPS_NODEPENDENTREADLIMIT</li>
+<li>D3DPS20CAPS_NOTEXINSTRUCTIONLIMIT</li>
+</ul>
+</td></tr>
+<tr><td data-th="Target">vs_4_0_level_9_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> for 9.1 and 9.2 (similar to vs_2_0)<ul>
+<li>256 instructions</li>
+<li>12 temporary registers</li>
+<li>Static flow control (max depth of 1)</li>
+</ul>
+</td></tr>
+<tr><td data-th="Target">vs_4_0_level_9_3</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> for 9.3 (similar to vs_2_a² with additional shader features and instancing)<ul>
+<li>256 instructions</li>
+<li>32 temporary registers</li>
+<li>Static flow control (max depth of 4)</li>
+<li>D3DVS20CAPS_PREDICATION</li>
+</ul>
+</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Legacy_D3D9_Shader_Model_3"></a><a id="legacy_d3d9_shader_model_3"></a><a id="LEGACY_D3D9_SHADER_MODEL_3"></a>Legacy Direct3D 9 Shader Model 3.0</h2>
+<p>Here are the shader targets for legacy Direct3D 9 shader model 3.0³.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">ps_3_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 3.0 </td></tr>
+<tr><td data-th="Target">ps_3_sw</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 3.0 (software)</td></tr>
+<tr><td data-th="Target">vs_3_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 3.0</td></tr>
+<tr><td data-th="Target">vs_3_sw</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 3.0 (software)</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Legacy_Direct3D_9_Shader_Model_2.0"></a><a id="legacy_direct3d_9_shader_model_2.0"></a><a id="LEGACY_DIRECT3D_9_SHADER_MODEL_2.0"></a>Legacy Direct3D 9 Shader Model 2.0</h2>
+<p>Here are the shader targets for legacy Direct3D 9 shader model 2.0³.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">ps_2_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 2.0 </td></tr>
+<tr><td data-th="Target">ps_2_a</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 2a</td></tr>
+<tr><td data-th="Target">ps_2_b</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 2b</td></tr>
+<tr><td data-th="Target">ps_2_sw</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Pixel_Shader_Stage">Pixel shader</a> 2.0 software</td></tr>
+<tr><td data-th="Target">vs_2_0</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 2.0</td></tr>
+<tr><td data-th="Target">vs_2_a</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 2a</td></tr>
+<tr><td data-th="Target">vs_2_sw</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 2.0 software</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Legacy_Direct3D_9_Shader_Model_1.x"></a><a id="legacy_direct3d_9_shader_model_1.x"></a><a id="LEGACY_DIRECT3D_9_SHADER_MODEL_1.X"></a>Legacy Direct3D 9 Shader Model 1.x</h2>
+<p>Here are the shader targets for legacy Direct3D 9 shader model 1.x⁴.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">tx_1_0</td><td data-th="Description">Texture shader profile that legacy D3DX9⁵ functions <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb172808%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DXCreateTextureShader</strong></a> and <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb172834%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">D3DXFillTextureTX</strong></a> use</td></tr>
+<tr><td data-th="Target">vs_1_1</td><td data-th="Description"><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb205146%28v=vs.85%29.aspx#Vertex_Shader_Stage">Vertex shader</a> 1.1</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Legacy_Effects"></a><a id="legacy_effects"></a><a id="LEGACY_EFFECTS"></a>Legacy Effects</h2>
+<p>Here are the effect targets for legacy effects.</p>
+<div class="contentTableWrapper"><table responsive="true" summary="table">
+<tbody><tr responsive="true"><th scope="col">Target</th><th scope="col">Description</th></tr>
+<tr><td data-th="Target">fx_2_0</td><td data-th="Description">Effects (FX) for Direct3D 9 in D3DX9⁵</td></tr>
+<tr><td data-th="Target">fx_4_0</td><td data-th="Description">Effects (FX) for Direct3D 10.0 in D3DX10⁵</td></tr>
+<tr><td data-th="Target">fx_4_1</td><td data-th="Description">Effects (FX) for Direct3D 10.1 in D3DX10⁵</td></tr>
+<tr><td data-th="Target">fx_5_0</td><td data-th="Description">Effects (FX) for Direct3D 11⁵</td></tr>
+</tbody></table></div>
+<p>&nbsp;</p>
+<h2><a id="Notes"></a><a id="notes"></a><a id="NOTES"></a>Notes</h2>
+<p>Here are some notes that the preceding sections refer to:</p>
+<ol>
+<li><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">Feature level</a> 10.0 and 10.1 devices can optionally support DirectCompute. To verify support, use <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476497%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">ID3D11Device::CheckFeatureSupport</strong></a> with <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476124%28v=vs.85%29.aspx#D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS"><strong xmlns="http://www.w3.org/1999/xhtml">D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS</strong></a>.</li>
+<li><a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ff476876%28v=vs.85%29.aspx#Overview">Feature level</a> 9.3 effectively requires hardware that complies with the requirements for <a href="#Legacy_D3D9_Shader_Model_3">legacy Direct3D 9 shader model 3.0</a>, but this feature level does not make use of vs_3_0 or ps_3_0 targets. </li>
+<li>Only use legacy Direct3D 9 shader models with the Direct3D 9 API. 
+Instead, use the 9.x profiles with the Direct3D 10.x and 11.x API. </li>
+<li>The current HLSL shader <strong>D3DCompile*</strong> functions don't
+ support legacy 1.x pixel shaders. The last version of HLSL to support 
+these targets was D3DX9 in the October 2006 release of the DirectX SDK.</li>
+<li>All versions of D3DX and the DirectX SDK are deprecated. For more info, see <a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/ee663275%28v=vs.85%29.aspx">Where is the DirectX SDK?</a>.</li>
+</ol>
+<h2><a id="related_topics"></a>Related topics</h2>
+<dl>
+<dt>
+<a href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/bb509635%28v=vs.85%29.aspx">Programming Guide for HLSL</a>
+</dt>
+</dl>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+
+
+
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Näytä:</span>
+        <label>
+            <input class="libraryFilterInherited" checked="checked" value="Inherit" type="checkbox">Peritty
+        </label>
+        <label>
+            <input class="libraryFilterProtected" checked="checked" value="Protected" type="checkbox">Suojattu
+        </label>
+    </div>
+</div>
+    
+<input id="libraryMemberFilterEmptyWarning" value="Nykyisillä suodatinasetuksilla ei ole saatavilla jäseniä." type="hidden">
+
+
+
+    </div>
+<div id="rightNavigationMenu" ms.cmpgrp="right nav">
+    <div id="mobileButtons">
+        
+    </div>
+    <div id="navMain" style="position: fixed; margin-left: 3px; top: 60px;">
+        <div id="closeNavigation">
+            <a class="tocCloseSmall" id="closeButton"></a>
+        </div>
+        <div id="navigationButtons">
+            <a id="isd_print" href="https://msdn.microsoft.com/fi-fi/library/windows/desktop/jj215820%28d=printer,v=vs.85%29.aspx" rel="nofollow"><ins class="print"></ins>Tulosta </a>
+            <a id="isd_printABook2" href="https://msdn.microsoft.com/fi-fi/library/export/help/?returnurl=%2ffi-fi%2flibrary%2fwindows%2fdesktop%2fjj215820%28v%3dvs.85%29.aspx">
+                <ins class="export"></ins>Vie (<span class="count">0</span>)
+            </a>
+            <a id="isdShare" href="#" role="button" aria-expanded="false">
+                <ins class="share"></ins>Jaa
+            </a>
+            <div id="socials" style="display: none">
+                <a class="isdFacebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fjj215820%28v%3Dvs.85%29.aspx" aria-label="Jaa Facebookissa">
+                    <ins class="facebook"></ins>
+                </a>
+                <a class="isdTwitter" href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fjj215820%28v%3Dvs.85%29.aspx&amp;text=Specifying%20Compiler%20Targets%20%28Windows%29&amp;tw_p=tweetbutton&amp;url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fjj215820%28v%3Dvs.85%29.aspx" aria-label="Jaa Twitterissä">
+                    <ins class="twitter"></ins>
+                </a>
+                <a class="isdGooglePlus" href="https://plus.google.com/share?url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Fwindows%2Fdesktop%2Fjj215820%28v%3Dvs.85%29.aspx" aria-label="Jaa Google+:ssa">
+                    <ins class="googlePlus"></ins>
+                </a>
+            </div>
+        </div>
+        <div id="indoc_toc" style="display: none" ms.cmpgrp="indoc toc">
+            <div id="indoc_title">TÄSSÄ ARTIKKELISSA</div>
+            <ul id="indoc_toclist"></ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+        </div>
+        <div class="clear"></div>
+
+        
+
+<input name="__RequestVerificationToken" value="ZnsIvU_RWQL4yKG7KcKjx020MeVnxW_B3PaP85vJdBQ17HF1jCn5ZmVdQAP9RuhGYY5McuHvuDmqsmuYDKG_fh4O7x01" type="hidden">
+<input id="ratingValueSubmitUrl" value="https://msdn.microsoft.com/fi-fi/library/feedback/rate/jj215820(v=vs.85).aspx" type="hidden">
+<input id="ratingAdditionalSubmitUrl" value="https://msdn.microsoft.com/fi-fi/library/feedback/additional/jj215820(v=vs.85).aspx" type="hidden">
+<input id="isTopicRated" value="false" type="hidden">
+
+
+
+    
+
+
+
+        <link rel="stylesheet" type="text/css" href="Specifying%20Compiler%20Targets%20%28Windows%29_tiedostot/UhfFooterResponsive.css" data-do-not-move="true">
+    
+    <input id="CurrentUrlLocale" value="fi-fi" type="hidden">
+    <div id="ux-footer" class="ltr">
+        
+
+
+    <div id="standardRatingBefore" class="clear stdr-container-before"></div>
+    <div id="standardRating" class="stdr-container" ms.pgarea="body" style="width: 900px; margin-left: 0px; display: block;">
+        <div class="stdr-close" style="display: none;"></div>
+        <div class="stdr-vote stdr-content">
+            <div class="stdr-content">
+                <span class="stdr-votetitle">Onko tästä sivusta apua?</span>
+                <button class="stdr-yes" aria-label="Kyllä, tämä sivu oli hyödyllinen">Kyllä</button>
+                <button class="stdr-no" aria-label="Ei, tämä sivu ei ollut hyödyllinen">Ei</button>
+                <input id="s_ratingValue" value="" type="hidden">
+            </div>
+        </div>
+        <div class="stdr-feedback" style="display: none">
+            <div class="stdr-form">
+                <div class="stdr-fieldtitle">Onko sinulla lisäpalautetta?</div>
+                <textarea class="stdr-detail" rows="6" maxlength="1500"></textarea>
+                <div>
+                    <span class="stdr-count"><span class="stdr-charcnt">1500</span> merkkiä jäljellä</span>
+                    <div class="stdr-buttons">
+                        <button class="stdr-provide" aria-label="Lähetä lisäpalaute">Lähetä</button>
+                        <button class="stdr-skip" aria-label="Ohita lisäpalaute">Ohita tämä</button>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="stdr-thanks" style="display: none">
+            <div class="stdr-content">
+                <span class="stdr-thankyou">Kiitos!</span>
+                <span class="stdr-appreciate">Arvostamme palautettasi.</span>
+            </div>
+        </div>
+
+        
+        <div id="contentFeedbackQAContainer" style="display: none;"></div>
+    </div>
+    <div id="standardRatingPlaceholder" style="display: none"></div>
+    
+        <div id="footerContainer">
+            <div id="baseFooter">
+                 
+
+
+<div class="shell-footer" ms.pgarea="uhffooter" data-bi-area="Footer" data-bi-view="3xLinks">
+    <div class="shell-footer-wrapper">
+
+            <div class="shell-footer-menugroups" ms.cmpgrp="footer nav">
+                    <div class="sfm-group" ms.cmpnm="Footer_Tools">
+                        <div class="grp-title">
+                            Ladattavat kohteet ja työkalut <i class="shell-icon-dropdown"></i>
+                        </div>
+                        <ul>
+                                    <li>
+                                        <a href="http://go.microsoft.com/fwlink/p/?linkid=280676" ms.title="Windows 10 -kehitystyökalut" data-bi-name="footer_DownloadsAndTools_Win10DevTools" data-bi-slot="1" data-bi-source="Compass">
+                                            Windows 10 -kehitystyökalut
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkId=618475" ms.title="Visual Studio" data-bi-name="Footer_DownloadsAndTools_VS" data-bi-slot="2" data-bi-source="Compass">
+                                            Visual Studio
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?linkid=616887" ms.title="Windows SDK" data-bi-name="Footer_DownloadsAndTools_WinSDK" data-bi-slot="3" data-bi-source="Compass">
+                                            Windows SDK
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkId=534236" ms.title="Windows-kaupan infopisteet" data-bi-name="Footer_DownloadsAndTools_Badges" data-bi-slot="4" data-bi-source="Compass">
+                                            Windows-kaupan infopisteet
+                                        </a>
+                                    </li>
+
+                        </ul>
+                    </div>
+                    <div class="sfm-group" ms.cmpnm="Footer_Essentials">
+                        <div class="grp-title">
+                            Perusasiat <i class="shell-icon-dropdown"></i>
+                        </div>
+                        <ul>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkId=534192" ms.title="Ohjelmointirajapintojen lähdeaineisto (Windows-sovellukset)" data-bi-name="Footer_Essentials_WinAppsAPIRef" data-bi-slot="1" data-bi-source="Compass">
+                                            Ohjelmointirajapintojen lähdeaineisto (Windows-sovellukset)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?linkid=285627" ms.title="Ohjelmointirajapintojen lähdeaineisto (työpöytäsovellukset)" data-bi-name="Footer_Essentials_DesktopAppsAPIRef" data-bi-slot="2" data-bi-source="Compass">
+                                            Ohjelmointirajapintojen lähdeaineisto (työpöytäsovellukset)
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/?LinkID=280677" ms.title="Koodiesimerkit" data-bi-name="FooterEssentialsCodeSamples" data-bi-slot="3" data-bi-source="Compass">
+                                            Koodiesimerkit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://docs.microsoft.com/fi-fi/uwp/api" ms.title="Ohjeet (Windows-sovellukset)" data-bi-name="Footer_Essentials_HowToWinApps" data-bi-slot="4" data-bi-source="Compass">
+                                            Ohjeet (Windows-sovellukset)
+                                        </a>
+                                    </li>
+
+                        </ul>
+                    </div>
+                    <div class="sfm-group" ms.cmpnm="Footer_LearningResources">
+                        <div class="grp-title">
+                            Opiskeluresurssit <i class="shell-icon-dropdown"></i>
+                        </div>
+                        <ul>
+                                    <li>
+                                        <a href="http://www.microsoftvirtualacademy.com/" ms.title="Microsoft Virtual Academy" data-bi-name="Footer_MS_Virtual_Academy" data-bi-slot="1" data-bi-source="Compass">
+                                            Microsoft Virtual Academy
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://channel9.msdn.com/" ms.title="Kanava 9" data-bi-name="Footer_Ch9" data-bi-slot="2" data-bi-source="Compass">
+                                            Kanava 9
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://go.microsoft.com/fwlink/p/?LinkId=534190" ms.title="Videovalikoima" data-bi-name="Footer_VidGallery" data-bi-slot="3" data-bi-source="Compass">
+                                            Videovalikoima
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://blogs.windows.com/buildingapps/2015/08/05/build-better-apps-windows-10-by-10-development-series/" ms.title="10 blogin sarja: Windows 10" data-bi-name="Footer_LearningResources_WIN10x10blog" data-bi-slot="4" data-bi-source="Compass">
+                                            10 blogin sarja: Windows 10
+                                        </a>
+                                    </li>
+
+                        </ul>
+                    </div>
+                    <div class="sfm-group" ms.cmpnm="Footer_Programs">
+                        <div class="grp-title">
+                            Ohjelmat <i class="shell-icon-dropdown"></i>
+                        </div>
+                        <ul>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkId=534191" ms.title="Kehittäjätilin hankkiminen" data-bi-name="Footer_Programs_DevAcct" data-bi-slot="1" data-bi-source="Compass">
+                                            Kehittäjätilin hankkiminen
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkID=246847" ms.title="Sovelluskehittäjän sopimus" data-bi-name="Footer_Programs_DevAgreement" data-bi-slot="2" data-bi-source="Compass">
+                                            Sovelluskehittäjän sopimus
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://insider.windows.com/" ms.title="Windows Insider -ohjelma" data-bi-name="Footer_Programs_WinInsider" data-bi-slot="3" data-bi-source="Compass">
+                                            Windows Insider -ohjelma
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://go.microsoft.com/fwlink/p/?LinkId=529768" ms.title="Microsoft Affiliate Program" data-bi-name="Footer_Programs_MsftAffliatePgrm" data-bi-slot="4" data-bi-source="Compass">
+                                            Microsoft Affiliate Program
+                                        </a>
+                                    </li>
+
+                        </ul>
+                    </div>
+
+            </div>
+
+        <div class="shell-footer-lang" ms.cmpgrp="loc picker" ms.cmpnm="loc picker"><span id="selectLocaleFromPopUp">
+        <div class="locale-selector" style="position: relative">
+            <a class="current-locale" href="javascript:void(0)" aria-label="Change your language" aria-haspopup="true">
+                <span class="text">Suomi</span>
+                <span class="gear"></span>
+            </a>
+            <div class="locale-selection-panel site-flag site-flag-lang" style="top: -245px; display: none;">
+                <div class="content" role="menu">
+                    <table class="all-locales" autogeneratecolumns="false" allowpaging="false" allowsorting="false" style="border-collapse: collapse;" cellspacing="0">
+                        <tbody>
+                            <tr>
+
+
+                                    <td><a title="Deutsch" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=de-de&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Deutsch</a></td>
+                                    <td><a title="English" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=en-us&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">English</a></td>
+                                    <td><a title="Español" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=es-es&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Español</a></td>
+                                    <td><a title="Français" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=fr-fr&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Français</a></td>
+                                        </tr><tr>
+                                    <td><a title="Italiano" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=it-it&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Italiano</a></td>
+                                    <td><a title="日本語" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=ja-jp&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">日本語</a></td>
+                                    <td><a title="한국어" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=ko-kr&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">한국어</a></td>
+                                    <td><a title="Português" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=pt-br&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Português</a></td>
+                                        </tr><tr class="last">
+                                    <td><a title="Pусский" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=ru-ru&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">Pусский</a></td>
+                                    <td><a title="简体中文" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=zh-cn&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">简体中文</a></td>
+                                    <td><a title="繁體中文" href="https://msdn.microsoft.com/fi-fi/?action=selectlocale&amp;currentlocale=fi-fi&amp;newlocale=zh-tw&amp;frompage=/fi-fi/library/windows/desktop/jj215820%28v=vs.85%29.aspx" class="locale-link" role="menuitem">繁體中文</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="arrow">
+                        &nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </span></div>
+        <div class="shell-footer-copyright" ms.cmpgrp="corp links" ms.cmpnm="corp" role="contentinfo">
+            <ul>
+                            <li>
+                                <a id="privacyandcookies" href="https://go.microsoft.com/fwlink/p/?linkid=521839" ms.title="Tietosuoja ja evästeet" class="ctl_footerNavLink" data-bi-name="PrivacyAndCookies" data-bi-slot="1">
+                                    Tietosuoja ja evästeet
+                                </a>
+                            </li>
+                            <li>
+                                <a id="termsofuse" href="https://go.microsoft.com/fwlink/p/?linkid=248155" ms.title="Käyttöehdot" class="ctl_footerNavLink" data-bi-name="TermsOfUse" data-bi-slot="2">
+                                    Käyttöehdot
+                                </a>
+                            </li>
+                            <li>
+                                <a id="trademarks" href="https://go.microsoft.com/fwlink/p/?linkid=248154" ms.title="Tavaramerkit" class="ctl_footerNavLink" data-bi-name="Trademarks" data-bi-slot="3">
+                                    Tavaramerkit
+                                </a>
+                            </li>
+
+                <li class="ctl_footerCopyright">
+                    © 2017 Microsoft
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        
+    
+    
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="footerPrintView">
+            <div class="footerCopyrightPrintView">© 2017 Microsoft</div>
+        </div>
+
+        
+        
+        
+        
+
+
+
+        <input id="MtpsDevice" value="Default" type="hidden">
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+        
+        
+        
+            
+        
+
+<!--[CDATA[ WebTrends view model not available or IncludeLegacyWebTrendsScriptInGlobal feature flag is off]]-->
+
+
+
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" value="qVAXVopkPZHzV_b888uCnFOvUCJGAWBpHr1cQolkklLf2ae5xAA0SG-QrToB-bAUbAW1oiJFqBaW6jpbBNccz0GcF1Y1" type="hidden">
+</div>
+
+
+    </div>
+
+    
+    
+
+    
+
+    
+
+
+<div id="meControlDropdown" class="msame_Drop_root" style="display: none;"><div class="msame_Drop_topb"></div><div class="msame_Drop_content"><div class="msame_Drop_active"></div><div class="msame_Drop_rewards" style="display: none;"></div><div class="msame_Drop_account"></div><div class="msame_Drop_links" style="display: none;"><div class="msame_Drop_links_list"></div></div><div class="msame_Drop_signIn"><div id="msame_si0" class="msame_Drop_SI"><a href="#" target="" class="msame_TxtTrunc">Sign in with another account</a></div></div><div class="msame_Drop_signOut"></div><div class="msame_Drop_accts" style="display: none;"><div class="msame_Drop_sep"></div><div class="msame_Drop_accts_list"></div></div></div></div></body></html>

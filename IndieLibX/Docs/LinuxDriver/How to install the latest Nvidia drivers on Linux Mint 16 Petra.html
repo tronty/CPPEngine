@@ -1,0 +1,383 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<title>How to install the latest Nvidia drivers on Linux Mint 16 Petra</title>
+<h1>How to install the latest Nvidia drivers on Linux Mint 16 Petra</h1>
+<pre>BinaryTides
+☰
+How to install the latest Nvidia drivers on Linux Mint 16 Petra
+By Silver Moon | March 10, 2016
+12 Comments
+Dedicated Nvidia GPU
+
+Having a dedicated graphics processing unit ( GPU or graphics card ), boosts graphics performance significantly, especially when playing 3d games. Nvidia GPUs are very popular on desktop computers and they work very well on linux, as drivers are available from Nvidia.
+
+It is necessary to install the right drivers to ensure proper utilisation GPU. Otherwise the performance would be limited, or totally unused.
+Nouveau - the default driver
+
+For Nvidia GPUs, the Nouveau driver becomes active by default. Nouveau is the open source driver for Nvidia GPUs.
+
+Check it with the lspci command.
+
+$ lspci -vnn | grep VGA -A 12
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GT218 [GeForce 210] [10de:0a65] (rev a2) (prog-if 00 [VGA controller])
+	Subsystem: ZOTAC International (MCO) Ltd. Device [19da:1160]
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Memory at e2000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at d0000000 (64-bit, prefetchable) [size=256M]
+	Memory at e0000000 (64-bit, prefetchable) [size=32M]
+	I/O ports at 2000 [size=128]
+	Expansion ROM at e3080000 [disabled] [size=512K]
+	Capabilities: <access denied="">
+	Kernel driver in use: nouveau
+
+The last line indicates the kernel driver in use, which is nouveau over here. However with the Nouveau driver the gpu cannot perform to its full potential and features like hardware 3d acceleration would be unavailable or limited.
+
+The official nvidia drivers would make the gpu deliver its full performance.
+Testing graphics performance
+
+It might be interesting to compare the graphics performance with different drivers and to ensure that the gpu is indeed performing well. For this we use 2 little utilities called glmark2 and glxgears.
+
+The glxgears command would popup a small window with an animation of rotating gears. It would then print out the fps every 5 seconds on the terminal.
+
+$ vblank_mode=0 glxgears
+ATTENTION: default value of option vblank_mode overridden by environment.
+4589 frames in 5.0 seconds = 917.740 FPS
+4714 frames in 5.0 seconds = 942.641 FPS
+4717 frames in 5.0 seconds = 943.335 FPS
+4718 frames in 5.0 seconds = 943.558 FPS
+4713 frames in 5.0 seconds = 942.536 FPS
+.....
+
+Note down the fps, which is around 940 in this case. Next run the glmark2 command, and let it complete all tests and at the end it would show a score.
+
+$ glmark2
+=======================================================
+    glmark2 2012.08
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     nouveau
+    GL_RENDERER:   Gallium 0.4 on NVA8
+    GL_VERSION:    3.0 Mesa 9.2.1
+=======================================================
+[build] use-vbo=false: FPS: 420 FrameTime: 2.381 ms
+[build] use-vbo=true: FPS: 430 FrameTime: 2.326 ms
+
+..... OUTPUT TRUNCATED .....
+
+=======================================================
+                                  glmark2 Score: 336 
+=======================================================
+
+benchmark gpu performance with glmark
+
+So with the Nouveau drivers, the glmark score is 336 and glxgears max FPS is around 940.
+Setup Nvidia proprietory drivers
+
+Now install the Nvidia proprietory drivers. The Nvidia drivers are available in the Ubuntu repositories but they are mostly out of date. The drivers are named like nvidia-331, nvidia-319, nvidia-304 and so on. Each driver supports a different set of graphics card.
+
+So first of all find the right driver for your GPU
+
+1. Check the graphics card model
+
+Check the model of your GPU chipset with the lspci command.
+
+$ lspci -vnn | grep VGA -A 12
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GT218 [GeForce 210] [10de:0a65] (rev a2) (prog-if 00 [VGA controller])
+.....
+
+The model of the graphics chipset is, NVIDIA Corporation GT218 [GeForce 210]. Now we need to find the right driver for this card.
+
+2. Find the correct driver from nvidia site
+
+Go to http://www.nvidia.com/Download/index.aspx and select your model and click Search.
+
+nvidia linux driver search
+
+On the next page, you would get all details about the driver, version, release date, supported chipsets and further information about how to install it.
+
+For the above GeForce 210 card, it showed 331.67 as the correct driver which can be downloaded from the website as .bin file. However we shall install the drivers from ppa to make things easier.
+
+3. Configure the ubuntu-x-swat PPA
+
+The ubuntu-x-swat ppa provides updated versions of nvidia drivers for ubuntu.
+
+$ sudo add-apt-repository ppa:ubuntu-x-swat/x-updates -y
+$ sudo apt-get update
+
+If you are looking for the very latest drivers then try another ppa called xorg-edgers.
+
+$ sudo add-apt-repository ppa:xorg-edgers/ppa -y
+$ sudo apt-get update
+
+After adding the new ppas, you can check the new drivers and their versions by running To list the Nvidia drivers available in the repository search using the aptitude command
+
+$ aptitude versions ^nvidia
+
+Or open the Synaptic Package manager and search for packages named nvidia. Now that the ppas are setup, we are ready to install the driver.
+
+4. Install the driver from Driver Manager
+
+We shall use the Driver Manager to install and activate the driver. Go to System Settings &gt; Driver Manager (Under Administration)
+
+linux mint driver manager
+
+Select the driver (nvidia-331) and click Apply. It would then download the necessary packages for the selected driver, install it and configure it. Once the Driver Manager finishes, restart the machine for the new drivers to take effect.
+Verify the new driver
+
+After the reboot, check the graphics driver using the lspci command again.
+
+$ lspci -vnn | grep VGA -A 12
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GT218 [GeForce 210] [10de:0a65] (rev a2) (prog-if 00 [VGA controller])
+	Subsystem: ZOTAC International (MCO) Ltd. Device [19da:1160]
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Memory at e2000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at d0000000 (64-bit, prefetchable) [size=256M]
+	Memory at e0000000 (64-bit, prefetchable) [size=32M]
+	I/O ports at 2000 [size=128]
+	[virtual] Expansion ROM at e3080000 [disabled] [size=512K]
+	Capabilities: <access denied="">
+	Kernel driver in use: nvidia
+
+This time it shows the nvidia driver in use.
+Alternatively use the inxi command to check graphics card information
+
+$ inxi -Gxx
+Graphics:  Card: NVIDIA GT218 [GeForce 210] bus-ID: 01:00.0 
+           X.Org: 1.14.5 drivers: nvidia (unloaded: fbdev,vesa,nouveau) Resolution: 1360x768@60.0hz 
+           GLX Renderer: GeForce 210/PCIe/SSE2 GLX Version: 3.3.0 NVIDIA 331.20 Direct Rendering: Yes
+
+Information about the X driver (nvidia) and OpenGL extensions (GLX Renderer and GLX Version) are mentioned. Note that the GLX Renderer is GeForce, which indicates the Nvidia libraries are used for direct rendering. In other words hardware 3d acceleration is enabled, which would make 3d games and applications work very well.
+
+Check the OpenGL configuration with glxinfo command. The output should contain details about the Nvidia driver currently in use.
+
+$ glxinfo | grep OpenGL
+OpenGL vendor string: NVIDIA Corporation
+OpenGL renderer string: GeForce 210/PCIe/SSE2
+OpenGL core profile version string: 3.3.0 NVIDIA 331.20
+OpenGL core profile shading language version string: 3.30 NVIDIA via Cg compiler
+OpenGL core profile context flags: (none)
+OpenGL core profile profile mask: core profile
+OpenGL core profile extensions:
+OpenGL version string: 3.3.0 NVIDIA 331.20
+OpenGL shading language version string: 3.30 NVIDIA via Cg compiler
+.....
+
+Check the dependencies of glxgears.
+
+$ which glxgears
+/usr/bin/glxgears
+
+$ ldd /usr/bin/glxgears | grep GL
+	libGL.so.1 =&gt; /usr/lib/nvidia-331/libGL.so.1 (0x00007f4fb3664000)
+
+The libGL line pointing to a nvidia library (nvidia-331 here), indicates that the Nvidia-331 driver is being used for OpenGL.
+Test the performance of the new driver
+
+Now that we replaced the Nouveau drivers with Nvidia drivers, its time to benchmark the gpu performance to get a comparison.
+
+First run nvidia-settings (or launch from Menu &gt; Administration &gt; Nvidia X Server Settings) and go to OpenGL Settings and uncheck "Sync to VBlank".
+
+Run glxgears
+
+$ glxgears
+15102 frames in 5.0 seconds = 3020.005 FPS
+15965 frames in 5.0 seconds = 3192.975 FPS
+16011 frames in 5.0 seconds = 3202.142 FPS
+15994 frames in 5.0 seconds = 3198.785 FPS
+15971 frames in 5.0 seconds = 3194.179 FPS
+.....
+
+Note that the FPS is above 3000, which is way higher than what it was with the Nouveau drivers.
+
+Run glmark2 and check the score.
+
+$ glmark2
+=======================================================
+    glmark2 2012.08
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     NVIDIA Corporation
+    GL_RENDERER:   GeForce 210/PCIe/SSE2
+    GL_VERSION:    3.3.0 NVIDIA 331.20
+=======================================================
+[build] use-vbo=false: FPS: 671 FrameTime: 1.490 ms
+[build] use-vbo=true: FPS: 747 FrameTime: 1.339 ms
+.....OUTPUT TRUNCATED.....
+=======================================================
+                                  glmark2 Score: 547 
+=======================================================
+
+The score is around 550 which is a lot better than the score of Nouveau drivers. So the nvidia drivers are installed and working perfectly fine.
+
+The nvidia driver comes with a gui tool called nvidia-settings, that can be used to configure the displays. Find it in the Administration menu, or run it from command line.
+
+nvidia settings linux
+
+To check the hardware information about the GPU, click on GPU 0 on the left.
+
+nvidia gpu information linux
+Last Updated On : 10th March 2016
+Category: Hardware Linux Mint Tags: nvidia
+Post navigation
+QMMP – A winamp style music player for Linux
+Ubuntu 14.04 LTS (Trusty Tahr) released and its time to upgrade
+12 thoughts on “How to install the latest Nvidia drivers on Linux Mint 16 Petra”
+
+    Rob Morris
+
+    June 17, 2019 at 5:05 pm
+
+    Nouveau drivers 270 fps and glmark2 score of 247
+    nVidia drivers 60 fps and glmark2 score of 318
+
+    hmmm ?
+    Reply	
+    Bruce
+
+    March 17, 2017 at 2:02 pm
+
+    The list of drivers didn’t show up in the driver manager. Yet after I ran the $ aptitude versions ^nvidia command I got a whole list of drivers.
+
+    The latest driver for my card is apparently version 375.39 but the only driver showing up in the manager is version 367.57 and the nouveau(open-source) driver.
+
+    Did everyone get this message as part of $ sudo add-apt-repository ppa:xorg-edgers/ppa -y
+
+    * WARNING: Do not use this PPA with enabled HWE stack.
+
+    Be sure to revert this PPA before doing a release upgrade or the upgrade will not succeed. To revert to official packages, install the ppa-purge package and run “sudo ppa-purge xorg-edgers”.
+
+    Help please?
+    Reply	
+    PJ
+
+    May 16, 2016 at 8:08 am
+
+    Just installed on Mint 17. even though it was already installed by Mint repository.
+    Ended up just running test with NVidia drivers
+    8800GTS running gears at over 8500fps
+    Reply	
+    Michael
+
+    January 25, 2015 at 10:10 pm
+
+    i just ran those tests with nouveau, 1780fps gears : 340fps glmark2.. and i only have a gt620! custom P5N-D, E8500 4GB DDR3 1333, no OC.
+    Reply	
+    Scud
+
+    November 16, 2014 at 9:09 pm
+
+    Do I need to “unplug” those PPA after driver install?
+    Reply	
+    Victor J
+
+    October 1, 2014 at 12:12 am
+
+    I wish this worked. Unfortunately it doesn’t work with the Ancient 7950GT card doesn’t work with this process. I am using the 304 drivers which are recommended for this card as well.
+
+    PS. I’m also trying this on Mint 17, which I figured would be the same steps.
+    Reply	
+    Roberto
+
+    September 19, 2014 at 2:02 pm
+
+    Thanks a lot. Very helpful article.
+    Reply	
+    Wilman Darnasutisna
+
+    July 12, 2014 at 6:06 pm
+
+    $ lspci -vnn | grep VGA -A 12
+    00:02.0 VGA compatible controller [0300]: Intel Corporation 3rd Gen Core processor Graphics Controller [8086:0166] (rev 09) (prog-if 00 [VGA controller])
+    Subsystem: Lenovo Device [17aa:5003]
+    Flags: bus master, fast devsel, latency 0, IRQ 44
+    Memory at a3000000 (64-bit, non-prefetchable) [size=4M]
+    Memory at 80000000 (64-bit, prefetchable) [size=256M]
+    I/O ports at 4000 [size=64]
+    Expansion ROM at [disabled]
+    Capabilities:
+    Kernel driver in use: i915
+
+    00:14.0 USB controller [0c03]: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller [8086:1e31] (rev 04) (prog-if 30 [XHCI])
+    Subsystem: Lenovo Device [17aa:5002]
+    Flags: bus master, medium devsel, latency 0, IRQ 41
+
+    WHY? my Graphic card cannot detect? mine is nvidia geforce 705M
+    Reply	
+        itzman
+
+        September 16, 2014 at 6:06 pm
+
+        sometimes you need to disable onboard graphics in the bios
+        Reply	
+    Benjamin Cawrse
+
+    June 3, 2014 at 10:10 am
+
+    Fantastic article, learned a lot and really enjoyed it. Normally installing nvidia drivers is bumping around in the dark until it seems to work. Thank You!
+    Reply	
+    gnugr
+
+    April 17, 2014 at 10:10 pm
+
+    The best way is the Debian way:
+
+    aptitude -r install linux-headers-`uname -r|sed ‘s,[^-]*-[^-]*-,,’` nvidia-kernel-dkms &amp;&amp; mkdir /etc/X11/xorg.conf.d ; echo -e ‘Section “Device”ntIdentifier “My GPU”ntDriver “nvidia”nEndSection’ &gt; /etc/X11/xorg.conf.d/20-nvidia.conf
+
+    Then restart system to blacklist Nouveau
+    Ready!!!
+    Reply	
+        Silver Moon
+
+        April 19, 2014 at 8:08 pm
+
+        that’s a wonderful magic spell, but this is linux mint and things need to be easy for kids.
+        Reply	
+
+Leave a Reply
+
+Your email address will not be published. Required fields are marked *
+
+Comment
+
+Name *
+
+Email *
+
+Website
+
+Search
+Search for:
+Other interesting stuff
+
+    How to install the latest Nvidia drivers on Ubuntu 14.04 Trusty Tahr
+    How to install the latest Nvidia drivers on Ubuntu 14.04 Trusty Tahr
+    Fix low resolution grub and splash screen with Nvidia drivers on Ubuntu 14.04
+    Fix low resolution grub and splash screen with Nvidia drivers on Ubuntu 14.04
+    How to monitor nvidia gpu temperature on Kubuntu 16.10
+    How to monitor nvidia gpu temperature on Kubuntu 16.10
+    Benchmark graphics card (GPU) performance on Linux with glmark
+    Benchmark graphics card (GPU) performance on Linux with glmark
+    How to get information about graphics card (GPU) on Linux
+    How to get information about graphics card (GPU) on Linux
+    How to install Nvidia drivers on Kubuntu 16.10
+    How to install Nvidia drivers on Kubuntu 16.10
+
+Follow us
+
+    facebook twitter 
+
+This site, binarytides.com is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
+
+    About us
+    Contact us
+    Privacy Policy
+    Terms of Service
+
+Copyright © 2020 · BinaryTides
+</access></access></pre>
+
+
+
+</body></html>

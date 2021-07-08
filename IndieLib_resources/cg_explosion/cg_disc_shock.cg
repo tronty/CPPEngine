@@ -1,0 +1,95 @@
+[Vertex shader]
+/**
+
+The main purpose of the vertex program is to send the position of the vertex in an interpolator
+so that we can compute perlin in the fragment program
+
+ **/
+
+struct a2v 
+{
+    float4 Position     : POSITION;
+    float4 Normal     : NORMAL;
+    float4 Color0       : COLOR0;
+    float  tc		   : TEXCOORD0;
+};
+
+// define outputs from vertex shader
+struct v2f
+{
+    float4 HPosition    : POSITION;
+    float4 Color0	    : COLOR0;
+    float tc			: TEXCOORD0;
+    float4 Pos			: TEXCOORD1;
+    float NoiseAmp		: TEXCOORD2;
+};
+
+float4x4 modelViewProj;
+float4x4 modelView;
+float4x4 Proj;
+float4x4 modelViewIT;
+float4x4 NoiseMatrix;
+float NoiseAmp;
+v2f main(a2v IN
+         )
+{
+	v2f OUT;
+
+	float4 Pos = mul(modelView, IN.Position);
+	float4 NPos;// = Pos;//mul(modelView, IN.Position);
+	NPos = mul(NoiseMatrix, Pos);
+
+	float3 Norm = normalize(mul(modelViewIT, IN.Normal).xyz);
+
+	OUT.HPosition = mul(modelViewProj, IN.Position);
+	float d = dot(normalize(modelViewIT[3].xyz - Pos.xyz), Norm);
+
+	// scale the influence of the noise depending on the distance
+	float4 n;
+	n = mul(Proj, float4(NoiseAmp,0,Pos.z,1));
+	OUT.NoiseAmp = n.x /= n.w;
+
+	OUT.Color0 = lit(1, d, 5).z;
+
+	OUT.Pos = float4(NPos.x,NPos.y,NPos.z,1);
+	OUT.tc = IN.tc;
+
+	return OUT;
+}
+
+[Fragment shader]
+
+struct vert2frag
+{
+    float4 HPosition    : POSITION;
+    float4 Color0	    : COLOR0;
+    float tc			: TEXCOORD0;
+    float4 Pos			: TEXCOORD1;
+    float NoiseAmp		: TEXCOORD2;
+};
+
+sampler3D NoiseTexture;
+sampler1D BaseTexture;
+half4 main(
+            vert2frag       IN
+            ) : COLOR
+{ 
+	float nscale;
+	float4 l = tex3D(NoiseTexture, IN.Pos.xyz);
+	nscale = 0.5f;
+	float3 scaledpos = IN.Pos.xyz * 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * nscale;
+	nscale *= 0.5f;
+	scaledpos *= 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * nscale;
+	nscale *= 0.5f;
+	scaledpos *= 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * nscale;
+
+	half4 texture4;
+	texture4 = tex1D(BaseTexture, IN.tc);
+
+    return l * texture4 * IN.NoiseAmp * IN.Color0;
+}
+
+

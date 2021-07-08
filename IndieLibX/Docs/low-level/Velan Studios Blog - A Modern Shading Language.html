@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msvalidate.01" content="255B7F664AF0D633E2C36F6F58312685">
+    <link rel="icon" href="http://www.velanstudios.com/assets/ico/favicon.ico">
+	
+    <title>Velan Studios Blog - A Modern Shading Language</title>
+	
+	<link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/animate.css" rel="stylesheet">
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/lightbox.css" rel="stylesheet">
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/font-awesome.css" rel="stylesheet">
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/open-iconic-bootstrap.css" rel="stylesheet">
+
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/style.css" rel="stylesheet">
+
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/css_002.css" rel="stylesheet" type="text/css">
+    <link href="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/css.css" rel="stylesheet" type="text/css">
+
+    
+  </head>
+
+  <body class="classic" data-spy="scroll" data-target=".scrollspy_menu">
+
+    <div class="navbar navbar-default navbar-fixed-top scrollspy_menu" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="fullpage__nav nav navbar-nav navbar-right">
+            <li><a href="http://www.velanstudios.com/index.html#welcome">Welcome</a></li>
+            <li><a href="http://www.velanstudios.com/index.html#values-detail">Values</a></li>
+            <li><a href="http://www.velanstudios.com/index.html#location">Location</a></li>
+            <li><a href="http://www.velanstudios.com/index.html#careers">Careers</a></li>
+            <li><a href="http://www.velanstudios.com/blog/index.html">Blog</a></li><li>
+            </li><li><a href="http://www.velanstudios.com/index.html#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+	
+	<!-- WELCOME
+    ============================== -->
+    <div class="welcome_classic" id="welcome" style="height: 150px; min-height: 150px">
+      <div class="welcome-classic__inner">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+              <h1 class="heading heading_lg" style="margin-top: 75px">
+                <img src="Velan%20Studios%20Blog%20-%20A%20Modern%20Shading%20Language_tiedostot/logo.png" alt="Velan Studios" style="margin-right: 15px" width="100"> Velan Studios Blog
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<!-- CONTENT
+    ============================== -->
+    <div class="site-wrapper" id="values">
+      <div class="container">
+        <div class="row">
+		  <h1 class="heading heading_lg" style="margin-bottom: 0px;">
+		  A Modern Shading Language
+		  </h1>
+		  <h3 style="text-align: center; margin-bottom: 40px;">
+		  Brett Lajzer — December 22, 2016
+		  </h3>
+          <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+            <div class="text-justify text">
+<p>High-level shading languages (GLSL, HLSL, MetalSL, etc...) are one of
+ the few areas in games and graphics programming that, despite their 
+name,
+are still very low level and have evaded tighter, more meaningful 
+integration with applications. There have been past attempts to provide
+richer semantic information, but those are largely couched in the realm 
+of being wrappers over an existing language: e.g. FX and Cg. The 
+biggest issue with this approach is that the semantic information isn't a
+ first-class citizen of the language. These wrappers are just
+fancy variations on the C preprocessor, which by definition makes them 
+lossy. What we really want is a language that has application-level
+semantics built into it. Let's start by examining why, especially 
+through the lens of game development.</p>
+
+<h3>Motivation</h3>
+<p>Many game developers make games for multiple platforms. Some of them 
+stay in the safe zone of Windows, PS4, and Xbox One. This is really
+beneficial from a shader standpoint because HLSL (or a close variant 
+thereof) can be used on all three of these platforms. In a lot
+of cases, the PC version won't have additional features that necessitate
+ different shaders. That being said, there's still the possibility
+that different hardware optimizations will be chosen for each, making 
+platform-specific code necessary. There are also developers that
+release games across a wider range of platforms, including iOS, Android,
+ Linux, MacOS, etc. This brings in other shader languages
+including desktop GLSL, GLSL ES, and Apple's Metal Shading Language. 
+With this, the problem of supporting multiple platforms becomes
+much more pressing. Whereas with the first situation you'd be able to 
+just use #defines for blocks of platform-specific functionality, you now
+need to either have some sort of conversion pipeline, or manually author
+ multiple, platform-specific shaders.</p>
+
+<p>Fortunately, for developers that just need something to work right now, there's a rich ecosystem of solutions for shader
+conversion and cross-compilation:</p>
+<ul>
+  <li><a href="https://github.com/aras-p/hlsl2glslfork">hlsl2glslfork</a> - (now outdated) Converts DX9 HLSL to various types of GLSL. The best that was available for a long time.</li>
+  <li><a href="https://github.com/Thekla/hlslparser">HLSLParser</a> - 
+Originally written by Unknown Worlds for Natural Selection 2, converts 
+DX9 HLSL to DX10 HLSL, GLSL, and Metal Shading Language.</li>
+  <li><a href="https://github.com/Unity-Technologies/HLSLcc">HLSLcc</a> - What Unity uses for shader conversion now. Converts HLSL bytecode to GLSL, GLSL ES, Vulkan GLSL, and Metal Shading Language.</li>
+  <li><a href="https://github.com/KhronosGroup/glslang">glslang</a> - Tool for converting GLSL to SPIR-V. HLSL front-end is in development.</li>
+  <li><a href="https://github.com/KhronosGroup/SPIRV-Cross">SPIRV-Cross</a> - Converts SPIR-V to GLSL, Metal Shading Language, and in the future, HLSL.</li>
+  <li><a href="https://github.com/aras-p/glsl-optimizer">glsl-optimizer</a> - Optimizes GLSL code, and can also translate GLSL to Metal Shading Language.</li>
+</ul>
+
+<h3>Where Existing Solutions Fall Flat</h3>
+<p>There's a couple problems with the above solutions. The first is that
+ cross-platform support isn't really there. Things like pixel-local 
+storage
+and framebuffer fetch are encoded through specific usage patterns 
+instead of with function calls. This is honestly a terrible approach 
+because
+it requires knowledge of something with a magical outcome: i.e. a given,
+ very specific configuration will translate into the desired usage in
+the output, but it must match exactly. It also means that the language 
+semantics need to be further overloaded to work with future
+platform-specific extensions. The second problem is that HLSL is largely
+ viewed as the "right" language to use as the input language. While
+I definitely agree that it has better syntax and semantics than GLSL, 
+it's not without its own problems, especially with regards to type
+safety and safety in general. Additionally, the existence of wrappers 
+like Cg and FX should make it obvious that HLSL doesn't have any real 
+application-level facilities. What I mean by application-level is 
+features for users that aid in developing applications: e.g. support for
+variations of a shader with/without a given feature (henceforth called 
+"variants"), material-level features (stuff like constant buffer
+header creation/serialization), and render-pass level features 
+(techniques). These are all possible in some form in FX and Cg, but
+they're not tightly integrated and instead applied as a layer above the 
+shader code itself.</p>
+
+<h3>Managing Complexity</h3>
+<p>The last aspect of all of this, largely motivated by prior experience
+ with a codebase of very complicated shaders with many
+variants controlled by boolean feature definitions, is a desire to 
+discourage use of the preprocessor as much as possible. It's a rather
+natural leap to want to control enabling/disabling features of a shader 
+through the use of preprocessor definitions, especially since the
+preprocessor is the most powerful metaprogramming tool that current 
+shading languages have available. The problem with this is that it's 
+a lossy transformation. Let's say you want to know what samplers and 
+uniform buffers are used by a given configuration of a shader. Using the
+preprocessor for variants means that you'll need to build and then 
+reflect the information from every single variant, the union of which is
+the information that you wanted to know. If your shader has thousands of
+ variants you'll need to compile all of them just to get this
+information, meaning that your shader build is potentially now a 
+bottleneck for your material build.</p>
+
+<p>The alternative here is having variants be a first-class citizen of 
+the language, such that an un-varianted version of a shader already
+represents the union of all possible shaders that can be generated from 
+it. In practice, this means having some type called Variant that
+the user uses like any other type (with some semantic restrictions).</p>
+
+<p>An additional aspect of having extra semantic information in the 
+shader is that we can even strip unnecessary vertex inputs based on
+their usage in the pipeline. For example, if texture mapping is an 
+optional feature, we can strip not only the code to do the texture
+fetches from the pixel shader, but also the code to read/copy/generate 
+the texture coordinates themselves from the vertex shader. This same
+idea extends naturally into deeper pipelines which include geometry or 
+tessellation shaders. In current systems, this can be achieved through 
+having defines in vertex input structures to eliminate elements. In this
+ system, it would be automatic and would require no additional work 
+besides the user varianting the code in the pixel shader.</p>
+
+<h3>What We Want In a Language</h3>
+<p>In light of all of this, I propose writing a new high-level language, designed around some core tenets:</p>
+<ol>
+  <li>Strong, static typing.</li>
+  <li>Include/module system.</li>
+  <li>Familiar syntax for C/C++ developers.</li>
+  <li>Platform-specific constructs represented in a uniform way (through intrinsics).</li>
+  <li>Variants as a first-class language construct.</li>
+  <li>Abstract intermediate representation.</li>
+  <li>Ability to transpile to many different platform languages from a single source unit.</li>
+  <li>Human-readable transpiled output (to aid debugging).</li>
+</ol>
+
+<p>If we look to the design of Apple's Metal Shading Language (from a 
+software engineering standpoint), it fits the first four points pretty 
+well.
+The reason for this is that it's a modified subset of C++ parsed with a 
+special version of Clang. I propose that this is currently the best
+direction to go in when developing this new language: a modified subset 
+of C++, parsed by an existing, well-tested parser (Clang). I imagine the
+ 
+pipeline as looking like [Clang] -&gt; [Abstract Representation] -&gt; 
+[Backend Transpilers].</p>
+
+<h3>What an Intermediate Representation Gets Us</h3>
+<p>Since we'd have an intermediate representation, there are all sorts of interesting things that could be done:</p>
+<ul>
+  <li>An actual module system with transpile/link-time optimization.</li>
+  <li>Node-based shader editor that uniformly mixes user code and engine/tool-provided shader nodes.</li>
+  <li>Output to non-GPU languages such as actual C++. This enables 
+having a software rasterizer that has feature parity with a GPU 
+rasterizer,
+  with little to no additional effort on the part of the shader authors.</li>
+  <li>Perform optimizations that aren't currently possible in 
+platform-level languages due to missing or incomplete semantic 
+information.</li>
+</ul>
+
+<h3>Conclusion</h3>
+<p>Hopefully I've made clear the case for having a shader language 
+beyond what the various platform langauges offer, and moving to an 
+authoring
+model that treats the platform-level shading languages as something akin
+ to assembly: a low-level language to compile to rather than author 
+directly. There are definitely benefits beyond what I've outlined that 
+this approach offers and having control over the language (versus 
+dealing
+with a platform/API vendor) opens the door to implementing high-level 
+constructs that the platform vendors wouldn't consider approaching.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+    <!-- FOOTER
+    ============================== -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs col-sm-6">
+            2017 © Velan Studios. All Rights Reserved. | <a href="http://www.velanstudios.com/privacy.html">Privacy Policy</a>
+          </div>
+          <div class="col-xs col-sm-6">
+            <div class="social__items">
+              <a href="https://twitter.com/velanstudios" class="social__item">
+                <i class="fa fa-twitter"></i>
+              </a>
+              <a href="https://facebook.com/VelanStudios" class="social__item">
+                <i class="fa fa-facebook"></i>
+              </a>
+              <a href="https://github.com/VelanStudios" class="social__item">
+                <i class="fa fa-github"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+	
+	<!-- JavaScript
+    ================================================== -->
+    
+    
+    
+    
+    
+    
+    
+    <div id="lightboxOverlay" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="><div class="lb-nav"><a class="lb-prev" href=""></a><a class="lb-next" href=""></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div>
+
+    
+  
+<div style="position: absolute; z-index: -10000; top: 0px; left: 0px; right: 0px; height: 3081px;"></div><div style="clear: both;"></div></body></html>

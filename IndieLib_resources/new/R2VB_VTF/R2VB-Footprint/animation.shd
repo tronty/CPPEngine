@@ -1,0 +1,54 @@
+//-----------------------------------------------------------------------------
+// File: animation.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+[Vertex shader]
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 t0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = pos;
+	Out.tc0 = t0;
+
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler2D boneAnimation;
+sampler2D heightmap ;
+float4 time_interp;
+float4x4 TransM;
+
+float XBias;
+float iBoneAnimationHeight;
+float4 Param; //(TerrainScale, DepthInSnow, HeightFactor, xxx);
+
+float4 main(float2 t0: TEXCOORD0) : COLOR {
+	float4 a0, a1;
+	float2 tc0, tc1, tc2;
+	float4 BM;
+
+	tc0 = float2(t0.x + XBias, (time_interp.x)*iBoneAnimationHeight); // get the four animation matrix elements of t0 frame.
+	tc1 = float2(tc0.x, (time_interp.y)*iBoneAnimationHeight); // get the four animation matrix elements of t1 frame.
+	a0 = tex2D(boneAnimation, tc0);
+	a1 = tex2D(boneAnimation, tc1);
+	BM = lerp(a0, a1, time_interp.z); // the four animation matrix elements of current frame.
+
+	TransM = transpose(TransM);	
+
+	// get height value from heightmap sampler
+	tc2.x = ((TransM[0][3]+Param.x)/(Param.x*2.0f));
+	tc2.y = ((TransM[2][3]+Param.x)/(Param.x*2.0f));
+	TransM[1][3] = ((tex2D(heightmap, tc2).x*Param.z)-Param.y);
+
+	return (mul(TransM, BM));	
+}
+

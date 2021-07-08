@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" vocab="http://ogp.me/ns" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapping between HLSL and GLSL | Anteru's blog</title>
+<link href="Mapping%20between%20HLSL%20and%20GLSL%20|%20Anteru's%20blog_files/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://anteru.net/rss.xml">
+<link rel="canonical" href="https://anteru.net/blog/2016/mapping-between-hlsl-and-glsl/index.html">
+<link rel="icon" href="https://anteru.net/assets/favicon.ico" sizes="32x32">
+<link rel="icon" href="https://anteru.net/assets/favicon.svg" sizes="any">
+<!--[if lt IE 9]><![endif]--><meta name="author" content="Anteru">
+<link rel="prev" href="https://anteru.net/blog/2016/setting-up-your-own-mailserver/index.html" title="Setting up your own mailserver" type="text/html">
+<link rel="next" href="https://anteru.net/blog/2016/dependency-free-autocomplete-a-web-development-story/index.html" title="Dependency-free autocomplete - a web development story" type="text/html">
+<meta property="og:site_name" content="Anteru's blog">
+<meta property="og:title" content="Mapping between HLSL and GLSL">
+<meta property="og:url" content="https://anteru.net/blog/2016/mapping-between-hlsl-and-glsl/index.html">
+<meta property="og:description" content="It's 2016 and we're still stuck with various shading languages - the current contenders being HLSL for Direct3D, and GLSL for OpenGL and as the &quot;default&quot; front-end language to generate SPIR-V for Vulk">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-06-07T19:57:19+02:00">
+<meta property="article:tag" content="Direct3D">
+<meta property="article:tag" content="Graphics">
+<meta property="article:tag" content="mathjax">
+<meta property="article:tag" content="OpenGL">
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax_LineBox {display: table!important}
+.MathJax_LineBox span {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Blank; src: url('about:blank')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px none; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+    <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+        <header id="header"><div class="content">
+                <div id="brand"><a href="https://anteru.net/" title="Anteru's blog" rel="home">
+        <img src="Mapping%20between%20HLSL%20and%20GLSL%20|%20Anteru's%20blog_files/anteru-header.svg" alt="Anteru's blog" id="logo"></a></div>
+
+            
+                <nav id="menu"><ul>
+<li aria-expanded="false">
+                    <a href="https://anteru.net/research/">Research</a>
+            <ul>
+<li><a href="https://anteru.net/research/assisted-environment-probe-placement/">Assisted environment probe placement</a></li>
+                    <li><a href="https://anteru.net/research/assisted-texture-assignment/">Assisted texture assignment</a></li>
+                    <li><a href="https://anteru.net/research/error-metrics-for-smart-image-refinement/">Error Metrics for Smart Image Refinement</a></li>
+                    <li><a href="https://anteru.net/research/high-quality-shadows-for-streaming-terrain-rendering/">High-Quality Shadows for Streaming Terrain Rendering</a></li>
+                    <li><a href="https://anteru.net/research/hybrid-sample-based-surface-rendering/">Hybrid Sample-based Surface Rendering</a></li>
+                    <li><a href="https://anteru.net/research/interactive-rendering-of-giga-particle-fluid-simulations/">Interactive rendering of Giga-Particle Fluid Simulations</a></li>
+                    <li><a href="https://anteru.net/research/quantitative-analysis-of-voxel-raytracing-acceleration-structures/">Quantitative Analysis of Voxel Raytracing Acceleration Structures</a></li>
+                    <li><a href="https://anteru.net/research/scalable-rendering-for-very-large-meshes/">Scalable rendering for very large meshes</a></li>
+                    <li><a href="https://anteru.net/research/subpixel-reconstruction-antialiasing/">Subpixel reconstruction anti-aliasing</a></li>
+                    <li><a href="https://anteru.net/research/tiled-light-trees/">Tiled light trees</a></li>
+            </ul>
+</li>
+<li><a href="https://anteru.net/about/">About</a></li>
+                <li><a href="https://anteru.net/archive.html">Archives</a></li>
+    
+    
+    </ul></nav><button id="nav-toggle" aria-controls="menu" aria-expanded="false" aria-haspopup="true">☰</button>
+
+        </div>
+    </header><div id="container">
+         <main id="content"><article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Mapping between HLSL and GLSL</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Anteru
+            </span></p>
+            <div class="divider">|</div>
+            <p class="dateline"><a href="#" rel="bookmark"><time class="published dt-published" datetime="2016-06-07T19:57:19+02:00" title="2016-06-07 19:57">2016-06-07 19:57</time></a></p>
+            
+        </div>
+        
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>It's 2016 and we're still stuck with various shading languages - the 
+current contenders being HLSL for Direct3D, and GLSL for OpenGL and as 
+the "default" front-end language to generate SPIR-V for Vulkan. SPIR-V 
+may become eventually the IL of choice for everything, but that will 
+take a while, so right now, you need to convert HLSL to GLSL or vice 
+versa if you want to target both APIs.</p>
+<p>I won't dig into the various cross-compilers today - that's a huge 
+topic - and focus on the language similarities instead. Did you ever ask
+ yourself how your <tt class="docutils literal">SV_Position</tt> input is called in GLSL? Then this post is for you!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is by no means complete. It's meant as a starting 
+point when you're looking to port some shaders between GLSL to HLSL. I'm
+ omitting functions which are the same for instance.</p>
+</div>
+<div class="section" id="system-values-built-in-inputs">
+<h2>System values &amp; built-in inputs</h2>
+<p>Direct3D specifies a couple of system values, GLSL has the concept of built-in variables. The mapping is as following:</p>
+<div class="table-wrapper"><table class="docutils" border="1">
+<colgroup>
+<col width="51%">
+<col width="49%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">HLSL</th>
+<th class="head">GLSL</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td><tt class="docutils literal">SV_ClipDistance</tt></td>
+<td><tt class="docutils literal">gl_ClipDistance</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_CullDistance</tt></td>
+<td>
+<tt class="docutils literal">gl_CullDistance</tt> if
+<a class="reference external" href="https://www.opengl.org/registry/specs/ARB/cull_distance.txt">ARB_cull_distance</a> is
+present</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_Coverage</tt></td>
+<td>
+<tt class="docutils literal">gl_SampleMaskIn</tt> &amp;
+<tt class="docutils literal">gl_SampleMask</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_Depth</tt></td>
+<td><tt class="docutils literal">gl_FragDepth</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_DepthGreaterEqual</tt></td>
+<td>
+<tt class="docutils literal">layout (depth_greater)</tt>
+<tt class="docutils literal">out float gl_FragDepth;</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_DepthLessEqual</tt></td>
+<td>
+<tt class="docutils literal">layout (depth_less)</tt>
+<tt class="docutils literal">out float gl_FragDepth;</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_DispatchThreadID</tt></td>
+<td><tt class="docutils literal">gl_GlobalInvocationID</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_DomainLocation</tt></td>
+<td><tt class="docutils literal">gl_TessCord</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_GroupID</tt></td>
+<td><tt class="docutils literal">gl_WorkGroupID</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_GroupIndex</tt></td>
+<td><tt class="docutils literal">gl_LocalInvocationIndex</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_GroupThreadID</tt></td>
+<td><tt class="docutils literal">gl_LocalInvocationID</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_GSInstanceID</tt></td>
+<td><tt class="docutils literal">gl_InvocationID</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_InsideTessFactor</tt></td>
+<td><tt class="docutils literal">gl_TessLevelInner</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_InstanceID</tt></td>
+<td>
+<tt class="docutils literal">gl_InstanceID</tt> &amp;
+<tt class="docutils literal">gl_InstanceIndex</tt>
+(latter in Vulkan with
+different semantics)</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_IsFrontFace</tt></td>
+<td><tt class="docutils literal">gl_FrontFacing</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_OutputControlPointID</tt></td>
+<td><tt class="docutils literal">gl_InvocationID</tt></td>
+</tr>
+<tr>
+<td>N/A</td>
+<td><tt class="docutils literal">gl_PatchVerticesIn</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_Position</tt></td>
+<td>
+<tt class="docutils literal">gl_Position</tt> in a vertex
+shader, <tt class="docutils literal">gl_FragCoord</tt> in
+a fragment shader</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_PrimitiveID</tt></td>
+<td><tt class="docutils literal">gl_PrimitiveID</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_RenderTargetArrayIndex</tt></td>
+<td><tt class="docutils literal">gl_Layer</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_SampleIndex</tt></td>
+<td><tt class="docutils literal">gl_SampleID</tt></td>
+</tr>
+<tr>
+<td>The equivalent functionality
+is available through
+<tt class="docutils literal">EvaluateAttributeAtSample</tt>
+</td>
+<td><tt class="docutils literal">gl_SamplePosition</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_StencilRef</tt></td>
+<td>
+<tt class="docutils literal">gl_FragStencilRef</tt> if
+<a class="reference external" href="https://www.opengl.org/registry/specs/ARB/shader_stencil_export.txt">ARB_shader_stencil_export</a>
+is present</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_Target</tt></td>
+<td>
+<tt class="docutils literal">layout(location=N) out</tt>
+<tt class="docutils literal">your_var_name;</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_TessFactor</tt></td>
+<td><tt class="docutils literal">gl_TessLevelOuter</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_VertexID</tt></td>
+<td>
+<tt class="docutils literal">gl_VertexID</tt> &amp;
+<tt class="docutils literal">gl_VertexIndex</tt> (latter
+Vulkan with different
+semantics)</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SV_ViewportArrayIndex</tt></td>
+<td><tt class="docutils literal">gl_ViewportIndex</tt></td>
+</tr>
+</tbody>
+</table></div>
+<p>This table is sourced from the <a class="reference external" href="https://www.opengl.org/wiki/Built-in_Variable_%28GLSL%29">OpenGL wiki</a>, the <a class="reference external" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509647%28v=vs.85%29.aspx">HLSL semantic documentation</a> and the <a class="reference external" href="https://www.khronos.org/registry/vulkan/specs/misc/GL_KHR_vulkan_glsl.txt">GL_KHR_vulkan_glsl</a> extension specification.</p>
+</div>
+<div class="section" id="atomic-operations">
+<h2>Atomic operations</h2>
+<p>These map fairly easily. <tt class="docutils literal">Interlocked</tt> becomes <tt class="docutils literal">atomic</tt>. So <tt class="docutils literal">InterlockedAdd</tt> becomes <tt class="docutils literal">atomicAdd</tt>, and so on. The only difference is <tt class="docutils literal">InterlockedCompareExchange</tt> which turns into <tt class="docutils literal">atomicCompSwap</tt>.</p>
+</div>
+<div class="section" id="shared-local-memory">
+<h2>Shared/local memory</h2>
+<p><tt class="docutils literal">groupshared</tt> memory in HLSL is <tt class="docutils literal">shared</tt> memory in GLSL. That's it.</p>
+</div>
+<div class="section" id="barriers">
+<h2>Barriers</h2>
+<div class="table-wrapper"><table class="docutils" border="1">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">HLSL</th>
+<th class="head">GLSL</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td><tt class="docutils literal">GroupMemoryBarrierWithGroupSync</tt></td>
+<td>
+<tt class="docutils literal">groupMemoryBarrier</tt> and
+<tt class="docutils literal">barrier</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">GroupMemoryBarrier</tt></td>
+<td><tt class="docutils literal">groupMemoryBarrier</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">DeviceMemoryBarrierWithGroupSync</tt></td>
+<td>
+<tt class="docutils literal">memoryBarrier</tt>,
+<tt class="docutils literal">memoryBarrierImage</tt>,
+<tt class="docutils literal">memoryBarrierImage</tt> and
+<tt class="docutils literal">barrier</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">DeviceMemoryBarrier</tt></td>
+<td>
+<tt class="docutils literal">memoryBarrier</tt>,
+<tt class="docutils literal">memoryBarrierImage</tt>,
+<tt class="docutils literal">memoryBarrierImage</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">AllMemoryBarrierWithGroupSync</tt></td>
+<td>All of the barriers above and
+<tt class="docutils literal">barrier</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">AllMemoryBarrier</tt></td>
+<td>All of the barriers above</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">N/A</tt></td>
+<td><tt class="docutils literal">memoryBarrierShared</tt></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="texture-access">
+<h2>Texture access</h2>
+<p>Before Vulkan, this is bundled and <a class="reference external" href="https://anteru.net/blog/2013/05/02/2119/">not trivial to emulate</a>.
+ Fortunately, this changes with Vulkan, where the semantics are the same
+ as in HLSL. The main difference is that in HLSL, the access method is 
+part of the "texture object", while in GLSL, they are free functions. In
+ HLSL, you'll sample a texture called <tt class="docutils literal">Texture</tt> with a sampler called <tt class="docutils literal">Sampler</tt> like this:</p>
+<pre class="literal-block">Texture.Sample (Sampler, coordinate)
+</pre>
+<p>In GLSL, you need to specify the type of the texture and the sampler, but otherwise, it's similar:</p>
+<pre class="literal-block">texture (sampler2D(Texture, Sampler), coordinate)
+</pre>
+<div class="table-wrapper"><table class="docutils" border="1">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">HLSL</th>
+<th class="head">GLSL</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td>
+<tt class="docutils literal">CalculateLevelOfDetail</tt> &amp;
+<tt class="docutils literal">CalculateLevelOfDetailUnclamped</tt>
+</td>
+<td><tt class="docutils literal">textureQueryLod</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">Load</tt></td>
+<td>
+<tt class="docutils literal">texelFetch</tt> and
+<tt class="docutils literal">texelFetchOffset</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">GetDimensions</tt></td>
+<td>
+<tt class="docutils literal">textureSize</tt>,
+<tt class="docutils literal">textureQueryLevels</tt> and
+<tt class="docutils literal">textureSamples</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">Gather</tt></td>
+<td>
+<tt class="docutils literal">textureGather</tt>,
+<tt class="docutils literal">textureGatherOffset</tt>,
+<tt class="docutils literal">textureGatherOffsets</tt>
+</td>
+</tr>
+<tr>
+<td>
+<tt class="docutils literal">Sample</tt>, <tt class="docutils literal">SampleBias</tt>
+</td>
+<td>
+<tt class="docutils literal">texture</tt>, <tt class="docutils literal">textureOffset</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SampleCmp</tt></td>
+<td><tt class="docutils literal">samplerShadow</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SampleGrad</tt></td>
+<td>
+<tt class="docutils literal">textureGrad</tt>,
+<tt class="docutils literal">textureGradOffset</tt>
+</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">SampleLevel</tt></td>
+<td>
+<tt class="docutils literal">textureLod</tt>, <tt class="docutils literal">textureLodOffset</tt>
+</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td><tt class="docutils literal">textureProj</tt></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section" id="general-math">
+<h2>General math</h2>
+<p>GLSL and HLSL differ in their default matrix interpretation. GLSL 
+assumes column-major, and multiplication on the right (that is, you 
+apply <span class="math"><span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-1-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;M&lt;/mi&gt;&lt;mo&gt;&amp;#x2217;&lt;/mo&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1" style="width: 2.828em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.443em; height: 0px; font-size: 116%;"><span style="position: absolute; clip: rect(1.52em, 1002.43em, 2.501em, -1000em); top: -2.347em; left: 0em;"><span class="mrow" id="MathJax-Span-2"><span class="mi" id="MathJax-Span-3" style="font-family: MathJax_Math; font-style: italic;">M<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.081em;"></span></span><span class="mo" id="MathJax-Span-4" style="font-family: MathJax_Main; padding-left: 0.222em;">∗</span><span class="mi" id="MathJax-Span-5" style="font-family: MathJax_Math; font-style: italic; padding-left: 0.222em;">v</span></span><span style="display: inline-block; width: 0px; height: 2.347em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.068em; border-left: 0px solid; width: 0px; height: 0.916em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi><mo>∗</mo><mi>v</mi></math></span></span></span>) and HLSL assumes multiplication from left (<span class="math"><span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax" id="MathJax-Element-2-Frame" tabindex="0" style="position: relative;" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;mo&gt;&amp;#x2217;&lt;/mo&gt;&lt;mi&gt;M&lt;/mi&gt;&lt;/math&gt;" role="presentation"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-6" style="width: 2.828em; display: inline-block;"><span style="display: inline-block; position: relative; width: 2.443em; height: 0px; font-size: 116%;"><span style="position: absolute; clip: rect(1.52em, 1002.44em, 2.501em, -1000em); top: -2.347em; left: 0em;"><span class="mrow" id="MathJax-Span-7"><span class="mi" id="MathJax-Span-8" style="font-family: MathJax_Math; font-style: italic;">v</span><span class="mo" id="MathJax-Span-9" style="font-family: MathJax_Main; padding-left: 0.222em;">∗</span><span class="mi" id="MathJax-Span-10" style="font-family: MathJax_Math; font-style: italic; padding-left: 0.222em;">M<span style="display: inline-block; overflow: hidden; height: 1px; width: 0.081em;"></span></span></span><span style="display: inline-block; width: 0px; height: 2.347em;"></span></span></span><span style="display: inline-block; overflow: hidden; vertical-align: -0.068em; border-left: 0px solid; width: 0px; height: 0.916em;"></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>v</mi><mo>∗</mo><mi>M</mi></math></span></span></span>)
+ While you can usually ignore that - you can override the order, and 
+multiply from whatever side you want in both - it does change the 
+meaning of <tt class="docutils literal">m[0]</tt> with <tt class="docutils literal">m</tt>
+ being a matrix. In HLSL, this will return the first row, in GLSL, the 
+first column. That also extends to the constructors, which initialize 
+the members in the "natural" order.</p>
+</div>
+<div class="section" id="various-functions">
+<h2>Various functions</h2>
+<div class="table-wrapper"><table class="docutils" border="1">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">HLSL</th>
+<th class="head">GLSL</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td><tt class="docutils literal">atan2(y,x)</tt></td>
+<td>
+<tt class="docutils literal">atan</tt>, with parameters swapped</td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddx</tt></td>
+<td><tt class="docutils literal">dFdx</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddx_coarse</tt></td>
+<td><tt class="docutils literal">dFdxCoarse</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddx_fine</tt></td>
+<td><tt class="docutils literal">dFdxFine</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddy</tt></td>
+<td><tt class="docutils literal">dFdy</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddy_coarse</tt></td>
+<td><tt class="docutils literal">dFdyCoarse</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">ddy_fine</tt></td>
+<td><tt class="docutils literal">dFdyFine</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">EvaluateAttributeAtCentroid</tt></td>
+<td><tt class="docutils literal">interpolateAtCentroid</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">EvaluateAttributeAtSample</tt></td>
+<td><tt class="docutils literal">interpolateAtSample</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">EvaluateAttributeSnapped</tt></td>
+<td><tt class="docutils literal">interpolateAtOffset</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">frac</tt></td>
+<td><tt class="docutils literal">fract</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">lerp</tt></td>
+<td><tt class="docutils literal">mix</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">mad</tt></td>
+<td><tt class="docutils literal">fma</tt></td>
+</tr>
+<tr>
+<td><tt class="docutils literal">saturate</tt></td>
+<td><tt class="docutils literal">clamp(x, 0.0, 1.0)</tt></td>
+</tr>
+</tbody>
+</table></div>
+<p>Anything else I'm missing? Please add a comment and I'll update this post!</p>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="https://anteru.net/tags/direct3d/index.html" rel="tag">Direct3D</a></li>
+            <li><a class="tag p-category" href="https://anteru.net/tags/graphics/index.html" rel="tag">Graphics</a></li>
+            <li><a class="tag p-category" href="https://anteru.net/tags/opengl/index.html" rel="tag">OpenGL</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="https://anteru.net/blog/2016/setting-up-your-own-mailserver/index.html" rel="prev" title="Setting up your own mailserver">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="https://anteru.net/blog/2016/dependency-free-autocomplete-a-web-development-story/index.html" rel="next" title="Dependency-free autocomplete - a web development story">Next post</a>
+            </li>
+        </ul></nav></aside></article></main><div id="sidebar">
+            <div class="related">
+                <h2>Follow me</h2>
+                <a class="twitter-timeline" href="https://twitter.com/NIV_Anteru">NIV_Anteru</a>
+                <h2>Find me on the web</h2>
+                <ul>
+<li><a href="https://bitbucket.org/Anteru">Bitbucket</a></li>
+                    <li><a href="https://github.com/Anteru">GitHub</a></li>
+                    <li><a href="https://db.thegpu.guru/">GPU database</a></li>
+                    <li><a href="https://sh13.net/projects">Projects</a></li>
+                </ul>
+</div>
+            <div id="recent-posts"><h2>Recent posts</h2><ul><li><a href="https://anteru.net/blog/2018/even-more-compute-shaders/index.html" title="Even more compute shaders, posted 2018-7">Even more compute shaders</a></li><li><a href="https://anteru.net/blog/2018/more-compute-shaders/index.html" title="More compute shaders, posted 2018-7">More compute shaders</a></li><li><a href="https://anteru.net/blog/2018/intro-to-compute-shaders/index.html" title="Introduction to compute shaders, posted 2018-7">Introduction to compute shaders</a></li><li><a href="https://anteru.net/blog/2018/project-status/index.html" title="Project status, posted 2018-5">Project status</a></li><li><a href="https://anteru.net/blog/2018/save-games-vs-hard-mode/index.html" title="Save games vs. hard mode, posted 2018-4">Save games vs. hard mode</a></li><li><a href="https://anteru.net/blog/2018/codegen-for-fast-vulkan/index.html" title="Codegen for fast Vulkan, posted 2018-3">Codegen for fast Vulkan</a></li><li><a href="https://anteru.net/blog/2018/dependency-management-2018/index.html" title="Dependency management 2018, posted 2018-2">Dependency management 2018</a></li><li><a href="https://anteru.net/blog/2017/from-google-test-to-catch/index.html" title="From Google Test to Catch, posted 2017-12">From Google Test to Catch</a></li><li><a href="https://anteru.net/blog/2017/graphql-in-the-gpudb/index.html" title="GraphQL in the GPU database, posted 2017-12">GraphQL in the GPU database</a></li><li><a href="https://anteru.net/blog/2017/version-numbers/index.html" title="Version numbers, posted 2017-11">Version numbers</a></li></ul></div>
+            
+</div>
+    </div>
+            <footer id="footer"><p>Contents © 2005-2018 | <a href="mailto:contact@shelter13.net">Anteru</a> | <a href="https://anteru.net/about/impressum">Imprint/Impressum</a> | <a href="https://anteru.net/about/privacy-policy">Privacy policy/Datenschutz</a> 
+
+<!-- Matomo -->
+<!-- End Matomo Code --></p>
+            
+        </footer>
+
+
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px none; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px none; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-size-adjust: none; font-family: MathJax_Size4, sans-serif;"></div></div></body></html>

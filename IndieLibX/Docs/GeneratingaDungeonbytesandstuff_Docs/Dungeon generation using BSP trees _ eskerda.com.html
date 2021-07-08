@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>
+            Dungeon generation using BSP trees | eskerda.com        </title>
+        <meta name="description" content="your daily cup of tea™">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/style.css">
+        <link rel="pingback" href="https://eskerda.com/xmlrpc.php">
+        
+        <link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="eskerda.com » Feed" href="https://eskerda.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="eskerda.com » Comments Feed" href="https://eskerda.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="eskerda.com » Dungeon generation using BSP trees Comments Feed" href="https://eskerda.com/bsp-dungeon-generation/feed/">
+		
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="https://api.w.org/" href="https://eskerda.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://eskerda.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://eskerda.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="The mule at the Blue Systems sprint" href="https://eskerda.com/a-mule/">
+<link rel="next" title="A conky config for thinkpads" href="https://eskerda.com/thinkpad-conky-config/">
+<meta name="generator" content="WordPress 4.9.6">
+<link rel="canonical" href="https://eskerda.com/bsp-dungeon-generation/">
+<link rel="shortlink" href="https://eskerda.com/?p=303">
+<link rel="alternate" type="application/json+oembed" href="https://eskerda.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Feskerda.com%2Fbsp-dungeon-generation%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://eskerda.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Feskerda.com%2Fbsp-dungeon-generation%2F&amp;format=xml">
+<style type="text/css" id="motif-css">
+				div.description p span {
+	position: relative;
+}
+
+div.description p span::before {
+	content: "";
+	border-bottom: solid 1px;
+	top: -50%;
+	width: 0%;
+	height: 100%;
+	position: absolute;
+	opacity: 0;
+	animation-name: strike;
+	animation-iteration-count: 1;
+    animation-duration: 0.5s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes strike {
+  0% {
+    opacity: 0;
+    width: 0%;
+  }
+  100% {
+    opacity: 1;
+    width: 100%
+  }
+}
+
+
+div.bicimad_mapa {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+div.bicimad_mapa img {
+  width: 100%;
+}
+
+div.bicimad_mapa img.fuckit {
+  position: absolute;
+  bottom: -100%;
+  left: -25%;
+  margin-left: 50%;
+  width: 50%;
+  transition: 0.5s;
+}
+
+div.bicimad_mapa:hover img.fuckit {
+  bottom: 0;
+}
+		</style>    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+<div class="header-container">
+    <header id="main">
+        <div class="description">
+            <a class="custom" href="https://eskerda.com/">
+                <img id="avatar" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/afc465fe979a8df7dcf3d0cc0e3b6609.jpeg">
+            </a>
+            <p>your <span>daily</span> cup of tea™</p>
+        </div>
+                <nav class="menu-main-container"><ul><li id="menu-item-4" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-4"><a title="Posts" href="http://eskerda.com/">Posts</a></li>
+<li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a href="https://eskerda.com/projects/">Projects</a></li>
+<li id="menu-item-5" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5"><a href="http://github.com/eskerda">Code</a></li>
+</ul></nav>        <div id="poweredby">
+            powered by
+            <ul>
+                <li>
+                    <a href="https://wordpress.org/">WP</a>
+                </li>
+                <li>
+                    <a href="https://github.com/eskerda/termlove">termlove</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+</div>
+<div class="main-container">
+    <main>
+                                                                <article id="post-303" class="post-303 post type-post status-publish format-standard hentry category-code tag-coding tag-games tag-procedural">
+    <header>
+        <h1>Dungeon generation using BSP trees</h1>
+        <div class="entry-meta">
+            <time datetime="2013-12-22T03:15:37+00:00">December 22, 2013</time>                            <span class="comments-link">
+                    <a href="https://eskerda.com/bsp-dungeon-generation/#comments">7 Comments</a>                </span>
+                   </div>
+    </header>
+
+    <div class="content">
+                <p>Essentially, a binary space partition algorithm will 
+recursively divide a surface into two for a number of iterations. A 
+binary tree provides the most obvious data structure to traverse the 
+different levels of partitions.</p>
+<p>For partitioning, in each iteration the direction of the division 
+-horizontal or vertical- is assigned randomly and so is the size of the 
+first partition, while the second just takes the remaining of the space.
+ Later, on the leafs of the tree (down-most nodes), rooms can be grown 
+within the container, be it randomly or by assigning some constraints 
+that suit the generation. Finally, by connecting the center of each one 
+of the partitions with his brother, all the partitions get connected and
+ accessible.</p>
+<p><img src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/bsp-dungeon-generation.gif" alt="bsp-dungeon-generation" class="aligncenter size-full wp-image-418"></p>
+<p>Maybe it’s a good idea to check the <a href="https://eskerda.com/demos/dungeon">interactive demo</a>
+ of the code that comes ahead before starting. To increase the number of
+ iterations make sure to increase the map size accordingly.</p>
+<p>Let’s get into it. First we need a toy implementation of a binary 
+tree. Do not consider the following feature proof or efficient 
+code-wise.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> </span><span class="typ">Tree</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln"> leaf </span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">leaf </span><span class="pun">=</span><span class="pln"> leaf
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>That’s it. Well, we might sooner or later need some auxiliary 
+functions to get an specific level of the tree and to get the down-most 
+bottom leafs of it, be it for debugging or just for the exercise.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="typ">Tree</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">getLeafs </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">===</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln"> </span><span class="pun">&amp;&amp;</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">===</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">[</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">]</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">[].</span><span class="pln">concat</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">.</span><span class="pln">getLeafs</span><span class="pun">(),</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">.</span><span class="pln">getLeafs</span><span class="pun">())</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Tree</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">getLevel </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">level</span><span class="pun">,</span><span class="pln"> queue</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">queue </span><span class="pun">===</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        queue </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[]</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">level </span><span class="pun">==</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        queue</span><span class="pun">.</span><span class="pln">push</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">!==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+            </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">.</span><span class="pln">getLevel</span><span class="pun">(</span><span class="pln">level</span><span class="pun">-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> queue</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">!==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+            </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">.</span><span class="pln">getLevel</span><span class="pun">(</span><span class="pln">level</span><span class="pun">-</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> queue</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> queue
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Tree</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">paint </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">!==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">!==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>This should be enough to keep things forward. Again, an array mapped 
+tree would avoid us some unnecessary recursive steps, but this is a 
+demo, right?</p>
+<p>Now, some utils that will come handy</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> </span><span class="typ">Point</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">=</span><span class="pln"> x
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">=</span><span class="pln"> y
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">function</span><span class="pln"> random</span><span class="pun">(</span><span class="pln">min</span><span class="pun">,</span><span class="pln"> max</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Math</span><span class="pun">.</span><span class="pln">floor</span><span class="pun">(</span><span class="typ">Math</span><span class="pun">.</span><span class="pln">random</span><span class="pun">()</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="pun">(</span><span class="pln">max </span><span class="pun">-</span><span class="pln"> min </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> min</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Next thing we need a container prototype. Easy as pie:</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> </span><span class="typ">Container</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">,</span><span class="pln"> w</span><span class="pun">,</span><span class="pln"> h</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">=</span><span class="pln"> x
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">=</span><span class="pln"> y
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w </span><span class="pun">=</span><span class="pln"> w
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h </span><span class="pun">=</span><span class="pln"> h
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">center </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Point</span><span class="pun">(</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">+</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w</span><span class="pun">/</span><span class="lit">2</span><span class="pun">),</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">+</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h</span><span class="pun">/</span><span class="lit">2</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Container</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">paint </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">strokeStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#0F0"</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">lineWidth   </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">strokeRect</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln">
+                 </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Okay, let’s build this tree. We need a function that grows a binary tree of containers.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">function</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">container</span><span class="pun">,</span><span class="pln"> iter</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> root </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Tree</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">iter </span><span class="pun">!=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">var</span><span class="pln"> sr </span><span class="pun">=</span><span class="pln"> random_split</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln">
+        root</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">sr</span><span class="pun">[</span><span class="lit">0</span><span class="pun">],</span><span class="pln"> iter</span><span class="pun">-</span><span class="lit">1</span><span class="pun">)</span><span class="pln">
+        root</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">sr</span><span class="pun">[</span><span class="lit">1</span><span class="pun">],</span><span class="pln"> iter</span><span class="pun">-</span><span class="lit">1</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> root
+</span><span class="pun">}</span></pre>
+<p>And now the actual function that splits a container</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">function</span><span class="pln"> random_split</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> r1</span><span class="pun">,</span><span class="pln"> r2
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Vertical</span><span class="pln">
+        r1 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">             </span><span class="com">// r1.x, r1.y</span><span class="pln">
+            random</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">),</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h   </span><span class="com">// r1.w, r1.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+        r2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x </span><span class="pun">+</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">      </span><span class="com">// r2.x, r2.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w </span><span class="pun">-</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h       </span><span class="com">// r2.w, r2.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Horizontal</span><span class="pln">
+        r1 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">             </span><span class="com">// r1.x, r1.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h</span><span class="pun">)</span><span class="pln">   </span><span class="com">// r1.w, r1.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+        r2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y </span><span class="pun">+</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h</span><span class="pun">,</span><span class="pln">      </span><span class="com">// r2.x, r2.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h </span><span class="pun">-</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h       </span><span class="com">// r2.w, r2.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">[</span><span class="pln">r1</span><span class="pun">,</span><span class="pln"> r2</span><span class="pun">]</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Good, now let’s throw it into a canvas! The wording here might look a
+ bit weird, just assume we are entering this in a development console.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> canvas       </span><span class="pun">=</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">'viewport'</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> MAP_SIZE     </span><span class="pun">=</span><span class="pln"> </span><span class="lit">50</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> SQUARE       </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width </span><span class="pun">/</span><span class="pln"> MAP_SIZE
+</span><span class="kwd">var</span><span class="pln"> N_ITERATIONS </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> c_context </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">getContext</span><span class="pun">(</span><span class="str">'2d'</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> main_container </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> container_tree </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">main_container</span><span class="pun">,</span><span class="pln"> N_ITERATIONS</span><span class="pun">)</span><span class="pln">
+
+c_context</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#000"</span><span class="pln">
+c_context</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+container_tree</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span></pre>
+<p><img class="aligncenter size-full wp-image-322" alt="BSP gone wild" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/ugly.png" srcset="https://eskerda.com/wp-content/uploads/2013/12/ugly.png 400w, https://eskerda.com/wp-content/uploads/2013/12/ugly-150x150.png 150w, https://eskerda.com/wp-content/uploads/2013/12/ugly-300x300.png 300w" sizes="(max-width: 400px) 100vw, 400px" width="400" height="400"><br>
+Woosh, not much impressive, this barely resembles a Piet Mondrian scam.</p>
+<h3>The ugly bits</h3>
+<p>Randomness it’s all good and fun, until you find out that containers 
+sized too small or too large will result in weird looking results, so 
+here I am discarding any container with a horizontal or vertical ratio 
+smaller than a predefined one. Too aggressive ratios will follow with 
+growing the stack size out of the heap limit.</p>
+<p>I do not know if this is the best solution, or if I should not worry 
+about too small partitions, or for instance if I could generate the 
+random width or height with a minimum value (though, I do not like that,
+ as it makes the algorithm code as straightforward. If we define a 
+minimum of 3 squares, what happens when you are confronted by an 
+hypothetical partition of 4 squares?).</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">function</span><span class="pln"> random_split</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> r1</span><span class="pun">,</span><span class="pln"> r2
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Vertical</span><span class="pln">
+        r1 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">             </span><span class="com">// r1.x, r1.y</span><span class="pln">
+            random</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">),</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h   </span><span class="com">// r1.w, r1.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+        r2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x </span><span class="pun">+</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">      </span><span class="com">// r2.x, r2.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w </span><span class="pun">-</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h       </span><span class="com">// r2.w, r2.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">DISCARD_BY_RATIO</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> r1_w_ratio </span><span class="pun">=</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w </span><span class="pun">/</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h
+            </span><span class="kwd">var</span><span class="pln"> r2_w_ratio </span><span class="pun">=</span><span class="pln"> r2</span><span class="pun">.</span><span class="pln">w </span><span class="pun">/</span><span class="pln"> r2</span><span class="pun">.</span><span class="pln">h
+            </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">r1_w_ratio </span><span class="pun">&lt;</span><span class="pln"> W_RATIO </span><span class="pun">||</span><span class="pln"> r2_w_ratio </span><span class="pun">&lt;</span><span class="pln"> W_RATIO</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="kwd">return</span><span class="pln"> random_split</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Horizontal</span><span class="pln">
+        r1 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">,</span><span class="pln">             </span><span class="com">// r1.x, r1.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h</span><span class="pun">)</span><span class="pln">   </span><span class="com">// r1.w, r1.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+        r2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y </span><span class="pun">+</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h</span><span class="pun">,</span><span class="pln">      </span><span class="com">// r2.x, r2.y</span><span class="pln">
+            container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h </span><span class="pun">-</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h       </span><span class="com">// r2.w, r2.h</span><span class="pln">
+        </span><span class="pun">)</span><span class="pln">
+
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">DISCARD_BY_RATIO</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">var</span><span class="pln"> r1_h_ratio </span><span class="pun">=</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">h </span><span class="pun">/</span><span class="pln"> r1</span><span class="pun">.</span><span class="pln">w
+            </span><span class="kwd">var</span><span class="pln"> r2_h_ratio </span><span class="pun">=</span><span class="pln"> r2</span><span class="pun">.</span><span class="pln">h </span><span class="pun">/</span><span class="pln"> r2</span><span class="pun">.</span><span class="pln">w
+            </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">r1_h_ratio </span><span class="pun">&lt;</span><span class="pln"> H_RATIO </span><span class="pun">||</span><span class="pln"> r2_h_ratio </span><span class="pun">&lt;</span><span class="pln"> H_RATIO</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="kwd">return</span><span class="pln"> random_split</span><span class="pun">(</span><span class="pln">container</span><span class="pun">)</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">[</span><span class="pln">r1</span><span class="pun">,</span><span class="pln"> r2</span><span class="pun">]</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Ok, run again!</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> canvas           </span><span class="pun">=</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">'viewport'</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> MAP_SIZE         </span><span class="pun">=</span><span class="pln"> </span><span class="lit">50</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> SQUARE           </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width </span><span class="pun">/</span><span class="pln"> MAP_SIZE
+</span><span class="kwd">var</span><span class="pln"> N_ITERATIONS     </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> DISCARD_BY_RATIO </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> H_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> W_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> c_context </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">getContext</span><span class="pun">(</span><span class="str">'2d'</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> main_container </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> container_tree </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">main_container</span><span class="pun">,</span><span class="pln"> N_ITERATIONS</span><span class="pun">)</span><span class="pln">
+
+c_context</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#000"</span><span class="pln">
+c_context</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+container_tree</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span></pre>
+<p><img class="aligncenter size-full wp-image-325" alt="BSP with filter ratios" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/not_bad.png" srcset="https://eskerda.com/wp-content/uploads/2013/12/not_bad.png 400w, https://eskerda.com/wp-content/uploads/2013/12/not_bad-150x150.png 150w, https://eskerda.com/wp-content/uploads/2013/12/not_bad-300x300.png 300w" sizes="(max-width: 400px) 100vw, 400px" width="400" height="400"><br>
+Much more pleasing to the eye. It’s true that a pattern-like structure 
+can be seen and by discarding small results epic randomness is also 
+being discarded, with the possibility to delete rooms that are too small
+ or impossible (hence, resulting in one less room in the map). In any 
+case, the option of discarding is left open, and the results wielded are
+ much more intelligible just for this post.</p>
+<p>At the start I was looking after a city-like partition. To see if BSP
+ will yield me what I was looking after, I did set the recursion level 
+to 9 with a map size of 500 squares. The results resemble what I want, 
+and give me enough material to move to the next stage.</p>
+<p><img class="aligncenter size-full wp-image-352" alt="Massive BSP" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/room2.png" srcset="https://eskerda.com/wp-content/uploads/2013/12/room2.png 400w, https://eskerda.com/wp-content/uploads/2013/12/room2-150x150.png 150w, https://eskerda.com/wp-content/uploads/2013/12/room2-300x300.png 300w" sizes="(max-width: 400px) 100vw, 400px"></p>
+<h3>Into the rooms and paths</h3>
+<p>For the purpose of my generator both rooms and paths are a bit out of
+ the scope as it is not exactly what I am looking for yet. However, I 
+will include them for the sake of completeness, so inaccuracies should 
+be expected.</p>
+<p>As mentioned earlier in the post, when we are happy with a recursion 
+level, rooms are placed within each container. The sizing on the room 
+can be defined by any rules. In this example, rooms are grown with a 
+random padding ranging from 0 to a third of the room size (for each of 
+the sides). By allowing it to be 0, the possibility of touching rooms is
+ contemplated, which should give interesting results.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> </span><span class="typ">Room</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln"> container </span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">=</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">x </span><span class="pun">+</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Math</span><span class="pun">.</span><span class="pln">floor</span><span class="pun">(</span><span class="pln">container</span><span class="pun">.</span><span class="pln">w</span><span class="pun">/</span><span class="lit">3</span><span class="pun">))</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">=</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y </span><span class="pun">+</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Math</span><span class="pun">.</span><span class="pln">floor</span><span class="pun">(</span><span class="pln">container</span><span class="pun">.</span><span class="pln">h</span><span class="pun">/</span><span class="lit">3</span><span class="pun">))</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w </span><span class="pun">=</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">w </span><span class="pun">-</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">-</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">x</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h </span><span class="pun">=</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">h </span><span class="pun">-</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">-</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">y</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w </span><span class="pun">-=</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w</span><span class="pun">/</span><span class="lit">3</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h </span><span class="pun">-=</span><span class="pln"> random</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w</span><span class="pun">/</span><span class="lit">3</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">this</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="typ">Room</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">paint </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">c</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#888"</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">x </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">y </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln">
+               </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">w </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">h </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Using the helper function to get the leafs of the tree rooms are 
+created dependent of each one of them and later its paint function is 
+called.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> canvas           </span><span class="pun">=</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">'viewport'</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> MAP_SIZE         </span><span class="pun">=</span><span class="pln"> </span><span class="lit">50</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> SQUARE           </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width </span><span class="pun">/</span><span class="pln"> MAP_SIZE
+</span><span class="kwd">var</span><span class="pln"> N_ITERATIONS     </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> DISCARD_BY_RATIO </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> H_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> W_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> c_context </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">getContext</span><span class="pun">(</span><span class="str">'2d'</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> main_container </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> container_tree </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">main_container</span><span class="pun">,</span><span class="pln"> N_ITERATIONS</span><span class="pun">)</span><span class="pln">
+
+c_context</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#000"</span><span class="pln">
+c_context</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+container_tree</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> leafs </span><span class="pun">=</span><span class="pln"> container_tree</span><span class="pun">.</span><span class="pln">getLeafs</span><span class="pun">()</span><span class="pln">
+</span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> leafs</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Room</span><span class="pun">(</span><span class="pln">leafs</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]).</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p><img class="aligncenter size-full wp-image-354" alt="BSP with rooms" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/room3.png" srcset="https://eskerda.com/wp-content/uploads/2013/12/room3.png 400w, https://eskerda.com/wp-content/uploads/2013/12/room3-150x150.png 150w, https://eskerda.com/wp-content/uploads/2013/12/room3-300x300.png 300w" sizes="(max-width: 400px) 100vw, 400px"></p>
+<p>Sweet. Now let’s add a way for paths to be drawn on the canvas. 
+Again, the purpose of this demo is just on drawing the stuff, so we are 
+not going to save them in any structure, nor carve it into a tile map. 
+Let’s see what happens if we draw a line between the centers of 
+containers with the same parent.</p>
+<pre class="prettyprint prettyprinted" style=""><span class="typ">Container</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">drawPath </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    ctx</span><span class="pun">.</span><span class="pln">beginPath</span><span class="pun">()</span><span class="pln">
+    ctx</span><span class="pun">.</span><span class="pln">lineWidth </span><span class="pun">=</span><span class="pln"> SQUARE
+    c</span><span class="pun">.</span><span class="pln">strokeStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#888"</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">moveTo</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">center</span><span class="pun">.</span><span class="pln">x </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">center</span><span class="pun">.</span><span class="pln">y </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">lineTo</span><span class="pun">(</span><span class="pln">container</span><span class="pun">.</span><span class="pln">center</span><span class="pun">.</span><span class="pln">x </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> container</span><span class="pun">.</span><span class="pln">center</span><span class="pun">.</span><span class="pln">y </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+    c</span><span class="pun">.</span><span class="pln">stroke</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> draw_paths </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> tree</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">tree</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln">
+    tree</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">.</span><span class="pln">drawPath</span><span class="pun">(</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">)</span><span class="pln">
+    draw_paths</span><span class="pun">(</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">)</span><span class="pln">
+    draw_paths</span><span class="pun">(</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> canvas           </span><span class="pun">=</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">'viewport'</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> MAP_SIZE         </span><span class="pun">=</span><span class="pln"> </span><span class="lit">50</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> SQUARE           </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width </span><span class="pun">/</span><span class="pln"> MAP_SIZE
+</span><span class="kwd">var</span><span class="pln"> N_ITERATIONS     </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> DISCARD_BY_RATIO </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> H_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> W_RATIO          </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.45</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> c_context </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">getContext</span><span class="pun">(</span><span class="str">'2d'</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">var</span><span class="pln"> main_container </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> container_tree </span><span class="pun">=</span><span class="pln"> split_container</span><span class="pun">(</span><span class="pln">main_container</span><span class="pun">,</span><span class="pln"> N_ITERATIONS</span><span class="pun">)</span><span class="pln">
+
+c_context</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#000"</span><span class="pln">
+c_context</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+container_tree</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span><span class="pln">
+draw_paths</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">,</span><span class="pln"> container_tree</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> leafs </span><span class="pun">=</span><span class="pln"> container_tree</span><span class="pun">.</span><span class="pln">getLeafs</span><span class="pun">()</span><span class="pln">
+</span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> leafs</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Room</span><span class="pun">(</span><span class="pln">leafs</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]).</span><span class="pln">paint</span><span class="pun">(</span><span class="pln">c_context</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p><img class="aligncenter size-full wp-image-359" alt="BSP, rooms and paths" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/bsp_tree_room_paths.gif"></p>
+<p>Good as done. Now, what about some cleaning up?</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> </span><span class="typ">Map</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">canvas</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">width  </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">width
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">height </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">height
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx    </span><span class="pun">=</span><span class="pln"> canvas</span><span class="pun">.</span><span class="pln">getContext</span><span class="pun">(</span><span class="str">'2d'</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">c_tree </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rooms  </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[]</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">init </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> m_container </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Container</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> MAP_SIZE</span><span class="pun">,</span><span class="pln"> MAP_SIZE</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">c_tree </span><span class="pun">=</span><span class="pln"> split_room</span><span class="pun">(</span><span class="pln">m_container</span><span class="pun">,</span><span class="pln"> N_ITERATIONS</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">growRooms</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">growRooms </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> leafs </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">c_tree</span><span class="pun">.</span><span class="pln">getLeafs</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> leafs</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rooms</span><span class="pun">.</span><span class="pln">push</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Room</span><span class="pun">(</span><span class="pln">leafs</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]))</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">clear </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">fillStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"#000"</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">fillRect</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">width</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">height</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">drawGrid </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">beginPath</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">strokeStyle </span><span class="pun">=</span><span class="pln"> </span><span class="str">"rgba(255,255,255,0.4)"</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">lineWidth </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.5</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> MAP_SIZE</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">moveTo</span><span class="pun">(</span><span class="pln">i </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">lineTo</span><span class="pun">(</span><span class="pln">i </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> MAP_SIZE </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">moveTo</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> i </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">lineTo</span><span class="pun">(</span><span class="pln">MAP_SIZE </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">,</span><span class="pln"> i </span><span class="pun">*</span><span class="pln"> SQUARE</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">.</span><span class="pln">stroke</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">drawContainers </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">c_tree</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">drawRooms </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rooms</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln">
+        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">rooms</span><span class="pun">[</span><span class="pln">i</span><span class="pun">].</span><span class="pln">paint</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">drawPaths </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">tree</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+   </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">tree</span><span class="pun">.</span><span class="pln">lchild </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">rchild </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">undefined</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln">
+    tree</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">.</span><span class="pln">drawPath</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">ctx</span><span class="pun">,</span><span class="pln"> tree</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">.</span><span class="pln">leaf</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">draw_paths</span><span class="pun">(</span><span class="pln">tree</span><span class="pun">.</span><span class="pln">lchild</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">draw_paths</span><span class="pun">(</span><span class="pln">tree</span><span class="pun">.</span><span class="pln">rchild</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="typ">Map</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">paint </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">clear</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">drawGrid</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">drawContainers</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">drawRooms</span><span class="pun">()</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">drawPaths</span><span class="pun">()</span><span class="pln">
+</span><span class="pun">}</span></pre>
+<p>Which now can be run as</p>
+<pre class="prettyprint prettyprinted" style=""><span class="kwd">var</span><span class="pln"> map </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Map</span><span class="pun">(</span><span class="pln">document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">'viewport'</span><span class="pun">))</span><span class="pln">
+map</span><span class="pun">.</span><span class="pln">init</span><span class="pun">()</span><span class="pln">
+map</span><span class="pun">.</span><span class="pln">paint</span><span class="pun">()</span></pre>
+<p><img src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/bsp-dungeon-generation-random.gif" alt="bsp-dungeon-generation-random" class="aligncenter size-full wp-image-419"></p>
+<p>Feel free to check the playground demo at <a href="https://eskerda.com/demos/dungeon">/demos/dungeon</a>.</p>
+    </div>
+
+    <footer class="entry-meta">
+
+    </footer><!-- .entry-meta -->
+</article>
+                            <nav id="pagination">
+            <ul>
+                                    <li class="future"><a href="https://eskerda.com/thinkpad-conky-config/">A conky config for thinkpads</a></li>
+                    <li class="past"><a href="https://eskerda.com/a-mule/">The mule at the Blue Systems sprint</a></li>
+                            </ul>
+        </nav>
+                    
+
+
+<section id="comments">
+            <h2>7 thoughts on “Dungeon generation using BSP trees”</h2>
+        <ol class="comment-list">
+            		<li id="comment-1" class="comment even thread-even depth-1 parent">
+			<article id="div-comment-1" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/85c0cb69ca6d87d84cc7df7967d9a834.jpeg" srcset="https://secure.gravatar.com/avatar/85c0cb69ca6d87d84cc7df7967d9a834?s=128&amp;d=retro&amp;r=x 2x" class="avatar avatar-64 photo" width="64" height="64">						<b class="fn"><a href="http://proli.net/" rel="external nofollow" class="url">apol</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://eskerda.com/bsp-dungeon-generation/#comment-1">
+							<time datetime="2014-01-13T19:54:37+00:00">
+								January 13, 2014 at 7:54 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Dungeons!! :O</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://eskerda.com/bsp-dungeon-generation/?replytocom=1#respond" onclick='return addComment.moveForm( "div-comment-1", "1", "respond", "303" )' aria-label="Reply to apol">Reply</a></div>			</article><!-- .comment-body -->
+<ol class="children">
+		<li id="comment-3" class="comment byuser comment-author-eskerda bypostauthor odd alt depth-2">
+			<article id="div-comment-3" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/afc465fe979a8df7dcf3d0cc0e3b6609_002.jpeg" srcset="https://secure.gravatar.com/avatar/afc465fe979a8df7dcf3d0cc0e3b6609?s=128&amp;d=retro&amp;r=x 2x" class="avatar avatar-64 photo" width="64" height="64">						<b class="fn">eskerda</b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://eskerda.com/bsp-dungeon-generation/#comment-3">
+							<time datetime="2014-01-13T19:57:17+00:00">
+								January 13, 2014 at 7:57 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>:D</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://eskerda.com/bsp-dungeon-generation/?replytocom=3#respond" onclick='return addComment.moveForm( "div-comment-3", "3", "respond", "303" )' aria-label="Reply to eskerda">Reply</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-126" class="pingback even thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href="http://www.gridsagegames.com/blog/2014/06/procedural-map-generation/" rel="external nofollow" class="url">Procedural Map Generation - Cogmind / Grid Sage Games</a> 			</div>
+</li><!-- #comment-## -->
+		<li id="comment-1843" class="pingback odd alt thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href="http://trlewis.net/?p=79" rel="external nofollow" class="url">Generating a dungeon (part 1) | bytes and stuff</a> 			</div>
+</li><!-- #comment-## -->
+		<li id="comment-2410" class="pingback even thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href="http://dluat.com/algorithm-for-procedureral-2d-map-with-connected-paths/" rel="external nofollow" class="url">Algorithm for procedureral 2D map with connected paths | DL-UAT</a> 			</div>
+</li><!-- #comment-## -->
+		<li id="comment-2560" class="comment odd alt thread-even depth-1">
+			<article id="div-comment-2560" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt="" src="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/4c05d4c9d5aa4f87bab9aab24e93abe3.png" srcset="https://secure.gravatar.com/avatar/4c05d4c9d5aa4f87bab9aab24e93abe3?s=128&amp;d=retro&amp;r=x 2x" class="avatar avatar-64 photo" width="64" height="64">						<b class="fn">LuisQuin</b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="https://eskerda.com/bsp-dungeon-generation/#comment-2560">
+							<time datetime="2015-07-27T17:25:26+00:00">
+								July 27, 2015 at 5:25 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Maybe is there a little problem in your …?<br>
+Container.prototype.paint = function(c) {<br>
+    c.strokeStyle = “#0F0”<br>
+    c.lineWidth   = 2<br>
+    c.strokeRect(this.x * SQUARE, this.y * SQUARE,<br>
+                 this.w * SQUARE, this.h * SQUARE)<br>
+}<br>
+Shouldn’t it be …?<br>
+c.strokeRect(this.x, this.y,<br>
+                 this.w * SQUARE, this.h * SQUARE)</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply"><a rel="nofollow" class="comment-reply-link" href="https://eskerda.com/bsp-dungeon-generation/?replytocom=2560#respond" onclick='return addComment.moveForm( "div-comment-2560", "2560", "respond", "303" )' aria-label="Reply to LuisQuin">Reply</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-24525" class="pingback even thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href="http://chepa.net/all/2018/05/14/%d0%bf%d0%b5%d1%80%d0%b5%d0%b2%d0%be%d0%b4-%d0%bf%d1%80%d0%be%d1%86%d0%b5%d0%b4%d1%83%d1%80%d0%bd%d0%b0%d1%8f-%d0%b3%d0%b5%d0%bd%d0%b5%d1%80%d0%b0%d1%86%d0%b8%d1%8f-%d0" rel="external nofollow" class="url">[Перевод] Процедурная генерация подземелий в roguelike – CHEPA website</a> 			</div>
+</li><!-- #comment-## -->
+        </ol>
+        
+                	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://eskerda.com/bsp-dungeon-generation/#respond" style="display:none;">Cancel Reply</a></small></h3>			<form action="https://eskerda.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<p class="comment-notes">Your email address will not be published.</p><p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p><p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a
+ href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; 
+&lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del 
+datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;s&gt; 
+&lt;strike&gt; &lt;strong&gt; </code></p><p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" size="30" type="text"></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" size="30" type="text"></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" size="30" type="text"></p>
+<p class="form-submit"><input name="submit" id="submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="303" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="7cd92aec2d" type="hidden"></p><p style="display: none;"></p>			<input id="ak_js" name="ak_js" value="1529498196167" type="hidden"></form>
+			</div><!-- #respond -->
+	</section>
+
+            </main>
+</div>
+        <footer class="main"></footer>
+        
+        
+        
+        
+        
+        <link rel="stylesheet" href="Dungeon%20generation%20using%20BSP%20trees%20|%20eskerda.com_tiedostot/sunburst.css">
+        
+
+
+    
+
+
+
+
+
+</body></html>
+<!-- Dynamic page generated in 0.201 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2018-06-20 14:36:35 -->
+<!-- super cache -->

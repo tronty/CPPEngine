@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8"><title>Vertex displacement with a noise function using GLSL and three.js - Blog - Clicktorelease</title><link rel="manifest" href="https://www.clicktorelease.com/manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="application-name" content="clicktorelease"><meta name="apple-mobile-web-app-title" content="clicktorelease"><meta name="theme-color" content="#ff7000"><meta name="msapplication-navbutton-color" content="#ff7000"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="msapplication-starturl" content="/"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel="apple-touch-icon" sizes="180x180" href="https://www.clicktorelease.com/apple-touch-icon.png"><link rel="icon" type="image/png" href="https://www.clicktorelease.com/favicon-32x32.png" sizes="32x32"><link rel="icon" type="image/png" href="https://www.clicktorelease.com/favicon-16x16.png" sizes="16x16"><link rel="manifest" href="https://www.clicktorelease.com/manifest.json"><link rel="mask-icon" href="https://www.clicktorelease.com/safari-pinned-tab.svg" color="#5bbad5"><meta name="theme-color" content="#ffffff"><meta property="og:url" content="https://www.clicktorelease.com/"><meta property="og:title" content="Vertex displacement with a noise function using GLSL and three.js - Blog - Clicktorelease"><meta property="og:description" content="Vertex displacement with a noise function using GLSL and three.js"><meta property="og:image" content="https://www.clicktorelease.com/snapshots/"><meta name="description" content="Vertex displacement with a noise function using GLSL and three.js"><meta itemprop="name" content="Vertex displacement with a noise function using GLSL and three.js - Blog - Clicktorelease"><meta itemprop="description" content="Vertex displacement with a noise function using GLSL and three.js"><meta itemprop="image" content="https://www.clicktorelease.com/snapshots/"><link href="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/css.css" rel="stylesheet"><link href="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/styles.css" rel="stylesheet"><link rel="alternate" type="application/rss+xml" title="Clicktorelease" href="https://www.clicktorelease.com/rss.xml"><link href="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/atom-one-dark.css" type="text/css" rel="stylesheet" media="screen,print"></head><body class="blog-page"><section class="main"><header><h1>click to release <span>dot</span> com</h1><nav><a href="https://www.clicktorelease.com/">home</a> <a href="https://www.clicktorelease.com/code/">code</a> <a href="https://www.clicktorelease.com/blog/" class="active">articles</a> <a href="https://www.clicktorelease.com/talks/">talks</a> <a href="https://www.clicktorelease.com/about/">contact</a></nav><div class="profile"><a href="https://twitter.com/thespite" rel="external"><svg viewBox="0 0 56.693 56.693" xmlns="http://www.w3.org/2000/svg"><path fill="#ff8a00" d="M52.837 15.065c-1.81.805-3.76 1.348-5.805 1.59 2.088-1.25 3.69-3.23 4.444-5.59-1.953 1.158-4.115 2-6.418 2.453-1.843-1.964-4.47-3.192-7.377-3.192-5.58 0-10.105 4.525-10.105 10.107 0 .79.09 1.562.262 2.303-8.4-.422-15.848-4.445-20.833-10.56-.87 1.492-1.368 3.228-1.368 5.082 0 3.506 1.784 6.6 4.496 8.412-1.656-.053-3.215-.508-4.578-1.265v.128c0 4.896 3.483 8.98 8.107 9.91-.847.23-1.74.354-2.662.354-.652 0-1.285-.063-1.902-.182 1.287 4.015 5.02 6.938 9.44 7.02-3.458 2.71-7.815 4.326-12.55 4.326-.816 0-1.62-.047-2.412-.14 4.474 2.868 9.786 4.54 15.493 4.54 18.59 0 28.756-15.4 28.756-28.756 0-.438-.01-.875-.028-1.31 1.974-1.42 3.688-3.202 5.042-5.23z"></path></svg></a><a href="https://github.com/spite" rel="external"><svg version="1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path fill="#ff8a00" clip-rule="evenodd" d="M16.003 0C7.17 0 .008 7.162.008 15.997c0 7.067 4.582 13.063 10.94 15.18.8.145 1.052-.33 1.052-.753 0-.38.008-1.442 0-2.777-4.45.967-5.37-2.107-5.37-2.107-.728-1.848-1.776-2.34-1.776-2.34-1.452-.992.11-.973.11-.973 1.604.113 2.45 1.65 2.45 1.65 1.427 2.442 3.743 1.736 4.654 1.328.146-1.034.56-1.74 1.017-2.14C9.533 22.663 5.8 21.29 5.8 15.16c0-1.747.622-3.174 1.645-4.292-.165-.404-.715-2.03.157-4.234 0 0 1.343-.43 4.398 1.64 1.276-.354 2.645-.53 4.005-.537 1.36.006 2.727.183 4.005.538 3.055-2.07 4.396-1.64 4.396-1.64.872 2.202.323 3.83.16 4.233 1.022 1.118 1.643 2.545 1.643 4.292 0 6.146-3.74 7.498-7.305 7.893C19.48 23.548 20 24.508 20 26v4.428c0 .428.258.9 1.07.746C27.422 29.054 32 23.062 32 15.997 32 7.162 24.838 0 16.003 0z" fill-rule="evenodd"></path></svg></a></div></header></section><section class="main content"><section class="title"><p><b>Article</b> | Posted on December 10, 2012</p><h1>Vertex displacement with a noise function using GLSL and three.js</h1><p>Reading time: <b>10 minutes</b></p><p>Topics: <b>WebGL, GLSL, three.js, shaders</b></p><p class="linkBar"><a class="button" href="https://www.clicktorelease.com/code/perlin/explosion.html" rel="external">See the demo</a><a class="button" href="https://github.com/spite/vertex-displacement-noise-3d-webgl-glsl-three-js" rel="external"><span class="icon"> <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.0" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="M16.003,0C7.17,0,0.008,7.162,0.008,15.997  c0,7.067,4.582,13.063,10.94,15.179c0.8,0.146,1.052-0.328,1.052-0.752c0-0.38,0.008-1.442,0-2.777  c-4.449,0.967-5.371-2.107-5.371-2.107c-0.727-1.848-1.775-2.34-1.775-2.34c-1.452-0.992,0.109-0.973,0.109-0.973  c1.605,0.113,2.451,1.649,2.451,1.649c1.427,2.443,3.743,1.737,4.654,1.329c0.146-1.034,0.56-1.739,1.017-2.139  c-3.552-0.404-7.286-1.776-7.286-7.906c0-1.747,0.623-3.174,1.646-4.292C7.28,10.464,6.73,8.837,7.602,6.634  c0,0,1.343-0.43,4.398,1.641c1.276-0.355,2.645-0.532,4.005-0.538c1.359,0.006,2.727,0.183,4.005,0.538  c3.055-2.07,4.396-1.641,4.396-1.641c0.872,2.203,0.323,3.83,0.159,4.234c1.023,1.118,1.644,2.545,1.644,4.292  c0,6.146-3.74,7.498-7.304,7.893C19.479,23.548,20,24.508,20,26c0,2,0,3.902,0,4.428c0,0.428,0.258,0.901,1.07,0.746  C27.422,29.055,32,23.062,32,15.997C32,7.162,24.838,0,16.003,0z" fill="#181616" fill-rule="evenodd"></path><g></g><g></g><g></g><g></g><g></g><g></g></svg> </span>Get the code on GitHub</a></p></section></section><div class="hero image"><div thumb-lazy="" original-src="images/perlin-explosion.jpg" thumb-src="images/perlin-explosion-thumb.png" thumb-width="2880" thumb-height="1800" style="background-color:#4a3833;width:100%"><div style="padding-bottom:62.5%"><noscript><img src=images/perlin-explosion.jpg></noscript><canvas style="width: 100%; height: 100%; opacity: 1;" height="16" width="16"></canvas><img class="final" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/perlin-explosion.jpg" style="opacity: 1;"></div></div><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></div><section class="main content"><section class="intro"><p>This
+ is a tutorial showing the steps to create an animated shape, using a 
+sphere as a basic geometry and perlin noise to disturb the vertices. It 
+also teaches how to add some more variation to the distortion and how to
+ add colour. It's based on <a class="underline" href="https://www.clicktorelease.com/code/perlin/explosion.html" rel="external">Fireball explosion</a>, part of the <a href="https://www.clicktorelease.com/blog/experiments-with-perlin-noise" rel="external">Experiments with Perlin Noise Series</a>.</p><p>I'm using <a href="https://github.com/mrdoob/three.js/" rel="external">three.js</a>
+ to create the geometry and setting up the scene, but the GLSL code can 
+be used with any other WebGL/OpenGL library. I'm quite sure it's also 
+pretty straightforward to translate into HLSL.</p></section></section><div class="section-icon"><img src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/keyboard.svg"></div><section class="main content"><p>I'm
+ going to assume for this tutorial that you already have some knowledge 
+of WebGL or a favorite library for 3D. In this case, I'll be using 
+three.js. I'll write the necessary code to set up the scene with 
+three.js, but won't be explaining what it does. <a href="http://mrdoob.github.com/three.js/" rel="external">There's a lot of examples and documentation for that</a>. <span class="note">You may need to check those links first, and I'll try to keep it all very basic.</span></p><h2>Creating the scene:<br>a sphere and a camera</h2><p>We need several things to start, but it all boils down to: including three.js, creating a <span class="js">renderer</span>, a <span class="js">scene</span>, a <span class="js">camera</span>, a <span class="js">material</span>, and a <span class="js">mesh</span>. Our <span class="js">scene</span> will contain the <span class="js">mesh</span> and the <span class="js">camera</span>. The <span class="js">camera</span> will be looking right at the <span class="js">mesh</span>. <span class="note">If you want to add camera movement with the keyboard or the mouse, check one of the many examples to do that.</span></p><p>We'll be using a sphere geometry to create the mesh, because it's very convenient for our purposes. The <span class="js">material</span> can be a wireframe shader for the time being, until we get into more sofisticated shading. <span class="note">Wireframe and bright colours are always a good combination for debugging 3D.</span></p><p>Here's the starting code:</p></section><section class="code hero"><section><h2>Basic page</h2><h3>HTML - index.html</h3><pre><code class="html"><span class="hljs-meta">&lt;!doctype html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Perlin noise | Fireball explosion<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/three.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"x-shader/x-vertex"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"vertexShader"</span>&gt;</span><span class="javascript">
+  <span class="hljs-comment">// Put the Vertex Shader code here</span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"x-shader/x-vertex"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"fragmentShader"</span>&gt;</span><span class="javascript">
+  <span class="hljs-comment">// Put the Fragment Shader code here</span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"mainCode"</span>&gt;</span><span class="javascript">
+  <span class="hljs-comment">// Put the main code here</span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p>Add this JavaScript code to the <span class="dom">script</span> tag we called <span class="dom">mainCode</span>.</p></section><section class="code hero"><section><h2>Three.js boilerplate</h2><h3>JavaScript - index.html</h3><pre><code class="javascript"><span class="hljs-keyword">var</span> container,
+  renderer,
+  scene,
+  camera,
+  mesh,
+  start = <span class="hljs-built_in">Date</span>.now(),
+  fov = <span class="hljs-number">30</span>;
+
+<span class="hljs-built_in">window</span>.addEventListener( <span class="hljs-string">'load'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+
+  <span class="hljs-comment">// grab the container from the DOM</span>
+  container = <span class="hljs-built_in">document</span>.getElementById( <span class="hljs-string">"container"</span> );
+
+  <span class="hljs-comment">// create a scene</span>
+  scene = <span class="hljs-keyword">new</span> THREE.Scene();
+
+  <span class="hljs-comment">// create a camera the size of the browser window</span>
+  <span class="hljs-comment">// and place it 100 units away, looking towards the center of the scene</span>
+  camera = <span class="hljs-keyword">new</span> THREE.PerspectiveCamera(
+    fov,
+    <span class="hljs-built_in">window</span>.innerWidth / <span class="hljs-built_in">window</span>.innerHeight,
+    <span class="hljs-number">1</span>,
+    <span class="hljs-number">10000</span>
+  );
+  camera.position.z = <span class="hljs-number">100</span>;
+
+  <span class="hljs-comment">// create a wireframe material</span>
+  material = <span class="hljs-keyword">new</span> THREE.MeshBasicMaterial( {
+    <span class="hljs-attr">color</span>: <span class="hljs-number">0xb7ff00</span>,
+    <span class="hljs-attr">wireframe</span>: <span class="hljs-literal">true</span>
+  } );
+
+  <span class="hljs-comment">// create a sphere and assign the material</span>
+  mesh = <span class="hljs-keyword">new</span> THREE.Mesh(
+    <span class="hljs-keyword">new</span> THREE.IcosahedronGeometry( <span class="hljs-number">20</span>, <span class="hljs-number">4</span> ),
+    material
+  );
+  scene.add( mesh );
+
+  <span class="hljs-comment">// create the renderer and attach it to the DOM</span>
+  renderer = <span class="hljs-keyword">new</span> THREE.WebGLRenderer();
+  renderer.setSize( <span class="hljs-built_in">window</span>.innerWidth, <span class="hljs-built_in">window</span>.innerHeight );
+  renderer.setPixelRatio( <span class="hljs-built_in">window</span>.devicePixelRatio );
+
+  container.appendChild( renderer.domElement );
+
+  render();
+
+} );
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
+
+  <span class="hljs-comment">// let there be light</span>
+  renderer.render( scene, camera );
+  requestAnimationFrame( render );
+
+}
+</code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p>This
+ sets up a scene, with a wireframe sphere of radius 20, made of 200x200 
+segments, in the center, and a camera looking at it, flat, from 100 
+units away. <span class="note">Try changing the radius or the segments in the sphere, or moving the camera or the mesh somewhere else.</span></p><p class="big-link"><a href="https://www.clicktorelease.com/code/vertex-displacement-noise-3d-webgl-glsl-three-js/creating-scene-mesh-camera.html" rel="external">See the first step</a></p></section><div class="hero embed"><div style="padding-bottom:66%"><span embed-enabled="" embed-lazy="" embed-autoplay="" embed-src="/code/vertex-displacement-noise-3d-webgl-glsl-three-js/creating-scene-mesh-camera.html"><iframe class="iframe" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/creating-scene-mesh-camera.html" style="opacity: 0;"></iframe><div class="blocker" tabindex="-1" style="height: 100%;"><span class="overlay" style="opacity: 1;">Touch to interact</span></div></span></div><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></div><section class="main content"><h2>Creating our custom shader</h2><p>If
+ we want to fiddle with the rendering, we have to create our own shader.
+ A custom shader will allow us to code how we want a vertex or a 
+fragment to behave. We'll need to change <span class="js">material</span> from a standard <span class="js">THREE.MeshBasicMaterial</span> to a <span class="js">THREE.ShaderMaterial</span>. A ShaderMaterial has some basic parameters: vertexShader, fragmentShader and uniforms.</p><ol><li><span class="js">vertexShader</span>: the GLSL code for the vertex manipulation.</li><li><span class="js">fragmentShader</span>: the GLSL code for the fragment manipulation.</li><li><span class="js">uniforms</span>: a list of variables that are shared by both the vertex and the fragment shader.</li></ol><p>Change the line in which <span class="js">material</span> is created to this:</p></section><section class="code hero"><section><h2>Custom basic shader material</h2><h3>JavaScript</h3><pre><code class="javascript">material = <span class="hljs-keyword">new</span> THREE.ShaderMaterial( {
+  <span class="hljs-attr">vertexShader</span>: <span class="hljs-built_in">document</span>.getElementById( <span class="hljs-string">'vertexShader'</span> ).textContent,
+  <span class="hljs-attr">fragmentShader</span>: <span class="hljs-built_in">document</span>.getElementById( <span class="hljs-string">'fragmentShader'</span> ).textContent
+} );</code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p>This
+ code takes the content from the script tags and assigns it to the 
+correct shader. This will be composed by three.js into a full shader, 
+and passed to the WebGL driver to be compiled. Then it'll be ready to 
+use.</p><p>Add this code to the <span class="dom">script</span> tag that we called <span class="dom">vertexShader</span>.</p></section><section class="code hero"><section><h2>Basic vertex shader code</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+
+<span class="hljs-type">void</span> main() {
+
+  vUv = uv;
+  <span class="hljs-built_in">gl_Position</span> = projectionMatrix * modelViewMatrix * <span class="hljs-type">vec4</span>( position, <span class="hljs-number">1.0</span> );
+
+}</code></pre><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section></section><section class="main content"><p>This
+ shader is almost the most elemental vertex shader there is. It takes 
+the attribute (a parameter for a vertex) UV (a two-dimensional vector, 
+or vec2, that specifies from 0 to 1 which texel to read in a given 
+texture) and passes it to the fragment shader using a varying (a 
+parameter that can be shared or passed between the vertex shader and the
+ fragment shader) called vUV (another vec2). It also takes the vertex 
+position attribute (position, a three-dimensional vector that specifies 
+the original location of the point, in object coordinates) and performs 
+the transform to place the vertex in eye coordinates. <span class="note">Both
+ values are created by three.js when creating a mesh using a primitive 
+like SphereGeometry or IcosahedronGeometry and passed without you having
+ to worry about anything.</span></p><p>Add this code to the <span class="dom">script</span> tag that we called <span class="dom">fragmentShader</span>.</p></section><section class="code hero"><section><h2>Basic fragment shader code</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+
+<span class="hljs-type">void</span> main() {
+
+  <span class="hljs-comment">// colour is RGBA: u, v, 0, 1</span>
+  <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-type">vec4</span>( <span class="hljs-type">vec3</span>( vUv, <span class="hljs-number">0.</span> ), <span class="hljs-number">1.</span> );
+
+}</code></pre><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section></section><section class="main content"><p>This
+ shader is also very simple. For the given fragment, takes the UV 
+coordinates (set to vUV by the vertex shader and interpolated by the GPU
+ for each fragment) and uses them as the two first components of the 
+fragment colour. <span class="note">We could be using a solid colour as 
+output of the fragment shader, but colouring the object with the texture
+ coordinates makes easier to see what's going on.</span></p><p class="big-link"><a href="https://www.clicktorelease.com/code/vertex-displacement-noise-3d-webgl-glsl-three-js/creating-custom-shader.html" rel="external">See the second step</a></p></section><div class="hero embed"><div style="padding-bottom:66%"><span embed-enabled="" embed-lazy="" embed-autoplay="" embed-src="/code/vertex-displacement-noise-3d-webgl-glsl-three-js/creating-custom-shader.html"><iframe class="iframe" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/creating-custom-shader.html" style="opacity: 0;"></iframe><div class="blocker" tabindex="-1" style="height: 100%;"><span class="overlay" style="opacity: 1;">Touch to interact</span></div></span></div><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></div><section class="main content"><h2>Let's make some noise!</h2><p>Now
+ finally comes the fun part! Spheres are nice, perfect by definition and
+ all that, but extremely boring; we have to disturb the vertex position 
+to get interesting shapes: potato, blob, stars, explosions...</p><p>The 
+main idea here is disturbing each vertex along the direction of its 
+normal. Imagine that there are lines that go from the center of our 
+sphere to each vertex, one line per vertex. Initally, all those lines 
+are the same length (the radius of the sphere). If we make some longer, 
+and some shorter, we have an interesting disturbed mesh.</p><div class="wide"><div thumb-lazy="" original-src="images/modifying-point-over-normal.jpg" thumb-src="images/modifying-point-over-normal-thumb.png" thumb-width="680" thumb-height="300" style="background-color:#f9f8f8;width:100%"><div style="padding-bottom:44.11764705882353%"><noscript><img src=images/modifying-point-over-normal.jpg></noscript><canvas style="width: 100%; height: 100%; opacity: 1;" height="16" width="16"></canvas><img class="final" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/modifying-point-over-normal.jpg" style="opacity: 1;"></div></div></div><p>Random
+ is good, but also chaotic and not very appealing. We want the 
+disturbance to be based on some random but controllable function, and 
+here's where <a href="http://en.wikipedia.org/wiki/Perlin_noise" rel="external">Perlin Noise</a> comes once again to save the day.</p><p>I'll be using <a href="https://github.com/ashima/webgl-noise" rel="external">ashima's webgl-noise</a>,
+ a fantastic set of Procedural Noise Shader Routines compatible with 
+WebGL. I'm not going to copy the whole code here, you'll have to add it 
+in the vertex shader code, where the comment says so. We'll be using <a href="https://github.com/ashima/webgl-noise/blob/master/src/classicnoise3D.glsl" rel="external">Classic Noise 3D</a>. <span class="note">There
+ are a lot of alternatives for having Perlin Noise in your shader: 
+standard implementations, simplex implementations, a noise texture. 
+Which one to choose depends on the usage and requirements for the noise.
+ The rule here is that the more complex, the slower. If you need a lot 
+of noise values, you might need a texture for quick lookups.</span></p><q>Random is good, but also chaotic and not very appealing.</q><p>Let's
+ disturb the vertex along the normal: we want to multiply the normal by 
+some scalar factor so it scales (the line from the center to the vertex 
+shrinks or grows, and since it's defining the vertex position, the 
+vertex itself moves inwards or outwards). That's where we get a noise 
+value. The coordinates for the noise are based on the normal before 
+being modified, and the noise value is modulated to fit the desired 
+scale. I'm not using the noise function directly, but using a turbulence
+ function instead, courtesy of Ken Perlin, that creates really 
+interesting shapes. <span class="note">You're encouraged to experiment 
+with different noise functions, and feeding different parameters and 
+periods to the noise functions.</span></p><p>I do an aditional distortion, adding a factor based on a larger noise (a low frequency noise), to disturb the sphere shape. <span class="note">Try changing the values for noise and b to see how each affect the generated shape.</span></p><p>This
+ is very important when working with noise functions: you usually pass 
+parameters with time coherence, since you don't want the mesh to change 
+abruptly it's shape every frame. This is achieved by using some value 
+that it's the same every frame for your vertex or fragment: it can be an
+ attribute or a uniform, but I usually like to use the UV coordinates, 
+the position or the normal. <span class="note">Usually before transforming to eye coordinates.</span></p><p>I'm
+ storing the noise as a fake ambient occlusion factor, that will be 
+useful when rendering the shape, to highlight raised regions agains 
+sunken regions.</p><p>Now we calculate the new position of the vertex, 
+by moving the vertex along its normal by the displacement factor: as 
+easy as taking the original position and adding the normal multiplied by
+ our noise.</p><p>The new vertex shader looks like this:</p></section><section class="code hero"><section><h2>Mesh distortion - vertex shader</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-comment">// Include the Ashima code here!</span>
+
+<span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+<span class="hljs-keyword">varying</span> <span class="hljs-type">float</span> noise;
+
+<span class="hljs-type">float</span> turbulence( <span class="hljs-type">vec3</span> p ) {
+
+  <span class="hljs-type">float</span> w = <span class="hljs-number">100.0</span>;
+  <span class="hljs-type">float</span> t = <span class="hljs-number">-.5</span>;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">float</span> f = <span class="hljs-number">1.0</span> ; f &lt;= <span class="hljs-number">10.0</span> ; f++ ){
+    <span class="hljs-type">float</span> power = <span class="hljs-built_in">pow</span>( <span class="hljs-number">2.0</span>, f );
+    t += <span class="hljs-built_in">abs</span>( pnoise( <span class="hljs-type">vec3</span>( power * p ), <span class="hljs-type">vec3</span>( <span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span> ) ) / power );
+  }
+
+  <span class="hljs-keyword">return</span> t;
+
+}
+
+<span class="hljs-type">void</span> main() {
+
+  vUv = uv;
+
+  <span class="hljs-comment">// get a turbulent 3d noise using the normal, normal to high freq</span>
+  noise = <span class="hljs-number">10.0</span> *  <span class="hljs-number">-.10</span> * turbulence( <span class="hljs-number">.5</span> * normal );
+  <span class="hljs-comment">// get a 3d noise using the position, low frequency</span>
+  <span class="hljs-type">float</span> b = <span class="hljs-number">5.0</span> * pnoise( <span class="hljs-number">0.05</span> * position, <span class="hljs-type">vec3</span>( <span class="hljs-number">100.0</span> ) );
+  <span class="hljs-comment">// compose both noises</span>
+  <span class="hljs-type">float</span> displacement = - <span class="hljs-number">10.</span> * noise + b;
+
+  <span class="hljs-comment">// move the position along the normal and transform it</span>
+  <span class="hljs-type">vec3</span> newPosition = position + normal * displacement;
+  <span class="hljs-built_in">gl_Position</span> = projectionMatrix * modelViewMatrix * <span class="hljs-type">vec4</span>( newPosition, <span class="hljs-number">1.0</span> );
+
+}</code></pre><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section></section><section class="main content"><p>And this is the new fragment shader, using the ambient occlusion factor:</p></section><section class="code hero"><section><h2>Mesh distortion - fragment shader</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+<span class="hljs-keyword">varying</span> <span class="hljs-type">float</span> noise;
+
+<span class="hljs-type">void</span> main() {
+
+  <span class="hljs-comment">// compose the colour using the UV coordinate</span>
+  <span class="hljs-comment">// and modulate it with the noise like ambient occlusion</span>
+  <span class="hljs-type">vec3</span> color = <span class="hljs-type">vec3</span>( vUv * ( <span class="hljs-number">1.</span> - <span class="hljs-number">2.</span> * noise ), <span class="hljs-number">0.0</span> );
+  <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-type">vec4</span>( color.rgb, <span class="hljs-number">1.0</span> );
+
+}</code></pre><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section></section><section class="main content"><p class="big-link"><a href="https://www.clicktorelease.com/code/vertex-displacement-noise-3d-webgl-glsl-three-js/lets-make-some-noise.html" rel="external">See the third step</a></p></section><div class="hero embed"><div style="padding-bottom:66%"><span embed-enabled="" embed-lazy="" embed-autoplay="" embed-src="/code/vertex-displacement-noise-3d-webgl-glsl-three-js/lets-make-some-noise.html"><iframe class="iframe" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/lets-make-some-noise.html" style="opacity: 0;"></iframe><div class="blocker" tabindex="-1" style="height: 100%;"><span class="overlay" style="opacity: 1;">Touch to interact</span></div></span></div><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></div><section class="main content"><h2>Add some colour, and movement!</h2><p>We're almost there. It's starting to look like something recognizable.</p><p>Let's
+ add some colour. We could code a function that uses several 
+interpolators to create a gradient that goes from dark to bright, 
+passing through red, orange and bright yellow. I usually don't like 
+spending unnecessary time dealing with assets if there are alternatives.
+ In this case, I went to google images, looked for explosion images, 
+picked the one I liked the most and cut a <a href="https://www.clicktorelease.com/code/perlin/explosion.png" rel="external">slice of image that had the right gradient</a>.</p><p>Now
+ that we have an image, we have to pass it to our shaders so it can be 
+used. That's done in JavaScript, and we have to modify the 
+ShaderMaterial we created previously. We add a uniform that defines a 
+texture (a 2D sampler). We're adding a time factor, too, to animate the 
+explosion. <span class="note">It's not easy sometimes to remember all the conventions three.js uses for uniform types: this is a life saver <a href="https://github.com/mrdoob/three.js/wiki/Uniforms-types" rel="external">Uniforms types</a>.</span></p></section><section class="code hero"><section><h2>Custom shader material for texturing</h2><h3>JavaScript</h3><pre><code class="javascript">material = <span class="hljs-keyword">new</span> THREE.ShaderMaterial( {
+
+  <span class="hljs-attr">uniforms</span>: {
+    <span class="hljs-attr">tExplosion</span>: {
+      <span class="hljs-attr">type</span>: <span class="hljs-string">"t"</span>,
+      <span class="hljs-attr">value</span>: THREE.ImageUtils.loadTexture( <span class="hljs-string">'explosion.png'</span> )
+    },
+    <span class="hljs-attr">time</span>: { <span class="hljs-comment">// float initialized to 0</span>
+      type: <span class="hljs-string">"f"</span>,
+      <span class="hljs-attr">value</span>: <span class="hljs-number">0.0</span>
+    }
+  },
+  <span class="hljs-attr">vertexShader</span>: <span class="hljs-built_in">document</span>.getElementById( <span class="hljs-string">'vertexShader'</span> ).textContent,
+  <span class="hljs-attr">fragmentShader</span>: <span class="hljs-built_in">document</span>.getElementById( <span class="hljs-string">'fragmentShader'</span> ).textContent
+
+} );</code></pre><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section></section><section class="main content"><p><span class="note">I've updated the code to use the new three.js notation to specify textures in uniforms.</span></p><p>And we add this first thing on our <span class="js">render</span> method, so the time variable specified in the uniform is updated.</p></section><section class="code hero"><section><h2>Passing time value to shader</h2><h3>JavaScript</h3><pre><code class="javascript">material.uniforms[ <span class="hljs-string">'time'</span> ].value = <span class="hljs-number">.00025</span> * ( <span class="hljs-built_in">Date</span>.now() - start );</code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p>The final vertex shader is almost the same, but we're adding a time factor to the noise lookup, so it moves with time.</p></section><section class="code hero"><section><h2>Mesh distortion over time - vertex shader</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-comment">// Include the Ashima code here!</span>
+
+<span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+<span class="hljs-keyword">varying</span> <span class="hljs-type">float</span> noise;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">float</span> time;
+
+<span class="hljs-type">float</span> turbulence( <span class="hljs-type">vec3</span> p ) {
+
+  <span class="hljs-type">float</span> w = <span class="hljs-number">100.0</span>;
+  <span class="hljs-type">float</span> t = <span class="hljs-number">-.5</span>;
+
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">float</span> f = <span class="hljs-number">1.0</span> ; f &lt;= <span class="hljs-number">10.0</span> ; f++ ){
+    <span class="hljs-type">float</span> power = <span class="hljs-built_in">pow</span>( <span class="hljs-number">2.0</span>, f );
+    t += <span class="hljs-built_in">abs</span>( pnoise( <span class="hljs-type">vec3</span>( power * p ), <span class="hljs-type">vec3</span>( <span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span>, <span class="hljs-number">10.0</span> ) ) / power );
+  }
+
+  <span class="hljs-keyword">return</span> t;
+
+}
+
+<span class="hljs-type">void</span> main() {
+
+vUv = uv;
+
+  <span class="hljs-comment">// add time to the noise parameters so it's animated</span>
+  noise = <span class="hljs-number">10.0</span> *  <span class="hljs-number">-.10</span> * turbulence( <span class="hljs-number">.5</span> * normal + time );
+  <span class="hljs-type">float</span> b = <span class="hljs-number">5.0</span> * pnoise( <span class="hljs-number">0.05</span> * position + <span class="hljs-type">vec3</span>( <span class="hljs-number">2.0</span> * time ), <span class="hljs-type">vec3</span>( <span class="hljs-number">100.0</span> ) );
+  <span class="hljs-type">float</span> displacement = - noise + b;
+
+  <span class="hljs-type">vec3</span> newPosition = position + normal * displacement;
+  <span class="hljs-built_in">gl_Position</span> = projectionMatrix * modelViewMatrix * <span class="hljs-type">vec4</span>( newPosition, <span class="hljs-number">1.0</span> );
+
+}</code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p>And
+ this is the final fragment shader, sampling a texture to determine the 
+colour, based on the depth. It also includes a random function, to break
+ the gradient a bit so it looks more natural.</p></section><section class="code hero"><section><h2>Mesh distortion over time - fragment shader</h2><h3>GLSL</h3><pre><code class="glsl"><span class="hljs-keyword">varying</span> <span class="hljs-type">vec2</span> vUv;
+<span class="hljs-keyword">varying</span> <span class="hljs-type">float</span> noise;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> tExplosion;
+
+<span class="hljs-type">float</span> random( <span class="hljs-type">vec3</span> scale, <span class="hljs-type">float</span> seed ){
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">fract</span>( <span class="hljs-built_in">sin</span>( <span class="hljs-built_in">dot</span>( <span class="hljs-built_in">gl_FragCoord</span>.xyz + seed, scale ) ) * <span class="hljs-number">43758.5453</span> + seed ) ;
+}
+
+<span class="hljs-type">void</span> main() {
+
+  <span class="hljs-comment">// get a random offset</span>
+  <span class="hljs-type">float</span> r = <span class="hljs-number">.01</span> * random( <span class="hljs-type">vec3</span>( <span class="hljs-number">12.9898</span>, <span class="hljs-number">78.233</span>, <span class="hljs-number">151.7182</span> ), <span class="hljs-number">0.0</span> );
+  <span class="hljs-comment">// lookup vertically in the texture, using noise and offset</span>
+  <span class="hljs-comment">// to get the right RGB colour</span>
+  <span class="hljs-type">vec2</span> tPos = <span class="hljs-type">vec2</span>( <span class="hljs-number">0</span>, <span class="hljs-number">1.3</span> * noise + r );
+  <span class="hljs-type">vec4</span> color = <span class="hljs-built_in">texture2D</span>( tExplosion, tPos );
+
+  <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-type">vec4</span>( color.rgb, <span class="hljs-number">1.0</span> );
+
+}</code></pre></section><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></section><section class="main content"><p class="big-link"><a href="https://www.clicktorelease.com/code/vertex-displacement-noise-3d-webgl-glsl-three-js/add-some-colour-movement.html" rel="external">See the fourth and last step</a></p></section><div class="hero embed"><div style="padding-bottom:66%"><span embed-enabled="" embed-lazy="" embed-autoplay="" embed-src="/code/vertex-displacement-noise-3d-webgl-glsl-three-js/add-some-colour-movement.html"><iframe class="iframe" src="Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js%20-%20Blog%20-%20Clicktorelease_files/add-some-colour-movement.html" style="opacity: 0;"></iframe><div class="blocker" tabindex="-1" style="height: 100%;"><span class="overlay" style="opacity: 1;">Touch to interact</span></div></span></div><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg> <svg class="bottom" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon points="0,250 0,200 100,50 100,250" class="highlight" fill="#ddd"></polygon><polygon points="0,250 100,90 100,250" fill="white"></polygon></svg></div><section class="main content"><h2>Wrapping up</h2><p>This
+ is basically all there is to start altering a mesh with polynomials. 
+From here, the sky is the limit. The vertex displacement can be done by 
+reading a 2D or 3D texture; it can be done along the normal or the 
+tangent; it can be scaled, twisted, modulated, inverted...</p><p>Note 
+that the normals are not correctly calculated for lighting: we're just 
+disturbing along the normal from the original shape, the sphere. It's 
+not updated to be the normal for the new shape we're creating. In this 
+case it doesn't matter because the object is self-illuminated, or 100% 
+emissive. For complex lighting, the correct normal has to be calculated.</p><q>Nobody gets those values right the first time, it's all after much tinkering and iterating.</q><p>If
+ you are wondering about the many "random" values, don't think about 
+them as magic, obscure numbers. It's all a matter of experimenting until
+ getting the right look and feel.</p><p>I can assure you that nobody 
+gets those values right the first time, it's all after much tinkering 
+and iterating. In fact, a lot of experiments turn out to be a completely
+ different and unexpected thing. So don't despair. <b>You might lose a fireball, but you might win a... <a href="https://www.clicktorelease.com/code/perlin/green.html" rel="external">slimy broccoli?</a>.</b></p><p>You can see other examples of what can be done with this simple technique in the <a href="https://www.clicktorelease.com/blog/experiments-with-perlin-noise" rel="external">Experiments with Perlin Noise Series</a>, or a bit more sofisticated example in <a href="http://www.itsamessage.com/halloween2012" rel="external">It's a Halloween Message!</a>.</p><p>As always, question and improvement suggestions are welcome. Have fun experimenting on your own!</p><div id="sharePanel"><p><span>Share on</span> <a href="https://twitter.com/intent/tweet?text=%27Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js&amp;url=https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js" rel="external" id="shareTwitterBtn" class="socialButton">Twitter</a> <a href="https://www.facebook.com/dialog/share?app_id=145634995501895&amp;display=page&amp;href=https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js&amp;quote=Vertex%20displacement%20with%20a%20noise%20function%20using%20GLSL%20and%20three.js" id="shareFacebookBtn" class="socialButton">Facebook</a> <a href="https://plus.google.com/share?url=https://www.clicktorelease.com/blog/vertex-displacement-noise-3d-webgl-glsl-three-js" id="shareGooglePlusBtn" class="socialButton">Google+</a></p></div><h2>Comments</h2><div id="disqus_thread"></div><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></section><footer><svg class="top" viewBox="0 0 100 250" preserveAspectRatio="none" shape-rendering="geometricPrecision"><polygon fill="black" fill-opacity=".2" points="0,0 0,250 100,60 100,0"></polygon><polygon fill="white" points="0,0 0,200 100,10 100,0"></polygon></svg><section class="main"><p>Jaume Sanchez Elias</p><br><p>Social: <a href="http://twitter.com/thespite" rel="external">Twitter </a>| <a href="https://plus.google.com/u/0/101115283233850167389/posts" rel="external">Google+</a> | <a href="https://www.youtube.com/user/thespite" rel="external">YouTube</a></p><p>Code: <a href="https://github.com/spite" rel="external">GitHub</a> | <a href="http://spite.github.io/" rel="external">GitHub Page</a> | <a href="https://codepen.io/spite" rel="external">CodePen</a></p><br><p>Last updated: May 5, 2017 / v3.346</p><br><p><a href="https://www.clicktorelease.com/rss.xml"><span id="rss-logo"></span>RSS Feed</a></p></section></footer><noscript><style>.embed{display:none}</style></noscript></body></html>

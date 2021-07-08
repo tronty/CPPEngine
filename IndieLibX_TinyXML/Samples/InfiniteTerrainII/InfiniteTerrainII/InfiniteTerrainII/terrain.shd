@@ -1,0 +1,63 @@
+/*
+  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+[Vertex shader]
+
+#undef TEX2D
+float4 GetPixelColor_(Texture2D<float4> atex, float2 aTexCoord)
+{
+    uint width_;
+    uint height_;
+    atex.GetDimensions(width_, height_);
+    float2 dim_;
+    dim_.x=float(width_-1);
+    dim_.y=float(height_-1);
+    return atex.Load(int3(dim_.x*aTexCoord.x, dim_.y*aTexCoord.y, 0));
+}
+#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)
+#define SAMPLER2D Texture2D<float4>
+
+float4x4 mvp;
+float3 camPos;
+
+struct VsOut {
+	float4 pos      : POSITION;
+	float2 texCoord : TEXCOORD0;
+	float3 normal   : TEXCOORD1;
+	float  fog      : TEXCOORD2;
+	float2 scale    : TEXCOORD3;
+};
+
+SAMPLER2D Terrain;
+VsOut main(float2 pos_: POSITION0){
+    float2 pos=pos_.xy + 0.5;
+	float4 height = SAMPLE2D(Terrain, pos);
+	float4 vertex = float4(4.0 * pos.x, height.w, 4.0 * pos.y, 1);
+
+	VsOut Out;
+	Out.pos = mul(mvp, vertex);
+	//Out.pos = vertex;
+	Out.texCoord = pos * 16.0;
+	Out.normal = height.xyz;
+	Out.fog = saturate(0.65 * length(vertex.xyz - camPos));
+	Out.scale = saturate(height.w * 1.2 - 0.3) * float2(0.6, 0.5);
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler2D Ground;
+
+float3 lightDir;
+float4 fogColor;
+
+float4 main(float2 texCoord: TEXCOORD0, float3 normal: TEXCOORD1, float fog: TEXCOORD2, float2 scale: TEXCOORD3) : COLOR {
+	float diffuse = saturate(dot(lightDir, normal) * scale.x + scale.y);
+	float4 base = tex2D(Ground, texCoord);
+
+	return lerp(diffuse * base, fogColor, fog);
+}
+

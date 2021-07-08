@@ -1,0 +1,762 @@
+<html><head>
+
+<script language="JavaScript">
+<!-- hide from JavaScript-challenged browsers
+
+function openWindow(url) {
+  popupWin = window.open(url, 'new_page', 'width=500,height=400')
+}
+
+function textCounter(field, maxlimit) {
+if (field.value.length > maxlimit) // if too long...trim it!
+field.value = field.value.substring(0, maxlimit);
+// otherwise, update 'characters left' counter
+}
+
+// done hiding -->
+</script>
+
+<style>
+.jc{
+position:relative; font-weight: bold;
+}
+</style>
+
+<script language="JavaScript1.2">
+<!--
+//Trembling message script- © Dynamic Drive (www.dynamicdrive.com)
+//For full source code, 100's more DHTML scripts, and TOS,
+//visit http://www.dynamicdrive.com
+
+var ns6 = document.getElementById&&!document.all
+var ie=document.all
+
+var customcollect=new Array()
+var i = 0;
+var p = 0;
+
+function jiggleit(num)
+{
+	customcollect[num].style.fontSize=15;
+	customcollect[num].style.left=Math.sin(p) * 10;
+	p++;
+}
+
+function init_jiggle()
+{
+i = 0;
+if (ie){
+	while ( eval("document.all.jiggle"+i) != null)
+	{
+		customcollect[i]= eval("document.all.jiggle"+i)
+		i++
+	}
+}
+else if (ns6){
+	while (document.getElementById("jiggle"+i)!=null)
+	{
+		customcollect[i]= document.getElementById("jiggle"+i)
+		i++
+	}
+}
+
+if (customcollect.length==1)
+	setInterval("jiggleit(0)",80)
+else if (customcollect.length>1)
+for (y=0;y<customcollect.length;y++){
+	var tempvariable='setInterval("jiggleit('+y+')",'+'100)'
+	eval(tempvariable)
+}
+}
+
+-->
+
+</script>
+
+
+
+
+<title>Cartesian to Spherical Coordinates and vica versa - GameDev.Net Discussion Forums</title>
+
+
+<meta name="Keywords" content="game development, game programming, game jobs, video game jobs, games jobs, graphics programming, OpenGL, DirectX, Direct3D, AI, artificial intelligence, game design, game, gamedev, development, programming, c++, games, program, create, design, gouraud, shading, tutorial, art, gdnet">
+<meta name="Description" content="Gamedev.net is the leading resource for game developers, featuring daily news updates, over 1500 featured articles and tutorials, and the most active game development forums anywhere!"> 
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link rel="stylesheet" type="text/css" href="SphericalCoord.asp_tiedostot/theme.css">
+
+<link rel="stylesheet" type="text/css" href="SphericalCoord.asp_tiedostot/source.css">
+<!-- GAM -->
+<script type="text/javascript" src="SphericalCoord.asp_tiedostot/google_service.js"></script>
+<script type="text/javascript">
+  GS_googleAddAdSenseService("ca-pub-3167291168602081");
+  GS_googleEnableAllServices();
+</script><script src="SphericalCoord.asp_tiedostot/test_gam_domain.js"></script><script src="SphericalCoord.asp_tiedostot/google_ads.js"></script>
+
+<script type="text/javascript">
+  GA_googleAddSlot("ca-pub-3167291168602081", "Banner_Main");
+</script>
+<script type="text/javascript">
+  GA_googleFetchAds();
+</script>
+
+<!--RJF 20070106 - fix for source boxes under IE, as it seems to be lacking support for the max-height CSS2 property -->
+<!--[if IE]>
+<style>
+.source {background: #ffffff; border: solid 2px; font-family: Courier New; color: black; font-size: 9pt; width: 95%; height: 250px; overflow: auto; padding: 3px;}
+</style>
+<![endif]-->
+<script type="text/javascript" src="SphericalCoord.asp_tiedostot/prototype-1.js"></script>
+<script type="text/javascript" src="SphericalCoord.asp_tiedostot/clientscripts.js"></script>
+<script type="text/javascript" src="SphericalCoord.asp_tiedostot/menu.js"></script>
+</head><body>
+
+<div id="header"><!-- style="width: 800px">-->
+<!--<div class="hdrtoplinks">
+<a href="">advertise</a> | <a href="">write</a> | <a href="">about us</a>&nbsp;&nbsp;</span>
+</div>-->
+<table style="table-layout: fixed;" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr valign="top">
+		<td id="CM_Logo" rowspan="4"><a href="http://www.gamedev.net/"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" border="0" height="100%"></a></td>
+		<td id="CM_SponsoredBy" style="text-align: center; vertical-align: middle; width: 180px;">
+<!--			<a href="https://www.adobe.com/cfusion/tdrc/index.cfm?loc=en%5Fus&product=director&sdid=EUOYD" border="0"><img src="http://images.gamedev.net/PPBU_Q309_Di11.5_Gamedev_SiteBranding_ 180x60.jpg" border="0"></a>-->
+		</td>
+		<td id="CM_AdSpace">
+			<div id="CM_AdContainer">
+			<script type="text/javascript">
+			        GA_googleFillSlot("Banner_Main");
+			        </script><script src="SphericalCoord.asp_tiedostot/ads"></script>
+<!-- Begin -  Site: GameDev.net Zone: GameDev.net Main 468x60 -->
+<script language="javascript" type="text/javascript">
+<!--
+var browName = navigator.appName;
+var browDateTime = (new Date()).getTime();
+var browVersion = parseInt(navigator.appVersion);
+var ua=navigator.userAgent.toLowerCase();
+var adcode='';
+if (browName=='Netscape'){
+     if (browVersion>=5) 
+          { document.write('<ifr'+'ame src="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Get&amp;Browser=NETSCAPE6&amp;SiteID=1&amp;X=' + browDateTime + '" width=468 height=60 Marginwidth=0 Marginheight=0 Hspace=0 Vspace=0 Frameborder=0 Scrolling=No></ifr'+'ame>'); }
+     else if ((browVersion>=4)&&(ua.indexOf("mac")==-1))
+          { document.write('<s'+'cript src="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Get&amp;Browser=NETSCAPE4&amp;SiteID=1">');
+          document.write('</'+'scr'+'ipt>');
+          document.write(adcode); }
+     else if (browVersion>=3) 
+          { document.write('<a href="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=' + browDateTime + '&RandomNumber=' + browDateTime + '" target="_blank"><img src="http://www.gamedev.net/banman/a.aspx?ZoneID=1&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&PageID=' + browDateTime + '&RandomNumber=' + browDateTime + '" width="468" height="60" border="0" alt=""></a>'); } }
+else
+     { document.write('<ifr'+'ame src="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Get&amp;SiteID=1&amp;X=' + browDateTime + '" width=468 height=60 Marginwidth=0 Marginheight=0 Hspace=0 Vspace=0 Frameborder=0 Scrolling=No></ifr'+'ame>'); }
+// --> 
+</script><iframe src="SphericalCoord.asp_tiedostot/a.htm" marginwidth="0" marginheight="0" hspace="0" vspace="0" width="468" frameborder="0" height="60" scrolling="No"></iframe>
+<noscript> <a
+href="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=71458"
+target="_blank"> <img
+src="http://www.gamedev.net/banman/a.aspx?ZoneID=2&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&amp;PageID=71458"
+width="468" height="60" border="0" alt=""></a>
+</noscript>
+<!-- End -  Site: GameDev.net Zone: GameDev.net Main 468x60 -->
+			</div>
+		</td>
+		<td id="CM_AdSpaceTrailer"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+	</tr>
+	<tr>
+		<td id="CM_MidSpace" colspan="2"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+		<td id="CM_MidSpaceTrailer"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+	</tr>
+	<tr>
+		<td id="CM_NavSpace" colspan="2">
+			<ul id="lw_menu">
+				<li style="width: 0pt;">&nbsp;</li>
+				<li id="l1f">Features
+					<ul>
+						<li id="l2fa"><img src="SphericalCoord.asp_tiedostot/jobs.gif" align="middle"> <a href="http://www.gamedev.net/gamejobs/">Game Jobs</a></li>
+						<li id="l2fb"><img src="SphericalCoord.asp_tiedostot/prodreview.gif" align="middle"> <a href="http://www.gamedev.net/features/reviews/">Product Reviews</a></li>
+						<li id="l2fc"><img src="SphericalCoord.asp_tiedostot/users.gif" align="middle"> <a href="http://www.gamedev.net/community/contest/">Contests</a></li>
+			
+						<li id="l2fd"><img src="SphericalCoord.asp_tiedostot/gds.gif" align="middle"> <a href="http://www.gamedev.net/community/gds/">GD Showcase</a></li>
+						<li id="l2fe"><img src="SphericalCoord.asp_tiedostot/newsletter.gif" align="middle"> <a href="http://www.gamedev.net/info/newsletter.asp">Newsletter</a></li>
+					</ul>
+				</li>
+				<li id="l1r">Resources
+					<ul>
+						<li id="l2ra"><img src="SphericalCoord.asp_tiedostot/articles.gif" align="middle"> <a href="http://www.gamedev.net/reference/">Articles &amp; Resources</a></li>
+			
+						<li id="l2rb"><img src="SphericalCoord.asp_tiedostot/columns.gif" align="middle"> <a href="http://www.gamedev.net/columns/">Columns</a></li>
+						<li id="l2rc"><img src="SphericalCoord.asp_tiedostot/books.gif" align="middle"> <a href="http://www.gamedev.net/columns/books/">Books</a></li>
+						<li id="l2rd"><img src="SphericalCoord.asp_tiedostot/beginners.gif" align="middle"> <a href="http://www.gamedev.net/reference/start_here/">For Beginners</a></li>
+						<li id="l2re"><img src="SphericalCoord.asp_tiedostot/gamedict.gif" align="middle"> <a href="http://www.gamedev.net/dict/">Game Dictionary</a></li>
+						<li id="l2rf"><img src="SphericalCoord.asp_tiedostot/newsletter.gif" align="middle"><a href="http://wiki.gamedev.net/">Wiki</a></li>
+					</ul>
+			
+				</li>
+				<li id="l1c">Community
+					<ul>
+						<li id="l2ca"><img src="SphericalCoord.asp_tiedostot/chat.gif" align="middle"> <a href="http://www.gamedev.net/community/forums/">Forums</a></li>
+						<li id="l2cb"><img src="SphericalCoord.asp_tiedostot/users.gif" align="middle"> <a href="http://www.gamedev.net/community/gathering/">GD Gathering</a></li>
+						<li id="l2cc"><img src="SphericalCoord.asp_tiedostot/ircchat.gif" align="middle"> <a href="http://www.gamedev.net/community/chat/">Online Chat</a></li>
+						<li id="l2cd"><img src="SphericalCoord.asp_tiedostot/books.gif" align="middle"><a href="http://www.gamedev.net/community/forums/?cid=17,11&amp;nofavs=t">Workshops</a></li>
+					</ul>
+				</li>
+				<li id="l1m">Members
+					<ul>
+						<li id="l2ma"><img src="SphericalCoord.asp_tiedostot/controlpanel.gif" align="middle"> <a href="http://www.gamedev.net/community/forums/cpanel.asp">Control Panel</a></li>
+						<li id="l2mb"><img src="SphericalCoord.asp_tiedostot/new1-08.gif" align="middle"> <a href="http://www.gamedev.net/subscribe/">GDNet+ Signups</a></li>
+						<li id="l2mc"><img src="SphericalCoord.asp_tiedostot/journals.gif" align="middle"> <a href="http://www.gamedev.net/community/journals/">Developer Journals</a></li>
+						<li id="l2md"><img src="SphericalCoord.asp_tiedostot/membersearch.gif" align="middle"> <a href="http://www.gamedev.net/profile/">Member Search</a></li>
+					</ul>
+				</li>
+			</ul>
+		
+		</td>
+		<td id="CM_NavSpaceTrailer"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+	</tr>
+	<tr>
+		<td id="CM_ExOptA" colspan="2"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+		<td id="CM_ExOptB"><img src="SphericalCoord.asp_tiedostot/clear.gif" alt="" width="100%" height="100%"></td>
+	</tr>
+</tbody></table>
+</div>
+
+<script language="Javascript">
+	startList();
+</script>
+
+<table class="contextNav" width="95%" align="center" border="0">
+	<tbody><tr>
+		<td width="90%" valign="bottom">
+			<div class="hdrbreadcrumbs">
+			<strong><a href="http://www.gamedev.net/">Home</a> » <a href="http://www.gamedev.net/community">Community</a> » <a href="http://www.gamedev.net/community/forums/">Forums</a> » <a href="http://www.gamedev.net/community/forums/forum.asp?forum_id=20">Math and Physics</a> » <strong>Cartesian to Spherical Coordinates and vica versa</strong></strong>
+			</div>
+		</td>
+		<td class="hdrSearchBox" width="10%" nowrap="nowrap" valign="middle">
+			<form style="margin: 0pt; padding: 0pt;" action="/community/forums/search.asp">&nbsp;&nbsp;<strong>search:</strong>&nbsp;<input size="20" name="terms" class="searchinput" type="text">&nbsp;&nbsp;<input src="SphericalCoord.asp_tiedostot/hdr3srchbtn.gif" class="searchbutton" type="image"><span class="mediumfont"><input name="area" value="site" type="hidden">
+		</span></form></td>
+	</tr>
+</tbody></table>
+
+<table class="contextNav" width="95%" align="center" border="0">
+	<tbody><tr>
+		<td align="center" valign="bottom"><script language="javascript" type="text/javascript">
+<!--
+var browName = navigator.appName;
+var SiteID = 1;
+var ZoneID = 19;
+var browDateTime = (new Date()).getTime();
+if (browName=='Netscape')
+{
+document.write('<s'+'cript lang' + 'uage="jav' + 'ascript" src="http://www.gamedev.net/banman/a.aspx?ZoneID=' + ZoneID + '&amp;Task=Get&amp;IFR=False&amp;Browser=NETSCAPE4&amp;PageID=79488&amp;SiteID=' + SiteID + '&amp;Random=' + browDateTime + '">'); document.write('</'+'scr'+'ipt>');
+}
+if (browName!='Netscape')
+{
+document.write('<s'+'cript lang' + 'uage="jav' + 'ascript" src="http://www.gamedev.net/banman/a.aspx?ZoneID=' + ZoneID + '&amp;Task=Get&amp;IFR=False&amp;PageID=79488&amp;SiteID=' + SiteID + '&amp;Random=' + browDateTime + '">'); document.write('</'+'scr'+'ipt>');
+}
+// --> 
+</script><script language="javascript" src="SphericalCoord.asp_tiedostot/a.js"></script><b><a href="http://www.gamedev.net/banman/a.aspx?Task=Click&amp;ZoneID=19&amp;CampaignID=697&amp;AdvertiserID=59&amp;BannerID=756&amp;SiteID=1&amp;RandomNumber=215452605&amp;Keywords=">GDC China Returns with the 1st IGF China, Video Games Live Shanghai, Over 60 speakers, and More than 50 sessions. Register now!</a></b>
+<noscript> <a
+href="http://www.gamedev.net/banman/a.aspx?ZoneID=19&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=79488"
+target="_blank"> <img
+src="http://www.gamedev.net/banman/a.aspx?ZoneID=19&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&amp;PageID=79488"
+width="0" height="0" border="0" alt=""></a>
+</noscript>
+</td>
+	</tr>
+</tbody></table>
+
+<div align="center">
+<table width="95%" border="0" cellpadding="2" cellspacing="0">
+  <tbody><tr valign="top">
+    <td width="120">
+      <!-- Begin -  Site: GameDev.net Zone: Mini: GameDev.net 120x60 -->
+<script language="javascript" type="text/javascript">
+  <!--
+var browName = navigator.appName;
+var browDateTime = (new Date()).getTime();
+var browVersion = parseInt(navigator.appVersion);
+var ua=navigator.userAgent.toLowerCase();
+var adcode='';
+if (browName=='Netscape'){
+     if (browVersion>=5) 
+          { document.write('<ifr'+'ame src="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Get&amp;Browser=NETSCAPE6&amp;SiteID=1&amp;X=' + browDateTime + '" width=120 height=60 Marginwidth=0 Marginheight=0 Hspace=0 Vspace=0 Frameborder=0 Scrolling=No></ifr'+'ame>'); }
+     else if ((browVersion>=4)&&(ua.indexOf("mac")==-1))
+          { document.write('<s'+'cript src="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Get&amp;Browser=NETSCAPE4&amp;SiteID=1">');
+          document.write('</'+'scr'+'ipt>');
+          document.write(adcode); }
+     else if (browVersion>=3) 
+          { document.write('<a href="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=' + browDateTime + '&RandomNumber=' + browDateTime + '" target="_blank"><img src="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&PageID=' + browDateTime + '&RandomNumber=' + browDateTime + '" width="120" height="60" border="0" alt=""></a>'); } }
+else
+     { document.write('<ifr'+'ame src="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Get&amp;SiteID=1&amp;X=' + browDateTime + '" width=120 height=60 Marginwidth=0 Marginheight=0 Hspace=0 Vspace=0 Frameborder=0 Scrolling=No></ifr'+'ame>'); }
+// -->
+</script><iframe src="SphericalCoord.asp_tiedostot/a_002.htm" marginwidth="0" marginheight="0" hspace="0" vspace="0" width="120" frameborder="0" height="60" scrolling="No"></iframe>
+<noscript> <a
+href="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Click&amp;Mode=HTML&amp;SiteID=1&amp;PageID=92950"
+target="_blank"> <img
+src="http://www.gamedev.net/banman/a.aspx?ZoneID=23&amp;Task=Get&amp;Mode=HTML&amp;SiteID=1&amp;PageID=92950"
+width="120" height="60" border="0" alt=""> </a>
+</noscript>
+<!-- End -  Site: GameDev.net Zone: Mini: GameDev.net 120x60 -->
+    </td>
+    <td align="right">
+      <table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td><a href="http://www.gamedev.net/community/forums/logincheck.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_login" alt="[Login]" border="0"></a> </td>
+<td><a href="http://www.gamedev.net/community/forums/cpanel.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_panel" alt="[Control Panel]" title="View your control panel." border="0"></a></td>
+
+<td><a href="http://www.gamedev.net/community/forums/register.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_register" alt="[Register]" title="Registration is free!" border="0"></a></td>
+
+<td><a href="http://www.gamedev.net/community/forums/track.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_bookmarks" alt="[Bookmarks]" title="View bookmarks." border="0"></a></td>
+<td><a href="http://www.gamedev.net/community/forums/activeusers.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_whosonline" alt="[Who's Online]" title="View who is currently online" border="0"></a></td>
+<td><a href="http://www.gamedev.net/community/forums/activetopics.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_activetopics" alt="[Active Topics]" title="View the most recently active topics" border="0"></a></td>
+<td><a href="http://www.gamedev.net/community/forums/activestats.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_stats" alt="[Stats]" title="View our forum stats" border="0"></a></td>
+<td><a href="http://www.gamedev.net/community/forums/faq.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_faq" alt="[FAQ]" title="Frequently Asked Questions" border="0"></a></td>
+<td><a href="http://www.gamedev.net/community/forums/search.asp"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_search" alt="[Search]" title="Perform a search by keyword, date, or name." border="0"></a></td>
+
+</tr>
+
+<tr>
+<td colspan="8" class="smallfont" align="right">
+
+<script language="Javascript">init_jiggle();</script>
+</td>
+</tr>
+</tbody></table>
+
+    </td>
+  </tr>
+</tbody></table>
+<table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0">
+<tbody><tr valign="bottom">
+<td width="99%" align="left" nowrap="nowrap"><span class="smallfont"><br><b><a href="http://www.gamedev.net/community/forums/favorites.asp?mode=addforum&amp;forum_id=20&amp;gforum_id=0" title="Add Forum to Favorites">Add Forum to Favorites</a></b>&nbsp;|&nbsp;
+<a href="http://www.gamedev.net/community/forums/post_page.asp?page=http://www.gamedev.net/community/forums/topic.asp?topic%5Fid%3D309804"><b>Send Topic To a Friend</b></a>&nbsp;|&nbsp;<a href="http://www.gamedev.net/community/forums/showfaq.asp?forum_id=20"><b>View Forum FAQ</b></a> | <a href="http://www.gamedev.net/community/forums/track.asp?topic_id=309804"><b>Track this topic</b></a></span><br><span class="smallfont"></span></td>
+<td width="1%" align="center" nowrap="nowrap"><span class="smallfont"><br><a href="http://www.gamedev.net/community/forums/goto.asp?topic_id=309804&amp;forum_id=20&amp;gforum_id=0&amp;move=prev"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_prevarrow" border="0">&nbsp;<u>Last Thread</u></a>&nbsp;<a href="http://www.gamedev.net/community/forums/goto.asp?topic_id=309804&amp;forum_id=20&amp;gforum_id=0&amp;move=next"><u>Next Thread</u>&nbsp;<img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_nextarrow" border="0"></a></span></td>
+</tr>
+</tbody></table>
+<table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0" cellpadding="2" cellspacing="0">
+<tbody><tr id="threadTitleHeader" valign="middle">
+<td class="head" width="96%">&nbsp;<span class="regularfont"><b>Cartesian to Spherical Coordinates and vica versa</b></span><br></td>
+<td class="head">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr><td><a href="http://www.gamedev.net/community/forums/post.asp?forum_id=20&amp;gforum_id=0&amp;method=post"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_newthread" alt="Post New Topic" border="0"></a>&nbsp;</td>
+<td><a href="http://www.gamedev.net/community/forums/post.asp?forum_id=20&amp;method=reply&amp;topic_id=309804"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_postreply" alt="Post Reply" border="0"></a>&nbsp;</td>
+</tr></tbody></table>
+</td>
+</tr>
+</tbody></table><a name="-1" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"></a><table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0" cellpadding="2" cellspacing="0">
+<tbody><tr valign="middle">
+<td rowspan="2" class="post_dateline" width="54" align="center" height="50" nowrap="nowrap"><img src="SphericalCoord.asp_tiedostot/default.png" border="0"></td>
+<td class="post_author" width="100%" valign="middle"><a href="http://www.gamedev.net/community/forums/post.asp?method=reply&amp;topic_id=309804&amp;Quote=2"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_quote" alt="Reply Quoting This Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/post.asp?method=editTopic&amp;topic_id=309804"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_edit" alt="Edit Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=63668" target="_new"><span class="regularfont">&nbsp;<b>justinrwalsh</b></span>&nbsp;<span class="regularfont">&nbsp;<b></b></span></a><span class="smallfont">&nbsp;&nbsp;<b>Member since:</b>&nbsp;7/17/2004&nbsp;&nbsp;<b>From:</b>&nbsp;Tempe, AZ, United States</span></td>
+</tr>
+<tr>
+<td class="post_dateline" colspan="1" width="100%">
+<table align="right" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><span class="smallfont"></span></td></tr></tbody></table><img src="SphericalCoord.asp_tiedostot/icon1.gif" alt="" align="left" border="0">&nbsp;Posted - 3/28/2005 2:24:12 PM</td>
+</tr>
+<tr>
+<td class="post_body" colspan="2">I have a post running in the openGL
+forum, but i think maybe the math forum is a better place to try and
+get some questions answered.<br>
+<br>
+<br>
+I have a point in cartesian coordinates...<br>
+<br>
+( 0.0, 0.0, 5.0 ) x, y, z<br>
+<br>
+I need to convert it to Spherical Cordinates, then be able to rotate
+the point in the XY plane around the Z axis, Given an angle to rotate
+about.<br>
+<br>
+Then convert back to Cartesian coordinates again.<br>
+<br>
+Here is what i'm doing and it seems to be wrong.<br>
+<br>
+<br>
+cX = 0.0<br>
+cY = 0.0<br>
+cZ = 5.0<br>
+<br>
+i have a variable for theta, phi, and radius<br>
+this is my calculation to convert to spherical Cordinates...<br>
+<br>
+radius = sqrt(cX^2 + cY^2 + cZ^2)<br>
+theta = acos(cX / radius)<br>
+phi = acos( cX / radius * sin(theta))<br>
+<br>
+then i convert theta and phi to degrees<br>
+<br>
+then i convert back to Cartesian, and it doens't even get me close to the coordinates i passed in, using this<br>
+<br>
+cX = radius * sin(phi) * cos(theta)<br>
+cY = radius * sin(phi) * sin(theta)<br>
+cZ = radius * cos(phi)<br>
+<br>
+i without the first part working i can't figure out how to translate the point in spherical coordinates.<br>
+<br>
+Im stuck, and do not understand much about Cartesian to spherical
+coordinate systems. Any light someon can shed on what im doing right
+will help great amounts.<br><br><x x=""></x><x x=""></x></td>
+</tr>
+<tr>
+<td class="post_trailer" colspan="2" width="100%">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="middle">
+<td nowrap="nowrap">&nbsp;<span class="smallfont">User Rating:  <strong>1041</strong>&nbsp;&nbsp;
+							| &nbsp;<a href="http://www.gamedev.net/community/forums/moderateuser.asp?userid=63668">Rate This User</a></span>&nbsp;</td>
+<td width="90%" align="left"><a href="http://www.gamedev.net/community/forums/pmcompose.asp?sendto=63668"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_pm" alt="Send Private Message" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=63668"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_profile" alt="View Profile" border="0"></a></td>
+<td align="right" nowrap="nowrap"><span class="smallfont"><a href="http://www.gamedev.net/community/forums/flagpost.asp?topic_id=309804">Report this Post to a Moderator</a>&nbsp;| <a href="http://www.gamedev.net/community/forums/topic.asp?topic_id=309804">Link</a></span></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<div class="post_separator" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"><br></div><a name="1977967" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"></a><table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0" cellpadding="2" cellspacing="0">
+<tbody><tr valign="middle">
+<td rowspan="2" class="post_dateline" width="54" align="center" height="50" nowrap="nowrap"><img src="SphericalCoord.asp_tiedostot/default.png" border="0"></td>
+<td class="post_author" width="100%" valign="middle"><a href="http://www.gamedev.net/community/forums/post.asp?method=reply&amp;topic_id=309804&amp;Quote=1&amp;reply_id=1977967"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_quote" alt="Reply Quoting This Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/post.asp?method=editreply&amp;reply_id=1977967&amp;topic_id=309804"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_edit" alt="Edit Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=5576" target="_new"><span class="regularfont">&nbsp;<b>grhodes_at_work</b></span>&nbsp;<span class="moderator">&nbsp;<b>Moderator - Math and Physics</b></span></a><span class="smallfont">&nbsp;&nbsp;<b>Member since:</b>&nbsp;5/31/2000&nbsp;&nbsp;<b>From:</b>&nbsp;Raleigh, NC, United States</span></td>
+</tr>
+<tr>
+<td class="post_dateline" colspan="1" width="100%">
+<table align="right" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><span class="smallfont"></span></td></tr></tbody></table><img src="SphericalCoord.asp_tiedostot/icon400.gif" alt="" align="left" border="0">&nbsp;Posted - 3/28/2005 5:41:37 PM</td>
+</tr>
+<tr>
+<td class="post_body" colspan="2">You don't actually have to convert to
+spherical coordinates to rotate about the Z axis. You can do it with a
+rotation matrix. But, here is something to help with the approach
+you've chosen.<br>
+<br>
+The other immediate thing I'll say is that your example point, (0, 0,
+5.0), when rotated about the Z axis, becomes.......(0, 0, 5.0)! The
+same point no matter what your angle of rotation about Z!!!!<br>
+<br>
+Your conversion to spherical coordinates is partially wrong. I think you knew this.<br>
+<br>
+Your formula for radius is correct.<br>
+<br>
+Your formula for theta is <b>ONE</b> of several valid choices for
+a spherical coordinate representation; HOWEVER, your choice is quite
+inconvenient for rotating about Z. Really, it was the wrong choice for
+rotating about Z. Here's another way. We'll choose theta to be the
+angle of the projection into the xy plane (the azimuth), and phi is the
+angle measured from the xy plane to the line segment from (0,0) to (cX,
+cY, cZ). So, we can first calculate phi:<br>
+<br>
+phi = asin(cZ / radius)<br>
+<br>
+Note that it is similar to your theta equation. It could just as easily be acos, but I want phi to represent the angle from the <b>xy plane</b> to the line segment. If I used acos, phi would be measured from the <b>z axis</b> to the line segment. Subtle difference. A personal choice.<br>
+<br>
+Now we can calculate theta. Noting that radius * cos(phi) = the length
+of the projection of the segment into the xy plane, we can easily
+calculate theta:<br>
+<br>
+theta = acos(cX / (radius * cos(phi)))<br>
+<br>
+If cos(phi) is zero.....then there is no single value of theta. This is
+a discontinuity that is well known with the spherical coordinate
+representation.<br>
+<br>
+Note that my theta is real similar to your phi calculation---though
+your phi calculation had an error and was incorrect even for your
+chosen computation of theta (you should not have been using cX to
+compute phi - either cY or cZ could be used to give a correct phi given
+your choice of theta, but not cX).<br>
+<br>
+You basically had the right idea...you just don't quite understand your
+projections yet! The biggest actual error was in your calculation of
+phi. The other error was in your choice of theta and phi. You had not
+set yourself up to conveniently do rotation about Z in the spherical
+coordinate system.<br>
+<br>
+So, from here you mentioned that you converted the angles to degrees.
+That is fine if you just want to add, say 5 "degrees" to theta to do
+the rotation about the Z axis. You could also convert 5 "degrees" to
+radians and add the corresponding radians value to theta.<br>
+<br>
+The thing I want you to recognize is that you <b>must</b> pass in
+radians to the sin() and cos() calls later on. If you pass in degrees
+values to sin() and cos(), you're screwed! Let supposed that you do <b>NOT</b> convert to degrees. I consider this the safer choice. So, to do your rotation, do this:<br>
+<br>
+theta += angle of rotation (in radians)<br>
+<br>
+Now you can convert back to Cartesian as below, with phi and theta in radians:<br>
+<br>
+cX = radius * cos(phi) * cos(theta)<br>
+cY = radius * cos(phi) * sin(theta)<br>
+cZ = radius * sin(phi) = should be identical to starting cZ value<br>
+<br>
+Hope this helps!<br>
+<br>
+Graham Rhodes<br>
+Principal Scientist<br>
+Applied Research Associates, Inc.<br><br><x x=""></x><x x=""></x></td>
+</tr>
+<tr>
+<td class="post_trailer" colspan="2" width="100%">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="middle">
+<td nowrap="nowrap">&nbsp;<span class="smallfont">User Rating:  <strong>1787</strong>&nbsp;&nbsp;
+							| &nbsp;<a href="http://www.gamedev.net/community/forums/moderateuser.asp?userid=5576">Rate This User</a></span>&nbsp;</td>
+<td width="90%" align="left"><a href="http://www.gamedev.net/community/forums/pmcompose.asp?sendto=5576"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_pm" alt="Send Private Message" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=5576"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_profile" alt="View Profile" border="0"></a><a href="http://www.gamedev.net/community/forums/mod/journal/journal.asp?userid=5576"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_journal" alt="View Journal" border="0"></a></td>
+<td align="right" nowrap="nowrap"><span class="smallfont"><a href="http://www.gamedev.net/community/forums/flagpost.asp?reply_id=1977967">Report this Post to a Moderator</a>&nbsp;| <a href="http://www.gamedev.net/community/forums/viewreply.asp?ID=1977967">Link</a></span></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<div class="post_separator" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"><br></div><a name="1978166" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"></a><table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0" cellpadding="2" cellspacing="0">
+<tbody><tr valign="middle">
+<td rowspan="2" class="post_dateline" width="54" align="center" height="50" nowrap="nowrap"><img src="SphericalCoord.asp_tiedostot/default.png" border="0"></td>
+<td class="post_author" width="100%" valign="middle"><a href="http://www.gamedev.net/community/forums/post.asp?method=reply&amp;topic_id=309804&amp;Quote=1&amp;reply_id=1978166"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_quote" alt="Reply Quoting This Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/post.asp?method=editreply&amp;reply_id=1978166&amp;topic_id=309804"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_edit" alt="Edit Message" align="right" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=63668" target="_new"><span class="regularfont">&nbsp;<b>justinrwalsh</b></span>&nbsp;<span class="regularfont">&nbsp;<b></b></span></a><span class="smallfont">&nbsp;&nbsp;<b>Member since:</b>&nbsp;7/17/2004&nbsp;&nbsp;<b>From:</b>&nbsp;Tempe, AZ, United States</span></td>
+</tr>
+<tr>
+<td class="post_dateline" colspan="1" width="100%">
+<table align="right" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><span class="smallfont"></span></td></tr></tbody></table><img src="SphericalCoord.asp_tiedostot/icon1.gif" alt="" align="left" border="0">&nbsp;Posted - 3/28/2005 7:55:47 PM</td>
+</tr>
+<tr>
+<td class="post_body" colspan="2">Thank you allmighty math master!<br>
+<br>
+This has been plagueing me for a few days now.<br>
+So i finally got the rotations right.<br>
+Now I just need to handle what to do with the up vector and look vector on the backside of the circle to get the desired effect.<br>
+<br>
+<br>
+<br>
+again thank you, you have been most helpful and explained the situation very well.<br><br><x x=""></x><x x=""></x></td>
+</tr>
+<tr>
+<td class="post_trailer" colspan="2" width="100%">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody><tr valign="middle">
+<td nowrap="nowrap">&nbsp;<span class="smallfont">User Rating:  <strong>1041</strong>&nbsp;&nbsp;
+							| &nbsp;<a href="http://www.gamedev.net/community/forums/moderateuser.asp?userid=63668">Rate This User</a></span>&nbsp;</td>
+<td width="90%" align="left"><a href="http://www.gamedev.net/community/forums/pmcompose.asp?sendto=63668"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_pm" alt="Send Private Message" border="0"></a><a href="http://www.gamedev.net/community/forums/profile.asp?mode=display&amp;id=63668"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_profile" alt="View Profile" border="0"></a></td>
+<td align="right" nowrap="nowrap"><span class="smallfont"><a href="http://www.gamedev.net/community/forums/flagpost.asp?reply_id=1978166">Report this Post to a Moderator</a>&nbsp;| <a href="http://www.gamedev.net/community/forums/viewreply.asp?ID=1978166">Link</a></span></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<div class="post_separator" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/"><br></div>
+<table xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xasp="urn:asp-objects" xmlns:xtend="http://www.gamedev.net/" width="95%" border="0">
+<tbody><tr valign="top">
+<td width="50%" align="left" valign="top"><span class="smallfont">All times are ET (US)</span><br><br><a href="http://www.gamedev.net/community/forums/post.asp?method=reply&amp;topic_id=309804"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_postreply" alt="Post Reply" border="0"></a></td>
+<td width="60%" align="right" nowrap="nowrap" valign="top"><span class="smallfont"><a href="http://www.gamedev.net/community/forums/goto.asp?topic_id=309804&amp;forum_id=20&amp;gforum_id=0&amp;move=prev"><img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_prevarrow" border="0">&nbsp;<u>Last Thread</u></a>&nbsp;<a href="http://www.gamedev.net/community/forums/goto.asp?topic_id=309804&amp;forum_id=20&amp;gforum_id=0&amp;move=next"><u>Next Thread</u>&nbsp;<img src="SphericalCoord.asp_tiedostot/clear.gif" class="img_post_nextarrow" border="0"></a></span><br></td>
+</tr>
+</tbody></table>
+
+
+<center>
+<table width="95%" border="0">
+  <tbody><tr valign="top">
+    <td class="smallfont" width="50%" align="left" valign="top">
+
+<table border="0" cellpadding="4" cellspacing="0">
+<tbody><tr><td>
+<span class="smallfont">
+<b>Forum Rules:</b>
+</span>
+</td></tr>
+<tr><td class="forumrules">
+You <b>may not</b> post new threads<br>
+You <b>may not</b> post replies<br>
+You <b>may not</b> edit your posts<br>
+You <b>may not</b> use HTML in your posts<br>
+</td>
+</tr>
+</tbody></table>
+
+    </td>
+    <td width="60%" align="right" nowrap="nowrap" valign="top">
+<form action="goto.asp" method="GET">
+<table border="0">
+<tbody><tr><td>
+<font face="" size="2">
+<b>Jump To:</b>
+<select name="redir" size="1">
+<option value="default.asp" selected="selected">Specific Forum</option>
+		<option value="default.asp"></option>
+
+		<option value="default.asp">Active Workshops</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D83">C# Workshop (old forum)</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">    The Technical Side</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D31">For Beginners</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D34">Software Engineering</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D39">Consoles, PDAs, and Cell Phones</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D41">Scripting Languages and Game Mods</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D61">Alternative Game Libraries</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D9">Artificial Intelligence</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D10">DirectX and XNA</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D11">Game Programming</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D12">Graphics Programming and Theory</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D13">Isometric Land</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D15">Multiplayer and Network Programming</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D20">Math and Physics</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D21">General Programming</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D25">OpenGL</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">  Community Interaction</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D2">Article Proposals and Requests</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D3">GDNet Lounge</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D4">GDNet Comments, Suggestions and Ideas</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D5">The Business and Law of Game Development</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D6">Your Announcements</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D8">Help Wanted</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D70">GD Gathering Forums</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">   The Creative Side</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D17">Game Design</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D18">Visual Arts</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D19">Music and Sound</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D32">Writing for Games</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp"> Special Interest</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D14">Everything Unix</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D24">Java Development</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D58">.NET</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D59">Web Development</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D82">Hardware Discussion</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D68">Eating fondue while sipping Gato Negro and listening to Vaya Con Dios</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">Affiliates</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D16">Power Render API</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D27">NeHe Productions</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D30">turbo</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D36">Real Soon Now</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D40">NeXe</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D49">AngelCode</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D67">Gamedev: The comic / Gamedev: Humour Portal</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">Interactive Discussion</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D62">Image of the Day</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D71">GDNet Contests</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D74">Nehe News</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D81">Developer Journals v2</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D35">Article Feedback</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D53">Developer Journals</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D52">GDS</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D55">News Discussion</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D56">GDS News</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D57">Book Discussion</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D80">4E5 Entries</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D100">4E6 Entries</option>
+
+		<option value="default.asp">               </option>
+
+		<option value="default.asp">Completed Workshops</option>
+
+		<option value="default.asp">--------------------------</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D76">CPP Workshop</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D84">C# Workshop</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D78">Freehand Drawing Workshop</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D33">Hands-On Interactive Game Development</option>
+
+		<option value="goto.asp?redir=forum%2Easp%3Fforum%5Fid%3D79">SICP Workshop</option>
+
+		<option value="default.asp">               </option>
+
+</select>
+<input value="Go" type="Submit">
+</font>
+</td></tr></tbody></table>
+</form>
+
+
+<form action="modpost.asp" name="modpost" method="get">
+<span class="smallfont"><b>Administrative Options:</b><br>
+<input name="topic_id" value="309804" type="hidden">
+<select name="method" onchange="document.modpost.submit();" class="smallfont">
+<option value="showintro" selected="selected">--- Topic Options ---
+</option><option value="closetopic">Open / Close Topic
+</option><option value="movetopic">Move Topic
+</option><option value="deletetopic">Delete Topic
+</option><option value="stick">Stick / Unstick Topic
+</option></select>
+</span>
+    </form></td>
+	
+  </tr>
+</tbody></table>
+</center>
+
+	</div><p>
+
+</p><p class="smallfont" align="center">               
+</p></body></html>

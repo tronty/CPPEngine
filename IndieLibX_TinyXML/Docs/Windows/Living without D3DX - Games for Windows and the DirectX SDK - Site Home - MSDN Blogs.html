@@ -1,0 +1,1637 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta name="robots" content="index,follow">
+<meta name="keywords" content="direct3d, dxsdk">
+<meta name="GENERATOR" content="Telligent Evolution Platform Developer Build (Build: 5.6.50428.7875)">
+<link rel="pingback" href="http://blogs.msdn.com/b/chuckw/pingback.aspx">
+<link href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/7632fe1dd91290a46b3a118f9478cf1b-27cae0dd5641775697cb89e9a85.css" rel="Stylesheet" type="text/css"><link rel="alternate" type="application/rss+xml" title="Site Home (RSS 2.0)" href="http://blogs.msdn.com/rss.aspx">
+<link rel="alternate" type="application/rss+xml" title="Chuck Walbourn - MSFT's Comments (RSS 2.0)" href="http://blogs.msdn.com/members/walbourn/comments/rss.aspx">
+<link rel="alternate" type="application/rss+xml" title="Chuck Walbourn - MSFT's Activities (RSS 2.0)" href="http://blogs.msdn.com/members/walbourn/activities/rss.aspx">
+<link rel="alternate" type="application/rss+xml" title="Activities of People Chuck Walbourn - MSFT Follows (RSS 2.0)" href="http://blogs.msdn.com/members/walbourn/activities/followersrss.aspx">
+<link rel="alternate" type="application/rss+xml" title="Chuck Walbourn - MSFT's Groups Activities (RSS 2.0)" href="http://blogs.msdn.com/members/walbourn/activities/groupsrss.aspx">
+<link rel="alternate" type="application/rss+xml" title="Games for Windows and the DirectX SDK (RSS 2.0)" href="http://blogs.msdn.com/b/chuckw/rss.aspx">
+<link rel="alternate" type="application/atom+xml" title="Games for Windows and the DirectX SDK (Atom 1.0)" href="http://blogs.msdn.com/b/chuckw/atom.aspx">
+<link rel="alternate" type="application/rss+xml" title="Games for Windows and the DirectX SDK - All Comments (RSS 2.0)" href="http://blogs.msdn.com/b/chuckw/rsscomments.aspx">
+<link rel="alternate" type="application/rss+xml" title="Living without D3DX - Comments for this post (RSS 2.0)" href="http://blogs.msdn.com/b/chuckw/rsscomments.aspx?WeblogPostID=10443145">
+
+                    
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+          <link rel="shortcut icon" type="image/ico" href="http://blogs.msdn.com/themes/MSDN2/favicon.ico">
+          <!--
+            Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx.
+          -->
+          <link href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/6e455ee01481483d5d047db51a775dad-ffc9f7e1f0412800af51bef62a8.css" rel="Stylesheet" type="text/css">
+                            
+          <link type="text/css" rel="stylesheet" href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/DynamicStyle.css" media="screen,print">
+          <link type="text/css" rel="stylesheet" href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/DynamicStyle.asc" media="screen,print">
+        
+          <!--[if lte IE 6]>
+              <link type="text/css" rel="stylesheet" href="/themes/MSDN2/css/ie6.css" media="screen,print" />
+          <![endif]-->
+                  <meta name="msvalidate.01" content="B717AD6FC29D3A844832AF011B5F9E4C">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blogs.msdn.com/b/chuckw/rsd.ashx">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" title="WLWManifest" href="http://blogs.msdn.com/b/chuckw/wlwmanifest.ashx">
+
+        <!--
+            Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx.
+          -->
+        
+    <title>
+	Living without D3DX - Games for Windows and the DirectX SDK - Site Home - MSDN Blogs
+</title><style type="text/css"></style><link type="text/css" rel="stylesheet" href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/UnifiedBaseballCard.css"><link type="text/css" rel="stylesheet" href="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/usercard.css"></head>
+	<body spellcheck="true">
+		<form name="aspnetForm" method="post" action="/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_answer" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_answer" value="11" type="hidden">
+<input name="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_encrypted" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_encrypted" value="csRVXJHyKkVtzB/iMLLDe5od4Vz5FYIhizyKAeMPWSc=" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM5OTAxNDYyNWRkvI787cXLvh9XHlDReEjVejxzcZ4=" type="hidden">
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+	<input name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="84C00179" type="hidden">
+</div>
+			
+            
+                
+            
+            <div class="header-fragments-header"></div>
+<div class="header-fragments"><div class="header-fragment-outer top-bar msdn-header-fragment-outer msdn-top-bar"><div class="header-fragment-inner top-bar msdn-header-fragment-inner msdn-top-bar"><div class="header-fragment welcome-message" id="header-fragment-1402503690">
+
+
+<!-- always render -->
+</div><div class="header-fragment login-logout" id="header-fragment-1402503691">
+
+
+
+
+
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+
+            <li class="navigation-item">
+                <span id="ctl00_header_fragment_1402503691__b2ed85_ctl00_ctl02_ctl05_WLIDLoginButton1" class="internal-link live-id-button"><a href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1423174178&amp;rver=6.0.5286.0&amp;wp=MBI&amp;wreply=http:%2F%2Fblogs.msdn.com%2Fb%2Fchuckw%2Farchive%2F2013%2F08%2F21%2Fliving-without-d3dx.aspx&amp;lc=1033&amp;id=271611">Sign in</a></span>
+            </li>
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div><div class="header-fragment user-welcome-without-login" id="header-fragment-1402503692">
+
+ &nbsp;<!-- always render -->
+
+</div></div></div><div class="header-fragment blog-banner" id="header-fragment-1402503693">
+
+
+
+<div class="site-banner blog-banner">
+
+<h1 class="blog-banner-name"><a href="http://blogs.msdn.com/b/chuckw/">Games for Windows and the DirectX SDK</a></h1>
+
+</div>
+
+</div></div>
+<div class="header-fragments-footer"></div>
+			
+    <div class="content-fragment-page post" id="ctl00_content_ctl00_page"><div class="layout">
+<div class="layout-header"></div>
+<div class="layout-content content-left-sidebar-right" id="ctl00_content_ctl00_layout">
+<div class="layout-region right-sidebar" id="ctl00_content_ctl00_right-sidebar">
+<div class="layout-region-inner right-sidebar"><div class="content-fragment c-t-f-widget no-wrapper-with-spacing with-header" id="fragment-52310">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Translate This Page</div></div>
+<div class="content-fragment-content">
+
+
+     <!--
+         
+           localize text, such as translate this & powered by 
+           
+           
+            -->
+<div class="" id="MicrosoftTranslatorWidget" style="border: 2px solid rgb(51, 51, 51); direction: ltr; width: 275px; min-height: 83px; background-color: rgb(204, 204, 204); background-repeat: repeat-x; background-image: url(&quot;data:image/x-ms-bmp;base64,Qk2eAAAAAAAAADYAAAAoAAAAAQAAABoAAAABABgAAAAAAGgAAAAAAAAAAAAAAAAAAAAAAAAAgICA/3p6ev90dHT/bm5u/2hoaP9iYmL/XFxc/1ZWVv9QUFD/S0tL/0VFRf8/Pz//OTk5/4CAgP+FhYX/i4uL/5GRkf+Xl5f/nZ2d/6Ojo/+pqan/r6+v/7S0tP+6urr/wMDA/8bGxv8=&quot;);"><div id="MSTWContent"><div style="border-color: rgb(158, 158, 158);" id="MSTWHeader"><span class="MSTWBox"><span id="MSTWHeaderText" style="width: 160px;">Käännä tämä sivu</span></span><span class="MSTWBox"><select name="MSTWMenu" id="MSTWMenu"><option value="ar">Arabia</option><option value="bg">Bulgaria</option><option value="es">Espanja</option><option value="ht">Haitin kieli</option><option value="he">Heprea</option><option value="hi">Hindi</option><option value="mww">Hmong daw</option><option value="nl">Hollanti</option><option value="id">Indonesia</option><option value="it">Italia</option><option value="ja">Japani</option><option value="ca">Katalaani</option><option value="tlh">Klingon</option><option value="ko">Korea</option><option value="el">Kreikka</option><option value="cy">Kymri (Wales)</option><option value="lv">Latvia</option><option value="lt">Liettua</option><option value="ms">Malaiji</option><option value="mt">Malta</option><option value="no">Norja</option><option value="zh-cht">Perinteinen kiina</option><option value="fa">Persia</option><option value="pt">Portugali</option><option value="pl">Puola</option><option value="fr">Ranska</option><option value="ro">Romania</option><option value="sv">Ruotsi</option><option value="de">Saksa</option><option value="sk">Slovakki</option><option value="sl">Sloveeni</option><option selected="selected" value="fi">Suomi</option><option value="da">Tanska</option><option value="th">Thai</option><option value="cs">Tšekki</option><option value="tr">Turkki</option><option value="uk">Ukraina</option><option value="hu">Unkari</option><option value="ur">Urdu</option><option value="ru">Venäjä</option><option value="vi">Vietnam</option><option value="et">Viro</option><option value="zh-chs">Yksinkertaistettu kiina</option></select><a href="javascript:%20K%C3%A4%C3%A4nn%C3%A4%20t%C3%A4m%C3%A4%20sivu" style="background-repeat: repeat-x; background-image: url(&quot;data:image/x-ms-bmp;base64,Qk2GAAAAAAAAADYAAAAoAAAAAQAAABQAAAABABgAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAA5ubm/+Pj4//g4OD/3t7e/9vb2//Z2dn/1tbW/9TU1P/R0dH/z8/P/+bm5v/o6Oj/6+vr/+3t7f/w8PD/8vLy//X19f/39/f/+vr6//z8/P8=&quot;); border-color: rgb(158, 158, 158);" id="MSTWGoButton" title="Käännä tämä sivu" class="MSTWButtonLink"><img id="MSTWGoImage" src="data:image/gif;base64,R0lGODlhGAASAHAAACH5BAEAAP8ALAAAAAAYABIAhwAAAP%2f%2f%2fwAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAg8AP8JHEiwoMGDCBMqXMiwIcMAARwihAhRYkGKFC0KxIjRIkeODj9%2bfCiyYsOSHkFq7KhxY8SW%0d%0aMGPKRBgQADs%3d" style="border-width:0px;"></a></span></div><div id="MSTWFooter"><span id="MSTWBrand" class="MSTWBox"><a id="MSTWBrandLink" title="Microsoft® Translator" href="http://www.bing.com/translator?ref=MSTWidget" target="_blank"><span style="font-family: Segoe UI; direction: ltr;">Microsoft<sup style="vertical-align: super; font-size: 70%;">®</sup> Translator</span></a></span><span id="MSTWGetShare" class="MSTWBox"><a style="border-color: rgb(158, 158, 158);" id="MSTWGetButton" title="Hanki tämä Windows-elementti omaan sivustoosi" class="MSTWButtonLink" href="http://www.microsofttranslator.com/widget/?ref=MSTWidget" target="_blank"><img id="MSTWGetImage" src="data:image/gif;base64,R0lGODlhGAASAPcAAAAAAP%2f%2f%2fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAYABIA%0d%0aAAhBAP8JHEiwoMGDCBMqXMiwocOHCAMEGCgRYkWCFxlmxDhx4caCH0F2TBiSI8mRJw%2bWVIny38qI%0d%0aI19CnEmzpk2DAQEAOw%3d%3d" style="border-width:0px;"></a><a href="mailto:?charset=utf-8&amp;subject=Katso%20t%C3%A4m%C3%A4%20sivu%20kielell%C3%A4%20Suomi%20k%C3%A4%C3%A4nnettyn%C3%A4%20kielest%C3%A4%20Englanti&amp;body=K%C3%A4%C3%A4nnetty%3A%20http%3A%2F%2Fblogs.msdn.com%2Fb%2Fchuckw%2Farchive%2F2013%2F08%2F21%2Fliving-without-d3dx.aspx%23mstto%3Dfi%0D%0AAlkuper%C3%A4inen%3A%20http%3A%2F%2Fblogs.msdn.com%2Fb%2Fchuckw%2Farchive%2F2013%2F08%2F21%2Fliving-without-d3dx.aspx%0D%0A%0D%0AAutomaattinen%20k%C3%A4%C3%A4nn%C3%B6s%3A%20Microsoft%C2%AE%20Translator%0D%0Ahttp%3A%2F%2Fwww.bing.com%2Ftranslator" style="border-color: rgb(158, 158, 158);" id="MSTWShareButton" title="Jaa" class="MSTWButtonLink"><img id="MSTWShareImage" src="data:image/gif;base64,R0lGODlhGAASAPcAAAAAAP%2f%2f%2fwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%0d%0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAYABIA%0d%0aAAhHAP8JHEiwoMGDCBMqXMiwocOHBQNInEiRokKJFwNc%2fKfxoMaOCDuCHChyo8CRIEcaLGmxZMKP%0d%0aITlmnPmyok2MEHPq3MlTYUAAOw%3d%3d" style="border-width:0px;"></a></span></div><div id="MSTWHidden" style="display: none;"><span id="MSTWCheckOut">Katso tämä sivu kielellä {0} käännettynä kielestä {1}</span><span id="MSTWTranslatedFrom">käännetty kielestä</span><span id="MSTWOriginal">Alkuperäinen:</span><span id="MSTWTranslated">Käännetty:</span><span id="MSTWPoweredBy">Automaattinen käännös: Microsoft® Translator</span><span id="MSTWStart">Aloita kääntämistoimet</span><span id="MSTWStop">Lopeta kääntäminen</span><span id="MSTWClose">Sulje</span><span id="MSTWCloseShowOrig">Sulje ja näytä alkuperäinen sivu</span><span id="MSTWLangNotSup"></span><span id="MSTWSelect">Valitse</span></div></div></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-links no-wrapper-with-spacing with-header" id="fragment-52311">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Options</div></div>
+<div class="content-fragment-content">
+
+		<div class="navigation-list-header"></div>
+		<ul class="navigation-list">
+	<li class="navigation-item"><a class="internal-link view-application" href="http://blogs.msdn.com/b/chuckw/"><span></span>Blog Home</a></li><li class="navigation-item"><a class="internal-link view-contact" href="http://blogs.msdn.com/b/chuckw/contact.aspx"><span></span>Email Blog Author</a></li><li class="navigation-item"><a class="internal-link email-post" href="mailto:?subject=Living%20without%20D3DX&amp;body=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx">
+		<span></span>Share this
+	</a></li><li class="navigation-item"><a class="internal-link rss" href="http://blogs.msdn.com/b/chuckw/rss.aspx"><span></span>RSS for posts</a></li><li class="navigation-item"><a class="internal-link rss" href="http://blogs.msdn.com/b/chuckw/atom.aspx"><span></span>Atom</a></li><li id="" rsscomments"""="" class="navigation-item"><a class="internal-link rss" href="http://blogs.msdn.com/b/chuckw/rsscomments.aspx"><span></span>RSS for comments</a></li>
+		</ul>
+		<div class="navigation-list-footer"></div>
+	</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment search-form no-wrapper-with-spacing with-header" id="fragment-52312">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Search</div></div>
+<div class="content-fragment-content">
+
+<div class="field-list-header">
+</div>
+<fieldset class="field-list">
+    <ul class="field-list">
+        <li class="field-item search">
+            <div style="display: none;" id="search-allblogs-container">
+                <span class="field-item-input">
+                    <input value="Search MSDN with Bing" style="color: rgb(170, 170, 170); font-style: italic;" title="Search MSDN with Bing" id="SearchTextBox_AllBlogs" name="SearchTextBox_AllBlogs" class="searchField" maxlength="64" size="45" autocomplete="off" type="text">
+                    <input title="Search MSDN with Bing" id="SearchButton_AllBlogs" name="SearchButton_AllBlogs" class="search-button" type="button">
+                <div style="display: none; text-align: left; border: 1px solid buttonshadow; position: absolute; z-index: 1000; padding: 2px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: Droid Sans; font-size: 11px;" id="SearchFlyoutContainer"><div id="SuggestionContainer"><ul style="list-style: outside none none; padding: 4px 2px 0px 1px; cursor: pointer; margin: 1px; white-space: nowrap;"></ul></div></div></span>
+            </div>
+            <div id="search-thisblog-container">
+                <span class="field-item-input">
+                    <input value="Search MSDN with Bing" style="color: rgb(170, 170, 170); font-style: italic;" title="Search MSDN with Bing" id="SearchTextBox_ThisBlog" name="SearchTextBox_ThisBlog" class="searchField" maxlength="64" size="45" autocomplete="off" type="text">
+                    <input title="Search MSDN with Bing" id="SearchButton_ThisBlog" name="SearchButton_ThisBlog" class="search-button" type="button">
+                <div style="display: none; text-align: left; border: 1px solid buttonshadow; position: absolute; z-index: 1000; padding: 2px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: Droid Sans; font-size: 11px;" id="SearchFlyoutContainer"><div id="SuggestionContainer"><ul style="list-style: outside none none; padding: 4px 2px 0px 1px; cursor: pointer; margin: 1px; white-space: nowrap;"></ul></div></div></span>
+            </div>
+        </li>
+    </ul>
+</fieldset>
+<div class="field-list-footer">
+    <div id="search-switch-container">
+        <span style="display: inline-block">
+            <input name="SearchTypeRadio" value="ThisBlog" id="ThisBlog" checked="checked" type="radio"><label for="ThisBlog" id="ThisBlogText">Search this blog</label></span>
+        <span style="display: inline-block">
+            <input name="SearchTypeRadio" value="AllBlogs" id="AllBlogs" type="radio"><label for="AllBlogs" id="AllBlogsText">Search all blogs</label></span>
+    </div>
+</div>
+
+
+
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment tag-cloud no-wrapper-with-spacing with-header" id="fragment-52313">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Tags</div></div>
+<div class="content-fragment-content">
+<div class="tag-list-header"></div><ul class="tag-list">
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/audio/" rel="tag">audio</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/codeplex/" rel="tag">codeplex</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/conference/" rel="tag">conference</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/dds/" rel="tag">dds</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/direct3d/" rel="tag">direct3d</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/directcompute/" rel="tag">directcompute</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/directx/" rel="tag">directx</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/dxsdk/" rel="tag">dxsdk</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/gfwtr/" rel="tag">gfwtr</a></li>
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/hlsl/" rel="tag">hlsl</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/input/" rel="tag">input</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/kinect/" rel="tag">kinect</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/networking/" rel="tag">networking</a></li>
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/pixw/" rel="tag">pixw</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/tessellation/" rel="tag">tessellation</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/visualc/" rel="tag">visualc</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/win10/" rel="tag">win10</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/win7/" rel="tag">win7</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/win8/" rel="tag">win8</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/windowssdk/" rel="tag">windowssdk</a></li>
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/winphone/" rel="tag">winphone</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/x64/" rel="tag">x64</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/xbox+one/" rel="tag">xbox one</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/xnamath/" rel="tag">xnamath</a></li>
+</ul>
+<div class="tag-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-archive-list no-wrapper-with-spacing with-header" id="fragment-52314">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Archive</div></div>
+<div class="content-fragment-content">
+
+		<div class="content-list-header"></div>
+		<div class="content-list-name">Archives</div>
+		<ul class="content-list">
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2015/01.aspx">January 2015</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/12.aspx">December 2014</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/11.aspx">November 2014</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/10.aspx">October 2014</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/09.aspx">September 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/08.aspx">August 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/07.aspx">July 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/06.aspx">June 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/05.aspx">May 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/04.aspx">April 2014</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/03.aspx">March 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/02.aspx">February 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2014/01.aspx">January 2014</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/12.aspx">December 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/11.aspx">November 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/10.aspx">October 2013</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/09.aspx">September 2013</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/08.aspx">August 2013</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/07.aspx">July 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/06.aspx">June 2013</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/04.aspx">April 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/03.aspx">March 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/02.aspx">February 2013</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2013/01.aspx">January 2013</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/11.aspx">November 2012</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/10.aspx">October 2012</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/09.aspx">September 2012</a> (8)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/08.aspx">August 2012</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/07.aspx">July 2012</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/06.aspx">June 2012</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/05.aspx">May 2012</a> (8)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/04.aspx">April 2012</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/03.aspx">March 2012</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2012/02.aspx">February 2012</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/12.aspx">December 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/11.aspx">November 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/10.aspx">October 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/07.aspx">July 2011</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/06.aspx">June 2011</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/05.aspx">May 2011</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/04.aspx">April 2011</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/03.aspx">March 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/02.aspx">February 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2011/01.aspx">January 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/12.aspx">December 2010</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/11.aspx">November 2010</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/10.aspx">October 2010</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/09.aspx">September 2010</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/08.aspx">August 2010</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/07.aspx">July 2010</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/06.aspx">June 2010</a> (7)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/04.aspx">April 2010</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/03.aspx">March 2010</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/02.aspx">February 2010</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="http://blogs.msdn.com/b/chuckw/archive/2010/01.aspx">January 2010</a> (4)</li>
+	
+		</ul>
+		<div class="content-list-footer"></div>
+	
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+</div>
+</div>
+<div class="layout-region content" id="ctl00_content_ctl00_content">
+<div class="layout-region-inner content"><div class="content-fragment blog-title full-border" id="fragment-52315">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+<h1 class="title">
+	    
+			        
+			    
+	                Living without D3DX
+			    
+	</h1></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-bread-crumbs no-wrapper" id="fragment-52316">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+
+<div class="breadcrumb-list-header"></div>
+<div class="breadcrumb-list">
+	<span class="breadcrumb-item"><a class="internal-link view-home" href="http://blogs.msdn.com/">MSDN Blogs</a></span>
+  
+	
+
+	
+			<span class="separator"> &gt; </span>
+			<span class="breadcrumb-item">
+		<a href="http://blogs.msdn.com/b/chuckw/">Games for Windows and the DirectX SDK</a>
+			</span>
+		
+	
+	
+			<span class="separator"> &gt; </span>
+			<span class="breadcrumb-item">
+		<a class="last" href="http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx">Living without D3DX</a>
+			</span>
+		
+
+	
+</div>
+<div class="breadcrumb-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-post no-wrapper" id="fragment-52317">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+<div class="full-post-header"></div>
+<div class="full-post">
+	<h3 class="post-name">Living without D3DX</h3>
+	
+	        <div class="post-rating">
+	            Rate This<br>
+	    <span class="rating readonly" id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl01" title="Rated Excellent [5 out of 5]."><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-left-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-right-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-left-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-right-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-left-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-right-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-left-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-right-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-left-on.png" style="border-width: 0px;" align="absmiddle" border="0"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/star-right-on.png" style="border-width: 0px;" align="absmiddle" border="0"></span><input value="5" id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl01_Value" type="hidden">
+	        </div>
+	    
+    <div class="post-author">
+        <span class="avatar"><a href="http://blogs.msdn.com/257488/ProfileUrlRedirect.ashx"><img src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/avatar.jpg" alt="" style="border-width:0px;max-height:32px;max-width:32px;"></a></span>
+        
+         <span data-profile-rendered="true" class="profile-usercard-hover" data-profile-userid="6a395d952b604a6a974a9b9007049ff0">
+            <span class="user-name"><a class="internal-link view-user-profile" href="http://blogs.msdn.com/257488/ProfileUrlRedirect.ashx"><span></span>Chuck Walbourn - MSFT</a></span>
+       
+            
+        <div class="profile-usercard">            <div class="profile-header">                <span class="profile-userimage">                                            <img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAsACwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDzFVLMFUZJroLPw7tj82/YpxnYOuPernhDTY1tLjWbiMOITshU8Auf8KuJFcPdNM4LE/e/wPtXJWqtOy0O7DUItc0jldX082N8YQDtPKZ9K1odAha0iExdJnXdnsPrXXS6BFq0FjckqPIb5x/s9cVR1O3864c/dQHHvisZV5OMVc1p0Ic8ro4fUtNn0+XbKuVPKuOjCqVegx2i6hC+m3Csd4LRMRyh7fhXB3EL29xJDIMPGxUj0Irqo1HNWlujkxFFU3dbGroXiXUtF/d2zh4CctDINyt+Fei6I9pr0AuBp8unyKM7iMxN9K4/wsmnR6XNePZpc3cTfdkPAHrj862rfVrq+lUTzYjJACKMKPwrCtUu3FI3oUpW5rnb2FlGsEgV1x0O3o1UJdNt5UeR2eQx5PkREBz+fSqNvqkW1wZMRFtkWT196zru/Yltx2yKcBwcFfeuZTi3axuqcrvUw9e8UXtm72en6cNMXuSuZG+pNcZLI80rSysXdzlmJySa9Ijv3v5DZ6vbw3UCqW8xxyo9Qa88v/I+3TfZlKw7zsBOcDPFd1CaldWscWIhKL1ZLpl/JYXIkXlTwy+orpbWWGQNcWsmcqdqD+EmuNqSKaSFt0bsp9jWk6SlqTSryp6dDb1jUXimhhic/ujuP1rTS6a4RJQco6/OD6Vx8jtI5d2LMepNSC5nEPkiVhH/AHc8UnQjZIuOJkpNm7qesLDaNZWbklvvvn9BXOUUVcIKCsjGpUc3dn//2Q==" alt="Avatar of Chuck Walbourn - MSFT">                                    </span>                <div>                    <p title="Chuck Walbourn - MSFT" class="profile-display-name">Chuck Walbourn - MSFT</p>                                    <p class="profile-company">Microsoft Corp</p>                                    <p class="profile-affiliations"></p>                </div>            </div>            <div class="profile-points-bar">                <span class="profile-points">49,487<span class="points-label"> Points</span></span>                <span class="profile-count profile-bronze-points"><span class="profile-bronze-img" title="Achievements Earned"></span><span>13</span></span>                <span class="profile-count profile-silver-points"><span class="profile-silver-img" title="Achievements Earned"></span><span>8</span></span>                <span class="profile-count profile-gold-points"><span class="profile-gold-img" title="Achievements Earned"></span><span>4</span></span>                        </div>            <div class="profile-achievements-header">                <span class="profile-achievements-title">Recent Achievements</span>            </div>            <div class="profile-achievements-recent">                <div class="profile-achievements-centering">                                                                <span class="profile-achievement profile-achievement-Bronze"><span>First Helpful Vote</span></span>                                            <span class="profile-achievement profile-achievement-Silver"><span>Gallery Storyteller II</span></span>                                            <span class="profile-achievement profile-achievement-Gold"><span>Gallery Contributor III</span></span>                                                            </div>            </div>            <div class="profile-footer">                                <a href="https://social.msdn.microsoft.com/profile/chuck%20walbourn%20-%20msft/?ws=usercard-hover" class="profile-usercard-profileLink" target="_blank">View Profile</a>            </div>        </div></span>
+    </div>
+    <div class="post-date">
+        <span class="value">
+            20 Aug 2013 5:49 PM
+        </span>
+    </div>
+    <div class="post-attributes">
+        <div class="attribute-list-header"></div>
+        <ul class="attribute-list">
+             <li class="attribute-item post-reply-count">
+                <span class="attribute-name">Comments</span>
+                <span class="attribute-value"><a href="#comments" class="internal-link view-replies"><span></span>0</a></span>
+             </li>
+        </ul>
+        <div class="attribute-list-footer"></div>
+    </div>
+    <div class="post-content user-defined-markup"><p>Over the past few 
+years, I've been working on a number of projects in part motivated by 
+the need to replace legacy D3DX functionality. As noted on <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee663275.aspx">MSDN</a>,
+ all versions of D3DX are deprecated and are not shipped with the 
+Windows 8.x SDK. This includes D3DX9, D3DX10, and D3DX11. There are 
+plenty of options for moving existing code over to newer, more 
+supportable solutions most of which are now shared-source.</p>
+<p>I've built a number of porting notes tables for each of these topics,
+ and then realized today I don't have a single place to see it all. So 
+here it is, the "D3DX porting mega-table" for Direct3D 11.</p>
+<p><strong>Direct3D 9:</strong> There are not many good replacements for
+ the functionality in D3DX9 if you are still using Direct3D 9. You can 
+make use of D3DCompile APIs directly with the legacy DirectX SDK, but 
+newer versions of the D3DCompile DLL in the Windows 8.x SDK are not 
+compatible with Windows XP for runtime use. You can use 
+DirectXMath/XNAMath for Direct3D 9 instead of D3DXMath. The <a href="http://blogs.msdn.com/b/chuckw/archive/2010/07/15/ddswithoutd3dx-sample-update.aspx">DDSWithoutD3DX</a> sample supports Direct3D 9, and you can use <a href="http://blogs.msdn.com/b/chuckw/archive/2011/10/28/directxtex.aspx">DirectXTex</a> and <a href="http://blogs.msdn.com/b/chuckw/archive/2014/06/27/directxmesh.aspx">DirectXMesh</a> when preparing content for use by Direct3D 9.</p>
+<p><strong>Direct3D 10:</strong> The best option for Direct3D 10.x 
+applications is to update them to use Direct3D 11, and then utilize all 
+the options here to replace legacy D3XD10. Porting the API is very <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff476190.aspx">straightforward</a>, and Direct3D 11 is <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee416644.aspx">available</a> on all supported platforms that have Direct3D 10.</p>
+<p><strong>Related:</strong> <a href="http://blogs.msdn.com/b/chuckw/archive/2012/03/22/where-is-the-directx-sdk.aspx">Where is the DirectX SDK?</a>, <a href="http://blogs.msdn.com/b/chuckw/archive/2013/07/01/where-is-the-directx-sdk-2013-edition.aspx">Where is the DirectX SDK (2013 Edition)?</a>, <a href="http://blogs.msdn.com/b/chuckw/archive/2012/08/22/directx-sdk-s-of-a-certain-age.aspx">DirectX SDKs of a certain age</a>, <a href="http://blogs.msdn.com/b/chuckw/archive/2013/09/14/dxut-for-win32-desktop-update.aspx">DXUT for Win32 Desktop Update</a>, <a href="http://blogs.msdn.com/b/chuckw/archive/2013/09/20/directx-sdk-samples-catalog.aspx">DirectX SDK Samples Catalog</a>,&nbsp;<a href="http://blogs.msdn.com/b/chuckw/archive/2014/10/28/directx-sdk-tools-catalog.aspx">DirectX SDK Tools Catalog</a></p>
+<h1>General Helpers</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2012/03/02/directxtk.aspx">DirectX Tool Kit</a>
+ provides a number of helpers that are designed to simplify Direct3D 11 
+programming in the tradition of the original D3DX library. You can find 
+the library on <a href="http://go.microsoft.com/fwlink/?LinkId=248929">CodePlex</a>.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>ID3DX10Sprite</code></td>
+<td>
+<p><code>SpriteBatch</code></p>
+</td>
+</tr>
+<tr>
+<td><code>ID3DX10Font</code></td>
+<td>
+<p><code>SpriteFont, SpriteBatch</code></p>
+</td>
+</tr>
+<tr>
+<td><code>ID3DX10Mesh</code></td>
+<td>
+<p><code>Model, ModelMesh, ModelMeshPart</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DXCreateBox <br>D3DXCreateCylinder <br>D3DXCreateSphere<br> D3DXCreateTeapot <br>D3DXCreateTorus</code></td>
+<td>
+<p><code>GeometricPrimitive</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateShaderResourceViewFromFile</code></td>
+<td>
+<p><code>CreateXXXTextureFromFile</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateShaderResourceViewFromResource<br>D3DX11CreateShaderResourceViewFromMemory</code></td>
+<td>
+<p><code>CreateXXXTextureFromMemory</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateTextureFromFile</code></td>
+<td>
+<p><code>CreateXXXTextureFromFile</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateTextureFromResource<br>D3DX11CreateTextureFromMemory </code></td>
+<td>
+<p><code>CreateXXXTextureFromMemory</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11SaveTextureToFile</code></td>
+<td>
+<p><code>SaveXXXTextureToFile</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1>HLSL Functions</h1>
+<p>The HLSL compiler, shader reflection API, and related functionality has been broken out into it's own <a href="http://blogs.msdn.com/b/chuckw/archive/2012/05/07/hlsl-fxc-and-d3dcompile.aspx">D3DCompile</a> DLL for some time. D3DCompile is in the Windows 8.x SDK and is included with VS 2012 and VS 2013 Preview.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DXCompileShaderFromFile<br> D3DX10CompileFromFile<br> D3DX11CompileFromFile</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh446872.aspx">D3DCompileFromFile</a></td>
+</tr>
+<tr>
+<td><code>D3DXCompileShader<br> D3D10CompileShader<br>D3DX10CompileFromMemory<br> D3DX11CompileFromMemory</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd607324.aspx">D3DCompile</a></td>
+</tr>
+<tr>
+<td><code>D3DXCompileShaderFromResource<br> D3DX10CompileFromResource<br> D3DX11CompileFromResource</code></td>
+<td>No direct equivalent. Can use resource APIs and then <code>D3DCompile</code> above.</td>
+</tr>
+<tr>
+<td><code>D3DXPreprocessShader<br> D3DXPreprocessShaderFromFile<br> D3DXPreprocessShaderFromResource<br> D3D10PreprocessShader<br> D3DX10PreprocessShaderFromFile<br> D3DX10PreprocessShaderFromMemory<br> D3DX10PreprocessShaderFromResource<br> D3DX11PreprocessShaderFromFile<br> D3DX11PreprocessShaderFromMemory<br> D3DX11PreprocessShaderFromResource</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd607332.aspx">D3DPreprocess</a></td>
+</tr>
+<tr>
+<td><code>D3DXDisassembleShader<br> D3D10DisassembleShader<br>D3DX10DisassembleShader</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd607326.aspx">D3DDisassemble</a></td>
+</tr>
+<tr>
+<td><code>D3D10ReflectShader<br>D3DX10ReflectShader</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd607334.aspx">D3DReflect</a><br><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff728670.aspx">D3D11Reflect</a></td>
+</tr>
+<tr>
+<td><code>ID3DXBuffer<br>ID3D10Blob</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff728743.aspx">ID3DBlob</a></td>
+</tr>
+<tr>
+<td><code>D3DXCreateBuffer<br>D3D10CreateBlob</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff728672.aspx">D3DCreateBlob</a></td>
+</tr>
+<tr>
+<td><code>D3D10GetInputSignatureBlob<br> D3D10GetOutputSignatureBlob<br> D3D10GetInputAndOutputSignatureBlob<br> D3D10GetShaderDebugInfo</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff728674.aspx">D3DGetBlobPart</a></td>
+</tr>
+</tbody>
+</table>
+<h1>Texture Functions</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2011/10/28/directxtex.aspx">DirectXTex</a> library is primarily intended for <a href="http://blogs.msdn.com/b/chuckw/archive/2012/05/04/direct3d-11-textures-and-block-compression.aspx">texture processing</a>
+ offline with tools, although it can also be used at runtime for doing 
+texture block compression, mipmap generation, or handling more general 
+image processing needs. <a href="http://blogs.msdn.com/b/chuckw/archive/2012/03/02/directxtk.aspx">DirectXTK</a>
+ is intended for use at runtime with light-weight helpers and image 
+loaders, but does not provide support for general runtime texture format
+ conversion. You can find both libraries on <a href="http://go.microsoft.com/fwlink/?LinkId=248926">CodePlex</a>.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DX11ComputeNormalMap</code></td>
+<td>
+<p>DirectXTex library, <code> ComputeNormalMap</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateShaderResourceViewFromFile<br> D3DX11CreateTextureFromFile</code></td>
+<td>
+<p>DDSTextureLoader: <code>CreateDDSTextureFromFile</code><br>WICTextureLoader: <code>CreateWICTextureFromFile</code></p>
+<p>DirectXTex library (tools), <code>LoadFromXXXFile</code> then <code>CreateShaderResourceView</code> or <code>CreateTexture</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateShaderResourceViewFromMemory<br> D3DX11CreateTextureFromMemory</code></td>
+<td>
+<p>DDSTextureLoader: <code>CreateDDSTextureFromMemory</code><br>WICTextureLoader: <code>CreateWICTextureFromMemory</code></p>
+<p>DirectXTex library (tools), <code>LoadFromXXXMemory</code> then <code>CreateShaderResourceView</code> or <code>CreateTexture</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11CreateShaderResourceViewFromResource<br> D3DX11CreateTextureFromResource</code></td>
+<td>
+<p>No direct equivalent, can use Win32 resource functions and then the ‘from memory’ APIs above.</p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11FilterTexture</code></td>
+<td>
+<p>DirectXTex library, <code>GenerateMipMaps</code> and <code>GenerateMipMaps3D</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11GetImageInfoFromFile</code></td>
+<td>
+<p>DirectXTex library, <code>GetMetadataFromXXXFile</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11GetImageInfoFromMemory</code></td>
+<td>
+<p>DirectXTex library, <code>GetMetadataFromXXXMemory</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11GetImageInfoFromResource</code></td>
+<td>
+<p>No direct equivalent, can use Win32 resource functions and then the ‘from memory’ APIs above.</p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11LoadTextureFromTexture</code></td>
+<td>
+<p>DirectXTex library, <code>Resize</code>, <code>Convert</code>, <code>Compress</code>, <code>Decompress</code>, and/or <code>CopyRectangle</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11SaveTextureToFile</code></td>
+<td>
+<p>ScreenGrab: <code>SaveDDSTextureToFile</code> or <code>SaveWICTextureToFile</code></p>
+<p>DirectXTex library, <code>CaptureTexture</code> then <code>SaveToXXXFile</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DX11SaveTextureToMemory</code></td>
+<td>
+<p>DirectXTex library, <code>CaptureTexture</code> then <code>SaveToXXXMemory</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1>Geometry Functions</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2014/06/27/directxmesh.aspx">DirectXMesh</a>
+ library is intended for geometry processing offline with tools, 
+although it can be used at runtime. You can find the library on <a href="http://go.microsoft.com/fwlink/?LinkID=324981">CodePlex</a>.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DXCleanMesh</code></td>
+<td><code>Clean</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeNormals</code></td>
+<td><code>ComputeNormals</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeTangent<br>D3DXComputeTangentFrame<br>D3DXComputeTangentFrameEx</code></td>
+<td><code>ComputeTangentFrame</code></td>
+</tr>
+<tr>
+<td><code>ID3DX10Mesh::GenerateAdjacencyAndPointReps</code></td>
+<td><code>GenerateAdjacencyAndPointReps</code></td>
+</tr>
+<tr>
+<td><code>ID3DX10Mesh::GenerateGSAdjacency</code></td>
+<td><code>GenerateGSAdjacency</code></td>
+</tr>
+<tr>
+<td><code>ID3DX10Mesh::Optimize</code></td>
+<td><code>AttributeSort<br>OptimizeFacesEx<br>OptimizeVertices<br>ReorderIB<br>FinalizeIB<br>FinalizeVB</code></td>
+</tr>
+<tr>
+<td><code>D3DXOptimizeFaces</code></td>
+<td><code>OptimizeFaces</code></td>
+</tr>
+<tr>
+<td><code>D3DXOptimizeVertices</code></td>
+<td><code>OptimizeVertices</code></td>
+</tr>
+<tr>
+<td><code>D3DXValidMesh</code></td>
+<td><code>Validate</code></td>
+</tr>
+</tbody>
+</table>
+<h1>Math</h1>
+<p>The legacy D3DXMath library has been replaced by <a href="http://blogs.msdn.com/b/chuckw/archive/2012/03/27/introducing-directxmath.aspx">DirectXMath</a>. The library is in the Windows 8.x SDK and is included with VS 2012 and VS 2013 Preview.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DXFLOAT16</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.types.__macro_half.aspx">HALF</a></td>
+</tr>
+<tr>
+<td><code>D3DXMATRIXA16</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmmatrix.aspx">XMMATRIX</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat4x4a.aspx">XMFLOAT4X4A</a></td>
+</tr>
+<tr>
+<td>
+<p><code>D3DXQUATERNION</code></p>
+<p><code>D3DXPLANE</code></p>
+<p><code>D3DXCOLOR</code></p>
+</td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee420742.aspx">XMVECTOR</a> is used rather than having unique types, so you will likely need to use an <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat4.aspx">XMFLOAT4</a></td>
+</tr>
+<tr>
+<td><code>D3DXVECTOR2</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat2.aspx">XMFLOAT2</a></td>
+</tr>
+<tr>
+<td><code>D3DXVECTOR2_16F</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmhalf2.aspx">XMHALF2</a></td>
+</tr>
+<tr>
+<td><code>D3DXVECTOR3</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat3.aspx">XMFLOAT3</a></td>
+</tr>
+<tr>
+<td><code>D3DXVECTOR4</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat4.aspx">XMFLOAT4</a>
+<p>(or if you can guarantee the data is 16-byte aligned, <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee420742.aspx">XMVECTOR</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmfloat4a.aspx">XMFLOAT4A</a> )</p>
+</td>
+</tr>
+<tr>
+<td><code>D3DXVECTOR4_16F</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xmhalf4.aspx">XMHALF4</a></td>
+</tr>
+<tr>
+<td><code>D3DX_PI</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee415576.aspx">XM_PI</a></td>
+</tr>
+<tr>
+<td><code>D3DX_1BYPI</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee415576.aspx">XM_1DIVPI</a></td>
+</tr>
+<tr>
+<td><code>D3DXToRadian</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.conversion.xmconverttoradians.aspx">XMConvertToRadians</a></td>
+</tr>
+<tr>
+<td><code>D3DXToDegree</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.conversion.xmconverttodegrees.aspx">XMConvertToDegrees</a></td>
+</tr>
+<tr>
+<td><code>D3DXBoxBoundProbe</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh437817.aspx">BoundingBox::Intersects(XMVECTOR, XMVECTOR, float&amp;)</a></td>
+</tr>
+<tr>
+<td><code>D3DXComputeBoundingBox</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh437802.aspx">BoundingBox::CreateFromPoints</a></td>
+</tr>
+<tr>
+<td><code>D3DXComputeBoundingSphere</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.directxcollision.boundingsphere.createfrompoints.aspx">BoundingSphere::CreateFromPoints</a></td>
+</tr>
+<tr>
+<td><code>D3DXSphereBoundProbe</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh437818.aspx">BoundingSphere::Intersects(XMVECTOR, XMVECTOR, float&amp;)</a></td>
+</tr>
+<tr>
+<td><code>D3DXIntersectTriFunction</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh855857.aspx">TriangleTests::Intersects</a></td>
+</tr>
+<tr>
+<td><code>D3DXFloat32To16Array</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh437913.aspx">XMConvertFloatToHalfStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXFloat16To32Array</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh437922.aspx">XMConvertHalfToFloatStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Length</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2length.aspx">XMVector2Length</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2lengthest.aspx">XMVector2LengthEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2LengthSq</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2lengthsq.aspx">XMVector2LengthSq</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Dot</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2dot.aspx">XMVector2Dot</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2CCW</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2cross.aspx">XMVector2Cross</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Add</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectoradd.aspx">XMVectorAdd</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Subtract</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorsubtract.aspx">XMVectorSubtract</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Minimize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormin.aspx">XMVectorMin</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Maximize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormax.aspx">XMVectorMax</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Scale</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorscale.aspx">XMVectorScale</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Lerp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerp.aspx">XMVectorLerp</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerpv.aspx">XMVectorLerpV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Normalize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2normalize.aspx">XMVector2Normalize</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector2normalizeest.aspx">XMVector2NormalizeEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Hermite</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermite.aspx">XMVectorHermite</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermitev.aspx">XMVectorHermiteV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2CatmullRom</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullrom.aspx">XMVectorCatmullRom</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullromv.aspx">XMVectorCatmullRomV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2BaryCentric</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentric.aspx">XMVectorBaryCentric</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentricv.aspx">XMVectorBaryCentricV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2Transform</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector2transform.aspx">XMVector2Transform</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2TransformCoord</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector2transformcoord.aspx">XMVector2TransformCoord</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2TransformNormal</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector2transformnormal.aspx">XMVector2TransformNormal</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2TransformArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404775.aspx">XMVector2TransformStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2TransformCoordArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404773.aspx">XMVector2TransformCoordStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec2TransformNormalArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404774.aspx">XMVector2TransformNormalStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Length</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3length.aspx">XMVector3Length</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3lengthest.aspx">XMVector3LengthEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3LengthSq</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3lengthsq.aspx">XMVector3LengthSq</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Dot</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3dot.aspx">XMVector3Dot</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Cross</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3cross.aspx">XMVector3Cross</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Add</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectoradd.aspx">XMVectorAdd</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Subtract</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorsubtract.aspx">XMVectorSubtract</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Minimize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormin.aspx">XMVectorMin</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Maximize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormax.aspx">XMVectorMax</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Scale</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorscale.aspx">XMVectorScale</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Lerp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerp.aspx">XMVectorLerp</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerpv.aspx">XMVectorLerpV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Normalize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3normalize.aspx">XMVector3Normalize</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector3normalizeest.aspx">XMVector3NormalizeEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Hermite</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermite.aspx">XMVectorHermite</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermitev.aspx">XMVectorHermiteV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3CatmullRom</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullrom.aspx">XMVectorCatmullRom</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullromv.aspx">XMVectorCatmullRomV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3BaryCentric</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentric.aspx">XMVectorBaryCentric</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentricv.aspx">XMVectorBaryCentricV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Transform</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector3transform.aspx">XMVector3Transform</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3TransformCoord</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector3transformcoord.aspx">XMVector3TransformCoord</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3TransformNormal</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector3transformnormal.aspx">XMVector3TransformNormal</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3TransformArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404780.aspx">XMVector3TransformStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3TransformCoordArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404778.aspx">XMVector3TransformCoordStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3TransformNormalArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404779.aspx">XMVector3TransformNormalStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Project</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector3project.aspx">XMVector3Project</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3Unproject</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector3unproject.aspx">XMVector3Unproject</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3ProjectArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404776.aspx">XMVector3ProjectStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec3UnprojectArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404782.aspx">XMVector3UnprojectStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Length</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4length.aspx">XMVector4Length</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4lengthest.aspx">XMVector4LengthEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4LengthSq</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4lengthsq.aspx">XMVector4LengthSq</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Dot</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4dot.aspx">XMVector4Dot</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Add</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectoradd.aspx">XMVectorAdd</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Subtract</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorsubtract.aspx">XMVectorSubtract</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Minimize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormin.aspx">XMVectorMin</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Maximize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectormax.aspx">XMVectorMax</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Scale</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorscale.aspx">XMVectorScale</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Lerp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerp.aspx">XMVectorLerp</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerpv.aspx">XMVectorLerpV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Cross</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4cross.aspx">XMVector4Cross</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Normalize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4normalize.aspx">XMVector4Normalize</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvector4normalizeest.aspx">XMVector4NormalizeEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Hermite</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermite.aspx">XMVectorHermite</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorhermitev.aspx">XMVectorHermiteV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4CatmullRom</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullrom.aspx">XMVectorCatmullRom</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorcatmullromv.aspx">XMVectorCatmullRomV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4BaryCentric</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentric.aspx">XMVectorBaryCentric</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorbarycentricv.aspx">XMVectorBaryCentricV</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4Transform</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.transformation.xmvector4transform.aspx">XMVector4Transform</a></td>
+</tr>
+<tr>
+<td><code>D3DXVec4TransformArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404783.aspx">XMVector4TransformStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixIdentity</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixidentity.aspx">XMMatrixIdentity</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixDeterminant</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixdeterminant.aspx">XMMatrixDeterminant</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixDecompose</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixdecompose.aspx">XMMatrixDecompose</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixTranspose</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixtranspose.aspx">XMMatrixTranspose</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixMultiply</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixmultiply.aspx">XMMatrixMultiply</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixMultiplyTranspose</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixmultiplytranspose.aspx">XMMatrixMultiplyTranspose</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixInverse</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixinverse.aspx">XMMatrixInverse</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixScaling</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixscaling.aspx">XMMatrixScaling</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixTranslation</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixtranslation.aspx">XMMatrixTranslation</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationX</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationx.aspx">XMMatrixRotationX</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationY</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationy.aspx">XMMatrixRotationY</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationZ</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationz.aspx">XMMatrixRotationZ</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationAxis</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationaxis.aspx">XMMatrixRotationAxis</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationQuaternion</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationquaternion.aspx">XMMatrixRotationQuaternion</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixRotationYawPitchRoll</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixrotationrollpitchyaw.aspx">XMMatrixRotationRollPitchYaw</a><br>(Note the order of parameters is different:<br> D3DXMath takes yaw, pitch, roll,<br> DirectXMath takes pitch, yaw, roll)</td>
+</tr>
+<tr>
+<td><code>D3DXMatrixTransformation</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixtransformation.aspx">XMMatrixTransformation</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixTransformation2D</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixtransformation2d.aspx">XMMatrixTransformation2D</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixAffineTransformation</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixaffinetransformation.aspx">XMMatrixAffineTransformation</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixAffineTransformation2D</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixaffinetransformation2d.aspx">XMMatrixAffineTransformation2D</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixLookAtRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixlookatrh.aspx">XMMatrixLookAtRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixLookAtLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixlookatlh.aspx">XMMatrixLookAtLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectiverh.aspx">XMMatrixPerspectiveRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectivelh.aspx">XMMatrixPerspectiveLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveFovRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectivefovrh.aspx">XMMatrixPerspectiveFovRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveFovLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectivefovlh.aspx">XMMatrixPerspectiveFovLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveOffCenterRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectiveoffcenterrh.aspx">XMMatrixPerspectiveOffCenterRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixPerspectiveOffCenterLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixperspectiveoffcenterlh.aspx">XMMatrixPerspectiveOffCenterLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixOrthoRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixorthographicrh.aspx">XMMatrixOrthographicRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixOrthoLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixorthographiclh.aspx">XMMatrixOrthographicLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixOrthoOffCenterRH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixorthographicoffcenterrh.aspx">XMMatrixOrthographicOffCenterRH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixOrthoOffCenterLH</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixorthographicoffcenterlh.aspx">XMMatrixOrthographicOffCenterLH</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixShadow</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixshadow.aspx">XMMatrixShadow</a></td>
+</tr>
+<tr>
+<td><code>D3DXMatrixReflect</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.matrix.xmmatrixreflect.aspx">XMMatrixReflect</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionLength</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionlength.aspx">XMQuaternionLength</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionLengthSq</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionlengthsq.aspx">XMQuaternionLengthSq</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionDot</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaterniondot.aspx">XMQuaternionDot</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionIdentity</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionidentity.aspx">XMQuaternionIdentity</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionIsIdentity</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionisidentity.aspx">XMQuaternionIsIdentity</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionConjugate</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionconjugate.aspx">XMQuaternionConjugate</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionToAxisAngle</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaterniontoaxisangle.aspx">XMQuaternionToAxisAngle</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionRotationMatrix</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionrotationmatrix.aspx">XMQuaternionRotationMatrix</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionRotationAxis</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionrotationaxis.aspx">XMQuaternionRotationAxis</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionRotationYawPitchRoll</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionrotationrollpitchyaw.aspx">XMQuaternionRotationRollPitchYaw</a><br> (Note the order of parameters is different:<br> D3DXMath takes yaw, pitch, roll,<br> DirectXMath takes pitch, yaw, roll)</td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionMultiply</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionmultiply.aspx">XMQuaternionMultiply</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionNormalize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionnormalize.aspx">XMQuaternionNormalize</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionnormalizeest.aspx">XMQuaternionNormalizeEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionInverse</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternioninverse.aspx">XMQuaternionInverse</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionLn</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionln.aspx">XMQuaternionLn</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionExp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionexp.aspx">XMQuaternionExp</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionSlerp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionslerp.aspx">XMQuaternionSlerp</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionslerpv.aspx">XMQuaternionSlerpV</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionSquad</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionsquad.aspx">XMQuaternionSquad</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionsquadv.aspx">XMQuaternionSquadV</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionSquadSetup</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionsquadsetup.aspx">XMQuaternionSquadSetup</a></td>
+</tr>
+<tr>
+<td><code>D3DXQuaternionBaryCentric</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionbarycentric.aspx">XMQuaternionBaryCentric</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.quaternion.xmquaternionbarycentricv.aspx">XMQuaternionBaryCentricV</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneDot</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanedot.aspx">XMPlaneDot</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneDotCoord</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanedotcoord.aspx">XMPlaneDotCoord</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneDotNormal</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanedotnormal.aspx">XMPlaneDotNormal</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneScale</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorscale.aspx">XMVectorScale</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneNormalize</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanenormalize.aspx">XMPlaneNormalize</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanenormalizeest.aspx">XMPlaneNormalizeEst</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneIntersectLine</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplaneintersectline.aspx">XMPlaneIntersectLine</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneFromPointNormal</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanefrompointnormal.aspx">XMPlaneFromPointNormal</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneFromPoints</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanefrompoints.aspx">XMPlaneFromPoints</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneTransform</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.plane.xmplanetransform.aspx">XMPlaneTransform</a></td>
+</tr>
+<tr>
+<td><code>D3DXPlaneTransformArray</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh404689.aspx">XMPlaneTransformStream</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorNegative</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.color.xmcolornegative.aspx">XMColorNegative</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorAdd</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectoradd.aspx">XMVectorAdd</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorSubtract</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorsubtract.aspx">XMVectorSubtract</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorScale</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.arithmetic.xmvectorscale.aspx">XMVectorScale</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorModulate</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.color.xmcolormodulate.aspx">XMColorModulate</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorLerp</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerp.aspx">XMVectorLerp</a> or <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.geometric.xmvectorlerpv.aspx">XMVectorLerpV</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorAdjustSaturation</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.color.xmcoloradjustsaturation.aspx">XMColorAdjustSaturation</a></td>
+</tr>
+<tr>
+<td><code>D3DXColorAdjustContrast</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.color.xmcoloradjustcontrast.aspx">XMColorAdjustContrast</a></td>
+</tr>
+<tr>
+<td><code>D3DXFresnelTerm</code></td>
+<td><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.utilities.xmfresnelterm.aspx">XMFresnelTerm</a></td>
+</tr>
+</tbody>
+</table>
+<h1>Spherical Harmonics Math</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2012/07/28/spherical-harmonics-math.aspx">SHmath</a> library is available as an add-on for DirectXMath.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>XMSHEvalDirection</code></td>
+<td>Evaluates the Spherical Harmonic basis functions. Equivalent to <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205448.aspx">D3DXSHEvalDirection</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHRotate</code></td>
+<td>Rotates SH vector by a rotation matrix. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb204992.aspx">D3DXSHRotate</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHRotateZ</code></td>
+<td>Rotates the SH vector in the Z axis by an angle. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205461.aspx">D3DXSHRotateZ</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHAdd</code></td>
+<td>Adds two SH vectors. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205438.aspx">D3DXSHAdd</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHScale</code></td>
+<td>Scales a SH vector. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb204994.aspx">D3DXSHScale</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHDot</code></td>
+<td>Computes the dot product of two SH vectors. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205446.aspx">D3DXSHDot</a> function.</td>
+</tr>
+<tr>
+<td><code><code>XMSHMultiply<br></code></code><code>XMSHMultiply2<br> XMSHMultiply3<br> XMSHMultiply4<br> XMSHMultiply5<br> XMSHMultiply6</code></td>
+<td>Computes the product of two functions represented using SH. Equivalent to <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205454.aspx">D3DXSHMultiply2</a>, <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb232906.aspx">D3DXSHMultiply3</a>, <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb232907.aspx">D3DXSHMultiply4</a>, <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb232908.aspx">D3DXSHMultiply5</a>, and <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb232909.aspx">D3DXSHMultiply6</a>.</td>
+</tr>
+<tr>
+<td><code>XMSHEvalDirectionalLight</code></td>
+<td>Evaluates a directional light and returns spectral SH data. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb204988.aspx">D3DXSHEvalDirectionalLight</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHEvalSphericalLight</code></td>
+<td>Evaluates a spherical light and returns spectral SH data. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb205451.aspx">D3DXEvalSphericalLight</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHEvalConeLight</code></td>
+<td>Evaluates a light that is a cone of constant intensity and returns spectral SH data. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb204986.aspx">D3DXSHEvalConeLight</a> function.</td>
+</tr>
+<tr>
+<td><code>XMSHEvalHemisphereLight</code></td>
+<td>Evaluates a light that is a linear interpolant between two colors over the sphere. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb204989.aspx">D3DXSHEvalHemisphereLight</a> function.</td>
+</tr>
+<tr>
+<td><code>SHProjectCubeMap</code></td>
+<td>Projects a function represented in a cube map into spherical harmonics. Equivalent to the <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff476300.aspx">D3DX11SHProjectCubeMap</a> function.</td>
+</tr>
+</tbody>
+</table>
+<h1>Effects (FX)</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2012/10/24/effects-for-direct3d-11-update.aspx">Effects system for Direct3D 11</a> is primarily provided as a porting aid for older code. The library is available on <a href="http://go.microsoft.com/fwlink/p/?LinkId=271568">CodePlex</a>.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DXCreateEffect<br>D3DXCreateEffectEx<br>D3DXCreateEffectFromResource<br>D3DXCreateEffectFromResourceEx<br>D3D10CompileEffectFromMemory</code></td>
+<td>
+<p><code>D3DX11CompileEffectFromMemory</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DXCreateEffectFromFile<br>D3DXCreateEffectFromFileEx</code></td>
+<td>
+<p><code>D3DX11CompileEffectFromFile</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3D10CreateEffectFromMemory</code></td>
+<td>
+<p><code>D3DX11CreateEffectFromMemory</code></p>
+</td>
+</tr>
+<tr>
+<td><code>D3DXCreateEffectPool<br> D3D10CreateEffectPoolFromMemory</code></td>
+<td>
+<p>Effects 11 does not support 'effect pools'<br>or <code>D3DCOMPILE_EFFECT_CHILD_EFFECT</code>. Effect <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff476120.aspx">groups</a> provide a more efficient solution for common scenarios previously addressed with 'effect pools'</p>
+</td>
+</tr>
+<tr>
+<td><code>D3DXDisassembleEffect<br> D3D10DisassembleEffect</code></td>
+<td>
+<p><code>D3DDisassemble</code><br> <code>D3DDisassemble10Effect</code> in D3DCompile</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1>Performance/Profiling</h1>
+<p>D3DX9 included the entry-points intercepted by PIX for Windows for 
+performance profiling. This is now handled by the DirectX runtime 
+directly and is monitored by the Visual Studio Graphics Diagnostics 
+tool.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DPERF_BeginEvent<br> D3DPERF_EndEvent<br>D3DPERF_SetMarker<br>D3DPERF_SetRegion<br>D3DPERF_QueryRepeatFrame<br>D3DPERF_SetOptions<br>D3DPERF_GetStatus</code></td>
+<td>
+<p><a href="http://msdn.microsoft.com/en-us/library/hh446881.aspx">ID3DUserDefinedAnnotation</a> which is supported by the DirectX 11.1 runtime on Windows 8.x and Windows 7 Service Pack 1 + <a href="http://blogs.msdn.com/b/chuckw/archive/2013/02/26/directx-11-1-and-windows-7-update.aspx">KB2670838</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h1>UVAtlas Functions</h1>
+<p>The <a href="http://blogs.msdn.com/b/chuckw/archive/2014/11/14/uvatlas-return-of-the-isochart.aspx">UVAtlas</a> library is intended for isochart creation offline with tools, although it can be used at runtime. You can find the library on <a href="http://go.microsoft.com/fwlink/?LinkID=512686">CodePlex</a>.</p>
+<table border="1">
+<tbody>
+<tr>
+<td><code>D3DXUVAtlasCreate</code></td>
+<td><code>UVAtlasCreate</code></td>
+</tr>
+<tr>
+<td><code>D3DXUVAtlasPartition</code></td>
+<td><code>UVAtlasPartition</code></td>
+</tr>
+<tr>
+<td><code>D3DXUVAtlasPack</code></td>
+<td><code>UVAtlasPack</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeIMTFromPerVertexSignal</code></td>
+<td><code>UVAtlasComputeIMTFromPerVertexSignal</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeIMTFromPerTexelSignal</code></td>
+<td><code>UVAtlasComputeIMTFromPerTexelSignal</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeIMTFromSignal </code></td>
+<td><code>UVAtlasComputeIMTFromSignal</code></td>
+</tr>
+<tr>
+<td><code>D3DXComputeIMTFromTexture </code></td>
+<td><code>UVAtlasComputeIMTFromTexture</code></td>
+</tr>
+</tbody>
+</table>
+<h1>Note</h1>
+<p>Careful readers will note that there are a few omissions from this table.</p>
+<ul>
+<li>The <code>ID3DXMatrixStack</code> from D3DXMath doesn't have a new 
+version, but it's actually pretty easy to implement your own. If someone
+ has a burning need for this, please comment below.</li>
+<li>The Precomputed Radiance Transfer (PRT) simulator is only available 
+in closed-source form in legacy D3DX9. There are a number of papers that
+ cover this technology in the literature, and the most generally useful 
+parts of this functionality are the <a href="http://blogs.msdn.com/b/chuckw/archive/2012/07/28/spherical-harmonics-math.aspx">SHmath</a> functions which are available.</li>
+</ul>
+<h1>Background</h1>
+<p>A few folks have asked why the D3DX libraries were deprecated in the 
+first place in the transition to the Windows 8.x SDK. D3DX has been a 
+useful set of utility code for Direct3D applications since Direct3D 7, 
+but has a presented a number of challenges over the years. The primary 
+one is that as a 'closed-source' utility library; it was difficult to 
+debug, resolve performance issues, or apply hot-fixes without taking a 
+dependency on a newer release of the DirectX SDK. Second, with the 
+security requirements that came with the adoption of the <a href="http://www.microsoft.com/security/sdl/default.aspx">Secure Development Lifecycle</a> (SDL) at Microsoft, the transition to a DLL rather than a static library created a redistribution requirement that<a href="http://blogs.msdn.com/b/chuckw/archive/2010/09/08/not-so-direct-setup.aspx"> complicated setup</a>
+ for many developers--note that static libraries have their own problems
+ such as being specific to a particular release of the compiler 
+including service pack level. D3DX9 itself became a bit bloated which 
+resulted in a DLL larger than many EXEs that used it.&nbsp;Finally, the 
+actual usable content of subsequent generations of D3DX left D3DX11 with
+ not much in it. The need for useful utility code is still there, but it
+ is now being solved with various 'shared-source' solutions rather than a
+ monolithic closed-source DLL like D3DX.</p><div style="clear:both;"></div></div>
+    <div class="post-attachment-viewer">
+		
+    </div>
+    <div class="post-actions">
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+            <!---->
+            <li class="navigation-item"><a class="internal-link view-replies" href="http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx#comments"><span></span>0 Comments</a></li>
+            
+            
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div>
+    <div class="post-tags"><div id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl01_Container" style="display: none;"><div class="tags-editor"><textarea id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl01_Tags" style="width: 97%; height: 100%;" rows="2" cols="30"></textarea><div style="white-space: nowrap; padding-top: 4px;"><table width="100%" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td align="left"><input onclick="Telligent_Modal.Open('\/utility\/TagSelector.aspx?TagEditor=ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl01_TagEditor',400,300,null);;return false;" value="Select Tags..." type="button"></td><td align="right"><input value="Save" type="button"><input onclick="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl01.Close(); return false;" value="Cancel" type="button"></td></tr></tbody></table></div></div></div><span id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl02"><a href="http://blogs.msdn.com/b/chuckw/archive/tags/direct3d/" rel="tag">direct3d</a>, <a href="http://blogs.msdn.com/b/chuckw/archive/tags/dxsdk/" rel="tag">dxsdk</a></span><input name="ctl00$content$ctl00$w_52317$_b2ed85$ctl00$ctl15$ctl02" id="ctl00_content_ctl00_w_52317__b2ed85_ctl00_ctl15_ctl02_State" value="value:%3Ca%20href%3D%22http%3A%2F%2Fblogs.msdn.com%2Fb%2Fchuckw%2Farchive%2Ftags%2Fdirect3d%2F%22%20rel%3D%22tag%22%3Edirect3d%3C%2Fa%3E%2C%20%3Ca%20href%3D%22http%3A%2F%2Fblogs.msdn.com%2Fb%2Fchuckw%2Farchive%2Ftags%2Fdxsdk%2F%22%20rel%3D%22tag%22%3Edxsdk%3C%2Fa%3E" type="hidden"></div>
+</div>
+<div class="full-post-footer"></div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment social-media-sharing no-wrapper" id="fragment-52318">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+
+<div class="ShareThisMainPanel">
+	<div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_960e5f69_e094_4811_bc4f_13487ffa8bd9" class="ShareThis_ChildRootPanel" onmouseover="ShareThisChildRootPanelOnmouseOver(this.id);" onmouseout="ShareThisChildRootPanelOnmouseOut(this.id);">
+		<div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_ShareThisBtnCollPanel_4a356af03ab44a9eb13e153cf73a2361" class="tierOnePanel">
+			<div class="buttonPanel">
+				<a title="Share on Facebook" class="iconsOnPanel" href="http://www.facebook.com/sharer.php?u=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;t=Living+without+D3DX" target="_blank"><img title="Share on Facebook" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/facebook.gif" style="border-width:0px;"></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Twitter" class="iconsOnPanel" href="http://twitter.com/home?status=Living+without+D3DX%20:%20http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx" target="_blank"><img title="Share on Twitter" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/twitter.gif" style="border-width:0px;"></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Digg" class="iconsOnPanel" href="http://digg.com/submit?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on Digg" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/digg.gif" style="border-width:0px;"></a>
+			</div><div class="buttonPanel">
+				<a title="Share on del.icio.us" class="iconsOnPanel" href="http://del.icio.us/post?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on del.icio.us" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/delicious.gif" style="border-width:0px;"></a>
+			</div>
+		</div><div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_ShareThisBtnCollPanel_a846d82485f34a7fb2dbcf91d96d77b4" class="tierTwoPanel" onclick="TierTwoPanelOnclick(this.id);" onkeypress="if (event.keyCode == 13) TierTwoPanelOnclick(this.id);" onmouseover="TierTwoPanelOnmouseOver(this.id);" onmouseout="TierTwoPanelOnmouseOut(this.id);">
+			<div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_ShareThisBtnCollPanel_06fc73c06ccb4bd1aaee861ebd258fec" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Reddit" class="iconsOnPanel" href="http://www.reddit.com/submit?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on Reddit" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/reddit.gif" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on LinkedIn" class="iconsOnPanel" href="http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX&amp;summary=&amp;source=Microsoft&amp;armin=armin" target="_blank"><img title="Share on LinkedIn" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/linkedin.gif" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Slashdot" class="iconsOnPanel" href="http://slashdot.org/bookmark.pl?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on Slashdot" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/slashdot.gif" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on MySpace" class="iconsOnPanel" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;t=Living+without+D3DX" target="_blank"><img title="Share on MySpace" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/myspace.gif" style="border-width:0px;"></a>
+				</div>
+			</div><div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_ShareThisBtnCollPanel_de88e104e2564ce99813f5406ad2ec73" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Technorati" class="iconsOnPanel" href="http://technorati.com/faves/?add=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx" target="_blank"><img title="Share on Technorati" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/technorati.gif" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on FriendFeed" class="iconsOnPanel" href="http://friendfeed.com/?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on FriendFeed" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/friendfeed.gif" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Messenger" class="iconsOnPanel" href="http://profile.live.com/badge?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on Messenger" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/messenger.png" style="border-width:0px;"></a>
+				</div><div class="buttonPanel">
+					<a title="Share on StumbleUpon" class="iconsOnPanel" href="http://www.stumbleupon.com/submit?url=http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx&amp;title=Living+without+D3DX" target="_blank"><img title="Share on StumbleUpon" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/stumbleupon.gif" style="border-width:0px;"></a>
+				</div>
+			</div>
+		</div>
+	</div><div id="ctl00_content_ctl00_w_52318__b2ed85_ctl00_ShowMoreLessButtonsPanel_d5e86283_f0b8_45dc_a05f_ce00b60cf5db" tabindex="1" class="ShowMoreLessButtonsPanel" onclick="ShowMoreLessButtonsPanelOnClick(this.id);" onkeypress="if (event.keyCode == 13) ShowMoreLessButtonsPanelOnClick(this.id);" onmouseover="ShowMoreLessButtonsPanelOnmouseOver(this.id);" onmouseout="ShowMoreLessButtonsPanelOnmouseOut(this.id);">
+		<a class="buttonMoreLess" id="btn_more"><img title="More" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/more.gif" style="border-width:0px;"></a><a class="buttonMoreLess" id="btn_less"><img title="Less" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/less.gif" style="border-width:0px;"></a>
+	</div>
+</div><div class="ShareClearFloatsPanel">
+
+</div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-feedback-list no-wrapper with-header" id="fragment-52319">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Blog - Comment List MSDN TechNet</div></div>
+<div class="content-fragment-content">
+
+
+
+
+
+<a name="comments"></a>
+<div class="content-list-header"></div>
+<div class="content-list-name">
+    
+            <a class="internal-link rss" href="http://blogs.msdn.com/b/chuckw/rsscomments.aspx?WeblogPostID=10443145"><span></span>Comments</a>
+        
+</div>
+
+
+
+<ul id="commentList" class="content-list"></ul>
+<div id="pagerContainer" class="pager">           </div>
+<div class="content-list-footer"></div>
+
+
+
+
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment captcha-blog-post-comment-form no-wrapper" id="fragment-52320">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+<input name="ctl00$content$ctl00$w_52320$_b2ed85$ctl00$ctl00$postCommentUrl" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_postCommentUrl" type="hidden">
+
+    
+            <div class="field-list-header"></div>
+            <fieldset class="field-list">
+                <legend class="field-list-description">Leave a Comment</legend>
+                <ul class="field-list">
+                    <li id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_NameField" class="field-item">
+                        <label for="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbName" class="field-item-header">Name</label>
+                        <span class="field-item-input"><input name="ctl00$content$ctl00$w_52320$_b2ed85$ctl00$ctl00$PlaceHolder1$ctl04$bpCommentForm$ctl04$tbName" size="60" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbName" type="text"></span>
+                        <span id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbNameRFV" style="color:Red;display:none;"><span class="field-item-validation">*</span></span>
+                    </li>
+                    <li class="field-item post-body">
+                        <label for="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbComment" class="field-item-header">Comment</label>
+                        <span class="field-item-input"><textarea tabindex="-1" rows="2" cols="20" style="height: 100px; resize: none; overflow-y: hidden; position: absolute; top: 0px; left: -9999px; width: 597px; line-height: 14px; text-decoration: none; letter-spacing: normal;"></textarea><textarea name="ctl00$content$ctl00$w_52320$_b2ed85$ctl00$ctl00$PlaceHolder1$ctl04$bpCommentForm$ctl04$tbComment" rows="2" cols="20" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbComment" style="height: 100px; resize: none; overflow-y: hidden;"></textarea></span>
+                        <span id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbCommentRFV" style="color:Red;display:none;"><span class="field-item-validation">* Please enter a comment</span></span>
+                        <span id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_tbCommentREV" style="color:Red;display:none;"><span class="field-item-validation">Please shorten the content to 3072 or less</span></span>
+                    </li>
+                    <li class="field-item">
+                        
+                           <span id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha" style="color:Red;display:none;">*</span><span style="display: none;" id="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_subtext_captcha">Please add 6 and 5 and type the answer here: <input name="ctl00_content_ctl00_w_52320__b2ed85_ctl00_ctl00_PlaceHolder1_ctl04_bpCommentForm_ctl04_invisibleCaptcha_visibleanswer" type="text"></span>
+
+
+                    </li>
+                    <li class="field-item">
+                        
+                        <span class="field-item-input">
+                            
+                            <a class="internal-link add-reply post" style="cursor: pointer;"><span></span>Post</a>
+                            <a class="internal-link add-reply publishing" style="color:#c7c7c7; display: none;cursor: pointer;"><span></span>Publishing</a>
+                            <span id="errorOnPosting" style="color: white; background-color: red; padding: 5px; margin-left: 10px; display: none;">An error occurred while posting! Please retry posting your comment.</span>
+                        </span>
+                    </li>
+                </ul>
+            </fieldset>
+            <div class="field-list-footer"></div>
+            
+        
+    </div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+</div>
+</div>
+</div>
+<div class="layout-footer"></div>
+</div></div>
+
+			<div class="footer-fragments-header"></div>
+<div class="footer-fragments"><div class="footer-fragment copyright-info" id="footer-fragment-1402503690">
+
+<ul class="footer-fragment-links">
+    <li class="message copyright">© 2014 Microsoft Corporation.</li>
+	<li class="message termsOfService"><a href="http://msdn.microsoft.com/cc300389">Terms of Use</a> </li>
+    <li class="message trademarks"><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a> </li>
+    <li class="message privacy"><a href="http://go.microsoft.com/fwlink/?LinkId=248681">Privacy &amp; Cookies</a> </li>
+    <li class="message abuse">
+    
+            <a id="ctl00_footer_fragment_1402503690__b2ed85_ctl00_ctl00_ctl01_lnkAbuse" href='javascript:WebForm_DoPostBackWithOptions(new%20WebForm_PostBackOptions("ctl00$footer_fragment_1402503690$_b2ed85$ctl00$ctl00$ctl01$lnkAbuse",%20"",%20true,%20"",%20"",%20false,%20true))'>Report Abuse</a>
+        
+    </li>
+    
+    <li class="message version">5.6.426.415</li>
+</ul></div><div class="footer-fragment omniture-footer-fragment" id="footer-fragment-1402503691">
+
+
+        <noscript><a href="http://www.omniture.com" title="Web Analytics"><img
+        src="http://msstomsdnblogs.112.2O7.net/b/ss/msstomsdnblogs/1/H.20.2--NS/0"
+        height="1" width="1" border="0" alt="" /></a></noscript>
+
+</div><div class="footer-fragment app-insights-footer-fragment" id="footer-fragment-1402503692">
+
+        
+    </div></div>
+<div class="footer-fragments-footer"></div>
+		
+
+
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx"
+dc:identifier="http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx"
+dc:title="Living without D3DX"
+trackback:ping="http://blogs.msdn.com/b/chuckw/trackback.ashx?WeblogPostID=10443145" />
+</rdf:RDF>
+-->
+
+
+
+
+
+</form>
+       
+    
+    
+	
+        
+
+<div id="_WEDCSInsertedData" style="display: none;"><iframe id="_msnFrame" src="Living%20without%20D3DX%20-%20Games%20for%20Windows%20and%20the%20DirectX%20SDK%20-%20Site%20Home%20-%20MSDN%20Blogs_tiedostot/c.gif" style="z-index:-1;height:1px;width:1px;display:none;visibility:hidden;" onload="javascript:MscomBeacon();"></iframe></div></body></html>
