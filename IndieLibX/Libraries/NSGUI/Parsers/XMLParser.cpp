@@ -1131,7 +1131,7 @@ bool XMLStack::fillRawData(char **stream, RawData *dataStruct, int bytesCount)
 
   {
 
-    while(!(*(subStream + 0) == '<' && *(subStream + 1) == stx_getOsSeparator() &&
+    while(!(*(subStream + 0) == '<' && *(subStream + 1) == '/' &&
 
             *(subStream + 2) == 'R' && *(subStream + 3) == 'a' &&
 
@@ -1365,7 +1365,7 @@ char* XMLStack::parseXMLStream(char *stream, XMLElement *parent)
 
     {
 
-      while((*stream != stx_getOsSeparator() && *(stream + 1) != '>') &&
+      while((*stream != '/' && *(stream + 1) != '>') &&
 
             (*stream != '>'))
 
@@ -1401,7 +1401,7 @@ char* XMLStack::parseXMLStream(char *stream, XMLElement *parent)
 
 
 
-      if(*stream == stx_getOsSeparator() && *(stream + 1) == '>')
+      if(*stream == '/' && *(stream + 1) == '>')
 
       {
 
@@ -1463,7 +1463,7 @@ char* XMLStack::parseXMLStream(char *stream, XMLElement *parent)
 
 
 
-    while(*stream == '<' && *(stream + 1) != stx_getOsSeparator())
+    while(*stream == '<' && *(stream + 1) != '/')
 
     {
 
@@ -1483,7 +1483,7 @@ char* XMLStack::parseXMLStream(char *stream, XMLElement *parent)
 
 
 
-    if(*stream == '<' && *(stream + 1)== stx_getOsSeparator())
+    if(*stream == '<' && *(stream + 1)== '/')
 
     {
 
