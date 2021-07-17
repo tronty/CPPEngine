@@ -1,0 +1,50 @@
+[Vertex shader]
+
+float4x4 mvp;
+float3 camPos;
+
+struct VsOut {
+	float4 pos      : POSITION;
+	float2 texCoord : TEXCOORD0;
+	float3 normal   : TEXCOORD1;
+	float  fog      : TEXCOORD2;
+	float2 scale    : TEXCOORD3;
+};
+
+sampler2D Terrain: register(s0);
+
+VsOut main(float2 pos: POSITION0
+#ifdef R2VB
+	, float4 height: POSITION1
+#endif
+	){
+
+#ifdef VTF
+	float4 height = tex2Dlod(Terrain, float4(pos.xy + 0.5, 0.0, 0.0));
+#endif
+
+	float4 vertex = float4(4.0 * pos.x, height.w, 4.0 * pos.y, 1);
+
+	VsOut Out;
+	Out.pos = mul(mvp, vertex);
+	Out.texCoord = pos * 16.0;
+	Out.normal = height.xyz;
+	Out.fog = saturate(0.65 * length(vertex.xyz - camPos));
+	Out.scale = saturate(height.w * 1.2 - 0.3) * float2(0.6, 0.5);
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler2D Ground;
+
+float3 lightDir;
+float4 fogColor;
+
+float4 main(float2 texCoord: TEXCOORD0, float3 normal: TEXCOORD1, float fog: TEXCOORD2, float2 scale: TEXCOORD3) : COLOR {
+	float diffuse = saturate(dot(lightDir, normal) * scale.x + scale.y);
+	float4 base = tex2D(Ground, texCoord);
+
+	return lerp(diffuse * base, fogColor, fog);
+}

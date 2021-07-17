@@ -1,0 +1,923 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>3D Graphics with OpenGL by Examples</title>
+
+<!-- @@ start change in v1 -->
+<link href="3D%20Graphics%20with%20OpenGL%20by%20Examples_tiedostot/programming_notes_v1.css" rel="stylesheet" type="text/css">
+
+<link rel="shortcut icon" href="https://www.ntu.edu.sg/home/ehchua/programming/favicon.ico" type="image/x-icon"></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>yet another insignificant programming notes... &nbsp;&nbsp;| &nbsp;&nbsp;<a href="https://www.ntu.edu.sg/home/ehchua/programming/index.html">HOME</a></p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="#show-toc">(HIDE)</a></h5>
+<div id="toc"><a class="toc-H3" href="#zz-1.">1.&nbsp;&nbsp;Example 1: 3D Shapes (<span class="font-code">OGL01Shape3D.cpp</span>)</a><br><a class="toc-H3" href="#zz-2.">2.&nbsp;&nbsp;Example 2: 3D Shape with Animation (<span class="font-code">OGL02Animation.cpp</span>)</a><br><a class="toc-H3" href="#zz-3.">3.&nbsp;&nbsp;Example 3: Orthographic Projection (<span class="font-code">OGL03Orthographic.cpp</span>)</a><br><a class="toc-H3" href="#zz-4.">4.&nbsp;&nbsp;Example 4: Vertex Array</a><br><br></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>3D Graphics with OpenGL</h1>
+<h2>By Examples</h2>
+</div>
+
+<div id="content-main">
+
+<p>I assume that you have some knowledge of OpenGL. Otherwise, read "<a href="https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Introduction.html">Introduction to OpenGL with 2D Graphics</a>".</p>
+
+<h3>1.&nbsp;&nbsp;Example 1: 3D Shapes (<span class="font-code">OGL01Shape3D.cpp</span>)<a id="zz-1."></a></h3>
+
+<p>This example is taken from Nehe OpenGL Tutorial Lesson # 5 (@ <a href="http://nehe.gamedev.net/">http://nehe.gamedev.net/</a>),
+ which displays a 3D color-cube and a pyramid. The cube is made of of 6 
+quads, each having different colors. The hallow pyramid is made up of 4 
+triangle, with different colors on each of the vertices.</p>
+
+<table class="table-program">
+<colgroup><col class="col-line-number">
+<col class="col-program">
+</colgroup><tbody>
+<tr>
+<td>
+<pre class="text-right">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145</pre>
+</td>
+<td>
+<pre><span class="color-comment">/*
+ * OGL01Shape3D.cpp: 3D Shapes
+ */</span>
+#include &lt;windows.h&gt;  <span class="color-comment">// for MS Windows</span>
+#include &lt;GL/glut.h&gt;  <span class="color-comment">// GLUT, include glu.h and gl.h</span>
+ 
+<span class="color-comment">/* Global variables */</span>
+char title[] = "3D Shapes";
+ 
+<span class="color-comment">/* Initialize OpenGL Graphics */</span>
+void initGL() {
+   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); <span class="color-comment">// Set background color to black and opaque</span>
+   glClearDepth(1.0f);                   <span class="color-comment">// Set background depth to farthest</span>
+   glEnable(GL_DEPTH_TEST);   <span class="color-comment">// Enable depth testing for z-culling</span>
+   glDepthFunc(GL_LEQUAL);    <span class="color-comment">// Set the type of depth-test</span>
+   glShadeModel(GL_SMOOTH);   <span class="color-comment">// Enable smooth shading</span>
+   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  <span class="color-comment">// Nice perspective corrections</span>
+}
+ 
+<span class="color-comment">/* Handler for window-repaint event. Called back when the window first appears and
+   whenever the window needs to be re-painted. */</span>
+void display() {
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); <span class="color-comment">// Clear color and depth buffers</span>
+   glMatrixMode(GL_MODELVIEW);     <span class="color-comment">// To operate on model-view matrix</span>
+ 
+   <span class="color-comment">// Render a color-cube consisting of 6 quads with different colors</span>
+   glLoadIdentity();                 <span class="color-comment">// Reset the model-view matrix</span>
+   glTranslatef(1.5f, 0.0f, -7.0f);  <span class="color-comment">// Move right and into the screen</span>
+ 
+   glBegin(GL_QUADS);                <span class="color-comment">// Begin drawing the color cube with 6 quads</span>
+      <span class="color-comment">// Top face (y = 1.0f)</span>
+      <span class="color-comment">// Define vertices in counter-clockwise (CCW) order with normal pointing out</span>
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f( 1.0f, 1.0f, -1.0f);
+      glVertex3f(-1.0f, 1.0f, -1.0f);
+      glVertex3f(-1.0f, 1.0f,  1.0f);
+      glVertex3f( 1.0f, 1.0f,  1.0f);
+ 
+      <span class="color-comment">// Bottom face (y = -1.0f)</span>
+      glColor3f(1.0f, 0.5f, 0.0f);     <span class="color-comment">// Orange</span>
+      glVertex3f( 1.0f, -1.0f,  1.0f);
+      glVertex3f(-1.0f, -1.0f,  1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f( 1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Front face  (z = 1.0f)</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f( 1.0f,  1.0f, 1.0f);
+      glVertex3f(-1.0f,  1.0f, 1.0f);
+      glVertex3f(-1.0f, -1.0f, 1.0f);
+      glVertex3f( 1.0f, -1.0f, 1.0f);
+ 
+      <span class="color-comment">// Back face (z = -1.0f)</span>
+      glColor3f(1.0f, 1.0f, 0.0f);     <span class="color-comment">// Yellow</span>
+      glVertex3f( 1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f,  1.0f, -1.0f);
+      glVertex3f( 1.0f,  1.0f, -1.0f);
+ 
+      <span class="color-comment">// Left face (x = -1.0f)</span>
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f,  1.0f,  1.0f);
+      glVertex3f(-1.0f,  1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f,  1.0f);
+ 
+      <span class="color-comment">// Right face (x = 1.0f)</span>
+      glColor3f(1.0f, 0.0f, 1.0f);     <span class="color-comment">// Magenta</span>
+      glVertex3f(1.0f,  1.0f, -1.0f);
+      glVertex3f(1.0f,  1.0f,  1.0f);
+      glVertex3f(1.0f, -1.0f,  1.0f);
+      glVertex3f(1.0f, -1.0f, -1.0f);
+   glEnd();  <span class="color-comment">// End of drawing color-cube</span>
+ 
+   <span class="color-comment">// Render a pyramid consists of 4 triangles</span>
+   glLoadIdentity();                  <span class="color-comment">// Reset the model-view matrix</span>
+   glTranslatef(-1.5f, 0.0f, -6.0f);  <span class="color-comment">// Move left and into the screen</span>
+ 
+   glBegin(GL_TRIANGLES);           <span class="color-comment">// Begin drawing the pyramid with 4 triangles</span>
+      <span class="color-comment">// Front</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f( 0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(-1.0f, -1.0f, 1.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(1.0f, -1.0f, 1.0f);
+ 
+      <span class="color-comment">// Right</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f(0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(1.0f, -1.0f, 1.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Back</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f(0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(1.0f, -1.0f, -1.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Left</span>
+      glColor3f(1.0f,0.0f,0.0f);       <span class="color-comment">// Red</span>
+      glVertex3f( 0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f,0.0f,1.0f);       <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f,-1.0f,-1.0f);
+      glColor3f(0.0f,1.0f,0.0f);       <span class="color-comment">// Green</span>
+      glVertex3f(-1.0f,-1.0f, 1.0f);
+   glEnd();   <span class="color-comment">// Done drawing the pyramid</span>
+ 
+   glutSwapBuffers();  <span class="color-comment">// Swap the front and back frame buffers (double buffering)</span>
+}
+ 
+<span class="color-comment">/* Handler for window re-size event. Called back when the window first appears and
+   whenever the window is re-sized with its new width and height */</span>
+void reshape(GLsizei width, GLsizei height) {  <span class="color-comment">// GLsizei for non-negative integer</span>
+   <span class="color-comment">// Compute aspect ratio of the new window</span>
+   if (height == 0) height = 1;                <span class="color-comment">// To prevent divide by 0</span>
+   GLfloat aspect = (GLfloat)width / (GLfloat)height;
+ 
+   <span class="color-comment">// Set the viewport to cover the new window</span>
+   glViewport(0, 0, width, height);
+ 
+   <span class="color-comment">// Set the aspect ratio of the clipping volume to match the viewport</span>
+   glMatrixMode(GL_PROJECTION);  <span class="color-comment">// To operate on the Projection matrix</span>
+   glLoadIdentity();             <span class="color-comment">// Reset</span>
+   <span class="color-comment">// Enable perspective projection with fovy, aspect, zNear and zFar</span>
+   gluPerspective(45.0f, aspect, 0.1f, 100.0f);
+}
+ 
+<span class="color-comment">/* Main function: GLUT runs as a console application starting at main() */</span>
+int main(int argc, char** argv) {
+   glutInit(&amp;argc, argv);            <span class="color-comment">// Initialize GLUT</span>
+   glutInitDisplayMode(GLUT_DOUBLE); <span class="color-comment">// Enable double buffered mode</span>
+   glutInitWindowSize(640, 480);   <span class="color-comment">// Set the window's initial width &amp; height</span>
+   glutInitWindowPosition(50, 50); <span class="color-comment">// Position the window's initial top-left corner</span>
+   glutCreateWindow(title);          <span class="color-comment">// Create window with the given title</span>
+   glutDisplayFunc(display);       <span class="color-comment">// Register callback handler for window re-paint event</span>
+   glutReshapeFunc(reshape);       <span class="color-comment">// Register callback handler for window re-size event</span>
+   initGL();                       <span class="color-comment">// Our own OpenGL initialization</span>
+   glutMainLoop();                 <span class="color-comment">// Enter the infinite event-processing loop</span>
+   return 0;
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<img class="image-float-right" src="3D%20Graphics%20with%20OpenGL%20by%20Examples_tiedostot/Output_OGL01Shape3D.png">
+
+<h5>GLUT Setup - <span class="font-code">main()</span></h5>
+
+<p>The program contains a <code>initGL()</code>, <code>display()</code> and <code>reshape()</code> functions.</p>
+<p>The <code>main()</code> program:</p>
+
+<ol>
+
+<li><span class="line-heading-code-new">glutInit(&amp;argc, argv);</span><br>
+Initializes the GLUT.</li>
+
+<li><span class="line-heading-code-new">glutInitWindowSize(640, 480);<br>
+glutInitWindowPosition(50, 50);<br>
+glutCreateWindow(title);</span><br>
+Creates a window with a title, initial width and height positioned at initial top-left corner.</li>
+
+<li><span class="line-heading-code-new">glutDisplayFunc(display);</span><br>
+Registers <code>display()</code> as the re-paint event handler. That is, the graphics sub-system calls back <code>display()</code> when the window first appears and whenever there is a re-paint request.</li>
+
+<li><span class="line-heading-code-new">glutReshapeFunc(reshape);</span><br>
+Registers <code>reshape()</code> as the re-sized event handler. That is, the graphics sub-system calls back <code>reshape()</code> when the window first appears and whenever the window is re-sized.</li>
+
+<li><span class="line-heading-code-new">glutInitDisplayMode(GLUT_DOUBLE);</span><br>
+Enables double buffering. In <code>display()</code>, we use <code>glutSwapBuffers()</code> to signal to the GPU to swap the front-buffer and back-buffer during the next VSync (Vertical Synchronization).</li>
+
+<li><span class="line-heading-code-new">initGL();</span><br>
+Invokes the <code>initGL()</code> once to perform all one-time initialization tasks.</li>
+
+<li><span class="line-heading-code-new">glutMainLoop();</span><br>
+Finally, enters the event-processing loop.</li>
+</ol>
+
+<h5>One-Time Initialization Operations - <span class="font-code">initGL()</span></h5>
+
+<p>The <code>initGL()</code> function performs the one-time initialization tasks. It is invoked from <code>main()</code> once (and only once).</p>
+
+<p><span class="line-heading-code-new">glClearColor(0.0f, 0.0f, 0.0f, 1.0f); <span class="color-comment">// Set background color to black and opaque</span><br>
+glClearDepth(1.0f); <span class="color-comment">// Set background depth to farthest</span><br>
+<span class="color-comment">// In display()</span><br>
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br>
+Set the clearing (background) color to black (R=0, G=0, B=0) and opaque 
+(A=1), and the clearing (background) depth to the farthest (Z=1). In <code>display()</code>, we invoke <code>glClear()</code>
+ to clear the color and depth buffer, with the clearing color and depth,
+ before rendering the graphics. (Besides the color buffer and depth 
+buffer, OpenGL also maintains an <em>accumulation buffer</em> and a <em>stencil buffer</em> which shall be discussed later.)</p>
+
+<p><span class="line-heading-code-new">glEnable(GL_DEPTH_TEST); <span class="color-comment">// Enable depth testing for z-culling</span><br>
+glDepthFunc(GL_LEQUAL); <span class="color-comment">// Set the type of depth-test</span></span><br>
+We need to enable depth-test to remove the hidden surface, and set the function used for the depth test.</p>
+
+<p><span class="line-heading-code-new">glShadeModel(GL_SMOOTH); <span class="color-comment">// Enable smooth shading</span></span><br>
+We enable smooth shading in color transition. The alternative is <code>GL_FLAT</code>. Try it out and see the difference.</p>
+
+<p><span class="line-heading-code-new">glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); <span class="color-comment">// Nice perspective corrections</span></span><br>
+ In graphics rendering, there is often a trade-off between processing speed and visual quality. We can use <code>glHint()</code>
+ to decide on the trade-off. In this case, we ask for the best 
+perspective correction, which may involve more processing. The default 
+is <code>GL_DONT_CARE</code>.</p>
+
+<h5>Defining the Color-cube and Pyramid</h5>
+
+<p>OpenGL's object is made up of primitives (such as triangle, quad, 
+polygon, point and line). A primitive is defined via one or more 
+vertices. The color-cube is made up of 6 quads. Each quad is made up of 4
+ vertices, defined in counter-clockwise (CCW) order, such as the normal 
+vector is pointing out, indicating the front face. All the 4 vertices 
+have the same color. The color-cube is defined in its local space 
+(called model space) with origin at the center of the cube with sides of
+ 2 units.</p>
+<p>Similarly, the pyramid is made up of 4 triangles (without the base). 
+Each triangle is made up of 3 vertices, defined in CCW order. The 5 
+vertices of the pyramid are assigned  different colors. The color of the
+ triangles are interpolated (and blend smoothly) from its 3 vertices. 
+Again, the pyramid is defined in its local space with origin at the 
+center of the pyramid.</p>
+
+<h5>Model Transform</h5>
+
+<img class="image-float-right" src="3D%20Graphics%20with%20OpenGL%20by%20Examples_tiedostot/Ex01_ModelTransform.png">
+<p>The objects are defined in their local spaces (model spaces). We need to transform them to the common world space, known as <em>model transform</em>.</p>
+
+<p>To perform model transform, we need to operate on the so-called <em>model-view matrix</em> (OpenGL has a few transformation matrices), by setting the current matrix mode to model-view matrix:</p>
+
+<p><span class="line-heading-code-new">glMatrixMode(GL_MODELVIEW); <span class="color-comment">// To operate on model-view matrix</span></span></p>
+
+<p>We perform translations on cube and pyramid, respectively, to position them on the world space:</p>
+
+<p><span class="line-heading-code-new">
+<span class="color-comment">// Color-cube</span><br>
+glLoadIdentity(); <span class="color-comment">// Reset model-view matrix</span><br>
+glTranslatef(1.5f, 0.0f, -7.0f);  <span class="color-comment">// Move right and into the screen</span><br>
+<span class="color-comment">// Pyramid</span><br>
+glLoadIdentity();<br>
+glTranslatef(-1.5f, 0.0f, -6.0f);  <span class="color-comment">// Move left and into the screen</span><br></span></p>
+
+
+<h5>View Transform</h5>
+
+<p>The default camera position is:</p>
+<pre class="color-syntax">gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, -100.0, 0.0, 1.0, 0.0)</pre>
+
+<p>That is<code>, EYE=(0,0,0)</code> at the origin, <code>AT=(0,0,-100)</code> pointing at negative-z axis (into the screen), and <code>UP=(0,1,0)</code> corresponds to y-axis.</p>
+<p>OpenGL graphics rendering pipeline performs so-called <em>view transform</em> to bring the <em>world space</em> to camera's <em>view space</em>. In the case of the default camera position, no transform is needed.</p>
+
+
+<h5>Viewport Transform</h5>
+
+<p><span class="line-heading-code-new">void reshape(GLsizei width, GLsizei height) {<br>
+&nbsp;&nbsp;&nbsp;glViewport(0, 0, width, height);</span><br>
+The graphics sub-system calls back <code>reshape()</code> when the window first appears and whenever the window is resized, given the new window's <code>width</code> and <code>height</code>, in pixels. We set our application viewport to cover the entire window, top-left corner at (0, 0) of <code>width</code> and <code>height</code>, with default <code>minZ</code> of 0 and <code>maxZ</code>
+ of 1. We also use the same aspect ratio of the viewport for the 
+projection view frustum to prevent distortion. In the viewport, a pixel 
+has (x, y) value as well as z-value for depth processing.</p>
+
+<img class="image-center" src="3D%20Graphics%20with%20OpenGL%20by%20Examples_tiedostot/Ex01_Projection.png">
+
+<h5>Projection Transform</h5>
+
+<p><span class="line-heading-code-new">
+GLfloat aspect = (GLfloat)width / (GLfloat)height; <span class="color-comment">// Compute aspect ratio of window</span><br>
+glMatrixMode(GL_PROJECTION); <span class="color-comment">// To operate on the Projection matrix</span><br>
+glLoadIdentity(); <span class="color-comment">// Reset</span><br>
+gluPerspective(45.0f, aspect, 0.1f, 100.0f); <span class="color-comment">// Perspective projection: fovy, aspect, near, far</span><br>
+</span>
+A camera has limited field of view. The projection models the view 
+captured by the camera. There are two types of projection: perspective 
+projection and orthographic projection.  In perspective projection, 
+object further to the camera appears smaller compared with object of the
+ same size nearer to the camera. In orthographic projection, the objects
+ appear the same regardless of the z-value. Orthographic projection is a
+ special case of perspective projection where the camera is placed very 
+far away. We shall discuss the orthographic projection in the later 
+example.</p>
+<p>To set the projection, we need to operate on the projection matrix. 
+(Recall that we operated on the model-view matrix in model transform.)</p>
+
+<p>We set the matrix mode to projection matrix and reset the matrix. We use the <code>gluPerspective()</code>
+ to enable perspective projection, and set the fovy (view angle from the
+ bottom-plane to the top-plane), aspect ratio (width/height), zNear and 
+zFar of the <em>View Frustum</em> (truncated pyramid). In this example, 
+we set the fovy to 45°. We use the same aspect ratio as the viewport to 
+avoid distortion. We set the zNear to 0.1 and zFar to 100 (z=-100). Take
+ that note the color-cube (1.5, 0, -7) and the pyramid (-1.5, 0, -6) are
+ contained within the View Frustum.</p>
+<p>The <em>projection transform</em> transforms the <em>view frustum</em> to a 2x2x1 cuboid <em>clipping-volume</em> centered on the near plane (z=0). The subsequent <em>viewport transform</em> transforms the <em>clipping-volume</em> to the <em>viewport</em> in screen space. The viewport is set earlier via the <code>glViewport()</code> function.</p>
+
+   
+   
+
+<h3>2.&nbsp;&nbsp;Example 2: 3D Shape with Animation (<span class="font-code">OGL02Animation.cpp</span>)<a id="zz-2."></a></h3>
+
+<p>Let's modify the previous example to carry out animation (rotating the cube and pyramid).</p>
+
+<table class="table-program">
+<colgroup><col class="col-line-number">
+<col class="col-program">
+</colgroup><tbody>
+<tr>
+<td>
+<pre class="text-right">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161</pre>
+</td>
+<td>
+<pre><span class="color-comment">/*
+ * OGL02Animation.cpp: 3D Shapes with animation
+ */</span>
+#include &lt;windows.h&gt;  <span class="color-comment">// for MS Windows</span>
+#include &lt;GL/glut.h&gt;  <span class="color-comment">// GLUT, include glu.h and gl.h</span>
+ 
+<span class="color-comment">/* Global variables */</span>
+char title[] = "3D Shapes with animation";
+<strong>GLfloat anglePyramid = 0.0f;  <span class="color-comment">// Rotational angle for pyramid [NEW]</span>
+GLfloat angleCube = 0.0f;     <span class="color-comment">// Rotational angle for cube [NEW]</span>
+int refreshMills = 15;        <span class="color-comment">// refresh interval in milliseconds [NEW]</span></strong>
+ 
+<span class="color-comment">/* Initialize OpenGL Graphics */</span>
+void initGL() {
+   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); <span class="color-comment">// Set background color to black and opaque</span>
+   glClearDepth(1.0f);                   <span class="color-comment">// Set background depth to farthest</span>
+   glEnable(GL_DEPTH_TEST);   <span class="color-comment">// Enable depth testing for z-culling</span>
+   glDepthFunc(GL_LEQUAL);    <span class="color-comment">// Set the type of depth-test</span>
+   glShadeModel(GL_SMOOTH);   <span class="color-comment">// Enable smooth shading</span>
+   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  <span class="color-comment">// Nice perspective corrections</span>
+}
+ 
+<span class="color-comment">/* Handler for window-repaint event. Called back when the window first appears and
+   whenever the window needs to be re-painted. */</span>
+void display() {
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); <span class="color-comment">// Clear color and depth buffers</span>
+   glMatrixMode(GL_MODELVIEW);     <span class="color-comment">// To operate on model-view matrix</span>
+ 
+   <span class="color-comment">// Render a color-cube consisting of 6 quads with different colors</span>
+   glLoadIdentity();                 <span class="color-comment">// Reset the model-view matrix</span>
+   glTranslatef(1.5f, 0.0f, -7.0f);  <span class="color-comment">// Move right and into the screen</span>
+   <strong>glRotatef(angleCube, 1.0f, 1.0f, 1.0f);  <span class="color-comment">// Rotate about (1,1,1)-axis [NEW]</span></strong>
+ 
+   glBegin(GL_QUADS);                <span class="color-comment">// Begin drawing the color cube with 6 quads</span>
+      <span class="color-comment">// Top face (y = 1.0f)</span>
+      <span class="color-comment">// Define vertices in counter-clockwise (CCW) order with normal pointing out</span>
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f( 1.0f, 1.0f, -1.0f);
+      glVertex3f(-1.0f, 1.0f, -1.0f);
+      glVertex3f(-1.0f, 1.0f,  1.0f);
+      glVertex3f( 1.0f, 1.0f,  1.0f);
+ 
+      <span class="color-comment">// Bottom face (y = -1.0f)</span>
+      glColor3f(1.0f, 0.5f, 0.0f);     <span class="color-comment">// Orange</span>
+      glVertex3f( 1.0f, -1.0f,  1.0f);
+      glVertex3f(-1.0f, -1.0f,  1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f( 1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Front face  (z = 1.0f)</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f( 1.0f,  1.0f, 1.0f);
+      glVertex3f(-1.0f,  1.0f, 1.0f);
+      glVertex3f(-1.0f, -1.0f, 1.0f);
+      glVertex3f( 1.0f, -1.0f, 1.0f);
+ 
+      <span class="color-comment">// Back face (z = -1.0f)</span>
+      glColor3f(1.0f, 1.0f, 0.0f);     <span class="color-comment">// Yellow</span>
+      glVertex3f( 1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f,  1.0f, -1.0f);
+      glVertex3f( 1.0f,  1.0f, -1.0f);
+ 
+      <span class="color-comment">// Left face (x = -1.0f)</span>
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f,  1.0f,  1.0f);
+      glVertex3f(-1.0f,  1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+      glVertex3f(-1.0f, -1.0f,  1.0f);
+ 
+      <span class="color-comment">// Right face (x = 1.0f)</span>
+      glColor3f(1.0f, 0.0f, 1.0f);     <span class="color-comment">// Magenta</span>
+      glVertex3f(1.0f,  1.0f, -1.0f);
+      glVertex3f(1.0f,  1.0f,  1.0f);
+      glVertex3f(1.0f, -1.0f,  1.0f);
+      glVertex3f(1.0f, -1.0f, -1.0f);
+   glEnd();  <span class="color-comment">// End of drawing color-cube</span>
+ 
+   <span class="color-comment">// Render a pyramid consists of 4 triangles</span>
+   glLoadIdentity();                  <span class="color-comment">// Reset the model-view matrix</span>
+   glTranslatef(-1.5f, 0.0f, -6.0f);  <span class="color-comment">// Move left and into the screen</span>
+   <strong>glRotatef(anglePyramid, 1.0f, 1.0f, 0.0f);  <span class="color-comment">// Rotate about the (1,1,0)-axis [NEW]</span></strong>
+ 
+   glBegin(GL_TRIANGLES);           <span class="color-comment">// Begin drawing the pyramid with 4 triangles</span>
+      <span class="color-comment">// Front</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f( 0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(-1.0f, -1.0f, 1.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(1.0f, -1.0f, 1.0f);
+ 
+      <span class="color-comment">// Right</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f(0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(1.0f, -1.0f, 1.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Back</span>
+      glColor3f(1.0f, 0.0f, 0.0f);     <span class="color-comment">// Red</span>
+      glVertex3f(0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 1.0f, 0.0f);     <span class="color-comment">// Green</span>
+      glVertex3f(1.0f, -1.0f, -1.0f);
+      glColor3f(0.0f, 0.0f, 1.0f);     <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f, -1.0f, -1.0f);
+ 
+      <span class="color-comment">// Left</span>
+      glColor3f(1.0f,0.0f,0.0f);       <span class="color-comment">// Red</span>
+      glVertex3f( 0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f,0.0f,1.0f);       <span class="color-comment">// Blue</span>
+      glVertex3f(-1.0f,-1.0f,-1.0f);
+      glColor3f(0.0f,1.0f,0.0f);       <span class="color-comment">// Green</span>
+      glVertex3f(-1.0f,-1.0f, 1.0f);
+   glEnd();   <span class="color-comment">// Done drawing the pyramid</span>
+ 
+   glutSwapBuffers();  <span class="color-comment">// Swap the front and back frame buffers (double buffering)</span>
+ 
+   <strong><span class="color-comment">// Update the rotational angle after each refresh [NEW]</span>
+   anglePyramid += 0.2f;
+   angleCube -= 0.15f;</strong>
+}
+ 
+<span class="color-comment"><strong>/* Called back when timer expired [NEW] */</strong></span><strong>
+void timer(int value) {
+   glutPostRedisplay();      <span class="color-comment">// Post re-paint request to activate display()</span>
+   glutTimerFunc(refreshMills, timer, 0); <span class="color-comment">// next timer call milliseconds later</span>
+}</strong>
+ 
+<span class="color-comment">/* Handler for window re-size event. Called back when the window first appears and
+   whenever the window is re-sized with its new width and height */</span>
+void reshape(GLsizei width, GLsizei height) {  <span class="color-comment">// GLsizei for non-negative integer</span>
+   <span class="color-comment">// Compute aspect ratio of the new window</span>
+   if (height == 0) height = 1;                <span class="color-comment">// To prevent divide by 0</span>
+   GLfloat aspect = (GLfloat)width / (GLfloat)height;
+ 
+   <span class="color-comment">// Set the viewport to cover the new window</span>
+   glViewport(0, 0, width, height);
+ 
+   <span class="color-comment">// Set the aspect ratio of the clipping volume to match the viewport</span>
+   glMatrixMode(GL_PROJECTION);  <span class="color-comment">// To operate on the Projection matrix</span>
+   glLoadIdentity();             <span class="color-comment">// Reset</span>
+   <span class="color-comment">// Enable perspective projection with fovy, aspect, zNear and zFar</span>
+   gluPerspective(45.0f, aspect, 0.1f, 100.0f);
+}
+ 
+<span class="color-comment">/* Main function: GLUT runs as a console application starting at main() */</span>
+int main(int argc, char** argv) {
+   glutInit(&amp;argc, argv);            <span class="color-comment">// Initialize GLUT</span>
+   glutInitDisplayMode(GLUT_DOUBLE); <span class="color-comment">// Enable double buffered mode</span>
+   glutInitWindowSize(640, 480);   <span class="color-comment">// Set the window's initial width &amp; height</span>
+   glutInitWindowPosition(50, 50); <span class="color-comment">// Position the window's initial top-left corner</span>
+   glutCreateWindow(title);          <span class="color-comment">// Create window with the given title</span>
+   glutDisplayFunc(display);       <span class="color-comment">// Register callback handler for window re-paint event</span>
+   glutReshapeFunc(reshape);       <span class="color-comment">// Register callback handler for window re-size event</span>
+   initGL();                       <span class="color-comment">// Our own OpenGL initialization</span>
+   <strong>glutTimerFunc(0, timer, 0);     <span class="color-comment">// First timer call immediately [NEW]</span></strong>
+   glutMainLoop();                 <span class="color-comment">// Enter the infinite event-processing loop</span>
+   return 0;
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>The new codes are:</p>
+
+<p><span class="line-heading-code-new">
+GLfloat anglePyramid = 0.0f;  <span class="color-comment">// Rotational angle for pyramid [NEW]</span><br>
+GLfloat angleCube = 0.0f;     <span class="color-comment">// Rotational angle for cube [NEW]</span><br>
+int refreshMills = 15;        <span class="color-comment">// refresh interval in milliseconds [NEW]</span><br>
+</span>
+We define two global variables to keep track of the current rotational 
+angles of the cube and pyramid. We also define the refresh period as 15 
+msec (66 frames per second).</p>
+
+<p><span class="line-heading-code-new">void timer(int value) {<br>
+&nbsp;&nbsp;&nbsp;glutPostRedisplay();      <span class="color-comment">// Post re-paint request to activate display()</span><br>
+&nbsp;&nbsp;&nbsp;glutTimerFunc(refreshMills, timer, 0); // <span class="color-comment">next timer call milliseconds later</span><br>
+}</span><br>
+To perform animation, we define a function called <code>timer()</code>, which posts a re-paint request to activate <code>display()</code> when the timer expired, and then run the timer again. In <code>main()</code>, we perform the first <code>timer()</code> call via <code>glutTimerFunc(0, timer, 0)</code>.</p>
+
+<p><span class="line-heading-code-new">glRotatef(angleCube, 1.0f, 1.0f, 1.0f);  <span class="color-comment">// Rotate the cube about (1,1,1)-axis [NEW]</span><br>
+......<br>
+glRotatef(anglePyramid, 1.0f, 1.0f, 0.0f);  <span class="color-comment">// Rotate about the (1,1,0)-axis [NEW]</span><br>
+......<br>
+anglePyramid += 0.2f;  <span class="color-comment">// update pyramid's angle</span><br>
+angleCube -= 0.15f;    <span class="color-comment">// update cube's angle</span><br></span>
+In <code>display()</code>, we rotate the cube and pyramid based on their rotational angles, and update the angles after each refresh.</p>
+
+<h3>3.&nbsp;&nbsp;Example 3: Orthographic Projection (<span class="font-code">OGL03Orthographic.cpp</span>)<a id="zz-3."></a></h3>
+
+<p>As mentioned, OpenGL support two type of projections: perspective and
+ orthographic. In orthographic projection, an object appears to be the 
+same size regardless of the depth. Orthographic is a special case of 
+perspective projection, where the camera is placed very far away.</p>
+<p>To use orthographic projection, change the <code>reshape()</code> function to invoke <code>glOrtho()</code>.</p>
+
+
+<pre class="color-example">void reshape(GLsizei width, GLsizei height) {  <span class="color-comment">// GLsizei for non-negative integer</span>
+   <span class="color-comment">// Compute aspect ratio of the new window</span>
+   if (height == 0) height = 1;                <span class="color-comment">// To prevent divide by 0</span>
+   GLfloat aspect = (GLfloat)width / (GLfloat)height;
+ 
+   <span class="color-comment">// Set the viewport to cover the new window</span>
+   glViewport(0, 0, width, height);
+ 
+   <span class="color-comment">// Set the aspect ratio of the clipping volume to match the viewport</span>
+   glMatrixMode(GL_PROJECTION);  <span class="color-comment">// To operate on the Projection matrix</span>
+   glLoadIdentity();             <span class="color-comment">// Reset</span>
+ 
+   <strong><span class="color-comment">// Set up orthographic projection view [NEW]</span>
+   if (width &gt;= height) {
+     <span class="color-comment">// aspect &gt;= 1, set the height from -1 to 1, with larger width</span>
+      glOrtho(-3.0 * aspect, 3.0 * aspect, -3.0, 3.0, 0.1, 100);
+   } else {
+      <span class="color-comment">// aspect &lt; 1, set the width to -1 to 1, with larger height</span>
+     glOrtho(-3.0, 3.0, -3.0 / aspect, 3.0 / aspect, 0.1, 100);
+   }</strong>
+}</pre>
+
+<p>In this example, we set the cross-section of view-volume according to
+ the aspect ratio of the viewport, and depth from 0.1 to 100, 
+corresponding to z=-0.1 to z=-100. Take note that the cube and pyramid 
+are contained within the view-volume.</p>
+
+<img class="image-center" src="3D%20Graphics%20with%20OpenGL%20by%20Examples_tiedostot/Ex03_Orthographic.png">
+
+
+<h3>4.&nbsp;&nbsp;Example 4: Vertex Array<a id="zz-4."></a></h3>
+
+<p>In the earlier example, drawing a cube requires at least 24 <code>glVertex</code> functions and a pair of <code>glBegin</code> and <code>glEnd</code>.
+ Function calls may involve high overhead and hinder the performance. 
+Furthermore, each vertex is specified and processed three times.</p>
+
+
+<!-- @@ start change in v1 -->
+<a class="references" href="https://www.ntu.edu.sg/home/ehchua/programming/opengl/References_OpenGL.html">Link to OpenGL/Computer Graphics References and Resources</a>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: ???<br>
+Last modified: May, 2012</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>Feedback, comments, corrections, and errata can be sent to Chua Hock-Chuan (ehchua@ntu.edu.sg) &nbsp;&nbsp;|&nbsp;&nbsp; <a href="https://www.ntu.edu.sg/home/ehchua/programming/index.html">HOME</a></p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+
+
+</body></html>

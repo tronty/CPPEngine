@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="google-site-verification" content="rYmCn15aktlRW99GMW9bccFCS8AGXyftdYtPdVvGOVA">
+<meta charset="UTF-8">
+<title>How to Count Visitors Using PHP &amp; MySQL Tutorial</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.freshdesignweb.com/xmlrpc.php">
+<link rel="stylesheet" type="text/css" media="all" href="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/style.css">
+<link rel="shortcut icon" href="https://cdn.freshdesignweb.com/wp-content/themes/designweb_v18s35_v5/images/icon.ico">
+
+
+
+<meta name="description" content="This example tutorial will show how to count visitors by using PHP (php counter)and MySLQ, you can count all visitor visited your website by date, time, year. All data will store in MySQL.">
+<meta name="keywords" content="PHP count vistors with mysql, example php code count visitor, php count vistors, sample code php count visitor, php counter">
+<link rel="canonical" href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Count Visitors Using PHP &amp; MySQL Tutorial">
+<meta property="og:description" content="This example tutorial will show how to count visitors by using PHP (php counter)and MySLQ, you can count all visitor visited your website by date, time, year. All data will store in MySQL.">
+<meta property="og:url" content="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/">
+<meta property="og:site_name" content="freshDesignweb">
+<meta property="article:section" content="Tutorials">
+<meta property="article:published_time" content="2011-10-01T16:37:40+00:00">
+<meta property="article:modified_time" content="2018-01-25T01:31:03+00:00">
+<meta property="og:updated_time" content="2018-01-25T01:31:03+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="This example tutorial will show how to count visitors by using PHP (php counter)and MySLQ, you can count all visitor visited your website by date, time, year. All data will store in MySQL.">
+<meta name="twitter:title" content="How to Count Visitors Using PHP &amp; MySQL Tutorial">
+<meta name="twitter:image" content="https://cdn.freshdesignweb.com/wp-content/uploads/2011/10/count-visitor-php.jpg">
+
+
+
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://www.freshdesignweb.com/">
+<link rel="dns-prefetch" href="https://secure.gravatar.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="freshDesignweb » How to Count Visitors Using PHP &amp; MySQL Comments Feed" href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/feed/">
+
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="jetpack_css-css" href="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/jetpack.css" type="text/css" media="all">
+
+
+<link rel="https://api.w.org/" href="https://www.freshdesignweb.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.freshdesignweb.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://cdn.freshdesignweb.com/wp-includes/wlwmanifest.xml">
+<link rel="shortlink" href="https://wp.me/p9tiIQ-1LS">
+<link rel="alternate" type="application/json+oembed" href="https://www.freshdesignweb.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.freshdesignweb.com%2Fhow-to-count-visitors-using-php-mysql-tutorial%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://www.freshdesignweb.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.freshdesignweb.com%2Fhow-to-count-visitors-using-php-mysql-tutorial%2F&amp;format=xml">
+<link rel="dns-prefetch" href="https://v0.wordpress.com/">
+<style type="text/css">img#wpstats{display:none}</style></head>
+<body class="post-template-default single single-post postid-6812 single-format-standard">
+<div class="fdw-container">
+<header id="site-header" class="fdw-header site-header" role="banner">
+<div class="fdw-header-line"></div>
+<div class="fdw-inner">
+<div class="fdw-branding">
+<p class="site-title"><meta content="https://cdn.freshdesignweb.com/wp-content/themes/designweb_v18s35_v5/images/logo.png"><a class="fdw-logo" href="https://www.freshdesignweb.com/" title="Fresh Design Web" rel="home">freshDesignweb</a></p>
+</div>
+<div class="fdw-nav-wrapper">
+<nav class="fdw-nav-top">
+<div id="menu" class="menu-menu-container"><ul id="menu-menu" class="menu"><li id="menu-item-14773" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14773"><a href="https://www.freshdesignweb.com/category/templates/">Web Templates</a></li>
+<li id="menu-item-16046" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16046"><a title="WordPress Themes" href="https://www.freshdesignweb.com/category/wordpress-themes/">WordPress</a></li>
+<li id="menu-item-16047" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16047"><a title="Joomla Templates" href="https://www.freshdesignweb.com/category/joomla-templates/">Joomla</a></li>
+<li id="menu-item-8556" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8556"><a href="https://www.freshdesignweb.com/category/tutorials/">Tutorials</a></li>
+</ul></div></nav>
+<div class="clr"></div>
+</div>
+<div class="clr"></div>
+</div>
+</header><div class="fdw-content">
+<div class="fdw-inner">
+<div class="fdw-main fdw-main-post" id="fdw-main" role="main">
+<div class="fdw-post">
+<article id="content" class="hentry">
+<header class="entry-header">
+<div class="fdw-subline entry-meta">
+<span xmlns:v="http://rdf.data-vocabulary.org/#"><span typeof="v:Breadcrumb"><a href="https://www.freshdesignweb.com/" rel="v:url" property="v:title">Home</a>» <span rel="v:child" typeof="v:Breadcrumb"><a href="https://www.freshdesignweb.com/category/tutorials/" rel="v:url" property="v:title">Tutorials</a>»<span class="breadcrumb_last"> How to Count Visitors Using PHP &amp; MySQL</span></span></span></span></div>
+<div id="post-media"><img src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/count-visitor-php-115x100.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" itemprop="image"></div>
+<h1 class="item fn fdw-h-shd entry-title">How to Count Visitors Using PHP &amp; MySQL</h1>
+<span class="meta-sub"><span class="updated entry-meta"><time datetime="2018-01-25"><a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/" rel="bookmark">January 25, 2018</a></time></span>, <span class="author vcard"><a href="https://www.freshdesignweb.com/author/grahambill/" class="url fn n"> grahambill</a></span>, <span><a href="https://www.freshdesignweb.com/category/tutorials/" rel="v:url" property="v:title">Tutorials</a></span> </span>
+</header>
+<div class="fdw-post-content entry-content description numberlist1">
+<p>This example tutorial will show how to count visitors by using PHP 
+and MySLQ, you can count all visitor visited your website by ip, hour, 
+minute, date, month, year, page, browser, referrer and it is stored in 
+MySQL. So you can get detail information about your visitors.</p>
+<p>Tracking our website’s visitors is a very important step if you’re 
+serious enough about analyzing your traffic and optimizing your pages to
+ get the most of your visitors. There are many reasons why you should 
+think of implementic tracking scripts (it’s crucial to know where your 
+traffic is coming from and where it goes, wha people search, how long 
+they stay etc.), you could increase sales, you could optimize your pages
+ to increase page hits, you could make lots of changes to increase your 
+Adsense profits and the list goes on and on.</p>
+<p>Bellow is tutorial how to count visitors using php and MySQL, follow with this step :</p><div class="fdw-ad-article">
+<p style="padding-bottom:10px;">
+
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1834448541186829" data-ad-slot="6249966524" data-ad-format="auto"></ins>
+</p>
+</div>
+<p>First step you need create visitors_table. Copy code bellow and pasted it Query SQL, you will get a table “visitors_table’.</p>
+<p>&nbsp;</p>
+<pre>CREATE TABLE `visitors_table` (
+`ID` INT( <span style="color: maroon;">11</span> ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`visitor_ip` VARCHAR( <span style="color: maroon;">32</span> ) NULL ,
+`visitor_browser` VARCHAR( <span style="color: maroon;">255</span> ) NULL ,
+`visitor_hour` SMALLINT( <span style="color: maroon;">2</span> ) NOT NULL DEFAULT <span style="color: maroon;">'00'</span>,
+`visitor_minute` SMALLINT( <span style="color: maroon;">2</span> ) NOT NULL DEFAULT <span style="color: maroon;">'00'</span>,
+`visitor_date` TIMESTAMP( <span style="color: maroon;">32</span> ) NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+`visitor_day` SMALLINT( <span style="color: maroon;">2</span> ) NOT NULL ,
+`visitor_month` SMALLINT( <span style="color: maroon;">2</span> ) NOT NULL ,
+`visitor_year` SMALLINT( <span style="color: maroon;">4</span> ) NOT NULL ,
+`visitor_refferer` VARCHAR( <span style="color: maroon;">255</span> ) NULL ,
+`visitor_page` VARCHAR( <span style="color: maroon;">255</span> ) NULL
+) TYPE = MYISAM ;</pre>
+<p>Ok. We have our database ready for storing our visitors info We will 
+need to setup a script which will store the visitor’s info in our 
+database so let’s start writing it. We need the ip address of our 
+visitor so we will get it using the following method.</p>
+<pre>$visitor_ip = GetHostByName($REMOTE_ADDR);</pre>
+<p>Next step we need the browser type of our visitor and we will use this function:</p>
+<pre><span style="color: blue;">function</span> getBrowserType () {
+<span style="color: blue;">if</span> (!empty($_SERVER[<span style="color: maroon;">'HTTP_USER_AGENT'</span>]))
+{
+   $HTTP_USER_AGENT = $_SERVER[<span style="color: maroon;">'HTTP_USER_AGENT'</span>];
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (!empty($HTTP_SERVER_VARS[<span style="color: maroon;">'HTTP_USER_AGENT'</span>]))
+{
+   $HTTP_USER_AGENT = $HTTP_SERVER_VARS[<span style="color: maroon;">'HTTP_USER_AGENT'</span>];
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (!isset($HTTP_USER_AGENT))
+{
+   $HTTP_USER_AGENT = <span style="color: maroon;">''</span>;
+}
+<span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Opera(/| )([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">2</span>];
+   $browser_agent = <span style="color: maroon;">'opera'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'MSIE ([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'ie'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'OmniWeb/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'omniweb'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Netscape([0-9]{1})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'netscape'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Mozilla/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'mozilla'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Konqueror/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'konqueror'</span>;
+}
+<span style="color: blue;">else</span>
+{
+   $browser_version = <span style="color: maroon;">0</span>;
+   $browser_agent = <span style="color: maroon;">'other'</span>;
+}
+<span style="color: blue;">return</span> $browser_agent;
+}</pre>
+<p>Here is browser types code:</p>
+<pre>$visitor_browser = getBrowserType();</pre>
+<p>Now we need to define hour, minute, day, month and year of visitors:</p>
+<pre>$visitor_hour = date(<span style="color: maroon;">"h"</span>);
+$visitor_minute = date(<span style="color: maroon;">"i"</span>);
+$visitor_day = date(<span style="color: maroon;">"d"</span>);
+$visitor_month = date(<span style="color: maroon;">"m"</span>);
+$visitor_year = date(<span style="color: maroon;">"y"</span>);</pre>
+<p>And next we need to find out who is sending us visitors so we can thank them.</p>
+<pre>$visitor_refferer = gethostbyname($HTTP_REFERER);</pre>
+<p>So to get the full url of our page we will use this function:</p>
+<pre><span style="color: blue;">function</span> selfURL() {
+$s = empty($_SERVER[<span style="color: maroon;">"HTTPS"</span>]) ? <span style="color: maroon;">''</span> : ($_SERVER[<span style="color: maroon;">"HTTPS"</span>] == <span style="color: maroon;">"on"</span>) ? <span style="color: maroon;">"s"</span> : <span style="color: maroon;">""</span>;
+$protocol = strleft(strtolower($_SERVER[<span style="color: maroon;">"SERVER_PROTOCOL"</span>]), <span style="color: maroon;">"/"</span>).$s;
+$port = ($_SERVER[<span style="color: maroon;">"SERVER_PORT"</span>] == <span style="color: maroon;">"80"</span>) ? <span style="color: maroon;">""</span> : (<span style="color: maroon;">":"</span>.$_SERVER[<span style="color: maroon;">"SERVER_PORT"</span>]);
+<span style="color: blue;">return</span> $protocol.<span style="color: maroon;">"://"</span>.$_SERVER[<span style="color: maroon;">'SERVER_NAME'</span>].$port.$_SERVER[<span style="color: maroon;">'REQUEST_URI'</span>];
+}
+<span style="color: blue;">function</span> strleft($s1, $s2) { <span style="color: blue;">return</span> substr($s1, <span style="color: maroon;">0</span>, strpos($s1, $s2));
+}</pre>
+<p>Now we have our page, we will store it on a variable:</p>
+<pre>$visited_page = selfURL();</pre>
+<p>We need to create a new page which will be used to connect to the database.</p>
+<p>It is visitors_connections.php. Copy this code and save it:</p>
+<pre>$hostname_visitors = <span style="color: maroon;">"host"</span>;
+$database_visitors = <span style="color: maroon;">"database"</span>;
+$username_visitors = <span style="color: maroon;">"username"</span>;
+$password_visitors = <span style="color: maroon;">"password"</span>;
+
+$visitors = mysql_connect($hostname_visitors, $username_visitors,
+ $password_visitors) or rigger_error(mysql_error(),E_USER_ERROR);
+
+<span style="color: blue;">function</span> getBrowserType () {
+<span style="color: blue;">if</span> (!empty($_SERVER[<span style="color: maroon;">'HTTP_USER_AGENT'</span>]))
+{
+   $HTTP_USER_AGENT = $_SERVER[<span style="color: maroon;">'HTTP_USER_AGENT'</span>];
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (!empty($HTTP_SERVER_VARS[<span style="color: maroon;">'HTTP_USER_AGENT'</span>]))
+{
+   $HTTP_USER_AGENT = $HTTP_SERVER_VARS[<span style="color: maroon;">'HTTP_USER_AGENT'</span>];
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (!isset($HTTP_USER_AGENT))
+{
+   $HTTP_USER_AGENT = <span style="color: maroon;">''</span>;
+}
+<span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Opera(/| )([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">2</span>];
+   $browser_agent = <span style="color: maroon;">'opera'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'MSIE ([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'ie'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'OmniWeb/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'omniweb'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Netscape([0-9]{1})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'netscape'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Mozilla/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'mozilla'</span>;
+}
+<span style="color: blue;">else</span> <span style="color: blue;">if</span> (ereg(<span style="color: maroon;">'Konqueror/([0-9].[0-9]{1,2})'</span>, $HTTP_USER_AGENT, $log_version))
+{
+   $browser_version = $log_version[<span style="color: maroon;">1</span>];
+   $browser_agent = <span style="color: maroon;">'konqueror'</span>;
+}
+<span style="color: blue;">else</span>
+{
+   $browser_version = <span style="color: maroon;">0</span>;
+   $browser_agent = <span style="color: maroon;">'other'</span>;
+}
+<span style="color: blue;">return</span> $browser_agent;
+}
+
+<span style="color: blue;">function</span> selfURL() {
+$s = empty($_SERVER[<span style="color: maroon;">"HTTPS"</span>]) ? <span style="color: maroon;">''</span> : ($_SERVER[<span style="color: maroon;">"HTTPS"</span>] == <span style="color: maroon;">"on"</span>) ? <span style="color: maroon;">"s"</span> : <span style="color: maroon;">""</span>;
+$protocol = strleft(strtolower($_SERVER[<span style="color: maroon;">"SERVER_PROTOCOL"</span>]), <span style="color: maroon;">"/"</span>).$s;
+$port = ($_SERVER[<span style="color: maroon;">"SERVER_PORT"</span>] == <span style="color: maroon;">"80"</span>) ? <span style="color: maroon;">""</span> : (<span style="color: maroon;">":"</span>.$_SERVER[<span style="color: maroon;">"SERVER_PORT"</span>]);
+<span style="color: blue;">return</span> $protocol.<span style="color: maroon;">"://"</span>.$_SERVER[<span style="color: maroon;">'SERVER_NAME'</span>].$port.$_SERVER[<span style="color: maroon;">'REQUEST_URI'</span>];
+}
+
+<span style="color: blue;">function</span> strleft($s1, $s2) { <span style="color: blue;">return</span> substr($s1, <span style="color: maroon;">0</span>, strpos($s1, $s2)); }
+
+<span style="color: blue;">function</span> paginate($start,$limit,$total,$filePath,$otherParams) {
+    global $lang;
+
+    $allPages = ceil($total/$limit);
+
+    $currentPage = floor($start/$limit) + <span style="color: maroon;">1</span>;
+
+    $pagination = <span style="color: maroon;">""</span>;
+    <span style="color: blue;">if</span> ($allPages&gt;<span style="color: maroon;">10</span>) {
+        $maxPages = ($allPages&gt;<span style="color: maroon;">9</span>) ? <span style="color: maroon;">9</span> : $allPages;
+
+        <span style="color: blue;">if</span> ($allPages&gt;<span style="color: maroon;">9</span>) {
+            <span style="color: blue;">if</span> ($currentPage&gt;=<span style="color: maroon;">1</span>&amp;&amp;$currentPage&lt;=$allPages) {
+                $pagination .= ($currentPage&gt;<span style="color: maroon;">4</span>) ? <span style="color: maroon;">" ... "</span> : <span style="color: maroon;">" "</span>;
+
+                $minPages = ($currentPage&gt;<span style="color: maroon;">4</span>) ? $currentPage : <span style="color: maroon;">5</span>;
+                $maxPages = ($currentPage&lt;$allPages-<span style="color: maroon;">4</span>) ? $currentPage : $allPages - <span style="color: maroon;">4</span>;
+
+                <span style="color: blue;">for</span>($i=$minPages-<span style="color: maroon;">4</span>; $i&lt;$maxPages+<span style="color: maroon;">5</span>; $i++) {
+                    $pagination .= ($i == $currentPage) ? "&lt;a href=\"#\"
+                    <span style="color: blue;">class</span>=\<span style="color: maroon;">"current\"&gt;"</span>.$i.<span style="color: maroon;">"&lt;/a&gt; "</span> : <span style="color: maroon;">"&lt;a href=\""</span>.$filePath."?
+                    start=<span style="color: maroon;">".(($i-1)*$limit).$otherParams."</span>\<span style="color: maroon;">"&gt;"</span>.$i.<span style="color: maroon;">"&lt;/a&gt; "</span>;
+                }
+                $pagination .= ($currentPage&lt;$allPages-<span style="color: maroon;">4</span>) ? <span style="color: maroon;">" ... "</span> : <span style="color: maroon;">" "</span>;
+            } <span style="color: blue;">else</span> {
+                $pagination .= <span style="color: maroon;">" ... "</span>;
+            }
+        }
+    } <span style="color: blue;">else</span> {
+        <span style="color: blue;">for</span>($i=<span style="color: maroon;">1</span>; $i&lt;$allPages+<span style="color: maroon;">1</span>; $i++) {
+        $pagination .= ($i==$currentPage) ? <span style="color: maroon;">"&lt;a href=\"#\" class=\"current\"&gt;"</span>.$i.<span style="color: maroon;">"&lt;/a&gt; "</span>
+        : <span style="color: maroon;">"&lt;a href=\""</span>.$filePath.<span style="color: maroon;">"?start="</span>.(($i-<span style="color: maroon;">1</span>)*$limit).$otherParams.<span style="color: maroon;">"\"&gt;"</span>.$i.<span style="color: maroon;">"&lt;/a&gt; "</span>;
+        }
+    }
+
+    <span style="color: blue;">if</span> ($currentPage&gt;<span style="color: maroon;">1</span>) $pagination = <span style="color: maroon;">"&lt;a href=\""</span>.$filePath."?
+    start=<span style="color: maroon;">0</span><span style="color: maroon;">".$otherParams."</span>\<span style="color: maroon;">"&gt;FIRST&lt;/a&gt; &lt;a href=\""</span>.$filePath."?
+    start=<span style="color: maroon;">".(($currentPage-2)*$limit).$otherParams."</span>\<span style="color: maroon;">"&gt;&lt;&lt;/a&gt; "</span>.$pagination;
+    <span style="color: blue;">if</span> ($currentPage&lt;$allPages) $pagination .= <span style="color: maroon;">"&lt;a href=\""</span>.$filePath."?
+    start=<span style="color: maroon;">".($currentPage*$limit).$otherParams."</span>\<span style="color: maroon;">"&gt;&gt;&lt;/a&gt; &lt;a href=\""</span>.$filePath."?
+    start=<span style="color: maroon;">".(($allPages-1)*$limit).$otherParams."</span>\<span style="color: maroon;">"&gt;LAST&lt;/a&gt;"</span>;
+
+    echo <span style="color: maroon;">'&lt;div class="pages"&gt;'</span> . $pagination . <span style="color: maroon;">'&lt;/div&gt;'</span>;
+}</pre>
+<p>Now we have all the details information for store in MySQL,&nbsp; So 
+we need to write them into our database. We will create a new file 
+called “visitor_tracking.php” and include it in every page that we want 
+to track:</p>
+<p>&nbsp;</p>
+<pre>require_once(<span style="color: maroon;">'visitors_connections.php'</span>);<span style="color: green;">//the file with connection code and functions</span>
+<span style="color: green;">//get the required data</span>
+
+$visitor_ip = GetHostByName($REMOTE_ADDR);
+$visitor_browser = getBrowserType();
+$visitor_hour = date(<span style="color: maroon;">"h"</span>);
+$visitor_minute = date(<span style="color: maroon;">"i"</span>);
+$visitor_day = date(<span style="color: maroon;">"d"</span>);
+$visitor_month = date(<span style="color: maroon;">"m"</span>);
+$visitor_year = date(<span style="color: maroon;">"Y"</span>);
+$visitor_refferer = GetHostByName($HTTP_REFERER);
+$visited_page = selfURL();
+
+<span style="color: green;">//write the required data to database</span>
+mysql_select_db($database_visitors, $visitors);
+$sql = "INSERT INTO visitors_table (visitor_ip, visitor_browser, visitor_hour,
+ visitor_minute, visitor_date, visitor_day, visitor_month, visitor_year,
+ visitor_refferer, visitor_page) VALUES (<span style="color: maroon;">'$visitor_ip'</span>, <span style="color: maroon;">'$visitor_browser'</span>,
+ <span style="color: maroon;">'$visitor_hour'</span>, <span style="color: maroon;">'$visitor_minute'</span>, <span style="color: maroon;">'$visitor_date'</span>, <span style="color: maroon;">'$visitor_day'</span>, <span style="color: maroon;">'$visitor_month'</span>,
+ <span style="color: maroon;">'$visitor_year'</span>, <span style="color: maroon;">'$visitor_refferer'</span>, <span style="color: maroon;">'$visitor_page'</span>)";
+$result = mysql_query($sql) or trigger_error(mysql_error(),E_USER_ERROR);</pre>
+<p>To display information detail about visitors, we need to create a new page called “display_visits.php”</p>
+<p>Go to create new page PHP and then copy code bellow and save it.</p>
+<pre>require_once(<span style="color: maroon;">'visitors_connections.php'</span>);<span style="color: green;">//the file with connection code and functions</span>
+
+<span style="color: blue;">if</span> ($_GET[<span style="color: maroon;">'start'</span>] == <span style="color: maroon;">""</span>) $start = <span style="color: maroon;">0</span>;
+<span style="color: blue;">else</span> $start = $_GET[<span style="color: maroon;">'start'</span>];
+$limit = <span style="color: maroon;">15</span>;
+
+$additionalQuery = <span style="color: maroon;">"SQL_CALC_FOUND_ROWS "</span>;
+
+mysql_select_db($database_visitors, $visitors);
+$query_visitors = <span style="color: maroon;">"(SELECT "</span>.$additionalQuery.<span style="color: maroon;">" * FROM visitors_table WHERE"</span>;
+
+<span style="color: blue;">if</span> ($_POST[<span style="color: maroon;">'day'</span>]!=<span style="color: maroon;">""</span>) {
+$query_visitors .= <span style="color: maroon;">" visitor_day = '"</span>.$_POST[<span style="color: maroon;">'day'</span>].<span style="color: maroon;">"'"</span>;
+} <span style="color: blue;">else</span> {
+$query_visitors .= <span style="color: maroon;">" visitor_day = "</span>.date(<span style="color: maroon;">"d"</span>).<span style="color: maroon;">""</span>;
+
+<span style="color: blue;">if</span> ($_POST[<span style="color: maroon;">'month'</span>]!=<span style="color: maroon;">""</span>) {
+$query_visitors .= <span style="color: maroon;">" AND visitor_month = '"</span>.$_POST[<span style="color: maroon;">'month'</span>].<span style="color: maroon;">"'"</span>;
+} <span style="color: blue;">else</span> {
+$query_visitors .= <span style="color: maroon;">" AND visitor_month = "</span>.date(<span style="color: maroon;">"m"</span>).<span style="color: maroon;">""</span>;
+}
+
+<span style="color: blue;">if</span> ($_POST[<span style="color: maroon;">'year'</span>]!=<span style="color: maroon;">""</span>) {
+$query_visitors .= <span style="color: maroon;">" AND visitor_year = '"</span>.$_POST[<span style="color: maroon;">'year'</span>].<span style="color: maroon;">"'"</span>;
+} <span style="color: blue;">else</span> {
+$query_visitors .= <span style="color: maroon;">" AND visitor_year = "</span>.date(<span style="color: maroon;">"Y"</span>).<span style="color: maroon;">""</span>;
+}}
+$query_visitors .= <span style="color: maroon;">" LIMIT $start,$limit)"</span>;
+$insert_visitors = mysql_query($query_visitors, $visitors) or die(mysql_error());
+$row_visitors = mysql_fetch_assoc($insert_visitors);
+$totalRows_visitors = mysql_num_rows($insert_visitors);
+
+$nbItems = mysql_result(mysql_query(<span style="color: maroon;">"Select FOUND_ROWS() AS nbr"</span>),<span style="color: maroon;">0</span>,<span style="color: maroon;">"nbr"</span>);
+<span style="color: blue;">if</span> ($nbItems&gt;($start+$limit)) $<span style="color: blue;">final</span> = $start+$limit;
+<span style="color: blue;">else</span> $<span style="color: blue;">final</span> = $nbItems;
+
+echo '&lt;table style=<span style="color: maroon;">"width:100%; border:1px dashed #CCC"</span> cellpadding=<span style="color: maroon;">"3"</span>&gt;
+      &lt;form id=<span style="color: maroon;">"form1"</span> name=<span style="color: maroon;">"form1"</span> method=<span style="color: maroon;">"post"</span> action=<span style="color: maroon;">"display_visits.php"</span>&gt;
+       &lt;tr&gt;
+        &lt;td&gt;day
+        &lt;select name=<span style="color: maroon;">"day"</span> id=<span style="color: maroon;">"day"</span>&gt;
+          &lt;option value=<span style="color: maroon;">""</span> selected=<span style="color: maroon;">"selected"</span>&gt;&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"01"</span>&gt;<span style="color: maroon;">01</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"02"</span>&gt;<span style="color: maroon;">02</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"03"</span>&gt;<span style="color: maroon;">03</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"04"</span>&gt;<span style="color: maroon;">04</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"05"</span>&gt;<span style="color: maroon;">05</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"06"</span>&gt;<span style="color: maroon;">06</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"07"</span>&gt;<span style="color: maroon;">07</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"08"</span>&gt;<span style="color: maroon;">08</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"09"</span>&gt;<span style="color: maroon;">09</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"10"</span>&gt;<span style="color: maroon;">10</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"11"</span>&gt;<span style="color: maroon;">11</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"12"</span>&gt;<span style="color: maroon;">12</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"13"</span>&gt;<span style="color: maroon;">13</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"14"</span>&gt;<span style="color: maroon;">14</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"15"</span>&gt;<span style="color: maroon;">15</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"16"</span>&gt;<span style="color: maroon;">16</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"17"</span>&gt;<span style="color: maroon;">17</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"18"</span>&gt;<span style="color: maroon;">18</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"19"</span>&gt;<span style="color: maroon;">19</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"20"</span>&gt;<span style="color: maroon;">20</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"21"</span>&gt;<span style="color: maroon;">21</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"22"</span>&gt;<span style="color: maroon;">22</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"23"</span>&gt;<span style="color: maroon;">23</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"24"</span>&gt;<span style="color: maroon;">24</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"25"</span>&gt;<span style="color: maroon;">25</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"26"</span>&gt;<span style="color: maroon;">26</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"27"</span>&gt;<span style="color: maroon;">27</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"28"</span>&gt;<span style="color: maroon;">28</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"29"</span>&gt;<span style="color: maroon;">29</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"30"</span>&gt;<span style="color: maroon;">30</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"31"</span>&gt;<span style="color: maroon;">31</span>&lt;/option&gt;
+        &lt;/select&gt;&lt;/td&gt;
+        &lt;td&gt;Month
+        &lt;select name=<span style="color: maroon;">"month"</span> id=<span style="color: maroon;">"month"</span>&gt;
+          &lt;option value=<span style="color: maroon;">""</span> selected=<span style="color: maroon;">"selected"</span>&gt;&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"1"</span>&gt;<span style="color: maroon;">1</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"2"</span>&gt;<span style="color: maroon;">2</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"3"</span>&gt;<span style="color: maroon;">3</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"4"</span>&gt;<span style="color: maroon;">4</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"5"</span>&gt;<span style="color: maroon;">5</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"6"</span>&gt;<span style="color: maroon;">6</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"7"</span>&gt;<span style="color: maroon;">7</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"8"</span>&gt;<span style="color: maroon;">8</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"9"</span>&gt;<span style="color: maroon;">9</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"10"</span>&gt;<span style="color: maroon;">10</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"11"</span>&gt;<span style="color: maroon;">11</span>&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"12"</span>&gt;<span style="color: maroon;">12</span>&lt;/option&gt;
+        &lt;/select&gt;&lt;/td&gt;
+        &lt;td&gt;Year
+        &lt;select name=<span style="color: maroon;">"year"</span> id=<span style="color: maroon;">"year"</span>&gt;
+          &lt;option value=<span style="color: maroon;">""</span> selected=<span style="color: maroon;">"selected"</span>&gt;&lt;/option&gt;
+          &lt;option value=<span style="color: maroon;">"2007"</span>&gt;<span style="color: maroon;">2007</span>&lt;/option&gt;
+        &lt;/select&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;input type=<span style="color: maroon;">"submit"</span> name=<span style="color: maroon;">"Submit"</span> value=<span style="color: maroon;">"Submit"</span> /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;/td&gt;
+       &lt;/tr&gt;';
+
+echo '&lt;tr&gt;
+        &lt;td style=<span style="color: maroon;">"width:15%;border-bottom:1px solid #CCC"</span>&gt;IP&lt;/td&gt;
+        &lt;td style=<span style="color: maroon;">"width:15%;border-bottom:1px solid #CCC"</span>&gt;Browser&lt;/td&gt;
+        &lt;td style=<span style="color: maroon;">"width:15%;border-bottom:1px solid #CCC"</span>&gt;Time&lt;/td&gt;
+        &lt;td style=<span style="color: maroon;">"width:30%;border-bottom:1px solid #CCC"</span>&gt;Refferer&lt;/td&gt;
+        &lt;td style=<span style="color: maroon;">"width:25%;border-bottom:1px solid #CCC"</span>&gt;Page&lt;/td&gt;
+       &lt;/tr&gt;';
+
+<span style="color: blue;">do</span> {
+
+echo '&lt;tr onmouseout=<span style="color: maroon;">"this.style.backgroundColor=\'\'"</span>
+      onmouseover=<span style="color: maroon;">"this.style.backgroundColor=\'#EAFFEA\'"</span>&gt;
+        &lt;td&gt;<span style="color: maroon;">'.$row_visitors['</span>visitor_ip<span style="color: maroon;">'].'</span>&lt;/td&gt;
+        &lt;td&gt;<span style="color: maroon;">'.$row_visitors['</span>visitor_browser<span style="color: maroon;">'].'</span>&lt;/td&gt;
+        &lt;td&gt;<span style="color: maroon;">'.$row_visitors['</span>visitor_hour<span style="color: maroon;">'].'</span>:<span style="color: maroon;">'.$row_visitors['</span>visitor_minute<span style="color: maroon;">'].'</span>&lt;/td&gt;
+        &lt;td&gt;<span style="color: maroon;">'.$row_visitors['</span>visitor_refferer<span style="color: maroon;">'].'</span>&lt;/td&gt;
+        &lt;td&gt;<span style="color: maroon;">'.$row_visitors['</span>visitor_page<span style="color: maroon;">'].'</span>&lt;/td&gt;
+       &lt;/tr&gt;';
+} <span style="color: blue;">while</span> ($row_visitors = mysql_fetch_assoc($insert_visitors));
+paginate($start,$limit,$nbItems,<span style="color: maroon;">"display_visits.php"</span>,<span style="color: maroon;">""</span>);</pre>
+<p>There’s only one small step to do and we’re ready to see some 
+results. We need to include the following line in every page that we 
+need to track results for:</p>
+<pre>include(<span style="color: maroon;">'visitor_tracking.php'</span>);</pre>
+<p>To see the results please call page “display_visits.php” in your 
+browser. Ok now I’m testing it, it works fine, I hope you will find it 
+useful somewhere in your website. Good Luck…!</p>
+<p></p><section class="numberlist">
+<h3>Related</h3>
+<h3><a href="https://www.freshdesignweb.com/free-responsive-navigation-menu/" title="40+ Free Responsive Navigation Menu Plugins &amp; Tutorials" rel="bookmark"> 40+ Free Responsive Navigation Menu Plugins &amp; Tutorials</a></h3>
+<h3><a href="https://www.freshdesignweb.com/php-jquery-poll-vote-survey-script/" title="20+ PHP jQuery CSS Poll Vote &amp; Survey Code Script" rel="bookmark"> 20+ PHP jQuery CSS Poll Vote &amp; Survey Code Script</a></h3>
+<h3><a href="https://www.freshdesignweb.com/jquery-image-slider-slideshow/" title="90+ Free Responsive jQuery Image Slider &amp; Slideshow Download" rel="bookmark"> 90+ Free Responsive jQuery Image Slider &amp; Slideshow Download</a></h3>
+<h3><a href="https://www.freshdesignweb.com/jquery-html5-file-upload/" title="30+ Free HTML5 jQuery Upload File Scripts Example" rel="bookmark"> 30+ Free HTML5 jQuery Upload File Scripts Example</a></h3>
+<h3><a href="https://www.freshdesignweb.com/jquery-css3-loading-progress-bar/" title="50+ Useful jQuery CSS3 Loading &amp; Progress Bar Tutorials" rel="bookmark"> 50+ Useful jQuery CSS3 Loading &amp; Progress Bar Tutorials</a></h3>
+</section>
+</div>
+</article>
+</div>
+<div style="text-align:center;"><a href="https://www.freshdesignweb.com/go/templatemonster/" rel="external nofollow" target="_blank" class="clicky_log_outbound"><img class="imagebox lazy" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/tf_v24.jpg" data-src="https://cdn.freshdesignweb.com/wp-content/themes/designweb_v18s35_v5/images/tf_v24.jpg" alt=""></a></div>
+<div class="fdw-row">
+<div class="fdw-author-info fdw-box">
+<div class="fdw-author-page-desc">
+<span>Written by </span><span class="author value-title reviewer fn"><a href="https://www.freshdesignweb.com/author/grahambill/" rel="author"> grahambill</a></span>
+<p> </p>
+<ul class="autor-social">
+</ul>
+</div>
+</div>
+<div class="clr"></div>
+<section id="comments" class="fdw-comments">
+<h6 id="comments-title" class="fdw-commenttitle">
+<span class="fdw-h-shd">Feedback</span>
+<sup class="fdw-h-shd">6 </sup>
+<a class="fdw-addcomment buttonbig action fright" href="#respond">Leave a comment</a>
+</h6>
+<nav class="fdw-commentnav">
+</nav>
+<ol class="fdw-commentlist">
+<li class="comment even thread-even depth-1" id="li-comment-61847">
+<article id="comment-61847" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/69db52115bf178c5ccda9cc8ac1e0c6e.jpeg" srcset="https://secure.gravatar.com/avatar/69db52115bf178c5ccda9cc8ac1e0c6e?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">nyamnyam</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-61847" class="fdw-commenttime">May 11, 2017 at 3:35 am</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>its ok but its not detecting other browsers other than firefox, as in it detect all browsers as mozillar firefox.<br>
+its not tracking page</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-61847" onclick='return addComment.moveForm( "comment-61847", "61847", "respond", "6812" )' aria-label="Reply to nyamnyam">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+</li>
+<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-47127">
+<article id="comment-47127" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/c0b271bb0bd5900f6f3049932b65475f.jpeg" srcset="https://secure.gravatar.com/avatar/c0b271bb0bd5900f6f3049932b65475f?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">Coder</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-47127" class="fdw-commenttime">July 19, 2013 at 10:39 pm</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>Thank you for an Informative Tutorial!</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-47127" onclick='return addComment.moveForm( "comment-47127", "47127", "respond", "6812" )' aria-label="Reply to Coder">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+</li>
+<li class="comment even thread-even depth-1" id="li-comment-40790">
+<article id="comment-40790" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/5fb9751f37ef43fb2d14ab3c36ab493b.jpeg" srcset="https://secure.gravatar.com/avatar/5fb9751f37ef43fb2d14ab3c36ab493b?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">kiko</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-40790" class="fdw-commenttime">June 1, 2013 at 9:11 pm</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>Great tutorial!</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-40790" onclick='return addComment.moveForm( "comment-40790", "40790", "respond", "6812" )' aria-label="Reply to kiko">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+</li>
+<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-26497">
+<article id="comment-26497" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/d15c044450546c8d36ba7f6c74a03acd.jpeg" srcset="https://secure.gravatar.com/avatar/d15c044450546c8d36ba7f6c74a03acd?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">Fei He</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-26497" class="fdw-commenttime">February 26, 2013 at 4:00 am</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>how can i add count total hits in the file?</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-26497" onclick='return addComment.moveForm( "comment-26497", "26497", "respond", "6812" )' aria-label="Reply to Fei He">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+</li>
+<li class="comment even thread-even depth-1" id="li-comment-22340">
+<article id="comment-22340" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/8a8ba104dedf1908a6d33009f2d300ce.jpeg" srcset="https://secure.gravatar.com/avatar/8a8ba104dedf1908a6d33009f2d300ce?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">sumir</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-22340" class="fdw-commenttime">November 24, 2012 at 12:00 am</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>error in sql query solve if please<br>
+CREATE TABLE `visitors_table` (<br>
+`ID` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,<br>
+`visitor_ip` VARCHAR( 32 ) NULL ,<br>
+`visitor_browser` VARCHAR( 255 ) NULL ,<br>
+`visitor_hour` SMALLINT( 2 ) NOT NULL DEFAULT ’00’,<br>
+`visitor_minute` SMALLINT( 2 ) NOT NULL DEFAULT ’00’,<br>
+`visitor_date` TIMESTAMP( 32 ) NOT NULL DEFAULT CURRENT_TIMESTAMP ,<br>
+`visitor_day` SMALLINT( 2 ) NOT NULL ,<br>
+`visitor_month` SMALLINT( 2 ) NOT NULL ,<br>
+`visitor_year` SMALLINT( 4 ) NOT NULL ,<br>
+`visitor_refferer` VARCHAR( 255 ) NULL ,<br>
+`visitor_page` VARCHAR( 255 ) NULL<br>
+) TYPE = MYISAM ;</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-22340" onclick='return addComment.moveForm( "comment-22340", "22340", "respond", "6812" )' aria-label="Reply to sumir">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+<ul class="children">
+<li class="comment odd alt depth-2" id="li-comment-26097">
+<article id="comment-26097" class="fdw-comment">
+<footer class="comment-meta">
+<div class="comment-author cicle vcard">
+<span class="fdw-commentthumb">
+<img alt="" src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/3ef8e58c3143482bdc189f6601c14213.jpeg" srcset="https://secure.gravatar.com/avatar/3ef8e58c3143482bdc189f6601c14213?s=96&amp;d=mm&amp;r=pg 2x" class="avatar avatar-48 photo" width="48" height="48"></span>
+<span class="fdw-commentauthorname"><cite class="fn">aya</cite></span> <a href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#comment-26097" class="fdw-commenttime">February 24, 2013 at 12:09 am</a></div>
+</footer>
+<div class="fdw-commentcontent">
+<p>try this code instead:<br>
+CREATE TABLE visitors_table (<br>
+ID INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,<br>
+visitor_ip VARCHAR( 32 ) NULL ,<br>
+visitor_browser VARCHAR( 255 ) NULL ,<br>
+visitor_hour SMALLINT( 2 ) NOT NULL DEFAULT 00 ,<br>
+visitor_minute SMALLINT( 2 ) NOT NULL DEFAULT 00 ,<br>
+visitor_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,<br>
+visitor_day SMALLINT( 2 ) NOT NULL ,<br>
+visitor_month SMALLINT( 2 ) NOT NULL ,<br>
+visitor_year SMALLINT( 4 ) NOT NULL ,<br>
+visitor_refferer VARCHAR( 255 ) NULL ,<br>
+visitor_page VARCHAR( 255 ) NULL<br>
+) ;</p>
+</div>
+<div class="fdw-commentreply">
+<a rel="nofollow" class="comment-reply-link" href="#comment-26097" onclick='return addComment.moveForm( "comment-26097", "26097", "respond", "6812" )' aria-label="Reply to aya">Reply</a></div>
+<div class="fdw-commentedit"></div>
+</article>
+</li>
+</ul>
+</li>
+</ol>
+<div class="fdw-comment-form">
+<div id="respond" class="comment-respond">
+<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://www.freshdesignweb.com/how-to-count-visitors-using-php-mysql-tutorial/#respond" style="display:none;">Cancel reply</a></small></h3> <form action="https://www.freshdesignweb.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" aria-required="true" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" size="30" maxlength="245" aria-required="true" required="required" type="text"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required" type="text"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" size="30" maxlength="200" type="text"></p>
+<p style="display:none;" class="comment-form-rating"><label for="rating">Rating<span class="required">*</span></label>
+<span class="commentratingbox"><span class="commentrating"><input name="rating" id="rating" value="humen" type="radio">humen</span></span></p><p class="form-submit"><input name="submit" id="submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="6812" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="32c3962d5d" type="hidden"></p><p style="display: none;"><input id="ak_js" name="ak_js" value="236" type="hidden"></p> </form>
+</div>
+<div class="clr"></div>
+</div>
+</section>
+</div><aside id="fdw-sidebar">
+<ul class="fdw-connect">
+<li><a class="fdw-connect-rss" href="https://feeds.feedburner.com/freshdesignweb" rel="external nofollow" target="_blank"><span>Rss Feed</span></a></li>
+<li><a class="fdw-connect-gplus" href="https://www.google.com/+Freshdesignweb" rel="external nofollow" target="_blank"><span>Fresh Design Web on Google+</span></a></li>
+<li><a class="fdw-connect-facebook" href="https://www.facebook.com/freshdesignweb" rel="external nofollow" target="_blank"><span>Fresh Design Web on Facebook</span></a></li>
+<li><a class="fdw-connect-twitter" href="https://twitter.com/freshdesignweb" rel="external nofollow" target="_blank"><span>Fresh Design Web on Twitter</span></a></li>
+</ul>
+<div class="clr"></div>
+<div id="sub-sidebar" class="fixed">
+<form role="search" method="get" id="searchform" action="https://www.freshdesignweb.com/" class="form-wrapper cf">
+<input name="s" id="s" size="34" maxlength="255" placeholder="Search here..." required="" type="text">
+<button type="submit" id="searchsubmit" title="Search">Search</button>
+</form>
+<section class="fdw-ads">
+<div class="adsright">
+
+
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-1834448541186829" data-ad-slot="1919525934"></ins>
+
+</div>
+<div class="clr"></div>
+</section>
+<section>
+<div class="bn_ads">
+<a href="https://www.freshdesignweb.com/go/templatemonster/" rel="external nofollow" target="_blank" class="clicky_log_outbound"><img src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/tm01.jpg" alt=""></a><a href="https://www.freshdesignweb.com/go/forest/" rel="external nofollow" target="_blank" class="clicky_log_outbound"><img src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/tf_v5.jpg" alt=""></a><br>
+</div>
+</section>
+<section class="emailrss">
+<h5 class="fdw-letterpress">Get Recent Update by Email</h5>
+<form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=freshdesignweb','popupwindow','scrollbars=yes,width=550,height=520');return true">
+<input class="text-update" name="email" value="Input your email address" onblur="if(this.value==this.defaultValue||this.value==''){this.value=this.defaultValue;this.style.color='#d9d9d9';}" onfocus="if(this.value==this.defaultValue){this.value='';this.style.color='#000';}" type="text">
+<input value="freshdesignweb" name="uri" type="hidden"><input name="loc" value="en_US" type="hidden">
+<input class="buttonrss" value="Submit" type="submit">
+</form>
+<div class="clr"></div>
+</section>
+</div>
+</aside></div>
+</div></div><footer id="fdw-footer">
+<div class="fdw-inner">
+<nav>
+<ul>
+<li><a href="https://www.freshdesignweb.com/about/" title="about us">About</a></li>
+<li><a href="https://www.freshdesignweb.com/contact/" title="contact us">Contact</a></li>
+<li><a href="https://www.freshdesignweb.com/privacy/" title="privacy policy">Privacy</a></li>
+</ul>
+</nav>
+<p style="float:right; "><a href="https://www.freshdesignweb.com/go/maxcdn/" rel="external nofollow" target="_blank" class="clicky_log_outbound"><img src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/cdn-link.png" alt=""></a></p>
+<p class="fdw-copyright copyright"><span>Copyright © 2017 freshDesignweb. All Rights Reserved.</span> <a href="https://www.freshdesignweb.com/" class="fdw-freshdesignweb-link">freshDesignweb</a></p>
+<div class="clr"></div>
+</div>
+<div class="fdw-footer-line"></div>
+</footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+<img src="How%20to%20Count%20Visitors%20Using%20PHP%20&amp;%20MySQL%20Tutorial_tiedostot/g.gif" alt=":)" id="wpstats" width="6" height="5"></body></html>

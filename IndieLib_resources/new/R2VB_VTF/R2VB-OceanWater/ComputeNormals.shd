@@ -1,0 +1,71 @@
+//--------------------------------------------------------------------------------------
+// File: ComputeNormals.shd
+// 
+// Copyright (c) ATI Research 2006
+//--------------------------------------------------------------------------------------
+[Vertex shader]
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 t0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = pos;
+	Out.tc0 = t0;
+
+	return Out;
+}
+
+[Fragment shader]
+
+float   g_fTexelSize;           // Size of a texel (needed for normal filter)
+
+sampler2D amplitudeSamp;
+
+//--------------------------------------------------------------------------------------
+// ComputeNormals vertex shader
+// Runs sobel filters over height map to compute normals
+//--------------------------------------------------------------------------------------
+float4 main( float2 Tex : TEXCOORD0 ) : COLOR0
+{
+    // This epsilon is a function of the size of the
+    // synthesis textures and should be set properly by app
+    float e = g_fTexelSize;
+
+    // Damping factor
+    float fDamp = 0.4f;
+
+    // Take all eight taps
+    float tl = fDamp * abs(tex2D (amplitudeSamp, Tex + float2(-e, -e)).x);   // top left
+    float  l = fDamp * abs(tex2D (amplitudeSamp, Tex + float2(-e,  0)).x);   // left
+    float bl = fDamp * abs(tex2D (amplitudeSamp, Tex + float2(-e,  e)).x);   // bottom left
+    float  t = fDamp * abs(tex2D (amplitudeSamp, Tex + float2( 0, -e)).x);   // top
+    float  b = fDamp * abs(tex2D (amplitudeSamp, Tex + float2( 0,  e)).x);   // bottom
+    float tr = fDamp * abs(tex2D (amplitudeSamp, Tex + float2( e, -e)).x);   // top right
+    float  r = fDamp * abs(tex2D (amplitudeSamp, Tex + float2( e,  0)).x);   // right
+    float br = fDamp * abs(tex2D (amplitudeSamp, Tex + float2( e,  e)).x);   // bottom right
+
+    // Compute dx using Sobel:
+    //
+    //           -1 0 1 
+    //           -2 0 2
+    //           -1 0 1
+    float dX = -tl - 2.0f*l - bl + tr + 2.0f*r + br;
+
+    // Compute dy using Sobel:
+    //
+    //           -1 -2 -1 
+    //            0  0  0
+    //            1  2  1
+    float dY = -tl - 2.0f*t - tr + bl + 2.0f*b + br;
+
+    // Compute cross-product and renormalize (flip dX for correct handedness)
+    float4 N = float4(normalize(float3(-dX, 1, dY)), 1.0f);
+
+    // Bias signed values from -1..1 to 0..1 range
+    return N * 0.5f + 0.5f;
+}
+

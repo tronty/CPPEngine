@@ -1,0 +1,84 @@
+
+Listing 3.1: CGA shape(complex) rule example defined using(simple) rules
+example =
+Push().T(0,0,6).S(8,10,18).I(cube).Pop().T(6,0,0).S(7,13,18).I(cube).T(0,0,16).S(8,15,8).I(cylinder)
+
+Listing 3.2: Setting selection probability of a rule
+// implementation A
+addRule(‘obj’,I(cube))
+// implementation B
+addRule(‘obj’,I(cylinder))
+// implementation C
+addRule(‘obj’,I(sphere),chance=0.5)
+
+Listing 3.3: Rule simpleHouse
+simpleHouse=Split(Z,[60%,40%],[Box,Prism])
+
+Listing 3.4: Rule simpleHouseWall
+simpleHouseWall = Repeat(X,2,wall−window−wall)
+wall−window−wall=Split(X,[30%,40%,30%],[Box,vertical−window−wall,Box])
+vertical−window−wall=Split(Z,[40%,40%,20%],[Box,Window,Box])
+• Axis describes scope axis along which the repetition is to be per-
+formed.
+• Dimension is an absolute dimension of pattern to be repeated.
+• Symbol specifies new shapes which are to be created.
+• Random optional parameter specifying randomness of newly created
+scopes dimensions.
+Because the function of the Repeat rule is closely related to the func-
+tion of the Split rule it is convenient to use in the Repeat rule underlying
+implementation the Split rule as it is done in listing 3.5.
+Listing 3.5: Implementation of Repeat
+Repeat(axis,dimension,symbol,random)
+n = dscope[axis]/dimensione
+if random
+tmp=(rnd(1,random),...,rnd(1,random))
+|
+{z
+100
+u n i t = P n−1
+i=0
+else
+}
+n
+tmp i
+r a t i o s =(tmp 0 ∗ unit %,...,tmp n−1 ∗ unit %)
+ratios =(
+100
+100
+%,...,
+%)
+| n
+{z n }
+n
+r e t u r n S p l i t(a x i s,r a t i o s,(symbol,...,symbol))
+|
+{z
+n
+}
+
+Listing 3.6: Rule simpleHouseBody
+simpleHouseBody =
+Comp('side-face-x',wall-window−wall).
+Comp('side-face-y',wall-door−wall).
+Comp('side-faces-nx',wall-window−wall).
+Comp('side-faces-ny',wall-window−wall)
+
+Listing 3.7: Parameterized I rule
+I(battlement,params = {'crenel-width' : 0.2,
+'merlon−width' : 0.2,
+'merlon−height' : 0.4 })
+
+Listing 3.8: Module rule
+stone-window−obj = Push().T(0,-window pillar dim / 2,0).Module('iron-grid').Pop().Module('stone-window−frame')
+
+Listing 3.9: window
+// translation i s used t o a v o i d Z−f i g h t i n g
+iron-grid =
+Repeat(X,0.1,barX)).T(0,0.0 0 1,0).Repeat(Z,0.1,barZ)
+barZ = SizeZ(0.0 2).SizeY(0.0 2).I(cube)
+barX = SizeX(0.0 2).SizeY(0.0 2).I(cube)
+// left part of window frame
+window−pillar-irr-left=Repeat(Z,window pillar dim,stone-small-brick-pillar-left,0.5)
+// brick of pillar
+stone-small-brick-pillar-left =ResizeAligned(−X,prnd(1,0.6)).ResizeAligned(−Y,prnd(1,0.6)).T(rnd(0.0 1,1),rnd(0.0 1,1),0).I(stone)
+
