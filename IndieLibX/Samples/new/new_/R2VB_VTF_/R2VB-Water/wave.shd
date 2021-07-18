@@ -1,0 +1,79 @@
+//-----------------------------------------------------------------------------
+// File: wave.shd
+// Copyright (c) 2006 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+[Vertex shader]
+
+float off;
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+	float2 tc1: TEXCOORD1;
+	float2 tc2: TEXCOORD2;
+	float2 tc3: TEXCOORD3;
+	float2 tc4: TEXCOORD4;
+};
+
+VsOut main(float2 pos: POSITION){
+	VsOut Out;
+
+	Out.Pos = float4(pos, 0, 1);
+
+	float2 tc = pos * float2(0.5, -0.5) + 0.5 + off;
+
+	Out.tc0 = tc;
+	Out.tc1 = tc + float2(-off, -off);
+	Out.tc2 = tc + float2( off, -off);
+	Out.tc3 = tc + float2(-off,  off);
+	Out.tc4 = tc + float2( off,  off);
+
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler Tex: register(s0);
+
+float damp;
+float velocity;
+float acceleration;
+
+float4 main(float2 t0: TEXCOORD0, float2 t1: TEXCOORD1, float2 t2: TEXCOORD2, float2 t3: TEXCOORD3, float2 t4: TEXCOORD4) : COLOR {
+	// Sample this position and four neighbors
+	float4 hv = tex2D(Tex, t0);
+	float4 s1 = tex2D(Tex, t1);
+	float4 s2 = tex2D(Tex, t2);
+	float4 s3 = tex2D(Tex, t3);
+	float4 s4 = tex2D(Tex, t4);
+
+	// Compute the force as the difference in height to the neighbors
+	float f = s1.w + s2.w + s3.w + s4.w - 4 * hv.w;
+
+	// Unsigned to signed
+	hv -= 0.5;
+
+	// Velocity
+	hv.y += acceleration * f;
+	// Height
+	hv.w += velocity * hv.y;
+
+	// Dampen the waves over time
+	hv *= damp;
+
+	/*
+		A Sobel filter is applied in X and Z direction. This normally requires 8 samples, but with a linear
+		filter and samples placed exactly on the texel corners it can be done with four samples by summing
+		them up like this:
+	*/
+	hv.x = (s1.w + s3.w) - (s2.w + s4.w);
+	hv.z = (s1.w + s2.w) - (s3.w + s4.w);
+
+	// Back to unsigned
+	hv += 0.5;
+
+	return hv;
+}

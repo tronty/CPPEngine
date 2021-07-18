@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="description" content="Marching Cubes 33 libraries for C and C++ languages">
+<meta name="author" content="David Vega">
+<link rel="icon" href="https://facyt-quimicomp.neocities.org/Imagenes/quimicomp16.ico" type="image/x-icon">
+<title>C and C++ libraries of Marching Cubes 33</title>
+<style type="text/css">
+	body{
+		background-image: url(Imagenes/background.png);
+		background-position: top center;
+		background-repeat: repeat-xy;
+	}
+	img {border-style: none;}
+</style>
+</head>
+<body>
+
+<table width="95%" cellspacing="0" cellpadding="10" border="0" align="center">
+	<tbody><tr>
+		<td><a href="http://facyt-quimicomp.neocities.org/"><img src="C%20and%20C++%20libraries%20of%20Marching%20Cubes%2033_tiedostot/quimicomp-100.png" alt="QUIMICOMP"></a></td>
+		<td><h2>C and C++ libraries of Marching Cubes 33</h2></td>
+	</tr>
+</tbody></table>
+<table width="95%" cellspacing="0" cellpadding="10" border="0" align="center">
+<tbody><tr><td>
+<br>This page contains information about the Marching Cubes 33 library 
+in C language, developed in our laboratory, and its adaptation to C++ 
+language.<br>
+The C library has been compiled with GCC in macOS and Linux, with MinGW / MinGW-w64 and Microsoft Visual C++ in Windows.<br>The
+ MC33 and MC33++ libraries can be used and distributed under the terms 
+of the MIT license, described in the "LICENSE.txt" file that is included
+ in the compressed folder of the source code.<br><br>
+</td></tr>
+</tbody></table>
+<table cellspacing="0" cellpadding="0" border="0" align="center">
+<tbody><tr><td></td><td>
+<table rules="cols" cellspacing="0" cellpadding="5" border="1" align="center">
+<caption><big><b>Download links</b></big><br><br></caption>
+<tbody><tr bgcolor="#A2A2FF">
+<th>Library</th><th>Description</th><th>Release date</th><th>Source code</th>
+</tr>
+<tr bgcolor="#E8E8FF">
+<td>MC33++ v1.0</td><td>First version of the Marching Cubes 33 library in <b>C++ language</b>, adapted from the library <q>MC33 v final</q>.<br>The Solution File to compile the library with Visual Studio community 2017, and an example<a href="#noteexample" style="text-decoration:none">†</a> that uses this library, are included.<br>This library still uses malloc and realloc for memory allocation of the isosurface and the 3D grid.</td><td align="center">Aug-2019</td><td align="center"><a href="https://sourceforge.net/projects/facyt-quimicomp/files/MC33_libraries/marching_cubes_33_c++_library_v1.7z">sourceforge.net</a></td>
+</tr>
+<tr bgcolor="#C2C2FF">
+<td>MC33 v final</td><td>Final version of the Marching Cubes 33 library in <b>C language</b>.<br>The code of this library is more efficient and was obtained by slightly modifying the library code described in the paper:<br><a href="http://jcgt.org/published/0008/03/01/">A Fast and Memory-Saving Marching Cubes 33 Implementation with the correct interior test</a><br>This C library compiled with visual C++ did not behave correctly. Compiling it as a C++ code (/TP option) fixed the problem.<br>An example in C++ that uses this library was added<a href="#noteexample" style="text-decoration:none">†</a>.</td><td align="center">Aug-2019</td><td align="center"><a href="https://sourceforge.net/projects/facyt-quimicomp/files/MC33_libraries/marching_cubes_33_c_library_vf.7z">sourceforge.net</a></td>
+</tr>
+<tr bgcolor="#E8E8FF">
+<td>MC33 paper</td><td>Version described in the paper mentioned above</td><td align="center">Jun-2018</td><td align="center"><a href="http://jcgt.org/published/0008/03/01/marching_cubes_33.zip">jcgt.org</a><br><a href="https://sourceforge.net/projects/facyt-quimicomp/files/marching_cubes_33_c_library.7z">sourceforge.net</a></td>
+</tr>
+<tr bgcolor="#C2C2FF">
+<td>Old version</td><td>First version published on the Internet of the 
+Marching Cubes 33 library in C language. This is an outdated version, 
+with some bugs.</td><td align="center">Sep-2012</td><td align="center"><a href="http://alfa.facyt.uc.edu.ve/quimicomp/Descarga/marching_cubes_33.7z">facyt.uc.edu.ve</a><br><a href="https://sourceforge.net/projects/facyt-quimicomp/files/marching_cubes_33.7z">sourceforge.net</a></td>
+</tr>
+</tbody></table>
+<p id="noteexample">† The example also needs the <a href="https://www.fltk.org/">FLTK</a> library.</p>
+</td><td></td></tr>
+</tbody></table>
+<table width="95%" cellspacing="0" cellpadding="10" border="0" align="center">
+<tbody><tr><td>
+<br>
+The following table compares the processing speed of the libraries, 
+using 4 datasets. The tests were performed on a laptop with an Intel® 
+Core™ i3-2350M CPU @ 2.30 GHz (4 GiB RAM). The test codes were compiled 
+with g++ of GCC 9.1.0 from MinGW-w64 in Windows 7 64-bit operating 
+system. Aggressive optimization compiler options -Ofast and 
+-funroll-loops were used. The calculation time of the <q>MC33 paper</q> version was taken as a reference.<br><br>
+</td></tr>
+</tbody></table>
+<table rules="cols" cellspacing="0" cellpadding="5" border="1" align="center">
+<caption><big><b>Performance comparison</b></big><br><br></caption>
+<tbody><tr bgcolor="#A2A2FF">
+<th>Dataset</th><th>Size</th><th>Isovalue</th><th>Library</th><th>Relative speed</th>
+</tr>
+<tr bgcolor="#E8E8FF">
+<td align="center"><a href="http://www.graphics.stanford.edu/data/voldata/bunny-ctscan.tar.gz">bunny</a></td>
+<td>512×512×361</td><td align="center">1500</td><td>MC33++ v1.0<br>MC33 v final<br>MC33 paper<br>Old version</td><td align="center">1.093<br>1.128<br>1.000<br>0.688</td>
+</tr>
+<tr bgcolor="#C2C2FF">
+<td align="center"><a href="http://www.graphics.stanford.edu/data/voldata/CThead.tar.gz">CThead</a></td>
+<td>256×256×113</td><td align="center">1500</td><td>MC33++ v1.0<br>MC33 v final<br>MC33 paper<br>Old version</td><td align="center">1.058<br>1.087<br>1.000<br>0.634</td>
+</tr>
+<tr bgcolor="#E8E8FF">
+<td align="center"><a href="https://www.cg.tuwien.ac.at/research/publications/2005/dataset-stagbeetle/dataset-stagbeetle-832x832x494.zip">stagbeetle</a></td>
+<td>832×832×494</td><td align="center">500</td><td>MC33++ v1.0<br>MC33 v final<br>MC33 paper<br>Old version</td><td align="center">1.061<br>1.091<br>1.000<br>0.638</td>
+</tr>
+<tr bgcolor="#C2C2FF">
+<td align="center"><a href="https://www.cg.tuwien.ac.at/research/publications/2006/dataset-present/dataset-present-492x492x442.zip">present</a></td>
+<td>492×492×442</td><td align="center">500</td><td>MC33++ v1.0<br>MC33 v final<br>MC33 paper<br>Old version</td><td align="center">1.040<br>1.063<br>1.000<br>0.706</td>
+</tr>
+</tbody></table>
+<table width="95%" cellspacing="0" cellpadding="10" border="0" align="center">
+<tbody><tr><td>
+<br>
+The comparison of the processing speed with other libraries not developed in our laboratory is found in the paper:<br><br>Vega, D., Abache, J., Coll, D., <a href="http://jcgt.org/published/0008/03/01/">A Fast and Memory-Saving Marching Cubes 33 Implementation with the correct interior test</a>, <a href="http://jcgt.org/" style="text-decoration:none"><i>Journal of Computer Graphics Techniques (JCGT)</i></a>, vol. 8, no. 3, 1-18, 2019
+<br><br>
+The Solution File to compile the library with Visual Studio and the Makefile to compile with GCC (on Linux, macOS or <a href="http://www.msys2.org/">msys2</a>/MinGW) were included in the source code of the libraries <q>MC33++ v1.0</q> and <q>MC33 v final</q>. A C++ example of the use of each library was also included. To compile this example, it is necessary install the <a href="https://www.fltk.org/">FLTK</a> library. The Makefiles are also included to compile the example with <a href="http://www.msys2.org/">msys2</a>/MinGW and Debian/GCC. Screen shots of the example compiled in Windows are shown below.<br><br>
+</td></tr>
+</tbody></table>
+<table width="95%" cellspacing="0" cellpadding="0" border="0" align="center">
+	<tbody><tr>
+		<td align="center"><img src="C%20and%20C++%20libraries%20of%20Marching%20Cubes%2033_tiedostot/testmc33-bonsai.png" alt="bonsai raw dataset" width="590" height="480"></td><td> </td>
+		<td align="center"><img src="C%20and%20C++%20libraries%20of%20Marching%20Cubes%2033_tiedostot/testmc33-engine.png" alt="engine raw dataset" width="590" height="480"></td>
+	</tr>
+</tbody></table>
+<table width="95%" cellspacing="0" cellpadding="10" border="0" align="center">
+<tbody><tr><td>
+<br>
+If you find any error in the codes or have difficulty compiling the library and the example, please write to  <a href="mailto:dvega@uc.edu.ve">dvega@uc.edu.ve</a> or <a href="mailto:dvega68@yahoo.com">dvega68@yahoo.com</a>
+</td></tr>
+</tbody></table>
+<hr>
+
+
+
+</body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Calculate a parabola from three known points – Geo-code – My scratchpad for geo-related coding and research</title>
+
+        <meta charset="utf-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    
+    <meta name="description" content="I was looking for a quick fix for calculating values along a parabola given three known points. Scouting around I found a nice symbolic C function doing exactly what I wanted (see here). The function doing the work of finding your unknowns is:
+
+">
+    <meta property="og:description" content="I was looking for a quick fix for calculating values along a parabola given three known points. Scouting around I found a nice symbolic C function doing exactly what I wanted (see here). The function doing the work of finding your unknowns is:
+
+">
+    
+    <meta name="author" content="Geo-code">
+
+    
+    <meta property="og:title" content="Calculate a parabola from three known points">
+    <meta property="twitter:title" content="Calculate a parabola from three known points">
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="Calculate%20a%20parabola%20from%20three%20known%20points%20%E2%80%93%20Geo-code%20%E2%80%93%20My%20scratchpad%20for%20geo-related%20coding%20and%20research_tiedostot/style.css">
+    <link rel="alternate" type="application/rss+xml" title="Geo-code - My scratchpad for geo-related coding and research" href="http://chris35wills.github.io/feed.xml">
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <!--<a href="/" class="site-avatar"><img src="https://avatars3.githubusercontent.com/u/5261617?v=3&s=460" /></a> -->
+          
+          <div class="site-info">
+            <h1 class="site-name"><a href="http://chris35wills.github.io/">Geo-code</a></h1>
+            <p class="site-description">My scratchpad for geo-related coding and research</p>
+          </div>
+
+          <nav>
+            <a href="http://chris35wills.github.io/">About</a>
+            <a href="http://chris35wills.github.io/blog">Blog</a>
+            <a href="http://chris35wills.github.io/research">Research</a>
+	          <a href="http://chris35wills.github.io/publications">Publications</a>
+            <a href="http://chris35wills.github.io/links">Coding Links</a>
+            <a href="http://chris35wills.github.io/links-eclectic">Eclectic Links</a>
+            <a href="http://chris35wills.github.io/courses">Courses</a>
+            
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Calculate a parabola from three known points</h1>
+
+  <div class="entry">
+    <p>I was looking for a quick fix for calculating values along a 
+parabola given three known points. Scouting around I found a nice 
+symbolic C function doing exactly what I wanted (see <a href="http://stackoverflow.com/questions/717762/how-to-calculate-the-vertex-of-a-parabola-given-three-points">here</a>). The function doing the work of finding your unknowns is:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
+	<span class="k">def</span> <span class="nf">calc_parabola_vertex</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">):</span>
+		<span class="s">'''
+		Adapted and modifed to get the unknowns for defining a parabola:
+		http://stackoverflow.com/questions/717762/how-to-calculate-the-vertex-of-a-parabola-given-three-points
+		'''</span>
+
+		<span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x3</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x3</span><span class="p">);</span>
+		<span class="n">A</span>     <span class="o">=</span> <span class="p">(</span><span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="n">y2</span><span class="o">-</span><span class="n">y1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y3</span><span class="p">)</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span><span class="o">-</span><span class="n">y2</span><span class="p">))</span> <span class="o">/</span> <span class="n">denom</span><span class="p">;</span>
+		<span class="n">B</span>     <span class="o">=</span> <span class="p">(</span><span class="n">x3</span><span class="o">*</span><span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span> <span class="o">+</span> <span class="n">x2</span><span class="o">*</span><span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span><span class="o">-</span><span class="n">y1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">*</span> <span class="p">(</span><span class="n">y2</span><span class="o">-</span><span class="n">y3</span><span class="p">))</span> <span class="o">/</span> <span class="n">denom</span><span class="p">;</span>
+		<span class="n">C</span>     <span class="o">=</span> <span class="p">(</span><span class="n">x2</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x3</span><span class="p">)</span> <span class="o">*</span> <span class="n">y1</span><span class="o">+</span><span class="n">x3</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span> <span class="o">*</span> <span class="n">y2</span><span class="o">+</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y3</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span></code></pre></figure>
+
+<p>By defining our three known xy points, we can use the above function 
+to find the values of the unknowns a, b and c which would satisfy the 
+equation of y = ax<sup>2</sup> + bx + c:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
+	<span class="c">#Define your three known points</span>
+	<span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span>
+	<span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">35</span><span class="p">]</span>
+	<span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+
+	<span class="c">#Calculate the unknowns of the equation y=ax^2+bx+c</span>
+	<span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">calc_parabola_vertex</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span><span class="p">)</span></code></pre></figure>
+
+<p>We now have our full equation and can apply it to calc values along the parabola:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
+	<span class="c">#Define x range for which to calc parabola</span>
+	<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+	<span class="n">x_pos</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">y_pos</span><span class="o">=</span><span class="p">[]</span>
+
+	<span class="c">#Calculate y values </span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_pos</span><span class="p">)):</span>
+		<span class="n">x_val</span><span class="o">=</span><span class="n">x_pos</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+		<span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">x_val</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">+</span><span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">x_val</span><span class="p">)</span><span class="o">+</span><span class="n">c</span>
+		<span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></code></pre></figure>
+
+<p>And then to plot it we can just do this:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"> 
+<span class="c"># Plot the parabola (+ the known points)</span>
+	<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+	<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-.'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'black'</span><span class="p">)</span> <span class="c"># parabola line</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'gray'</span><span class="p">)</span> <span class="c"># parabola points</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s">"D"</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="c"># 1st known xy</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s">"D"</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="c"># 2nd known xy</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">'k'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s">"D"</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span> <span class="c"># 3rd known xy</span>
+	<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p>…which gives us this:</p>
+
+<p><img src="Calculate%20a%20parabola%20from%20three%20known%20points%20%E2%80%93%20Geo-code%20%E2%80%93%20My%20scratchpad%20for%20geo-related%20coding%20and%20research_tiedostot/parabola_three_points.png" alt="Parabola from our three known points" title="Parabola from our three known points"></p>
+    
+  </div>
+
+  <div class="date">
+    Written on November 16, 2015
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <!--<div id="sidebar">
+      <h1>Sidebar</h1>
+    </div>-->
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:chris.neil.wills@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/Chris35Wills"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/chris-williams-1ab19746"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/chris35williams"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+	<!-- Google Analytics -->
+	<script async="" src="Calculate%20a%20parabola%20from%20three%20known%20points%20%E2%80%93%20Geo-code%20%E2%80%93%20My%20scratchpad%20for%20geo-related%20coding%20and%20research_tiedostot/analytics.js"></script><script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-43822493-1', 'auto');
+		ga('send', 'pageview', {
+		  'page': '/parabola_python/',
+		  'title': 'Calculate a parabola from three known points'
+		});
+	</script>
+	<!-- End Google Analytics -->
+
+
+  
+
+</body></html>

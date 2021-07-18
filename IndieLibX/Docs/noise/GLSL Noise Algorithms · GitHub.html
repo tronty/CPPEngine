@@ -1,0 +1,2369 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+  <link rel="dns-prefetch" href="https://assets-cdn.github.com/">
+  <link rel="dns-prefetch" href="https://avatars0.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars1.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars2.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://github-cloud.s3.amazonaws.com/">
+  <link rel="dns-prefetch" href="https://user-images.githubusercontent.com/">
+
+
+
+  <link crossorigin="anonymous" media="all" integrity="sha512-FCg44VGg5ax/5MpZ8otwiPE+/tG1/Sq67mKkl6agbqgoScZtJyXhQSFQMIJfOHMZZ+yXDINb8nEiws60SiLohg==" rel="stylesheet" href="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/frameworks-5aa6d9885579bb2359f66266aee26f3b.css">
+  <link crossorigin="anonymous" media="all" integrity="sha512-TgKanqz7DGdDP4AzIYUrO8HotYJQqK095FgSwOka1FxAjgyD7Vf4DuZunJt1bZt8BajtoaKAxCK/kzFwKJdWlA==" rel="stylesheet" href="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/github-558080f77c5e1ef1c73e9aac93ccfb39.css">
+  
+  
+  <link crossorigin="anonymous" media="all" integrity="sha512-vziz6Jjw591pyA52+2EoS07YE63bIc0zkvSG4yIM9edY2ArBBBIwvTw49H8rn4Z+YLbBw5LzBWSFwoZkxQK+0A==" rel="stylesheet" href="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/site-3ba3ae12a2f85a6290c97a963107cc97.css">
+  
+
+  <meta name="viewport" content="width=device-width">
+  
+  <title>GLSL Noise Algorithms  · GitHub</title>
+    <meta name="description" content="GLSL Noise Algorithms . GitHub Gist: instantly share code, notes, and snippets.">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://gist.github.com/opensearch-gist.xml" title="Gist">
+  <link rel="fluid-icon" href="https://gist.github.com/fluidicon.png" title="GitHub">
+  <meta property="fb:app_id" content="1401488693436528">
+
+    
+    <meta property="og:image" content="https://avatars2.githubusercontent.com/u/346914?s=400&amp;v=4"><meta property="og:site_name" content="Gist"><meta property="og:type" content="article"><meta property="og:title" content="GLSL Noise Algorithms "><meta property="og:url" content="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83"><meta property="og:description" content="GLSL Noise Algorithms . GitHub Gist: instantly share code, notes, and snippets."><meta property="article:author" content="262588213843476"><meta property="article:publisher" content="262588213843476">
+
+  <link rel="assets" href="https://assets-cdn.github.com/">
+  
+  <meta name="pjax-timeout" content="1000">
+  
+  <meta name="request-id" content="D24C:020D:132AB5:21A6F8:5BCD4C16" data-pjax-transient="">
+
+
+  
+
+  <meta name="selected-link" value="gist_code" data-pjax-transient="">
+
+      <meta name="google-site-verification" content="KT5gs8h0wvaagLKAVWq8bbeNwnZZK1r1XQysX3xurLU">
+    <meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
+    <meta name="google-site-verification" content="GXs5KoUUkNCoaAZn7wPN-t01Pywp9M3sEjnt_3_ZWPc">
+
+  <meta name="octolytics-host" content="collector.githubapp.com"><meta name="octolytics-app-id" content="gist"><meta name="octolytics-event-url" content="https://collector.githubapp.com/github-external/browser_event"><meta name="octolytics-dimension-request_id" content="D24C:020D:132AB5:21A6F8:5BCD4C16"><meta name="octolytics-dimension-region_edge" content="iad"><meta name="octolytics-dimension-region_render" content="iad">
+<meta name="analytics-location" content="/&lt;user-name&gt;/&lt;gist-id&gt;" data-pjax-transient="true">
+
+
+
+
+
+<meta class="js-ga-set" name="dimension1" content="Logged Out">
+
+
+
+    <meta name="octolytics-dimension-public" content="true"><meta name="octolytics-dimension-gist_id" content="12829180"><meta name="octolytics-dimension-gist_name" content="670c22f3966e662d2f83"><meta name="octolytics-dimension-anonymous" content="false"><meta name="octolytics-dimension-owner_id" content="346914"><meta name="octolytics-dimension-owner_login" content="patriciogonzalezvivo"><meta name="octolytics-dimension-forked" content="false">
+
+  <meta class="js-ga-set" name="dimension5" content="public">
+  <meta class="js-ga-set" name="dimension6" content="owned">
+  <meta class="js-ga-set" name="dimension7" content="markdown">
+
+
+      <meta name="hostname" content="gist.github.com">
+    <meta name="user-login" content="">
+
+      <meta name="expected-hostname" content="gist.github.com">
+    <meta name="js-proxy-site-detection-payload" content="OWU0OTk5MTI2NGNlNGI1MTIzOWE5NDhlYjgwYjJiMDZhNDAxNzhmYmRlOWVjOWFlNzk0MDFmYWFkZmY4YmUzZXx7InJlbW90ZV9hZGRyZXNzIjoiOTEuMTQ1LjExMi4xNTciLCJyZXF1ZXN0X2lkIjoiRDI0QzowMjBEOjEzMkFCNToyMUE2Rjg6NUJDRDRDMTYiLCJ0aW1lc3RhbXAiOjE1NDAxODEwMTUsImhvc3QiOiJnaXRodWIuY29tIn0=">
+
+    <meta name="enabled-features" content="DASHBOARD_V2_LAYOUT_OPT_IN,EXPLORE_DISCOVER_REPOSITORIES,UNIVERSE_BANNER,MARKETPLACE_PLAN_RESTRICTION_EDITOR">
+
+  <meta name="html-safe-nonce" content="1e4164059836bc73e208188844da37725b5efb7a">
+
+  <meta http-equiv="x-pjax-version" content="5694c6469a89a10d6f22867d4d877bfb">
+  
+
+      <link href="https://gist.github.com/patriciogonzalezvivo.atom" rel="alternate" title="atom" type="application/atom+xml">
+
+  <link crossorigin="anonymous" media="all" integrity="sha512-276lVvjrO9uBs1FU7UaGaOySkNYW4LhdI4LPaMoFqvQjbhTqL3//QQFhhnMAJ/o/gChwAx2/qW9lirb4A85Gyw==" rel="stylesheet" href="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/gist-505186e2d729df6ac70c50c7e8754dbb.css">
+
+
+
+
+  <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
+
+  <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
+
+  <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#000000">
+  <link rel="icon" type="image/x-icon" class="js-site-favicon" href="https://assets-cdn.github.com/favicon.ico">
+
+<meta name="theme-color" content="#1e2327">
+
+
+
+
+  </head>
+
+  <body class="logged-out env-production">
+    
+
+  <div class="position-relative js-header-wrapper ">
+    <a href="#start-of-content" tabindex="1" class="px-2 py-4 bg-blue text-white show-on-focus js-skip-to-content">Skip to content</a>
+    <div id="js-pjax-loader-bar" class="pjax-loader-bar"><div class="progress"></div></div>
+
+    
+    
+    
+
+
+
+        <div class="Header gist-header header-logged-out" role="banner">
+  <div class="container-lg px-3 clearfix">
+    <div class="d-flex flex-justify-between">
+      <div class="d-flex">
+        <a class="header-logo-wordmark" data-hotkey="g d" aria-label="Gist Homepage" href="https://gist.github.com/">
+          <svg width="78" height="28" class="octicon octicon-logo-github" viewBox="0 0 45 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M18.53 12.03h-.02c.009 0 .015.01.024.011h.006l-.01-.01zm.004.011c-.093.001-.327.05-.574.05-.78 0-1.05-.36-1.05-.83V8.13h1.59c.09 0 .16-.08.16-.19v-1.7c0-.09-.08-.17-.16-.17h-1.59V3.96c0-.08-.05-.13-.14-.13h-2.16c-.09 0-.14.05-.14.13v2.17s-1.09.27-1.16.28c-.08.02-.13.09-.13.17v1.36c0 .11.08.19.17.19h1.11v3.28c0 2.44 1.7 2.69 2.86 2.69.53 0 1.17-.17 1.27-.22.06-.02.09-.09.09-.16v-1.5a.177.177 0 0 0-.146-.18zm23.696-2.2c0-1.81-.73-2.05-1.5-1.97-.6.04-1.08.34-1.08.34v3.52s.49.34 1.22.36c1.03.03 1.36-.34 1.36-2.25zm2.43-.16c0 3.43-1.11 4.41-3.05 4.41-1.64 0-2.52-.83-2.52-.83s-.04.46-.09.52c-.03.06-.08.08-.14.08h-1.48c-.1 0-.19-.08-.19-.17l.02-11.11c0-.09.08-.17.17-.17h2.13c.09 0 .17.08.17.17v3.77s.82-.53 2.02-.53l-.01-.02c1.2 0 2.97.45 2.97 3.88zm-8.72-3.61h-2.1c-.11 0-.17.08-.17.19v5.44s-.55.39-1.3.39-.97-.34-.97-1.09V6.25c0-.09-.08-.17-.17-.17h-2.14c-.09 0-.17.08-.17.17v5.11c0 2.2 1.23 2.75 2.92 2.75 1.39 0 2.52-.77 2.52-.77s.05.39.08.45c.02.05.09.09.16.09h1.34c.11 0 .17-.08.17-.17l.02-7.47c0-.09-.08-.17-.19-.17zm-23.7-.01h-2.13c-.09 0-.17.09-.17.2v7.34c0 .2.13.27.3.27h1.92c.2 0 .25-.09.25-.27V6.23c0-.09-.08-.17-.17-.17zm-1.05-3.38c-.77 0-1.38.61-1.38 1.38 0 .77.61 1.38 1.38 1.38.75 0 1.36-.61 1.36-1.38 0-.77-.61-1.38-1.36-1.38zm16.49-.25h-2.11c-.09 0-.17.08-.17.17v4.09h-3.31V2.6c0-.09-.08-.17-.17-.17h-2.13c-.09 0-.17.08-.17.17v11.11c0 .09.09.17.17.17h2.13c.09 0 .17-.08.17-.17V8.96h3.31l-.02 4.75c0 .09.08.17.17.17h2.13c.09 0 .17-.08.17-.17V2.6c0-.09-.08-.17-.17-.17zM8.81 7.35v5.74c0 .04-.01.11-.06.13 0 0-1.25.89-3.31.89-2.49 0-5.44-.78-5.44-5.92S2.58 1.99 5.1 2c2.18 0 3.06.49 3.2.58.04.05.06.09.06.14L7.94 4.5c0 .09-.09.2-.2.17-.36-.11-.9-.33-2.17-.33-1.47 0-3.05.42-3.05 3.73s1.5 3.7 2.58 3.7c.92 0 1.25-.11 1.25-.11v-2.3H4.88c-.11 0-.19-.08-.19-.17V7.35c0-.09.08-.17.19-.17h3.74c.11 0 .19.08.19.17z"></path></svg>
+          <svg width="40" height="28" class="octicon octicon-logo-gist" viewBox="0 0 25 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M4.7 8.73h2.45v4.02c-.55.27-1.64.34-2.53.34-2.56 0-3.47-2.2-3.47-5.05 0-2.85.91-5.06 3.48-5.06 1.28 0 2.06.23 3.28.73V2.66C7.27 2.33 6.25 2 4.63 2 1.13 2 0 4.69 0 8.03c0 3.34 1.11 6.03 4.63 6.03 1.64 0 2.81-.27 3.59-.64V7.73H4.7v1zm6.39 3.72V6.06h-1.05v6.28c0 1.25.58 1.72 1.72 1.72v-.89c-.48 0-.67-.16-.67-.7v-.02zm.25-8.72c0-.44-.33-.78-.78-.78s-.77.34-.77.78.33.78.77.78.78-.34.78-.78zm4.34 5.69c-1.5-.13-1.78-.48-1.78-1.17 0-.77.33-1.34 1.88-1.34 1.05 0 1.66.16 2.27.36v-.94c-.69-.3-1.52-.39-2.25-.39-2.2 0-2.92 1.2-2.92 2.31 0 1.08.47 1.88 2.73 2.08 1.55.13 1.77.63 1.77 1.34 0 .73-.44 1.42-2.06 1.42-1.11 0-1.86-.19-2.33-.36v.94c.5.2 1.58.39 2.33.39 2.38 0 3.14-1.2 3.14-2.41 0-1.28-.53-2.03-2.75-2.23h-.03zm8.58-2.47v-.86h-2.42v-2.5l-1.08.31v2.11l-1.56.44v.48h1.56v5c0 1.53 1.19 2.13 2.5 2.13.19 0 .52-.02.69-.05v-.89c-.19.03-.41.03-.61.03-.97 0-1.5-.39-1.5-1.34V6.94h2.42v.02-.01z"></path></svg>
+</a>
+        <div class="site-search js-site-search" role="search">
+            <div class="header-search" role="search">
+
+<!-- '"` --><!-- </textarea></xmp> --><form class="position-relative js-quicksearch-form" action="/search" accept-charset="UTF-8" method="get"><input name="utf8" value="✓" type="hidden">
+  <label class="header-search-wrapper form-control js-chromeless-input-container">
+    <input class="form-control js-site-search-focus header-search-input" data-hotkey="s,/" name="q" placeholder="Search…" autocorrect="off" autocomplete="off" autocapitalize="off" type="text">
+  </label>
+
+</form></div>
+
+        </div>
+
+        <ul class="list-style-none d-flex flex-items-center text-bold pl-2" role="navigation">
+          <li><a class="HeaderNavlink px-2" data-ga-click="Header, go to all gists, text:all gists" href="https://gist.github.com/discover">All gists</a></li>
+          <li><a class="HeaderNavlink px-2" data-ga-click="Header, go to GitHub, text:GitHub" href="https://github.com/">GitHub</a></li>
+        </ul>
+      </div>
+
+        <div class="header-actions" role="navigation">
+            <a class="btn btn-primary" data-ga-click="Header, sign up" href="https://gist.github.com/join?source=header-gist">Sign up for a GitHub account</a>
+          <a class="btn" data-ga-click="Header, sign in" href="https://gist.github.com/auth/github?return_to=https%3A%2F%2Fgist.github.com%2Fpatriciogonzalezvivo%2F670c22f3966e662d2f83">Sign in</a>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+  </div>
+
+  <div id="start-of-content" class="show-on-focus"></div>
+
+    <div id="js-flash-container">
+
+
+</div>
+
+
+
+  <div role="main" class="application-main ">
+        <div itemscope="" itemtype="http://schema.org/Code">
+    <div id="gist-pjax-container" class="gist-content-wrapper" data-pjax-container="">
+      
+
+
+  <div class="gist-detail-intro gist-banner">
+    <div class="container">
+      <p class="lead">
+        Instantly share code, notes, and snippets.
+      </p>
+    </div>
+  </div>
+
+
+<div class="gisthead pagehead repohead instapaper_ignore readability-menu experiment-repo-nav mb-4">
+  <div class="container">
+    
+  
+<div class="container repohead-details-container">
+
+  <ul class="pagehead-actions">
+
+
+    <li>
+        <a class="btn btn-sm btn-with-count tooltipped tooltipped-n" aria-label="You must be signed in to star a gist" rel="nofollow" href="https://gist.github.com/login?return_to=https%3A%2F%2Fgist.github.com%2Fpatriciogonzalezvivo%2F670c22f3966e662d2f83">
+    <svg class="octicon octicon-star" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path></svg>
+    Star
+</a>
+  <a class="social-count" aria-label="433 users starred this gist" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/stargazers">
+    433
+</a>
+    </li>
+
+      <li>
+          <a class="btn btn-sm btn-with-count tooltipped tooltipped-n" aria-label="You must be signed in to fork a gist" rel="nofollow" href="https://gist.github.com/login?return_to=https%3A%2F%2Fgist.github.com%2Fpatriciogonzalezvivo%2F670c22f3966e662d2f83">
+    <svg class="octicon octicon-repo-forked" viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+    Fork
+</a>
+  <a class="social-count" aria-label="68 users forked this gist" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/forks">
+    68
+</a>
+      </li>
+  </ul>
+
+  <h1 class="public css-truncate">
+    <img class="avatar gist-avatar" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/346914_003.png" alt="@patriciogonzalezvivo" width="26" height="26">
+    <span class="author"><a rel="author" class="url fn" href="https://gist.github.com/patriciogonzalezvivo"><span itemprop="author">patriciogonzalezvivo</span></a></span><!--
+        --><span class="path-divider">/</span><!--
+        --><strong itemprop="name" class="gist-header-title css-truncate-target"><a href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83">GLSL-Noise.md</a></strong>
+
+    <div class="d-block text-small text-gray">
+      Last active <time-ago datetime="2018-10-21T15:07:03Z" title="21 Oct 2018, 18:07 EEST">13 hours ago</time-ago>
+    </div>
+  </h1>
+</div>
+
+<div class="container gist-file-navigation">
+  <div class="float-right file-navigation-options" data-multiple="">
+
+    <div class="file-navigation-option v-align-middle">
+
+  <div class="input-group js-gist-share-menu">
+    <div class="input-group-button">
+      <details class="details-reset details-overlay select-menu">
+        <summary class="btn btn-sm select-menu-button" data-ga-click="Repository, clone Embed, location:repo overview" aria-haspopup="menu">
+          <span data-menu-button="">Embed</span>
+        </summary>
+        <details-menu class="select-menu-modal position-absolute" style="z-index: 99;" aria-label="Clone options" role="menu">
+          <div class="select-menu-header">
+            <span class="select-menu-title">What would you like to do?</span>
+          </div>
+          <div class="select-menu-list">
+              <button type="button" class="select-menu-item width-full" aria-checked="true" role="menuitemradio" tabindex="0" value="&lt;script src=&quot;https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83.js&quot;&gt;&lt;/script&gt;">
+                <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path></svg>
+                <div class="select-menu-item-text">
+                  <span class="select-menu-item-heading" data-menu-button-text="">
+                    
+                    Embed
+                  </span>
+                    <span class="description">
+                      Embed this gist in your website.
+                    </span>
+                </div>
+              </button>
+              <button type="button" class="select-menu-item width-full" aria-checked="false" role="menuitemradio" tabindex="0" value="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83">
+                <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path></svg>
+                <div class="select-menu-item-text">
+                  <span class="select-menu-item-heading" data-menu-button-text="">
+                    
+                    Share
+                  </span>
+                    <span class="description">
+                      Copy sharable link for this gist.
+                    </span>
+                </div>
+              </button>
+              <button type="button" class="select-menu-item width-full" aria-checked="false" role="menuitemradio" tabindex="0" value="https://gist.github.com/670c22f3966e662d2f83.git">
+                <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path></svg>
+                <div class="select-menu-item-text">
+                  <span class="select-menu-item-heading" data-menu-button-text="">
+                    Clone via
+                    HTTPS
+                  </span>
+                    <span class="description">
+                      Clone with Git or checkout with SVN using the repository’s web address.
+                    </span>
+                </div>
+              </button>
+          </div>
+          <div class="select-menu-list" role="menu">
+            <a class="select-menu-item select-menu-action" href="https://help.github.com/articles/which-remote-url-should-i-use" target="_blank">
+              <svg class="octicon octicon-question select-menu-item-icon" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 10h2v2H6v-2zm4-3.5C10 8.64 8 9 8 9H6c0-.55.45-1 1-1h.5c.28 0 .5-.22.5-.5v-1c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5V7H4c0-1.5 1.5-3 3-3s3 1 3 2.5zM7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7z"></path></svg>
+              <div class="select-menu-item-text">
+                Learn more about clone URLs
+              </div>
+            </a>
+          </div>
+        </details-menu>
+      </details>
+    </div>
+
+    <input id="gist-share-url" data-autoselect="" class="form-control input-monospace input-sm" value="&lt;script src=&quot;https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83.js&quot;&gt;&lt;/script&gt;" aria-label="Clone this repository at &lt;script src=&quot;https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83.js&quot;&gt;&lt;/script&gt;" readonly="readonly" type="text">
+
+    <div class="input-group-button">
+      <clipboard-copy for="gist-share-url" aria-label="Copy to clipboard" class="btn btn-sm zeroclipboard-button" tabindex="0" role="button">
+        <svg class="octicon octicon-clippy" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path></svg>
+      </clipboard-copy>
+    </div>
+  </div>
+</div>
+
+
+    <div class="file-navigation-option">
+</div>
+
+
+    <div class="file-navigation-option">
+      <a href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/archive/4fc6afd7f548fb1d3d3f46566b44e1e7465cac85.zip" class="btn btn-sm" rel="nofollow" data-ga-click="Gist, download zip, location:gist overview">
+        Download ZIP
+      </a>
+    </div>
+  </div>
+
+  <div class="float-left">
+    <nav class="reponav js-repo-nav js-sidenav-container-pjax" role="navigation" data-pjax="#gist-pjax-container">
+
+  <a class="js-selected-navigation-item selected reponav-item" aria-label="Code" data-pjax="true" data-hotkey="g c" data-selected-links="gist_code /patriciogonzalezvivo/670c22f3966e662d2f83" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83">
+    <svg class="octicon octicon-code" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z"></path></svg>
+    Code
+</a>
+    <a class="js-selected-navigation-item reponav-item" aria-label="Revisions" data-pjax="true" data-hotkey="g r" data-selected-links="gist_revisions /patriciogonzalezvivo/670c22f3966e662d2f83/revisions" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/revisions">
+      <svg class="octicon octicon-git-commit" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10.86 7c-.45-1.72-2-3-3.86-3-1.86 0-3.41 1.28-3.86 3H0v2h3.14c.45 1.72 2 3 3.86 3 1.86 0 3.41-1.28 3.86-3H14V7h-3.14zM7 10.2c-1.22 0-2.2-.98-2.2-2.2 0-1.22.98-2.2 2.2-2.2 1.22 0 2.2.98 2.2 2.2 0 1.22-.98 2.2-2.2 2.2z"></path></svg>
+      Revisions
+      <span class="Counter">7</span>
+</a>
+    <a class="js-selected-navigation-item reponav-item" aria-label="Stars" data-pjax="true" data-hotkey="g s" data-selected-links="gist_stars /patriciogonzalezvivo/670c22f3966e662d2f83/stargazers" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/stargazers">
+      <svg class="octicon octicon-star" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path></svg>
+      Stars
+      <span class="Counter">433</span>
+</a>
+    <a class="js-selected-navigation-item reponav-item" aria-label="Forks" data-pjax="true" data-hotkey="g f" data-selected-links="gist_forks /patriciogonzalezvivo/670c22f3966e662d2f83/forks" href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/forks">
+      <svg class="octicon octicon-git-branch" viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 5c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v.3c-.02.52-.23.98-.63 1.38-.4.4-.86.61-1.38.63-.83.02-1.48.16-2 .45V4.72a1.993 1.993 0 0 0-1-3.72C.88 1 0 1.89 0 3a2 2 0 0 0 1 1.72v6.56c-.59.35-1 .99-1 1.72 0 1.11.89 2 2 2 1.11 0 2-.89 2-2 0-.53-.2-1-.53-1.36.09-.06.48-.41.59-.47.25-.11.56-.17.94-.17 1.05-.05 1.95-.45 2.75-1.25S8.95 7.77 9 6.73h-.02C9.59 6.37 10 5.73 10 5zM2 1.8c.66 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2C1.35 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2zm0 12.41c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm6-8c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+      Forks
+      <span class="Counter">68</span>
+</a></nav>
+
+  </div>
+</div>
+
+
+  </div>
+</div>
+
+<div class="container new-discussion-timeline experiment-repo-nav">
+  <div class="repository-content gist-content">
+    
+  <div>
+      <div itemprop="about">
+    GLSL Noise Algorithms 
+  </div>
+
+
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-glsl-noise-md" class="file">
+      <div class="file-header">
+        <div class="file-actions">
+
+          <a class="btn btn-sm " href="https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83/raw/4fc6afd7f548fb1d3d3f46566b44e1e7465cac85/GLSL-Noise.md">Raw</a>
+        </div>
+        <div class="file-info">
+          <span class="icon">
+            <svg class="octicon octicon-gist" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.5 5L10 7.5 7.5 10l-.75-.75L8.5 7.5 6.75 5.75 7.5 5zm-3 0L2 7.5 4.5 10l.75-.75L3.5 7.5l1.75-1.75L4.5 5zM0 13V2c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v11c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1zm1 0h10V2H1v11z"></path></svg>
+          </span>
+          <a class="tooltipped tooltipped-s css-truncate" aria-label="Permalink" href="#file-glsl-noise-md">
+            <strong class="user-select-contain gist-blob-name css-truncate-target">
+              GLSL-Noise.md
+            </strong>
+          </a>
+        </div>
+      </div>
+    
+  <div id="readme" class="readme blob instapaper_body">
+    <article class="markdown-body entry-content" itemprop="text"><h2><a id="user-content-generic-123-noise" class="anchor" aria-hidden="true" href="#generic-123-noise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generic 1,2,3 Noise</h2>
+<pre><code>float rand(float n){return fract(sin(n) * 43758.5453123);}
+
+float noise(float p){
+	float fl = floor(p);
+  float fc = fract(p);
+	return mix(rand(fl), rand(fl + 1.0), fc);
+}
+	
+float noise(vec2 n) {
+	const vec2 d = vec2(0.0, 1.0);
+  vec2 b = floor(n), f = smoothstep(vec2(0.0), vec2(1.0), fract(n));
+	return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);
+}
+</code></pre>
+<pre><code>float rand(vec2 n) { 
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+float noise(vec2 p){
+	vec2 ip = floor(p);
+	vec2 u = fract(p);
+	u = u*u*(3.0-2.0*u);
+	
+	float res = mix(
+		mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),
+		mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);
+	return res*res;
+}
+</code></pre>
+<pre><code>float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
+
+float noise(vec3 p){
+    vec3 a = floor(p);
+    vec3 d = p - a;
+    d = d * d * (3.0 - 2.0 * d);
+
+    vec4 b = a.xxyy + vec4(0.0, 1.0, 0.0, 1.0);
+    vec4 k1 = perm(b.xyxy);
+    vec4 k2 = perm(k1.xyxy + b.zzww);
+
+    vec4 c = k2 + a.zzzz;
+    vec4 k3 = perm(c);
+    vec4 k4 = perm(c + 1.0);
+
+    vec4 o1 = fract(k3 * (1.0 / 41.0));
+    vec4 o2 = fract(k4 * (1.0 / 41.0));
+
+    vec4 o3 = o2 * d.z + o1 * (1.0 - d.z);
+    vec2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
+
+    return o4.y * d.y + o4.x * (1.0 - d.y);
+}
+</code></pre>
+<pre><code>//	&lt;https://www.shadertoy.com/view/4dS3Wd&gt;
+//	By Morgan McGuire @morgan3d, http://graphicscodex.com
+//
+float hash(float n) { return fract(sin(n) * 1e4); }
+float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }
+
+float noise(float x) {
+	float i = floor(x);
+	float f = fract(x);
+	float u = f * f * (3.0 - 2.0 * f);
+	return mix(hash(i), hash(i + 1.0), u);
+}
+
+float noise(vec2 x) {
+	vec2 i = floor(x);
+	vec2 f = fract(x);
+
+	// Four corners in 2D of a tile
+	float a = hash(i);
+	float b = hash(i + vec2(1.0, 0.0));
+	float c = hash(i + vec2(0.0, 1.0));
+	float d = hash(i + vec2(1.0, 1.0));
+
+	// Simple 2D lerp using smoothstep envelope between the values.
+	// return vec3(mix(mix(a, b, smoothstep(0.0, 1.0, f.x)),
+	//			mix(c, d, smoothstep(0.0, 1.0, f.x)),
+	//			smoothstep(0.0, 1.0, f.y)));
+
+	// Same code, with the clamps in smoothstep and common subexpressions
+	// optimized away.
+	vec2 u = f * f * (3.0 - 2.0 * f);
+	return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+}
+
+// This one has non-ideal tiling properties that I'm still tuning
+float noise(vec3 x) {
+	const vec3 step = vec3(110, 241, 171);
+
+	vec3 i = floor(x);
+	vec3 f = fract(x);
+ 
+	// For performance, compute the base input to a 1D hash from the integer part of the argument and the 
+	// incremental change to the 1D based on the 3D -&gt; 1D wrapping
+    float n = dot(i, step);
+
+	vec3 u = f * f * (3.0 - 2.0 * f);
+	return mix(mix(mix( hash(n + dot(step, vec3(0, 0, 0))), hash(n + dot(step, vec3(1, 0, 0))), u.x),
+                   mix( hash(n + dot(step, vec3(0, 1, 0))), hash(n + dot(step, vec3(1, 1, 0))), u.x), u.y),
+               mix(mix( hash(n + dot(step, vec3(0, 0, 1))), hash(n + dot(step, vec3(1, 0, 1))), u.x),
+                   mix( hash(n + dot(step, vec3(0, 1, 1))), hash(n + dot(step, vec3(1, 1, 1))), u.x), u.y), u.z);
+}
+</code></pre>
+<h2><a id="user-content-perlin-noise" class="anchor" aria-hidden="true" href="#perlin-noise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Perlin Noise</h2>
+<pre><code>float rand(vec2 c){
+	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+float noise(vec2 p, float freq ){
+	float unit = screenWidth/freq;
+	vec2 ij = floor(p/unit);
+	vec2 xy = mod(p,unit)/unit;
+	//xy = 3.*xy*xy-2.*xy*xy*xy;
+	xy = .5*(1.-cos(PI*xy));
+	float a = rand((ij+vec2(0.,0.)));
+	float b = rand((ij+vec2(1.,0.)));
+	float c = rand((ij+vec2(0.,1.)));
+	float d = rand((ij+vec2(1.,1.)));
+	float x1 = mix(a, b, xy.x);
+	float x2 = mix(c, d, xy.x);
+	return mix(x1, x2, xy.y);
+}
+
+float pNoise(vec2 p, int res){
+	float persistance = .5;
+	float n = 0.;
+	float normK = 0.;
+	float f = 4.;
+	float amp = 1.;
+	int iCount = 0;
+	for (int i = 0; i&lt;50; i++){
+		n+=amp*noise(p, f);
+		f*=2.;
+		normK+=amp;
+		amp*=persistance;
+		if (iCount == res) break;
+		iCount++;
+	}
+	float nf = n/normK;
+	return nf*nf*nf*nf;
+}
+</code></pre>
+<pre><code>#define M_PI 3.14159265358979323846
+
+float rand(vec2 co){return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);}
+float rand (vec2 co, float l) {return rand(vec2(rand(co), l));}
+float rand (vec2 co, float l, float t) {return rand(vec2(rand(co, l), t));}
+
+float perlin(vec2 p, float dim, float time) {
+	vec2 pos = floor(p * dim);
+	vec2 posx = pos + vec2(1.0, 0.0);
+	vec2 posy = pos + vec2(0.0, 1.0);
+	vec2 posxy = pos + vec2(1.0);
+	
+	float c = rand(pos, dim, time);
+	float cx = rand(posx, dim, time);
+	float cy = rand(posy, dim, time);
+	float cxy = rand(posxy, dim, time);
+	
+	vec2 d = fract(p * dim);
+	d = -0.5 * cos(d * M_PI) + 0.5;
+	
+	float ccx = mix(c, cx, d.x);
+	float cycxy = mix(cy, cxy, d.x);
+	float center = mix(ccx, cycxy, d.y);
+	
+	return center * 2.0 - 1.0;
+}
+
+// p must be normalized!
+float perlin(vec2 p, float dim) {
+	
+	/*vec2 pos = floor(p * dim);
+	vec2 posx = pos + vec2(1.0, 0.0);
+	vec2 posy = pos + vec2(0.0, 1.0);
+	vec2 posxy = pos + vec2(1.0);
+	
+	// For exclusively black/white noise
+	/*float c = step(rand(pos, dim), 0.5);
+	float cx = step(rand(posx, dim), 0.5);
+	float cy = step(rand(posy, dim), 0.5);
+	float cxy = step(rand(posxy, dim), 0.5);*/
+	
+	/*float c = rand(pos, dim);
+	float cx = rand(posx, dim);
+	float cy = rand(posy, dim);
+	float cxy = rand(posxy, dim);
+	
+	vec2 d = fract(p * dim);
+	d = -0.5 * cos(d * M_PI) + 0.5;
+	
+	float ccx = mix(c, cx, d.x);
+	float cycxy = mix(cy, cxy, d.x);
+	float center = mix(ccx, cycxy, d.y);
+	
+	return center * 2.0 - 1.0;*/
+	return perlin(p, dim, 0.0);
+}
+</code></pre>
+<h2><a id="user-content-classic-perlin-noise" class="anchor" aria-hidden="true" href="#classic-perlin-noise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Classic Perlin Noise</h2>
+<pre><code>//	Classic Perlin 2D Noise 
+//	by Stefan Gustavson
+//
+vec2 fade(vec2 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+float cnoise(vec2 P){
+  vec4 Pi = floor(P.xyxy) + vec4(0.0, 0.0, 1.0, 1.0);
+  vec4 Pf = fract(P.xyxy) - vec4(0.0, 0.0, 1.0, 1.0);
+  Pi = mod(Pi, 289.0); // To avoid truncation effects in permutation
+  vec4 ix = Pi.xzxz;
+  vec4 iy = Pi.yyww;
+  vec4 fx = Pf.xzxz;
+  vec4 fy = Pf.yyww;
+  vec4 i = permute(permute(ix) + iy);
+  vec4 gx = 2.0 * fract(i * 0.0243902439) - 1.0; // 1/41 = 0.024...
+  vec4 gy = abs(gx) - 0.5;
+  vec4 tx = floor(gx + 0.5);
+  gx = gx - tx;
+  vec2 g00 = vec2(gx.x,gy.x);
+  vec2 g10 = vec2(gx.y,gy.y);
+  vec2 g01 = vec2(gx.z,gy.z);
+  vec2 g11 = vec2(gx.w,gy.w);
+  vec4 norm = 1.79284291400159 - 0.85373472095314 * 
+    vec4(dot(g00, g00), dot(g01, g01), dot(g10, g10), dot(g11, g11));
+  g00 *= norm.x;
+  g01 *= norm.y;
+  g10 *= norm.z;
+  g11 *= norm.w;
+  float n00 = dot(g00, vec2(fx.x, fy.x));
+  float n10 = dot(g10, vec2(fx.y, fy.y));
+  float n01 = dot(g01, vec2(fx.z, fy.z));
+  float n11 = dot(g11, vec2(fx.w, fy.w));
+  vec2 fade_xy = fade(Pf.xy);
+  vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
+  float n_xy = mix(n_x.x, n_x.y, fade_xy.y);
+  return 2.3 * n_xy;
+}
+</code></pre>
+<pre><code>//	Classic Perlin 3D Noise 
+//	by Stefan Gustavson
+//
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+float cnoise(vec3 P){
+  vec3 Pi0 = floor(P); // Integer part for indexing
+  vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
+  Pi0 = mod(Pi0, 289.0);
+  Pi1 = mod(Pi1, 289.0);
+  vec3 Pf0 = fract(P); // Fractional part for interpolation
+  vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+  vec4 iz0 = Pi0.zzzz;
+  vec4 iz1 = Pi1.zzzz;
+
+  vec4 ixy = permute(permute(ix) + iy);
+  vec4 ixy0 = permute(ixy + iz0);
+  vec4 ixy1 = permute(ixy + iz1);
+
+  vec4 gx0 = ixy0 / 7.0;
+  vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
+  gx0 = fract(gx0);
+  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+  vec4 sz0 = step(gz0, vec4(0.0));
+  gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+  gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+  vec4 gx1 = ixy1 / 7.0;
+  vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
+  gx1 = fract(gx1);
+  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+  vec4 sz1 = step(gz1, vec4(0.0));
+  gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+  gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+  g000 *= norm0.x;
+  g010 *= norm0.y;
+  g100 *= norm0.z;
+  g110 *= norm0.w;
+  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+  g001 *= norm1.x;
+  g011 *= norm1.y;
+  g101 *= norm1.z;
+  g111 *= norm1.w;
+
+  float n000 = dot(g000, Pf0);
+  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+  float n111 = dot(g111, Pf1);
+
+  vec3 fade_xyz = fade(Pf0);
+  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+  return 2.2 * n_xyz;
+}
+</code></pre>
+<pre><code>//	Classic Perlin 3D Noise 
+//	by Stefan Gustavson
+//
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec4 fade(vec4 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+float cnoise(vec4 P){
+  vec4 Pi0 = floor(P); // Integer part for indexing
+  vec4 Pi1 = Pi0 + 1.0; // Integer part + 1
+  Pi0 = mod(Pi0, 289.0);
+  Pi1 = mod(Pi1, 289.0);
+  vec4 Pf0 = fract(P); // Fractional part for interpolation
+  vec4 Pf1 = Pf0 - 1.0; // Fractional part - 1.0
+  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+  vec4 iz0 = vec4(Pi0.zzzz);
+  vec4 iz1 = vec4(Pi1.zzzz);
+  vec4 iw0 = vec4(Pi0.wwww);
+  vec4 iw1 = vec4(Pi1.wwww);
+
+  vec4 ixy = permute(permute(ix) + iy);
+  vec4 ixy0 = permute(ixy + iz0);
+  vec4 ixy1 = permute(ixy + iz1);
+  vec4 ixy00 = permute(ixy0 + iw0);
+  vec4 ixy01 = permute(ixy0 + iw1);
+  vec4 ixy10 = permute(ixy1 + iw0);
+  vec4 ixy11 = permute(ixy1 + iw1);
+
+  vec4 gx00 = ixy00 / 7.0;
+  vec4 gy00 = floor(gx00) / 7.0;
+  vec4 gz00 = floor(gy00) / 6.0;
+  gx00 = fract(gx00) - 0.5;
+  gy00 = fract(gy00) - 0.5;
+  gz00 = fract(gz00) - 0.5;
+  vec4 gw00 = vec4(0.75) - abs(gx00) - abs(gy00) - abs(gz00);
+  vec4 sw00 = step(gw00, vec4(0.0));
+  gx00 -= sw00 * (step(0.0, gx00) - 0.5);
+  gy00 -= sw00 * (step(0.0, gy00) - 0.5);
+
+  vec4 gx01 = ixy01 / 7.0;
+  vec4 gy01 = floor(gx01) / 7.0;
+  vec4 gz01 = floor(gy01) / 6.0;
+  gx01 = fract(gx01) - 0.5;
+  gy01 = fract(gy01) - 0.5;
+  gz01 = fract(gz01) - 0.5;
+  vec4 gw01 = vec4(0.75) - abs(gx01) - abs(gy01) - abs(gz01);
+  vec4 sw01 = step(gw01, vec4(0.0));
+  gx01 -= sw01 * (step(0.0, gx01) - 0.5);
+  gy01 -= sw01 * (step(0.0, gy01) - 0.5);
+
+  vec4 gx10 = ixy10 / 7.0;
+  vec4 gy10 = floor(gx10) / 7.0;
+  vec4 gz10 = floor(gy10) / 6.0;
+  gx10 = fract(gx10) - 0.5;
+  gy10 = fract(gy10) - 0.5;
+  gz10 = fract(gz10) - 0.5;
+  vec4 gw10 = vec4(0.75) - abs(gx10) - abs(gy10) - abs(gz10);
+  vec4 sw10 = step(gw10, vec4(0.0));
+  gx10 -= sw10 * (step(0.0, gx10) - 0.5);
+  gy10 -= sw10 * (step(0.0, gy10) - 0.5);
+
+  vec4 gx11 = ixy11 / 7.0;
+  vec4 gy11 = floor(gx11) / 7.0;
+  vec4 gz11 = floor(gy11) / 6.0;
+  gx11 = fract(gx11) - 0.5;
+  gy11 = fract(gy11) - 0.5;
+  gz11 = fract(gz11) - 0.5;
+  vec4 gw11 = vec4(0.75) - abs(gx11) - abs(gy11) - abs(gz11);
+  vec4 sw11 = step(gw11, vec4(0.0));
+  gx11 -= sw11 * (step(0.0, gx11) - 0.5);
+  gy11 -= sw11 * (step(0.0, gy11) - 0.5);
+
+  vec4 g0000 = vec4(gx00.x,gy00.x,gz00.x,gw00.x);
+  vec4 g1000 = vec4(gx00.y,gy00.y,gz00.y,gw00.y);
+  vec4 g0100 = vec4(gx00.z,gy00.z,gz00.z,gw00.z);
+  vec4 g1100 = vec4(gx00.w,gy00.w,gz00.w,gw00.w);
+  vec4 g0010 = vec4(gx10.x,gy10.x,gz10.x,gw10.x);
+  vec4 g1010 = vec4(gx10.y,gy10.y,gz10.y,gw10.y);
+  vec4 g0110 = vec4(gx10.z,gy10.z,gz10.z,gw10.z);
+  vec4 g1110 = vec4(gx10.w,gy10.w,gz10.w,gw10.w);
+  vec4 g0001 = vec4(gx01.x,gy01.x,gz01.x,gw01.x);
+  vec4 g1001 = vec4(gx01.y,gy01.y,gz01.y,gw01.y);
+  vec4 g0101 = vec4(gx01.z,gy01.z,gz01.z,gw01.z);
+  vec4 g1101 = vec4(gx01.w,gy01.w,gz01.w,gw01.w);
+  vec4 g0011 = vec4(gx11.x,gy11.x,gz11.x,gw11.x);
+  vec4 g1011 = vec4(gx11.y,gy11.y,gz11.y,gw11.y);
+  vec4 g0111 = vec4(gx11.z,gy11.z,gz11.z,gw11.z);
+  vec4 g1111 = vec4(gx11.w,gy11.w,gz11.w,gw11.w);
+
+  vec4 norm00 = taylorInvSqrt(vec4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
+  g0000 *= norm00.x;
+  g0100 *= norm00.y;
+  g1000 *= norm00.z;
+  g1100 *= norm00.w;
+
+  vec4 norm01 = taylorInvSqrt(vec4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
+  g0001 *= norm01.x;
+  g0101 *= norm01.y;
+  g1001 *= norm01.z;
+  g1101 *= norm01.w;
+
+  vec4 norm10 = taylorInvSqrt(vec4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
+  g0010 *= norm10.x;
+  g0110 *= norm10.y;
+  g1010 *= norm10.z;
+  g1110 *= norm10.w;
+
+  vec4 norm11 = taylorInvSqrt(vec4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
+  g0011 *= norm11.x;
+  g0111 *= norm11.y;
+  g1011 *= norm11.z;
+  g1111 *= norm11.w;
+
+  float n0000 = dot(g0000, Pf0);
+  float n1000 = dot(g1000, vec4(Pf1.x, Pf0.yzw));
+  float n0100 = dot(g0100, vec4(Pf0.x, Pf1.y, Pf0.zw));
+  float n1100 = dot(g1100, vec4(Pf1.xy, Pf0.zw));
+  float n0010 = dot(g0010, vec4(Pf0.xy, Pf1.z, Pf0.w));
+  float n1010 = dot(g1010, vec4(Pf1.x, Pf0.y, Pf1.z, Pf0.w));
+  float n0110 = dot(g0110, vec4(Pf0.x, Pf1.yz, Pf0.w));
+  float n1110 = dot(g1110, vec4(Pf1.xyz, Pf0.w));
+  float n0001 = dot(g0001, vec4(Pf0.xyz, Pf1.w));
+  float n1001 = dot(g1001, vec4(Pf1.x, Pf0.yz, Pf1.w));
+  float n0101 = dot(g0101, vec4(Pf0.x, Pf1.y, Pf0.z, Pf1.w));
+  float n1101 = dot(g1101, vec4(Pf1.xy, Pf0.z, Pf1.w));
+  float n0011 = dot(g0011, vec4(Pf0.xy, Pf1.zw));
+  float n1011 = dot(g1011, vec4(Pf1.x, Pf0.y, Pf1.zw));
+  float n0111 = dot(g0111, vec4(Pf0.x, Pf1.yzw));
+  float n1111 = dot(g1111, Pf1);
+
+  vec4 fade_xyzw = fade(Pf0);
+  vec4 n_0w = mix(vec4(n0000, n1000, n0100, n1100), vec4(n0001, n1001, n0101, n1101), fade_xyzw.w);
+  vec4 n_1w = mix(vec4(n0010, n1010, n0110, n1110), vec4(n0011, n1011, n0111, n1111), fade_xyzw.w);
+  vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
+  vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
+  float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
+  return 2.2 * n_xyzw;
+}
+
+// Classic Perlin noise, periodic version
+float cnoise(vec4 P, vec4 rep){
+  vec4 Pi0 = mod(floor(P), rep); // Integer part modulo rep
+  vec4 Pi1 = mod(Pi0 + 1.0, rep); // Integer part + 1 mod rep
+  vec4 Pf0 = fract(P); // Fractional part for interpolation
+  vec4 Pf1 = Pf0 - 1.0; // Fractional part - 1.0
+  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+  vec4 iz0 = vec4(Pi0.zzzz);
+  vec4 iz1 = vec4(Pi1.zzzz);
+  vec4 iw0 = vec4(Pi0.wwww);
+  vec4 iw1 = vec4(Pi1.wwww);
+
+  vec4 ixy = permute(permute(ix) + iy);
+  vec4 ixy0 = permute(ixy + iz0);
+  vec4 ixy1 = permute(ixy + iz1);
+  vec4 ixy00 = permute(ixy0 + iw0);
+  vec4 ixy01 = permute(ixy0 + iw1);
+  vec4 ixy10 = permute(ixy1 + iw0);
+  vec4 ixy11 = permute(ixy1 + iw1);
+
+  vec4 gx00 = ixy00 / 7.0;
+  vec4 gy00 = floor(gx00) / 7.0;
+  vec4 gz00 = floor(gy00) / 6.0;
+  gx00 = fract(gx00) - 0.5;
+  gy00 = fract(gy00) - 0.5;
+  gz00 = fract(gz00) - 0.5;
+  vec4 gw00 = vec4(0.75) - abs(gx00) - abs(gy00) - abs(gz00);
+  vec4 sw00 = step(gw00, vec4(0.0));
+  gx00 -= sw00 * (step(0.0, gx00) - 0.5);
+  gy00 -= sw00 * (step(0.0, gy00) - 0.5);
+
+  vec4 gx01 = ixy01 / 7.0;
+  vec4 gy01 = floor(gx01) / 7.0;
+  vec4 gz01 = floor(gy01) / 6.0;
+  gx01 = fract(gx01) - 0.5;
+  gy01 = fract(gy01) - 0.5;
+  gz01 = fract(gz01) - 0.5;
+  vec4 gw01 = vec4(0.75) - abs(gx01) - abs(gy01) - abs(gz01);
+  vec4 sw01 = step(gw01, vec4(0.0));
+  gx01 -= sw01 * (step(0.0, gx01) - 0.5);
+  gy01 -= sw01 * (step(0.0, gy01) - 0.5);
+
+  vec4 gx10 = ixy10 / 7.0;
+  vec4 gy10 = floor(gx10) / 7.0;
+  vec4 gz10 = floor(gy10) / 6.0;
+  gx10 = fract(gx10) - 0.5;
+  gy10 = fract(gy10) - 0.5;
+  gz10 = fract(gz10) - 0.5;
+  vec4 gw10 = vec4(0.75) - abs(gx10) - abs(gy10) - abs(gz10);
+  vec4 sw10 = step(gw10, vec4(0.0));
+  gx10 -= sw10 * (step(0.0, gx10) - 0.5);
+  gy10 -= sw10 * (step(0.0, gy10) - 0.5);
+
+  vec4 gx11 = ixy11 / 7.0;
+  vec4 gy11 = floor(gx11) / 7.0;
+  vec4 gz11 = floor(gy11) / 6.0;
+  gx11 = fract(gx11) - 0.5;
+  gy11 = fract(gy11) - 0.5;
+  gz11 = fract(gz11) - 0.5;
+  vec4 gw11 = vec4(0.75) - abs(gx11) - abs(gy11) - abs(gz11);
+  vec4 sw11 = step(gw11, vec4(0.0));
+  gx11 -= sw11 * (step(0.0, gx11) - 0.5);
+  gy11 -= sw11 * (step(0.0, gy11) - 0.5);
+
+  vec4 g0000 = vec4(gx00.x,gy00.x,gz00.x,gw00.x);
+  vec4 g1000 = vec4(gx00.y,gy00.y,gz00.y,gw00.y);
+  vec4 g0100 = vec4(gx00.z,gy00.z,gz00.z,gw00.z);
+  vec4 g1100 = vec4(gx00.w,gy00.w,gz00.w,gw00.w);
+  vec4 g0010 = vec4(gx10.x,gy10.x,gz10.x,gw10.x);
+  vec4 g1010 = vec4(gx10.y,gy10.y,gz10.y,gw10.y);
+  vec4 g0110 = vec4(gx10.z,gy10.z,gz10.z,gw10.z);
+  vec4 g1110 = vec4(gx10.w,gy10.w,gz10.w,gw10.w);
+  vec4 g0001 = vec4(gx01.x,gy01.x,gz01.x,gw01.x);
+  vec4 g1001 = vec4(gx01.y,gy01.y,gz01.y,gw01.y);
+  vec4 g0101 = vec4(gx01.z,gy01.z,gz01.z,gw01.z);
+  vec4 g1101 = vec4(gx01.w,gy01.w,gz01.w,gw01.w);
+  vec4 g0011 = vec4(gx11.x,gy11.x,gz11.x,gw11.x);
+  vec4 g1011 = vec4(gx11.y,gy11.y,gz11.y,gw11.y);
+  vec4 g0111 = vec4(gx11.z,gy11.z,gz11.z,gw11.z);
+  vec4 g1111 = vec4(gx11.w,gy11.w,gz11.w,gw11.w);
+
+  vec4 norm00 = taylorInvSqrt(vec4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100)));
+  g0000 *= norm00.x;
+  g0100 *= norm00.y;
+  g1000 *= norm00.z;
+  g1100 *= norm00.w;
+
+  vec4 norm01 = taylorInvSqrt(vec4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101)));
+  g0001 *= norm01.x;
+  g0101 *= norm01.y;
+  g1001 *= norm01.z;
+  g1101 *= norm01.w;
+
+  vec4 norm10 = taylorInvSqrt(vec4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110)));
+  g0010 *= norm10.x;
+  g0110 *= norm10.y;
+  g1010 *= norm10.z;
+  g1110 *= norm10.w;
+
+  vec4 norm11 = taylorInvSqrt(vec4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111)));
+  g0011 *= norm11.x;
+  g0111 *= norm11.y;
+  g1011 *= norm11.z;
+  g1111 *= norm11.w;
+
+  float n0000 = dot(g0000, Pf0);
+  float n1000 = dot(g1000, vec4(Pf1.x, Pf0.yzw));
+  float n0100 = dot(g0100, vec4(Pf0.x, Pf1.y, Pf0.zw));
+  float n1100 = dot(g1100, vec4(Pf1.xy, Pf0.zw));
+  float n0010 = dot(g0010, vec4(Pf0.xy, Pf1.z, Pf0.w));
+  float n1010 = dot(g1010, vec4(Pf1.x, Pf0.y, Pf1.z, Pf0.w));
+  float n0110 = dot(g0110, vec4(Pf0.x, Pf1.yz, Pf0.w));
+  float n1110 = dot(g1110, vec4(Pf1.xyz, Pf0.w));
+  float n0001 = dot(g0001, vec4(Pf0.xyz, Pf1.w));
+  float n1001 = dot(g1001, vec4(Pf1.x, Pf0.yz, Pf1.w));
+  float n0101 = dot(g0101, vec4(Pf0.x, Pf1.y, Pf0.z, Pf1.w));
+  float n1101 = dot(g1101, vec4(Pf1.xy, Pf0.z, Pf1.w));
+  float n0011 = dot(g0011, vec4(Pf0.xy, Pf1.zw));
+  float n1011 = dot(g1011, vec4(Pf1.x, Pf0.y, Pf1.zw));
+  float n0111 = dot(g0111, vec4(Pf0.x, Pf1.yzw));
+  float n1111 = dot(g1111, Pf1);
+
+  vec4 fade_xyzw = fade(Pf0);
+  vec4 n_0w = mix(vec4(n0000, n1000, n0100, n1100), vec4(n0001, n1001, n0101, n1101), fade_xyzw.w);
+  vec4 n_1w = mix(vec4(n0010, n1010, n0110, n1110), vec4(n0011, n1011, n0111, n1111), fade_xyzw.w);
+  vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
+  vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
+  float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
+  return 2.2 * n_xyzw;
+}
+</code></pre>
+<h3><a id="user-content-simplex-noise" class="anchor" aria-hidden="true" href="#simplex-noise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="http://en.wikipedia.org/wiki/Simplex_noise" rel="nofollow">Simplex Noise</a></h3>
+<pre><code>// Simplex 2D noise
+//
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+           -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x &gt; x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+  + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+    dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+</code></pre>
+<pre><code>//	Simplex 3D Noise 
+//	by Ian McEwan, Ashima Arts
+//
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+
+float snoise(vec3 v){ 
+  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+// First corner
+  vec3 i  = floor(v + dot(v, C.yyy) );
+  vec3 x0 =   v - i + dot(i, C.xxx) ;
+
+// Other corners
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min( g.xyz, l.zxy );
+  vec3 i2 = max( g.xyz, l.zxy );
+
+  //  x0 = x0 - 0. + 0.0 * C 
+  vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+  vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+  vec3 x3 = x0 - 1. + 3.0 * C.xxx;
+
+// Permutations
+  i = mod(i, 289.0 ); 
+  vec4 p = permute( permute( permute( 
+             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+           + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
+           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+// Gradients
+// ( N*N points uniformly over a square, mapped onto an octahedron.)
+  float n_ = 1.0/7.0; // N=7
+  vec3  ns = n_ * D.wyz - D.xzx;
+
+  vec4 j = p - 49.0 * floor(p * ns.z *ns.z);  //  mod(p,N*N)
+
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+  vec4 x = x_ *ns.x + ns.yyyy;
+  vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+
+  vec4 b0 = vec4( x.xy, y.xy );
+  vec4 b1 = vec4( x.zw, y.zw );
+
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+  vec3 p0 = vec3(a0.xy,h.x);
+  vec3 p1 = vec3(a0.zw,h.y);
+  vec3 p2 = vec3(a1.xy,h.z);
+  vec3 p3 = vec3(a1.zw,h.w);
+
+//Normalise gradients
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+
+// Mix final noise value
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), 
+                                dot(p2,x2), dot(p3,x3) ) );
+}
+</code></pre>
+<pre><code>//	Simplex 4D Noise 
+//	by Ian McEwan, Ashima Arts
+//
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+float permute(float x){return floor(mod(((x*34.0)+1.0)*x, 289.0));}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+float taylorInvSqrt(float r){return 1.79284291400159 - 0.85373472095314 * r;}
+
+vec4 grad4(float j, vec4 ip){
+  const vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);
+  vec4 p,s;
+
+  p.xyz = floor( fract (vec3(j) * ip.xyz) * 7.0) * ip.z - 1.0;
+  p.w = 1.5 - dot(abs(p.xyz), ones.xyz);
+  s = vec4(lessThan(p, vec4(0.0)));
+  p.xyz = p.xyz + (s.xyz*2.0 - 1.0) * s.www; 
+
+  return p;
+}
+
+float snoise(vec4 v){
+  const vec2  C = vec2( 0.138196601125010504,  // (5 - sqrt(5))/20  G4
+                        0.309016994374947451); // (sqrt(5) - 1)/4   F4
+// First corner
+  vec4 i  = floor(v + dot(v, C.yyyy) );
+  vec4 x0 = v -   i + dot(i, C.xxxx);
+
+// Other corners
+
+// Rank sorting originally contributed by Bill Licea-Kane, AMD (formerly ATI)
+  vec4 i0;
+
+  vec3 isX = step( x0.yzw, x0.xxx );
+  vec3 isYZ = step( x0.zww, x0.yyz );
+//  i0.x = dot( isX, vec3( 1.0 ) );
+  i0.x = isX.x + isX.y + isX.z;
+  i0.yzw = 1.0 - isX;
+
+//  i0.y += dot( isYZ.xy, vec2( 1.0 ) );
+  i0.y += isYZ.x + isYZ.y;
+  i0.zw += 1.0 - isYZ.xy;
+
+  i0.z += isYZ.z;
+  i0.w += 1.0 - isYZ.z;
+
+  // i0 now contains the unique values 0,1,2,3 in each channel
+  vec4 i3 = clamp( i0, 0.0, 1.0 );
+  vec4 i2 = clamp( i0-1.0, 0.0, 1.0 );
+  vec4 i1 = clamp( i0-2.0, 0.0, 1.0 );
+
+  //  x0 = x0 - 0.0 + 0.0 * C 
+  vec4 x1 = x0 - i1 + 1.0 * C.xxxx;
+  vec4 x2 = x0 - i2 + 2.0 * C.xxxx;
+  vec4 x3 = x0 - i3 + 3.0 * C.xxxx;
+  vec4 x4 = x0 - 1.0 + 4.0 * C.xxxx;
+
+// Permutations
+  i = mod(i, 289.0); 
+  float j0 = permute( permute( permute( permute(i.w) + i.z) + i.y) + i.x);
+  vec4 j1 = permute( permute( permute( permute (
+             i.w + vec4(i1.w, i2.w, i3.w, 1.0 ))
+           + i.z + vec4(i1.z, i2.z, i3.z, 1.0 ))
+           + i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))
+           + i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));
+// Gradients
+// ( 7*7*6 points uniformly over a cube, mapped onto a 4-octahedron.)
+// 7*7*6 = 294, which is close to the ring size 17*17 = 289.
+
+  vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;
+
+  vec4 p0 = grad4(j0,   ip);
+  vec4 p1 = grad4(j1.x, ip);
+  vec4 p2 = grad4(j1.y, ip);
+  vec4 p3 = grad4(j1.z, ip);
+  vec4 p4 = grad4(j1.w, ip);
+
+// Normalise gradients
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+  p4 *= taylorInvSqrt(dot(p4,p4));
+
+// Mix contributions from the five corners
+  vec3 m0 = max(0.6 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), 0.0);
+  vec2 m1 = max(0.6 - vec2(dot(x3,x3), dot(x4,x4)            ), 0.0);
+  m0 = m0 * m0;
+  m1 = m1 * m1;
+  return 49.0 * ( dot(m0*m0, vec3( dot( p0, x0 ), dot( p1, x1 ), dot( p2, x2 )))
+               + dot(m1*m1, vec2( dot( p3, x3 ), dot( p4, x4 ) ) ) ) ;
+
+}
+</code></pre>
+<pre><code>// 	&lt;www.shadertoy.com/view/XsX3zB&gt;
+//	by Nikita Miropolskiy
+
+/* discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3 */
+vec3 random3(vec3 c) {
+	float j = 4096.0*sin(dot(c,vec3(17.0, 59.4, 15.0)));
+	vec3 r;
+	r.z = fract(512.0*j);
+	j *= .125;
+	r.x = fract(512.0*j);
+	j *= .125;
+	r.y = fract(512.0*j);
+	return r-0.5;
+}
+
+const float F3 =  0.3333333;
+const float G3 =  0.1666667;
+float snoise(vec3 p) {
+
+	vec3 s = floor(p + dot(p, vec3(F3)));
+	vec3 x = p - s + dot(s, vec3(G3));
+	 
+	vec3 e = step(vec3(0.0), x - x.yzx);
+	vec3 i1 = e*(1.0 - e.zxy);
+	vec3 i2 = 1.0 - e.zxy*(1.0 - e);
+	 	
+	vec3 x1 = x - i1 + G3;
+	vec3 x2 = x - i2 + 2.0*G3;
+	vec3 x3 = x - 1.0 + 3.0*G3;
+	 
+	vec4 w, d;
+	 
+	w.x = dot(x, x);
+	w.y = dot(x1, x1);
+	w.z = dot(x2, x2);
+	w.w = dot(x3, x3);
+	 
+	w = max(0.6 - w, 0.0);
+	 
+	d.x = dot(random3(s), x);
+	d.y = dot(random3(s + i1), x1);
+	d.z = dot(random3(s + i2), x2);
+	d.w = dot(random3(s + 1.0), x3);
+	 
+	w *= w;
+	w *= w;
+	d *= w;
+	 
+	return dot(d, vec4(52.0));
+}
+
+float snoiseFractal(vec3 m) {
+	return   0.5333333* snoise(m)
+				+0.2666667* snoise(2.0*m)
+				+0.1333333* snoise(4.0*m)
+				+0.0666667* snoise(8.0*m);
+}
+
+
+</code></pre>
+<h3><a id="user-content-normalmap-noise" class="anchor" aria-hidden="true" href="#normalmap-noise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NormalMap Noise</h3>
+<pre><code>vec3 normalNoise(vec2 _st, float _zoom, float _speed){
+	vec2 v1 = _st;
+	vec2 v2 = _st;
+	vec2 v3 = _st;
+	float expon = pow(10.0, _zoom*2.0);
+	v1 /= 1.0*expon;
+	v2 /= 0.62*expon;
+	v3 /= 0.83*expon;
+	float n = time*_speed;
+	float nr = (simplexNoise(vec3(v1, n)) + simplexNoise(vec3(v2, n)) + simplexNoise(vec3(v3, n))) / 6.0 + 0.5;
+	n = time * _speed + 1000.0;
+	float ng = (simplexNoise(vec3(v1, n)) + simplexNoise(vec3(v2, n)) + simplexNoise(vec3(v3, n))) / 6.0 + 0.5;
+	return vec3(nr,ng,0.5);
+}
+</code></pre>
+<h2><a id="user-content-voronoise" class="anchor" aria-hidden="true" href="#voronoise"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>VoroNoise</h2>
+<pre><code>//	&lt;https://www.shadertoy.com/view/Xd23Dh&gt;
+//	by inigo quilez &lt;http://iquilezles.org/www/articles/voronoise/voronoise.htm&gt;
+//
+
+vec3 hash3( vec2 p ){
+    vec3 q = vec3( dot(p,vec2(127.1,311.7)), 
+				   dot(p,vec2(269.5,183.3)), 
+				   dot(p,vec2(419.2,371.9)) );
+	return fract(sin(q)*43758.5453);
+}
+
+float iqnoise( in vec2 x, float u, float v ){
+    vec2 p = floor(x);
+    vec2 f = fract(x);
+		
+	float k = 1.0+63.0*pow(1.0-v,4.0);
+	
+	float va = 0.0;
+	float wt = 0.0;
+    for( int j=-2; j&lt;=2; j++ )
+    for( int i=-2; i&lt;=2; i++ )
+    {
+        vec2 g = vec2( float(i),float(j) );
+		vec3 o = hash3( p + g )*vec3(u,u,1.0);
+		vec2 r = g - f + o.xy;
+		float d = dot(r,r);
+		float ww = pow( 1.0-smoothstep(0.0,1.414,sqrt(d)), k );
+		va += o.z*ww;
+		wt += ww;
+    }
+	
+    return va/wt;
+}
+
+</code></pre>
+<pre><code>//	https://www.shadertoy.com/view/lsjGWD
+//	by Pietro De Nicola
+//
+#define OCTAVES   		1		// 7
+#define SWITCH_TIME 	60.0		// seconds
+
+float t = time/SWITCH_TIME;
+
+float function 			= mod(t,4.0);
+bool  multiply_by_F1	= mod(t,8.0)  &gt;= 4.0;
+bool  inverse				= mod(t,16.0) &gt;= 8.0;
+float distance_type	= mod(t/16.0,4.0);
+
+vec2 hash( vec2 p ){
+	p = vec2( dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
+	return fract(sin(p)*43758.5453);
+}
+
+float voronoi( in vec2 x ){
+	vec2 n = floor( x );
+	vec2 f = fract( x );
+	
+	float F1 = 8.0;
+	float F2 = 8.0;
+	
+	for( int j=-1; j&lt;=1; j++ )
+		for( int i=-1; i&lt;=1; i++ ){
+			vec2 g = vec2(i,j);
+			vec2 o = hash( n + g );
+
+			o = 0.5 + 0.41*sin( time + 6.2831*o );	
+			vec2 r = g - f + o;
+
+		float d = 	distance_type &lt; 1.0 ? dot(r,r)  :				// euclidean^2
+				  	distance_type &lt; 2.0 ? sqrt(dot(r,r)) :			// euclidean
+					distance_type &lt; 3.0 ? abs(r.x) + abs(r.y) :		// manhattan
+					distance_type &lt; 4.0 ? max(abs(r.x), abs(r.y)) :	// chebyshev
+					0.0;
+
+		if( d&lt;F1 ) { 
+			F2 = F1; 
+			F1 = d; 
+		} else if( d&lt;F2 ) {
+			F2 = d;
+		}
+    }
+	
+	float c = function &lt; 1.0 ? F1 : 
+			  function &lt; 2.0 ? F2 : 
+			  function &lt; 3.0 ? F2-F1 :
+			  function &lt; 4.0 ? (F1+F2)/2.0 : 
+			  0.0;
+		
+	if( multiply_by_F1 )	c *= F1;
+	if( inverse )			c = 1.0 - c;
+	
+    return c;
+}
+
+float fbm( in vec2 p ){
+	float s = 0.0;
+	float m = 0.0;
+	float a = 0.5;
+	
+	for( int i=0; i&lt;OCTAVES; i++ ){
+		s += a * voronoi(p);
+		m += a;
+		a *= 0.5;
+		p *= 2.0;
+	}
+	return s/m;
+}
+
+// Use:
+//		vec2 p = gl_FragCoord.xy/iResolution.xx;
+//    float c = POWER*fbm( SCALE*p ) + BIAS;
+
+</code></pre>
+<h2><a id="user-content-fractional-brownian-motion" class="anchor" aria-hidden="true" href="#fractional-brownian-motion"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="http://en.wikipedia.org/wiki/Fractional_Brownian_motion" rel="nofollow">Fractional Brownian motion</a></h2>
+<pre><code>#define NUM_OCTAVES 5
+
+float fbm(float x) {
+	float v = 0.0;
+	float a = 0.5;
+	float shift = float(100);
+	for (int i = 0; i &lt; NUM_OCTAVES; ++i) {
+		v += a * noise(x);
+		x = x * 2.0 + shift;
+		a *= 0.5;
+	}
+	return v;
+}
+
+
+float fbm(vec2 x) {
+	float v = 0.0;
+	float a = 0.5;
+	vec2 shift = vec2(100);
+	// Rotate to reduce axial bias
+    mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
+	for (int i = 0; i &lt; NUM_OCTAVES; ++i) {
+		v += a * noise(x);
+		x = rot * x * 2.0 + shift;
+		a *= 0.5;
+	}
+	return v;
+}
+
+
+float fbm(vec3 x) {
+	float v = 0.0;
+	float a = 0.5;
+	vec3 shift = vec3(100);
+	for (int i = 0; i &lt; NUM_OCTAVES; ++i) {
+		v += a * noise(x);
+		x = x * 2.0 + shift;
+		a *= 0.5;
+	}
+	return v;
+}
+</code></pre>
+<pre><code>// 	&lt;https://www.shadertoy.com/view/MdX3Rr&gt;
+//	by inigo quilez
+//
+const mat2 m2 = mat2(0.8,-0.6,0.6,0.8);
+float fbm( in vec2 p ){
+    float f = 0.0;
+    f += 0.5000*noise( p ); p = m2*p*2.02;
+    f += 0.2500*noise( p ); p = m2*p*2.03;
+    f += 0.1250*noise( p ); p = m2*p*2.01;
+    f += 0.0625*noise( p );
+
+    return f/0.9375;
+}
+</code></pre>
+<p>Articles:</p>
+<ul>
+<li>
+<p>Improving Noise, Ken Perlin <a href="http://mrl.nyu.edu/%7Eperlin/paper445.pdf" rel="nofollow">http://mrl.nyu.edu/~perlin/paper445.pdf</a></p>
+</li>
+<li>
+<p>Perlin Noise, Hugo Elias <a href="http://freespace.virgin.net/hugo.elias/models/m_perlin.htm" rel="nofollow">http://freespace.virgin.net/hugo.elias/models/m_perlin.htm</a></p>
+</li>
+<li>
+<p>Implementation of Perlin Noise on GPU, Leena Kora <a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/Perlin%20Noise%20on%20GPU.html" rel="nofollow">http://www.sci.utah.edu/~leenak/IndStudy_reportfall/Perlin%20Noise%20on%20GPU.html</a></p>
+</li>
+<li>
+<p>Implementing Improved Perlin Noise, Simon Green <a href="http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter26.html" rel="nofollow">http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter26.html</a></p>
+</li>
+<li>
+<p>Perlin Noise <a href="http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Perlin.php#.U7Fvs41dVhs" rel="nofollow">http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Perlin.php#.U7Fvs41dVhs</a></p>
+</li>
+<li>
+<p>Simplex Noise <a href="http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Simplex.php#.U7FwI41dVhs" rel="nofollow">http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Simplex.php#.U7FwI41dVhs</a></p>
+</li>
+<li>
+<p>Voronoise <a href="http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Voronoi.php#.U7FwM41dVhs" rel="nofollow">http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Voronoi.php#.U7FwM41dVhs</a></p>
+</li>
+<li>
+<p>Voronoise, inigo quilez <a href="http://iquilezles.org/www/articles/voronoise/voronoise.htm" rel="nofollow">http://iquilezles.org/www/articles/voronoise/voronoise.htm</a></p>
+</li>
+<li>
+<p>Voronoi Noise, <a href="http://www.pixeleuphoria.com/node/34" rel="nofollow">http://www.pixeleuphoria.com/node/34</a></p>
+</li>
+<li>
+<p>Mosaic Noise <a href="http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Mosaic.php#.U7FwZo1dVhs" rel="nofollow">http://mines.lumpylumpy.com/Electronics/Computers/Software/Cpp/Graphics/Bitmap/Textures/Noise/Mosaic.php#.U7FwZo1dVhs</a></p>
+</li>
+<li>
+<p>Inigo Quilez <a href="http://iquilezles.org/www/articles/morenoise/morenoise.htm" rel="nofollow">http://iquilezles.org/www/articles/morenoise/morenoise.htm</a></p>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>Andrew Baldwin <a href="http://thndl.com/?15" rel="nofollow">http://thndl.com/?15</a></li>
+</ul>
+</article>
+  </div>
+
+  </div>
+</div>
+
+
+    <a name="comments"></a>
+    <div class="discussion-timeline gist-discussion-timeline js-quote-selection-container" data-quote-markdown=".js-comment-body">
+      <div class="js-discussion js-socket-channel" data-channel="marked-as-read:gist:12829180">
+        
+  <div class="timeline-comment-wrapper js-comment-container">
+      
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a class="d-inline-block" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=681322" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/stegu" aria-describedby="hovercard-aria-description"><img class="avatar rounded-1" alt="@stegu" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/681322_002.jpeg" width="44" height="44"></a>
+
+</div>
+
+
+    
+<div class="timeline-comment-group js-minimizable-comment-group js-targetable-comment" id="gistcomment-1766534">
+    <div class="minimized-comment d-none ">
+      
+
+  <details class="Details-element details-reset border rounded-1 bg-white" data-body-version="8c86ebfef9015636fbc451475a202ee6">
+    <summary class="bg-gray border-bottom-0 py-0 px-2">
+      <div class="d-flex flex-justify-between flex-items-center">
+        <h3 class="timeline-comment-header-text f5 text-gray text-normal text-italic">
+              This comment has been minimized.
+
+        </h3>
+        <div class="Details-content--closed text-gray f6"><svg class="octicon octicon-unfold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 7.5L14 10c0 .55-.45 1-1 1H9v-1h3.5l-2-2h-7l-2 2H5v1H1c-.55 0-1-.45-1-1l2.5-2.5L0 5c0-.55.45-1 1-1h4v1H1.5l2 2h7l2-2H9V4h4c.55 0 1 .45 1 1l-2.5 2.5zM6 6h2V3h2L7 0 4 3h2v3zm2 3H6v3H4l3 3 3-3H8V9z"></path></svg>Show comment</div>
+        <div class="Details-content--open text-gray f6"><svg class="octicon octicon-fold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 9l3 3H8v3H6v-3H4l3-3zm3-6H8V0H6v3H4l3 3 3-3zm4 2c0-.55-.45-1-1-1h-2.5l-1 1h3l-2 2h-7l-2-2h3l-1-1H1c-.55 0-1 .45-1 1l2.5 2.5L0 10c0 .55.45 1 1 1h2.5l1-1h-3l2-2h7l2 2h-3l1 1H13c.55 0 1-.45 1-1l-2.5-2.5L14 5z"></path></svg>Hide comment</div>
+      </div>
+    </summary>
+    <div class="review-comment border-top pt-3">
+      <div class="previewable-edit  js-task-list-container ">
+        <div class="edit-comment-hide">
+          <div class="timeline-comment-actions">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment-1766534-minimized-permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+          </div>
+            <a class="float-left mt-1" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=681322" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/stegu" aria-describedby="hovercard-aria-description"><img class="avatar" alt="@stegu" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/681322.jpeg" width="28" height="28"></a>
+          <div class="review-comment-contents">
+            <h4 class="f5 text-normal d-inline text-gray-dark">
+              <strong class="text-gray">
+                
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=681322" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/stegu" aria-describedby="hovercard-aria-description">stegu</a>
+  
+
+              </strong>
+              <span class="text-gray">
+                  <a href="#gistcomment-1766534" id="gistcomment-1766534-minimized-permalink" class="timestamp"><relative-time datetime="2016-05-02T08:50:14Z" title="2 May 2016, 11:50 EEST">on 2 May 2016</relative-time></a>
+              </span>
+            </h4>
+            
+
+            <task-lists disabled="" sortable="">
+              <div class="comment-body markdown-body p-0 pt-1 js-comment-body ">
+                  <p>Please consider adding a link to <a href="https://github.com/ashima/webgl-noise">http://github.com/ashima/webgl-noise</a>
+ in your list of articles at the end. Most of the code above comes from 
+there, and with the heavy edits you made to the headers it's 
+unnecessarily hard to find the original source. You also violate the 
+permissive license for many of the functions by not including the 
+copyright header.</p>
+<p>Note also that the functions under the heading "Perlin Noise" are 
+fractal sums of value noise, not gradient noise. Value noise is not 
+Perlin noise at all, but a pattern with lots of low frequency content 
+that is less useful. This naming confusion is common, partly due to an 
+infamous web page by Hugo Elias that I won't link to here, simply 
+because it's both misinformed and badly outdated.</p>
+              </div>
+            </task-lists>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </details>
+
+    </div>
+  <div class="unminimized-comment comment previewable-edit js-comment js-task-list-container timeline-comment" data-body-version="8c86ebfef9015636fbc451475a202ee6" data-unfurl-authenticity-token="j7scMqbWdM2NSpH/Vv2qRYFucb+iukTN4zQI/Q2IohJ6Z1zvCo8hPy8/EMfcqwY0EigXY+8LBV68vcRGu+TbbA==">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="details-gistcomment-">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment--permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong class="css-truncate">
+      
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=681322" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/stegu" aria-describedby="hovercard-aria-description">stegu</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="#gistcomment-1766534" id="gistcomment--permalink" class="timestamp js-timestamp"><relative-time datetime="2016-05-02T08:50:14Z" title="2 May 2016, 11:50 EEST">on 2 May 2016</relative-time></a>
+
+
+    <span class="js-comment-fragment">
+      <include-fragment class="js-comment-edit-history d-inline">
+            
+  <span class="d-inline-block text-gray-light">•</span>
+
+  <details class="details-overlay details-reset d-inline-block dropdown js-load-contents" data-deferred-details-content-url="/_render_node/MDExOkdpc3RDb21tZW50NjcwYzIyZjM5NjZlNjYyZDJmODM6MTc2NjUzNA==/comments/comment_edit_history_log">
+    <summary class="btn-link no-underline text-gray js-notice" aria-haspopup="menu">
+      <div class="position-relative">
+        <span>
+            edited
+        </span>
+        <svg height="11" class="octicon octicon-triangle-down v-align-middle" viewBox="0 0 12 16" version="1.1" width="8" aria-hidden="true"><path fill-rule="evenodd" d="M0 5l6 6 6-6H0z"></path></svg>
+      </div>
+    </summary>
+    <details-menu class="anim-scale-in dropdown-menu dropdown-menu-se py-0" style="width:352px" role="menu">
+      <include-fragment class="octocat-spinner my-3" aria-label="Loading..."></include-fragment>
+    </details-menu>
+  </details>
+
+      </include-fragment>
+    </span>
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+
+      
+<task-lists disabled="" sortable="">
+<table class="d-block">
+  <tbody class="d-block">
+    <tr class="d-block">
+      <td class="d-block comment-body markdown-body  js-comment-body">
+
+          <p>Please consider adding a link to <a href="https://github.com/ashima/webgl-noise">http://github.com/ashima/webgl-noise</a>
+ in your list of articles at the end. Most of the code above comes from 
+there, and with the heavy edits you made to the headers it's 
+unnecessarily hard to find the original source. You also violate the 
+permissive license for many of the functions by not including the 
+copyright header.</p>
+<p>Note also that the functions under the heading "Perlin Noise" are 
+fractal sums of value noise, not gradient noise. Value noise is not 
+Perlin noise at all, but a pattern with lots of low frequency content 
+that is less useful. This naming confusion is common, partly due to an 
+infamous web page by Hugo Elias that I won't link to here, simply 
+because it's both misinformed and badly outdated.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</task-lists>
+
+
+    </div>
+
+  </div>
+</div>
+
+  </div>
+  <div class="timeline-comment-wrapper js-comment-container">
+      
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a class="d-inline-block" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=21131812" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/kryptocloud" aria-describedby="hovercard-aria-description"><img class="avatar rounded-1" alt="@kryptocloud" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/21131812.png" width="44" height="44"></a>
+
+</div>
+
+
+    
+<div class="timeline-comment-group js-minimizable-comment-group js-targetable-comment" id="gistcomment-1872086">
+    <div class="minimized-comment d-none ">
+      
+
+  <details class="Details-element details-reset border rounded-1 bg-white" data-body-version="adbe5e89a34fd9259e760531f4e27e34">
+    <summary class="bg-gray border-bottom-0 py-0 px-2">
+      <div class="d-flex flex-justify-between flex-items-center">
+        <h3 class="timeline-comment-header-text f5 text-gray text-normal text-italic">
+              This comment has been minimized.
+
+        </h3>
+        <div class="Details-content--closed text-gray f6"><svg class="octicon octicon-unfold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 7.5L14 10c0 .55-.45 1-1 1H9v-1h3.5l-2-2h-7l-2 2H5v1H1c-.55 0-1-.45-1-1l2.5-2.5L0 5c0-.55.45-1 1-1h4v1H1.5l2 2h7l2-2H9V4h4c.55 0 1 .45 1 1l-2.5 2.5zM6 6h2V3h2L7 0 4 3h2v3zm2 3H6v3H4l3 3 3-3H8V9z"></path></svg>Show comment</div>
+        <div class="Details-content--open text-gray f6"><svg class="octicon octicon-fold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 9l3 3H8v3H6v-3H4l3-3zm3-6H8V0H6v3H4l3 3 3-3zm4 2c0-.55-.45-1-1-1h-2.5l-1 1h3l-2 2h-7l-2-2h3l-1-1H1c-.55 0-1 .45-1 1l2.5 2.5L0 10c0 .55.45 1 1 1h2.5l1-1h-3l2-2h7l2 2h-3l1 1H13c.55 0 1-.45 1-1l-2.5-2.5L14 5z"></path></svg>Hide comment</div>
+      </div>
+    </summary>
+    <div class="review-comment border-top pt-3">
+      <div class="previewable-edit  js-task-list-container ">
+        <div class="edit-comment-hide">
+          <div class="timeline-comment-actions">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment-1872086-minimized-permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+          </div>
+            <a class="float-left mt-1" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=21131812" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/kryptocloud" aria-describedby="hovercard-aria-description"><img class="avatar" alt="@kryptocloud" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/21131812_002.png" width="28" height="28"></a>
+          <div class="review-comment-contents">
+            <h4 class="f5 text-normal d-inline text-gray-dark">
+              <strong class="text-gray">
+                
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=21131812" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/kryptocloud" aria-describedby="hovercard-aria-description">kryptocloud</a>
+  
+
+              </strong>
+              <span class="text-gray">
+                  <a href="#gistcomment-1872086" id="gistcomment-1872086-minimized-permalink" class="timestamp"><relative-time datetime="2016-09-12T18:00:21Z" title="12 Sep 2016, 21:00 EEST">on 12 Sep 2016</relative-time></a>
+              </span>
+            </h4>
+            
+
+            <task-lists disabled="" sortable="">
+              <div class="comment-body markdown-body p-0 pt-1 js-comment-body ">
+                  <p>great reference ++ thanks</p>
+              </div>
+            </task-lists>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </details>
+
+    </div>
+  <div class="unminimized-comment comment previewable-edit js-comment js-task-list-container timeline-comment" data-body-version="adbe5e89a34fd9259e760531f4e27e34" data-unfurl-authenticity-token="jQONOrukjSeiLOmhDx6vjEjFITUvLLNBnwHuN4G4Oct4383nF/3Y1QBZaJmFSAP924NH6WKd8tLAiCKMN9RAtQ==">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="details-gistcomment-">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment--permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong class="css-truncate">
+      
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=21131812" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/kryptocloud" aria-describedby="hovercard-aria-description">kryptocloud</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="#gistcomment-1872086" id="gistcomment--permalink" class="timestamp js-timestamp"><relative-time datetime="2016-09-12T18:00:21Z" title="12 Sep 2016, 21:00 EEST">on 12 Sep 2016</relative-time></a>
+
+
+    <span class="js-comment-fragment">
+      <include-fragment class="js-comment-edit-history d-inline">
+      </include-fragment>
+    </span>
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+
+      
+<task-lists disabled="" sortable="">
+<table class="d-block">
+  <tbody class="d-block">
+    <tr class="d-block">
+      <td class="d-block comment-body markdown-body  js-comment-body">
+
+          <p>great reference ++ thanks</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</task-lists>
+
+
+    </div>
+
+  </div>
+</div>
+
+  </div>
+  <div class="timeline-comment-wrapper js-comment-container">
+      
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a class="d-inline-block" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=2304151" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/Atrix256" aria-describedby="hovercard-aria-description"><img class="avatar rounded-1" alt="@Atrix256" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/2304151_002.png" width="44" height="44"></a>
+
+</div>
+
+
+    
+<div class="timeline-comment-group js-minimizable-comment-group js-targetable-comment" id="gistcomment-2351846">
+    <div class="minimized-comment d-none ">
+      
+
+  <details class="Details-element details-reset border rounded-1 bg-white" data-body-version="7827cb2f33db3b15a43fe62d3d382bbc">
+    <summary class="bg-gray border-bottom-0 py-0 px-2">
+      <div class="d-flex flex-justify-between flex-items-center">
+        <h3 class="timeline-comment-header-text f5 text-gray text-normal text-italic">
+              This comment has been minimized.
+
+        </h3>
+        <div class="Details-content--closed text-gray f6"><svg class="octicon octicon-unfold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 7.5L14 10c0 .55-.45 1-1 1H9v-1h3.5l-2-2h-7l-2 2H5v1H1c-.55 0-1-.45-1-1l2.5-2.5L0 5c0-.55.45-1 1-1h4v1H1.5l2 2h7l2-2H9V4h4c.55 0 1 .45 1 1l-2.5 2.5zM6 6h2V3h2L7 0 4 3h2v3zm2 3H6v3H4l3 3 3-3H8V9z"></path></svg>Show comment</div>
+        <div class="Details-content--open text-gray f6"><svg class="octicon octicon-fold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 9l3 3H8v3H6v-3H4l3-3zm3-6H8V0H6v3H4l3 3 3-3zm4 2c0-.55-.45-1-1-1h-2.5l-1 1h3l-2 2h-7l-2-2h3l-1-1H1c-.55 0-1 .45-1 1l2.5 2.5L0 10c0 .55.45 1 1 1h2.5l1-1h-3l2-2h7l2 2h-3l1 1H13c.55 0 1-.45 1-1l-2.5-2.5L14 5z"></path></svg>Hide comment</div>
+      </div>
+    </summary>
+    <div class="review-comment border-top pt-3">
+      <div class="previewable-edit  js-task-list-container ">
+        <div class="edit-comment-hide">
+          <div class="timeline-comment-actions">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment-2351846-minimized-permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+          </div>
+            <a class="float-left mt-1" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=2304151" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/Atrix256" aria-describedby="hovercard-aria-description"><img class="avatar" alt="@Atrix256" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/2304151.png" width="28" height="28"></a>
+          <div class="review-comment-contents">
+            <h4 class="f5 text-normal d-inline text-gray-dark">
+              <strong class="text-gray">
+                
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=2304151" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/Atrix256" aria-describedby="hovercard-aria-description">Atrix256</a>
+  
+
+              </strong>
+              <span class="text-gray">
+                  <a href="#gistcomment-2351846" id="gistcomment-2351846-minimized-permalink" class="timestamp"><relative-time datetime="2018-02-14T23:08:49Z" title="15 Feb 2018, 01:08 EET">on 15 Feb</relative-time></a>
+              </span>
+            </h4>
+            
+
+            <task-lists disabled="" sortable="">
+              <div class="comment-body markdown-body p-0 pt-1 js-comment-body ">
+                  <p>"Hash Without Sine" is also nice, as sin(time) can have stretching problems pretty quickly on some machines.<br>
+<a href="https://www.shadertoy.com/view/4djSRW" rel="nofollow">https://www.shadertoy.com/view/4djSRW</a></p>
+<p>Also, more useful for dithering, when using temporal AA, but Jorge 
+Jiminez has some "Interleaved Gradient Noise" that has some interesting 
+properties.<br>
+<a href="https://www.shadertoy.com/view/4tXGWN" rel="nofollow">https://www.shadertoy.com/view/4tXGWN</a></p>
+<p>There is some analysis of interleaved gradient noise done at these 
+two links, although it really shines under temporal AA which these links
+ do not look at.<br>
+<a href="https://blog.demofox.org/2017/10/31/animating-noise-for-integration-over-time/" rel="nofollow">https://blog.demofox.org/2017/10/31/animating-noise-for-integration-over-time/</a><br>
+<a href="https://blog.demofox.org/2017/11/03/animating-noise-for-integration-over-time-2-uniform-over-time/" rel="nofollow">https://blog.demofox.org/2017/11/03/animating-noise-for-integration-over-time-2-uniform-over-time/</a></p>
+              </div>
+            </task-lists>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </details>
+
+    </div>
+  <div class="unminimized-comment comment previewable-edit js-comment js-task-list-container timeline-comment" data-body-version="7827cb2f33db3b15a43fe62d3d382bbc" data-unfurl-authenticity-token="HRJrPX2jaa60mtCseJr5QgSEQp+EZH222rZetrJ02kLozivg0fo8XBbvUZTyzFUzl8IkQ8nVPCWFP5INBBijPA==">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="details-gistcomment-">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment--permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong class="css-truncate">
+      
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=2304151" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/Atrix256" aria-describedby="hovercard-aria-description">Atrix256</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="#gistcomment-2351846" id="gistcomment--permalink" class="timestamp js-timestamp"><relative-time datetime="2018-02-14T23:08:49Z" title="15 Feb 2018, 01:08 EET">on 15 Feb</relative-time></a>
+
+
+    <span class="js-comment-fragment">
+      <include-fragment class="js-comment-edit-history d-inline">
+      </include-fragment>
+    </span>
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+
+      
+<task-lists disabled="" sortable="">
+<table class="d-block">
+  <tbody class="d-block">
+    <tr class="d-block">
+      <td class="d-block comment-body markdown-body  js-comment-body">
+
+          <p>"Hash Without Sine" is also nice, as sin(time) can have stretching problems pretty quickly on some machines.<br>
+<a href="https://www.shadertoy.com/view/4djSRW" rel="nofollow">https://www.shadertoy.com/view/4djSRW</a></p>
+<p>Also, more useful for dithering, when using temporal AA, but Jorge 
+Jiminez has some "Interleaved Gradient Noise" that has some interesting 
+properties.<br>
+<a href="https://www.shadertoy.com/view/4tXGWN" rel="nofollow">https://www.shadertoy.com/view/4tXGWN</a></p>
+<p>There is some analysis of interleaved gradient noise done at these 
+two links, although it really shines under temporal AA which these links
+ do not look at.<br>
+<a href="https://blog.demofox.org/2017/10/31/animating-noise-for-integration-over-time/" rel="nofollow">https://blog.demofox.org/2017/10/31/animating-noise-for-integration-over-time/</a><br>
+<a href="https://blog.demofox.org/2017/11/03/animating-noise-for-integration-over-time-2-uniform-over-time/" rel="nofollow">https://blog.demofox.org/2017/11/03/animating-noise-for-integration-over-time-2-uniform-over-time/</a></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</task-lists>
+
+
+    </div>
+
+  </div>
+</div>
+
+  </div>
+  <div class="timeline-comment-wrapper js-comment-container">
+      
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a class="d-inline-block" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=346914" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/patriciogonzalezvivo" aria-describedby="hovercard-aria-description"><img class="avatar rounded-1" alt="@patriciogonzalezvivo" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/346914_002.png" width="44" height="44"></a>
+
+</div>
+
+
+    
+<div class="timeline-comment-group js-minimizable-comment-group js-targetable-comment" id="gistcomment-2351862">
+    <div class="minimized-comment d-none ">
+      
+
+  <details class="Details-element details-reset border rounded-1 bg-white" data-body-version="8ac4010e87ec19ac27682e153841a088">
+    <summary class="bg-gray border-bottom-0 py-0 px-2">
+      <div class="d-flex flex-justify-between flex-items-center">
+        <h3 class="timeline-comment-header-text f5 text-gray text-normal text-italic">
+              This comment has been minimized.
+
+        </h3>
+        <div class="Details-content--closed text-gray f6"><svg class="octicon octicon-unfold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 7.5L14 10c0 .55-.45 1-1 1H9v-1h3.5l-2-2h-7l-2 2H5v1H1c-.55 0-1-.45-1-1l2.5-2.5L0 5c0-.55.45-1 1-1h4v1H1.5l2 2h7l2-2H9V4h4c.55 0 1 .45 1 1l-2.5 2.5zM6 6h2V3h2L7 0 4 3h2v3zm2 3H6v3H4l3 3 3-3H8V9z"></path></svg>Show comment</div>
+        <div class="Details-content--open text-gray f6"><svg class="octicon octicon-fold position-relative mr-1" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 9l3 3H8v3H6v-3H4l3-3zm3-6H8V0H6v3H4l3 3 3-3zm4 2c0-.55-.45-1-1-1h-2.5l-1 1h3l-2 2h-7l-2-2h3l-1-1H1c-.55 0-1 .45-1 1l2.5 2.5L0 10c0 .55.45 1 1 1h2.5l1-1h-3l2-2h7l2 2h-3l1 1H13c.55 0 1-.45 1-1l-2.5-2.5L14 5z"></path></svg>Hide comment</div>
+      </div>
+    </summary>
+    <div class="review-comment border-top pt-3">
+      <div class="previewable-edit  js-task-list-container ">
+        <div class="edit-comment-hide">
+          <div class="timeline-comment-actions">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment-2351862-minimized-permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+          </div>
+            <a class="float-left mt-1" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=346914" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/patriciogonzalezvivo" aria-describedby="hovercard-aria-description"><img class="avatar" alt="@patriciogonzalezvivo" src="GLSL%20Noise%20Algorithms%20%C2%B7%20GitHub_files/346914.png" width="28" height="28"></a>
+          <div class="review-comment-contents">
+            <h4 class="f5 text-normal d-inline text-gray-dark">
+              <strong class="text-gray">
+                
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=346914" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/patriciogonzalezvivo" aria-describedby="hovercard-aria-description">patriciogonzalezvivo</a>
+  
+
+              </strong>
+              <span class="text-gray">
+                  <a href="#gistcomment-2351862" id="gistcomment-2351862-minimized-permalink" class="timestamp"><relative-time datetime="2018-02-14T23:22:27Z" title="15 Feb 2018, 01:22 EET">on 15 Feb</relative-time></a>
+              </span>
+            </h4>
+            
+
+            <task-lists disabled="" sortable="">
+              <div class="comment-body markdown-body p-0 pt-1 js-comment-body ">
+                  <p>Better to grab them from here</p>
+<p><a href="http://thebookofshaders.com/10/" rel="nofollow">http://thebookofshaders.com/10/</a><br>
+<a href="http://thebookofshaders.com/11/" rel="nofollow">http://thebookofshaders.com/11/</a><br>
+<a href="http://thebookofshaders.com/12/" rel="nofollow">http://thebookofshaders.com/12/</a><br>
+<a href="http://thebookofshaders.com/13/" rel="nofollow">http://thebookofshaders.com/13/</a></p>
+<p>They are better explained there ; )</p>
+              </div>
+            </task-lists>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </details>
+
+    </div>
+  <div class="unminimized-comment comment previewable-edit js-comment js-task-list-container timeline-comment" data-body-version="8ac4010e87ec19ac27682e153841a088" data-unfurl-authenticity-token="wHHusBlZ22TjNqSc8r0llo0CdWSncXJHZO12po8GCYY1ra5ttQCOlkFDJaR464nnHkQTuOrAM9Q7ZLodOWpw+A==">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details class="details-overlay details-reset position-relative d-inline-block js-dropdown-details " id="details-gistcomment-">
+  <summary class="btn-link timeline-comment-action" aria-haspopup="true" aria-label="Show options">
+    <svg aria-label="Show options" class="octicon octicon-kebab-horizontal" viewBox="0 0 13 16" version="1.1" width="13" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM13 7.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path></svg>
+  </summary>
+  <div class="dropdown-menu dropdown-menu-sw show-more-popover text-gray-dark anim-scale-in" role="menu">
+        <clipboard-copy class="dropdown-item btn-link" for="gistcomment--permalink" aria-label="Copy link" data-toggle-for="details-gistcomment-" role="menuitem" tabindex="0">
+    Copy link
+  </clipboard-copy>
+
+        <button type="button" class="dropdown-item btn-link d-none js-comment-quote-reply" data-toggle-for="details-gistcomment-">
+    Quote reply
+  </button>
+
+      
+  </div>
+</details>
+
+  </div>
+
+    
+  <span class="timeline-comment-label text-bold tooltipped tooltipped-multiline tooltipped-s" aria-label="This user is the owner of the gist.">
+    Owner
+  </span>
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong class="css-truncate">
+      
+
+  <a class="author text-inherit css-truncate-target" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=346914" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://gist.github.com/patriciogonzalezvivo" aria-describedby="hovercard-aria-description">patriciogonzalezvivo</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="#gistcomment-2351862" id="gistcomment--permalink" class="timestamp js-timestamp"><relative-time datetime="2018-02-14T23:22:27Z" title="15 Feb 2018, 01:22 EET">on 15 Feb</relative-time></a>
+
+
+    <span class="js-comment-fragment">
+      <include-fragment class="js-comment-edit-history d-inline">
+      </include-fragment>
+    </span>
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+
+      
+<task-lists disabled="" sortable="">
+<table class="d-block">
+  <tbody class="d-block">
+    <tr class="d-block">
+      <td class="d-block comment-body markdown-body  js-comment-body">
+
+          <p>Better to grab them from here</p>
+<p><a href="http://thebookofshaders.com/10/" rel="nofollow">http://thebookofshaders.com/10/</a><br>
+<a href="http://thebookofshaders.com/11/" rel="nofollow">http://thebookofshaders.com/11/</a><br>
+<a href="http://thebookofshaders.com/12/" rel="nofollow">http://thebookofshaders.com/12/</a><br>
+<a href="http://thebookofshaders.com/13/" rel="nofollow">http://thebookofshaders.com/13/</a></p>
+<p>They are better explained there ; )</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</task-lists>
+
+
+    </div>
+
+  </div>
+</div>
+
+  </div>
+
+<!-- Rendered timeline since 2018-10-21 08:07:03 -->
+<div id="partial-timeline-marker" class="js-timeline-marker js-updatable-content" data-url="/patriciogonzalezvivo/670c22f3966e662d2f83/show_partial?partial=gist%2Ftimeline_marker&amp;since=1540134423" data-last-modified="Sun, 21 Oct 2018 15:07:03 GMT">
+</div>
+
+
+        <div class="discussion-timeline-actions">
+            <div class="flash flash-warn mt-3">
+    <a rel="nofollow" class="btn btn-primary" href="https://gist.github.com/join?source=comment-gist">Sign up for free</a>
+    <strong>to join this conversation on GitHub</strong>.
+    Already have an account?
+    <a rel="nofollow" href="https://gist.github.com/login?return_to=https%3A%2F%2Fgist.github.com%2Fpatriciogonzalezvivo%2F670c22f3966e662d2f83">Sign in to comment</a>
+</div>
+
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+
+  <div class="modal-backdrop js-touch-events"></div>
+</div><!-- /.container -->
+
+    </div>
+  </div>
+
+  </div>
+
+        
+<div class="footer container-lg px-3" role="contentinfo">
+  <div class="position-relative d-flex flex-justify-between pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <ul class="list-style-none d-flex flex-wrap ">
+      <li class="mr-3">© 2018 <span title="0.40439s from unicorn-5994744f98-84df2">GitHub</span>, Inc.</li>
+        <li class="mr-3"><a data-ga-click="Footer, go to terms, text:terms" href="https://github.com/site/terms">Terms</a></li>
+        <li class="mr-3"><a data-ga-click="Footer, go to privacy, text:privacy" href="https://github.com/site/privacy">Privacy</a></li>
+        <li class="mr-3"><a href="https://help.github.com/articles/github-security/" data-ga-click="Footer, go to security, text:security">Security</a></li>
+        <li class="mr-3"><a href="https://status.github.com/" data-ga-click="Footer, go to status, text:status">Status</a></li>
+        <li><a data-ga-click="Footer, go to help, text:help" href="https://help.github.com/">Help</a></li>
+    </ul>
+
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon mr-lg-4" href="https://github.com/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+</a>
+   <ul class="list-style-none d-flex flex-wrap ">
+        <li class="mr-3"><a data-ga-click="Footer, go to contact, text:contact" href="https://github.com/contact">Contact GitHub</a></li>
+        <li class="mr-3"><a href="https://github.com/pricing" data-ga-click="Footer, go to Pricing, text:Pricing">Pricing</a></li>
+      <li class="mr-3"><a href="https://developer.github.com/" data-ga-click="Footer, go to api, text:api">API</a></li>
+      <li class="mr-3"><a href="https://training.github.com/" data-ga-click="Footer, go to training, text:training">Training</a></li>
+        <li class="mr-3"><a href="https://blog.github.com/" data-ga-click="Footer, go to blog, text:blog">Blog</a></li>
+        <li><a data-ga-click="Footer, go to about, text:about" href="https://github.com/about">About</a></li>
+
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+</div>
+
+
+
+  <div id="ajax-error-message" class="ajax-error-message flash flash-error">
+    <svg class="octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
+    <button type="button" class="flash-close js-ajax-error-dismiss" aria-label="Dismiss error">
+      <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"></path></svg>
+    </button>
+    You can’t perform that action at this time.
+  </div>
+
+
+    
+    
+    
+    
+    
+      
+
+    
+  <div class="js-stale-session-flash stale-session-flash flash flash-warn flash-banner d-none">
+    <svg class="octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg>
+    <span class="signed-in-tab-flash">You signed in with another tab or window. <a href="">Reload</a> to refresh your session.</span>
+    <span class="signed-out-tab-flash">You signed out in another tab or window. <a href="">Reload</a> to refresh your session.</span>
+  </div>
+  <div class="facebox" id="facebox" style="display:none;">
+  <div class="facebox-popup">
+    <div class="facebox-content" role="dialog" aria-labelledby="facebox-header" aria-describedby="facebox-description">
+    </div>
+    <button type="button" class="facebox-close js-facebox-close" aria-label="Close modal">
+      <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"></path></svg>
+    </button>
+  </div>
+</div>
+
+  <template id="site-details-dialog">
+  <details class="details-reset details-overlay details-overlay-dark lh-default text-gray-dark" open="">
+    <summary aria-haspopup="dialog" aria-label="Close dialog"></summary>
+    <details-dialog class="Box Box--overlay d-flex flex-column anim-fade-in fast">
+      <button class="Box-btn-octicon m-0 btn-octicon position-absolute right-0 top-0" type="button" aria-label="Close dialog" data-close-dialog="">
+        <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"></path></svg>
+      </button>
+      <div class="octocat-spinner my-6 js-details-dialog-spinner"></div>
+    </details-dialog>
+  </details>
+</template>
+
+  <div class="Popover js-hovercard-content position-absolute" style="display: none; outline: none;" tabindex="0">
+  <div class="Popover-message Popover-message--bottom-left Popover-message--large Box box-shadow-large" style="width:360px;">
+  </div>
+</div>
+
+<div id="hovercard-aria-description" class="sr-only">
+  Press h to open a hovercard with more details.
+</div>
+
+
+  
+
+
+</body></html>

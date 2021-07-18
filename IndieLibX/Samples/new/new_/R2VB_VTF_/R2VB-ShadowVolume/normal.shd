@@ -1,0 +1,46 @@
+[Vertex shader]
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 t0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = pos;
+	Out.tc0 = t0;
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler vertexPosition;
+sampler vertexIndexMap;
+
+float iVertexTextureWidth;
+
+float4 main(float2 t0: TEXCOORD0) : COLOR {
+	float4 Out;
+
+	float4 Index = tex2D(vertexIndexMap, t0)*65535.0f; // convert floating-point back to short
+	if (Index.w == 0.0f) //it is a vertex position
+	{
+		Out.xyz = tex2D(vertexPosition, float2((Index.x+0.1f)*iVertexTextureWidth, 0.5f));
+		Out.w = 1.0f;
+	}
+	else //it is a normal
+	{
+		float4 v0 = tex2D(vertexPosition, float2((Index.x+0.1f)*iVertexTextureWidth, 0.5f));
+		float4 v1 = tex2D(vertexPosition, float2((Index.y+0.1f)*iVertexTextureWidth, 0.5f));
+		float4 v2 = tex2D(vertexPosition, float2((Index.z+0.1f)*iVertexTextureWidth, 0.5f));
+		float3 d0 = v0 - v1;
+		float3 d1 = v2 - v1;
+		float3 Normal = cross(d1, d0);
+		Out.xyz = normalize(Normal);
+		Out.w = 1.0f;
+	}	
+
+	return Out;
+}
