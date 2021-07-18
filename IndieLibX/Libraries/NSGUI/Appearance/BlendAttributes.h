@@ -1,12 +1,11 @@
 #ifndef BLEND_ATTRIBUTES_H
-
 #define BLEND_ATTRIBUTES_H
 
-
-
+#ifdef USE_TINYXML 
+#include <Parsers_tinyXML/IOXMLObject.h>
+#else
 #include <Parsers/IOXMLObject.h>
-
-
+#endif
 
 class BlendAttributes : public IOXMLObject
 

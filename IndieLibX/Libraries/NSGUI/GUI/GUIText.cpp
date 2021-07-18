@@ -106,7 +106,7 @@ const NSString& GUIText::getString(){  return text; }
 
 void GUIText::setString(const NSString &textArg)
 {
-  if(textArg.getLength() && text != textArg)
+  if(textArg.length() && text != textArg)
   {
 	 //text.data=0;//???
     text   = textArg;
@@ -146,10 +146,10 @@ void  GUIText::print(int x, int y, int startIndex, int endIndex)
 LOG_FNLN;
 LOG_PRINT("x=%d, y=%d, %s\n", x ,y, text.c_str());
 #endif
-  if(!text.getLength())
+  if(!text.length())
     return;
 
-  endIndex   = (endIndex  < 0) ? int(text.getLength()) : endIndex;
+  endIndex   = (endIndex  < 0) ? int(text.length()) : endIndex;
   startIndex = clampNS(startIndex, 0, endIndex);
 
   GUIFontManager::setCurrentFont(fontIndex);
@@ -167,7 +167,7 @@ LOG_PRINT("x=%d, y=%d, %s\n", x ,y, text.c_str());
 
 void  GUIText::printCenteredX (int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -176,7 +176,7 @@ void  GUIText::printCenteredX (int x, int y, int startIndex, int endIndex)
 
 void  GUIText::printCenteredY (int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -185,7 +185,7 @@ void  GUIText::printCenteredY (int x, int y, int startIndex, int endIndex)
 
 void  GUIText::printCenteredXY(int x, int y, int startIndex, int endIndex)
 {
-  if(!text.getLength())
+  if(!text.length())
     return;
 
   computeDimensions();
@@ -205,7 +205,7 @@ void GUIText::computeDimensions()
     if(currentFont == GUIFontManager::getDefaultFont())
       fontIndex = GUIFontManager::findFontIndex(currentFont);
 
-    if(text.getLength())
+    if(text.length())
     {
       size = currentFont->getFontObject()->getStringDimensions(text);
       size.x = int(float(size.x)*scales.x);

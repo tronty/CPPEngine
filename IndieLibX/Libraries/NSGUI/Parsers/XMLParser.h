@@ -1,3 +1,4 @@
+#ifndef USE_TINYXML
 #pragma once
 
 
@@ -247,4 +248,5 @@ class XMLStack : public XMLTree
            state;
 
 };
+#endif
 

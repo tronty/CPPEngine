@@ -1,7 +1,7 @@
 #include <Framework3/IRenderer.h>
 #include <GUI/GUIUtils.h>
 
-GUIPanel::GUIPanel(NSString cbs) : GUIRectangle(cbs), GUIClippedRectangle()
+GUIPanel::GUIPanel(NSString cbs) : GUIRectangle(cbs.c_str()), GUIClippedRectangle()
 {
   setInterval(4, 4);
   widgetType = PANEL;
@@ -15,13 +15,13 @@ bool GUIPanel::loadXMLSettings(NSString stackPath)
 	  stackPath;
   XMLStack    cfgStack;
   bool        result = false;
-  if(!xmlFile.length)
+  if(!xmlFile.length())
     {LOG_PRINT_NONE("Failed to locate the XML GUI file");return false;}
 
 
 //LOG_PRINT_NONE("xmlFile=%s\n", xmlFile);
 
-  if(cfgStack.loadXMLFile(xmlFile) != XML_SUCCESS)
+  if(cfgStack.loadXMLFile(xmlFile.c_str()) != XML_SUCCESS)
   {LOG_PRINT_NONE("Invalid XML GUI description file");return false;}
 
   result = loadXMLSettings(cfgStack.getChildByName("Panel"));
@@ -37,7 +37,7 @@ bool GUIPanel::loadXMLSettings(XMLElement *element)
 	LOG_FNLN_NONE;
 	LOG_PRINT_NONE("Need a Panel node in the xml file\n");
 	LOG_PRINT_NONE("element=%x\n", element);
-	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().data);
+	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().c_str());
 	return false;
   }
 
@@ -193,7 +193,7 @@ void GUIPanel::setIndexes()
 
 int GUIPanel::getWidgetIndexByCallbackString(NSString callbackString) const
 {
-  if(!callbackString)
+  if(""==callbackString)
     return 0;
 
   int element = -1;
@@ -211,7 +211,7 @@ int GUIPanel::getWidgetIndexByCallbackString(NSString callbackString) const
 
 GUIRectangle *GUIPanel::getWidgetByCallbackString(NSString callbackString)
 {
-  if(!callbackString)
+  if(""==callbackString)
     return 0;
 
   GUIRectangle *element = 0,
@@ -278,8 +278,8 @@ void  GUIPanel::render(float tick)
 	  {
 /*
 		  LOG_PRINT_NONE("cbs=%s\n",
-			elements[t]->getCallbackString().data);
-		if(stx_memcmp("Visibility",elements[t]->getCallbackString().data,10)==0)DBG_HALT;
+			elements[t]->getCallbackString().c_str());
+		if(stx_memcmp("Visibility",elements[t]->getCallbackString().c_str(),10)==0)DBG_HALT;
 */
 		elements[t]->render(tick);
 	  }
@@ -295,8 +295,8 @@ void  GUIPanel::render(float tick)
     for(size_t t = 0; t < comboBoxes.size(); t++)
       comboBoxes[t]->render(tick);
   }
-//	if(stx_memcmp("Visibility",getCallbackString().data,10)==0)DBG_HALT;
-	//if(stx_memcmp("Visibility",getCallbackString().data,10)==0)
+//	if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)DBG_HALT;
+	//if(stx_memcmp("Visibility",getCallbackString().c_str(),10)==0)
 	//	visible=true;
 
 

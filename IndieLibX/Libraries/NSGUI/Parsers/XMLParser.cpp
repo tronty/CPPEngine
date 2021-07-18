@@ -1,4 +1,4 @@
-
+#ifndef USE_TINYXML
 #include <STX/STX.h>
 #include <STX/STXCPP.h>
 #include <STX/STXinterfaces.h>
@@ -260,7 +260,7 @@ void XMLElement::setValue(NSString &val)
 
   bool valid = 0;
 
-  for(size_t i = 0; i <val.getLength(); i++)
+  for(size_t i = 0; i <val.length(); i++)
 
     if(val[i] != ' '  &&
 
@@ -1529,4 +1529,5 @@ char* XMLStack::parseXMLStream(char *stream, XMLElement *parent)
   return (state == XML_SUCCESS) ? stream : nullChar;
 
 }
+#endif
 

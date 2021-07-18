@@ -191,7 +191,7 @@ GUIEvent &GUIEvent::operator= (const GUIEvent& copy)
 
 GUIRectangle *GUIEvent::getEventSource()   { return eventSource ;   }
 const NSString &GUIEvent::getCallbackString(){ return callbackString; }
-NSString GUIEvent::getCallbackCString(){ return callbackString.data; }
+NSString GUIEvent::getCallbackCString(){ return callbackString.c_str(); }
 
 int GUIEvent::getWidgetType()
 {

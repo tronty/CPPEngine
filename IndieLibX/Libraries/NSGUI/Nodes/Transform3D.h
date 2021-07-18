@@ -2,9 +2,11 @@
 
 #define TRANSFORM3D_H
 
-
-
+#ifdef USE_TINYXML 
+#include "../Parsers_tinyXML/IOXMLObject.h"
+#else
 #include "../Parsers/IOXMLObject.h"
+#endif
 
 
 

@@ -5,8 +5,8 @@
 #include "GUIFontManager.h"
 #include "GUIFrame.h"
 
-GUITextBox::GUITextBox(NSString callback,
-                       NSString text) : GUIAlphaElement(callback)
+GUITextBox::GUITextBox(std::string callback,
+                       std::string text) : GUIAlphaElement(callback)
 
 {
   setBordersColor(0.3f, 0.3f, 0.3f);
@@ -210,7 +210,7 @@ void    GUITextBox::setupBlinker(int x)
     return;
 
   GUIFont *font           = GUIFontManager::getFont(label.getFontIndex());
-  const    NSString &string = label.getString();
+  const    std::string &string = label.getString();
   const    int    *spaces = 0;
   blinkerPosition         = getWindowBounds().x + padding.x;
   x -= 1;
@@ -221,7 +221,7 @@ void    GUITextBox::setupBlinker(int x)
 
      for(size_t i = 0; i < string.length(); i++)
      if(blinkerPosition < x)
-       blinkerPosition += spaces[int(string./* getBytes ??? */ c_str()[i])];
+       blinkerPosition += spaces[int(string. /* getBytes */ c_str()[i])];
   }
 
   blinkerOn = true;
@@ -236,7 +236,7 @@ void GUITextBox::setupText(int type, char Char)
   LOG_FNLN_NONE;
   LOG_PRINT_NONE("spaces = %x\n", font->getFontObject()->getCharHorizontalGlyphs());
   LOG_PRINT_NONE("spaces = %d\n", *font->getFontObject()->getCharHorizontalGlyphs());
-  NSString   temp;
+  std::string   temp;
   int      start  = windowBounds.x + padding.x,
            index  = 0;
 
@@ -256,12 +256,11 @@ void GUITextBox::setupText(int type, char Char)
   {
     if(index != length && length)
     {
-      NSString leftSide;
-      leftSide=(((char*)label.getCharString().c_str()) + index);
+      std::string leftSide;
+      leftSide=((char*)label.getCharString().c_str())+index;
       leftSide += Char;
-      char buf[128];
-      stx_snprintf(buf, 128, "%s", label.getCharString(), index);//, length - index);
-      temp=buf;
+      //temp.set(((char*)label.getCharString().c_str()) + index, length - index);
+      temp=((char*)label.getCharString().c_str()) + index;
       label.setString(leftSide + temp);
     }
     else
@@ -277,12 +276,13 @@ void GUITextBox::setupText(int type, char Char)
   {
     if(index != length)
     {
-      NSString leftSide;
+      std::string leftSide;
       setupBlinker(blinkerPosition - GUIFontManager::getCharacterWidth(label.getCharString()[index -1],
                                                                        label.getFontIndex()));
 
-      leftSide=(((char*)label.getCharString().c_str()) + index - 1);
-      temp=(((char*)label.getCharString().c_str()) + index + length - index);
+      leftSide=((char*)label.getCharString().c_str()) + index - 1;
+      //temp.set(((char*)label.getCharString().c_str()) + index, length - index);
+      temp=((char*)label.getCharString().c_str()) + index;
       label.setString(leftSide + temp);
       return;
     }
@@ -290,7 +290,7 @@ void GUITextBox::setupText(int type, char Char)
     setupBlinker(blinkerPosition - GUIFontManager::getCharacterWidth(label.getCharString()[length -1],
                                                                      font));
 
-    temp=(label.getCharString(), length - 1);
+    temp=((char*)label.getCharString().c_str())+ length - 1;
     if(temp.length())
       label.setString(temp);
     else
@@ -310,9 +310,10 @@ void GUITextBox::setupText(int type, char Char)
 
     if(index < length)
     {
-      NSString leftSide;
-      leftSide=(label.getCharString(), index);
-      temp=(((char*)label.getCharString().c_str()) + index + 1, length - index - 1);
+      std::string leftSide;
+      leftSide=((char*)label.getCharString().c_str())+ index;
+      //temp.set(((char*)label.getCharString().c_str()) + index + 1, length - index - 1);
+      temp=((char*)label.getCharString().c_str()) + index + 1;
       label.setString(leftSide + temp);
     }
   }
@@ -336,3 +337,4 @@ const Tuple4i &GUITextBox::getWindowBounds()
   }
   return windowBounds;
 }
+

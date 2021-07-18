@@ -1,13 +1,13 @@
 #ifndef TEXTURESMANAGER_H
-
 #define TEXTURESMANAGER_H
-
-
 
 #include "../Tools/MediaInfo.h"
 
+#ifdef USE_TINYXML
+#include "../Parsers_tinyXML/XMLParser.h"
+#else
 #include "../Parsers/XMLParser.h"
-
+#endif
 
 typedef MediaInfo<TextureID> TextureInfo;
 

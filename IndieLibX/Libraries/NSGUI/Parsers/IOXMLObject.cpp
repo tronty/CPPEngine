@@ -1,4 +1,4 @@
-
+#ifndef USE_TINYXML
 #include <STX/STX.h>
 #include <STX/STXCPP.h>
 #include <STX/STXinterfaces.h>
@@ -36,7 +36,7 @@ bool IOXMLObject::loadXMLSettings(const char* apath)
 	const char* path=f2.c_str();
 	LOG_PRINT_NONE("path:%s\n",path);
 
-  if(!ioname.getLength())
+  if(!ioname.length())
 
   {
 
@@ -49,7 +49,7 @@ bool IOXMLObject::loadXMLSettings(const char* apath)
   //LOG_PRINT_NONE("path    =%s\n",path);
   NSString verifiedNS = MediaPathManager::lookUpMediaPath(path);
 
-  const char *verified=verifiedNS.data;
+  const char *verified=verifiedNS.c_str();
 
   //LOG_PRINT_NONE("verified:%s\n",verified);
 
@@ -160,8 +160,5 @@ bool IOXMLObject::isSuitable(XMLElement *element)
   return true;
 
 }
-
-
-
-
+#endif
 

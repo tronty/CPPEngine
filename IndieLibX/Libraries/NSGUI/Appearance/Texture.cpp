@@ -137,7 +137,7 @@ bool NVTexture::finalizeLoading(NSString astring)
 
   if(!id)
 
-    {LOG_PRINT_NONE("Failed to load texture <%s>\n",astring.data);return false;}
+    {LOG_PRINT_NONE("Failed to load texture <%s>\n",astring.c_str());return false;}
 
   else
 
@@ -475,8 +475,9 @@ void NVTexture::setID(TextureID texID)
   else
 
   {
-
-    newTextureInfo = new TextureInfo(NSString("Unknown texture #") + unknown, texID);
+    char buf[128];
+    stx_snprintf(buf, 128, "Unknown texture #%d", unknown);
+    newTextureInfo = new TextureInfo(NSString(buf), texID);
 
     unknown++;
 
@@ -806,7 +807,7 @@ int NVTexture::getXMLMagFilter(const NSString &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -824,7 +825,7 @@ int NVTexture::getXMLMinFilter(const NSString &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -850,7 +851,7 @@ int NVTexture::getXMLWrapMode(const NSString &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 
@@ -872,7 +873,7 @@ int NVTexture::getXMLType(const NSString &value)
 
 {
 
-  if(value.getLength())
+  if(value.length())
 
   {
 

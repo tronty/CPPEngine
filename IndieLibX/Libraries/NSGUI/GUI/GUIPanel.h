@@ -27,6 +27,7 @@ class GUIPanel : public GUIRectangle,
                  public GUIClippedRectangle
 {
   protected:
+  public:
 	__DWORD__ time;
     Widgets  elements;
     Tuple2i  interval;

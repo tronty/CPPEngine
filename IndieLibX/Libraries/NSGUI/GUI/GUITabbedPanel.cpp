@@ -6,7 +6,7 @@
 #include "GUIButton.h"
 #include "GUIFrame.h"
 
-GUITabbedPanel::GUITabbedPanel(NSString cbs) : GUIRectangle(cbs)
+GUITabbedPanel::GUITabbedPanel(NSString cbs) : GUIRectangle(cbs.c_str())
 {
   setTabButtonsBordersColor(0.0f, 0.0f, 0.0f);
   setTabButtonsColor(100, 150, 190);
@@ -130,7 +130,9 @@ bool GUITabbedPanel::addPanel(GUIPanel *panel)
   if(lowerPanel->addWidget(panel))
   {
     int count = int(lowerPanel->getWidgets().size()) - 1;
-    GUIButton *tabButton = new GUIButton(NSString(" ") + count + " tb");
+    char buf[128];
+    stx_snprintf(buf, 128, " %d tb", count);
+    GUIButton *tabButton = new GUIButton(buf);
     tabButton->setBordersColor(tabButtonsBordersColor);
     tabButton->setColor(tabButtonsColor);
     NSString ls=NSString("  ") + panel->getCallbackString() + "  ";
@@ -194,7 +196,7 @@ void GUITabbedPanel::actionPerformed(GUIEvent &evt)
   {
     const Widgets &widgets = lowerPanel->getWidgets(),
                   &buttons = upperPanel->getWidgets();
-    int   target = atoi(sourceRectangle->getCallbackString()),
+    int   target = atoi(sourceRectangle->getCallbackString().c_str()),
           count  = int(widgets.size());
     for(int t = 0; t < count; t++)
     {

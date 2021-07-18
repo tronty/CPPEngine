@@ -3,7 +3,7 @@
 #include <STX/CInput.h>
 #include "GUIAlphaElement.h"
 
-GUIAlphaElement::GUIAlphaElement(NSString cbs) :  GUIRectangle(cbs)
+GUIAlphaElement::GUIAlphaElement(NSString cbs) :  GUIRectangle(cbs.c_str())
 {
   setColor(225.0f, 225.0f, 225.0f);
   alphaFadeScale =     1.0f;
@@ -76,7 +76,7 @@ GUIText * GUIAlphaElement::getLabel()
 
 NSString GUIAlphaElement::getLabelString()
 {
-  return label.getString().getBytes();
+  return label.getString(). /* getBytes ??? */ c_str ();
 }
 
 void  GUIAlphaElement::setAlpha(float alphaArg)

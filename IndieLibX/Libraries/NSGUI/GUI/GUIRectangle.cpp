@@ -123,14 +123,14 @@ const NSString & GUIRectangle::getCallbackString()
 
 void  GUIRectangle::setAnchorPoint(NSString anchorArg)
 {
-  if(!anchorArg)
+  if(""==anchorArg)
     return;
 
-  if(!strcmp(anchorArg, "CENTER")  ){ anchor = CENTER;   return; }
-  if(!strcmp(anchorArg, "CORNERLU")){ anchor = CORNERLU; return; }
-  if(!strcmp(anchorArg, "CORNERRU")){ anchor = CORNERRU; return; }
-  if(!strcmp(anchorArg, "CORNERLD")){ anchor = CORNERLD; return; }
-  if(!strcmp(anchorArg, "CORNERRD")){ anchor = CORNERRD; return; }
+  if(anchorArg=="CENTER")  { anchor = CENTER;   return; }
+  if(anchorArg=="CORNERLU"){ anchor = CORNERLU; return; }
+  if(anchorArg=="CORNERRU"){ anchor = CORNERRU; return; }
+  if(anchorArg=="CORNERLD"){ anchor = CORNERLD; return; }
+  if(anchorArg=="CORNERRD"){ anchor = CORNERRD; return; }
 }
 
 void  GUIRectangle::setAnchorPoint(int anchorArg)

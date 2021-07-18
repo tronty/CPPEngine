@@ -1,7 +1,10 @@
 #ifndef STRING_H
 
 #define STRING_H
-
+#ifdef USE_TINYXML
+#include <string>
+#define NSString std::string
+#else
 #ifdef _WIN32
 #pragma warning( disable : 4996)
 #endif
@@ -72,17 +75,15 @@ const char* c_str();
 
     void clear();
 
-    const unsigned int getLength() const;
+    //const unsigned int getLength() const;
 
-
+    const unsigned int length() const {return m_length;}
 
 public:
+    unsigned int   m_length;
 
-    unsigned int   length;
-
-
+private:
     char *data;
-
 };
 
 
@@ -114,7 +115,6 @@ bool   operator  !=(const NSString &arg1 , const NSString &arg2);
 bool   operator  !=(const NSString &arg  , const char   *bytes);
 
 bool   operator  !=(const char   *bytes, const NSString &arg);
-
-
-
 #endif
+#endif
+

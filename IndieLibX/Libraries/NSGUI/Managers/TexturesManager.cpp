@@ -33,7 +33,7 @@ TextureInfo *TexturesManager::getTextureInfo(NSString texturePath)
 
   flushUnusedTextures();
 
-  if(!texturePath || !textureCollection.size())
+  if(""==texturePath || !textureCollection.size())
 
     return 0;
 

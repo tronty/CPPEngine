@@ -3,8 +3,14 @@
 
 #include "../Appearance/Texture.h"
 #include "GUIPanel.h"
+#ifdef USE_TINYXML
+#include "../Parsers_tinyXML/XMLParser.h"
+#include "../Parsers_tinyXML/IOXMLObject.h"
+#else
 #include "../Parsers/XMLParser.h"
 #include "../Parsers/IOXMLObject.h"
+#endif
+
 typedef vector<GUITexCoordDescriptor> GUITexCoordsInfo;
 
 //class Window;

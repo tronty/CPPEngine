@@ -1,7 +1,9 @@
 #ifndef GUI_UTILS_H
 #define GUI_UTILS_H
 
+#ifndef USE_TINYXML
 #include "../Tools/NSString.h"
+#endif
 
 #include "GUITexCoordDescriptor.h"
 #include "GUIClippedRectangle.h"

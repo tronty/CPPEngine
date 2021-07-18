@@ -33,7 +33,7 @@ void GUIRadioButton::checkMouseEvents(int extraInfo, bool bits)
     		clicked = false;
 		((GUIPanel*)parent)->notify(this);
 		//LOG_FNLN_NONE;
-		//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.data, i, c);
+		//LOG_PRINT_NONE("callbackString=%s,%d,%d\n", callbackString.c_str(), i, c);
 	}
 	return;
   }

@@ -42,7 +42,7 @@ bool GUIFrame::loadXMLSettings(XMLElement *element)
 	LOG_FNLN_NONE;
 	LOG_PRINT_NONE("Need a Panel node in the xml file\n");
 	LOG_PRINT_NONE("element=%x\n", element);
-	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().data);
+	if(element) LOG_PRINT_NONE("name=%s\n", element->getName().c_str());
 	return false;
   }
 

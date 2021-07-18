@@ -6,7 +6,7 @@
 #include "GUIPanel.h"
 #include "GUIFrame.h"
 
-GUIComboBox::GUIComboBox(NSString cbs) : GUIRectangle(cbs)
+GUIComboBox::GUIComboBox(NSString cbs) : GUIRectangle(cbs.c_str())
 
 {
   setScrollingColor(0.2f, 0.75f, 0.35f, 1.0f);
@@ -181,10 +181,10 @@ void GUIComboBox::actionPerformed(GUIEvent &evt)
       scrollingRectangle = newSelection->getWindowBounds();
 
     if(newSelection->isClicked() &&
-       strcmp(newSelection->getLabelString(), currentSelection->getLabelString()))
+       strcmp(newSelection->getLabelString().c_str(), currentSelection->getLabelString().c_str()))
     {
-      currentSelection->setLabelString(newSelection->getLabelString());
-      selectionIndex = getItemIndex(newSelection->getLabelString());
+      currentSelection->setLabelString(newSelection->getLabelString().c_str());
+      selectionIndex = getItemIndex(newSelection->getLabelString().c_str());
       update         = true;
       //if(eventsListener)
 	{
@@ -266,11 +266,11 @@ void GUIComboBox::finalizeSize()
 
     for(size_t l = 0; l < items.size(); l++)
     {
-      length = items[l].getLength();
+      length = items[l].length();
       width  = 0.0f;
 
       for(int t = 0; t < length; t++)
-        width += spaces[items[l].getBytes()[t]];
+        width += spaces[items[l]. /* getBytes ??? */ c_str ()[t]];
 
       maxWidth = width > maxWidth ? width : maxWidth;
     }
@@ -286,7 +286,9 @@ void GUIComboBox::finalizeSize()
 
   for(size_t l = 0; l < items.size(); l++)
   {
-    GUILabel *newLabel = new GUILabel(items[l], itemCBS + (cbsIndex++));
+    char buf[128];
+    stx_snprintf(buf, 128, "%s%d", itemCBS , (cbsIndex++));
+    GUILabel *newLabel = new GUILabel(items[l], buf);
     newLabel->getLabel()->setFontIndex(fontIndex);
     newLabel->setDimensions(maxWidth*fontScales.x + 2.0f /*+ height*fontScales.y + 10.0f*/, height*fontScales.y);
     newLabel->getLabel()->setScales(fontScales);
@@ -323,7 +325,7 @@ const void GUIComboBox::computeWindowBounds()
 
 void GUIComboBox::addItem(const NSString &item)
 {
-  if(lockItems || !item.getLength())
+  if(lockItems || !item.length())
     return;
 
   for(size_t t = 0; t < items.size(); t++)

@@ -1,13 +1,14 @@
 #include <STX/STX.h>
+#ifndef USE_TINYXML
 #include "NSString.h"
 
 const char* NSString::c_str()
 {
 	static char* buf2=0;
 	delete[] buf2;
-	buf2=new char[length+1];
-	stx_memcpy(buf2,data,length);
-	buf2[length]='\0';
+	buf2=new char[m_length+1];
+	stx_memcpy(buf2,data,m_length);
+	buf2[m_length]='\0';
 	return buf2;
 }
 
@@ -15,7 +16,7 @@ NSString::NSString(const char* string)
 
 {
 
-  length = 0;
+  m_length = 0;
 
   data   = 0;
 
@@ -31,7 +32,7 @@ NSString::NSString(const NSString &copy)
 
   data   = 0;
 
-  length = 0;
+  m_length = 0;
 
   operator=(copy);
 
@@ -49,17 +50,17 @@ NSString &NSString::operator  =(const NSString &copy)
 
     clear();
 
-    if(copy.data && copy.length)
+    if(copy.data && copy.m_length)
 
     {
 
-      data   = new char[copy.length + 1];
+      data   = new char[copy.m_length + 1];
 
-      length = copy.length;
+      m_length = copy.m_length;
 
-      stx_memcpy(data, copy.data, copy.length);
+      stx_memcpy(data, copy.data, copy.m_length);
 
-      data[length] = 0;
+      data[m_length] = 0;
 
     }
 
@@ -85,11 +86,11 @@ void NSString::set(const char* string, int slen)
 
     data   = new char[slen + 1];
 
-    length = slen;
+    m_length = slen;
 
     stx_memcpy(data, string, slen);
 
-    data[length] = 0;
+    data[m_length] = 0;
 
   }
 
@@ -113,11 +114,11 @@ NSString &NSString::operator  =(const char *string)
 
     data   = new char[slen + 1];
 
-    length = slen;
+    m_length = slen;
 
     stx_memcpy(data, string, slen);
 
-    data[length] = 0;
+    data[m_length] = 0;
 
   }
 
@@ -135,25 +136,25 @@ NSString &NSString::operator +=(const char character)
 
   {
 
-    if(data && length)
+    if(data && m_length)
 
     {
 
-      int   newLength = length + 1;
+      int   newLength = m_length + 1;
 
       char *newBuffer = new char[newLength + 1];
 
 
 
-      stx_memcpy(newBuffer, data, length);
+      stx_memcpy(newBuffer, data, m_length);
 
-      newBuffer[length    ] = character;
+      newBuffer[m_length    ] = character;
 
-      newBuffer[length + 1] = 0;
+      newBuffer[m_length + 1] = 0;
 
       clear();
 
-      length = newLength;
+      m_length = newLength;
 
       data   = newBuffer;
 
@@ -169,7 +170,7 @@ NSString &NSString::operator +=(const char character)
 
       data[1] =  0;
 
-      length  = 1;
+      m_length  = 1;
 
     }
 
@@ -199,13 +200,13 @@ NSString &NSString::operator +=(const NSString &copy)
 
 {
 
-  if(copy.data && copy.length)
+  if(copy.data && copy.m_length)
 
   {
 
-    char *newBuffer = new char[length + copy.length + 1];
+    char *newBuffer = new char[m_length + copy.m_length + 1];
 
-    int   newLength = length + copy.length;
+    int   newLength = m_length + copy.m_length;
 
 
 
@@ -215,13 +216,13 @@ NSString &NSString::operator +=(const NSString &copy)
 
       data   = newBuffer;
 
-      length = newLength;
+      m_length = newLength;
 
 
 
-      stx_memcpy(data, copy.data, length);
+      stx_memcpy(data, copy.data, m_length);
 
-      data[length] = 0;
+      data[m_length] = 0;
 
     }
 
@@ -229,9 +230,9 @@ NSString &NSString::operator +=(const NSString &copy)
 
     {
 
-      stx_memcpy(newBuffer         , data     , length     );
+      stx_memcpy(newBuffer         , data     , m_length     );
 
-      stx_memcpy(newBuffer + length, copy.data, copy.length);
+      stx_memcpy(newBuffer + m_length, copy.data, copy.m_length);
 
       newBuffer[newLength] = 0;
 
@@ -239,7 +240,7 @@ NSString &NSString::operator +=(const NSString &copy)
 
       data   = newBuffer;
 
-      length = newLength;
+      m_length = newLength;
 
     }
 
@@ -271,23 +272,23 @@ NSString NSString::operator + (const int numberi)
 
   NSString  returnString;
 
-  char   *numberBuffer = new char[12 + length];
+  char   *numberBuffer = new char[12 + m_length];
 
 
 
-  if(data && length)
+  if(data && m_length)
 
-    stx_snprintf(numberBuffer, 12 + length, "%s%d", data, numberi);
+    stx_snprintf(numberBuffer, 12 + m_length, "%s%d", data, numberi);
 
   else
 
-    stx_snprintf(numberBuffer, 12 + length, "%d", numberi);
+    stx_snprintf(numberBuffer, 12 + m_length, "%d", numberi);
 
 
 
   returnString.data   = numberBuffer;
 
-  returnString.length = stx_strlen(numberBuffer);
+  returnString.m_length = stx_strlen(numberBuffer);
 
   return returnString;
 
@@ -301,23 +302,23 @@ NSString NSString::operator + (const float numberf)
 
   NSString  returnString;
 
-  char   *numberBuffer = new char[16 + length];
+  char   *numberBuffer = new char[16 + m_length];
 
 
 
-  if(data && length)
+  if(data && m_length)
 
-    stx_snprintf(numberBuffer,16 + length, "%s%.2f", data, numberf);
+    stx_snprintf(numberBuffer,16 + m_length, "%s%.2f", data, numberf);
 
   else
 
-    stx_snprintf(numberBuffer,16 + length, "%.2f", numberf);
+    stx_snprintf(numberBuffer,16 + m_length, "%.2f", numberf);
 
 
 
   returnString.data   = numberBuffer;
 
-  returnString.length = stx_strlen(numberBuffer);
+  returnString.m_length = stx_strlen(numberBuffer);
 
   return returnString;
 
@@ -329,17 +330,17 @@ NSString &NSString::operator +=(const int    numberi)
 
 {
 
-  char   *numberBuffer = new char[12 + length];
+  char   *numberBuffer = new char[12 + m_length];
 
 
 
-  if(data && length)
+  if(data && m_length)
 
-    stx_snprintf(numberBuffer, 12 + length, "%s%d", data, numberi);
+    stx_snprintf(numberBuffer, 12 + m_length, "%s%d", data, numberi);
 
   else
 
-    stx_snprintf(numberBuffer, 12 + length, "%d", numberi);
+    stx_snprintf(numberBuffer, 12 + m_length, "%d", numberi);
 
 
 
@@ -349,7 +350,7 @@ NSString &NSString::operator +=(const int    numberi)
 
   data   = numberBuffer;
 
-  length = stx_strlen(numberBuffer);
+  m_length = stx_strlen(numberBuffer);
 
 
 
@@ -363,17 +364,17 @@ NSString &NSString::operator +=(const float  numberf)
 
 {
 
-  char   *numberBuffer = new char[16 + length];
+  char   *numberBuffer = new char[16 + m_length];
 
 
 
-  if(data && length)
+  if(data && m_length)
 
-    stx_snprintf(numberBuffer,16 + length, "%s%.2f", data, numberf);
+    stx_snprintf(numberBuffer,16 + m_length, "%s%.2f", data, numberf);
 
   else
 
-    stx_snprintf(numberBuffer,16 + length, "%.2f", numberf);
+    stx_snprintf(numberBuffer,16 + m_length, "%.2f", numberf);
 
 
 
@@ -383,7 +384,7 @@ NSString &NSString::operator +=(const float  numberf)
 
   data   = numberBuffer;
 
-  length = stx_strlen(numberBuffer);
+  m_length = stx_strlen(numberBuffer);
 
 
 
@@ -397,7 +398,7 @@ bool   operator  < (const char   *arg1, const NSString &arg2)
 
 {
 
-  return (!arg2.getLength() || !arg1) ? false :
+  return (!arg2.length() || !arg1) ? false :
 
          (strcmp(arg1, arg2)  < 0);
 
@@ -407,7 +408,7 @@ bool   operator  < (const NSString &arg1, const char   *arg2)
 
 {
 
-  return (!arg1.getLength() || !arg2) ? false :
+  return (!arg1.length() || !arg2) ? false :
 
          (strcmp(arg1, arg2)  < 0);
 
@@ -419,7 +420,7 @@ bool   operator  < (const NSString &arg1, const NSString &arg2)
 
 {
 
-  return (!arg1.getLength() || !arg2.getLength()) ? false :
+  return (!arg1.length() || !arg2.length()) ? false :
 
          (strcmp(arg1, arg2)  < 0);
 
@@ -431,7 +432,7 @@ bool   operator  > (const char   *arg1, const NSString &arg2)
 
 {
 
-  return (!arg2.getLength() || !arg1) ? false :
+  return (!arg2.length() || !arg1) ? false :
 
          (strcmp(arg1, arg2)  > 0);
 
@@ -443,7 +444,7 @@ bool   operator  > (const NSString &arg1, const char   *arg2)
 
 {
 
-  return (!arg1.getLength() || !arg2) ? false :
+  return (!arg1.length() || !arg2) ? false :
 
          (strcmp(arg1, arg2)  > 0);
 
@@ -455,7 +456,7 @@ bool   operator  > (const NSString &arg1, const NSString &arg2)
 
 {
 
-  return (!arg1.getLength() || !arg2.getLength()) ? false :
+  return (!arg1.length() || !arg2.length()) ? false :
 
          (strcmp(arg1, arg2)  > 0);
 
@@ -467,9 +468,9 @@ bool   operator  ==(const NSString &arg1, const NSString &arg2)
 
 {
 
-  return (arg1.getLength() == arg2.getLength()) &&
+  return (arg1.length() == arg2.length()) &&
 
-         (arg1.getLength() !=                0) &&
+         (arg1.length() !=                0) &&
 
          !strcmp(arg1, arg2);
 
@@ -483,7 +484,7 @@ bool   operator  ==(const char   *bytes, const NSString &arg)
 
   return (bytes           != 0) &&
 
-         (arg.getLength() !=    0) &&
+         (arg.length() !=    0) &&
 
          !strcmp(arg, bytes);
 
@@ -497,7 +498,7 @@ bool   operator  ==(const NSString &arg , const char   *bytes)
 
   return (bytes           != 0) &&
 
-         (arg.getLength() !=    0) &&
+         (arg.length() !=    0) &&
 
          !strcmp(arg, bytes);
 
@@ -509,9 +510,9 @@ bool   operator  !=(const NSString &arg1, const NSString &arg2)
 
 {
 
-  return !((arg1.getLength() == arg2.getLength()) &&
+  return !((arg1.length() == arg2.length()) &&
 
-           (arg1.getLength() !=                0) &&
+           (arg1.length() !=                0) &&
 
            !strcmp(arg1, arg2));
 
@@ -525,7 +526,7 @@ bool   operator  !=(const char   *bytes, const NSString &arg)
 
   return !((bytes           != 0) &&
 
-           (arg.getLength() !=    0) &&
+           (arg.length() !=    0) &&
 
            !strcmp(arg, bytes));
 
@@ -539,7 +540,7 @@ bool   operator  !=(const NSString &arg , const char   *bytes)
 
   return !((bytes           != 0) &&
 
-           (arg.getLength() !=    0) &&
+           (arg.length() !=    0) &&
 
            !strcmp(arg, bytes));
 
@@ -566,15 +567,15 @@ const    char *NSString::getBytes() const
 }
 
 
-
-const unsigned int NSString::getLength() const
+/*
+const unsigned int NSString::length() const
 
 {
 
-  return length;
+  return m_length;
 
 }
-
+*/
 
 
 void NSString::clear()
@@ -591,7 +592,7 @@ void NSString::clear()
 
   }
 
-  length = 0;
+  m_length = 0;
 
 }
 
@@ -625,17 +626,17 @@ NSString &NSString::addFloat(const float numberf, int precision)
 
 
 
-  char *numberBuffer = new char[16 + length];
+  char *numberBuffer = new char[16 + m_length];
 
 
 
-  if(data && length)
+  if(data && m_length)
 
-    stx_snprintf(numberBuffer, 16 + length, format, data, numberf);
+    stx_snprintf(numberBuffer, 16 + m_length, format, data, numberf);
 
   else
 
-    stx_snprintf(numberBuffer, 16 + length, "%s", data);
+    stx_snprintf(numberBuffer, 16 + m_length, "%s", data);
 
 
 
@@ -645,11 +646,12 @@ NSString &NSString::addFloat(const float numberf, int precision)
 
   data   = numberBuffer;
 
-  length = (unsigned int)(stx_strlen(numberBuffer));
+  m_length = (unsigned int)(stx_strlen(numberBuffer));
 
 
 
   return *this;
 
 }
+#endif
 

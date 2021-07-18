@@ -2,7 +2,11 @@
 #define GUI_TCD_H
 
 #include "../Tools/NamedObject.h"
+#ifdef USE_TINYXML
+#include "../Parsers_tinyXML/XMLParser.h"
+#else
 #include "../Parsers/XMLParser.h"
+#endif
 //include "../Tools/MathUtils.h"
 
 enum WidgetTypes

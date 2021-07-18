@@ -1,9 +1,13 @@
 #include <Framework3/IRenderer.h>
+
+#ifdef USE_TINYXML
+#include "../Parsers_tinyXML/XMLParser.h"
+#include "../Parsers_tinyXML/IOXMLObject.h"
+#else
 #include "../Parsers/XMLParser.h"
 #include "../Parsers/IOXMLObject.h"
+#endif
 #include "Appearance.h"
-
-
 
 Appearance::Appearance() : IOXMLObject("Appearance")
 
