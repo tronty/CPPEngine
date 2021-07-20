@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 1</title>
+</head>
+<body>
+<p>
+<pre>
+/// Initialise the render texture.
+bool RenderTexture::Init(int width, int height)
+{
+	LPDIRECT3DDEVICE9 pD3DDevice = DXUTGetD3DDevice();
+	int mipLevels = 1;
+	DWORD usage = D3DUSAGE_RENDERTARGET;
+	D3DFORMAT fmt = D3DFMT_A8R8G8B8;
+	D3DPOOL pool = D3DPOOL_DEFAULT;
+
+	HRESULT hr;
+	hr = D3DXCreateTexture(pD3DDevice, width, height, mipLevels,
+				   usage, fmt, pool, &m_pTexture);
+	if (FAILED(hr))
+	{
+		DXUTReportD3DError(hr);
+		return false;
+	}
+
+	bool createZBuffer = true;
+	D3DFORMAT depthStencilFmt = D3DFMT_D16;
+	hr = D3DXCreateRenderToSurface(pD3DDevice, width, height, fmt,
+				           createZBuffer, depthStencilFmt, &m_pRenderSurface);
+	if (FAILED(hr))
+	{
+		ReportD3DError(hr);
+		return false;
+	}
+
+	return true;
+}
+
+
+</pre>
+</p>
+</body>
+</html>

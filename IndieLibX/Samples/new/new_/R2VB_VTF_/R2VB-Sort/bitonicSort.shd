@@ -1,0 +1,95 @@
+//-----------------------------------------------------------------------------
+// File: bitonicSort.shd
+// Copyright (c) 2006 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+/*
+	This is a parallel Bitonic Sort implementation.
+	Details about the implementation can be found in the documentation for this sample.
+*/
+
+
+
+[Vertex shader]
+
+struct VsOut {
+	float4 pos: POSITION;
+	float4 texCoord: TEXCOORD0;
+	float3 direction: TEXCOORD1;
+};
+
+float2 halfPixel;
+float step0;
+float step1;
+float step2;
+
+float2 select;
+
+VsOut main(float4 pos: POSITION){
+	VsOut Out;
+
+	Out.pos = pos;
+	Out.texCoord.xy = pos.xy * float2(0.5, -0.5) + 0.5 + halfPixel;
+	Out.texCoord.zw = 0;
+
+	// Select sample direction
+	float r = dot(Out.texCoord, select);
+
+	// Sample direction and frequencies
+	Out.direction = float3(r * step0, r * step1, Out.texCoord.y * step2);
+
+	return Out;
+}
+
+[Fragment shader]
+
+struct PsOut {
+	float4 pos:  COLOR0;
+	float4 dist: COLOR1;
+};
+
+sampler2D Tex;
+sampler2D Dist;
+
+// Distance between pixels to compare. We only use .xy, but make it a float4
+// to shave off one instruction when computing texCoord1.
+float4 offset;
+
+PsOut main(float4 texCoord: TEXCOORD0, float3 direction: TEXCOORD1){
+	PsOut Out;
+
+	// Sample current value
+	float4 d0 = tex2D(Dist, texCoord.xy);
+
+	// Create square waves toggling between -1 and 1 at the frequencies encoded in "direction"
+	// dir.x = Sample and comparison direction.
+	// dir.y = Horizontal comparison frequency.
+	// dir.z = Vertical comparison frequency.
+	float3 dir = (frac(direction) < 0.5)? 1 : -1;
+
+	// Select other value to compare to
+	float4 texCoord1 = texCoord + dir.x * offset;
+	float4 d1 = tex2D(Dist, texCoord1.xy);
+
+	// Compute comparison direction and make actual comparison
+	dir.x *= dir.y;
+	dir.x *= dir.z;
+	dir.x *= (d1.x - d0.x);
+
+	// The sign indicates which value we want
+	if (dir.x <= 0){
+		Out.pos = tex2D(Tex, texCoord);
+		Out.dist = d0;
+	} else {
+#ifdef SM3
+		Out.pos = tex2Dlod(Tex, texCoord1);
+#else
+		Out.pos = tex2D(Tex, texCoord1.xy);
+#endif
+		Out.dist = d1;
+	}
+
+	return Out;
+}

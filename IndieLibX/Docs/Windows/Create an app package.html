@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta content="en-us" name="WT.seg_1"><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/hh975357.aspx">
+        <title>Create an app package</title>
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/hh975357(d=default,l=en-us,v=vs.120).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/hh975357(d=default,l=en-us,v=vs.120).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/hh975357(d=default,l=en-us,v=vs.120).aspx">
+
+<meta name="DCSext.ProductFamily" content="LIB_DG">
+
+<meta name="DCSext.Product" content="VS_WinTools">
+
+<meta name="DCSext.Title" content="Create an app package">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/hh975357(d=default,l=en-us,v=vs.120).aspx">
+
+<meta name="MN" content="EE4293C3-9:11:46 PM">
+
+<meta name="Search.ShortId" content="hh975357">
+
+<meta name="ms.shortidmsdn" content="hh975357">
+
+<meta name="Ms.Locale" content="en-us">
+
+<meta name="ms.prodver" content="VS.120">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="EN">
+
+<meta name="ms.loc" content="US">
+
+<meta name="ms.sitever" content="2015.01.20.2">
+
+<meta name="ms.assetid" content="7a045d20-86ae-49a6-abb2-f264bf179cd6">
+
+<meta name="ms.auth" content="0">
+
+
+
+
+
+
+
+
+        
+    <link rel="stylesheet" type="text/css" href="Create%20an%20app%20package_tiedostot/Combined.css"><link media="print" type="text/css" rel="stylesheet" href="Create%20an%20app%20package_tiedostot/PrintView.css"></head>
+    <body class="library FF FF3">
+        <div id="page">
+            
+
+            
+            
+            
+    
+
+    
+    <link type="text/css" rel="stylesheet">
+    
+    <input id="isHeaderBleeding" value="true" type="hidden">
+    <div id="ux-header" dir="ltr" class="ltr msdn">
+        
+
+        <header>
+            <div class="row">
+                <div class="top mobile"></div>
+                <div class="left">
+                    <div class="siteLogo">  
+                        
+                            <a class="msdnLogoImg" href="https://msdn.microsoft.com/en-us">
+                               <img src="Create%20an%20app%20package_tiedostot/microsoftLogoForHeader.png">
+                            </a>
+                                                             
+                        <div data-fragmentname="SiteLogo" id="Fragment_SiteLogo" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="LinkWithImage topImage">
+    <a id="SiteLogo_2152_1" href="http://msdn.microsoft.com/">
+      <img id="msdnLogo-black" src="Create%20an%20app%20package_tiedostot/dn610975.jpg" xmlns="">
+      <span></span>
+    </a>
+  </div>
+</div>    
+
+                    </div>
+                    <a id="grip" href="javascript:void(0)"></a>
+                </div>
+                
+                <div class="right desktop">
+                    <div class="auxNav">
+                        <div id="signIn">
+
+<a class="scarabLink" href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1422076306&amp;rver=6.0.5276.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-us%2flibrary%2fhh975357.aspx&amp;lc=1033&amp;id=254354&amp;mkt=en-US" title="Sign in">Sign in</a></div>
+
+    
+
+                        <div data-fragmentname="Subscriptions" id="Fragment_Subscriptions" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="https://msdn.microsoft.com/subscriptions/manage/hh442900" id="Subscriptions_2153_1" xmlns="http://www.w3.org/1999/xhtml">MSDN subscriptions</a>
+</div>   
+                        <div data-fragmentname="GetTools" id="Fragment_GetTools" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="http://go.microsoft.com/fwlink/?LinkId=309297&amp;clcid=0x409&amp;slcid=0x409" id="GetTools_2153_3" xmlns="http://www.w3.org/1999/xhtml">Get tools</a>
+</div>
+                        <div data-fragmentname="SocialLinks" id="Fragment_SocialLinks" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links horizontal">
+      <li>
+        <a href="http://www.facebook.com/microsoftdeveloper" target="_blank" id="SocialLinks_2152_4" class="facebook" xmlns="http://www.w3.org/1999/xhtml">http://www.facebook.com/microsoftdeveloper</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/msdev" target="_blank" id="SocialLinks_2152_5" class="twitter" xmlns="http://www.w3.org/1999/xhtml">https://twitter.com/msdev</a>
+      </li>
+      <li>
+        <a href="http://plus.google.com/111221966647232053570/" target="_blank" id="SocialLinks_2152_6" class="googlePlus" xmlns="http://www.w3.org/1999/xhtml">http://plus.google.com/111221966647232053570/</a>
+      </li>
+    </ul>
+  </div>
+</div> 
+                    </div>
+                    <div data-fragmentname="SearchBox" id="Fragment_SearchBox" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="SearchBox">
+    <form id="HeaderSearchForm" name="HeaderSearchForm" method="get" onsubmit="return Epx.Controls.SearchBox.searchBoxOnSubmit(this);">
+      <input autocomplete="off" id="HeaderSearchTextBox" name="query" maxlength="200" onfocus="Epx.Controls.SearchBox.watermarkFocus(event, this.title)" onblur="Epx.Controls.SearchBox.watermarkBlur(event, this.title)" type="text">
+      <button title="Search MSDN" id="HeaderSearchButton" value="" type="submit" class="header-search-button"></button>
+    <div style="display: none; text-align: left; border: 1px solid buttonshadow; position: absolute; z-index: 1000; padding: 2px; background-color: rgb(255, 255, 255); color: rgb(59, 59, 59); font-family: Droid Sans; font-size: 13.3333px;" id="SearchFlyoutContainer"><div id="SuggestionContainer"><ul style="list-style: outside none none; padding: 4px 2px 0px 1px; cursor: pointer; margin: 1px; white-space: nowrap;"></ul></div></div></form>
+    
+    
+  </div>
+</div> 
+                </div>
+            </div>
+       
+             <div style="display: block;" class="row" id="droor">
+                <div class="left toc">
+                    
+        <nav>
+            <ul class="navL1">
+                        <li class="inactive toggle">
+                            <a href="javascript:void(0)" title="Technologies">Technologies</a>
+                                <ul style="display: none;" class="navL2">
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/cloud-app-development-msdn" title="Cloud">Cloud</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/mobile-app-development-msdn" title="Mobile">Mobile</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/web-app-development-msdn" title="Web">Web</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/business-and-productivity-app-development-msdn" title="Business">Business</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/big-data-development-msdn" title="Data">Data</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/games-development-msdn" title="Gaming">Gaming</a>
+
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive toggle">
+                            <a href="javascript:void(0)" title="Downloads">Downloads</a>
+                                <ul style="display: none;" class="navL2">
+                                        <li class="inactive">
+                                            <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs" title="Visual Studio">Visual Studio</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/subscriptions/" title="MSDN subscriptions">MSDN subscriptions</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/microsoft-sdks-msdn" title="SDKs">SDKs</a>
+
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive toggle">
+                            <a href="javascript:void(0)" title="Programs">Programs</a>
+                                <ul style="display: none;" class="navL2">
+                                        <li class="inactive">
+                                            <a href="http://www.microsoft.com/bizspark" title="BizSpark">BizSpark</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="Students">Students</a>
+
+                                                <ul style="display: none;" class="navL3">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/student-developer-program" title="Develop apps">Develop apps</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://blogs.msdn.com/b/microsoft_student_developer_blog" title="Blog">Blog</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="Architects">Architects</a>
+
+                                                <ul style="display: none;" class="navL3">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/architects-overview-msdn" title="Overview">Overview</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/architects-case-studies-msdn" title="Case studies">Case studies</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/architects-blueprints-msdn" title="Blueprints">Blueprints</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://blogs.msdn.com/b/msarchitecture/" title="Blog">Blog</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://social.msdn.microsoft.com/forums/en-us/home?brandignore=true&amp;sort=relevancedesc&amp;searchterm=architecture+or+architect" title="Forums">Forums</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://events.msdn.microsoft.com/" title="Events">Events</a>
+
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive toggle">
+                            <a href="javascript:void(0)" title="Community">Community</a>
+                                <ul style="display: none;" class="navL2">
+                                        <li class="inactive">
+                                            <a href="https://social.msdn.microsoft.com/forums/" title="Forums">Forums</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://blogs.msdn.com/b/developer-tools/" title="Blogs">Blogs</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://tech-advisors.msdn.microsoft.com/en-us" title="Tech Advisors">Tech Advisors</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://channel9.msdn.com/" title="Channel 9">Channel 9</a>
+
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive current toggle">
+                            <a href="javascript:void(0)" title="Documentation">Documentation</a>
+                                <ul style="display: none;" class="navL2">
+                                        <li class="inactive current">
+                                            <a href="http://msdn.microsoft.com/library/" title="APIs and reference">APIs and reference</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/developer-centers-msdn" title="Dev centers">Dev centers</a>
+
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive">
+                            <a href="https://code.msdn.microsoft.com/" title="Samples">Samples</a>
+                        </li>
+            </ul>
+        </nav>
+                
+                </div>
+                <div class="right mobile"></div>
+                
+                <span id="singleCol"></span>
+                <span id="doubleCol"></span>
+             </div>
+        </header>
+    </div>
+    
+    
+
+        
+    <div class="printExportMenus ltr">
+        <a style="display: inline;" id="isd_printABook" href="https://msdn.microsoft.com/en-us/library/export/help/?returnUrl=%2fen-us%2flibrary%2fhh975357.aspx">
+            Export (<span class="count">0</span>)
+        </a>
+        <a id="isd_print" href="https://msdn.microsoft.com/en-us/library/hh975357%28d=printer%29.aspx" rel="nofollow">
+            Print 
+        </a>
+    </div>
+    
+
+        <div class="printExportMenus ltr">
+        <a id="expandCollapseAll" accesskey="e" href="javascript:void(0)" title="Expand/Collapse all sections by pressing Ctrl + Shift + e">Collapse All</a>
+    </div>
+
+    
+
+
+            <div id="body">
+                
+
+
+
+
+
+
+
+
+    <div style="width: 280px; max-width: 480px; min-height: 7470px; height: 387px;" id="leftNav">
+
+
+
+<div style="width: 280px; position: fixed; top: 39px;" id="tocnav">
+
+            <div style="padding-left: 0px;" data-childrenloaded="true" class="toclevel0 current" data-toclevel="0">
+<a class="toc_expanded" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ms123401.aspx" id="ms310241_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="5DDC0A78-6B2C-43E3-9C56-55F45C0DFFA5_MSDN.10_en-us" mtpsshortid="ms123401_MSDN.10_en-us" title="MSDN Library">MSDN Library</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/cc295789.aspx" id="cc295789_Expression.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Design Tools">Design Tools</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/aa187916.aspx" id="aa187916_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Development Tools and Languages">Development Tools and Languages</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ms376734.aspx" id="ms376734_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Mobile and Embedded Development">Mobile and Embedded Development</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ff361664%28v=vs.110%29.aspx" id="aa139615_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title=".NET Development">.NET Development</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/fp161347%28v=office.15%29.aspx" id="bb665965_office.12_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Office development">Office development</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ee702802.aspx" id="ee702802_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Online Services">Online Services</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/dd208104%28v=prot.10%29.aspx" id="cc203350_PROT.20_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Open Specifications">Open Specifications</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ff921345.aspx" id="ff653621_PandP.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="patterns &amp; practices">patterns &amp; practices</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/aa155072.aspx" id="aa155072_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Servers and Enterprise Development">Servers and Enterprise Development</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/hh323806%28v=office.14%29.aspx" id="jj127411_office.14_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Speech Technologies">Speech Technologies</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/aa155073.aspx" id="aa155073_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Web Development">Web Development</a>            </div>
+            <div style="padding-left: 17px;" class="toclevel1" data-toclevel="1">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/ee663300%28v=vs.85%29.aspx" id="aa139672_MSDN.10_en-us" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="Windows Desktop App Development">Windows Desktop App Development</a>            </div>
+</div>
+        
+
+        
+
+        
+        
+        <div id="toc-resizable-ew" class="toc-resizable-ew"></div>
+        
+
+<a style="left: 280px; display: inline-block;" id="NavigationResize" href="javascript:void(0)">
+    <img style="" class="cl_nav_resize_open" src="Create%20an%20app%20package_tiedostot/ImageSprite.png" title="Expand" alt="Expand">
+    <img style="display: none;" class="cl_nav_resize_close" src="Create%20an%20app%20package_tiedostot/ImageSprite.png" title="Minimize" alt="Minimize">
+</a>
+
+
+
+    </div>
+<div style="margin-left: 280px; width: auto;" id="content" class="content">
+
+
+
+
+
+<div class="topicNotInScope" id="topicNotInScope">
+    <div class="topicNotInScopeDisclaimer" id="topicNotInScopeDisclaimer">
+        <div class="topicNotInScopeImageContainer clip16x16">
+            <img class="topicNotInScopeInformationImage" src="Create%20an%20app%20package_tiedostot/ImageSprite.png" alt="Information">
+        </div>
+        <div class="topicNotInScopeSwitchCollectionContainer">
+            <a class="topicNotInScopeSwitchCollection" id="topicNotInScopeSwitchCollection" href="#" onclick="TopicNotInScope_ShowPicker();return false;">
+                Switch
+            </a>
+            <div class="topicNotInScopeImageContainer2 clip11x6">
+                <img class="topicNotInScopeDropdownImage" id="topicNotInScopeDropdownImage" src="Create%20an%20app%20package_tiedostot/ImageSprite.png" alt="Switch" onclick="TopicNotInScope_ShowPicker()">
+            </div>
+             <ul id="topicNotInScopeCollectionPicker" class="topicNotInScopeCollectionPicker">
+                        <li class="topicNotInScopeCollectionPickerItem">
+                            <a href="https://msdn.microsoft.com/en-us/library/windows/apps/hh975357.aspx" title="Windows Store apps">Windows Store apps</a>
+                        </li>
+                        <li class="topicNotInScopeCollectionPickerItem">
+                            <a href="https://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh975357.aspx" title="Windows Store apps (XAML)">Windows Store apps (XAML)</a>
+                        </li>
+            </ul>
+        </div>
+        <div class="topicNotInScopeDisclaimerText">The topic you 
+requested is included in another documentation set. For convenience, 
+it's displayed below. Choose Switch to see the topic in its original 
+location.</div>
+        <div class="Clear"></div>
+    </div>
+</div>
+
+
+
+        
+<div xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="topic" xmlns="http://www.w3.org/1999/xhtml" xmlns:mtps="http://msdn2.microsoft.com/mtps" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:cs="http://msdn.microsoft.com/en-us/">
+    <h1 class="title">Create an app package</h1>
+    
+    <div id="mainSection">
+      <div id="mainBody">
+        <p>
+          
+        </p> <div class="introduction"><img id="windows_and_phone_content" alt="Applies to Windows and Windows Phone" src="Create%20an%20app%20package_tiedostot/IC712390.png" title="Applies to Windows and Windows Phone" xmlns=""><p></p><p>To
+ distribute an app, either through the Store or to another device, you 
+must create an app package. You can do that by using the <span class="label">Create App Packages</span> wizard. Follow these steps:</p><ul><li><p><span><a href="#Step1">Step 1: Start the wizard</a></span></p></li><li><p><span><a href="#Step2">Step 2: Name your app</a></span></p></li><li><p><span><a href="#Step3">Step 3: Select and configure your app package</a></span></p></li><li><p><span><a href="#Step4">Step 4: Validate your app package</a></span></p></li></ul><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>These
+ steps apply to Visual Studio 2013. If you are using Visual Studio 2012 
+to package a Windows 8 version of your app, the steps will differ 
+slightly.</p></td></tr></tbody></table></div></div><a id="Step1"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Step 1: Start the wizard</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle0"></a><p>This section helps you start the <span class="label">Create App Packages</span> wizard. If you have trouble starting the wizard, see <span><a href="#WizardHelp">Help me start the wizard</a></span>.</p><h3 class="procedureSubHeading">To start the wizard in Visual Studio Professional, Visual Studio Premium, or Visual Studio Ultimate</h3><div class="subSection"><ul><li><p>Create or open a Windows app or Windows Phone app project in Visual Studio .</p><p>See <a href="http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh738343.aspx">Templates to speed up your app development</a>.</p></li><li><p>In <span class="label">Solution Explorer</span>, select a Windows app or Windows Phone app project. </p></li><li><p>On the menu bar, choose <span class="label">Project</span>, <span class="label">Store</span>, <span class="label">Create App Packages</span>.</p><img id="Store_Menu_VS_Ultimate" alt="Store menu in Visual Studio 2013" src="Create%20an%20app%20package_tiedostot/IC724210.png" title="Store menu in Visual Studio 2013" xmlns=""><p>The <span class="label">Create App Packages</span> wizard appears. If this option is disabled or does not appear at all, see <span><a href="#WizardHelp">Help me start the wizard</a></span>.</p></li></ul></div><h3 class="procedureSubHeading">To start the wizard in Visual Studio Express 2013 for Windows</h3><div class="subSection"><ul><li><p>Create or open a Windows app or Windows Phone app project in Visual Studio .</p><p>See <a href="http://msdn.microsoft.com/en-us/library/windows/apps/xaml/hh738343.aspx">Templates to speed up your app development</a>.</p></li><li><p>In <span class="label">Solution Explorer</span>, select a Windows app or Windows Phone app project. </p></li><li><p>On the menu bar, choose <span class="label">Store</span>, <span class="label">Create App Packages</span>.</p><img id="Store_Menu_VS_Express" alt="The Store menu in Visual Studio Express 2013" src="Create%20an%20app%20package_tiedostot/IC724211.png" title="The Store menu in Visual Studio Express 2013" xmlns=""><p>The <span class="label">Create App Packages</span> wizard appears.  If this option is disabled or does not appear at all, see <span><a href="#WizardHelp">Help me start the wizard</a></span>.</p></li></ul></div><h3 class="procedureSubHeading">To create an app package for the Store</h3><div class="subSection"><ol><li><p>In the <span class="label">Create Your Packages</span> page of the wizard, choose the <span class="label">Yes</span> option button.</p><p>If you haven’t already established a developer account, choose the <span class="label">create an account</span> link. See <a href="http://msdn.microsoft.com/library/windows/apps/jj193592">Ready to Sign up?</a></p></li><li><p>Choose the <span class="label">Next</span> button.</p></li><li><p>In the <span class="label">Sign In</span> dialog box, enter the Microsoft account and password you created the developer account with, and then choose the <span class="label">Sign In</span> button.</p><p>The <span class="label">Select an app name</span> page of the wizard appears.</p></li></ol></div><h3 class="procedureSubHeading">To create an app package for local testing and distribution</h3><div class="subSection"><ul><li><p>In the <span class="label">Create Your Packages</span> page of the wizard, choose the <span class="label">No</span> option button, and then choose the <span class="label">Next</span> button.</p><p>The <span class="label">Select and Configure Packages</span> page of the wizard appears. </p></li></ul></div><a id="WizardHelp"></a><div><h3 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Help me start the Create App Packages wizard</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h3><div class="sectionblock"><a id="sectionToggle1"></a><div class="caption"></div><div class="tableSection"><table><tbody><tr><td><p>Have you selected the project in <span class="label">Solution Explorer</span>?</p></td><td><p>The <span class="label">Create App Packages</span> option is enabled only if a project is selected in <span class="label">Solution Explorer</span>.</p></td></tr><tr><td><p>Are you using a Windows app or Windows Phone app project?</p></td><td><p>For example, Windows Phone Silverlight apps can’t be packaged by using this wizard. If you want to package one of those, see <a href="http://msdn.microsoft.com/en-us/library/windows/apps/dn655122%28v=vs.105%29.aspx">Prepare your Windows Phone Silverlight 8.1 app for publishing</a>.</p></td></tr><tr><td><p>Are you using Visual Studio 2012?</p></td><td><p>If you are using Visual Studio 2012 to maintain a Windows 8 version of your app, the <span class="label">Create App Packages</span> option won’t appear until you install the Tools for Maintaining Store apps for Windows 8. See <a href="http://msdn.microsoft.com/en-us/library/windows/apps/dn263114.aspx#step5">Service the Windows 8 version of your app</a>.</p></td></tr></tbody></table></div></div></div></div></div><a id="Step2"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Step 2: Name your app</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle2"></a><p>This procedure applies only to apps that you want to publish to the Store.</p><div class="subSection"><ol><li><p>If you haven't already reserved a name for your app, enter a name in the <span class="label">Reserve a new app name</span> box, and then choose the <span class="label">Reserve</span> button. See <a href="http://msdn.microsoft.com/library/windows/apps/hh868182.aspx">Reserving an app name</a>.</p></li><li><p>Choose the name of the app you want to create this package for, and then choose the <span class="label">Next</span> button.</p><p>If you’re packaging an update to an app that you’ve already published, select the <span class="label">Include app names that already have packages</span> check box to display names of published apps in the list.</p><p>The <span class="label">Select and Configure Packages</span> page of the wizard appears.</p></li></ol></div></div></div><a id="Step3"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Step 3: Select and configure your app package</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle3"></a><div class="subSection"><ol><li><p>In the <span class="label">Output location</span> box, enter the location where the package files will be created.</p><p>When you’re ready to publish your app, you’ll upload the packages from this location.</p></li><li><p>Allow the version numbers to increment automatically by keeping the <span class="label">Automatically increment</span> check box selected (recommended), or specify a particular version number in the <span class="label">Version</span> box.</p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_caution" alt="Caution note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Caution note" xmlns="" class="cl_IC46226"><strong>Caution</strong></th></tr><tr><td><p><img id="windows_only_content" alt="Applies to Windows only" src="Create%20an%20app%20package_tiedostot/IC712394.png" title="Applies to Windows only" xmlns="">
+  If you plan to update both the Windows 8.1 and Windows 8 versions of 
+an app and you want to increment the version numbers manually, see <span><a href="#VersionNumbers">Safely applying version numbers to an app package</a></span>.</p></td></tr></tbody></table></div><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>If the <span class="label">Automatically increment</span>
+ check box is selected, the last field of the version number increases 
+by one each time you package the app. You should increase the major 
+version number manually only if you’ve significantly changed your app.</p></td></tr></tbody></table></div></li><li><p>If
+ you're creating a package for the Windows 8.1 version of a Windows 
+Store app, or you're creating a package for a Windows Phone app, in the <span class="label">Generate app bundle</span> list, choose whether you’d like Visual Studio to generate an app bundle for your package.</p><p>See <span><a href="#Appx">Deciding whether to generate an app bundle</a></span>.</p></li><li><p>Under <span class="label">Select the packages to create and the solution configuration mappings</span>, select the check box for each build configuration you want to create a package for.</p><p>The
+ build configurations grid lists the possible platform architectures of 
+the package (for example, Neutral, ARM, x64, and x86). In each row, a 
+box displays the combination of the current <span class="label">Solution Configuration</span> and <span class="label">Architecture</span>
+ choices that relate to that row’s architecture. The check box for the 
+default platform is set to the current, active project platform. The box
+ for the <span class="label">Neutral</span> row shows the <span class="label">Solution Configuration</span> combinations that contain <span class="label">AnyCPU</span> as the project’s platform. If no <span class="label">Solution Configuration</span> combination is relevant, you can't choose anything in the entire row for that platform.</p></li><li><p>For each build configuration that you specified, choose the <span class="label">Solution Configuration</span> that you want to build.</p><p>A package will be created for each build configuration that you specified.</p></li><li><p>Select or clear the <span class="label">Include public symbol files, if any, to enable crash analysis for the app</span> check box.</p><p>If
+ the check box is selected (default), Visual Studio generates the public
+ symbol (.pdb) files and adds them to the .appxupload file. The 
+.appxupload file is created as part of the packaging process and 
+contains two other files: .appx and .appxsym. The .appxsym file is the 
+compressed file that contains the public symbols of your app. When you 
+upload your app and the .appxupload file to the Store, it analyzes the 
+file and uses the public symbols to map crashes of your app. The 
+resulting telemetry information about your app is published for you to 
+review on the developer dashboard. See <a href="http://go.microsoft.com/fwlink/?LinkID=241328" target="_blank">Submitting your app</a> and <a href="http://msdn.microsoft.com/library/windows/apps/hh967768.aspx">Analyzing your apps in the Store</a>.</p></li><li><p>Choose the <span class="label">Create</span> button.</p><p>When the packaging process is complete, the <span class="label">Package Creation Completed</span> page appears.</p></li></ol></div><a id="Appx"></a><div><h3 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Deciding whether to generate an app bundle</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h3><div class="sectionblock"><a id="sectionToggle4"></a><p>If
+ you’re creating a package for the Windows 8.1 version of an app, or 
+you’re creating a package for a Windows Phone app, you can generate an 
+app bundle to reduce the size of the app that users download. Your app 
+takes up less room on their devices, and users can download it faster 
+because they download only the assets that they need. See <a href="http://go.microsoft.com/fwlink/?LinkId=306269" target="_blank">App bundles</a>.</p><p>Consider
+ generating an app bundle if your app contains language-specific 
+resources, a variety of image scales, or resources that apply to 
+specific versions of DirectX. If you don't generate one, your app will 
+run just fine, but users will have to download a larger app.</p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>One app bundle can contain your packages for all architectures. You should create only one bundle per app.</p></td></tr></tbody></table></div><p>You can create an app bundle based on these options:</p><div class="caption"></div><div class="tableSection"><table><tbody><tr><th><p>Use this option</p></th><th><p>To</p></th></tr><tr><td><p>If Needed</p></td><td><p>Generate
+ an app bundle only if you've defined language-specific assets, a 
+variety of image-scale assets, or resources that apply to specific 
+versions of DirectX.</p></td></tr><tr><td><p>Always</p></td><td><p>Generate an app bundle.</p></td></tr><tr><td><p>Never</p></td><td><p>Don’t
+ generate an app bundle. You might choose this option if you plan to 
+individually service each architecture that your app supports.</p></td></tr></tbody></table></div><p>If
+ you create an app bundle, you can submit your app to the Store more 
+easily because, no matter how many architectures your app supports, you 
+must upload only one .appxupload file. If you don't create an app 
+bundle, you must upload an .appxupload file for each supported 
+architecture.</p></div></div><a id="VersionNumbers"></a><div><h3 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Safely applying version numbers to an app package</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h3><div class="sectionblock"><a id="sectionToggle5"></a><img id="windows_only_content" alt="Applies to Windows only" src="Create%20an%20app%20package_tiedostot/IC712394.png" title="Applies to Windows only" xmlns=""><p></p><p>The
+ Windows Store requires the Windows 8.1 version of an app to have a 
+higher version number than the Windows 8 version of the same app. 
+However, the Store doesn’t enforce how much higher that number must be. 
+Therefore, if you manually provide a version number for the Windows 8.1 
+version, leave enough room between the first version number of the 
+Windows 8.1 version and the most recent version number for the Windows 8
+ version. Otherwise, you’ll run out of numbers to apply to your Windows 8
+ version and won’t be able to update it anymore. </p><p>For example, 
+assume that the most recent version of your Windows 8 app is 1.0.0.1. 
+Then, you publish a Windows 8.1 version of the same app with the version
+ number 1.0.0.2. In this case, you’ve met the Store requirement, but 
+you’ll have no remaining version numbers to use if you want to update 
+the Windows 8 version.</p><p>If you're applying version numbers 
+manually, you should consider how many version numbers you’ll want to 
+reserve for the Windows 8 version of your app. Unless you have a 
+specific reason to apply your own version numbers, you can let Visual 
+Studio number your versions for you. When you package the Windows 8.1 
+version for the first time, Visual Studio applies a version number that 
+leaves plenty of available minor version numbers for the Windows 8 
+version.</p></div></div></div></div><a id="Step4"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Step 4: Validate your app package</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle6"></a><div class="subSection"><ul><li><p>To
+ make certification as smooth as possible, validate your app against 
+devices that you plan to target before you submit it for certification 
+and listing in the Store:</p><ul><li><p><span><a href="#ValidatePhone">Validate your app package (Windows Phone)</a></span></p></li><li><p><span><a href="#ValidateLocal">Validate your app package against your local machine (Windows Store)</a></span></p></li><li><p><span><a href="#ValidateRemote">Validate your app package against a remote device (Windows Store)</a></span></p></li></ul></li></ul></div></div></div><a id="ValidatePhone"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Validate your app package</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle7"></a><img id="phone_only_content" alt="Applies to Windows Phone only" src="Create%20an%20app%20package_tiedostot/IC711363.png" title="Applies to Windows Phone only" xmlns=""><div class="subSection"><ul><li><p>In the <span class="label">Create App Packages</span> wizard, choose the <span class="label">Launch Windows App Certification Kit</span> button.</p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>This option is available only if you specified at least one solution configuration that supports validation. See <a href="http://go.microsoft.com/fwlink/?LinkID=241330" target="_blank">How to test your app with the Windows App Certification Kit</a>.</p></td></tr></tbody></table></div><p>The Windows App Certification Kit performs tests and shows you the results. See <a href="http://msdn.microsoft.com/library/windows/apps/jj657973.aspx">Windows App Certification Kit tests</a>.</p></li></ul></div></div></div><a id="ValidateLocal"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Validate your app package against your local machine</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle8"></a><img id="windows_only_content" alt="Applies to Windows only" src="Create%20an%20app%20package_tiedostot/IC712394.png" title="Applies to Windows only" xmlns=""><div class="subSection"><ul><li><p>Under <span class="label">Select a target device to run</span>, choose the <span class="label">Local machine</span> option button, and then choose the <span class="label">Launch Windows App Certification Kit</span> button.</p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>This option is available only if you specified at least one solution configuration that supports validation. See <a href="http://go.microsoft.com/fwlink/?LinkID=241330" target="_blank">How to test your app with the Windows App Certification Kit</a>.</p></td></tr></tbody></table></div><p>The Windows App Certification Kit performs tests and shows you the results. See <a href="http://msdn.microsoft.com/library/windows/apps/jj657973.aspx">Windows App Certification Kit tests</a>.</p></li></ul></div></div></div><a id="ValidateRemote"></a><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Validate your app package against a remote device</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="sectionToggle9"></a><img id="windows_only_content" alt="Applies to Windows only" src="Create%20an%20app%20package_tiedostot/IC712394.png" title="Applies to Windows only" xmlns=""><p>You
+ can validate a package for the Windows 8 version of an app by using a 
+remote device that's running either Windows 8 or Windows 8.1. However, 
+you must use a device that's running Windows 8.1 to validate a Windows 
+8.1 package. Also, the architecture of the target device must match a 
+platform architecture that you specified in <span><a href="#Step3">Step 3: Select and configure app packages</a></span>.</p><div class="subSection"><ul><li><p>To validate your app package against a remote device, configure it, and then connect to it. </p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>You have to configure a device only once, no matter how many apps you validate with it.</p></td></tr></tbody></table></div></li></ul></div><div><h3 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Configure a device for remote validation</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h3><div class="sectionblock"><a id="sectionToggle10"></a><div class="subSection"><ol><li><p>From your local development computer, copy the PrepWinACK.exe file to each device that you want to use for validation.</p><p>You can find that file in one of these directories: </p><ul><li><p>For
+ 32-bit operating systems: %ProgramFiles%\Microsoft Visual Studio 
+12.0\Common7\IDE\CommonExtensions\Microsoft\TailoredProjectServices\</p></li><li><p>For
+ 64-bit operating systems: %ProgramFiles(x86)%\Microsoft Visual Studio 
+12.0\Common7\IDE\CommonExtensions\Microsoft\TailoredProjectServices\</p></li></ul></li><li><p>Run the PrepWinACK.exe program, and then install one or more of the following items as prompted:</p><ul><li><p>Remote Tools for Visual Studio 2013</p></li><li><p>A developer license</p></li><li><p>The Windows App Certification Kit</p></li></ul><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>If
+ you run the program on an ARM device, you’ll have to reboot it, and 
+then follow the instructions on the screen to complete the installation 
+of the ARM Kit policy. If you encounter issues, see <a href="http://msdn.microsoft.com/library/windows/desktop/bg162891.aspx">Windows Software Development Kit (SDK) for Windows 8.1</a>.</p></td></tr></tbody></table></div></li><li><p>Start the remote debug monitor as described on the <a href="http://msdn.microsoft.com/library/vstudio/hh441469.aspx#BKMK_Starting_the_Remote_Debugger_Monitor">Running Windows Store apps on a remote machine</a> webpage.</p></li></ol></div></div></div><div><h3 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">Connect to a device and validate your app package</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h3><div class="sectionblock"><a id="sectionToggle11"></a><div class="subSection"><ol><li><p>On the <span class="label">Package Creation Completed</span> page of the <span class="label">Create App Packages </span> wizard, choose the <span class="label">Remote Machine</span> option button, and then choose the ellipsis button next to the <span class="label">Test Connection</span> button.</p><div class="alert"><table><tbody><tr><th align="left"><img id="alert_note" alt="Note" src="Create%20an%20app%20package_tiedostot/clear.gif" title="Note" xmlns="" class="cl_IC101471"><strong>Note</strong></th></tr><tr><td><p>The <span class="label">Remote Machine</span> option button is available only if you specified at least one solution configuration that supports validation. See <a href="http://go.microsoft.com/fwlink/?LinkID=241330" target="_blank">How to test your app with the Windows App Certification Kit</a>.</p></td></tr></tbody></table></div></li><li><p>Specify
+ a device from inside your subnet, or provide the Domain Name Server 
+(DNS) name or IP address of a device that's outside of your subnet.</p></li><li><p>In the <span class="label">Authentication Mode</span> list, choose <span class="label">None</span> if your device doesn't require you to log onto it by using your Windows credentials.</p></li><li><p>Choose the <span class="label">Select</span> button, and then choose the <span class="label">Launch Windows App Certification Kit</span> button.</p><p>If the remote tools are running on that device, Visual Studio connects to it and then performs the validation tests. See <a href="http://msdn.microsoft.com/library/windows/apps/jj657973.aspx">Windows App Certification Kit tests</a>.</p></li></ol></div></div></div></div></div><div><h2 class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Click to collapse. Double-click to collapse all." role="button"><span class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"></span><span class="LW_CollapsibleArea_Title">See Also</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr"></div></div></h2><div class="sectionblock"><a id="seeAlsoToggle"></a><h4 class="subHeading">Concepts</h4><div class="seeAlsoStyle"><span><a href="https://msdn.microsoft.com/en-us/library/hh454036.aspx">Packaging your Store app by using Visual Studio</a></span></div><div class="seeAlsoStyle"><span><a href="https://msdn.microsoft.com/en-us/library/hh975356.aspx">Install and test an app on other devices</a></span></div><h4 class="subHeading">Other Resources</h4><div class="seeAlsoStyle"><a href="http://go.microsoft.com/fwlink/?LinkID=241328" target="_blank">Preparing your app for the Store</a></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+
+    
+
+
+
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Show:</span>
+        <label>
+            <input class="libraryFilterInherited" checked="checked" value="Inherit" type="checkbox">Inherited
+        </label>
+        <label>
+            <input class="libraryFilterProtected" checked="checked" value="Protected" type="checkbox">Protected
+        </label>
+    </div>
+</div>
+    
+<input id="libraryMemberFilterEmptyWarning" value="There are no members available with your current filter settings." type="hidden">
+
+
+ 
+</div>
+
+
+            </div>
+            <div class="clear"></div>
+
+            
+    
+<input name="__RequestVerificationToken" value="bkZEwyD9z86CicGQFOelFXT24RYsJNfVDj7gTlCZ6XPd-sZ1Ml0ySuK18qgUMypF8MEn3x6dwMo55vp-dDSzvfp6OWQ1" type="hidden">
+<input id="ratingSubmitUrl" value="https://msdn.microsoft.com/en-us/library/feedback/add/hh975357.aspx" type="hidden">
+<input id="isTopicRated" value="false" type="hidden">
+
+
+
+
+    
+
+    
+    <link type="text/css" rel="stylesheet">
+    
+    <div id="ux-footer" class="" style="" dir="ltr">
+            
+            <div id="footerSock" class="librarySock both">
+                <div id="footerSockInner">
+                        <a name="feedback"></a>
+
+<div style="display: block;" class="rating">
+    <div id="ratingSection1">
+        <div class="title">
+            Was this page helpful?
+        </div>
+        <div class="description">
+            Your feedback about this content is important.<br>Let us know what you think.
+        </div>
+        <div class="buttons">
+            <button class="button" id="ratingYes">Yes</button>
+            <button class="button" id="ratingNo">No</button>
+        </div>
+        <input id="ratingValue" value="" type="hidden">
+    </div>
+    <div id="ratingSection2">
+        <div class="title">
+            Additional feedback?
+        </div>
+        <textarea id="ratingText" rows="6" cols="" maxlength="1500"></textarea>
+        <div class="counter right">
+            <span id="feedbackTextCounter">1500</span> characters remaining
+        </div>
+        <div class="buttons left">
+            <button class="button" id="ratingSubmit">Submit</button>
+            <button class="button" id="ratingSkipThis">Skip this</button>
+        </div>
+    </div>
+    <div id="ratingSection3">
+        <div class="title">
+            Thank you!
+        </div>
+        <div class="description">
+            We appreciate your feedback.
+        </div>
+    </div>
+    
+    
+    <div id="contentFeedbackQAContainer" style="display: none;"></div>
+</div>
+    
+                    <div class="userVoice">
+    <div class="title">
+        Have a suggestion to improve MSDN Library?
+    </div>
+        <div class="description">
+            Visit our UserVoice Page to submit and vote on ideas!
+        </div>
+    <div class="buttons">
+        <a class="button" id="userVoiceButton" href="http://feedback.msdn.com/forums/257782-msdn-feature-suggestions/category/83975" target="_blank">Make a suggestion</a>
+    </div>
+</div>  
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+        <footer class="top">
+            <div data-fragmentname="LeftLinks" id="Fragment_LeftLinks" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <div class="linkListTitle">Dev centers</div>
+    <ul class="links">
+      <li>
+        <a href="http://dev.windows.com/" id="LeftLinks_2148_1" class="windowsBlue" xmlns="http://www.w3.org/1999/xhtml">Windows</a>
+      </li>
+      <li>
+        <a href="http://dev.office.com/" id="LeftLinks_2148_3" class="office" xmlns="http://www.w3.org/1999/xhtml">Office</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/vstudio" id="LeftLinks_2148_4" class="visualStudio" xmlns="http://www.w3.org/1999/xhtml">Visual Studio</a>
+      </li>
+      <li>
+        <a href="http://developer.nokia.com/" title="Nokia" id="LeftLinks_2148_15" class="nokia" xmlns="http://www.w3.org/1999/xhtml">Nokia</a>
+      </li>
+      <li>
+        <a href="http://azure.microsoft.com/en-us/documentation/" target="_blank" id="LeftLinks_2148_12" xmlns="http://www.w3.org/1999/xhtml">Microsoft Azure</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/aa937802" id="LeftLinks_2148_5" xmlns="http://www.w3.org/1999/xhtml">More...</a>
+      </li>
+    </ul>
+  </div>
+</div>    
+            <div id="rightLinks">
+                <div data-fragmentname="CenterLinks1" id="Fragment_CenterLinks1" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <div class="linkListTitle">Learning resources</div>
+    <ul class="links">
+      <li>
+        <a href="http://www.microsoftvirtualacademy.com/" id="CenterLinks1_2151_4" xmlns="http://www.w3.org/1999/xhtml">Microsoft Virtual Academy</a>
+      </li>
+      <li>
+        <a href="http://channel9.msdn.com/" id="CenterLinks1_2151_5" xmlns="http://www.w3.org/1999/xhtml">Channel 9</a>
+      </li>
+      <li>
+        <a href="http://www.interoperabilitybridges.com/" id="CenterLinks1_2151_6" xmlns="http://www.w3.org/1999/xhtml">Interoperability Bridges</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/magazine/" id="CenterLinks1_2151_7" xmlns="http://www.w3.org/1999/xhtml">MSDN Magazine</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div data-fragmentname="CenterLinks2" id="Fragment_CenterLinks2" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <div class="linkListTitle">Community</div>
+    <ul class="links">
+      <li>
+        <a href="https://social.msdn.microsoft.com/forums/en-us/home" id="CenterLinks2_2151_8" xmlns="http://www.w3.org/1999/xhtml">Forums</a>
+      </li>
+      <li>
+        <a href="http://blogs.msdn.com/b/developer-tools/" id="CenterLinks2_2151_9" xmlns="http://www.w3.org/1999/xhtml">Blogs</a>
+      </li>
+      <li>
+        <a href="http://www.codeplex.com/" id="CenterLinks2_2151_10" xmlns="http://www.w3.org/1999/xhtml">Codeplex</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div data-fragmentname="CenterLinks3" id="Fragment_CenterLinks3" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <div class="linkListTitle">Support</div>
+    <ul class="links">
+      <li>
+        <a href="http://msdn.microsoft.com/hh361695" id="CenterLinks3_2151_11" xmlns="http://www.w3.org/1999/xhtml">Self support</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div class="nth-child-4n" data-fragmentname="CenterLinks4" id="Fragment_CenterLinks4" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <div class="linkListTitle">Programs</div>
+    <ul class="links">
+      <li>
+        <a href="http://www.microsoft.com/bizspark/" id="CenterLinks4_2151_13" xmlns="http://www.w3.org/1999/xhtml">BizSpark (for startups)</a>
+      </li>
+      <li>
+        <a href="https://www.dreamspark.com/" id="CenterLinks4_2151_14" xmlns="http://www.w3.org/1999/xhtml">DreamSpark</a>
+      </li>
+      <li>
+        <a href="http://www.imaginecup.com/" id="CenterLinks4_2151_17" xmlns="http://www.w3.org/1999/xhtml">Imagine Cup</a>
+      </li>
+    </ul>
+  </div>
+</div>                
+            </div>
+        </footer>
+    
+        <footer class="bottom">
+            <span class="localeContainer">
+                
+    <form class="selectLocale" id="selectLocaleForm" action="https://msdn.microsoft.com/en-us/selectlocale-dmc">
+        <input name="fromPage" value="https%3a%2f%2fmsdn.microsoft.com%2fen-us%2flibrary%2fhh975357.aspx" type="hidden">
+        <a href="#" onclick="$('#selectLocaleForm').submit();return false;" title="Change your language">United States (English)</a>
+    </form>
+
+
+            </span>
+        
+            <div data-fragmentname="BottomLinks" id="Fragment_BottomLinks" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links horizontal">
+      <li>
+        <a href="http://msdn.microsoft.com/newsletter.aspx" id="BottomLinks_2148_7" xmlns="http://www.w3.org/1999/xhtml">Newsletter</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/dn529288" id="BottomLinks_2148_8" xmlns="http://www.w3.org/1999/xhtml">Privacy &amp; cookies</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/cc300389" id="BottomLinks_2148_9" xmlns="http://www.w3.org/1999/xhtml">Terms of use</a>
+      </li>
+      <li>
+        <a href="http://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx" id="BottomLinks_2148_10" xmlns="http://www.w3.org/1999/xhtml">Trademarks</a>
+      </li>
+    </ul>
+  </div>
+</div>    
+            <span class="logoLegal">
+                <span class="logo"></span>
+                <span class="copyright">© 2015 Microsoft</span>
+            </span>
+        </footer>
+    </div>
+    
+
+
+            <div class="footerPrintView">
+                <div class="footerCopyrightPrintView">© 2015 Microsoft</div>
+            </div>
+
+            
+            
+    
+    
+    <input id="tocPaddingPerLevel" value="17" type="hidden">
+
+
+
+            <input id="MtpsDevice" value="Default" type="hidden">
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+            
+            
+            
+            
+            
+
+
+
+
+
+
+
+<noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="https://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No" /></div></noscript>
+
+
+
+
+
+
+
+
+
+<noscript>
+  <a href="http://www.omniture.com" title="Web Analytics">
+    <img src="//msstonojsmsdn.112.2o7.net/b/ss/msstonojsmsdn/1/H.20.2--NS/0" height="1" width="1" border="0" alt="" />
+  </a>
+</noscript>
+
+
+
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" value="v91mnLxMfTivE_BQ9PpA7GksYR8f6F-wRaTYct5odASWXCGxpUCaIeho6QjH4Z5aJOouv8JXYK2g4G4IVBSPr9GWjSE1" type="hidden">
+</div>
+
+
+        </div>
+
+        
+        
+        
+        
+    
+</body></html>
