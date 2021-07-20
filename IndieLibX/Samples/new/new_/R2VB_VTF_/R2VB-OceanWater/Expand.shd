@@ -1,0 +1,31 @@
+//--------------------------------------------------------------------------------------
+// File: Expand.shd
+// 
+// Copyright (c) ATI Research 2006
+//--------------------------------------------------------------------------------------
+
+[Fragment shader]
+
+<compile ps_2_0 main>
+
+float    g_heightScale;          // wave height scale
+float    g_repeatRate;
+
+sampler sampSourceImage;
+
+//--------------------------------------------------------------------------------------
+// Pixel shader to expand height map values 3D coordinates
+//--------------------------------------------------------------------------------------
+float4 main( float2 Tex : TEXCOORD0 ) : COLOR0
+{
+    float4 vertex;
+    float2 xyPos;
+
+    xyPos = (Tex * 2.1f) - 1.0f;
+    vertex.x = -xyPos.x;
+    // scale the height to compensate for the IFFT
+    vertex.y = abs(tex2D(sampSourceImage, Tex * g_repeatRate).r) * g_heightScale;
+    vertex.z = xyPos.y;
+    vertex.w = 1;
+    return vertex;
+}

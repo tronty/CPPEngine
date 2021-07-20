@@ -1,0 +1,436 @@
+<html>
+<head>
+<title>How To Activate the .NET Framework 3.5 on Windows 8 Without Internet Access</title>
+</head>
+<body>
+How To Activate the .NET Framework 3.5 on Windows 8 Without Internet Access<br>
+<br>
+<br>
+<br>
+Premier Field Engineers	Premier Field Engineers<br>
+<br>
+Avatar of Premier Field Engineers<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+ 16 Apr 2013 11:00 PM<br>
+<br>
+<br>
+ 81<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Summary:  Milad Aslaner, a Microsoft Premier Field Engineer (PFE) based in Germany, walks us through how you can activate the .NET Framework 3.5 on Windows 8 when you don’t have access to the Internet.  Enjoy!<br>
+<br>
+<br>
+Microsoft Windows LogoI had to install SQL Server 2012 on my lab computer today. For those of you who follow my blog posts, you might be a little bit surprised why a Desktop PFE is starting talking around SQL, but don’t worry,  this article is still about the Windows Desktop.<br>
+<br>
+One of the prerequisites for a complete SQL Server 2012 installation is that the operating system has the .NET Framework 3.5 installed.  As you might know, Windows 8 has the .NET Framework 4.5 built-in and you can optionally activate .NET Framework 3.5 using the Windows Features panel (see the image below), but the problem is that once you activate the .NET Framework 3.5 the computer will want to access to Microsoft servers on the Internet to get the binaries.<br>
+<br>
+Windows Features - Adding the .NET Framework 3.5<br>
+<br>
+But what do you do if you have no Internet connection? The solution emerges with the Windows 8 ISO and DISM. Have a look below for a quick step-by-step guide on how to install and activate the .NET Framework 3.5 without Internet access:<br>
+1.Create a folder on your system drive called NET35 (example: C:\NET35)<br>
+2.Mount your Windows 8 ISO file or DVD<br>
+3.Copy the folder sources\sxs\ from the Windows 8 ISO into the newly created NET35 folder. I recommend using XCOPY for it, for example:<br>
+xcopy G:\sources\sxs\*.* C:\NET35 /s<br>
+[Ed: Note that this copies the contents of the SXS folder into C:\NET35, but not the folder itself]<br>
+4.Once you copy all the files, you can now utilize DISM to enable the .NET Framework 3.5 feature by entering the following command in an elevated command prompt (Start, Type "CMD", press Ctrl+Shift+Enter or right-click the Command Prompt item and choose Run as Administrator):<br>
+ DISM.exe /online /enable-feature /featurename:NetFX3 /All /Source:c:\net35 /LimitAccess<br>
+[Ed: Note the above is one line but may wrap in this blog depending on formatting - if in doubt, it should be typed as in the screenshot below.]<br>
+<br>
+If everything runs smoothly you should now have the .NET Framework 3.5 installed without the computer needing access to the Internet.<br>
+<br>
+clip_image003<br>
+<br>
+<br>
+Written by Milad Aslaner;  Posted by Frank Battiston, MSPFE Editor. Then mildly fiddled with by Tristan.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+ SQL Server, Windows, Milad Aslaner, Windows Client, .NET Framework, Windows 8<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+in<br>
+<br>
+Share<br>
+.<br>
+<br>
+1<br>
+<br>
+Delicious  Save this on Delicious<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Leave a Comment<br>
+Name<br>
+<br>
+Comment<br>
+<br>
+<br>
+<br>
+<br>
+Post<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Comments<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	dhaneesh  27 Apr 2013 6:40 AM<br>
+<br>
+<br>
+i got an error<br>
+<br>
+You cannot service a running 64-bit operating system with a 32-bit version of DI<br>
+<br>
+SM.<br>
+<br>
+Please use the version of DISM that corresponds to your computer's architecture.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Andre.Ziegler 	Andre.Ziegler<br>
+<br>
+Avatar of Andre.Ziegler<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  27 Apr 2013 9:04 AM<br>
+<br>
+<br>
+looks like you have used the 32Bit cmd.exe on a 64Bit Windows 8. Use the 64Bit cmd.exe and try again.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Sumit Show  8 May 2013 6:55 PM<br>
+<br>
+<br>
+Many many Thanxzzzzzzzzzzzzzzzzzzzz............. :)<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Prabuddha  28 May 2013 9:04 AM<br>
+<br>
+<br>
+Error : 0x800f081f<br>
+<br>
+the source files could not be found.<br>
+<br>
+Help plz<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	williamkasaija  21 Jun 2013 7:53 AM<br>
+<br>
+<br>
+i noticed it didnt work with this<br>
+<br>
+DISM.exe /online /enable-feature /featurename:NetFX3 /All /Source:c:\net35 /LimitAccess<br>
+<br>
+i had to add the subfolder too<br>
+<br>
+DISM.exe /online /enable-feature /featurename:NetFX3 /All /Source:c:\net35\sxs /LimitAccess<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	T.G  23 Jun 2013 7:20 PM<br>
+<br>
+<br>
+I haven't tried it yet.. i'm downloading the real deal from the net... but it sounds plausible<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	T.G  23 Jun 2013 7:27 PM<br>
+<br>
+<br>
+didnt work... error.. 87.. i'll just finish the online process<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Billu  9 Jul 2013 4:07 PM<br>
+<br>
+<br>
+Thank you very much, it worked for me.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Pritesh  12 Jul 2013 6:43 AM<br>
+<br>
+<br>
+Is there any possibilities to play Windows 8 Xbox inbult games without internet connection...???? Like in Win7 inbuilt Games that we can play anytime without internet..<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Bayu  22 Jul 2013 11:43 PM<br>
+<br>
+<br>
+thanks a bunch, it works like magic..<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	thomas anton  7 Aug 2013 7:34 AM<br>
+<br>
+<br>
+thanksssss a lot<br>
+<br>
+:D<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	Erald.Sison  13 Aug 2013 9:31 AM<br>
+<br>
+<br>
+It did't work. I already did what you said above but it keeps on giving me  "ERROR: 0x800f081f"<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	bonyjose  16 Aug 2013 6:30 PM<br>
+<br>
+<br>
+www.4shared.com/.../dotNetFx35_W8_x86_x64.html<br>
+<br>
+this file will do it simply without much effort,just download and install and you're good to go...<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	rgm  22 Aug 2013 2:24 PM<br>
+<br>
+<br>
+1. this doesn't work with win 8. it asks x64 dism command.<br>
+<br>
+2. will be grateful if you mention how to give elevated command thru dos.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+Anonymous 	mohsen  27 Aug 2013 11:57 PM<br>
+<br>
+<br>
+plz help me<br>
+<br>
+after type it  DISM.exe /online /enable-feature /featurename:NetFX3 /All /Source:c:\net35 /LimitAccess<br>
+<br>
+to cmd<br>
+<br>
+i got this eror<br>
+<br><br>
+to find a version to your pc check with the software publisher<br><br>
+</body>
+</html>

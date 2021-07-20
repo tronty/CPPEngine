@@ -1,0 +1,406 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><meta name="description" content="Marching Cubes Algorithm Tutorial by Michael Polyakov">
+	<meta name="keywords" content="marching cubes marchingcubes michael polyakov mike">
+
+  
+   <title> Marching Cubes Algorithm Tutorial - by Michael Polyakov </title>
+  <script type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/Tag.json"></script><link rel="preload" href="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/integrator.js"></script><link rel="preload" href="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/integrator_002.js"></script><script src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/pubads_impl_2020012701.js" async=""></script></head>
+
+  <body><!--'"</title></head>-->
+
+<script type="text/javascript" async="" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/infinity.aspx" id="infinity" data-guid="5dd1f7f3-98b2-4ece-89b4-f094cbb5f878" data-version="async"></script><script async="" type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/gpt.js"></script><script type="text/javascript" async="" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/ga.js"></script><script type="text/javascript" async="" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/lycosn.js"></script><script type="text/javascript">
+//OwnerIQ
+var __oiq_pct = 50;
+if( __oiq_pct>=100 || Math.floor(Math.random()*100/(100-__oiq_pct)) > 0 ) {
+var _oiqq = _oiqq || [];
+_oiqq.push(['oiq_addPageBrand','Lycos']);
+_oiqq.push(['oiq_addPageCat','Internet > Websites']);
+_oiqq.push(['oiq_addPageLifecycle','Intend']);
+_oiqq.push(['oiq_doTag']);
+(function() {
+var oiq = document.createElement('script'); oiq.type = 'text/javascript'; oiq.async = true;
+oiq.src = document.location.protocol + '//px.owneriq.net/stas/s/lycosn.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(oiq, s);
+})();
+}
+
+/////// Google Analytics
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-21402695-21']);
+_gaq.push(['_setDomainName', 'angelfire.com']);
+_gaq.push(['_setCustomVar', 1, 'member_name', 'linux/myp', 3]);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+////// Lycos Initialization /////////////////////
+var lycos_ad = Array();
+var lycos_search_query = "";
+var lycos_onload_timer;
+
+var cm_role = "live";
+var cm_host = "angelfire.lycos.com";
+var cm_taxid = "/memberembedded";
+var angelfire_member_name = "linux/myp";
+var angelfire_member_page = "linux/myp/MC/index.html";
+var angelfire_ratings_hash = "1580545206:29881d14b9471db0bb1c17f0f37b4b8a";
+
+var lycos_ad_category = {"dmoz":"computers\/algorithms","ontarget":"&CAT=technology&L2CAT=computing","find_what":"paris"};
+
+var lycos_ad_remote_addr = "91.145.112.157";
+var lycos_ad_www_server = "www.angelfire.lycos.com";
+var edit_site_url = "www.angelfire.lycos.com/landing/landing.tmpl?utm_source=house&utm_medium=landingpage&utm_campaign=toolbarlink";
+
+</script>
+<script type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/init.js"></script><script type="text/javascript" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/memberembedded.js"></script>
+
+<script type="text/javascript">
+ var googletag = googletag || {};
+ googletag.cmd = googletag.cmd || [];
+ (function() {
+   var gads = document.createElement('script');
+   gads.async = true;
+   gads.type = 'text/javascript';
+   var useSSL = 'https:' == document.location.protocol;
+   gads.src = (useSSL ? 'https:' : 'http:') +
+     '//www.googletagservices.com/tag/js/gpt.js';
+   var node = document.getElementsByTagName('script')[0];
+   node.parentNode.insertBefore(gads, node);
+ })();
+</script>
+
+
+<script type="text/javascript">
+ googletag.cmd.push(function() {
+   googletag.defineSlot('/95963596/ANG_300x250_dfp', [300, 250], 'div-gpt-ad-1450207484070-0').addService(googletag.pubads());
+   googletag.enableServices();
+ });
+</script>
+
+<script type="text/javascript">
+ googletag.cmd.push(function() {
+   googletag.defineSlot('/95963596/ANG_above_728x90_dfp', [728, 90], 'div-gpt-ad-1450207484070-1').addService(googletag.pubads());
+   googletag.enableServices();
+ });
+</script>
+
+<script type="text/javascript">
+ googletag.cmd.push(function() {
+   googletag.defineSlot('/95963596/ANG_below_728X90_dfp', [728, 90], 'div-gpt-ad-1450207484070-2').addService(googletag.pubads());
+   googletag.enableServices();
+ });
+</script>
+
+
+<script type="text/javascript">
+(function(isV) {
+    if (!isV) {
+        return;
+    }
+
+    //this.lycos_search_query = lycos_get_search_referrer();
+    var adMgr = new AdManager();
+    var lycos_prod_set = adMgr.chooseProductSet();
+    var slots = ["leaderboard", "leaderboard2", "toolbar_image", "toolbar_text", "smallbox", "top_promo", "footer2","slider"];
+    var adCat = this.lycos_ad_category;
+    adMgr.setForcedParam('page', (adCat && adCat.dmoz) ? adCat.dmoz : 'member');
+
+    if (this.lycos_search_query) {
+        adMgr.setForcedParam("keyword", this.lycos_search_query);
+    } 
+    else if (adCat && adCat.find_what) {
+        adMgr.setForcedParam('keyword', adCat.find_what);
+    }
+
+    for (var s in slots) {
+        var slot = slots[s];
+        if (adMgr.isSlotAvailable(slot)) {
+            this.lycos_ad[slot] = adMgr.getSlot(slot);
+        }
+    }
+
+
+    adMgr.renderHeader();
+    adMgr.renderFooter();
+}((function() {
+    var w = 0, h = 0, minimumThreshold = 300;
+    if (top == self) {
+        return true;
+    }
+
+    if (typeof(window.innerWidth) == 'number' ) {
+        w = window.innerWidth;
+        h = window.innerHeight;
+    }
+    else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+        w = document.documentElement.clientWidth;
+        h = document.documentElement.clientHeight;
+    }
+    else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+        w = document.body.clientWidth;
+        h = document.body.clientHeight;
+    }
+
+    return ((w > minimumThreshold) && (h > minimumThreshold));
+}())));
+
+
+
+window.onload = function() {
+    var f = document.getElementById("lycosFooterAd");
+    var b = document.getElementsByTagName("body")[0];
+    b.appendChild(f);
+    f.style.display = "block";
+    document.getElementById('lycosFooterAdiFrame').src = '/adm/ad/footerAd.iframe.html';
+
+    // Slider Injection
+    (function() {
+        var e = document.createElement('iframe');
+        e.style.border = '0';
+        e.style.margin = 0;
+        e.style.display = 'block';
+        e.style.cssFloat = 'right';
+        e.style.height = '254px';
+        e.style.overflow = 'hidden';
+        e.style.padding = 0;
+        e.style.width = '300px';
+    })();
+
+
+    // Bottom Ad Injection
+    ( function() {
+        var b = document.getElementsByTagName("body")[0];
+
+        var iif = document.createElement('iframe');
+        iif.style.border = '0';
+        iif.style.margin = 0;
+        iif.style.display = 'block';
+        iif.style.cssFloat = 'right';
+        iif.style.height = '254px';
+        iif.style.overflow = 'hidden';
+        iif.style.padding = 0;
+        iif.style.width = '300px';
+        iif.src = '/adm/ad/injectAd.iframe.html';
+        
+        var cdiv = document.createElement('div');
+        cdiv.style = "width:300px;margin:10px auto;";
+        cdiv.appendChild( iif );
+        if( b )
+        {
+            b.insertBefore(cdiv, b.lastChild);
+        }
+    })();
+
+}
+
+
+</script><script type="text/javascript">
+
+
+(function() { 
+if (user.browser.family === 'Chrome') { return };
+objAdMgr = new AdManager();
+var _cm_cycle = document.cookie.replace(/(?:(?:^|.*;s*)cmcycles*=s*([^;]*).*$)|^.*$/, "$1");
+if (_cm_cycle === "") _cm_cycle = 0; _cm_cycle = parseInt(_cm_cycle);
+switch (_cm_cycle) {
+case 0:
+case 1:
+case 2:
+case 3:
+var _cm_prev_cycle = _cm_cycle;if (this.objAdMgr && objAdMgr.isSlotAvailable( "pop1" )) objAdMgr.renderSlot("pop1");
+break;
+case 4:
+case 5:
+case 6:
+case 7:
+default:
+var _cm_prev_cycle = 'default';if (this.objAdMgr && objAdMgr.isSlotAvailable( "pop1" )) objAdMgr.renderSlot("pop1");
+break;
+}
+var date = new Date();
+date.setDate(date.getDate() + 1);
+_cm_cycle = _cm_cycle + 1;document.cookie = "cmcycle="+_cm_cycle+";expires="+date.toGMTString()+";path=/"; 
+(function() 
+{   
+if (user.browser.family === 'Chrome') { return };
+var bv2 = document.createElement('script');  bv2.type = 'text/javascript';    
+bv2.async = true;   
+bv2.src = 'http://beacon.lycos.com/e.php?h=angelfire.lycos.com&t=category&c=page&e=pagePop&a='+_cm_prev_cycle+'&s=&b='+Math.random();   
+var s = document.getElementsByTagName('script')[0];    
+s.parentNode.insertBefore(bv2, s);
+})();
+})();
+</script>
+
+
+<style>
+	#body .adCenterClass{margin:0 auto}
+</style>
+
+<div style="background:#abe6f6; border-bottom:1px solid #507a87; position:relative; z-index:9999999">
+
+    <div class="adCenterClass" style="display:block!important; overflow:hidden; width:916px;">
+        <a href="http://www.angelfire.lycos.com/" title="Angelfire.com: build your free website today!" style="display:block; float:left; width:186px; border:0">
+        <img src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/angelfire-freeAd.jpg" alt="Site hosted by Angelfire.com: Build your free website today!" style="display:block; border:0">
+        </a>
+        <div id="ad_container" style="display:block!important; float:left; width:728px ">
+            <script type="text/javascript">document.write(lycos_ad['leaderboard']);</script><img src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/af_cm.gif" width="1" height="1">
+
+<!-- Creative Clicks pop -->
+<script data-cfasync="false" type="text/javascript">(function(s,o,l,v,e,d){if(s[o]==null&&s[l+e]){s[o]="loading";s[l+e](d,l=function(){s[o]="complete";s[v+e](d,l,!1)},!1)}})(document,"readyState","add","remove","EventListener","DOMContentLoaded");(function(){var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src="//cdn.engine.spotscenered.info/Scripts/infinity.js.aspx?guid=5dd1f7f3-98b2-4ece-89b4-f094cbb5f878";s.id="infinity";s.setAttribute("data-guid","5dd1f7f3-98b2-4ece-89b4-f094cbb5f878");s.setAttribute("data-version","async");var e=document.getElementsByTagName('script')[0];e.parentNode.insertBefore(s,e)})();</script>
+
+<iframe src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/728x90.html" width="728" height="90"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ///////////////////////////////////// -->
+<script type="text/javascript" async="" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/a"></script><script type="text/javascript">document.write(lycos_ad['slider']);</script>undefined
+
+
+
+
+
+
+
+	<hr width="80%" size="5">
+	<h1 align="center"> <b><u> Marching Cubes Tutorial </u></b></h1>
+	<hr width="80%" size="5">
+<p>	
+This is a short tutorial on the Marching Cubes Algorithm with C++ source code.
+</p>
+<p>
+If you want a fuller tutorial on this subject please read an <a href="http://astronomy.swin.edu.au/~pbourke/modelling/polygonise/">article</a> by Paul Bourke.<br><br>
+
+There are a number of other tutorials on the web:  <br><a href="http://www.cfxweb.net/article.php?sid=199">http://www.cfxweb.net/article.php?sid=199</a><br>
+<a href="http://www.cosc.brocku.ca/Project/info/grossi/detmarch.html">http://www.cosc.brocku.ca/Project/info/grossi/detmarch.html</a><br>
+<a href="http://www.cs.wpi.edu/~matt/courses/cs563/talks/march_cub.html">http://www.cs.wpi.edu/~matt/courses/cs563/talks/march_cub.html</a><br>
+<a href="http://www.siggraph.org/education/materials/HyperVis/vistech/volume/surface4.htm">http://www.siggraph.org/education/materials/HyperVis/vistech/volume/surface4.htm</a><br>
+<a href="http://www.whisqu.se/per/docs/math29.htm">http://www.whisqu.se/per/docs/math29.htm</a><br>
+<!-- <a href="http://www.cs.fsu.edu/~grant/projects/mcubes/">http://www.cs.fsu.edu/~grant/projects/mcubes/</a><br> -->
+<!-- <a href="http://www.essi.fr/~krichard/accueil.html">http://www.essi.fr/~krichard/accueil.html</a><br> -->
+</p><br>
+
+	<p>
+	Marching Cubes algorithm, developed by Lorensen and Cline in 1987 is 
+used to approximate an isosurface by subdividing a region of space into 
+3D array of rectangular cells. Each of the eight vertices of a cell 
+is assigned a value, comparing which against the minimum determines if 
+that cell is intersected by the surface. Any vertex with a value less 
+than or equal to the minimum is defined to be inside the surface. For 
+each inside vertex a bit is inserted into a designated index (called 
+cubeIndex in my source code) at a position representing that vertex. The
+ index is used with edgeTable (defined in MCTable.h) to return the edges
+ of the cube that intersect the surface, again as bits of an integer. If
+ none of the edges are intersected the process goes back to the 
+beginning and tests another cell. Otherwise that number is checked bit 
+by bit and a point of intersection is determined (usually by Linear 
+Interpolation, see this  <a href="http://www.cs.brown.edu/stc/outrea/greenhouse/nursery/interpolation/home.html">page</a>
+ for details) for each intersected edge. That point is saved into an 
+array at the index corresponding to its edge (see Paul Bourke's <a href="http://astronomy.swin.edu.au/~pbourke/modelling/polygonise/">article</a>
+ for numbering). Finally triangles are created by connecting points on 
+intersected edges of the cell in the order returned by triTable at index
+ formed earlier (cubeIndex). triTable is 256x16 table of integer values,
+ which are used as indices 
+for the array of 12 points of intersection. It defines the right order 
+to connect the 
+intersected edges to form triangles. The process for one cell stops when
+ index of -1 is returned from the table, forming a maximum of 5 
+triangles. Here are the step in Marching Cubes Algorithm, each one is 
+also shown in the source code (MarchingCubes.cpp): </p>
+
+	<ol>
+<li> Define space: (minx, maxx, miny, maxy, minz, maxz).
+</li><li> Subdivide space: either number of cells or the step size on each axis.
+</li><li> Assign a value to each vertex of each box.<br>
+(the above is done outside of the algorithm, the steps below are what the algorithm actually does)<br>
+</li><li> Compare the value at each vertex of each box to the designated
+ minimum value. This will determine if vertex 
+is inside or outside. For each vertex that is inside a bit is inserted 
+into the index (cubeIndex). Again for numbering of the vertices consult 
+Paul Bourke's <a href="http://astronomy.swin.edu.au/~pbourke/modelling/polygonise/">article</a>.
+</li><li> We index the edgeTable array using cubeIndex from step 4. That
+ in turn returns a number, bits of which represent the 12 edges that 
+intersect the cube (there are 256 possibilities). Zero is returned if 
+all are inside or outside, at which case we don't go any further.
+</li><li> If cube is intersected by the surface we assign a point of 
+intersection for edge that is 
+intersected, as determined by the bits in the number returned from 
+edgeTable (using Linear Interpolation). All of the points are put in an 
+array of size 12, each representing its edge.
+</li><li> cubeIndex is used again with triTable which returns indexes for the array of points defined in step 6. 
+triTable is a double 256x16 array, representing 256 possibilities of intersection and up to 15 vertices for the 
+triangles formed in each possibility. The points are in order, so for example triTable[3][0] will be the index of 
+the first vertex of a first triangle of the third possibility, and so on. Those indexes are used with array defined 
+in step 6 to group vertices in appropriate triangles.
+</li><li> (Optional) Normal vector is defined as the cross product of two vectors for each triangle. <br> <br>
+	</li></ol>
+	<p>
+	This is all for the basic Marching Cubes algorithm. Once each step is 
+understood it can be coded in no time. I have provided 2 functions, one 
+that runs Marching Cubes on an array of already computed points and the 
+other which first computes points using some given formula and then 
+executes the first function with that data.
+	</p>
+	<p>
+	First function (version 1) takes the number of cells to subdivide the 
+space on each axis, the minimum value 
+to be used with during linear interpolation, the array of points (type 
+mp4Vector) with already defined coordinates and values (mp4Vector 
+contains 4 
+values, see mpVector.h for details). The size of the array is 
+(ncellsX+1)(ncellsY+1)(ncellsZ+1) where ncells is 
+the number of subdivisions on each axis. Final argument is integer in 
+which number of triangles formed is 
+saved.
+	</p>
+	<p>
+	The second function does more work for your. It starts with step one and goes down to step 8, while the first
+function needs steps 1 to 3 done before hand. It accepts maximum and minimum values and a number of subdivisions for each 
+axis, a minimum value used during linear interpolation, a function which computes value based on the point passed 
+to its only argument (type float(mpVector)), and the integer in which the number of triangles is saved.
+	</p><br>
+	Here is a program that demonstrates using the Marching Cubes Algorithm.
+ The zip file contains all the C++ files needed to compile it under 
+Borland Free Command Line Tools v5.5 (MarchingCubesCross.h, 
+MarchingCubesCross.cpp, mpVector files, and the executable version of 
+the program). Note: The program is written using wxWindows. Visit <a href="http://www.wxwindows.org/">www.wxwindows.org</a> for more details.<br><br>
+	<center>Download here (534 kb): <a href="http://www.angelfire.com/linux/myp/MC/MCExample.zip">MCExample.zip</a>
+
+	<br><br> <img src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/mcexample.gif" alt="Screenshot of the program"> </center><br><br>
+
+											<hr width="20%" size="5">
+
+	<p>
+	</p><h2> <b><u>Source Code</u></b></h2>
+	<b>Warning</b>: this source code is not the fastest way to do this, its
+ sole purpose is to demonstrate the basics of Marching Cubes Algorithm. 
+For more efficient code please visit the <a href="http://www.angelfire.com/linux/myp/MCAdvanced/MCImproved.html">next</a> tutorial on this subject.<br><br>
+	<u>C++ source Code:</u> <a href="http://www.angelfire.com/linux/myp/MC/MarchingCubesCross.cpp">MarchingCubesCross.cpp</a> 
+	<a href="http://www.angelfire.com/linux/myp/MC/MarchingCubesCross.h">MarchingCubesCross.h</a> <a href="http://www.angelfire.com/linux/myp/MC/MCTable.h">MCTable.h</a><br>
+	mpVector and mp4Vector C++ code used by Marching Cubes: <a href="http://www.angelfire.com/linux/myp/MC/mpVector.cpp">mpVector.cpp</a> 
+	<a href="http://www.angelfire.com/linux/myp/MC/mpVector.h">mpVector.h</a> <br><br>
+
+	In my code I have used mpVector and mp4Vector, which are used to store 3 and 4 values respectively. Vector 
+operations are also defined for mpVector. For more details see mpVector.h 
+	<p></p>
+	<p>
+	Please email me with suggestions and/or bugs at: <br>
+		myp@andrew.cmu.edu  or  mikepolyakov@hotmail.com
+	</p>
+  
+
+
+<iframe style="display: none;" src="https://px.owneriq.net/eps?pt=lycosn&amp;pid=682&amp;uid=Q6338316101660013649J&amp;l=true"></iframe><div style="width: 300px; margin: 10px auto;"><iframe style="border: 0px none; margin: 0px; display: block; float: right; height: 254px; overflow: hidden; padding: 0px; width: 300px;" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/injectAd.html"></iframe></div><div id="lycosFooterAd" style="background: rgb(171, 230, 246) none repeat scroll 0% 0%; border-top: 1px solid rgb(80, 122, 135); clear: both; display: block; position: relative; z-index: 9999999;">
+<div class="adCenterClass" style="display:block!important; overflow:hidden; width:936px;">
+	<div id="aflinksholder" style="float:left; width:186px;">
+        <a href="http://www.angelfire.lycos.com/" title="Angelfire.com: build your free website today!" style="display:block; border:0">
+            <img src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/angelfire-freeAd2.jpg" alt="Site hosted by Angelfire.com: Build your free website today!" style="display:block; border:0">
+        </a>
+    </div>
+    <iframe id="lycosFooterAdiFrame" style="border:0; display:block; float:left; height:96px; overflow:hidden; padding:0; width:750px" src="Marching%20Cubes%20Algorithm%20Tutorial%20-%20by%20Michael%20Polyakov_tiedostot/footerAd.html"></iframe>
+</div>
+</div></body></html>

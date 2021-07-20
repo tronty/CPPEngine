@@ -1,0 +1,222 @@
+<html>
+<head>
+<title>IndieLibX NOTES3</title>
+</head>
+<body>
+<br>
+<h1>IndieLibX NOTES3</h1>
+<br>
+<br>
+<P>After adding LoadThreadProc2 function to the MeshRenderer2 library more 3D-models (X-format) appeared to the screen.</P>
+<pre>
+void MeshRenderer::LoadThreadProc2(std::string& aFileNameMesh)
+{
+// only ever give us triangles.
+                aiPropertyStore* props = aiCreatePropertyStore();
+                aiSetImportPropertyInteger(props, AI_CONFIG_PP_SBP_REMOVE, 
+						aiPrimitiveType_LINE | aiPrimitiveType_POINT );
+                
+                unsigned int aiPostProccesFlags;
+                
+                switch (2)
+                {
+                    case 0:
+                        aiPostProccesFlags = aiProcessPreset_TargetRealtime_Fast;
+                        break;                    
+                    case 1:
+                        aiPostProccesFlags = aiProcessPreset_TargetRealtime_Quality;
+                        break;
+                    case 2:
+                        aiPostProccesFlags = aiProcessPreset_TargetRealtime_MaxQuality;
+                        break;
+                    default:
+                        aiPostProccesFlags = aiProcessPreset_TargetRealtime_MaxQuality;
+                        break;
+                }
+                
+                // aiProcess_FlipUVs is needed for VAO / VBOs,  not sure why.
+                m_pcAsset->pcScene = (aiScene*) aiImportFileExWithProperties(aFileNameMesh.c_str(),
+			 		aiPostProccesFlags | aiProcess_ConvertToLeftHanded |
+ 					aiProcess_Triangulate | aiProcess_FlipUVs | 
+					aiProcess_PreTransformVertices | 0, NULL, props);
+
+                aiReleasePropertyStore(props);
+}
+</pre>
+<table ALIGN="CENTER">
+<TR><TD><P ALIGN="CENTER">dino_videogame <img src="1.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">dino_videogame2 <img src="2.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">skeleton <img src="3.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">test <img src="4.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">dwarf <img src="5.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">backdrop <img src="6.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">chopper <img src="7.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Rotor <img src="8.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Shadow <img src="9.jpg" alt="Screenshot"></P></TD></TR> 
+<!-- TR><TD><P ALIGN="CENTER">cube <img src="10.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">sphere <img src="11.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">teapot <img src="12.jpg" alt="Screenshot"></P></TD></TR --> 
+<TR><TD><P ALIGN="CENTER">tiger <img src="13.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">tiny <img src="14.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Dwarf <img src="15.jpg" alt="Screenshot"></P></TD></TR>
+<!-- TR><TD><P ALIGN="CENTER">TexturedBox <img src="Screenshot_2016-05-04.01:40:40.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Sphere <img src="Screenshot_2016-05-04.01:41:33.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Skybox <img src="Screenshot_2016-05-04.01:41:41.jpg" alt="Screenshot"></P></TD></TR -->
+<TR><TD><P ALIGN="CENTER">2DAnimation <img src="Screenshot_2016-05-04.01:41:55.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Texture <img src="Screenshot_2016-05-04.01:42:01.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Blending <img src="Screenshot_2016-05-04.01:42:09.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Raptor <img src="Screenshot_2016-05-04.01:42:19.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Spineboy <img src="Screenshot_2016-05-04.01:42:22.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Speedy <img src="Screenshot_2016-05-04.01:42:24.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Alien <img src="Screenshot_2016-05-04.01:42:26.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Goblins <img src="Screenshot_2016-05-04.01:42:28.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Goblins 2 <img src="Screenshot_2016-05-04.01:42:30.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Dragon <img src="Screenshot_2016-05-04.01:42:32.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Spineboy-old <img src="Screenshot_2016-05-04.01:42:33.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">Cube <img src="ScreenShot_2016-08-01_07:41:23 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Cylinder <img src="ScreenShot_2016-08-01_07:49:44 PM.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Sphere <img src="ScreenShot_2018-08-03_02:46:36 PM.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Skybox <img src="ScreenShot_2016-08-01_07:53:15 PM.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">Teapot <img src="ScreenShot_2016-08-01_07:54:08 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">TexturedCube <img src="ScreenShot_2017-11-01_11:06:45 PM.jpg" alt="Screenshot"></P></TD></TR> 
+<TR><TD><P ALIGN="CENTER">ProceduralHouse <img src="ScreenShot_2018-02-19_07:28:17 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ProceduralHouse <img src="ScreenShot_2018-02-19_07:28:01 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ProceduralHouse <img src="ScreenShot_2018-02-19_07:27:44 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Cube <img src="ScreenShot_2018-03-06_01:48:00 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">demon <img src="ScreenShot_2018-12-30_12:59:51 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">Orcs <img src="ScreenShot_2018-08-03_02:47:24 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">maze3D <img src="ScreenShot_2018-06-04_01:30:01 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ProceduralBuilding5 <img src="ScreenShot_2018-06-04_03:11:45 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ProceduralBuilding5 <img src="ScreenShot_2018-06-13_12:05:35 PM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">ProceduralBuilding5 <img src="ScreenShot_2018-06-14_09:29:57 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ProceduralBuilding5 <img src="ScreenShot_2018-06-14_09:30:57 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">CantorDust3D <img src="ScreenShot_2018-07-13_10:29:30 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">CantorDust3D3 <img src="ScreenShot_2018-07-15_05:52:11 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">NatureScene2 <img src="ScreenShot_2018-09-12_10:51:37 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">NatureScene2 <img src="ScreenShot_2018-09-13_01:48:40 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">NatureScene2 <img src="ScreenShot_2018-09-13_05:45:34 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Atlas1 <img src="ScreenShot_2018-09-21_04:10:52 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Atlas2 <img src="ScreenShot_2018-09-21_04:11:08 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Atlas3 <img src="ScreenShot_2018-10-31_03:51:22 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ParticleVS <img src="ScreenShot_2018-09-23_05:00:30 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">VertexDisplacement <img src="ScreenShot_2018-09-28_01:35:06 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">VertexDisplacement <img src="ScreenShot_2018-09-28_01:34:04 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">VertexDisplacement <img src="ScreenShot_2018-09-28_01:22:49 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">AccurateAtmosphericalScattering <img src="ScreenShot_2018-10-11_08:54:06 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">ProceduralBuilding6 <img src="ScreenShot_2018-12-10_03:21:33 PM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">Battlement <img src="ScreenShot_2018-12-10_05:36:16 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Battlement <img src="ScreenShot_2018-12-10_08:26:51 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle Tower <img src="ScreenShot_2018-12-18_05:55:04 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle Tower <img src="ScreenShot_2018-12-19_02:27:52 PM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">Castle <img src="ScreenShot_2018-12-22_02:05:42 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle <img src="ScreenShot_2018-12-25_09:47:50 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle <img src="ScreenShot_2018-12-26_11:45:52 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle <img src="ScreenShot_2018-12-27_10:38:48 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle <img src="ScreenShot_2018-12-27_10:47:57 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle Tower <img src="ScreenShot_2019-01-01_03:14:57 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Castle Tower <img src="ScreenShot_2019-01-01_03:14:47 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise fBm <img src="ScreenShot_2019-01-31_06:41:53 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise turbulence <img src="ScreenShot_2019-01-31_06:41:09 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:31:52 AM.jpg" alt="Screenshot"></P></TD></TR>'
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:31:56 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:32:01 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:32:07 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:32:17 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_01:32:23 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">noise3D <img src="ScreenShot_2019-02-01_02:41:22 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">VertexDisplacement2D <img src="ScreenShot_2019-02-02_01:24:05 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">VertexDisplacement3D <img src="ScreenShot_2019-02-02_01:26:12 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Tower <img src="ScreenShot_2019-02-20_09:43:24 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Tower <img src="ScreenShot_2019-02-20_09:44:59 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Iron Grid <img src="ScreenShot_2019-04-24_10:50:40 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Iron Grid <img src="ScreenShot_2019-04-24_11:18:15 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Rectangular Tower <img src="ScreenShot_2019-04-26_01:09:09 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Round Tower <img src="ScreenShot_2019-04-26_01:09:27 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Teapot PhongLightning2 <img src="ScreenShot_2019-05-02_06:17:11 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Cube PhongLightning2 <img src="ScreenShot_2019-05-02_06:17:15 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">T34-76.3DS <img src="ScreenShot_2019-05-06_07:18:19 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">T34-76.3DS <img src="ScreenShot_2019-05-06_07:22:00 PM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">spitvb.3DS <img src="ScreenShot_2019-05-08_03:03:08 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spitvb2.3DS <img src="ScreenShot_2019-05-08_03:03:13 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spit_Vb.obj <img src="ScreenShot_2019-05-11_01:55:49 AM.jpg" alt="Screenshot"></P></TD></TR>
+<!-- TR><TD><P ALIGN="CENTER">spit_Vb.obj <img src="ScreenShot_2019-05-11_01:55:50 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spit_Vb.3ds <img src="ScreenShot_2019-05-11_01:55:55 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spit_Vb.3DS <img src="ScreenShot_2019-05-11_01:56:08 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spit_Vb.3DS <img src="ScreenShot_2019-05-11_01:56:09 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">spit_Vb2.3DS <img src="ScreenShot_2019-05-11_01:56:12 AM.jpg" alt="Screenshot"></P></TD></TR -->
+<TR><TD><P ALIGN="CENTER">e10.3DS <img src="ScreenShot_2019-05-08_03:38:29 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">panther.3DS <img src="ScreenShot_2019-05-08_03:38:37 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">jpanther.3DS <img src="ScreenShot_2019-05-08_03:38:42 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">saber.3DS <img src="ScreenShot_2019-05-08_03:39:30 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<!-- TR><TD><P ALIGN="CENTER">E25.3ds <img src="ScreenShot_2019-05-11_12:39:15 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Panter.3ds <img src="ScreenShot_2019-05-11_12:39:24 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">P-51D.3ds <img src="ScreenShot_2019-05-11_12:40:15 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Fw190D.3ds <img src="ScreenShot_2019-05-11_12:40:28 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">b17g.3ds <img src="ScreenShot_2019-05-11_12:40:40 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">BF109E.3ds <img src="ScreenShot_2019-05-11_12:40:46 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">???.3DS <img src="ScreenShot_2019-05-11_12:40:56 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">wildcat.3ds <img src="ScreenShot_2019-05-11_12:41:03 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">262.3ds <img src="ScreenShot_2019-05-11_12:41:06 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">leopard1.3ds <img src="ScreenShot_2019-05-11_12:41:43 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">GWF.3ds <img src="ScreenShot_2019-05-11_12:41:49 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">t72.3ds <img src="ScreenShot_2019-05-11_12:42:31 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">GMTR460L.3ds <img src="ScreenShot_2019-05-11_12:42:35 AM.jpg" alt="Screenshot"></P></TD></TR -->
+
+<TR><TD><P ALIGN="CENTER">E25.3ds <img src="ScreenShot_2019-05-11_01:55:06 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Panther.3ds <img src="ScreenShot_2019-05-11_01:55:10 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">P-51D.3ds <img src="ScreenShot_2019-05-11_01:56:03 AM.jpg" alt="Screenshot"></P></TD></TR>
+<!-- TR><TD><P ALIGN="CENTER">P-51D.3ds <img src="ScreenShot_2019-05-11_01:56:04 AM.jpg" alt="Screenshot"></P></TD></TR -->
+<TR><TD><P ALIGN="CENTER">Fw190D.3ds <img src="ScreenShot_2019-05-11_01:56:06 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">b17g.3ds <img src="ScreenShot_2019-05-11_01:56:18 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">BF109E.3ds <img src="ScreenShot_2019-05-11_01:56:38 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">dauntless.3ds <img src="ScreenShot_2019-05-11_01:56:51 AM.jpg" alt="Screenshot"></P></TD></TR>
+<!-- TR><TD><P ALIGN="CENTER">dauntless.3ds <img src="ScreenShot_2019-05-11_01:56:52 AM.jpg" alt="Screenshot"></P></TD></TR -->
+<TR><TD><P ALIGN="CENTER">wildcat.3ds <img src="ScreenShot_2019-05-11_01:57:01 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">262.3ds <img src="ScreenShot_2019-05-11_01:57:08 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">leopard1.3ds <img src="ScreenShot_2019-05-11_01:57:44 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">GWF.3ds <img src="ScreenShot_2019-05-11_01:57:50 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">t72.3ds <img src="ScreenShot_2019-05-11_01:58:22 AM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">GMTR460L.3ds <img src="ScreenShot_2019-05-11_01:58:28 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><P ALIGN="CENTER">kha-go.3ds <img src="ScreenShot_2019-05-14_05:54:05 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Panther.3ds <img src="ScreenShot_2019-05-14_05:54:18 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">sdkfz251.3ds <img src="ScreenShot_2019-05-14_05:54:23 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">sdkfz250.3ds <img src="ScreenShot_2019-05-14_05:54:27 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">stiger.3d <img src="ScreenShot_2019-05-14_05:54:30 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">pz38g.3ds <img src="ScreenShot_2019-05-14_05:54:33 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">pz3l.3ds <img src="ScreenShot_2019-05-14_05:54:37 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">Jtiger.3ds <img src="ScreenShot_2019-05-14_05:54:46 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">sdkfz222.3ds <img src="ScreenShot_2019-05-14_05:54:48 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">tiger2p.3ds <img src="ScreenShot_2019-05-14_05:54:51 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">tiger2p.3ds <img src="ScreenShot_2019-05-14_05:54:53 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">pz1a.3ds <img src="ScreenShot_2019-05-14_05:54:57 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">bz35.3ds <img src="ScreenShot_2019-05-14_05:55:12 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">PANTHER.3DS <img src="ScreenShot_2019-05-14_05:55:47 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">A7V.3DS <img src="ScreenShot_2019-05-14_05:55:53 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">fokker.3DS <img src="ScreenShot_2019-05-14_05:56:17 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">ka58.3ds <img src="ScreenShot_2019-05-14_05:56:32 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">leopard1.3ds <img src="ScreenShot_2019-05-14_05:57:24 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">NatureScene2 <img src="ScreenShot_2019-05-26_06:43:34 PM.jpg" alt="Screenshot"></P></TD></TR>
+<TR><TD><P ALIGN="CENTER">MultiLighting <img src="MultiLighting 2019-06-22_09:56:54 AM.jpg" alt="Screenshot"></P></TD></TR>
+
+<TR><TD><A TARGET="_blank" HREF="bcga/bcga.html">bcga</A></TD></TR>
+
+<TR><TD><A TARGET="_blank" HREF="SampleApps/SampleApps.html">SampleApps Screenshots</A></TD></TR>
+
+<TR><TD><A TARGET="_blank" HREF="IndieLibX_Quads.html">IndieLibX_Quads</A></TD></TR>
+
+</table>
+<pre>
+</pre>
+</body>
+</html>
+

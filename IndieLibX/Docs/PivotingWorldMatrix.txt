@@ -1,0 +1,30 @@
+	// Set Matrices
+	D3DXFROMWINEMATRIX mPivot;
+	D3DXFROMWINEMATRIX mPivotInv;
+	D3DXFROMWINEMATRIX mScale;
+	D3DXFROMWINEMATRIX mRotation;
+	D3DXFROMWINEMATRIX mTranslation;
+	
+	D3DXFROMWINEMatrixIdentity(&mPivot);
+	D3DXFROMWINEMatrixIdentity(&mPivotInv);
+	D3DXFROMWINEMatrixIdentity(&mScale);
+	D3DXFROMWINEMatrixIdentity(&mRotation);
+	D3DXFROMWINEMatrixIdentity(&mTranslation);
+
+	// Pivot
+	D3DXFROMWINEVECTOR3 mPivotPos(0, -5, 0);
+	D3DXFROMWINEMatrixTranslation(&mPivot, mPivotPos.x, mPivotPos.y, mPivotPos.z);
+	D3DXFROMWINEMatrixTranslation(&mPivotInv, -mPivotPos.x, -mPivotPos.y, -mPivotPos.z);
+
+	// Scale
+	D3DXFROMWINEMatrixScaling(&mScale, 1, 1, 1);
+	
+	// Rotate
+	D3DXFROMWINEVECTOR3 mAxis(0, 0, 1);
+	D3DXFROMWINEMatrixRotationAxis(&mRotation, &mAxis, D3DXFROMWINEToRadian(45));
+	
+	// Translate
+	D3DXFROMWINEMatrixTranslation(&mTranslation, 10, 0, 0);
+
+	// World Matrix Result
+	m_world = mPivotInv * mScale * mRotation * mPivot * mTranslation;
