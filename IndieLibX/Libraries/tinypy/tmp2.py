@@ -1,1 +1,0 @@
-import tmp1; tmp1.test()
