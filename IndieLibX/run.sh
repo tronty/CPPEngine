@@ -1,3 +1,4 @@
+cd ./bin;./concurrent-pacman.bin;cd .. &&
 cd ./bin;./opengl_simple.bin;cd .. &&
 cd ./bin;./BallOfFire.bin;cd .. &&
 cd ./bin;./TestNoise.bin;cd .. &&

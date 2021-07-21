@@ -14,15 +14,15 @@
 //import java.awt.*;
 //import java.util.Collections;
 //import java.util.std::stack;
-//import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.std::map;
 
 /**
  * Entity is an  struct that can represent an active entity in the map
  * Shared algorithms already implemented
  */
-  struct Entity :  CThread {
+  struct Entity /* :  CThread  */ {
 
-     const Point initPos;
+     const D3DXFROMWINEVECTOR2 initPos;
      const int initialSpeed;
      const char initialSymbol;
     const GameController gc;
@@ -30,10 +30,10 @@
      const char startSymbol;
      const char markedPositionSymbol = '+';
      const char actualPositionSymbol = 'o';
-     volatile Point lastPos;
+     volatile D3DXFROMWINEVECTOR2 lastPos;
      char symbol;
      bool underAttack = false;
-    ConcurrentHashMap<Point, Character> pathLog;
+    std::map<D3DXFROMWINEVECTOR2, Character> pathLog;
     int speed;
 
 
@@ -46,7 +46,7 @@
      * @param pos    initial position
      * @param speed  of the entity
      */
-    Entity(String name, char symbol, GameController gc, Point pos, int speed) {
+    Entity(std::string name, char symbol, GameController gc, D3DXFROMWINEVECTOR2 pos, int speed) {
         super(name);
         //assert gc != null;
         //assert pos != null;
@@ -63,7 +63,7 @@
         this->startSymbol = symbol;
         this->markedStartSymbol = symbol;
 
-        pathLog = new ConcurrentHashMap<>();
+        pathLog = std::map<>();
     }
 
     
@@ -76,7 +76,7 @@
      * @param pos      position to travel to
      * @return true if a objective was found
      */
-    bool searchPath(int distance, Point pos) {
+    bool searchPath(int distance, D3DXFROMWINEVECTOR2 pos) {
         //assert distance > 0;
         //assert pos != null;
         //assert super.isAlive();
@@ -88,7 +88,7 @@
 
             markPosition(pos);
 
-            Point lp = (Point) pos.clone();
+            D3DXFROMWINEVECTOR2 lp = (D3DXFROMWINEVECTOR2) pos.clone();
             pos = gc.reportPosition(pos);
             //assert gc.isRoad(pos);
 
@@ -97,7 +97,7 @@
                 markPosition(pos);
             }
 
-            std::stack<Point> shuffleDirections = shuffleDirections();
+            std::stack<D3DXFROMWINEVECTOR2> shuffleDirections = shuffleDirections();
 
             while (!shuffleDirections.isEmpty()) {
                 if (searchPath(distance + 1, getDirection(pos, shuffleDirections.pop()))) {
@@ -120,25 +120,25 @@
      *
      * @return directions shuffled
      */
-     std::stack<Point> shuffleDirections() {
-        std::stack<Point> directions = new std::stack<>();
-        directions.push( Point(-1, 0));
-        directions.push( Point(0, +1));
-        directions.push( Point(0, -1));
-        directions.push( Point(+1, 0));
+     std::stack<D3DXFROMWINEVECTOR2> shuffleDirections() {
+        std::stack<D3DXFROMWINEVECTOR2> directions = std::stack<>();
+        directions.push( D3DXFROMWINEVECTOR2(-1, 0));
+        directions.push( D3DXFROMWINEVECTOR2(0, +1));
+        directions.push( D3DXFROMWINEVECTOR2(0, -1));
+        directions.push( D3DXFROMWINEVECTOR2(+1, 0));
         Collections.shuffle(directions);
         return directions;
     }
 
     /**
-     * Computes the next Point position according to the movement direction
+     * Computes the next D3DXFROMWINEVECTOR2 position according to the movement direction
      *
      * @param a actual position
      * @param b direction of the movement
      * @return position of the desired movement
      */
-     Point getDirection(Point a, Point b) {
-        return  Point(a.x + b.x, a.y + b.y);
+     D3DXFROMWINEVECTOR2 getDirection(D3DXFROMWINEVECTOR2 a, D3DXFROMWINEVECTOR2 b) {
+        return  D3DXFROMWINEVECTOR2(a.x + b.x, a.y + b.y);
     }
 
     /**
@@ -147,7 +147,7 @@
      * @param pos to check
      * @return if valid
      */
-    bool freePosition(Point pos) {
+    bool freePosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -166,7 +166,7 @@
      *
      * @param pos position to mark
      */
-     void markPosition(Point pos) {
+     void markPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -183,7 +183,7 @@
      *
      * @param pos position to unmark
      */
-     void unmarkPosition(Point pos) {
+     void unmarkPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -198,7 +198,7 @@
      * @param pos position to check
      * @return true if is the start
      */
-     bool isStartPosition(Point pos) {
+     bool isStartPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -213,7 +213,7 @@
      * @param pos position to check
      * @return symbol of the road
      */
-    char roadSymbol(Point pos) {
+    char roadSymbol(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -226,7 +226,7 @@
      * @param pos    position to mark
      * @param symbol symbol to use in the mark
      */
-     void putRoadSymbol(Point pos, char symbol) {
+     void putRoadSymbol(D3DXFROMWINEVECTOR2 pos, char symbol) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 

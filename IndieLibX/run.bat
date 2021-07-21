@@ -1,4 +1,7 @@
 cd bin
+call concurrent-pacman.exe
+cd ..
+cd bin
 call opengl_simple.exe
 cd ..
 cd bin

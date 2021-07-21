@@ -13,7 +13,7 @@
 //import pt.ua.concurrent.ThreadInterruptedException;
 
 //import java.awt.*;
-//import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.std::map;
 //import java.util.concurrent.ScheduledExecutorService;
 //import java.util.concurrent.TimeUnit;
 
@@ -23,14 +23,14 @@
 /**
  * Ghost struct. Special cases include trespassing ghost cages and continually running.
  */
- struct Ghost :  Entity {
+ struct Ghost :  public Entity {
 
      const int attackModeSlowdownFactor;
      const int blinkSpeed;
      const bool alive = true;
      ScheduledExecutorService es;
 
-     Ghost(String name, GameController gc, char symbol, Point pos, int speed, int slowdownFactor, int blinkSpeed) {
+     Ghost(std::string name, GameController gc, char symbol, D3DXFROMWINEVECTOR2 pos, int speed, int slowdownFactor, int blinkSpeed) {
         super(name, symbol, gc, pos, speed);
         attackModeSlowdownFactor = slowdownFactor;
         this->blinkSpeed = blinkSpeed;
@@ -47,12 +47,12 @@
             //noinspection InfiniteLoopStatement
             while (alive) {
                 searchPath(1, initPos);
-                pathLog = new ConcurrentHashMap<>();
+                pathLog = std::map<>();
             }
     }
 
     
-    bool searchPath(int distance, Point pos) {
+    bool searchPath(int distance, D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert distance > 0;
 
@@ -69,7 +69,7 @@
      * @return true if valid path to wander
      */
     
-    bool freePosition(Point pos) {
+    bool freePosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert gc.isRoad(pos);
 
@@ -102,7 +102,7 @@
             speed = speed * attackModeSlowdownFactor;
 
             // wait for attack mode to end.
-            new CThread(() -> {
+            CThread(() -> {
                 gc.hasAttackModeEnded();
                 disableAttackMode();
             }).start();

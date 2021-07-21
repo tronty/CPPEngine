@@ -21,7 +21,7 @@
 //import java.awt.*;
 //import java.io.File;
 //import java.util.std::vector;
-//import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.std::map;
 
 //import  java.lang.System.out;
 
@@ -33,18 +33,18 @@
  * - Enable/Disable attack mode
  * - Synchronization of GBoard
  */
- struct GameController :  CObject {
+ struct GameController /* :  CObject */ {
 
      const Labyrinth labyrinth;
-     const Point[] portalPoints, portalDst;
-    // const CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<>();
-     const std::vector<Entity> entities = new std::vector<>();
-     const ConcurrentHashMap<Point, Entity> entityTracker = new ConcurrentHashMap<>();
-     const ConcurrentHashMap<Point, Character> mapCache = new ConcurrentHashMap<>();
+     const std::vector<D3DXFROMWINEVECTOR2> portalPoints, portalDst;
+    // const CopyOnWriteArrayList<Entity> entities = CopyOnWriteArrayList<>();
+     const std::vector<Entity> entities;
+     const std::map<D3DXFROMWINEVECTOR2, Entity> entityTracker = std::map<>();
+     const std::map<D3DXFROMWINEVECTOR2, Character> mapCache = std::map<>();
      const bool GodMode;
      const int attackModeDuration;
      const bool endless;
-    // const ReentrantLock lock = new ReentrantLock();
+    // const ReentrantLock lock = ReentrantLock();
     // const Condition attackEnded = lock.newCondition();
     // const Condition hasGameEnded = lock.newCondition();
      int totalNumberOfPoints;
@@ -69,7 +69,7 @@
 
         LabyrinthGelem.setShowRoadBoundaries();
 
-        char[] allSymbols = {
+        std::vector<char> allSymbols = {
                 // main ghosts
                 'C', // inky
                 'P', // pinky
@@ -91,35 +91,35 @@
                 '!' // portal destination
         };
 
-        File f = new File("./resources/board.txt");
+        File f = File("/new/javagames/concurrent-pacman/board.txt");
         if (!f.exists()) {
             LOG_PRINT("Missing resources folder");
             LOG_PRINT("Looking at:" + f.getAbsolutePath());
-            System.exit(1);
+            stx_exit(1);
         }
 
-        labyrinth = new Labyrinth("./resources/board.txt", allSymbols);
+        labyrinth = new Labyrinth("/new/javagames/concurrent-pacman/board.txt", allSymbols);
 
-        Gelem[] allGelems = {
+        std::vector<Gelem> allGelems = {
                 // entities
-                new ImageGelem("./resources/inky.png", labyrinth.board, 100),
-                new ImageGelem("./resources/pinky.png", labyrinth.board, 100),
-                new ImageGelem("./resources/clyde.png", labyrinth.board, 100),
-                new ImageGelem("./resources/blinky.png", labyrinth.board, 100),
-                new ImageGelem("./resources/pacman_r.png", labyrinth.board, 100),
-                new ImageGelem("./resources/attack_w.png", labyrinth.board, 100),
-                new ImageGelem("./resources/attack_b.png", labyrinth.board, 100),
-                new ImageGelem("./resources/generic.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/inky.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/pinky.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/clyde.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/blinky.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/pacman_r.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/attack_w.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/attack_b.png", labyrinth.board, 100),
+                ImageGelem("/new/javagames/concurrent-pacman/generic.png", labyrinth.board, 100),
                 // game elements
-                new StringGelem("" + '.', Color.black),
-                new CircleGelem(Color.blue, 65),
+                StringGelem("" + '.', Color.black),
+                CircleGelem(Color.blue, 65),
                 // mapPath helpers
-                new CircleGelem(Color.GREEN, 35),
-                new CircleGelem(Color.GREEN, 45),
-                new CircleGelem(Color.BLACK, 35),
-                new CircleGelem(Color.LIGHT_GRAY, 5),
-                new CircleGelem(Color.LIGHT_GRAY, 5),
-                new CircleGelem(Color.ORANGE, 35)};
+                CircleGelem(Color.GREEN, 35),
+                CircleGelem(Color.GREEN, 45),
+                CircleGelem(Color.BLACK, 35),
+                CircleGelem(Color.LIGHT_GRAY, 5),
+                CircleGelem(Color.LIGHT_GRAY, 5),
+                CircleGelem(Color.ORANGE, 35)};
 
         // attach all gelems to the map
         for (int i = 0; i < allSymbols.length; i++) {
@@ -135,7 +135,7 @@
         LOG_PRINT("Game maximum number of points: " + totalNumberOfPoints);
 
         // draw "P" points on the map
-        labyrinth.board.draw(new StringGelem("P:", Color.white), 32, 4, 1);
+        labyrinth.board.draw(StringGelem("P:", Color.white), 32, 4, 1);
     }
 
     /**
@@ -145,7 +145,7 @@
      * @param pos to move the entity to
      * @return new position, if teleported by the portal
      */
-     synchronized Point reportPosition(Point pos) {
+     /* synchronized */ D3DXFROMWINEVECTOR2 reportPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert isRoad(pos);
 
@@ -236,18 +236,18 @@
     /**
      * Draw points in the GBoard
      */
-     synchronized void drawPoints() {
+     /* synchronized */ void drawPoints() {
         //assert points <= totalNumberOfPoints;
         //assert points >= 0;
         //assert labyrinth.numberOfLines >= 32; // TODO remove hardcoded point positions
 
-        String sPoints = new StringBuilder(String.valueOf(points)).reverse().toString();
-        labyrinth.board.draw(new FilledGelem(Color.blue, 100), 32, 5, 1);
-        labyrinth.board.draw(new FilledGelem(Color.blue, 100), 32, 6, 1);
-        labyrinth.board.draw(new FilledGelem(Color.blue, 100), 32, 7, 1);
+        std::string sPoints = StringBuilder(std::string.valueOf(points)).reverse().toString();
+        labyrinth.board.draw(FilledGelem(Color.blue, 100), 32, 5, 1);
+        labyrinth.board.draw(FilledGelem(Color.blue, 100), 32, 6, 1);
+        labyrinth.board.draw(FilledGelem(Color.blue, 100), 32, 7, 1);
 
         for (int i = 0; i < sPoints.length(); i++) {
-            labyrinth.board.draw(new StringGelem(String.valueOf(sPoints.charAt(i)), Color.white), 32, 7 - i, 1);
+            labyrinth.board.draw(StringGelem(std::string.valueOf(sPoints.charAt(i)), Color.white), 32, 7 - i, 1);
         }
 
     }
@@ -257,7 +257,7 @@
      *
      * @param entity to clone
      */
-     synchronized void spawnNewEntity(Entity entity) {
+     /* synchronized */ void spawnNewEntity(Entity entity) {
         //assert entity != null;
         //assert entity.isAlive();
         //assert !entity.isInterrupted();
@@ -269,7 +269,7 @@
         if (entity.isGhost()) {
             LOG_PRINT("Spawning new " + entity.getName());
             Ghost ghost = (Ghost) entity;
-            ghost = new Ghost(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.initialSpeed, ghost.attackModeSlowdownFactor, ghost.blinkSpeed);
+            ghost = Ghost(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.initialSpeed, ghost.attackModeSlowdownFactor, ghost.blinkSpeed);
 
             entities.add(ghost);
             ghost.start();
@@ -278,7 +278,7 @@
             if(!endless) pacmanLives--;
             if (pacmanLives > 0) {
                 LOG_PRINT("Pacman has " + pacmanLives + " pacmanLives left.");
-                Pacman pm = new Pacman(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.getInitialSpeed());
+                Pacman pm = Pacman(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.getInitialSpeed());
                 entities.add(pm);
                 pm.start();
             } else {
@@ -290,7 +290,7 @@
     /**
      * End the game, interrupts all entities and signals who's waiting for the end of the game.
      */
-     synchronized void endGame() {
+     /* synchronized */ void endGame() {
         //assert gameInProgress;
 
         entities.forEach(Thread::interrupt);
@@ -303,7 +303,7 @@
      *
      * @return true if pacman won, false otherwise
      */
-     synchronized bool waitingForGameToEnd() {
+     /* synchronized */ bool waitingForGameToEnd() {
         //assert gameInProgress;
 
         while (gameInProgress)
@@ -318,7 +318,7 @@
      *
      * @param pos to paint
      */
-     synchronized void paintPosition(Point pos) {
+     /* synchronized */ void paintPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert isRoad(pos);
 
@@ -337,11 +337,11 @@
      * Starts a timer counting the duration of an attack.
      * An attack is when pacman eats a bonus and ghosts can be killed by pacman.
      */
-     synchronized void startAttackTimer() {
+     /* synchronized */ void startAttackTimer() {
         //assert attackInProgress;
 
         if (timer == null || !timer.isAlive()) {
-            timer = new AttackTimer(this, attackModeDuration);
+            timer = AttackTimer(this, attackModeDuration);
             timer.start();
         } else {
             timer.addMore(attackModeDuration);
@@ -354,14 +354,14 @@
      * @param pos to get the road symbol
      * @return char road symbol
      */
-     synchronized char RealRoadSymbol(Point pos) {
+     /* synchronized */ char RealRoadSymbol(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert isRoad(pos);
 
         return labyrinth.roadSymbol(pos.y, pos.x);
     }
 
-     synchronized char CachedRoadSymbol(Point pos) {
+     /* synchronized */ char CachedRoadSymbol(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
         //assert isRoad(pos);
 
@@ -374,7 +374,7 @@
      * @param pos to check if is road
      * @return true if it is a road position, otherwise it returns false
      */
-     synchronized bool isRoad(Point pos) {
+     /* synchronized */ bool isRoad(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
 
         return labyrinth.isRoad(pos.y, pos.x);
@@ -386,7 +386,7 @@
      * @param pos to check if valid
      * @return true if position is valid, otherwise it returns false
      */
-     synchronized bool validPosition(Point pos) {
+     /* synchronized */ bool validPosition(D3DXFROMWINEVECTOR2 pos) {
         //assert pos != null;
 
         return labyrinth.validPosition(pos.y, pos.x);
@@ -398,7 +398,7 @@
      * @param symbol to road
      * @return array of positions
      */
-     synchronized Point[] getPositions(char symbol) {
+     /* synchronized */ std::vector<D3DXFROMWINEVECTOR2> getPositions(char symbol) {
 
         return labyrinth.roadSymbolPositions(symbol);
     }
@@ -406,7 +406,7 @@
     /**
      * Disables attack mode and broadcasts signal to everyone waiting for its end
      */
-     synchronized void disableAttackMode() {
+     /* synchronized */ void disableAttackMode() {
         //assert attackInProgress;
 
         attackInProgress = false;
@@ -417,7 +417,7 @@
     /**
      * Waiting point for the end of an attack
      */
-     synchronized void hasAttackModeEnded() {
+     /* synchronized */ void hasAttackModeEnded() {
         //assert attackInProgress;
 
         while (attackInProgress)
@@ -430,7 +430,7 @@
      *
      * @param entity to attach
      */
-     synchronized void attachExtraEntity(Entity entity) {
+     /* synchronized */ void attachExtraEntity(Entity entity) {
 
         labyrinth.putRoadSymbol(entity.initPos.y, entity.initPos.x, entity.symbol);
         mapCache.put(entity.initPos, ' ');
@@ -445,7 +445,7 @@
      * @param symbol to check
      * @return true if active entity
      */
-     synchronized bool symbolIsEntity(char symbol) {
+     /* synchronized */ bool symbolIsEntity(char symbol) {
         return symbol == 'C' // inky
                 || symbol == 'P' // pinky
                 || symbol == 'O' // clyde

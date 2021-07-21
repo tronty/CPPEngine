@@ -17,9 +17,9 @@
 /**
  * Simple timer that uses an Metronome implementation to count duration of an attack time.
  */
- struct AttackTimer :  CThread {
+ struct AttackTimer /* :  CThread */  {
 
-     const  Metronome metronome = new Metronome(1);
+     const  Metronome metronome = Metronome(1);
      GameController gc;
      int pause;
 

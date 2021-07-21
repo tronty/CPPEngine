@@ -25,11 +25,11 @@
     /**
      * @param args the command line arguments
      */
-      void main(String[] args) {
+      void main(std::vector<std::string> args) {
 
         if (args.length != 1) {
             printHelp();
-            System.exit(1);
+            stx_exit(1);
         }
 
         int lives = 3;
@@ -39,7 +39,7 @@
         int extraGhots = 0;
         int extraPacmans = 0;
         bool endless = false;
-        std::vector<Entity> entities = new std::vector<>();
+        std::vector<Entity> entities;
 
         switch (args[0].charAt(0)) {
             case '1': {
@@ -72,11 +72,11 @@
                 endless = true;
                 extraPacmans = 127;
 
-                GameController gc = new GameController(lives, attackDuration, endless);
-                entities.add(new Pacman("pacman", gc, 'X', gc.getPositions('X')[0], 125));
-                entities.add(new Ghost("blinky", gc, 'R', gc.getPositions('R')[0], 100, slowdownFactor, blinkSpeed));
+                GameController gc = GameController(lives, attackDuration, endless);
+                entities.add(Pacman("pacman", gc, 'X', gc.getPositions('X')[0], 125));
+                entities.add(Ghost("blinky", gc, 'R', gc.getPositions('R')[0], 100, slowdownFactor, blinkSpeed));
                 for (int i = 0; i < extraPacmans; i++) {
-                    Pacman pc = new Pacman("Pacman nr: " + i,
+                    Pacman pc = Pacman("Pacman nr: " + i,
                             gc,
                             'X',
                             gc.getPositions('X')[0],
@@ -94,25 +94,25 @@
             }
             default: {
                 printHelp();
-                System.exit(1);
+                stx_exit(1);
             }
         }
 
-        GameController gc = new GameController(lives, attackDuration, endless);
+        GameController gc = GameController(lives, attackDuration, endless);
 
 
-        entities.add(new Pacman("pacman", gc, 'X', gc.getPositions('X')[0], 125));
+        entities.add(Pacman("pacman", gc, 'X', gc.getPositions('X')[0], 125));
 
         // enemies
-        entities.add(new Ghost("inky", gc, 'C', gc.getPositions('C')[0], 125, slowdownFactor, blinkSpeed));
-        entities.add(new Ghost("pinky", gc, 'P', gc.getPositions('P')[0], 175, slowdownFactor, blinkSpeed));
-        entities.add(new Ghost("clyde", gc, 'O', gc.getPositions('O')[0], 250, slowdownFactor, blinkSpeed));
-        entities.add(new Ghost("blinky", gc, 'R', gc.getPositions('R')[0], 100, slowdownFactor, blinkSpeed));
+        entities.add(Ghost("inky", gc, 'C', gc.getPositions('C')[0], 125, slowdownFactor, blinkSpeed));
+        entities.add(Ghost("pinky", gc, 'P', gc.getPositions('P')[0], 175, slowdownFactor, blinkSpeed));
+        entities.add(Ghost("clyde", gc, 'O', gc.getPositions('O')[0], 250, slowdownFactor, blinkSpeed));
+        entities.add(Ghost("blinky", gc, 'R', gc.getPositions('R')[0], 100, slowdownFactor, blinkSpeed));
 
         for (int i = 0; i < extraGhots; i++) {
-            Point[] freeSlots = gc.getPositions('.');
-            Point pos = freeSlots[ThreadLocalRandom.current().nextInt(0, freeSlots.length)];
-            Ghost ghost = new Ghost("Generic Ghost " + i,
+            std::vector<D3DXFROMWINEVECTOR2> freeSlots = gc.getPositions('.');
+            D3DXFROMWINEVECTOR2 pos = freeSlots[ThreadLocalRandom.current().nextInt(0, freeSlots.length)];
+            Ghost ghost = Ghost("Generic Ghost " + i,
                     gc,
                     'G', // generic ghost
                     pos,
@@ -124,7 +124,7 @@
         }
 
         for (int i = 0; i < extraPacmans; i++) {
-            Pacman pc = new Pacman("Pacman nr: " + i,
+            Pacman pc = Pacman("Pacman nr: " + i,
                     gc,
                     'X',
                     gc.getPositions('X')[0],
@@ -167,3 +167,4 @@
 
 }
 #endif
+
