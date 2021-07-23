@@ -508,7 +508,7 @@ installlinuxpackages()
   		apt-get -y install wine-development
 
 		apt-get -y install filezilla
-		apt-get -y install xfburn
+		apt-get -y install brasero
 		apt-get -y install asunder
 		apt-get -y install gedit
 		apt-get -y install cmake
