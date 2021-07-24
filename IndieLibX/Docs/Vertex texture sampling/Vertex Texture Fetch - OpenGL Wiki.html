@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="client-js" dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Vertex Texture Fetch - OpenGL Wiki</title>
+
+
+<link rel="stylesheet" href="Vertex%20Texture%20Fetch%20-%20OpenGL%20Wiki_tiedostot/load_002.css">
+
+<style>
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:0;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:#fff;cursor:pointer;border:solid 1px #aaa;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:#fff;cursor:pointer;border:solid 1px #aaa;padding:0;margin:0}.suggestions-result{color:#000;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#4c59a6;color:#fff}.suggestions-special .special-label{color:#808080;text-align:left}.suggestions-special .special-query{color:#000;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:#c0c0c0}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:#fff}.highlight{font-weight:bold}
+.postedit-container{margin:0 auto;position:fixed;top:0;height:0;left:50%;z-index:1000;font-size:13px}.postedit-container:hover{cursor:pointer}.postedit{position:relative;top:0.6em;left:-50%;padding:0.6em 3.6em 0.6em 1.1em;line-height:1.5625em;color:#626465;background-color:#f4f4f4;border:1px solid #dcd9d9;text-shadow:0 0.0625em 0 rgba( 255,255,255,0.5 );border-radius:5px;box-shadow:0 2px 5px 0 #ccc;-webkit-transition:all 0.25s ease-in-out;-moz-transition:all 0.25s ease-in-out;-ms-transition:all 0.25s ease-in-out;-o-transition:all 0.25s ease-in-out;transition:all 0.25s ease-in-out}.skin-monobook .postedit{top:6em !important; }.postedit-faded{opacity:0}.postedit-icon{padding-left:41px;  line-height:25px;background-repeat:no-repeat;background-position:8px 50%}.postedit-icon-checkmark{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB9ElEQVR4AZWRA3AYURQArxrVHtW2bdu2bdu2zdi2bdu2bWxs7zeehZaw4f70kbs+zI3e/nWK+RWx3aOFlrL56Sy5SxrruG69hlv6OyK+mz+8KDSXdXembj0ispT7tjs4ZTIbpYBvxGSGKzZTeFrb7W/meN002swFs0U8ttpHTkF2BvCqWQrW35929bTsKm5Zb+SEwWwcY8wAngB9m7Z+d+rIPZ/npdy12M5p47n8dXsCYAf0qPy06eGMdktuDu9Qf+JmKl3SWM91qzVcN9tAbEYkwMaq0tyb1m/To5kP170el/BK8/qa6sJr70ydf+T/Uu5ab+Oo/lS0AkUBpIFWlZ9WPhxpse/PHO7YbOOczjL0vZV2lNxPPtG73dYXM+xvm2znrOl83tidoqCwMBgYXsPFB0on5S6pr+eK5TKuW67lgvaKvF8mL1dtfTL32FHxRdyx3cQpg7m4x9sCXKkTIzA4LDH44zWdzaUf71hv5rTG4uyzcusybxSX7aThbMQ8XgCYAp3rzTTQOiIh9PNlzY3FSuZxrzjme1Y7uGS6kjsWO4jPjM4FVjRZsvD4kO9XtTZzQn82NyzWc0B7AmZh6gA/hOYSGhfw9YbOVnarj+S7800AL2BIsxUAbWNToj7bhBuQmZcOsFdoKUC74rGheCwXmqAIQTc9jQcrADIAAAAASUVORK5CYII=);background-image:url(/opengl/wiki_opengl/resources/src/mediawiki.action/images/green-checkmark.png?d94f1)!ie;background-position:left}.postedit-close{position:absolute;padding:0 0.8em;right:0;top:0;font-size:1.25em;font-weight:bold;line-height:2.3em;color:#000;text-shadow:0 0.0625em 0 #fff;text-decoration:none;opacity:0.2;filter:alpha( opacity=20 )}.postedit-close:hover{color:#000;text-decoration:none;opacity:0.4;filter:alpha( opacity=40 )}</style><style>
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:#000;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:#fff}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Vertex%20Texture%20Fetch%20-%20OpenGL%20Wiki_tiedostot/load.css">
+<meta name="generator" content="MediaWiki 1.29.1">
+<link rel="shortcut icon" href="https://www.khronos.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://www.khronos.org/opengl/wiki_opengl/opensearch_desc.php" title="OpenGL Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://www.khronos.org/opengl/wiki_opengl/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="OpenGL Wiki Atom feed" href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Special:RecentChanges&amp;feed=atom">
+
+
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Vertex_Texture_Fetch rootpage-Vertex_Texture_Fetch skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+
+						<div class="mw-indicators mw-body-content">
+</div>
+			<h1 id="firstHeading" class="firstHeading" lang="en">Vertex Texture Fetch</h1>
+									<div id="bodyContent" class="mw-body-content">
+									<div id="siteSub">From OpenGL Wiki</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					Jump to:					<a href="#mw-head">navigation</a>, 					<a href="#p-search">search</a>
+				</div>
+				<div id="mw-content-text" dir="ltr" class="mw-content-ltr" lang="en">
+<div style="width:728px;margin-left: auto;margin-right:auto;">
+<a href="https://beta.opengl.org/ads/www/delivery/ck.php?oaparams=2__bannerid=108__zoneid=1__cb=fb4024bfdf__oadest=https%3A%2F%2Fwww.khronos.org%2Fdevelopers%2Fbooks" target="_blank"><img src="Vertex%20Texture%20Fetch%20-%20OpenGL%20Wiki_tiedostot/a9513fe84b439ccd988d4a18ac415408.png" alt="Khronos related books" title="Khronos related books" width="728" height="90" border="0"></a><div id="beacon_fb4024bfdf" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Vertex%20Texture%20Fetch%20-%20OpenGL%20Wiki_tiedostot/lg.gif" alt="" style="width: 0px; height: 0px;" width="0" height="0"></div>
+
+</div>
+<table class="metadata plainlinks stub" style="background: #CCF; border: 1px solid black;">
+<tbody><tr>
+<td>This article contains inaccurate information. Further details can be found on the <a href="https://www.khronos.org/opengl/wiki/Talk:Vertex_Texture_Fetch" title="Talk:Vertex Texture Fetch">talk page</a>.</td>
+</tr>
+</tbody></table>
+<p>The following article discusses Vertex Texture Fetch feature of todays GPUs.</p>
+<p><br></p>
+<p>Vertex Texture Fetch will be referred to as VTF from now on.<br>
+Texture image units will be referred to as TIU.<br>
+VS means vertex shader<br>
+FS means fragment shader<br>
+<br>
+What version of GL supports VTF?<br>
+In order to be able to do VTF, you need shader support. GLSL has been made core since GL 2.0.<br>
+You also need a GPU that supports VTF.<br>
+As of GL 2.1, texture float formats are not core yet. You need to check if GL_ARB_texture_float is present.<br>
+<a rel="nofollow" class="external free" href="http://www.opengl.org/registry/specs/ARB/texture_float.txt">http://www.opengl.org/registry/specs/ARB/texture_float.txt</a><br>
+In GL 3.0, floating point formats became a core feature.<br>
+<br>
+GPUs that support VTF use the same TIUs as the fragment shader. This 
+means that you can bind a texture to TIU 1 and sample that same texture 
+in the vertex shader and also the fragment shader. To bind the texture, 
+it is rather simple&nbsp;:<br></p>
+<pre> glActiveTexture(GL_TEXTURE1);
+ glBindTexture(GL_TEXTURE_2D, textureID);
+</pre>
+<p>In order to know how many TIUs your vertex shader has access to, call</p>
+<pre> int MaxVertexTextureImageUnits;
+ glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &amp;MaxVertexTextureImageUnits);
+ int MaxCombinedTextureImageUnits;
+ glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &amp;MaxCombinedTextureImageUnits);
+</pre>
+<p>and GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS is the TUI number accessible from your VS and FS combined.<br>
+If in your VS and FS, you access the same texture, that counts like accessing 2 TIUs.<br>
+<br>
+An issue with accessing a texture is the texture format. Your GPU might 
+support a wide range of formats that can be accessed by the TIU of the 
+FS but the TIU of the VS simply doesn't support certain formats. For 
+example, nVidia has published Vertex_Format.pdf when Gf6 was released<br>
+Gf 6 supports only GL_TEXTURE_2D of format GL_LUMINANCE32F_ARB and 
+GL_RGBA32F_ARB. It doesn't support any of the other floating point 
+formats or fixed point formats. There is no floating point compressed 
+format.<br>
+All other formats besides GL_LUMINANCE32F_ARB and GL_RGBA32F_ARB cause the VS to run in software mode.<br>
+Gf 7 is similar to the Gf6.<br>
+Gf 8 is a DX10 level GPU and all DX10 level GPUs should support VTF with the same formats supported by the fragment pipe.<br>
+<br>
+ATI/AMD&nbsp;:<br>
+ATI/AMD chose not to have VTF in their SM 3.0 GPUs.<br>
+X300 up to X1950. All of their standard X series.<br>
+They said it would be too slow. It would be better to do Render_To_VertexBuffer (R2VB).<br>
+In OpenGL, to do R2VB you would need PBO support. <a rel="nofollow" class="external free" href="http://www.opengl.org/registry/specs/ARB/pixel_buffer_object.txt">http://www.opengl.org/registry/specs/ARB/pixel_buffer_object.txt</a><br>
+PBO became core in GL 2.1 and ATI's driver do support GL 2.1.<br>
+ATI's DX10 parts, in other words all their GPUs with the <b>HD</b> in the name, support VTF.<br>
+ATI's driver does report 16 for GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS but users are saying that their shaders don't work.<br></p>
+<p><br>
+Example code&nbsp;:</p>
+<pre> uint vertex_texture;
+ glGenTextures(1, &amp;vertex_texture);
+ glBindTexture(GL_TEXTURE_2D, vertex_texture);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+ //Linear filter might cause a fallback to software rendering so we are using GL_NEAREST
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+ //Linear filter might cause a fallback to software rendering so we are using GL_NEAREST_MIPMAP_NEAREST
+ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+ //Make sure your GPU support mipmaps with floating point textures
+ glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAPS, GL_TRUE);
+ glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE32F_ARB, width, height, 0, GL_LUMINANCE, GL_FLOAT, data);
+</pre>
+<p>If you setup some unsupported filter mode or wrap mode, or some 
+unsupported texture format, it will fall to software vertex processing.<br>
+<br>
+Another thing to remember is that the GPU doesn't know which mipmap to use. It has no way to compute the lambda factor.<br>
+You need to choose the mipmap in the VS yourself.<br>
+Here is an example of a VS.<br>
+Notice how the example uses texture2DLod() and it chooses mipmap 0.<br></p>
+<pre> attribute vec2 inTexCoord;
+ uniform sampler2D Texture0;
+ uniform mat4 ProjectionModelviewMatrix;
+ varying vec2 TexCoord;
+ void main()
+ {
+     vec4 texel, newVertex;
+     //Read the texture offset. Offset in the z direction only
+     texel = texture2DLod(Texture0, inTexCoord, 0.0);
+     newVertex = gl_Vertex;
+     newVertex.z += texel.x;
+     gl_Position = ProjectionModelviewMatrix * newVertex;
+     TexCoord = inTexCoord;
+ }
+</pre>
+<!-- 
+NewPP limit report
+Cached time: 20171110145030
+Cache expiry: 1209600
+Dynamic content: false
+CPU time usage: 0.021 seconds
+Real time usage: 0.023 seconds
+Preprocessor visited node count: 14/1000000
+Preprocessor generated node count: 68/1000000
+Post‐expand include size: 500/2097152 bytes
+Template argument size: 126/2097152 bytes
+Highest expansion depth: 4/40
+Expensive parser function count: 0/100
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    4.547      1 -total
+100.00%    4.547      1 Template:Inaccurate
+ 48.60%    2.210      1 Template:Alertbox
+-->
+
+<!-- Saved in parser cache with key khronos_opengl_wiki-mw_:pcache:idhash:1400-0!*!0!*!*!*!* and timestamp 20171110145030 and revision id 3392
+ -->
+</div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="http://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;oldid=3392">http://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;oldid=3392</a>"					</div>
+				<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-createaccount"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Special:CreateAccount&amp;returnto=Vertex+Texture+Fetch" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Special:UserLogin&amp;returnto=Vertex+Texture+Fetch" title="You are encouraged to log in; however, it is not mandatory [Alt+Vaihto+o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+															<li id="ca-nstab-main" class="selected"><span><a href="https://www.khronos.org/opengl/wiki/Vertex_Texture_Fetch" title="View the content page [Alt+Vaihto+c]" accesskey="c">Page</a></span></li>
+															<li id="ca-talk"><span><a href="https://www.khronos.org/opengl/wiki/Talk:Vertex_Texture_Fetch" title="Discussion about the content page [Alt+Vaihto+t]" accesskey="t" rel="discussion">Discussion</a></span></li>
+													</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<h3 id="p-variants-label" tabindex="0">
+							<span>Variants</span><a href="#" tabindex="-1"></a>
+						</h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+															<li id="ca-view" class="selected"><span><a href="https://www.khronos.org/opengl/wiki/Vertex_Texture_Fetch">Read</a></span></li>
+															<li id="ca-viewsource"><span><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;action=edit" title="This page is protected.
+You can view its source [Alt+Vaihto+e]" accesskey="e">View source</a></span></li>
+															<li id="ca-history" class="collapsible"><span><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;action=history" title="Past revisions of this page [Alt+Vaihto+h]" accesskey="h">View history</a></span></li>
+													</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label" style="">
+						<h3 id="p-cactions-label" tabindex="0"><span>More</span><a href="#" tabindex="-1"></a></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+
+						<form action="/opengl/wiki_opengl/index.php" id="searchform">
+							<div>
+							<input name="search" placeholder="Search OpenGL Wiki" title="Search OpenGL Wiki [Alt+Vaihto+f]" accesskey="f" id="searchInput" tabindex="1" autocomplete="off" type="search"><input value="Special:Search" name="title" type="hidden"><input name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton" type="submit">							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="https://www.khronos.org/opengl/wiki/Main_Page" title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id="p-navigation" aria-labelledby="p-navigation-label">
+			<h3 id="p-navigation-label">Navigation</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-mainpage"><a href="https://www.khronos.org/opengl/wiki/Main_Page" title="Visit the main page [Alt+Vaihto+z]" accesskey="z">Main Page</a></li><li id="n-OpenGL-News"><a href="http://opengl.org/" rel="nofollow">OpenGL News</a></li><li id="n-OpenGL-Forums"><a href="http://opengl.org/discussion_boards" rel="nofollow">OpenGL Forums</a></li><li id="n-recentchanges"><a href="https://www.khronos.org/opengl/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Vaihto+r]" accesskey="r">Recent changes</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-Help" aria-labelledby="p-Help-label">
+			<h3 id="p-Help-label">Help</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-Privacy-Policy"><a href="https://www.khronos.org/legal/privacy" rel="nofollow">Privacy Policy</a></li><li id="n-About-OpenGL"><a href="https://www.opengl.org/about/" rel="nofollow">About OpenGL</a></li><li id="n-Contact-Us"><a href="https://www.khronos.org/about/contact/" rel="nofollow">Contact Us</a></li><li id="n-Help-Editing"><a href="https://www.mediawiki.org/wiki/Help:Contents">Help Editing</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-tb" aria-labelledby="p-tb-label">
+			<h3 id="p-tb-label">Tools</h3>
+
+			<div class="body">
+									<ul>
+						<li id="t-whatlinkshere"><a href="https://www.khronos.org/opengl/wiki/Special:WhatLinksHere/Vertex_Texture_Fetch" title="A list of all wiki pages that link here [Alt+Vaihto+j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="https://www.khronos.org/opengl/wiki/Special:RecentChangesLinked/Vertex_Texture_Fetch" rel="nofollow" title="Recent changes in pages linked from this page [Alt+Vaihto+k]" accesskey="k">Related changes</a></li><li id="t-specialpages"><a href="https://www.khronos.org/opengl/wiki/Special:SpecialPages" title="A list of all special pages [Alt+Vaihto+q]" accesskey="q">Special pages</a></li><li id="t-print"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;printable=yes" rel="alternate" title="Printable version of this page [Alt+Vaihto+p]" accesskey="p">Printable version</a></li><li id="t-permalink"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;oldid=3392" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Vertex_Texture_Fetch&amp;action=info" title="More information about this page">Page information</a></li><li id="t-cite"><a href="https://www.khronos.org/opengl/wiki_opengl/index.php?title=Special:CiteThisPage&amp;page=Vertex_Texture_Fetch&amp;id=3392" title="Information on how to cite this page">Cite this page</a></li>					</ul>
+							</div>
+		</div>
+				</div>
+		</div>
+		<div id="footer" role="contentinfo">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last edited on 21 March 2011, at 03:13.</li>
+									</ul>
+									<div style="clear:both"></div>
+		</div>
+		
+
+	
+
+
+<div style="display: none; font-size: 14.6667px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div></body><!-- Cached 20171110145030 --></html>

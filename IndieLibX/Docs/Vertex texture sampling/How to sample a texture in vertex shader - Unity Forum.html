@@ -1,0 +1,3514 @@
+<!DOCTYPE html>
+<html id="XenForo" dir="LTR" class="Public LoggedOut NoSidebar  Responsive hasJs NoTouch HasDragDrop js no-flexbox flexbox-legacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" xmlns:fb="https://www.facebook.com/2008/fbml" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	
+		<!-- base href="https://forum.unity.com/" -->
+		<script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/analytics.js"></script><script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/inferredEvents.js" async=""></script><script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/1062735023749175" async=""></script><script async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/fbevents.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/sj.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/elqCfg.js"></script><script async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/website-search-1.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/hotjar-632820.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/gtm.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/conversion_async.js"></script><script type="text/javascript" async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/analytics.js"></script><script async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/gtm_002.js"></script><script>
+			var _b = document.getElementsByTagName('base')[0], _bH = "https://forum.unity.com/";
+			if (_b && _b.href != _bH) _b.href = _bH;
+		</script>
+	
+
+	<title>How to sample a texture in vertex shader - Unity Forum</title>
+
+	
+	<link href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/css_002.css" rel="stylesheet">
+	<link rel="stylesheet" href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/unity-core.css">
+	<link rel="stylesheet" href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/unity-helpers.css">
+	<link rel="stylesheet" href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/css_003.css">
+	<link rel="stylesheet" href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/css_004.css">
+
+	
+
+	
+    <script>window.dataLayer = window.dataLayer || [];</script>
+    <!-- Google Tag Manager GTM-5V25JL6 -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-5V25JL6');
+    </script>
+    <!-- End Google Tag Manager -->
+	<script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/jquery-1.js"></script>
+	
+	<script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/xenforo.js"></script>
+    <script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/unity-cdp.js"></script>
+	<script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/unity-search.js"></script>
+
+
+	<link rel="apple-touch-icon" href="https://unity3d.com/files/images/ogimg.jpg">
+	<link rel="alternate" type="application/rss+xml" title="RSS feed for Unity Forum" href="https://forum.unity.com/forums/-/index.rss">
+	
+	
+	<link rel="canonical" href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/">
+	<meta name="description" content="I want to sample texture in vert shader. I write like this
+
+void vert(inout appdata_full vertex)
+{
+
+vertex.vertex.y -= tex2Dlod(_SnowTrackTex,...">	<meta property="og:site_name" content="Unity Forum">
+	
+<meta property="og:image" content="https://unity3d.com/files/images/ogimg.jpg">
+	<meta property="og:type" content="article">
+	<meta property="og:url" content="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/">
+	<meta property="og:title" content="How to sample a texture in vertex shader">
+	<meta property="og:description" content="I want to sample texture in vert shader. I write like this
+
+void vert(inout appdata_full vertex)
+{
+
+vertex.vertex.y -= tex2Dlod(_SnowTrackTex,...">
+	
+	
+	
+
+<!-- Custom head -->
+	<!-- Fav Icon. -->
+	<link rel="shortcut icon" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/favicon.png">
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon-precomposed" href="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/apple-touch-icon.png">
+	<meta name="msapplication-TileColor" content="#002835">
+	<meta name="msapplication-TileImage" content="https://unity3d.com/profiles/unity3d/themes/unity/images/ui/favicons/tileicon-144x144.png">
+
+	<!-- JS -->
+
+  <script type="text/javascript" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/modernizr.js"></script>
+
+  <script type="text/javascript" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/core.js"></script>
+  <script type="text/javascript" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/mobile-core.js"></script>
+  <!-- Css -->
+  <link href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/css.css" rel="stylesheet">
+  <link href="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/style.css" media="screen" rel="stylesheet">
+  
+
+<!-- /Custom head -->
+
+
+<script src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/a"></script><script async="" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/modules.js" charset="utf-8"></script><style type="text/css">iframe#_hjRemoteVarsFrame {display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;}</style></head>
+
+<body class="node16 node4 node75 SelectQuotable">
+
+
+
+<!-- Google Tag Manager (noscript) GTM-5V25JL6 -->
+
+<!-- End Google Tag Manager (noscript) -->
+
+
+
+ <div id="headerMover">
+ <div id="master-wrapper">
+  <div id="page" class="page clear has-submenu">
+   
+
+
+<header id="main-header" class="main-header clear has-submenu">
+	<div class="wrap clear no-userinfo">
+		<a href="https://forum.unity.com/" class="unity-logo"></a>
+		<div class="main-navigation clear">
+			<ul class="main-menu">
+				<li><a href="https://unity3d.com/unity">Products</a></li>
+				<li><a href="https://unity.com/solutions">Solutions</a></li>
+				<li><a href="https://unity.com/madewith">Made with Unity</a></li>
+				<li><a href="https://unity.com/learn">Learn</a></li>
+				<li><a href="https://unity.com/support-services">Support &amp; Services</a></li>
+				<li class="active-trail"><a class="active-trail active" href="https://unity3d.com/community">Community</a></li>
+				<li><a href="https://unity3d.com/asset-store">Asset Store</a></li>
+				<li class="last"><a href="https://unity3d.com/get-unity">Get Unity</a></li>
+			</ul>
+		</div>
+		<div class="main-tools">
+			<a class="tool tool-menu toggle-panel" data-panel="mobile-navigation">
+				<div class="icon"></div>
+			</a>
+			<a class="tool tool-search toggle-panel" data-panel="search-panel">
+				<div class="icon"></div>
+			</a>
+			<a class="tool user-icon toggle-panel" data-panel="user-panel">
+				
+					<img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/user-default-light64x64.png" class="avatar">
+				
+			</a>
+		</div>
+		<nav class="sub-nav">
+			<div class="wrap">
+				<ul class="secondary-menu">
+					<li class="more"><a href="" class="rel">More</a></li><li class="hide"><a href="https://blogs.unity3d.com/">Blog</a></li>
+					<li class="active-trail hide"><a href="https://forum.unity.com/" class="active-trail active">Forums</a></li>
+					<li class="hide"><a href="https://answers.unity.com/">Answers</a></li>
+					<li class="hide"><a href="https://unity3d.com/community/evangelists">Evangelists</a></li>
+					<li class="hide"><a href="https://unity3d.com/community/user-groups">User Groups</a></li>
+					<li class="hide"><a href="https://unity3d.com/unity/beta">Beta Program</a></li>
+					<li class="hide"><a href="https://unity.com/advisorypanel">Advisory Panel</a></li>
+				</ul>
+				<script>
+					var submore = 'More';
+				</script>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<div id="search-panel" class="header-panel search-panel clear">
+	<div class="panel-content clear">
+		<h4>Search Unity</h4>
+        <div class="search-box"><div class="sj-inline"><div class="sj-logo"></div><div class="sj-search-holder-outer"><div class="sj-search-holder-inner"><span class="sj-search-input-wrapper"><input type="text" class="sj-search-bar-input-common" placeholder="Search..."></span></div></div></div></div>
+		<div class="search-results"></div>
+	</div>
+</div>
+
+<div id="user-panel" class="header-panel user-panel clear">
+	<div class="panel-content clear txt-c">
+		
+		<div class="sign-in">
+			<img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/user-default128x128.png" class="avatar">
+			<h2>Unity ID</h2>
+			<p class="mb30">A Unity ID allows you to buy and/or subscribe to Unity products and services, shop in the Asset Store and participate
+				in the Unity community.</p>
+			<a href="https://forum.unity.com/login/" class="signin-btn btn mr15 mb10 js-cms-oauth-login-url">Log in</a>
+			<a href="https://id.unity.com/account/new" class="signup-btn btn mb10">Create a Unity ID</a>
+		</div>
+  
+	</div>
+</div>
+
+<div id="panel-overlay" class="panel-overlay toggle-panel" data-panel="overlay"></div>
+<div id="alert-overlay" class="alert-overlay close-alert"></div>
+<div id="mobile-navigation" class="header-panel mobile-navigation clear">
+  <div class="panel-content clear">
+    <div class="mb30 bb clear">
+      <ul>
+        <li><a href="https://unity3d.com/">Home</a></li>
+        <li><a href="https://unity3d.com/unity">Products</a></li>
+        <li><a href="https://unity.com/solutions">Solutions</a></li>
+        <li><a href="https://unity.com/madewith">Made with Unity</a></li>
+        <li><a href="https://unity.com/learn">Learn</a></li>
+        <li><a href="https://unity.com/support-services">Support &amp; Services</a></li>
+        <li class="active-trail"><a href="https://unity3d.com/unity" class="active-trail active">Community</a>
+          <ul class="secondary-menu">
+            <li><a href="https://blogs.unity3d.com/">Blog</a></li>
+            <li class="active-trail"><a href="https://forum.unity.com/" class="active-trail active">Forums</a></li>
+            <li><a href="https://answers.unity.com/">Answers</a></li>
+            <li><a href="https://unity3d.com/community/evangelists">Evangelists</a></li>
+            <li><a href="https://unity3d.com/community/user-groups">User Groups</a></li>
+            <li><a href="https://unity3d.com/unity/beta">Beta Program</a></li>
+            <li><a href="https://unity.com/advisorypanel">Advisory Panel</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+   
+   
+
+
+
+
+<section id="section-content" class="thread_view section section-content">
+<div class="background"></div>
+<div class="hero clear"></div>
+<section id="content" class="thread_view content-wrapper gw clear mb80">
+	<div class="pageWidth">
+		<div class="pageContent">
+			<!-- main content area -->
+
+			
+
+			
+
+			
+
+						
+
+						
+						<div class="breadBoxTop ">
+							
+							
+
+<nav>
+	
+		
+			
+				
+			
+		
+			
+				
+			
+		
+			
+				
+			
+		
+	
+
+	<fieldset class="breadcrumb" style="">
+		<a href="https://forum.unity.com/misc/quick-navigation-menu?selected=node-16" class="OverlayTrigger jumpMenuTrigger" data-cacheoverlay="true" title="Open quick navigation"><!--Jump to...--></a>
+			
+		<div class="boardTitle"><strong>Unity Forum</strong></div>
+		
+		<span class="crumbs">
+			
+			
+			
+				<span class="crust selectedTabCrumb" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+					<a href="https://forum.unity.com/" class="crumb" rel="up" itemprop="url"><span itemprop="title">Forums</span></a>
+					<span class="arrow"><span>&gt;</span></span>
+				</span>
+			
+			
+			
+				
+					<span class="crust" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+						<a href="https://forum.unity.com/#unity-community-discussion.4" class="crumb" rel="up" itemprop="url"><span itemprop="title">Unity Community Discussion</span></a>
+						<span class="arrow"><span>&gt;</span></span>
+					</span>
+				
+					<span class="crust" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+						<a href="https://forum.unity.com/categories/graphics.75/" class="crumb" rel="up" itemprop="url"><span itemprop="title">Graphics</span></a>
+						<span class="arrow"><span>&gt;</span></span>
+					</span>
+				
+					<span class="crust" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+						<a href="https://forum.unity.com/forums/shaders.16/" class="crumb" rel="up" itemprop="url"><span itemprop="title">Shaders</span></a>
+						<span class="arrow"><span>&gt;</span></span>
+					</span>
+				
+			
+		</span>
+	</fieldset>
+</nav>
+						</div>
+						
+
+						
+
+<div id="navigation" class="pageWidth withSearch">
+	<div class="nav-container">
+		<nav>
+<div class="navTabs">
+
+	<ul class="publicTabs">
+
+		<!-- home -->
+		
+
+
+		<!-- extra tabs: home -->
+		
+
+
+		<!-- forums -->
+		
+			<li class="navTab forums selected">
+
+				
+
+				<div class="tabLinks forumsTabLinks">
+					<div class="primaryContent menuHeader">
+						<h3>Forums</h3>
+						<div class="muted">Quick Links</div>
+					</div>
+					<ul class="secondaryContent blockLinksList">
+					
+						
+						<li><a href=""></a></li>
+						<li><a href="https://forum.unity.com/search/?type=post">Search Forums</a></li>
+						
+						<li><a href="https://forum.unity.com/find-new/posts" rel="nofollow">Recent Posts</a></li>
+					
+					</ul>
+				</div>
+			</li>
+		
+
+		
+			
+
+		<!-- extra tabs: middle -->
+		
+
+
+		<!-- members -->
+		
+
+		<!-- extra tabs: end -->
+		
+
+		<!-- responsive popup -->
+		<li class="navTab navigationHiddenTabs Popup PopupControl PopupClosed PopupContainerControl" style="display: none;">
+
+			<a rel="Menu" class="navLink NoPopupGadget"><span class="menuIcon">Menu</span></a>
+
+			
+		</li>
+
+
+		<!-- no selection -->
+		
+
+	</ul>
+
+	
+</div>
+
+<span class="helper"></span>
+
+		</nav>
+	</div>
+</div>
+
+						
+
+						<!--[if lt IE 8]>
+							<p class="importantMessage">You are using an out of date browser. It  may not display this or other websites correctly.<br />You should upgrade or use an <a href="https://www.google.com/chrome/browser/" target="_blank">alternative browser</a>.</p>
+						<![endif]-->
+
+						
+						
+	
+
+		
+		
+		
+
+		<div class="PanelScroller Notices" data-vertical="0" data-speed="400" data-interval="4000" style="display: block;">
+			<div class="scrollContainer">
+				<div class="PanelContainer">
+					<ol class="Panels" style="position: static;">
+						
+							<li class="panel Notice DismissParent notice_173 " data-notice="173">
+	
+	<div class="baseHtml noticeContent"><font color="#009ac0">Unity 2019.2 is </font> <a href="https://forum.unity.com/threads/unity-2019-2-is-now-available.718838/"> <font color="#FF0066">now released</font></a><font color="#009ac0">.</font></div>
+	
+	
+		<a href="https://forum.unity.com/account/dismiss-notice?notice_id=173" class="DismissCtrl Tooltip" data-offsetx="7" data-tipclass="flipped">Dismiss Notice</a>
+</li>
+						
+					</ol>
+				</div>
+			</div>
+
+			
+		</div>
+
+	
+
+	
+
+						
+
+						
+						
+							<!-- h1 title, description -->
+							<div class="titleBar">
+								
+								<h1>How to sample a texture in vertex shader</h1>
+
+								<p id="pageDescription" class="muted ">
+	Discussion in '<a href="https://forum.unity.com/forums/shaders.16/">Shaders</a>' started by <a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto">GreatWall</a>, <a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/"><span class="DateTime" title="Jan 23, 2018 at 6:35 AM">Jan 23, 2018</span></a>.
+</p>
+								
+								<div id="threadSearch">
+  									<form action="search/search" method="post" class="formPopup">
+    										<input type="search" name="keywords" class="textCtrl" placeholder="Search this thread..." title="Enter your search and hit enter" id="QuickSearchQuery">
+    										<input type="hidden" name="type[post][thread_id]" value="513816" id="search_bar_thread" class="AutoChecker" data-uncheck="#search_bar_title_only, #search_bar_nodes">
+  										<input type="hidden" name="_xfToken" value="">
+  									</form>
+								</div>
+								
+
+
+							</div>
+						
+						
+
+						
+
+						<!-- main template -->
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+<div class="tagBlock TagContainer">
+	
+		<ul class="tagList" itemscope="" itemtype="http://schema.org/CreativeWork">
+	<meta itemprop="keywords" content="shaders, textures">
+		
+			<li><a href="https://forum.unity.com/tags/shaders/" rel="tag" class="tag"><span class="arrow"></span>shaders</a></li>
+		
+			<li><a href="https://forum.unity.com/tags/textures/" rel="tag" class="tag"><span class="arrow"></span>textures</a></li>
+		
+		</ul>
+	
+	
+
+	
+</div>
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+<div class="pageNavLinkGroup">
+	<div class="linkGroup SelectionCountContainer">
+		
+		
+	</div>
+
+	
+</div>
+
+
+
+
+
+<form action="inline-mod/post/switch" method="post" class="InlineModForm section" data-cookiename="posts" data-controls="#InlineModControls" data-imodoptions="#ModerationSelect option">
+
+	<ol class="messageList" id="messageList">
+		
+			
+				
+
+
+<li id="post-3364355" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					I want to sample texture in vert shader. I write like this<br>
+<br>
+void vert(inout appdata_full vertex)<br>
+{<br>
+<br>
+vertex.vertex.y -= tex2Dlod(_SnowTrackTex, vertex.texcoord)<br>
+<br>
+}<br>
+works well, but when I use tex2D like this:<br>
+<br>
+void vert(inout appdata_full vertex)<br>
+{<br>
+<br>
+vertex.vertex.y -= tex2D(_SnowTrackTex,vertex.texcoord.xy)<br>
+<br>
+}<br>
+It can’t works.error message as follow:<br>
+<br>
+cannot map expression to vs_5_0 instruction set.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 23, 2018 at 6:35 AM">Jan 23, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3364355/permalink">#1</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3364355"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3364383" class="message   " data-author="neoshaman">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock online">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/neoshaman.35101/" class="username" dir="auto" itemprop="name">neoshaman</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/neoshaman.35101/" class="avatar Av35101m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/35101.jpg" alt="neoshaman" width="96" height="96"></a>
+			<span class="Tooltip onlineMarker" data-offsetx="-22" data-offsety="-8"></span>
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Feb 11, 2011</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=35101" class="concealed" rel="nofollow">4,300</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					I don't know which shader version you are using but I think the 
+proper call is Tex2dlod instead of tex2d, I haven't testes it myself and
+ kind forgot the rational, but I remember searching about that once.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/neoshaman.35101/" class="username author" dir="auto">neoshaman</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3364383" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 23, 2018 at 7:04 AM">Jan 23, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3364383" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3364383/permalink">#2</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3364383"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3364390" class="message   " data-author="bgolus">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/bgolus.163285/" class="username" dir="auto" itemprop="name">bgolus</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/bgolus.163285/" class="avatar Av163285m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/163285.jpg" alt="bgolus" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Dec 7, 2012</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=163285" class="concealed" rel="nofollow">7,222</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					The tex2D function is only allowed in the fragment shader. It 
+cannot be used in the vertex shader or any other shader stage.<br>
+<br>
+The reason is mip mapping. Specifically the way GPUs calculate the 
+proper mip level to display when using tex2D. This is calculated by 
+measuring how much the UV changes per pixel, which is only known during 
+the fragment shader stage.<br>
+<br>
+You must use tex2Dlod in the vertex shader.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/bgolus.163285/" class="username author" dir="auto">bgolus</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3364390" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 23, 2018 at 7:14 AM">Jan 23, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3364390" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3364390/permalink">#3</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3364390">
+	
+	<div class="likesSummary secondaryContent">
+		<span class="LikeText">
+			<a href="https://forum.unity.com/members/neoshaman.35101/" class="username" dir="auto">neoshaman</a> likes this.
+		</span>
+	</div>
+</div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365539" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="bgolus">
+	<aside>
+		
+			<div class="attribution type">bgolus said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3364390#post-3364390" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">The reason is mip mappin</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>So  "mip mapping" and "level of detail of a texture " are different? I always confused about these terms.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365539" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 23, 2018 at 11:24 PM">Jan 23, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365539" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365539/permalink">#4</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365539"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365565" class="message   " data-author="Invertex">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/invertex.458918/" class="username" dir="auto" itemprop="name">Invertex</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/invertex.458918/" class="avatar Av458918m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/458918.jpg" alt="Invertex" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Nov 7, 2013</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=458918" class="concealed" rel="nofollow">898</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="GreatWall">
+	<aside>
+		
+			<div class="attribution type">GreatWall said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365539#post-3365539" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">So  "mip mapping" and "level of detail of a texture " are different? I always confused about these terms.</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>LOD controls which mip-map is used. As he stated, the automated 
+value for choosing which mip-map level to use isn't know till fragment 
+stage. Thus, you use the tex2Dlod method because it requires you state a
+ specific mip-map level to sample from.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/invertex.458918/" class="username author" dir="auto">Invertex</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365565" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 23, 2018 at 11:46 PM">Jan 23, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365565" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365565/permalink">#5</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365565"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365591" class="message   " data-author="bgolus">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/bgolus.163285/" class="username" dir="auto" itemprop="name">bgolus</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/bgolus.163285/" class="avatar Av163285m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/163285.jpg" alt="bgolus" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Dec 7, 2012</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=163285" class="concealed" rel="nofollow">7,222</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="GreatWall">
+	<aside>
+		
+			<div class="attribution type">GreatWall said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365539#post-3365539" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">So  "mip mapping" and "level of detail of a texture " are different? I always confused about these terms.</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>When it comes to textures they can be thought of the same thing. 
+The texture's mip and level of detail aren't necessarily the same thing 
+though. You'll note I used the term "mip level", which would more 
+accurately be the "mip map level of detail". I'll explain a bit more, 
+but first some additional information.<br>
+<br>
+As stated the tex2D function calculates the texture's mip level during 
+the fragment shader stage. As such you only need to pass in the texture 
+(in the form of a sampler2D) and the UV (in the form of a float2) to get
+ an appropriately filtered color back.<br>
+<br>
+The tex2Dlod function requires you define the mip level manually. As 
+such you need to pass in the texture (a sampler2D again), and the uv 
+(again a float2), but also an LOD value. Now if your examples above 
+you're using this example:<br>
+<br>
+<span style="font-family: 'Courier New'">tex2Dlod(_SnowTrackTex, vertex.texcoord)</span><br>
+<br>
+That <span style="font-family: 'Courier New'">vertex.texcoord</span> from <span style="font-family: 'Courier New'">appdata_full</span>
+ is already a float4 value, so that works with out any error. By default
+ most meshes are going to have the z and w components of the float4 be 
+0.0, which works out perfectly for this case. However you're better off 
+doing this:<br>
+<br>
+<span style="font-family: 'Courier New'">tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0.0, 0.0));</span><br>
+<br>
+That last zero is the mip level. If you change that to a 1.0 or 2.0 
+you'd use the first or second mip instead, assuming your texture has mip
+ maps.<br>
+<br>
+<i><span style="font-size: 12px">Note, if you pass a float4 as the UV 
+for a tex2D it would automatically cull it down to a float2 on most 
+platforms, but might also error on others and fail to compile. Be wary 
+of this because a shader that compiles on your computer might not on 
+someone else's if you're not careful!</span></i><br>
+<br>
+<br>
+So what's the difference between mip maps and level of detail and why do
+ I say "mip level" or "mip map level of detail"? Mip mapping refers to 
+taking a texture and making successively smaller pre-filtered versions 
+of the texture. Each texture is half the size of the previous mip, and 
+each pixel is (usually) an average of the 4 pixels of the larger texture
+ it's a mip of. Now, when rendering a mesh using that texture it can 
+pick the texture that's closest in size to how it's currently being 
+rendered.<br>
+<br>
+When the mip level is calculated by the GPU, it's not going to always be
+ whole numbers. Usually it's going to come up with fractional numbers, 
+ie: a mip level of 0.66. For point and bilinear filtering, this just 
+gets pushed up to the next whole number mip. However for trilinear 
+filtering it takes both mip 0 and mip 1 and blends between them, 34% of 
+mip 0 and 66% of mip 1.<br>
+<br>
+<br>
+So the term mip mapping can refer to both the mip maps themselves and 
+the basic idea of choosing a mip based on the viewed scale of the 
+texture. It is one of <i>many</i> methods of doing level of detail <i>for </i>texturing,
+ though it is by far and away the most common and also the only one 
+really supported by current GPUs. Also, this all gets quite pedantic and
+ most likely when people talk about mip mapping or level of detail, or 
+anything else around this they're probably talking about the same thing.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/bgolus.163285/" class="username author" dir="auto">bgolus</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365591" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 24, 2018 at 12:23 AM">Jan 24, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365591" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365591/permalink">#6</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365591">
+	
+	<div class="likesSummary secondaryContent">
+		<span class="LikeText">
+			<a href="https://forum.unity.com/members/trenthm.1580909/" class="username" dir="auto">trenthm</a> likes this.
+		</span>
+	</div>
+</div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365615" class="message   " data-author="Invertex">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/invertex.458918/" class="username" dir="auto" itemprop="name">Invertex</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/invertex.458918/" class="avatar Av458918m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/458918.jpg" alt="Invertex" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Nov 7, 2013</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=458918" class="concealed" rel="nofollow">898</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					Also, OP should probably keep in mind that operations done in the 
+Vertex shader are typically only done for the 3 points of the triangle 
+and the value is interpolated between the results of those 3 points. So 
+if you were hoping to use any complex texture detail in this way, it 
+wouldn't really work, you'll just end up with a gradient of color 
+between each vertex of the mesh.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/invertex.458918/" class="username author" dir="auto">Invertex</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365615" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 24, 2018 at 12:56 AM">Jan 24, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365615" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365615/permalink">#7</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365615"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365882" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="bgolus">
+	<aside>
+		
+			<div class="attribution type">bgolus said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365591#post-3365591" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">It is one of <i>many</i> methods of doing level of detail <i>for </i>texturing, though it is by far and away the most common and also the only one really supported by current GPUs</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>Thanks for your detailed explanation. I think I get the point. <br>
+Then because there is no mip map in vertex shader, I test the following lines in my code, and they have the same result:<br>
+tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0.0, 0.0));<br>
+tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0.0, 1.0));<br>
+It just uses the level 0 texture for sample.because there is no level 1 texture??
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365882" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 24, 2018 at 7:08 AM">Jan 24, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365882" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365882/permalink">#8</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365882"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365891" class="message   " data-author="Invertex">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/invertex.458918/" class="username" dir="auto" itemprop="name">Invertex</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/invertex.458918/" class="avatar Av458918m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/458918.jpg" alt="Invertex" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Nov 7, 2013</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=458918" class="concealed" rel="nofollow">898</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="GreatWall">
+	<aside>
+		
+			<div class="attribution type">GreatWall said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365882#post-3365882" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">Thanks for your detailed explanation. I think I get the point.<br>
+Then because there is no mip map in vertex shader, I test the following lines in my code, and they have the same result:<br>
+tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0.0, 0.0));<br>
+tex2Dlod(_SnowTrackTex, float4(vertex.texcoord.xy, 0.0, 1.0));<br>
+It just uses the level 0 texture for sample.because there is no level 1 texture??</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>If the texture you're supplying has no mip-maps, then yes it uses 
+the level 0 texture. He didn't say there is no mip-map in the vertex 
+shader, he's saying that the "level of detail" functionality that is 
+part of tex2D cannot happen in the vertex shader, and thus you have to 
+manually choose which mip-map to sample instead of letting the 
+level-of-detail value control it.<br>
+<br>
+If your texture has mip-maps, then your second line there would select the second mip level.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/invertex.458918/" class="username author" dir="auto">Invertex</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365891" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 24, 2018 at 7:32 AM">Jan 24, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365891" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365891/permalink">#9</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365891"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3365945" class="message   " data-author="neoshaman">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock online">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/neoshaman.35101/" class="username" dir="auto" itemprop="name">neoshaman</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/neoshaman.35101/" class="avatar Av35101m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/35101.jpg" alt="neoshaman" width="96" height="96"></a>
+			<span class="Tooltip onlineMarker" data-offsetx="-22" data-offsety="-8"></span>
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Feb 11, 2011</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=35101" class="concealed" rel="nofollow">4,300</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					Can you show result? because mip map level are similar, especially if you are using a low resolution output like vertex
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/neoshaman.35101/" class="username author" dir="auto">neoshaman</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365945" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 24, 2018 at 8:54 AM">Jan 24, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3365945" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3365945/permalink">#10</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3365945"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367245" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="neoshaman">
+	<aside>
+		
+			<div class="attribution type">neoshaman said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365945#post-3365945" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">Can you show result?</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>
+	
+	<img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/a.png" alt="Group.png" class="bbCodeImage LbImage" style="">
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367245" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 12:19 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367245" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367245/permalink">#11</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367245"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367248" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					I just output in fragment.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367248" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 12:20 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367248" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367248/permalink">#12</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367248"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367255" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="Invertex">
+	<aside>
+		
+			<div class="attribution type">Invertex said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3365891#post-3365891" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">the "level of detail" functionality that is part of tex2D cannot happen in the vertex shader</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>Does that means the "level of detail" function can't exist in vertex shader even through the texture has mipmap?<br>
+In other word, no matter mipmap exists or not,tex2D can't be used in 
+vertex? So "tex2D can't be used in vertex" has no matter with the 
+texture's mipmap, just because it use a function which can't be done in 
+vertex shader?
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367255" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 12:27 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367255" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367255/permalink">#13</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367255"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367257" class="message   " data-author="Invertex">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/invertex.458918/" class="username" dir="auto" itemprop="name">Invertex</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/invertex.458918/" class="avatar Av458918m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/458918.jpg" alt="Invertex" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Nov 7, 2013</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=458918" class="concealed" rel="nofollow">898</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="GreatWall">
+	<aside>
+		
+			<div class="attribution type">GreatWall said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3367255#post-3367255" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">Does that means the "level of detail" function can't exist in vertex shader even through the texture has mipmap?<br>
+In other word, no matter mipmap exists or not,tex2D can't be used in 
+vertex? So "tex2D can't be used in vertex" has no matter with the 
+texture's mipmap, just because it use a function which can't be done in 
+vertex shader?</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>No. What I was saying, like bgolus was saying, is that the 
+automatic LOD "functionality" that is in "tex2D" cannot happen in in the
+ vertex shader. But, you can <b>manually</b> define a specific mipmap by using tex2Dlod instead, just like you're doing now.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/invertex.458918/" class="username author" dir="auto">Invertex</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367257" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 12:30 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367257" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367257/permalink">#14</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367257"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367264" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="Invertex">
+	<aside>
+		
+			<div class="attribution type">Invertex said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3367257#post-3367257" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">automatic LOD "functionality" that is in "tex2D" cannot happen in in the vertex shader. But, you can <b>manually</b> define a specific mipmap by using tex2Dlod instead</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>That means there are two kinds of LOD functions  "automatic" and 
+"manually". And the "automatic" one must happen in fragment shader .<br>
+tex2D choses the "automatic" one.So it can't be used in vertex shader.No matter with whether the texture has mipmap.<br>
+tex2Dlod choses the "manually" one. So it can be used in vertex shader.No matter with whether the texture has mipmap.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367264" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 12:42 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367264" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367264/permalink">#15</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367264"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367354" class="message   " data-author="Invertex">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/invertex.458918/" class="username" dir="auto" itemprop="name">Invertex</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/invertex.458918/" class="avatar Av458918m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/458918.jpg" alt="Invertex" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Nov 7, 2013</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=458918" class="concealed" rel="nofollow">898</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="GreatWall">
+	<aside>
+		
+			<div class="attribution type">GreatWall said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3367264#post-3367264" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">That means there
+ are two kinds of LOD functions  "automatic" and "manually". And the 
+"automatic" one must happen in fragment shader .<br>
+tex2D choses the "automatic" one.So it can't be used in vertex shader.No matter with whether the texture has mipmap.<br>
+tex2Dlod choses the "manually" one. So it can be used in vertex shader.No matter with whether the texture has mipmap.</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>Basically yes. Though I wouldn't say they use different kinds of LOD functions. <br>
+<br>
+It's just that, with tex2D, since you aren't providing your own LOD/MIP 
+value, tex2D needs to get the LOD value from somewhere else. That 
+"somewhere else" is the screen-space derivatives (ddx/ddy) that are 
+calculated by the GPU during the Pixel shader process. <br>
+<br>
+At it's core, it is the same sampling method, you are simply changing where the source of the LOD value comes from.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/invertex.458918/" class="username author" dir="auto">Invertex</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367354" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 2:28 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367354" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367354/permalink">#16</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367354"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+			
+				
+
+
+<li id="post-3367584" class="message   " data-author="GreatWall">
+
+	
+
+<div class="messageUserInfo" itemscope="itemscope" itemtype="http://data-vocabulary.org/Person">
+<div class="messageUserBlock ">
+<h3 class="userText">
+	<a href="https://forum.unity.com/members/greatwall.667715/" class="username" dir="auto" itemprop="name">GreatWall</a>
+</h3>
+	
+		<div class="avatarHolder">
+			<span class="helper"></span>
+			<a href="https://forum.unity.com/members/greatwall.667715/" class="avatar Av667715m" data-avatarhtml="true"><img src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/667715.jpg" alt="GreatWall" width="96" height="96"></a>
+			
+			<!-- slot: message_user_info_avatar -->
+		</div>
+	
+
+
+	
+		<h3 class="userText">
+		
+			
+			
+			<!-- slot: message_user_info_text -->
+		</h3>
+	
+
+	
+		<div class="extraUserInfo">
+			
+			
+				
+					<dl class="pairsJustified">
+						<dt>Joined:</dt>
+						<dd>Aug 7, 2014</dd>
+					</dl>
+				
+
+				
+					<dl class="pairsJustified">
+						<dt>Posts:</dt>
+						<dd><a href="https://forum.unity.com/search/member?user_id=667715" class="concealed" rel="nofollow">57</a></dd>
+					</dl>
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+				
+
+			
+			
+			
+		</div>
+	
+
+
+
+	<span class="arrow"><span></span></span>
+</div>
+</div>
+
+	<div class="messageInfo primaryContent">
+		
+		
+		
+		
+		
+		<div class="messageContent">		
+			<article>
+				<blockquote class="messageText SelectQuoteContainer ugc baseHtml">
+					
+					<div class="bbCodeBlock bbCodeQuote" data-author="Invertex">
+	<aside>
+		
+			<div class="attribution type">Invertex said:
+				
+					<a href="https://forum.unity.com/goto/post?id=3367354#post-3367354" class="AttributionLink">↑</a>
+				
+			</div>
+		
+		<blockquote class="quoteContainer"><div class="quote">At it's core, it is the same sampling method, you are simply changing where the source of the LOD value comes from.</div><div class="quoteExpand">Click to expand...</div></blockquote>
+	</aside>
+</div>Thank you Invertex,I think I get the point this time.
+					<div class="messageTextEndMarker">&nbsp;</div>
+				</blockquote>
+			</article>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+				
+		<div class="messageMeta ToggleTriggerAnchor">
+			
+			<div class="privateControls">
+				
+				<span class="item muted">
+					<span class="authorEnd"><a href="https://forum.unity.com/members/greatwall.667715/" class="username author" dir="auto">GreatWall</a>,</span>
+					<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367584" title="Permalink" class="datePermalink"><span class="DateTime" title="Jan 25, 2018 at 8:15 AM">Jan 25, 2018</span></a>
+				</span>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="publicControls">
+				<a href="https://forum.unity.com/threads/how-to-sample-a-texture-in-vertex-shader.513816/#post-3367584" title="Permalink" class="item muted postNumber hashPermalink OverlayTrigger" data-href="posts/3367584/permalink">#17</a>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+		
+		<div id="likes-post-3367584"></div>
+	</div>
+
+	
+	
+	
+	
+</li>
+			
+		
+		
+	</ol>
+
+	
+
+	<input type="hidden" name="_xfToken" value="">
+
+</form>
+
+	<div class="pageNavLinkGroup">
+			
+				
+					<div class="linkGroup">
+						
+							<label for="LoginControl"><a href="https://forum.unity.com/login/" class="concealed element">(You must log in or sign up to reply here.)</a></label>
+						
+					</div>
+				
+			
+			<div class="linkGroup" style="display: none"><a href="javascript:" class="muted JsOnly DisplayIgnoredContent Tooltip">Show Ignored Content</a></div>
+
+			
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+						
+
+						
+							<!-- login form, to be moved to the upper drop-down -->
+							
+
+
+
+
+
+
+
+<form action="login/login" method="post" class="xenForm eAuth" id="login" style="display:none">
+
+	
+
+	<div class="ctrlWrapper">
+		<dl class="ctrlUnit">
+			<dt><label for="LoginControl">Your name or email address:</label></dt>
+			<dd><input type="text" name="login" id="LoginControl" class="textCtrl" tabindex="101"></dd>
+		</dl>
+	
+	
+		<dl class="ctrlUnit">
+			<dt>
+				<label for="ctrl_password">Password:</label>
+			</dt>
+			<dd>
+				<input type="password" name="password" class="textCtrl" id="ctrl_password" tabindex="102">
+				<div class="lostPasswordLogin"><a href="https://forum.unity.com/lost-password/" class="OverlayTrigger OverlayCloser" tabindex="106">Forgot your password?</a></div>
+			</dd>
+		</dl>
+	
+		
+		<dl class="ctrlUnit submitUnit">
+			<dt></dt>
+			<dd>
+				<input type="submit" class="button primary" value="Log in" tabindex="104" data-loginphrase="Log in" data-signupphrase="Sign up">
+				<label for="ctrl_remember" class="rememberPassword"><input type="checkbox" name="remember" value="1" id="ctrl_remember" tabindex="103"> Stay logged in</label>
+			</dd>
+		</dl>
+	</div>
+
+	<input type="hidden" name="cookie_check" value="1">
+	<input type="hidden" name="redirect" value="/threads/how-to-sample-a-texture-in-vertex-shader.513816/">
+	<input type="hidden" name="_xfToken" value="">
+
+</form>
+						
+
+					
+
+
+
+		</div>
+	</div>
+</section>
+
+
+
+
+
+	<footer class="main-footer">
+  <div class="wrapper clear gr-lg-rev">
+    <div class="gw clear">
+      <div class="g12 crumbs pb0">
+        <div class="rel">
+          <a href="https://forum.unity.com/" class="unity-logo"></a>
+          <a class="to-top"></a>
+        </div>
+      </div>
+      <div class="g8 nest group links">
+        <div class="g3">
+          <p class="lbl">Purchase</p>
+          <ul>
+            <li><a href="https://store.unity.com/">Subscription</a></li>
+            <li><a href="https://assetstore.unity.com/">Asset Store</a></li>
+            <li><a href="https://unity3d.com/gear">Unity Gear</a></li>
+            <li><a href="https://store.unity.com/resellers">Resellers</a></li>
+          </ul>
+          <p class="lbl pt25">Education</p>
+          <ul>
+            <li><a href="https://unity.com/education#unity-for-students">Students</a></li>
+            <li><a href="https://unity.com/education#unity-for-educators-and-academic-institutions">Educators</a></li>
+            <li><a href="https://unity.com/coe">Center of Excellence</a></li>
+          </ul>
+        </div>
+        <div class="g3">
+          <p class="lbl">Download</p>
+          <ul>
+            <li><a href="https://store.unity.com/">Unity</a></li>
+            <li><a href="https://unity3d.com/unity/beta">Beta Program</a></li>
+            <li><a href="https://unity3d.com/webplayer">Web Player</a></li>
+            <li><a href="https://unity3d.com/public-relations/downloads">Press material</a></li>
+            <li><a href="https://unity3d.com/whitepapers">Whitepapers</a></li>
+          </ul>
+
+					<p class="lbl pt25">Unity Labs</p>
+          <ul>
+            <li><a href="https://unity.com/labs">Labs</a></li>
+            <li><a href="https://unity.com/labs/publications">Publications</a></li>
+					</ul>
+
+        </div>
+        <div class="g3">
+          <p class="lbl">Resources</p>
+          <ul>
+                        <li><a href="https://unity3d.com/learn">Learn</a></li>
+            <li><a href="https://unity3d.com/community">Community</a></li>
+            <li><a href="https://unity3d.com/learn/documentation">Documentation</a></li>
+            <li><a href="https://unity3d.com/unity/qa">Unity QA</a></li>
+            <li><a href="https://unity3d.com/unity/faq">FAQ</a></li>
+            <li><a href="http://status.cloud.unity3d.com/" target="_blank">Services Status</a></li>
+            <li><a href="https://certification.unity.com/">Certification</a></li>
+            <li><a href="https://connect.unity.com/">Connect</a></li>
+          </ul>
+        </div>
+        <div class="g3">
+          <p class="lbl">About Unity</p>
+          <ul>
+            <li><a href="http://blogs.unity3d.com/">Blog</a></li>
+            <li><a href="https://unity3d.com/events">Events</a></li>
+            <li><a href="https://careers.unity.com/">Careers</a></li>
+                        <li><a href="https://unity3d.com/contact">Contact</a></li>
+                        <li><a href="https://unity3d.com/public-relations">Press</a></li>
+            <li><a href="https://unity.com/partners">Partners</a></li>
+            <li><a href="https://unity3d.com/affiliates">Affiliates</a></li>
+						<li><a href="https://unity3d.com/security">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="g4 group nest">
+        <div class="g12 newsletter pb0">
+          <form method="post" action="/contact/newsletter-signup" id="newsletter-signup" class="newsletter-signup rel">
+  <div class="fields clear">
+          <p class="lbl">Get Unity news</p>
+        <div class="rel">
+      <div class="field rel clear">
+        <input type="email" name="email" id="email" class="email mb15" placeholder="Enter your email here...">
+        <input type="text" name="name" id="name" class="name mb15 hide" placeholder="Enter your name here...">
+        <input type="submit" value="Sign up" class="btn bg-dg">
+      </div>
+      <div class="checkbox clear">
+        <input type="checkbox" id="agree" name="terms" value="agreed">
+                  <label for="agree">I agree to the <a href="https://unity3d.com/company/legal/privacy-policy" target="_blank">Unity Privacy Policy</a> and the processing and use of my information</label>
+              </div>
+      <div class="loading rel hide">
+        <div class="loading-inline"></div>
+      </div>
+      <div class="success hide">
+        <h4 class="mb5 c-gr">Nearly there...</h4>
+        <p>To start receiving news from Unity Technologies, click on the link we've sent to your e-mail account.</p>
+      </div>
+      <div class="failed hide">
+        <h4 class="mb5 c-re">Oops...</h4>
+        <p>Something went wrong, please try again.</p>
+      </div>
+    </div>
+  </div>
+</form>
+        </div>
+        <div class="g12 lang pb0">
+          <p class="lbl">Language</p>
+          <div class="language-switcher">
+  <ul id="mobile-lang" class="languages">
+              <li><a href="https://forum.unity.com/cn" data-lang="cn" hreflang="zh-hans" lang="zh-hans">中文</a></li>
+                <li><a href="https://forum.unity.com/fr" data-lang="fr" hreflang="fr" lang="fr">Français</a></li>
+                <li><a href="https://forum.unity.com/de" data-lang="de" hreflang="de" lang="de">Deutsch</a></li>
+                <li><a href="https://forum.unity.com/jp" data-lang="jp" hreflang="ja" lang="ja">日本語</a></li>
+                <li><a href="https://forum.unity.com/kr" data-lang="kr" hreflang="ko" lang="ko">한국어</a></li>
+                <li><a href="https://forum.unity.com/pt" data-lang="pt" hreflang="pt" lang="pt">Português</a></li>
+                <li><a href="https://forum.unity.com/ru" data-lang="ru" hreflang="ru" lang="ru">Русский</a></li>
+                <li><a href="https://forum.unity.com/es" data-lang="es" hreflang="es" lang="es">Español</a></li>
+      </ul>
+</div>        </div>
+      </div>
+      <div class="g12 partners">
+        <p class="lbl">Partners</p>
+        <div class="partner moolah"><a href="https://unity3d.com/partners/cloudmoolah" target="_blank"></a></div>
+        <div class="partner google"><a href="https://unity3d.com/partners/google/daydream"></a></div>
+        <div class="partner intel"><a href="https://unity3d.com/partners/intel"></a></div>
+        <div class="partner microsoft"><a href="https://unity3d.com/partners/microsoft"></a></div>
+        <div class="partner nintendo"><a href="http://www.nintendo.com/" target="_blank"></a></div>
+        <div class="partner oculus"><a href="https://unity3d.com/partners/oculus" target="_blank"></a></div>
+        <div class="partner sony"><a href="http://www.sony.com/" target="_blank"></a></div>
+        <div class="partner vuforia"><a href="https://unity3d.com/partners/vuforia" target="_blank"></a></div>
+        <div class="partner xiaomi"><a href="https://unity3d.com/partners/xiaomi" target="_blank"></a></div>
+        <div class="partner otoy"><a href="https://unity3d.com/partners/otoy/octanerender" target="_blank"></a></div>
+        <div class="partner magicleap"><a href="https://unity3d.com/partners/magicleap" target="_blank"></a></div>
+      </div>
+      <div class="g12 nest">
+        <div class="g12 pt0 pb0"><div class="bb"></div></div>
+        <div class="g5 right">
+          <div class="social">
+            <a href="http://www.facebook.com/unity3d" class="icon facebook" target="_blank">Facebook</a>
+            <a href="http://www.twitter.com/unity3d" class="icon twitter" target="_blank">Twitter</a>
+            <a href="https://www.instagram.com/unitytechnologies" class="icon instagram" target="_blank">Instagram</a>
+            <a href="https://www.linkedin.com/company/unity-technologies" class="icon linkedin" target="_blank">LinkedIn</a>
+            <a href="https://www.youtube.com/user/Unity3D" class="icon youtube" target="_blank">YouTube</a>
+          </div>
+        </div>
+        <div class="g7">
+          <small>© 2019 Unity Technologies</small>
+          <ul class="legal">
+                        <li><a href="https://unity3d.com/legal">Legal</a></li>
+            <li><a href="https://unity3d.com/legal/privacy-policy">Privacy Policy</a></li>
+            <li><a href="https://unity3d.com/legal/cookie-policy#cookies">Cookies</a></li>
+          </ul>
+          <small class="copyright-line">"Unity", Unity logos, and other 
+Unity trademarks are trademarks or registered trademarks of Unity 
+Technologies or its affiliates in the U.S. and elsewhere (more info <a target="_blank" href="https://unity3d.com/legal/trademarks">here</a>). Other names or brands are trademarks of their respective owners.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+</section>
+</div>
+</div>
+</div>
+<div class="overlay" style="-webkit-user-select: none; -webkit-user-drag: none; display: none; height: 2840px;"></div>
+<script>
+
+
+
+jQuery.extend(true, XenForo,
+{
+	visitor: {
+		user_id: 0,
+		unity_id: 0
+		},
+	serverTimeInfo:
+	{
+		now: 1570498844,
+		today: 1570489200,
+		todayDow: 2
+	},
+	_lightBoxUniversal: "0",
+	_enableOverlays: "1",
+	_animationSpeedMultiplier: "0",
+	_overlayConfig:
+	{
+		top: "10%",
+		speed: 0,
+		closeSpeed: 0,
+		mask:
+		{
+			color: "rgb(255, 255, 255)",
+			opacity: "0.6",
+			loadSpeed: 0,
+			closeSpeed: 0
+		}
+	},
+	_ignoredUsers: [],
+	_loadedScripts: {"thread_view":true,"message":true,"bb_code":true,"message_user_info":true,"likes_summary":true,"notices":true,"panel_scroller":true},
+	_cookieConfig: { path: "/", domain: "", prefix: "xf_"},
+	_csrfToken: "",
+	_csrfRefreshUrl: "login/csrf-token-refresh",
+	_jsVersion: "ea114524",
+	_noRtnProtect: false,
+	_noSocialLogin: false
+});
+jQuery.extend(XenForo.phrases,
+{
+	cancel: "Cancel",
+
+	a_moment_ago:    "A moment ago",
+	one_minute_ago:  "1 minute ago",
+	x_minutes_ago:   "%minutes% minutes ago",
+	today_at_x:      "Today at %time%",
+	yesterday_at_x:  "Yesterday at %time%",
+	day_x_at_time_y: "%day% at %time%",
+
+	day0: "Sunday",
+	day1: "Monday",
+	day2: "Tuesday",
+	day3: "Wednesday",
+	day4: "Thursday",
+	day5: "Friday",
+	day6: "Saturday",
+
+	_months: "January,February,March,April,May,June,July,August,September,October,November,December",
+	_daysShort: "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
+
+	following_error_occurred: "The following error occurred",
+	server_did_not_respond_in_time_try_again: "The server did not respond in time. Please try again.",
+	logging_in: "Logging in",
+	click_image_show_full_size_version: "Click this image to show the full-size version.",
+	show_hidden_content_by_x: "Show hidden content by {names}"
+});
+
+// Facebook Javascript SDK
+XenForo.Facebook.appId = "";
+XenForo.Facebook.forceInit = false;
+
+
+</script>
+
+
+
+
+
+<div class="Menu JsOnly blockLinksList primaryContent" id="NavigationHiddenMenu"></div><script type="text/javascript" id="">var _elqQ=_elqQ||[];_elqQ.push(["elqSetSiteId","795651218"]);_elqQ.push(["elqUseFirstPartyCookie","eloqua-trackings.unity.com"]);_elqQ.push(["elqTrackPageView"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="//img06.en25.com/i/elqCfg.min.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();</script>
+
+<script type="text/javascript" id="">var _sj=_sj||[];_sj.push(["project","1517403709749308252"]);_sj.push(["collection","unity3d-com"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.sajari.com/js/sj.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();</script>
+<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","1062735023749175");fbq("set","agent","tmgoogletagmanager","1062735023749175");fbq("track","PageView");</script>
+<iframe style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;" name="_hjRemoteVarsFrame" title="_hjRemoteVarsFrame" id="_hjRemoteVarsFrame" src="How%20to%20sample%20a%20texture%20in%20vertex%20shader%20-%20Unity%20Forum_tiedostot/box-90f3a29ef7448451db5af955688970d7.html"></iframe><div style="display: none;" data-sj-overlay=""><div class="sj-search"> <div id="sj-o-shade" class="sj-shade"></div> <div class="sj-search-modal sj-cf"> <div id="sj-o-close" class="sj-close"> × </div> <form class="sj-search-form"> <div id="sj-search-bar"> <span id="sj-icon-search"></span> <input data-sj-search-query="" type="search" placeholder="search this site"> <button data-sj-search-query-go="" type="submit" class="sj-search-go blue">Search</button> </div> </form> <div data-sj-search-results="" class="sj-results"></div> </div></div></div></body></html>

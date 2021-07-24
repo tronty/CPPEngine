@@ -1,0 +1,73 @@
+//-----------------------------------------------------------------------------
+// File: initCloth.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+struct VsOut {
+	float4 pos: POSITION;
+	float4 initPos: TEXCOORD0;
+};
+
+float2 scale;
+float bias;
+
+VsOut main(float4 pos: POSITION){
+	VsOut Out;
+
+	Out.pos = pos;
+
+	float2 p = pos.xy * scale + bias;
+
+#if defined(CURTAIN)
+	Out.initPos = float4(p.x, 1, -p.y, 0);
+#elif defined(SAIL)
+	Out.initPos = float4(p.x, -1.2 * p.y, 0, 0);
+#else
+	Out.initPos = float4(p.x, -0.2, -p.y, 0);
+#endif
+
+	return Out;
+}
+
+[Fragment shader]
+
+struct PsOut {
+	float4 pos: COLOR0;
+	float4 dir: COLOR1;
+};
+
+PsOut main(float4 initPos: TEXCOORD0){
+	PsOut Out;
+
+	// By default a node is unlocked. This is indicated with .w = 1
+	float4 initDir = float4(0, 0, 0, 1);
+
+	// Lock nodes according to the various presets
+#if defined(CURTAIN)
+	if (initPos.z > 0.999)
+#elif defined(SAIL)
+	if (abs(initPos.y) > 1.1999)
+#elif defined(SAFETYNET)
+	if (abs(initPos.x) > 0.999 || abs(initPos.z) > 0.999)
+#elif defined(ROUNDTABLE)
+	if (length(initPos.xz) < 0.7)
+#elif defined(SQUARETABLE)
+	if (abs(initPos.x) < 0.6 && abs(initPos.z) < 0.6)
+#elif defined(SQUARETABLE2)
+	if (abs(initPos.x) + abs(initPos.z) < 0.8)
+#endif
+	{
+		initDir.w = 0;
+	}
+
+	Out.pos = initPos;
+	Out.dir = initDir;
+
+	return Out;
+}

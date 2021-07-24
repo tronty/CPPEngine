@@ -1,0 +1,122 @@
+[Vertex shader]
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 t0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = pos;
+	Out.tc0 = t0;
+
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler RotationDeg;
+sampler LinkTM;	
+sampler EffectLinkTM;	
+		
+float4 EndPos;
+
+float3 QuaternionToEuler(float4 q)
+{
+	float m[3][3];
+	float cx,sx,x;
+	float cy,sy,y,yr;
+	float cz,sz,z;
+	float3 Euler;
+	
+	// CONVERT QUATERNION TO MATRIX - I DON'T REALLY NEED ALL OF IT
+	m[0][0] = 1.0f - (2.0f * q.y * q.y) - (2.0f * q.z * q.z);
+//	matrix[0][1] = (2.0f * q.x * q.y) - (2.0f * q.w * q.z);
+//	matrix[0][2] = (2.0f * q.x * q.z) + (2.0f * q.w * q.y);
+	m[1][0] = (2.0f * q.x * q.y) + (2.0f * q.w * q.z);
+//	matrix[1][1] = 1.0f - (2.0f * q.x * q.x) - (2.0f * q.z * q.z);
+//	matrix[1][2] = (2.0f * q.y * q.z) - (2.0f * q.w * q.x);
+	m[2][0] = (2.0f * q.x * q.z) - (2.0f * q.w * q.y);
+	m[2][1] = (2.0f * q.y * q.z) + (2.0f * q.w * q.x);
+	m[2][2] = 1.0f - (2.0f * q.x * q.x) - (2.0f * q.y * q.y);
+
+	sy = -m[2][0];
+	cy = sqrt(1 - (sy * sy));
+	yr = (float)atan2(sy,cy);
+	Euler.y = (yr * 180.0f) / 3.14159f;
+
+	// AVOID DIVIDE BY ZERO ERROR ONLY WHERE Y= +-90 or +-270 
+	// NOT CHECKING cy BECAUSE OF PRECISION ERRORS
+	if (sy != 1.0f && sy != -1.0f)	
+	{
+		cx = m[2][2] / cy;
+		sx = m[2][1] / cy;
+		Euler.x = ((float)atan2(sx,cx) * 180.0f) / 3.14159f;	// RAD TO DEG
+
+		cz = m[0][0] / cy;
+		sz = m[1][0] / cy;
+		Euler.z = ((float)atan2(sz,cz) * 180.0f) / 3.14159f;	// RAD TO DEG
+	}
+	else
+	{
+		// SINCE Cos(Y) IS 0, I AM SCREWED.  ADOPT THE STANDARD Z = 0
+		// I THINK THERE IS A WAY TO FIX THIS BUT I AM NOT SURE.  EULERS SUCK
+		// NEED SOME MORE OF THE MATRIX TERMS NOW
+		m[1][1] = 1.0f - (2.0f * q.x * q.x) - (2.0f * q.z * q.z);
+		m[1][2] = (2.0f * q.y * q.z) - (2.0f * q.w * q.x);
+		cx = m[1][1];
+		sx = -m[1][2];
+		Euler.x = ((float)atan2(sx,cx) * 180.0f) / 3.14159f;	// RAD TO DEG
+
+		cz = 1.0f;
+		sz = 0.0f;
+		Euler.z = ((float)atan2(sz,cz) * 180.0f) / 3.14159f;	// RAD TO DEG
+	}
+	return Euler;
+}
+
+float4 main(float2 t0: TEXCOORD0) : COLOR {
+	float4x4 rm, pm, newpm;
+	float4 LinkPos, EffectPos;
+	float3 f, t, d;
+	float Rad;
+	float3 axis;
+	float4 Quat;
+	float3 OldEuler;
+	
+	OldEuler = tex2D(RotationDeg, t0).xyz;
+	EffectPos = tex2D(EffectLinkTM, float2(0.875f, 0.5f));
+	d = EffectPos.xyz - EndPos.xyz;
+	if (length(d) > 0.5f)
+	{	
+		LinkPos = tex2D(LinkTM, float2(0.875f, 0.5f));		
+	
+		f = EndPos.xyz - LinkPos.xyz;
+		f = normalize(f);
+		
+		t = EffectPos.xyz - LinkPos.xyz;
+		t = normalize(t);
+		
+		axis = cross(t, f);
+		axis = normalize(axis);		
+		
+		Rad = acos(dot(t, f));
+		Rad *= 0.1f;
+	
+		Quat.x = axis.x*sin(Rad);
+		Quat.y = axis.y*sin(Rad);
+		Quat.z = axis.z*sin(Rad);
+		Quat.w = cos(Rad);
+		float3 Euler = QuaternionToEuler(Quat);
+		Euler.y = 0.0f;  //lock y axis
+		Euler.x = 0.0f;
+		
+		return float4((Euler+OldEuler), 0.0f);		
+	}
+	else
+	{
+		return float4(OldEuler, 0.0f);
+	}			
+}

@@ -1,0 +1,937 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+
+<style type="text/css">
+table, body {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+h3.title {font-size: 16px; background: #eeeeee; width: 100%; padding: 3px;}
+span.gamacode {
+	/*font-family: "courier new";*/
+	display: block;
+	padding-left: 20px;
+	text-align: left;
+}
+</style>
+
+<title>Gamasutra - Implementing Lighting Models With HLSL</title>
+</head>
+<body><div style="width: 750px; margin:auto;">
+<div style="border: 2px solid #ccc; width: 100%;"><a href="http://www.gamasutra.com/"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/gamalogo.gif" border="0"></a>
+	<a href="javascript:window.print()"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/print.gif" style="border: 0pt none ; float: right; margin-top: 10px;"></a>
+</div>
+<div style="clear:both;"></div>
+<h3 class="title">Implementing Lighting Models With HLSL</h3>
+By Wolfgang Engel
+<a href="http://www.gamasutra.com/view/feature/131275/implementing_lighting_models_with_.php"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/engel_index_lg.jpg" style="border:0; margin:5px;" align="right"></a><p>With
+ the introduction of the second generation of shader-capable hardware 
+like the ATI Radeon 9500 (and more recent boards) and the Nvidia GeForce
+ FX, several high-level languages for shader programming were released 
+to the public. Prior to this hardware support, shader programming was 
+performed exclusively with assembly-like syntax, that was difficult to 
+read for a non-assembly programmer. The new C-like languages make 
+learning shader programming faster and make the shader code easier to 
+read.</p>
+<p>The new shader languages -- Cg, HLSL and GLslang -- have similar 
+syntax and provide similar functionality. Continuing Gamasutra's series 
+on shader programming (which began with "<a href="http://www.gamasutra.com/features/20030325/fernando_01.shtml">Animation Using Cg</a>"
+ by Mark Kilgard and Randy Fernando), I will look at using the High 
+Level Shader Language (HLSL) which comes with DirectX 9. However, the 
+examples I provide should run without any changes in a Cg environment 
+and with only minor changes in a GLslang environment. For further rapid 
+prototyping of these shaders, ATI's <a href="http://mirror.ati.com/developer/sdk/radeonSDK/html/Tools/RenderMonkey.html" target="_blank">RenderMonkey</a>
+ is highly recommended. The code and executables for all of the examples
+ presented in this article can be downloaded in a single file called "<a href="http://www.gamasutra.com/features/20030418/gamasutra-hlsl-lighting-examples.zip">gamasutra-hlsl-lighting-examples.zip</a>" (17MB).</p>
+<p class="subhead">Getting a Jump Start with HLSL</p>
+<p>The only requirement to start HLSL programming with the DirectX SDK 
+is that the HLSL compiler is installed properly. This is done by setting
+ the right directory path in the Tools&gt;Option&gt;Project&gt;VC++ 
+Directories of the Visual .NET IDE. Additionally the shader debugger 
+provided for Visual .NET (not Visual C/C++ 6) should be installed from 
+the SDK CD-ROM. This installation is optional and has to be explicitely 
+chosen therefore. To be able to use the Visual Studio .NET shader 
+debugger, the following steps are necessary:</p>
+<ul>
+<li>Install the shader debugger. This is an option in the DirectX 9 SDK installation routine, which must be selected. </li>
+<li>Select the "Use Debug Version of Direct3D" and "Enable Shader 
+Debugger" check boxes in the configuration panel of the DirectX 
+run-time.<br> <br> 
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/Direct3Dpropertiesbox.jpg" alt="" height="506" width="401"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 1. The Direct3D properties box. This checkbox 
+can be found at Start&gt;Control Panel&gt;DirectX and there on the 
+Direct3D tab.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Launch the application under Visual Studio .NET with Debug&gt;Direct3D&gt;Start D3D </li>
+<li>Switch to the reference rasterizer </li>
+<li>Set a breakpoint in Vertex Shader or Pixel Shader </li>
+<li>Shader assembly can be viewed under Debug&gt;Window&gt;Disassembly </li>
+<li>Render targets can be viewed under Debug&gt;Direct3D&gt;RenderTarget </li>
+</ul>
+<p class="subhead">Tasks of the Vertex and Pixel Shader</p>
+<p>To estimate the capabilities of vertex and pixel shaders, it is helpful to look at their position in the Direct3D pipeline</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/Direct3Dpipeline9.gif" alt="" height="715" width="400"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="2" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="2" valign="top">
+<p><strong><strong>Figure 2. The Direct3D pipeline.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The vertex shader, as the functional replacement of the legacy 
+transform and lighting stage (T&amp;L), is located after the tesselation
+ stage and before the culling and clipping stages. The data for one 
+vertex is provided by the tesselation stage to the vertex shader. This 
+vertex might consist of data regarding its position, texture 
+coordinates, vertex colors, normals and so on.</p>
+<p>The vertex shader can not create or remove a vertex. Its minimal 
+output value is the position data of one vertex. It can not affect 
+subsequent stages of the Direct3D pipeline.</p>
+<p>The pixel shader, as the functional replacement of the legacy 
+multitexturing stage, is located after the rasterizer stage. It gets its
+ data from the rasterizer, from the vertex shader, from the application 
+and from texture maps. It is important to note here that texture maps 
+can not only store color data, but all kinds of numbers that are useful 
+to calculate algorithms in the pixel shader. Furthermore, the result of 
+the pixel shader can be written into a render target and set in a second
+ rendering pass as the input texture. This is called "render to render 
+rarget". The output of the pixel shader consists usually of a float4 
+value. In a case where the pixel shader renders in several render 
+targets at once, the output might be up to four float4 values (Multiple 
+Render Targets; MRT).</p>
+<p>With the help of the pixel shader, subsequent stages of the Direct3D 
+pipeline can be "influenced" by choosing for example a specific alpha 
+value and configuring the alpha test or alpha blending in a specific 
+way.</p>
+<p class="subhead">Common Lighting Formulas Implemented with HLSL</p>
+<p>To demonstrate the use of HLSL to create shaders, and to demonstrate 
+the tasks of the vertex and pixel shaders, the following examples show 
+the implementation of the common lighting formulas (for a more extensive
+ introduction read [Mitchell/Peeper]).</p>
+<p class="subhead">Ambient Lighting</p>
+<p>In an ambient lighting model, all light beams fall uniformly from all
+ directions onto an object. A lighting model like this is also called a 
+"global lighting model" (an example of a more advanced global lighting 
+model is called "area lighting"). The ambient lighting component is 
+usually described with the following formula:</p>
+<p><strong>I = A<sub>intensity</sub> * A<sub>color</sub></strong></p>
+<p>The intesity value describes the lighting intensity and the color 
+value describes the color of the light. A more complex lighting formula 
+with its ambient terms might look like this:</p>
+<p><strong>I = A<sub>intensity</sub> * A<sub>color</sub> + Diffuse + Specular</strong></p>
+<p>The diffuse and specular component are placeholders here for the 
+diffuse and specular lighting formulas that will be described in the 
+upcoming examples. All high-level languages support shader instructions 
+that are written similar to mathematical expressions like 
+multiplication, addition and so on. Therefore the ambient component can 
+be written in a high-level language as follows:</p>
+<p>float4 Acolor = {1.0, 0.15, 0.15, 1.0};<br> float Aintensity = 0.5;<br> return Aintensity * Acolor;</p>
+<p>A simplified implementation might look like this:</p>
+<p>return float4 (0.5, 0.075, 0.075, 1.0);</p>
+<p>It's common to pre-bake the intensity values and the color values 
+into one value. This is done in the following example programs for 
+simplicity and readability, otherwise the HLSL compiler would pre-bake 
+the two constant values together in its output. The following source 
+code shows a vertex and a pixel shader that displays ambient lighting:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="114" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> float4x4 matWorldViewProj;
+<p>struct VS_OUTPUT<br> {<br> float4 Pos: POSITION;<br> };</p>
+<p>VS_OUTPUT VS( float4 Pos: POSITION )<br> {<br> VS_OUTPUT Out = (VS_OUTPUT) 0; <br> Out.Pos = mul(Pos, matWorldViewProj); // transform Position<br> return Out;<br> }</p>
+<p>float4 PS() : COLOR<br> {<br> return float4(0.5, 0.075, 0.075, 1.0);<br> }</p>
+</div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="2" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="2" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p>The structure VS_OUTPUT at the beginning of the source describes the 
+output values of the vertex shader. The vertex shader looks like a C 
+function with the return value VS_OUTPUT and the input value in the 
+variable Pos in brackets after its name VS.</p>
+<p>The input and output values for the vertex shader use the semantic 
+POSITION, which is identified by a colon (:) that precedes it. Semantics
+ help the HLSL compiler to bind the right shader registers for the data.
+ The semantic in the vertex shader input structure identifies the input 
+data to the function as position data. The second semantic indentifies 
+the vertex shader return value as position data that will be an input 
+value to the pixel shader (this is the only obligatory output value of 
+the vertex shader). There are several other semantics for the vertex 
+shader input data, vertex shader output data, pixel shader input data 
+and pixel shader output data. The following examples will show a few of 
+them (consult the DirectX 9 documentation for more information).</p>
+<p>Inside the brackets, the vertex shader transforms the vertex position
+ with the matWorldViewProj matrix provided by the application as a 
+constant and outputs the position values.</p>
+<p>The pixel shader follows the same C-function-like approach as the 
+vertex shader. Its return value is always float4 and this value is 
+always treated as a color value by the compiler, because it is marked 
+with the semantic COLOR. Unlike to the vertex shader, the pixel shader 
+takes no explicit input value here (except the obligatory POSITION), 
+because the brackets after its name PS are empty.</p>
+<p>The names of the vertex and pixel shader are also the entry point for
+ the high-level language compiler and must be provided in its command 
+line.</p>
+<p>The following screenshot shows the example program with an ambient lighting model:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/ambient.jpg" alt="" height="405" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 3. Ambient lighting.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The knob of the top of the teapot is not visible, when it is turned 
+towards the viewer. This is because all light beams are coming from all 
+directions uniformly onto the object, and therefore the whole teapot 
+gets exactly the same color.</p>
+<hr name="false">
+<p><strong>Diffuse Lighting</strong></p>
+<p>In a diffuse lighting model (or "positional lighting model") the 
+location of the light is considered. Another characteristic of diffuse 
+lighting is that reflections are independent of the observer's position.
+ Therefore the surface of an object in a diffuse lighting model reflects
+ equally well in all directions. This is why diffuse lighting is 
+commonly used to simulate matte surfaces (another more advanced lighting
+ model to simulate matte surfaces was developed by Oren-Nayar [Fosner] 
+[Valient]).</p>
+<p>The diffuse lighting model following Lambert's law is described with 
+the help of two vectors (read more in [RTR] and [Savchenko]). The light 
+vector L describes the position of light and the normal vector N 
+describes the normal of a vertex of the object.</p>
+<p>The diffuse reflection has its peak (cos <em>alpha</em> = = 1) when L
+ and N are aligned; in other words, when the surface is perpendicular to
+ the light beam. The diffuse reflection diminishes for smaller angles. 
+Therefore light intensity is directly proportional to cos a.</p>
+<p><br> <br></p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/ambientdiffuse.jpg" alt="" height="403" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="4" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="4" valign="top">
+<p><strong><strong>Figure 4. Diffuse lighting.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/LdotN.jpg" alt="" height="436" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="9" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="9" valign="top">
+<p><strong><strong>Figure 5. Light and normal vector.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To implement the diffuse reflection in an efficient way, a property of the dot product of two n-dimensional vectors is used:</p>
+<p><strong>N.L = ||N|| * ||L|| * cos <em>alpha</em></strong></p>
+<p>If the light and normal vectors are of unit length (normalized), this leads to</p>
+<p><strong>N.L = cos <em>alpha</em></strong></p>
+<p>When N.L is equal to cos <em>alpha</em> , the diffuse lighting 
+component can be described with the dot product of N and L. This diffuse
+ lighting component is usually added to the ambient lighting component 
+like this:</p>
+<p><strong>I = Aintensity * Acolor + Dintensity * Dcolor * N.L + Specular</strong></p>
+<p>The example uses the following simplified version:</p>
+<p><strong>I = A + D * N.L + Specular</strong></p>
+<p>The following source code shows the HLSL vertex and pixel shaders:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="388" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> float4x4 matWorldViewProj; <br> float4x4 matWorld; <br> float4 vecLightDir;
+<p>struct VS_OUTPUT<br> {<br> float4 Pos : POSITION;<br> float3 Light : TEXCOORD0;<br> float3 Norm : TEXCOORD1;<br> };</p>
+<p>VS_OUTPUT VS(float4 Pos : POSITION, float3 Normal : NORMAL)<br> {<br> VS_OUTPUT Out = (VS_OUTPUT)0; <br> Out.Pos = mul(Pos, matWorldViewProj); // transform Position<br> Out.Light = vecLightDir; // output light vector<br> Out.Norm = normalize(mul(Normal, matWorld)); // transform       Normal and normalize it <br> return Out;<br> }</p>
+<p>float4 PS(float3 Light: TEXCOORD0, float3 Norm : TEXCOORD1) : COLOR<br> {<br> float4 diffuse = { 1.0f, 0.0f, 0.0f, 1.0f};<br> float4 ambient = {0.1, 0.0, 0.0, 1.0}; <br> return ambient + diffuse * saturate(dot(Light, Norm));<br> }</p>
+</div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p>Compared to the previous example, the vertex shader gets additionally
+ a vertex normal as input data. The semantic NORMAL shows the compiler 
+how to bind the data to the vertex shader registers. The 
+world-view-projection matrix, the world matrix and the light vector are 
+provided to the vertex shader via the constants matWorldViewProj, 
+matWorld, vecLightDir. All these constants are provided by the 
+application to the vertex shader.</p>
+<p>The vertex shader VS outputs additionally the N and L vectors in the 
+variables Light and Norm here. Both vectors are normalized in the vertex
+ shader with the intrinsic function normalize(). This function returns 
+the normalized vector v = v/length(v). If the length of v is 0, the 
+result is indefinite.</p>
+<p>The normal vector is transformed by beeing multiplied with the world 
+matrix (read more on transformation of normals in [RTR2]). This is done 
+with the function mul(a, b), which performs a matrix multiplication 
+between a and b. If a is a vector, it is treated as a row vector. If b 
+is a vector, it is treated as a column vector. The inner dimensions <strong>a<sub>columns</sub></strong> and <strong>b<sub>rows</sub></strong> must be equal. The result has the dimension <strong>a<sub>rows</sub></strong> *<strong> b<sub>columns</sub></strong>.
+ In this example mul() gets the position vector as the first parameter 
+--therefore it is treated as a row vector -- and the transformation 
+matrix, consisting of 16 floating-point values (float4x4), as the second
+ parameter. The following figure shows the row vector and the matrix:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="237" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/RowVectorMatrix.jpg" alt="" height="235" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 6. Column-major matrix multiply.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The whole lighting formula consisting of an ambient and a diffuse 
+component is implemented in the return statement. The diffuse and 
+ambient constant values were defined in the pixel shader to make the 
+source code easier to understand. In a real-world application these 
+values might be loaded from the 3D model file.</p>
+<p class="subhead">Specular Lighting</p>
+<p>Whereas diffuse lighting considers the location of the light vector 
+and ambient lighting does not consider the location of the light or the 
+viewer at all, specular lighting considers the location of the viewer. 
+Specular lighting is used to simulate smooth, shiny and/or polished 
+surfaces.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="445" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/ambientdiffusespecular.jpg" alt="" height="404" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 7. Phong lighting</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the specular lighting model developed by Bui Tong Phong [Foley], 
+two vectors are used to calculate the specular component: the viewer 
+vector V that describes the direction of the viewer (in other words the 
+camera), and the reflection vector R that describes the direction of the
+ reflections from the light vector.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/SpecularVectors.jpg" alt="" height="306" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="14" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="14" valign="top">
+<p><strong><strong>Figure 8. Vectors for specular lighting.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The angle between V and R is ß. The more V is aligned with R, the 
+brighter the specular light should be. Therefore cos ß can be used to 
+describe the specular reflection. Additionally to characterize shiny 
+properties an exponent<sup>n</sup> is used.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="342" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/Specularpower.jpg" alt="" height="382" width="420"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 9. Specular power value.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Therefore the specular reflection can be described with</p>
+<p><strong>cos (ß)<sup>n</sup></strong></p>
+<p>In an implementation of a specular lighting model, a property of the dot product can be used as follows:</p>
+<p><strong>R.V = ||R|| * ||V|| * cos ß</strong></p>
+<p>If both vectors are of unit length, R.V can replace cos ß. Therefore the specular reflection can be described with</p>
+<p><strong>(R.V)<sup>n</sup></strong></p>
+<p>It is quite common to calculate the reflection vector with the following formula (read more in [Foley2]):</p>
+<p><strong>R = 2 * (N.L) * N - L</strong></p>
+<p>The whole Phong specular lighting formula now looks like this:</p>
+<p><strong>I = A<sub>intensity</sub> * A<sub>color</sub> + D<sub>intensity</sub> * D<sub>color</sub> * N.L + S<sub>intensity</sub> * S<sub>color</sub> * (R.V)<sup>n</sup></strong></p>
+<p>Baking some values together and using white as the specular color 
+leads to (find a more advanced implementation of specular lighting 
+together with cube map shadow mapping at [Persson] [Valient]):</p>
+<p><strong>I = A + D * N.L + (R.V)<sup>n</sup></strong></p>
+<p>The following source shows the implementation of the Phong specular lighting model:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="388" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> float4x4 matWorldViewProj; <br> float4x4 matWorld; <br> float4 vecLightDir;<br> float4 vecEye;
+<p>struct VS_OUTPUT<br> {<br> float4 Pos : POSITION;<br> float3 Light : TEXCOORD0;<br> float3 Norm : TEXCOORD1;<br> float3 View : TEXCOORD2;<br> };</p>
+<p>VS_OUTPUT VS(float4 Pos : POSITION, float3 Normal : NORMAL)<br> {<br> VS_OUTPUT Out = (VS_OUTPUT)0; <br> Out.Pos = mul(Pos, matWorldViewProj); // transform Position<br> Out.Light = vecLightDir;              // L<br> float3 PosWorld = normalize(mul(Pos, matWorld)); <br> Out.View = vecEye - PosWorld;         // V<br> Out.Norm = mul(Normal, matWorld);     // N<br> <br> return Out;<br> }</p>
+<p>float4 PS(float3 Light: TEXCOORD0, float3 Norm : TEXCOORD1, <br> float3 View : TEXCOORD2) : COLOR<br> {<br> float4 diffuse = { 1.0f, 0.0f, 0.0f, 1.0f};<br> float4 ambient = { 0.1f, 0.0f, 0.0f, 1.0f};<br> <br> float3 Normal = normalize(Norm);<br> float3 LightDir = normalize(Light);<br> float3 ViewDir = normalize(View); <br> float4 diff = saturate(dot(Normal, LightDir)); // diffuse component<br> <br> // R = 2 * (N.L) * N - L<br> float3 Reflect = normalize(2 * diff * Normal - LightDir); <br> float4 specular = pow(saturate(dot(Reflect, ViewDir)), 8); // R.V^n</p>
+<p>// I = Acolor + Dcolor * N.L + (R.V)n<br> return ambient + diffuse * diff + specular; <br> }</p>
+</div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="2" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="2" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p>Like the previous example, the vertex shader input values are the 
+position values and a normal vector. Additionally, the vertex shader 
+gets as constants the matWorldViewProj matrix, the matWorld matrix, the 
+position of the eye in vecEye and the light vector in vecLightDir from 
+the application.</p>
+<p>In the vertex shader, the viewer vector V is calculated by 
+subtracting the vertex position in world space from the eye position. 
+The vertex shader outputs the position, the light, normal and viewer 
+vector. The vectors are also the input values of the pixel shader.</p>
+<p>All three vectors are normalized with normalize() in the pixel 
+shader, whereas in the previous example vectors were normalized in the 
+vertex shader. Normalizing vectors in the pixel shader is quite 
+expensive, because every pixel shader version has a restricted number of
+ assembly instruction slots available for use by the output of the HLSL 
+compiler. If more instructions slots are used than available, the 
+compiler will display an error message like the following:</p>
+<p><strong>error X4532: cannot map expression to pixel shader instruction set</strong></p>
+<p>The number of instruction slots available in a specific Direct3D 
+pixel shader version usually corresponds to the number of instruction 
+slots available in graphics cards. The high-level language compiler can 
+not choose a suitable shader version on its own, this has to be done by 
+the programmer. If your game will targets something other than the least
+ common denominator of graphics cards on the target market, several 
+shader versions must be provided.</p>
+<p>Here is a list of all vertex and pixel shader versions supported by DirectX 9.</p>
+<table border="0" cellpadding="0" cellspacing="0" width="80%">
+<tbody>
+<tr>
+<td width="30%">Version</td>
+<td width="33%">Inst. Slots</td>
+<td width="37%">Constant Count</td>
+</tr>
+<tr>
+<td width="30%">======</td>
+<td width="33%">========</td>
+<td width="37%">===========</td>
+</tr>
+<tr>
+<td width="30%">vs_1_1</td>
+<td width="33%">128</td>
+<td width="37%">at least 96 cap'd (4)</td>
+</tr>
+<tr>
+<td width="30%">vs_2_0</td>
+<td width="33%">256</td>
+<td width="37%">cap'd (4)</td>
+</tr>
+<tr>
+<td width="30%">vs_2_x</td>
+<td width="33%">256</td>
+<td width="37%">cap'd (4)</td>
+</tr>
+<tr>
+<td width="30%">vs_2_sw</td>
+<td width="33%">unlimited</td>
+<td width="37%">8192</td>
+</tr>
+<tr>
+<td height="13" width="30%">vs_3_0</td>
+<td height="13" width="33%">cap'd (1)</td>
+<td height="13" width="37%">cap'd (4)</td>
+</tr>
+<tr>
+<td height="17" width="30%">ps_1_1 - ps_1_3</td>
+<td height="17" width="33%">12</td>
+<td height="17" width="37%">8</td>
+</tr>
+<tr>
+<td width="30%">ps_1_4</td>
+<td width="33%">28 (in two phases)</td>
+<td width="37%">8</td>
+</tr>
+<tr>
+<td width="30%">ps_2_0</td>
+<td width="33%">96</td>
+<td width="37%">32</td>
+</tr>
+<tr>
+<td width="30%">ps_2_x</td>
+<td width="33%">cap'd (2)</td>
+<td width="37%">32</td>
+</tr>
+<tr>
+<td width="30%">ps_3_0</td>
+<td width="33%">cap'd (3)</td>
+<td width="37%">224</td>
+</tr>
+<tr>
+<td width="30%">ps_3_sw</td>
+<td width="33%">unlimited</td>
+<td width="37%">8192</td>
+</tr>
+</tbody>
+</table>
+<p>(1) D3DCAPS9.MaxVertexShader30InstructionSlots<br> (2) D3DCAPS9.D3DPSHADERCAPS2_0.NumInstructionSlots<br> (3) D3DCAPS9.MaxPixelShader30InstructionSlots<br> (4) D3DCAPS9.MaxVertexShaderConst</p>
+<p>The capability bits above have to be checked to obtain the maximum 
+number of instructions supported by a specific card. This can be done in
+ the DirectX Caps viewer or via the D3DCAPS9 structure in the 
+application. Checking the availability of specific shader versions is 
+usually done while the application starts up. The application can then 
+choose the proper version from a list of already prepared shaders or the
+ application can put together a shader consisting of already prepared 
+shader fragments with the help of the shader fragment linker.</p>
+<p>Note that the examples shown here require mostly pixel shader version
+ 2.0 or higher. With some tweaking, some of the effects might be 
+implemented with a lower shader version by trading off some image 
+quality, but that's out of the scope of this article.</p>
+<p>The pixel shader example above calculates the diffuse reflection in 
+the source code line below the lines that are used to normalize the 
+input vectors. The function saturate() is used here to clamp all values 
+to the range 0..1. The reflection vector is retrieved by re-using the 
+result from the diffuse reflection calculation. To get the specular 
+power value, the function pow() is used. It is declared as pow(x, y) and
+ returns x<sup>y</sup>. This function is only available in pixel shaders
+ &gt;= ps_2_0. Getting a smooth specular power value in pixel shader 
+versions lower than ps_2_0 is quite a challenge (read more at 
+[Beaudoin/Guardado], [Halpin]).</p>
+<p>The last line that starts with the return statement corresponds to the implementation of the lighting formula shown above.</p>
+<hr name="false">
+<p class="subhead">Self-Shadowing Term</p>
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/self_shadow_term.jpg" alt="" height="133" width="500"></div>
+<div><strong><strong>Figure 10. Self-shadowing term. (Image on right is very faint.)</strong></strong></div>
+<p>It's common to use a self-shadowing term together with a specular 
+lighting model to receive a geometric self-shadowing effect. Such a term
+ sets the light brightness to zero, if the light vector is obscured by 
+geometry and allows a linear scaling of the light brightness. This helps
+ to reduce pixel popping when using bump maps. The screenshot in Figure 
+10 shows an example of a self-shadowing term on the right and an example
+ that does not use a self-shadowing term on the left.</p>
+<p>There are several ways to calculate this term. The following example uses (read more at [Frazier]):</p>
+<p><strong>S = saturate(4 * N.L)</strong></p>
+<p>This implementation just re-uses the N.L calculation to calculate the
+ self-shadowing term. This leads to the following lighting formula:</p>
+<p><strong>I = A + S * (D * N.L + (R.V)<sup>n</sup>)</strong></p>
+<p>The self-shadowing term reduces the diffuse and specular component of
+ the lighting model to null, in case the diffuse component is null. In 
+other words: the diffuse component is used to diminish the intensity of 
+the specular component. This is shown in the following pixel shader:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="388" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> float4 PS(float3 Light: TEXCOORD0, float3 Norm : TEXCOORD1, float3 View : TEXCOORD2) : COLOR<br> {<br> float4 diffuse = { 1.0f, 0.0f, 0.0f, 1.0f};<br> float4 ambient = {0.1, 0.0, 0.0, 1.0}; <br> <br> float3 Normal = normalize(Norm);<br> float3 LightDir = normalize(Light);<br> float3 ViewDir = normalize(View); <br> float4 diff = saturate(dot(Normal, LightDir)); // diffuse component<br> <br> // compute self-shadowing term<br> float shadow = saturate(4* diff);<br> <br> float3 Reflect = normalize(2 * diff * Normal - LightDir); // R<br> float4 specular = pow(saturate(dot(Reflect, ViewDir)), 8); // R.V^n
+<p>// I = ambient + shadow * (Dcolor * N.L + (R.V)n)<br> return ambient + shadow * (diffuse * diff + specular); <br> }</p>
+</div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="2" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="2" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bump Mapping</strong></p>
+<p>As you are probably aware, bump mapping fakes the existance of 
+geometry (grooves, nodges, bulges). The screenshot in Figure 11 shows an
+ example of a program that gives the viewer the illusion that regions 
+with mountains are higher than the water regions on earth.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="313" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/bumpmapdiffusespecularself_shadow.jpg" alt="" height="404" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 11. Bump mapping.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Whereas a color map stores color values, a bump map is a graphics 
+file (*.dds, *.tga etc.) that stores normals that are used instead of 
+the vertex normals to calculate the lighting. These normals are stored 
+in the most common bump mapping technique in what is called texture 
+space or tangent space. The light vector is usually handled in object or
+ world space, which leads to the problem, that the light vector has to 
+be transformed into the same space as the normals in the bump map, to 
+obtain proper results. This is done with the help of a texture or 
+tangent space coordinate system.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="144" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/texturespace.jpg" alt="" height="216" width="500"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 12. Texture space coordinate system.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The easiest way to obtain such a texture space coordinate system is 
+to use the D3DXComputeNormal() and D3DXComputeTangent() functions 
+provided with the Direct3D utility library Direct3DX. Source code 
+implementations of the functionality covered by these functions can be 
+found in the NVMeshMender library, that can be downloaded from the 
+Nvidia web site (developer.nvidia.com). Calculating a texture space 
+coordinate system can work similar to the calculation of the vertex 
+normal. For example, if a vertex shares three triangles, the face 
+normal/face tangent of each triangle is calculated first, then these 
+face normals of all three triangles are added together at the vertex 
+that connects these triangles to form the vertex normal/vertex tangent. 
+This example uses the vertex normal instead of a W vector for the 
+texture space coordinate system and calculates the U vector with the 
+help of the D3DXComputeTangent() function. The V vector is retrieved by 
+calculating the cross product of the W and the U vector. This is done 
+with the cross() function in the vertex shader:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="388" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br>
+<p>struct VS_OUTPUT<br> {<br> float4 Pos : POSITION;<br> float2 Tex : TEXCOORD0;<br> float3 Light : TEXCOORD1;<br> float3 View : TEXCOORD2;<br> };</p>
+<p>VS_OUTPUT VS(float4 Pos : POSITION, float2 Tex : TEXCOORD, float3 Normal : NORMAL, float3 Tangent : TANGENT )<br> {<br> VS_OUTPUT Out = (VS_OUTPUT)0; <br> Out.Pos = mul(Pos, matWorldViewProj); // transform Position<br> <br> // compute the 3x3 tranform matrix <br> // to transform from world space to tangent space<br> float3x3 worldToTangentSpace;<br> worldToTangentSpace[0] = mul(Tangent, matWorld);<br> worldToTangentSpace[1] = mul(cross(Tangent, Normal), matWorld);<br> worldToTangentSpace[2] = mul(Normal, matWorld);<br> <br> Out.Tex = Tex.xy;</p>
+<p>Out.Light.xyz = mul(worldToTangentSpace, vecLightDir); // L<br> float3 PosWorld = normalize(mul(Pos, matWorld));<br> float3 Viewer = vecEye - PosWorld; // V<br> Out.View = mul(worldToTangentSpace, Viewer);<br> <br> return Out;<br> }</p>
+<p>float4 PS(float2 Tex: TEXCOORD0, float3 Light : TEXCOORD1, <br> float3 View : TEXCOORD2) : COLOR<br> {<br> float4 color = tex2D(ColorMapSampler, Tex); // fetch color map<br> float3 bumpNormal = 2 * (tex2D(BumpMapSampler, Tex) - 0.5); // bump map<br> <br> float3 LightDir = normalize(Light); // L<br> float3 ViewDir = normalize(View); // V<br> <br> float4 diff = saturate(dot(bumpNormal, LightDir)); // diffuse comp.<br> <br> float shadow = saturate(4 * diff); // compute self-shadowing term<br> <br> float3 Reflect = normalize(2 * diff * bumpNormal - LightDir); // R<br> <br> // gloss map in color.w restricts spec reflection<br> float4 spec = min(pow(saturate(dot(Reflect, ViewDir)), 3), color.w);</p>
+<p>return 0.2 * color + shadow * (color * diff + spec); <br> }</p>
+</div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p>The 3x3 matrix, consisting of the U, V and W (== N) vectors, is 
+created in the vertex shader and is used there to transform L and V to 
+texture space.</p>
+<p>Compared to the previous example, the major differences in the pixel 
+shader are the usage of a color map and a bump map, that are fetched 
+with tex2D(). The function tex2D() is declared as tex2D(s, t), whereas s
+ is a sampler object and t is a 2D texture coordinate. Please consult 
+the DirectX 9 documentation for a lot of other texture sampler 
+functions, like texCUBE(s, t), which fetches a cube map.</p>
+<p>The normal from the bump map is used instead of the normal from the 
+vertex throughout the whole pixel shader. It is fetched from the normal 
+map by biasing (- 0.5) and scaling (* 2.0) its values. This has to be 
+done, because the normal map was stored in a unsigned texture format 
+with a value range of 0..1 to allow older hardware to operate correctly.
+ Therefore the normals have to be expanded back to their signed range.</p>
+<p>Compared to previous examples, this pixel shader restricts the region
+ where a specular reflection might happen to the water regions of the 
+shown earth model. This is done with the help of the min() function and a
+ gloss map that is stored in the alpha values of the color map. min() is
+ defined as min(a, b) and it selects the lesser of a and b.</p>
+<p>In the return statement, the ambient term is replaced by an 
+intensity-decreased color value from the color map. This way, if the 
+self-shadowing term reduces the diffuse and specular lighting component,
+ at least a very dark Earth is still visible.</p>
+<p class="subhead">Point Light</p>
+<p>The last example adds a per-pixel point light to the previous 
+example. Contrary to the parallel light beams of a directional light 
+source, the light beams of a point light spread out from the position of
+ the point light uniformerly in all directions.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="144" width="175">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> <img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/pointlight.gif" alt="" height="375" width="400"></div>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p><strong><strong>Figure 13. Point light.</strong></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br> Using a point light with an attenuation map is extensively 
+discussed in articles by Sim Dietrich [Dietrich2], by Dan Ginsburg/Dave 
+Gosselin [Ginsburg/Gosselin], by Kelly Dempski [Dempski] and others.</p>
+<p>Sim Dietrich shows in his article, that the following function delivers good enough results:</p>
+<p><strong>attenuation = 1 - d * d // d = distance</strong></p>
+<p>which stands for</p>
+<p><strong>attenuation = 1 - (x * x + y * y + z * z)</strong></p>
+<p>Dan Ginsburg/Dave Gosselin and Kelly Dempski divide the squared 
+distance through a constant, which stands for the range of distance, in 
+which the point light attenuation effect should happen:</p>
+<p><strong>attenuation = 1 - ((x/r)<sup>2</sup> + (y/r)<sup>2</sup> + (z/r)<sup>2</sup>)</strong></p>
+<p>The x/r, y/r and z/r values to the pixel shader via a TEXCOORDn 
+channel and multiply them there with the help of the mul() function. The
+ relevant source code to do this is:</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="388" width="550">
+<tbody>
+<tr>
+<td rowspan="2" bgcolor="#ccc999" height="3" valign="top" width="10">
+<div><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10"></div>
+</td>
+<td colspan="3" rowspan="2" bgcolor="#ccc999" height="3" valign="top">
+<div><br> VS_OUTPUT VS(float4 Pos : POSITION, float2 Tex : TEXCOORD, <br> float3 Normal : NORMAL, float3 Tangent : TANGENT )<br> {<br> ... <br> float LightRange = 1.0;</div>
+<p>// point light<br> Out.Att = Light * LightRange;<br> ...<br> }</p>
+<p>float4 PS(float2 Tex: TEXCOORD0, float3 Light : TEXCOORD1, <br> float3 View : TEXCOORD2, float3 Att : TEXCOORD3) : COLOR<br> {<br> ...<br> // attenuation<br> float4 Attenuation = mul(Att, Att);</p>
+<p>// colormap * (self-shadow-term * diffuse + ambient) + self-<br> shadow-term   * // specular<br> return (color * (shadow * diff + ambient) + shadow * spec) * (1     -Attenuation); <br> }</p>
+</td>
+<td align="right" bgcolor="#ccc999" height="3" valign="top" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+</tr>
+<tr>
+<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+</tr>
+<tr valign="top">
+<td align="left" bgcolor="#ccc999" height="11" valign="bottom" width="10"><img src="Gamasutra%20-%20Implementing%20Lighting%20Models%20With%20HLSL_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+<td colspan="3" bgcolor="#ccc999" height="11" valign="top">
+<p>&nbsp;</p>
+<br></td>
+</tr>
+</tbody>
+</table>
+<p>Decreasing the LightRange parameter increases the range of light, 
+whereas increasing this value leads to a shorter light range. The 
+attenuation value is multiplied with itself in the pixel shader because 
+this is more efficient than using the exponent 2. In the last line of 
+the pixel shader, the attenuation value is multiplied with the result of
+ the lighting computation to decrease or increase light intensity 
+depending on the distance of the light source.</p>
+<p class="subhead">Wrapping Up</p>
+<p>This article had covered the syntax and some of the intrinsic 
+functions of HLSL by showing how to implement some common lighting 
+formulas. It introduced you to six working (and generally concise) code 
+examples, getting you ready to generate your own shaders. To move on 
+from here, I recommend lurking into the RenderMonkey examples on <a href="http://www.ati.com/developer/indexsc.html">ATI's web site</a> and playing around with the source code found there. An interactive RenderMonkey tutorial can be found on <a href="http://www.shaderx.com/direct3d.net/tutorials/RenderMonkey%20Movies/1St">my website</a>.</p>
+<p>Furthermore, two books on shader programming (in the "ShaderX<sup>2"</sup>
+ series) will be published by Wordware in August 2003. These books 
+contain articles about shader programming by over 50 authors, and cover 
+many aspects of shader programming (more info can be found at <a href="http://www.shaderx2.com/">http://www.shaderx2.com/</a>).
+ In a few weeks, Ron Fosner will publish an article on HLSL programming 
+on Gamasutra that covers the use of RenderMonkey and Oren-Nayar Diffuse 
+lighting. If you have any comments regarding this article, I appreciate 
+any feedback -- send it to me at <a href="mailto:wolf@shaderx.com">wolf@shaderx.com</a>.</p>
+<p>&nbsp;</p>
+<p class="subhead">Acknowledgements</p>
+<p>I have to thank the following people for proof-reading this text and sending me comments (in alphabetical order):</p>
+<p>· Wessam Bahnassi<br> · Stefano Cristiano<br> · Ron Fosner<br> · Muhammad Haggag<br> · Dale LaForce<br> · William Liebenberg<br> · Vincent Prat<br> · Guillermo Rodríguez<br> · Mark Wang</p>
+<p>This text is an excerpt from the following upcoming book:</p>
+<p>Wolfgang F. Engel, <em>Beginning Direct3D Game Programming with DirectX 9 Featuring Vertex and Pixel Shaders</em>, May 2003, ISBN 1-93184-139-X</p>
+<p><strong>References</strong></p>
+<p>[Beaudoin/Guardado] Philippe Beaudoin, Juan Guardado, A Non-Integer Power Function on the Pixel Shader, <a href="http://www.gamasutra.com/features/20020801/beaudoin_01.htm">http://www.gamasutra.com/features/20020801/beaudoin_01.htm</a> (This feature is an excerpt from <em>Direct3D ShaderX: Vertex and Pixel Shader Tips and Tricks</em>, edited by Wolfgang Engel)</p>
+<p>[Dempski] Kelly Dempski, <em>Real-Time Rendering Tricks and Techniques in DirectX</em>, Premier Press, Inc., pp 578 - 585, 2002, ISBN 1-931841-27-6</p>
+<p>[Dietrich] Sim Dietrich, "Per-Pixel Lighting", Nvidia developer web-site.</p>
+<p>[Dietrich2] Sim Dietrich, "Attenuation Maps", <em>Game Programming Gems</em>, Charles River Media Inc., pp 543 - 548, 2000, ISBN 1-58450-049-2</p>
+<p>[Foley] James D. Foley, Andries van Dam, Steven K. Feiner, John F. Hughes, <em>Computer Graphics - Principles and Practice, Second Edition</em>, pp. 729 - 731, Addison Wesley, ISBN 0-201-84840-6.</p>
+<p>[Foley2] James D. Foley, Andries van Dam, Steven K. Feiner, John F. Hughes, <em>Computer Graphics - Principles and Practice, Second Edition</em>, p. 730, Addison Wesley, ISBN 0-201-84840-6.</p>
+<p>[Fosner] Ron Fosner, <em>Real-Time Shader Programming</em>, Morgan Kauffmann, pp 54 - 58, 2003, ISBN 1 - 55860-853-2</p>
+<p>[Frazier] Ronald Frazier, "Advanced Real-Time Per-Pixel Lighting in OpenGL", <a href="http://www.ronfrazier.net/apparition/index.asp?appmain=research/%20advanced_per_pixel_lighting.html" target="_blank">http://www.ronfrazier.net/apparition/index.asp?appmain=research/<br> %20advanced_per_pixel_lighting.html</a></p>
+<p>[Ginsburg/Gosselin] Dan Ginsburg/Dave Gosselin, "Dynamic Per-Pixel Lighting Techniques", <em>Game Programming Gems 2</em>, Charles River Media Inc., pp 452 - 462, 2001, ISBN 1-58450-054-9</p>
+<p>[Halpin] Matthew Halpin, "Specular Bump mapping", <em>ShaderX2 - Shader Tips &amp; Tricks</em>, Wordware Ltd. August 2003, ISBN ??</p>
+<p>[Mitchell/Peeper] Jason L. Mitchell, Craig Peeper, "Introduction to the DirectX 9 High Level Shading Language", <em>ShaderX2 - Shader Programming Introduction &amp; Tutorials</em>, Wordware Ltd., persumably August 2003, ISBN ??</p>
+<p>[RTR] Thomas Möller, Eric Haines, <em>Real-Time Rendering (</em>Second Edition), A K Peters, Ltd., p 73, 2002, ISBN 1-56881-182-9.</p>
+<p>[RTR2] Thomas Möller, Eric Haines, <em>Real-Time Rendering (</em>Second Edition), A K Peters, Ltd., pp 35 - 36, 2002, ISBN 1-56881-182-9.</p>
+<p>[Persson] Emil Persson, "Fragment level Phong Illumination", <em>ShaderX2 - Shader Tips &amp; Tricks</em>, Wordware Ltd. Autumn 2003,</p>
+<p>[Savchenko] Sergei Savchenko, "3D Graphics Programming Games and Beyond", SAMS, Seite 266, 2000, ISBN 0-672-31929-2.</p>
+<p>[Valient] Michal Valient, "Advanced Lighting and Shading with DirectX 9", <em>ShaderX2 - Shader Programming Introduction &amp; Tutorials</em>, Wordware Ltd., August 2003.</p>
+<p>&nbsp;</p>
+<blockquote>
+<blockquote>
+<div>
+<p>______________________________________________________</p>
+</div>
+</blockquote>
+</blockquote>
+
+<p style="background: #eee; text-align: center; padding: 5px;"><a href="http://www.gamasutra.com/view/feature/131275/implementing_lighting_models_with_.php">Return to the full version of this article</a><br>
+Copyright © 
+2016
+
+UBM Tech, All rights reserved
+</p>
+
+
+</div> 
+
+</body></html>

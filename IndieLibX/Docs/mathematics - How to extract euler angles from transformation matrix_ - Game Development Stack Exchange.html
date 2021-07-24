@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>mathematics - How to extract euler angles from transformation matrix? - Game Development Stack Exchange</title>
+    <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/gamedev/img/favicon.ico?v=a17a1dcca8de">
+    <link rel="apple-touch-icon image_src" href="https://cdn.sstatic.net/Sites/gamedev/img/apple-touch-icon.png?v=0cfb55927bd2">
+    <link rel="search" type="application/opensearchdescription+xml" title="Game Development Stack Exchange" href="http://gamedev.stackexchange.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StackGameDev">
+    <meta name="twitter:domain" content="gamedev.stackexchange.com">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="https://cdn.sstatic.net/Sites/gamedev/img/apple-touch-icon@2.png?v=9bca23db2259">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="How to extract euler angles from transformation matrix?">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="I have a simple realisation of entity/component game engine.
+Transform component have methods to set local position, local rotation, global position and global rotation.
+
+If transform is being set ...">
+    <meta property="og:url" content="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix">
+    <link rel="canonical" href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix">
+
+    
+    
+    
+    
+    <link rel="stylesheet" type="text/css" href="mathematics%20-%20How%20to%20extract%20euler%20angles%20from%20transformation%20matrix%3F%20-%20Game%20Development%20Stack%20Exchange_tiedostot/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'How to extract euler angles from transformation matrix?'" href="http://gamedev.stackexchange.com/feeds/question/50963">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        
+
+
+    
+    
+    
+        
+    <noscript id="noscript-css"><style type="text/css">body,.so-header{margin-top:1.9em}</style></noscript>
+</head>
+<body class="question-page new-topbar">
+            
+        <iframe id="adzerk-user-match" scrolling="no" onload="window.AUMIframeDone=true" src="https://ssum-sec.casalemedia.com/usermatch?s=183712&amp;cb=https%3A%2F%2Fengine.adzerk.net%2Fudb%2F22%2Fsync%2Fi.gif%3FpartnerId%3D1%26userId%3D" style="display: none;" marginheight="0" marginwidth="0" width="0" frameborder="0" height="0"></iframe>
+
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+    <div class="topbar-dialog siteSwitcher-dialog dno">
+        <div class="header">
+            <h3><a href="http://gamedev.stackexchange.com/">current community</a>
+            </h3>
+        </div>
+        <div class="modal-content current-site-container">
+            <ul class="current-site">
+                    <li>
+                            <div class="related-links">
+                    <a href="http://chat.stackexchange.com/?tab=site&amp;host=gamedev.stackexchange.com" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+    <a href="http://gamedev.stackexchange.com/" class="current-site-link site-link js-gps-track" data-id="53" data-gps-track="site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-gamedev" title="Game Development"></div>
+        Game Development
+    </a>
+
+                    </li>
+                    <li class="related-site">
+                            <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                        
+    <a href="http://meta.gamedev.stackexchange.com/" class="site-link js-gps-track" data-id="54" data-gps-track="site.switch({ target_site:54, item_type:3 }),site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-gamedevmeta" title="Game Development Meta"></div>
+        Game Development Meta
+    </a>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="header" id="your-communities-header">
+            <h3>
+your communities            </h3>
+
+        </div>
+        <div class="modal-content" id="your-communities-section">
+
+                <div class="call-to-login">
+<a href="https://gamedev.stackexchange.com/users/signup?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://gamedev.stackexchange.com/users/login?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+                </div>
+        </div>
+
+        <div class="header">
+            <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a>
+            </h3>
+            <a href="https://stackoverflow.blog/" class="fr">company blog</a>
+        </div>
+        <div class="modal-content">
+                <div class="child-content"></div>
+        </div>        
+    </div>
+        </div>
+
+        <div class="network-items">
+                <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 166 Stack Exchange sites">
+                    <span class="hidden-text">Stack Exchange</span>
+                </a>
+
+    <a href="#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#" class="topbar-icon icon-achievements yes-hover js-achievements-button" data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://gamedev.stackexchange.com/users/signup?ssrc=head&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix" class="login-link" rel="nofollow">sign up</a>
+                                <a href="https://gamedev.stackexchange.com/users/login?ssrc=head&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix" class="login-link" rel="nofollow">log in</a>
+
+                            <a href="http://gamedev.stackexchange.com/tour">tour</a>
+        <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+            help
+            <span class="triangle"></span>
+        </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://gamedev.stackexchange.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://gamedev.stackexchange.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="http://meta.gamedev.stackexchange.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.stackoverflowbusiness.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+                                            </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                        <input name="q" placeholder="Search Q&amp;A" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    
+
+    <div class="container">
+            <div id="header">
+                <br class="cbt">
+                <div id="hlogo">
+                    <a href="http://gamedev.stackexchange.com/">
+                        Game Development
+                    </a>
+                </div>
+                <div id="hmenus">
+                        <div class="nav mainnavs">
+                            <ul>
+                                    <li class="youarehere">
+        <a id="nav-questions" href="http://gamedev.stackexchange.com/questions" class="js-gps-track" data-gps-track="top_nav.click({is_current:true, location:2, destination:1})">
+        Questions
+        </a>
+    </li>
+
+                                                                    <li>
+        <a id="nav-tags" href="http://gamedev.stackexchange.com/tags" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:2})">
+        Tags
+        </a>
+    </li>
+
+                                    <li>
+        <a id="nav-users" href="http://gamedev.stackexchange.com/users" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:3})">
+        Users
+        </a>
+    </li>
+
+                                    <li>
+        <a id="nav-badges" href="http://gamedev.stackexchange.com/help/badges" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:4})">
+        Badges
+        </a>
+    </li>
+
+    <li>
+        <a id="nav-unanswered" href="http://gamedev.stackexchange.com/unanswered" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:5})">
+        Unanswered
+        </a>
+    </li>
+                            </ul>
+                        </div>
+                    <div class="nav askquestion">
+                        <ul>
+                            <li>
+                                <a id="nav-askquestion" href="http://gamedev.stackexchange.com/questions/ask">Ask Question</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+
+
+        <div id="content" class="snippet-hidden">
+
+
+
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="https://cdn.sstatic.net/Sites/gamedev/img/apple-touch-icon.png?v=0cfb55927bd2">
+
+
+<div id="herobox">
+    <div id="hero-content">
+            <div id="close"><a title="click to minimize">_</a></div>
+        <div id="blurb">
+            Game Development Stack Exchange is a question and answer 
+site for professional and independent game developers. Join them; it 
+only takes a minute:
+            <br>
+            <br>
+            <a href="http://gamedev.stackexchange.com/users/signup?ssrc=hero&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix" id="tell-me-more" class="button">Sign up</a>
+        </div>
+        <div id="desc">
+            <b>Here's how it works:</b>
+            <ol id="hiw">
+                <li id="q">
+                    Anybody can ask a question
+                </li>
+                <li id="an">
+                    Anybody can answer
+                </li>
+                <li id="b">
+                    The best answers are voted up and rise to the top
+                </li>
+            </ol>
+        </div>
+    <div style="clear: both"></div>
+    </div>
+</div>			<div id="question-header">
+                <h1 itemprop="name"><a href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix" class="question-hyperlink">How to extract euler angles from transformation matrix?</a></h1>
+
+            
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="50963" id="question">
+
+    
+            <div class="everyonelovesstackoverflow" id="adzerk176663767"></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="50963" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">8</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>2</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>I have a simple realisation of entity/component game engine.<br>
+Transform component have methods to set local position, local rotation, global position and global rotation.<br></p>
+
+<p>If transform is being set new global position, then local position 
+also changes, to update local position in such case I'm just applying 
+current transform local matrix to parent's transform world matrix.<br></p>
+
+<p>Until then I have no problems, I can get updated local transform matrix.<br>
+But I'm struggling on how to update local position and rotation value in transform.
+Only solution I have in mind is to extract translation &amp; rotation values from localMatrix of transform.<br></p>
+
+<p>For translation it's quite easy - I just take 4th column values.
+but what's about rotation?<br>
+How to extract euler angles from transformation matrix?</p>
+
+<p>Is such solution right?:<br>
+To find rotation around Z axis, we can find difference between X axis 
+vector of localTransform and X axis vector of parent.localTransform and 
+store result in Delta, then:
+localRotation.z = atan2(Delta.y, Delta.x);</p>
+
+<p>Same for rotation around X &amp; Y, just need to swap axis.</p>
+    </div>
+    <div class="post-taglist">
+        <a href="http://gamedev.stackexchange.com/questions/tagged/mathematics" class="post-tag js-gps-track" title="show questions tagged 'mathematics'" rel="tag">mathematics</a> <a href="http://gamedev.stackexchange.com/questions/tagged/transformation" class="post-tag js-gps-track" title="show questions tagged 'transformation'" rel="tag">transformation</a> <a href="http://gamedev.stackexchange.com/questions/tagged/angles" class="post-tag js-gps-track" title="show questions tagged 'angles'" rel="tag">angles</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://gamedev.stackexchange.com/q/50963" title="short permalink to this question" class="short-link" id="link-post-50963">share</a><span class="lsep">|</span><a href="http://gamedev.stackexchange.com/posts/50963/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2013-03-13 15:19:17Z" class="relativetime">Mar 13 '13 at 15:19</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://gamedev.stackexchange.com/users/27061/denis-narushevich"><div class="gravatar-wrapper-32"><img src="mathematics%20-%20How%20to%20extract%20euler%20angles%20from%20transformation%20matrix%3F%20-%20Game%20Development%20Stack%20Exchange_tiedostot/91b3ecf713df7736e3c2fdba656896d0.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://gamedev.stackexchange.com/users/27061/denis-narushevich">Denis Narushevich</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">147</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="3 silver badges"><span class="badge2"></span><span class="badgecount">3</span></span><span title="14 bronze badges"><span class="badge3"></span><span class="badgecount">14</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                    
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-50963" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-50963" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								2 Answers
+                                <span style="display:none;" itemprop="answerCount">2</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active" data-shortcut="A">
+            active</a>
+        <a href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest" data-shortcut="O">
+            oldest</a>
+        <a class="youarehere" href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes" data-shortcut="V">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="50968"></a>
+<div id="answer-50968" class="answer accepted-answer" data-answerid="50968" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="50968" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">8</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Normally I store all objects as 4x4 Matrices (you could do 3x3 but 
+easier for me just to have 1 class) instead of translating back and 
+forth between a 4x4 and 3 sets of vector3s (Translation, Rotation, 
+Scale). Euler angles are notoriously difficult to deal with in certain 
+scenarios so I would recommend using Quaternions if you really want to 
+store the components instead of a matrix.</p>
+
+<p>But here is some code I found a while back that works. I hope this 
+helps, unfortunately I do not have the original source for where I found
+ this. I have no idea what odd scenarios it may not work in. I am 
+currently using this to get the rotation of YawPitchRoll rotated, left 
+handed 4x4 matrices.</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">   </span><span class="kwd">union</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">struct</span><span class="pln"> 
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln">        _11</span><span class="pun">,</span><span class="pln"> _12</span><span class="pun">,</span><span class="pln"> _13</span><span class="pun">,</span><span class="pln"> _14</span><span class="pun">;</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln">        _21</span><span class="pun">,</span><span class="pln"> _22</span><span class="pun">,</span><span class="pln"> _23</span><span class="pun">,</span><span class="pln"> _24</span><span class="pun">;</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln">        _31</span><span class="pun">,</span><span class="pln"> _32</span><span class="pun">,</span><span class="pln"> _33</span><span class="pun">,</span><span class="pln"> _34</span><span class="pun">;</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln">        _41</span><span class="pun">,</span><span class="pln"> _42</span><span class="pun">,</span><span class="pln"> _43</span><span class="pun">,</span><span class="pln"> _44</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">};</span><span class="pln">
+        </span><span class="kwd">float</span><span class="pln"> m</span><span class="pun">[</span><span class="lit">4</span><span class="pun">][</span><span class="lit">4</span><span class="pun">];</span><span class="pln">
+        </span><span class="kwd">float</span><span class="pln"> m2</span><span class="pun">[</span><span class="lit">16</span><span class="pun">];</span><span class="pln">
+    </span><span class="pun">};</span><span class="pln">
+
+    </span><span class="kwd">inline</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> </span><span class="typ">GetRotation</span><span class="pun">(</span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> </span><span class="typ">Yaw</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> </span><span class="typ">Pitch</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> </span><span class="typ">Roll</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">_11 </span><span class="pun">==</span><span class="pln"> </span><span class="lit">1.0f</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="typ">Yaw</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> atan2f</span><span class="pun">(</span><span class="pln">_13</span><span class="pun">,</span><span class="pln"> _34</span><span class="pun">);</span><span class="pln">
+            </span><span class="typ">Pitch</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+            </span><span class="typ">Roll</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+
+        </span><span class="pun">}</span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">_11 </span><span class="pun">==</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1.0f</span><span class="pun">)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="typ">Yaw</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> atan2f</span><span class="pun">(</span><span class="pln">_13</span><span class="pun">,</span><span class="pln"> _34</span><span class="pun">);</span><span class="pln">
+            </span><span class="typ">Pitch</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+            </span><span class="typ">Roll</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="kwd">else</span><span class="pln"> 
+        </span><span class="pun">{</span><span class="pln">
+
+            </span><span class="typ">Yaw</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(-</span><span class="pln">_31</span><span class="pun">,</span><span class="pln">_11</span><span class="pun">);</span><span class="pln">
+            </span><span class="typ">Pitch</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> asin</span><span class="pun">(</span><span class="pln">_21</span><span class="pun">);</span><span class="pln">
+            </span><span class="typ">Roll</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(-</span><span class="pln">_23</span><span class="pun">,</span><span class="pln">_22</span><span class="pun">);</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">}</span></code></pre>
+
+<p>Here is another thread I found while trying to answer your question that looked like a similar result to mine.</p>
+
+<p><a href="http://stackoverflow.com/questions/1996957/conversion-euler-to-matrix-and-matrix-to-euler">http://stackoverflow.com/questions/1996957/conversion-euler-to-matrix-and-matrix-to-euler</a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://gamedev.stackexchange.com/a/50968" title="short permalink to this answer" class="short-link" id="link-post-50968">share</a><span class="lsep">|</span><a href="http://gamedev.stackexchange.com/posts/50968/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2013-03-13 16:30:37Z" class="relativetime">Mar 13 '13 at 16:30</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://gamedev.stackexchange.com/users/7057/ntsccobalt"><div class="gravatar-wrapper-32"><img src="mathematics%20-%20How%20to%20extract%20euler%20angles%20from%20transformation%20matrix%3F%20-%20Game%20Development%20Stack%20Exchange_tiedostot/1a258fab0581775ab9c6dce274990606.jpeg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://gamedev.stackexchange.com/users/7057/ntsccobalt">NtscCobalt</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">933</span><span title="5 silver badges"><span class="badge2"></span><span class="badgecount">5</span></span><span title="15 bronze badges"><span class="badge3"></span><span class="badgecount">15</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-50968" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-87017" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">It seems that my proposed solution is almost right, just don't know why isntead of atan2 asin is used for pitch.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/27061/denis-narushevich" title="147 reputation" class="comment-user owner">Denis Narushevich</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment87017_50968"><span title="2013-03-13 16:57:05Z" class="relativetime-clean">Mar 13 '13 at 16:57</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-87018" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Also, how it would help me, 
+if I would store each component in separate mat4x4? How could I then get
+ and e.g. output angle of rotation around some axis?</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/27061/denis-narushevich" title="147 reputation" class="comment-user owner">Denis Narushevich</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment87018_50968"><span title="2013-03-13 16:57:47Z" class="relativetime-clean">Mar 13 '13 at 16:57</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-87019" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Your original question lead 
+me to believe that you are storing your objects as 3 vector3s: 
+Translation, Rotation, and Scale. Then when you creating a 
+localTransform out of those doing some work and later attempting to 
+convert (localTransform*globalTransform) back into 3 vector3s. I could 
+be totally wrong I was just getting that impression.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/7057/ntsccobalt" title="933 reputation" class="comment-user">NtscCobalt</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment87019_50968"><span title="2013-03-13 17:00:17Z" class="relativetime-clean">Mar 13 '13 at 17:00</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-87020" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Yeah I don't know the math 
+well enough for why pitch is done with ASIN but the linked question uses
+ the same math so I believe it is correct. I've been using this function
+ for a while to without any issue.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/7057/ntsccobalt" title="933 reputation" class="comment-user">NtscCobalt</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment87020_50968"><span title="2013-03-13 17:02:00Z" class="relativetime-clean">Mar 13 '13 at 17:02</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-241466" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Is there any particular reason for using atan2f in the first two if cases and atan2 in the third, or is it a typo?</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/97707/mattias-f" title="101 reputation" class="comment-user">Mattias F</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment241466_50968"><span title="2017-02-13 13:16:24Z" class="relativetime-clean">Feb 13 at 13:16</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-50968" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+            <div class="everyonelovesstackoverflow" id="adzerk139862155"></div>
+  
+<a name="112271"></a>
+<div id="answer-112271" class="answer" data-answerid="112271" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="112271" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">5</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>There's a great writeup on this process by Mike Day:
+<a href="https://d3cw3dd2w32x2b.cloudfront.net/wp-content/uploads/2012/07/euler-angles1.pdf" rel="nofollow noreferrer">https://d3cw3dd2w32x2b.cloudfront.net/wp-content/uploads/2012/07/euler-angles1.pdf</a></p>
+
+<p>It is also now implemented in glm, as of version 0.9.7.0, 02/08/2015.  <a href="https://github.com/jzrake/glm/commit/d3313421c664db5bd1b672d39ba3faec0d430117" rel="nofollow noreferrer">Check out the implementation</a>.</p>
+
+<p>To understand the math, you should look at the values that are in 
+your rotation matrix.  In addition, you have to know the order in which 
+the rotations were applied to create your matrix in order to properly 
+extract the values.</p>
+
+<p>A rotation matrix from Euler angles is formed by combining rotations 
+around the x-, y-, and z-axes.  For instance, rotating θ degrees around Z
+ can be done with the matrix</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">     </span><span class="pun">┌</span><span class="pln"> cos</span><span class="pun">θ</span><span class="pln">  </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln"> </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">Rz</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln"> sin</span><span class="pun">θ</span><span class="pln">   cos</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln"> </span><span class="pun">│</span><span class="pln">
+     </span><span class="pun">└</span><span class="pln">   </span><span class="lit">0</span><span class="pln">      </span><span class="lit">0</span><span class="pln">   </span><span class="lit">1</span><span class="pln"> </span><span class="pun">┘</span></code></pre>
+
+<p>Similar matrices exist for rotating about the X and Y axes:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">     </span><span class="pun">┌</span><span class="pln">  </span><span class="lit">1</span><span class="pln">    </span><span class="lit">0</span><span class="pln">     </span><span class="lit">0</span><span class="pln">   </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">Rx</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln">  </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">│</span><span class="pln">
+     </span><span class="pun">└</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  sin</span><span class="pun">θ</span><span class="pln">   cos</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┘</span><span class="pln">
+
+     </span><span class="pun">┌</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  sin</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">Ry</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln">   </span><span class="lit">0</span><span class="pln">    </span><span class="lit">1</span><span class="pln">   </span><span class="lit">0</span><span class="pln">   </span><span class="pun">│</span><span class="pln">
+     </span><span class="pun">└</span><span class="pln"> </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┘</span><span class="pln">
+
+     </span><span class="pun">┌</span><span class="pln">  </span><span class="lit">1</span><span class="pln">    </span><span class="lit">0</span><span class="pln">     </span><span class="lit">0</span><span class="pln">   </span><span class="pun">┐┌</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  sin</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">Rx</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln">  </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">││</span><span class="pln">   </span><span class="lit">0</span><span class="pln">    </span><span class="lit">1</span><span class="pln">   </span><span class="lit">0</span><span class="pln">   </span><span class="pun">│</span><span class="pln">
+     </span><span class="pun">└</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  sin</span><span class="pun">θ</span><span class="pln">   cos</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┘└</span><span class="pln"> </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">θ</span><span class="pln">  </span><span class="lit">0</span><span class="pln">  cos</span><span class="pun">θ</span><span class="pln"> </span><span class="pun">┘</span></code></pre>
+
+<p>We can multiply these matrices together to create one matrix that is 
+the result of all three rotations.  It's important to note that the 
+order that these matrices are multiplied together is important, because <a href="https://en.wikipedia.org/wiki/Matrix_multiplication#All_matrices" rel="nofollow noreferrer">matrix multiplication is not commutative</a>.  This means that <code>Rx*Ry*Rz ≠ Rz*Ry*Rx</code>.
+  Let's consider one possible rotation order, z-y-x.  When the three 
+matrices are combined, it results in a matrix that looks like this:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">         </span><span class="pun">┌</span><span class="pln">      </span><span class="typ">CyCz</span><span class="pln">              </span><span class="pun">-</span><span class="typ">CySz</span><span class="pln">        </span><span class="typ">Sy</span><span class="pln">  </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">RxRyRz</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln">  </span><span class="typ">SxSyCz</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="typ">CxSz</span><span class="pln">   </span><span class="pun">-</span><span class="typ">SxSySz</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="typ">CxCz</span><span class="pln">   </span><span class="pun">-</span><span class="typ">SxCy</span><span class="pln"> </span><span class="pun">│</span><span class="pln">
+         </span><span class="pun">└</span><span class="pln"> </span><span class="pun">-</span><span class="typ">CxSyCz</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="typ">SxSz</span><span class="pln">    </span><span class="typ">CxSySz</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="typ">SxCz</span><span class="pln">    </span><span class="typ">CxCy</span><span class="pln"> </span><span class="pun">┘</span></code></pre>
+
+<p>where <code>Cx</code> is the cosine of the <code>x</code> angle of rotation, <code>Sx</code> is the sine of the <code>x</code> angle of rotation, etc.</p>
+
+<p>Now, the challenge is to extract the original <code>x</code>, <code>y</code>, and <code>z</code> values that went into the matrix.</p>
+
+<p>Let's first get the <code>x</code> angle out.  If we know the <code>sin(x)</code> and <code>cos(x)</code>, we can use the inverse tangent function <code>atan2</code>
+ to give us back our angle.  Unfortunately, those values don't appear by
+ themselves in our matrix.  But, if we take a closer look at elements <code>M[1][2]</code> and <code>M[2][2]</code>, we can see we do know <code>-sin(x)*cos(y)</code> as well as <code>cos(x)*cos(y)</code>.
+  Since the tangent function is the ratio of the opposite and adjacent 
+sides of a triangle, scaling both values by the same amount (in this 
+case <code>cos(y)</code>) will yield the same result.  Thus,</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">x </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(-</span><span class="pln">M</span><span class="pun">[</span><span class="lit">1</span><span class="pun">][</span><span class="lit">2</span><span class="pun">],</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">2</span><span class="pun">][</span><span class="lit">2</span><span class="pun">])</span></code></pre>
+
+<p>Now let's try to get <code>y</code>.  We know <code>sin(y)</code> from <code>M[0][2]</code>.  If we had cos(y), we could use <code>atan2</code> again, but we don't have that value in our matrix.  However, <a href="https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Pythagorean_identity" rel="nofollow noreferrer">due to the Pythagorean identity</a>, we know that:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">cosY </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="lit">1</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">0</span><span class="pun">][</span><span class="lit">2</span><span class="pun">])</span></code></pre>
+
+<p>So, we can calculate <code>y</code>:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">y </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(</span><span class="pln">M</span><span class="pun">[</span><span class="lit">0</span><span class="pun">][</span><span class="lit">2</span><span class="pun">],</span><span class="pln"> cosY</span><span class="pun">)</span></code></pre>
+
+<p>Last, we need to calculate <code>z</code>.  This is where Mike Day's approach differs from the previous answer.  Since at this point we know the amount of <code>x</code> and <code>y</code> rotation, we can construct an XY rotation matrix, and find the amount of <code>z</code> rotation necessary to match the target matrix.  The <code>RxRy</code> matrix looks like this:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">       </span><span class="pun">┌</span><span class="pln">   </span><span class="typ">Cy</span><span class="pln">     </span><span class="lit">0</span><span class="pln">     </span><span class="typ">Sy</span><span class="pln">  </span><span class="pun">┐</span><span class="pln">
+</span><span class="typ">RxRy</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln">  </span><span class="typ">SxSy</span><span class="pln">   </span><span class="typ">Cx</span><span class="pln">   </span><span class="pun">-</span><span class="typ">SxCy</span><span class="pln"> </span><span class="pun">│</span><span class="pln">
+       </span><span class="pun">└</span><span class="pln"> </span><span class="pun">-</span><span class="typ">CxSy</span><span class="pln">   </span><span class="typ">Sx</span><span class="pln">    </span><span class="typ">CxCy</span><span class="pln"> </span><span class="pun">┘</span></code></pre>
+
+<p>Since we know that <code>RxRy</code> * <code>Rz</code> is equal to our input matrix <code>M</code>, we can use this matrix to get back to <code>Rz</code>:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">M </span><span class="pun">=</span><span class="pln"> </span><span class="typ">RxRy</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> </span><span class="typ">Rz</span><span class="pln">
+
+inverse</span><span class="pun">(</span><span class="typ">RxRy</span><span class="pun">)</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> M </span><span class="pun">=</span><span class="pln"> </span><span class="typ">Rz</span></code></pre>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Rotation_matrix#Multiplication" rel="nofollow noreferrer">inverse of a rotation matrix is its transpose</a>, so we can expand this to:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pun">┌</span><span class="pln"> </span><span class="typ">Cy</span><span class="pln">   </span><span class="typ">SxSy</span><span class="pln">  </span><span class="pun">-</span><span class="typ">CxSy</span><span class="pln"> </span><span class="pun">┐┌</span><span class="pln">M00  M01  M02</span><span class="pun">┐</span><span class="pln">   </span><span class="pun">┌</span><span class="pln"> cosZ  </span><span class="pun">-</span><span class="pln">sinZ  </span><span class="lit">0</span><span class="pln"> </span><span class="pun">┐</span><span class="pln">
+</span><span class="pun">│</span><span class="pln">  </span><span class="lit">0</span><span class="pln">    </span><span class="typ">Cx</span><span class="pln">     </span><span class="typ">Sx</span><span class="pln">  </span><span class="pun">││</span><span class="pln">M10  M11  M12</span><span class="pun">│</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">│</span><span class="pln"> sinZ   cosZ  </span><span class="lit">0</span><span class="pln"> </span><span class="pun">│</span><span class="pln">
+</span><span class="pun">└</span><span class="pln"> </span><span class="typ">Sy</span><span class="pln">  </span><span class="pun">-</span><span class="typ">SxCy</span><span class="pln">   </span><span class="typ">CxCy</span><span class="pln"> </span><span class="pun">┘└</span><span class="pln">M20  M21  M22</span><span class="pun">┘</span><span class="pln">   </span><span class="pun">└</span><span class="pln">   </span><span class="lit">0</span><span class="pln">      </span><span class="lit">0</span><span class="pln">   </span><span class="lit">1</span><span class="pln"> </span><span class="pun">┘</span></code></pre>
+
+<p>We can now solve for <code>sinZ</code> and <code>cosZ</code> by performing the matrix multiplication.  We only need to calculate the elements <code>[1][0]</code> and <code>[1][1]</code>.</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="pln">sinZ </span><span class="pun">=</span><span class="pln"> cosX </span><span class="pun">*</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">1</span><span class="pun">][</span><span class="lit">0</span><span class="pun">]</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> sinX </span><span class="pun">*</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">2</span><span class="pun">][</span><span class="lit">0</span><span class="pun">]</span><span class="pln">
+cosZ </span><span class="pun">=</span><span class="pln"> coxX </span><span class="pun">*</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">1</span><span class="pun">][</span><span class="lit">1</span><span class="pun">]</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> sinX </span><span class="pun">*</span><span class="pln"> M</span><span class="pun">[</span><span class="lit">2</span><span class="pun">][</span><span class="lit">1</span><span class="pun">]</span><span class="pln">
+z </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(</span><span class="pln">sinZ</span><span class="pun">,</span><span class="pln"> cosZ</span><span class="pun">)</span></code></pre>
+
+<p>Here's a full implementation for reference:</p>
+
+<pre class="default prettyprint prettyprinted" style=""><code><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;iostream&gt;</span><span class="pln">
+</span><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;cmath&gt;</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Vec4</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+</span><span class="kwd">public</span><span class="pun">:</span><span class="pln">
+    </span><span class="typ">Vec4</span><span class="pun">(</span><span class="kwd">float</span><span class="pln"> x</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> y</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> z</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> w</span><span class="pun">)</span><span class="pln"> </span><span class="pun">:</span><span class="pln">
+        x</span><span class="pun">(</span><span class="pln">x</span><span class="pun">),</span><span class="pln"> y</span><span class="pun">(</span><span class="pln">y</span><span class="pun">),</span><span class="pln"> z</span><span class="pun">(</span><span class="pln">z</span><span class="pun">),</span><span class="pln"> w</span><span class="pun">(</span><span class="pln">w</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+    </span><span class="kwd">float</span><span class="pln"> dot</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="typ">Vec4</span><span class="pun">&amp;</span><span class="pln"> other</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> x </span><span class="pun">*</span><span class="pln"> other</span><span class="pun">.</span><span class="pln">x </span><span class="pun">+</span><span class="pln">
+            y </span><span class="pun">*</span><span class="pln"> other</span><span class="pun">.</span><span class="pln">y </span><span class="pun">+</span><span class="pln">
+            z </span><span class="pun">*</span><span class="pln"> other</span><span class="pun">.</span><span class="pln">z </span><span class="pun">+</span><span class="pln">
+            w </span><span class="pun">*</span><span class="pln"> other</span><span class="pun">.</span><span class="pln">w</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">};</span><span class="pln">
+
+    </span><span class="kwd">float</span><span class="pln"> x</span><span class="pun">,</span><span class="pln"> y</span><span class="pun">,</span><span class="pln"> z</span><span class="pun">,</span><span class="pln"> w</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">};</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Mat4x4</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+</span><span class="kwd">public</span><span class="pun">:</span><span class="pln">
+    </span><span class="typ">Mat4x4</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+    </span><span class="typ">Mat4x4</span><span class="pun">(</span><span class="kwd">float</span><span class="pln"> v00</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v01</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v02</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v03</span><span class="pun">,</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln"> v10</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v11</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v12</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v13</span><span class="pun">,</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln"> v20</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v21</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v22</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v23</span><span class="pun">,</span><span class="pln">
+            </span><span class="kwd">float</span><span class="pln"> v30</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v31</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v32</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pln"> v33</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v00</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">1</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v01</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">2</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v02</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">3</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v03</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">4</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v10</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">5</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v11</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">6</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v12</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">7</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v13</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">8</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v20</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">9</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln">  v21</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">10</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v22</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">11</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v23</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">12</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v30</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">13</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v31</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">14</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v32</span><span class="pun">;</span><span class="pln">
+        values</span><span class="pun">[</span><span class="lit">15</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> v33</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="typ">Vec4</span><span class="pln"> row</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> row</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Vec4</span><span class="pun">(</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">row</span><span class="pun">*</span><span class="lit">4</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">row</span><span class="pun">*</span><span class="lit">4</span><span class="pun">+</span><span class="lit">1</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">row</span><span class="pun">*</span><span class="lit">4</span><span class="pun">+</span><span class="lit">2</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">row</span><span class="pun">*</span><span class="lit">4</span><span class="pun">+</span><span class="lit">3</span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="typ">Vec4</span><span class="pln"> column</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> column</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Vec4</span><span class="pun">(</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">column</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">column </span><span class="pun">+</span><span class="pln"> </span><span class="lit">4</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">column </span><span class="pun">+</span><span class="pln"> </span><span class="lit">8</span><span class="pun">],</span><span class="pln">
+            values</span><span class="pun">[</span><span class="pln">column </span><span class="pun">+</span><span class="pln"> </span><span class="lit">12</span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="typ">Mat4x4</span><span class="pln"> multiply</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="typ">Mat4x4</span><span class="pun">&amp;</span><span class="pln"> other</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="typ">Mat4x4</span><span class="pln"> result</span><span class="pun">;</span><span class="pln">
+        </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> row </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> row </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">4</span><span class="pun">;</span><span class="pln"> </span><span class="pun">++</span><span class="pln">row</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> column </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> column </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">4</span><span class="pun">;</span><span class="pln"> </span><span class="pun">++</span><span class="pln">column</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                result</span><span class="pun">.</span><span class="pln">values</span><span class="pun">[</span><span class="pln">row</span><span class="pun">*</span><span class="lit">4</span><span class="pun">+</span><span class="pln">column</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">this</span><span class="pun">-&gt;</span><span class="pln">row</span><span class="pun">(</span><span class="pln">row</span><span class="pun">).</span><span class="pln">dot</span><span class="pun">(</span><span class="pln">other</span><span class="pun">.</span><span class="pln">column</span><span class="pun">(</span><span class="pln">column</span><span class="pun">));</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> result</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="kwd">void</span><span class="pln"> extractEulerAngleXYZ</span><span class="pun">(</span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> rotXangle</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> rotYangle</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">float</span><span class="pun">&amp;</span><span class="pln"> rotZangle</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">const</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        rotXangle </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(-</span><span class="pln">row</span><span class="pun">(</span><span class="lit">1</span><span class="pun">).</span><span class="pln">z</span><span class="pun">,</span><span class="pln"> row</span><span class="pun">(</span><span class="lit">2</span><span class="pun">).</span><span class="pln">z</span><span class="pun">);</span><span class="pln">
+        </span><span class="kwd">float</span><span class="pln"> cosYangle </span><span class="pun">=</span><span class="pln"> sqrt</span><span class="pun">(</span><span class="pln">pow</span><span class="pun">(</span><span class="pln">row</span><span class="pun">(</span><span class="lit">0</span><span class="pun">).</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">)</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> pow</span><span class="pun">(</span><span class="pln">row</span><span class="pun">(</span><span class="lit">0</span><span class="pun">).</span><span class="pln">y</span><span class="pun">,</span><span class="pln"> </span><span class="lit">2</span><span class="pun">));</span><span class="pln">
+        rotYangle </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(</span><span class="pln">row</span><span class="pun">(</span><span class="lit">0</span><span class="pun">).</span><span class="pln">z</span><span class="pun">,</span><span class="pln"> cosYangle</span><span class="pun">);</span><span class="pln">
+        </span><span class="kwd">float</span><span class="pln"> sinXangle </span><span class="pun">=</span><span class="pln"> sin</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">);</span><span class="pln">
+        </span><span class="kwd">float</span><span class="pln"> cosXangle </span><span class="pun">=</span><span class="pln"> cos</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">);</span><span class="pln">
+        rotZangle </span><span class="pun">=</span><span class="pln"> atan2</span><span class="pun">(</span><span class="pln">cosXangle </span><span class="pun">*</span><span class="pln"> row</span><span class="pun">(</span><span class="lit">1</span><span class="pun">).</span><span class="pln">x </span><span class="pun">+</span><span class="pln"> sinXangle </span><span class="pun">*</span><span class="pln"> row</span><span class="pun">(</span><span class="lit">2</span><span class="pun">).</span><span class="pln">x</span><span class="pun">,</span><span class="pln"> cosXangle </span><span class="pun">*</span><span class="pln"> row</span><span class="pun">(</span><span class="lit">1</span><span class="pun">).</span><span class="pln">y </span><span class="pun">+</span><span class="pln"> sinXangle </span><span class="pun">*</span><span class="pln"> row</span><span class="pun">(</span><span class="lit">2</span><span class="pun">).</span><span class="pln">y</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="kwd">float</span><span class="pln"> values</span><span class="pun">[</span><span class="lit">16</span><span class="pun">];</span><span class="pln">
+</span><span class="pun">};</span><span class="pln">
+
+</span><span class="kwd">float</span><span class="pln"> toRadians</span><span class="pun">(</span><span class="kwd">float</span><span class="pln"> degrees</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> degrees </span><span class="pun">*</span><span class="pln"> </span><span class="pun">(</span><span class="pln">M_PI </span><span class="pun">/</span><span class="pln"> </span><span class="lit">180</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">float</span><span class="pln"> toDegrees</span><span class="pun">(</span><span class="kwd">float</span><span class="pln"> radians</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> radians </span><span class="pun">*</span><span class="pln"> </span><span class="pun">(</span><span class="lit">180</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> M_PI</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">int</span><span class="pln"> main</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">float</span><span class="pln"> rotXangle </span><span class="pun">=</span><span class="pln"> toRadians</span><span class="pun">(</span><span class="lit">15</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">float</span><span class="pln"> rotYangle </span><span class="pun">=</span><span class="pln"> toRadians</span><span class="pun">(</span><span class="lit">30</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">float</span><span class="pln"> rotZangle </span><span class="pun">=</span><span class="pln"> toRadians</span><span class="pun">(</span><span class="lit">60</span><span class="pun">);</span><span class="pln">
+
+    </span><span class="typ">Mat4x4</span><span class="pln"> rotX</span><span class="pun">(</span><span class="pln">
+        </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">               </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> cos</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">),</span><span class="pln"> </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> sin</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">),</span><span class="pln">  cos</span><span class="pun">(</span><span class="pln">rotXangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">               </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">1</span><span class="pln">
+    </span><span class="pun">);</span><span class="pln">
+    </span><span class="typ">Mat4x4</span><span class="pln"> rotY</span><span class="pun">(</span><span class="pln">
+         cos</span><span class="pun">(</span><span class="pln">rotYangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> sin</span><span class="pun">(</span><span class="pln">rotYangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+         </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">(</span><span class="pln">rotYangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> cos</span><span class="pun">(</span><span class="pln">rotYangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln">               </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">1</span><span class="pln">
+    </span><span class="pun">);</span><span class="pln">
+    </span><span class="typ">Mat4x4</span><span class="pln"> rotZ</span><span class="pun">(</span><span class="pln">
+        cos</span><span class="pun">(</span><span class="pln">rotZangle</span><span class="pun">),</span><span class="pln"> </span><span class="pun">-</span><span class="pln">sin</span><span class="pun">(</span><span class="pln">rotZangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        sin</span><span class="pun">(</span><span class="pln">rotZangle</span><span class="pun">),</span><span class="pln">  cos</span><span class="pun">(</span><span class="pln">rotZangle</span><span class="pun">),</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln">               </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln">
+        </span><span class="lit">0</span><span class="pun">,</span><span class="pln">               </span><span class="lit">0</span><span class="pun">,</span><span class="pln">              </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pln">
+    </span><span class="pun">);</span><span class="pln">
+
+    </span><span class="typ">Mat4x4</span><span class="pln"> concatenatedRotationMatrix </span><span class="pun">=</span><span class="pln">
+        rotX</span><span class="pun">.</span><span class="pln">multiply</span><span class="pun">(</span><span class="pln">rotY</span><span class="pun">.</span><span class="pln">multiply</span><span class="pun">(</span><span class="pln">rotZ</span><span class="pun">));</span><span class="pln">
+
+    </span><span class="kwd">float</span><span class="pln"> extractedXangle </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> extractedYangle </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> extractedZangle </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+    concatenatedRotationMatrix</span><span class="pun">.</span><span class="pln">extractEulerAngleXYZ</span><span class="pun">(</span><span class="pln">
+        extractedXangle</span><span class="pun">,</span><span class="pln"> extractedYangle</span><span class="pun">,</span><span class="pln"> extractedZangle
+    </span><span class="pun">);</span><span class="pln">
+
+    std</span><span class="pun">::</span><span class="pln">cout </span><span class="pun">&lt;&lt;</span><span class="pln"> toDegrees</span><span class="pun">(</span><span class="pln">extractedXangle</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">' '</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln">
+        toDegrees</span><span class="pun">(</span><span class="pln">extractedYangle</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> </span><span class="str">' '</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln">
+        toDegrees</span><span class="pun">(</span><span class="pln">extractedZangle</span><span class="pun">)</span><span class="pln"> </span><span class="pun">&lt;&lt;</span><span class="pln"> std</span><span class="pun">::</span><span class="pln">endl</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://gamedev.stackexchange.com/a/112271" title="short permalink to this answer" class="short-link" id="link-post-112271">share</a><span class="lsep">|</span><a href="http://gamedev.stackexchange.com/posts/112271/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://gamedev.stackexchange.com/posts/112271/revisions" title="show all edits to this post">edited <span title="2016-11-18 18:12:46Z" class="relativetime">Nov 18 '16 at 18:12</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-12-02 01:24:38Z" class="relativetime">Dec 2 '15 at 1:24</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://gamedev.stackexchange.com/users/75400/chris"><div class="gravatar-wrapper-32"><img src="mathematics%20-%20How%20to%20extract%20euler%20angles%20from%20transformation%20matrix%3F%20-%20Game%20Development%20Stack%20Exchange_tiedostot/ov87a.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://gamedev.stackexchange.com/users/75400/chris">Chris</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">151</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="3 bronze badges"><span class="badge3"></span><span class="badgecount">3</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-112271" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-196214" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Note, however, the problem 
+when y = pi/2 and thus cos(y) == 0. Then it is NOT the case that M[1][3]
+ and M[2][3] can be used to obtain x because the ratio is undefined, and
+ not <i>atan2</i> value can be obtained. I believe that this is equivalent to the <i>gimbal lock</i> problem.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/26606/pieter-geerkens" title="1,826 reputation" class="comment-user">Pieter Geerkens</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment196214_112271"><span title="2015-12-03 23:18:46Z" class="relativetime-clean">Dec 3 '15 at 23:18</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-196218" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@PieterGeerkens, you're 
+right, that is gimbal lock.  BTW, your comment revealed that I had a 
+typo in that section.  I refer to the matrix indices with the first one 
+at 0, and since they are 3x3 matrices, the last index is 2, not 3.  I've
+ corrected <code>M[1][3]</code> with <code>M[1][2]</code>, and <code>M[2][3]</code> with <code>M[2][2]</code>.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/75400/chris" title="151 reputation" class="comment-user">Chris</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment196218_112271"><span title="2015-12-04 00:17:32Z" class="relativetime-clean">Dec 4 '15 at 0:17</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-232354" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I'm pretty sure second row first column of the example combined matrix is SxSyCz + CxSz, not SxSySz + CxSz!</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/33749/lake" title="101 reputation" class="comment-user">Lake</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment232354_112271"><span title="2016-11-18 15:39:05Z" class="relativetime-clean">Nov 18 '16 at 15:39</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-232374" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@Lake, you're correct.  Edited.</span>
+                    –&nbsp;<a href="http://gamedev.stackexchange.com/users/75400/chris" title="151 reputation" class="comment-user">Chris</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment232374_112271"><span title="2016-11-18 18:13:22Z" class="relativetime-clean">Nov 18 '16 at 18:13</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-112271" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/50963/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="50963" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="https://www.google.fi/" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+
+            
+    
+
+
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li id="wmd-bold-button" class="wmd-button" style="left: 0px;"><span style="background-position: 0px -20px;"></span></li><li id="wmd-italic-button" class="wmd-button" style="left: 25px;"><span style="background-position: -20px -20px;"></span></li><li id="wmd-spacer1" class="wmd-spacer" style="left: 50px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-link-button" class="wmd-button" style="left: 75px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-quote-button" class="wmd-button" style="left: 100px;"><span style="background-position: -60px -20px;"></span></li><li id="wmd-code-button" class="wmd-button" style="left: 125px;"><span style="background-position: -80px -20px;"></span></li><li id="wmd-image-button" class="wmd-button" style="left: 150px;"><span style="background-position: -100px -20px;"></span></li><li id="wmd-spacer2" class="wmd-spacer" style="left: 175px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-olist-button" class="wmd-button" style="left: 200px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-ulist-button" class="wmd-button" style="left: 225px;"><span style="background-position: -140px -20px;"></span></li><li id="wmd-heading-button" class="wmd-button" style="left: 250px;"><span style="background-position: -160px -20px;"></span></li><li id="wmd-hr-button" class="wmd-button" style="left: 275px;"><span style="background-position: -180px -20px;"></span></li><li id="wmd-spacer3" class="wmd-spacer" style="left: 300px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-undo-button" class="wmd-button" style="left: 325px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-redo-button" class="wmd-button" style="left: 350px;"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="32495ec331b828ec6c19514cd91e3d8d" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://gamedev.stackexchange.com/users/login?ssrc=question_page&amp;returnurl=http%3a%2f%2fgamedev.stackexchange.com%2fquestions%2f50963%2fhow-to-extract-euler-angles-from-transformation-matrix%23new-answer">log in</a></h3>
+                        
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" 
+type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" 
+size="30" maxlength="100" value="" tabindex="106" placeholder="required,
+ but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="btn-clear discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" name="privacy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" name="tos" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://gamedev.stackexchange.com/questions/tagged/mathematics" class="post-tag" title="show questions tagged 'mathematics'" rel="tag">mathematics</a> <a href="http://gamedev.stackexchange.com/questions/tagged/transformation" class="post-tag" title="show questions tagged 'transformation'" rel="tag">transformation</a> <a href="http://gamedev.stackexchange.com/questions/tagged/angles" class="post-tag" title="show questions tagged 'angles'" rel="tag">angles</a>  or <a href="http://gamedev.stackexchange.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2013-03-13 15:19:17Z"><b>3 years ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>17621 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://gamedev.stackexchange.com/questions/50963/how-to-extract-euler-angles-from-transformation-matrix?lastactivity" class="lastactivity-link" title="2016-11-18 18:12:46Z">3 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+			<div class="module community-bulletin" data-tracker="cb=1">
+    <div class="related">
+                <div class="bulletin-title">
+                    Blog
+                </div>
+                <hr>
+    <div class="spacer">
+        <div class="bulletin-item-type">
+                <a href="https://stackoverflow.blog/2017/03/06/stack-overflow-podcast-103-grandma/?cb=1" class="question-hyperlink">
+<div class="favicon favicon-stackexchangemeta" title="Meta Stack Exchange"></div>                </a>
+            </div>
+                <div class="bulletin-item-content">
+                    <a href="https://stackoverflow.blog/2017/03/06/stack-overflow-podcast-103-grandma/?cb=1" class="question-hyperlink">Podcast #103: Grandma, is that you?</a>
+                </div>
+                <br class="cbt">
+            </div>
+    </div>
+</div>			
+			
+            <div class="everyonelovesstackoverflow" id="adzerk1992357373"></div>
+			
+
+            
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/35476?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">4</div></a><a href="http://gamedev.stackexchange.com/questions/35476/how-to-derive-euler-angles-from-matrix-or-quaternion?rq=1" class="question-hyperlink">How to derive euler angles from matrix or quaternion?</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/40226?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">2</div></a><a href="http://gamedev.stackexchange.com/questions/40226/confusion-about-rotation-matrices-from-euler-angles?rq=1" class="question-hyperlink">Confusion about Rotation matrices from Euler Angles</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/44511?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">4</div></a><a href="http://gamedev.stackexchange.com/questions/44511/how-to-transform-mesh-components?rq=1" class="question-hyperlink">How to transform mesh components?</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/48927?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">8</div></a><a href="http://gamedev.stackexchange.com/questions/48927/how-can-you-extract-orientation-from-a-transformation-matrix?rq=1" class="question-hyperlink">How can you extract orientation from a transformation matrix?</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/50782?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">1</div></a><a href="http://gamedev.stackexchange.com/questions/50782/proper-approach-to-handle-transformation-matrix-and-extract-its-components?rq=1" class="question-hyperlink">Proper approach to handle transformation matrix and extract its components</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/79367?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="http://gamedev.stackexchange.com/questions/79367/matrix-transformation?rq=1" class="question-hyperlink">Matrix transformation</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/97183?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">0</div></a><a href="http://gamedev.stackexchange.com/questions/97183/how-to-use-atan2-to-get-the-correct-angle-inside-or-outside-angle?rq=1" class="question-hyperlink">How to use atan2 to get the correct angle? (inside or outside angle)</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/131686?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">0</div></a><a href="http://gamedev.stackexchange.com/questions/131686/axis-of-affine-transformation-matrix?rq=1" class="question-hyperlink">Axis of affine transformation matrix</a></div><div class="spacer js-gps-track"><a href="http://gamedev.stackexchange.com/q/132538?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">-1</div></a><a href="http://gamedev.stackexchange.com/questions/132538/changing-a-direction-vector-with-euler-angles?rq=1" class="question-hyperlink">Changing a direction Vector with Euler angles</a></div>
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module tex2jax_ignore">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-blender" title="Blender Stack Exchange"></div><a href="http://blender.stackexchange.com/questions/75239/how-can-i-align-a-new-object-to-the-camera-view-with-python" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:502 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can I align a new object to the camera view with python?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-money" title="Personal Finance &amp; Money Stack Exchange"></div><a href="http://money.stackexchange.com/questions/76981/ghana-scam-and-direct-deposit-scam" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:93 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Ghana scam and direct deposit scam?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/73356/could-inequality-and-class-warfare-still-exist-in-a-post-scarcity-society" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Could inequality and class warfare still exist in a post-scarcity society?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/2178926/finding-the-cardinality-of-a-set-given-a-set-property" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Finding the cardinality of a set given a set property.
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/89497/is-it-true-that-you-can-receive-emergency-care-in-the-uk-completely-free-of-char" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it true that you can receive emergency care in the UK completely free of charge?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-ell" title="English Language Learners Stack Exchange"></div><a href="http://ell.stackexchange.com/questions/121729/what-do-we-call-the-small-towel-that-we-use-only-with-hands" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:481 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What do we call the small towel that we use only with hands
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/154231/whos-the-other-one-to-be-killed-by-a-terminator-a-predator-and-a-xenomorph" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Who's the other one to be killed by a Terminator, a Predator, and a Xenomorph?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-movies" title="Movies &amp; TV Stack Exchange"></div><a href="http://movies.stackexchange.com/questions/69805/why-is-the-movie-title-blazing-saddles" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:367 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is the movie title "Blazing Saddles"?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/73303/how-can-i-have-a-habitable-world-on-which-life-can-not-develop" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can I have a habitable world on which life can not develop?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-biology" title="Biology Stack Exchange"></div><a href="http://biology.stackexchange.com/questions/57132/what-is-the-smallest-touch-sensation-that-a-human-can-feel" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:375 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the smallest touch sensation that a human can feel?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/86413/i-snapped-at-a-co-worker-apologized-but-now-hr-wants-me-to-meet-with-her" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I snapped at a co-worker, apologized, but now HR wants me to meet with her
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/154035/in-star-trek-why-do-federation-starfleet-ships-always-seem-to-delay-returning" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    In Star Trek, why do Federation / Starfleet ships 
+always seem to delay returning fire until it's almost too late?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-biology" title="Biology Stack Exchange"></div><a href="http://biology.stackexchange.com/questions/57128/why-is-forgetting-good-for-the-brain" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:375 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is forgetting good for the brain?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-parenting" title="Parenting Stack Exchange"></div><a href="http://parenting.stackexchange.com/questions/29211/what-age-limit-is-appropriate-for-using-tools-such-as-screwdrivers-hacksaw-dr" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:228 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What age limit is appropriate for using tools (such as screwdrivers, hacksaw, drill etc)?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-money" title="Personal Finance &amp; Money Stack Exchange"></div><a href="http://money.stackexchange.com/questions/77108/exchange-gain-on-credit-card-refund" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:93 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Exchange gain on credit card refund
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-physics" title="Physics Stack Exchange"></div><a href="http://physics.stackexchange.com/questions/317359/why-can-electric-cars-recoup-energy-from-braking-but-a-spaceship-cannot" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:151 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why can electric cars recoup energy from braking, but a spaceship cannot?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/73432/how-to-realistically-create-a-bow-thats-also-two-one-handed-swords" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to realistically create a bow that's also two one-handed swords?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/86169/how-to-politely-inform-potential-phd-supervisor-that-i-must-wait-before-respondi" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to politely inform potential PhD supervisor that
+ I must wait before responding to an offer? (Two-body problem)
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/42688894/sql-remove-part-of-the-string-from-all-the-entries-returned-by-the-select-state" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    SQL: Remove part of the string from all the entries returned by the SELECT statement
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/86572/boss-wants-to-replace-a-good-colleague" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Boss wants to replace a good colleague
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/96219/respawning-mechanics-for-quick-and-easy-recovery-from-death" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Respawning mechanics for quick and easy recovery from death
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-gis" title="Geographic Information Systems Stack Exchange"></div><a href="http://gis.stackexchange.com/questions/231406/creating-fixed-buffer-around-a-selected-point-in-qgis-version-2-18-2" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:79 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Creating fixed buffer around a selected point in QGIS version 2.18.2
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/96215/are-there-issues-about-making-up-own-skills-when-commonly-used" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Are there issues about making up own skills, when commonly used?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/377376/is-there-any-word-in-english-for-the-date-after-interchanged-day-and-month-digit" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is there any word in English for the date after interchanged day and month digit?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://gamedev.stackexchange.com/feeds/question/50963" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	
+<noscript>
+    <div><img src="/posts/50963/ivc/2e4d" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">default</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">            
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="http://gamedev.stackexchange.com/tour">tour</a>
+                    <a href="http://gamedev.stackexchange.com/help">help</a>
+                    <a href="https://stackoverflow.blog/?blb=1">blog</a>
+                        <a href="http://chat.stackexchange.com/?tab=site&amp;host=gamedev.stackexchange.com">chat</a>
+                    <a href="https://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="http://gamedev.stackexchange.com/contact">contact us</a></b>
+                        <b><a href="http://meta.gamedev.stackexchange.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                        <li><a href="http://softwareengineering.stackexchange.com/" title="professionals, academics, and students working within the systems development life cycle who care about creating, delivering, and maintaining software responsibly">Software Engineering</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Wolfram Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="http://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                        <li><a href="http://crypto.stackexchange.com/" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://codereview.stackexchange.com/" title="peer programmer code reviews">Code Review</a></li>
+                        <li><a href="http://magento.stackexchange.com/" title="users of the Magento e-Commerce platform">Magento</a></li>
+                        <li><a href="http://dsp.stackexchange.com/" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                        <li><a href="http://raspberrypi.stackexchange.com/" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                        <li><a href="http://codegolf.stackexchange.com/" title="programming puzzle enthusiasts and code golfers">Programming Puzzles &amp; Code Golf</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (7)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="http://music.stackexchange.com/" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (8)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://ell.stackexchange.com/" title="speakers of other languages learning English">English Language Learners</a></li>
+                        <li><a href="http://japanese.stackexchange.com/" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                        <li><a href="http://anime.stackexchange.com/" title="anime and manga fans">Anime &amp; Manga</a></li>
+                        <li><a href="http://mechanics.stackexchange.com/" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (17)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="http://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                        <li><a href="http://cs.stackexchange.com/" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                        <li><a href="http://philosophy.stackexchange.com/" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (3)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="https://www.stackoverflowbusiness.com/talent">Stack Overflow Talent</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2017 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2017.3.9.25365
+            </div>
+                </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Game Development Stack Exchange works
+ best with JavaScript enabled<img 
+src="https://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" 
+class="dno"></div>
+    </noscript>
+
+
+
+
+    
+        
+    
+            
+    
+</body></html>
