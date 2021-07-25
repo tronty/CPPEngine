@@ -25,9 +25,11 @@
     /**
      * @param args the command line arguments
      */
-      void main(std::vector<std::string> args) {
+      int ApplicationLogic()
+      {
+      std::vector<std::string> args;
 
-        if (args.length != 1) {
+        if (args.size() != 1) {
             printHelp();
             stx_exit(1);
         }
@@ -137,34 +139,34 @@
         entities.forEach(CThread::start);
 
         bool won = gc.waitingForGameToEnd();
-        LOG_PRINT("Game Ended! " + "Pacman as " + (won ? "won!" : "lost"));
+        LOG_PRINT("Game Ended! Pacman as %s\n", (won ? "won!" : "lost"));
 
 
     }
 
       void printHelp() {
-        LOG_PRINT("PCOO Pacman Simulation 2016/2017");
-        LOG_PRINT("Guilherme Cardoso <gjc@ua.pt>");
-        LOG_PRINT("");
-        LOG_PRINT("Usage: java -ea -jar Pacman.jar <preset>");
-        LOG_PRINT("");
-        LOG_PRINT("Available presets:");
-        LOG_PRINT("");
-        LOG_PRINT("1:  Normal pacman game. 3 lives, 4 ghosts.");
-        LOG_PRINT("    Game whens when all points collected or no more lives");
-        LOG_PRINT("");
-        LOG_PRINT("2:  Aggressive mode: 100 lives, 16 ghosts");
-        LOG_PRINT("    Attack duration lasts 15 seconds");
-        LOG_PRINT("");
-        LOG_PRINT("3:  Endless mode: infinite lives");
-        LOG_PRINT("    Game doesn't end when all points are collected.");
-        LOG_PRINT("");
-        LOG_PRINT("4:  Crazy mode: infinite lives, 32 pacmans, 32 ghosts");
-        LOG_PRINT("    Same as 3, but with more entities");
-        LOG_PRINT("");
-        LOG_PRINT("5:  Developer mode. 128 pacmans killing one Ghost. Tests interrupts and concurrency.");
+        LOG_PRINT("PCOO Pacman Simulation 2016/2017\n");
+        LOG_PRINT("Guilherme Cardoso <gjc@ua.pt>\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("Usage: java -ea -jar Pacman.jar <preset>\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("Available presets:\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("1:  Normal pacman game. 3 lives, 4 ghosts.\n");
+        LOG_PRINT("    Game whens when all points collected or no more lives\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("2:  Aggressive mode: 100 lives, 16 ghosts\n");
+        LOG_PRINT("    Attack duration lasts 15 seconds\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("3:  Endless mode: infinite lives\n");
+        LOG_PRINT("    Game doesn't end when all points are collected.\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("4:  Crazy mode: infinite lives, 32 pacmans, 32 ghosts\n");
+        LOG_PRINT("    Same as 3, but with more entities\n");
+        LOG_PRINT("\n");
+        LOG_PRINT("5:  Developer mode. 128 pacmans killing one Ghost. Tests interrupts and concurrency.\n");
     }
 
-}
+};
 #endif
 

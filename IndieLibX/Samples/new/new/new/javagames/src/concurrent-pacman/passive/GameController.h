@@ -8,10 +8,10 @@
 #include <Framework3/IRenderer.h>
 //package pacman.passive;
 
-#include "active/Entity.h";
-#include "active/Ghost.h";
-#include "active/Pacman.h";
-#include "other/AttackTimer.h";
+#include "../active/Entity.h";
+#include "../active/Ghost.h";
+#include "../active/Pacman.h";
+#include "../other/AttackTimer.h";
 //import pt.ua.concurrent.CObject;
 //import pt.ua.concurrent.CThread;
 //import pt.ua.gboard.*;
@@ -24,6 +24,8 @@
 //import java.util.concurrent.std::map;
 
 //import  java.lang.System.out;
+
+typedef Character char;
 
 /**
  * Central game controller.
@@ -39,8 +41,8 @@
      const std::vector<D3DXFROMWINEVECTOR2> portalPoints, portalDst;
     // const CopyOnWriteArrayList<Entity> entities = CopyOnWriteArrayList<>();
      const std::vector<Entity> entities;
-     const std::map<D3DXFROMWINEVECTOR2, Entity> entityTracker = std::map<>();
-     const std::map<D3DXFROMWINEVECTOR2, Character> mapCache = std::map<>();
+     const std::map<D3DXFROMWINEVECTOR2, Entity> entityTracker = std::map<D3DXFROMWINEVECTOR2, Entity>();
+     const std::map<D3DXFROMWINEVECTOR2, Character> mapCache = std::map<D3DXFROMWINEVECTOR2, Character>();
      const bool GodMode;
      const int attackModeDuration;
      const bool endless;
@@ -90,14 +92,14 @@
                 '?', // portal
                 '!' // portal destination
         };
-
+#if 0
         File f = File("/new/javagames/concurrent-pacman/board.txt");
         if (!f.exists()) {
-            LOG_PRINT("Missing resources folder");
-            LOG_PRINT("Looking at:" + f.getAbsolutePath());
+            LOG_PRINT("Missing resources folder\n");
+            LOG_PRINT("Looking at:%s\n", f.getAbsolutePath());
             stx_exit(1);
         }
-
+#endif
         labyrinth = new Labyrinth("/new/javagames/concurrent-pacman/board.txt", allSymbols);
 
         std::vector<Gelem> allGelems = {
@@ -132,7 +134,7 @@
 
         // check total number of points for pacman to collect
         totalNumberOfPoints = getPositions('.').length;
-        LOG_PRINT("Game maximum number of points: " + totalNumberOfPoints);
+        LOG_PRINT("Game maximum number of points: %d\n", totalNumberOfPoints);
 
         // draw "P" points on the map
         labyrinth.board.draw(StringGelem("P:", Color.white), 32, 4, 1);
@@ -149,7 +151,7 @@
         //assert pos != null;
         //assert isRoad(pos);
 
-        Entity entity = (Entity) CThread.currentThread();
+        Entity entity;// ??? = (Entity) CThread.currentThread();
         //assert entity.isAlive();
 
         // portal
@@ -176,7 +178,7 @@
         if (entity1 != null) {
             if (entity.isGhost() && !entity1.isGhost()
                     || !entity.isGhost() && entity1.isGhost()) {
-                LOG_PRINT("I am:" + entity.getName() + " killing " + entity1.getName() + " " + pos + " on cache:" + entity1.getName());
+                LOG_PRINT("I am:%s killing %s %d on cache:%s\n", entity.getName(), entity1.getName(), pos, entity1.getName());
 
                 if (!entity.isGhost()) {
                     if (entity1.underAttack() || GodMode) {
@@ -208,7 +210,7 @@
             if (RealRoadSymbol(pos) == '.') { // point counting logic
                 points++;
 
-                if ((points % 30) == 0) LOG_PRINT("Points " + points + "/" + totalNumberOfPoints);
+                if ((points % 30) == 0) LOG_PRINT("Points %d/%d\n", points, totalNumberOfPoints);
 
                 drawPoints();
 
@@ -267,17 +269,17 @@
         entity.interrupt();
 
         if (entity.isGhost()) {
-            LOG_PRINT("Spawning new " + entity.getName());
+            LOG_PRINT("Spawning new %s\n", entity.getName());
             Ghost ghost = (Ghost) entity;
             ghost = Ghost(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.initialSpeed, ghost.attackModeSlowdownFactor, ghost.blinkSpeed);
 
             entities.add(ghost);
             ghost.start();
-            LOG_PRINT(entity.getName() + " spawned at " + entity.initPos);
+            LOG_PRINT("%s spawned at %d\n", entity.getName(), entity.initPos);
         } else {
             if(!endless) pacmanLives--;
             if (pacmanLives > 0) {
-                LOG_PRINT("Pacman has " + pacmanLives + " pacmanLives left.");
+                LOG_PRINT("Pacman has %d pacmanLives left.\n", pacmanLives);
                 Pacman pm = Pacman(entity.getName(), this, entity.initialSymbol, entity.initPos, entity.getInitialSpeed());
                 entities.add(pm);
                 pm.start();
@@ -309,7 +311,7 @@
         while (gameInProgress)
             await();
 
-        LOG_PRINT("Final points:" + points);
+        LOG_PRINT("Final points:%d\n", points);
         return points == totalNumberOfPoints;
     }
 
@@ -436,7 +438,7 @@
         mapCache.put(entity.initPos, ' ');
         entities.add(entity);
         totalNumberOfPoints = getPositions('.').length;
-        LOG_PRINT("Updated maximum number of points to " + totalNumberOfPoints);
+        LOG_PRINT("Updated maximum number of points to %d\n", totalNumberOfPoints);
     }
 
     /**
@@ -456,6 +458,6 @@
                 || symbol == 'G'; // generic ghost
     }
 
-}
+};
 #endif
 

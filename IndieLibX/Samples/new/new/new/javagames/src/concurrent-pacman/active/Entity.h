@@ -8,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-#include "passive/GameController.h";
+#include "../passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 
 //import java.awt.*;
@@ -47,7 +47,7 @@
      * @param speed  of the entity
      */
     Entity(std::string name, char symbol, GameController gc, D3DXFROMWINEVECTOR2 pos, int speed) {
-        super(name);
+        // ??? super(name);
         //assert gc != null;
         //assert pos != null;
         //assert speed > 0;
@@ -63,7 +63,7 @@
         this->startSymbol = symbol;
         this->markedStartSymbol = symbol;
 
-        pathLog = std::map<>();
+        pathLog = std::map<D3DXFROMWINEVECTOR2, Character>();
     }
 
     
@@ -104,7 +104,7 @@
                     result = true;
                 }
             }
-            CThread.pause(speed);
+            //CThread.pause(speed);
 
             unmarkPosition(pos);
             pos = gc.reportPosition(pos);
@@ -218,6 +218,7 @@
         //assert gc.isRoad(pos);
 
         return pathLog.computeIfAbsent(pos, (t) -> gc.CachedRoadSymbol(pos));
+        //return '.';
     }
 
     /**
@@ -265,6 +266,6 @@
         return underAttack;
     }
 
-}
+};
 #endif
 

@@ -8,7 +8,8 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-#include "passive/GameController.h";
+#include "../active/Entity.h";
+#include "../passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 //import pt.ua.concurrent.ThreadInterruptedException;
 
@@ -25,13 +26,13 @@
  */
  struct Ghost :  public Entity {
 
-     const int attackModeSlowdownFactor;
-     const int blinkSpeed;
+     /* const */ int attackModeSlowdownFactor;
+     /* const */ int blinkSpeed;
      const bool alive = true;
-     ScheduledExecutorService es;
+     //ScheduledExecutorService es;
 
      Ghost(std::string name, GameController gc, char symbol, D3DXFROMWINEVECTOR2 pos, int speed, int slowdownFactor, int blinkSpeed) {
-        super(name, symbol, gc, pos, speed);
+        Entity(name, symbol, gc, pos, speed);
         attackModeSlowdownFactor = slowdownFactor;
         this->blinkSpeed = blinkSpeed;
     }
@@ -42,12 +43,12 @@
      */
     
      void run() {
-        //LOG_PRINT(super.getName() + " started");
+        //LOG_PRINT("%s started\n", Entity::getName());
         
             //noinspection InfiniteLoopStatement
             while (alive) {
                 searchPath(1, initPos);
-                pathLog = std::map<>();
+                pathLog = std::map<D3DXFROMWINEVECTOR2, char>();
             }
     }
 
@@ -57,7 +58,7 @@
         //assert distance > 0;
 
         if (gc.validPosition(pos) && gc.isRoad(pos))
-            super.searchPath(distance, pos);
+            Entity::searchPath(distance, pos);
 
         return false;
     }
@@ -73,7 +74,7 @@
         //assert pos != null;
         //assert gc.isRoad(pos);
 
-        return super.freePosition(pos)
+        return Entity::freePosition(pos)
                 || roadSymbol(pos) == '%'; // allow passing though ghost cage gate
     }
 
@@ -83,29 +84,34 @@
     
      void attackMode() {
 
-        if (es == null || es.isTerminated()) {
+        // ??? if (es == null || es.isTerminated()) 
+        {
 
             symbol = 'b'; // ghost black
             underAttack = true;
 
-            es = java.util.concurrent.Executors.newScheduledThreadPool(1);
-
-            es.scheduleAtFixedRate(() -> {
-                //LOG_PRINT("Toggling " + super.getName() + " symbol");
+            //es = java.util.concurrent.Executors.newScheduledThreadPool(1);
+//            es.scheduleAtFixedRate(() -> {
+                //LOG_PRINT("Toggling %s symbol\n", Entity::getName());
                 if (symbol == 'w')
                     symbol = 'b';
                 else
                     symbol = 'w';
 
-            }, 0, blinkSpeed, TimeUnit.MILLISECONDS);
+//            }, 0, blinkSpeed, TimeUnit.MILLISECONDS);
 
             speed = speed * attackModeSlowdownFactor;
 
+#if 0 // ???
             // wait for attack mode to end.
             CThread(() -> {
                 gc.hasAttackModeEnded();
                 disableAttackMode();
             }).start();
+#else
+	if(gc.hasAttackModeEnded())
+                disableAttackMode();
+#endif
         }
 
     }
@@ -113,15 +119,16 @@
      void disableAttackMode() {
         //assert !es.isTerminated();
 
-            LOG_PRINT("Ending " + super.getName() + " attack mode");
+            LOG_PRINT("Ending %s attack mode\n", Entity::getName());
             speed = speed / attackModeSlowdownFactor;
             underAttack = false;
+#if 0
             es.shutdown();
             es.awaitTermination(1, TimeUnit.SECONDS);
-
+#endif
         symbol = markedStartSymbol;
     }
 
-}
+};
 #endif
 

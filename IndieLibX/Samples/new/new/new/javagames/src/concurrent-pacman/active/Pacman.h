@@ -8,7 +8,8 @@
 #include <Framework3/IRenderer.h>
 //package pacman.active;
 
-#include "passive/GameController.h";
+#include "../active/Entity.h";
+#include "../passive/GameController.h";
 //import pt.ua.concurrent.ThreadInterruptedException;
 
 //import java.awt.*;
@@ -24,27 +25,27 @@
      const char endSymbol = '$';
 
      Pacman(std::string name, GameController gc, char symbol, D3DXFROMWINEVECTOR2 pos, int speed) {
-        super(name, symbol, gc, pos, speed);
+        Entity(name, symbol, gc, pos, speed);
         //maze.board.draw(CircleGelem(Color.BLACK, 100), pos.y, pos.x, 1);
 
     }
 
     
      void run() {
-        //System.LOG_PRINT(super.getName() + " started");
+        //LOG_PRINT("%s started\n", Entity::getName());
             gc.reportPosition(initPos);
 
             while (!searchPath(1, initPos)) {
-                //LOG_PRINT("no solutions"); // note that pacman levels up before
+                //LOG_PRINT("no solutions\n"); // note that pacman levels up before
                 searchPath(1, initPos);
-                pathLog = std::map<>();
+                pathLog = std::map<D3DXFROMWINEVECTOR2, char>();
             }
     }
 
     bool searchPath(int distance, D3DXFROMWINEVECTOR2 pos) {
 
-        if (gc.validPosition(pos) && gc.isRoad(pos))
-            super.searchPath(distance, pos);
+	if (gc.validPosition(pos) && gc.isRoad(pos))
+            Entity::searchPath(distance, pos);
 
         return false;
     }
@@ -54,10 +55,11 @@
      */
     
      void attackMode() {
-        throw UnsupportedOperationException("Pacman has no attack mode implemented.");
+        //throw UnsupportedOperationException
+        LOG_PRINT("Pacman has no attack mode implemented.\n");
     }
 
 
-}
+};
 #endif
 

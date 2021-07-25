@@ -8,7 +8,7 @@
 #include <Framework3/IRenderer.h>
 //package pacman.other;
 
-#include "passive/GameController.h";
+#include "../passive/GameController.h";
 //import pt.ua.concurrent.CThread;
 //import pt.ua.concurrent.Metronome;
 
@@ -19,7 +19,7 @@
  */
  struct AttackTimer /* :  CThread */  {
 
-     const  Metronome metronome = Metronome(1);
+     // ??? const  Metronome metronome = Metronome(1);
      GameController gc;
      int pause;
 
@@ -37,12 +37,12 @@
 
     
      void run() {
-        LOG_PRINT("AttackingTimer started");
-
+        LOG_PRINT("AttackingTimer started\n");
+#if 0
         for (int i = 0; i < pause; i++) {
             metronome.sync();
         }
-
+#endif
         // once ended, disable attack mode
         gc.disableAttackMode();
     }
@@ -52,9 +52,9 @@
      */
      void addMore(int pause) {
 
-        LOG_PRINT("Added more " + pause + " seconds to timer");
+        LOG_PRINT("Added more %d seconds to timer\n", pause);
         this->pause += pause;
     }
-}
+};
 #endif
 
