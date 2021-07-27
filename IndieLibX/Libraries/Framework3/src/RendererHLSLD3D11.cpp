@@ -1720,20 +1720,40 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 	cbDesc.MiscFlags = 0;
 
 	VArray <ConstantD3D11> constants;
-
+#if 0
+	for (uint i = 0; i < shader.nVSCBuffers; i++){
+		vsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
+		cbDesc.ByteWidth = sbDesc.Size;
+		device->CreateBuffer(&cbDesc, NULL, &shader.vsConstants[i]);
+		shader.vsConstMem[i] = new ubyte[sbDesc.Size];
+		for (uint k = 0; k < sbDesc.Variables; k++){
+			D3D10_SHADER_VARIABLE_DESC vDesc;
+			vsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
+			Constant constant;
+			size_t length = strlen(vDesc.Name);
+			constant.name = new char[length + 1];
+			strcpy(constant.name, vDesc.Name);
+			constant.vsData = shader.vsConstMem[i] + vDesc.StartOffset;
+			constant.gsData = NULL;
+			constant.psData = NULL;
+			constant.vsBuffer = i;
+			constant.gsBuffer = -1;
+			constant.psBuffer = -1;
+			constants.add(constant);
+		}
+		shader.vsDirty[i] = false;
+	}
+#endif
 	for (uint i = 0; i < shader.nVSCBuffers; i++)
 	{
 		vsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
 		cbDesc.ByteWidth = sbDesc.Size;
 		device->CreateBuffer(&cbDesc, NULL, &shader.vsConstants[i]);
-
 		shader.vsConstMem[i] = new ubyte[sbDesc.Size];
 		for (uint k = 0; k < sbDesc.Variables; k++)
 		{
 			D3D11_SHADER_VARIABLE_DESC vDesc;
 			vsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
 			ConstantD3D11 constant;
 			constant.name=vDesc.Name;
 			    //constant.type=vDesc.Type;
@@ -1752,22 +1772,55 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			constant.dsBuffer = -1;
 			constants.add(constant);
 		}
+		//shader.vsDirty[i] = false;
 	}
-
+#if 0
+	uint maxConst = constants.getCount();
+	for (uint i = 0; i < shader.nGSCBuffers; i++){
+		gsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
+		cbDesc.ByteWidth = sbDesc.Size;
+		device->CreateBuffer(&cbDesc, NULL, &shader.gsConstants[i]);
+		shader.gsConstMem[i] = new ubyte[sbDesc.Size];
+		for (uint k = 0; k < sbDesc.Variables; k++){
+			D3D10_SHADER_VARIABLE_DESC vDesc;
+			gsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
+			int merge = -1;
+			for (uint i = 0; i < maxConst; i++){
+				if (strcmp(constants[i].name, vDesc.Name) == 0){
+					merge = i;
+					break;
+				}
+			}
+			if (merge < 0){
+				Constant constant;
+				size_t length = strlen(vDesc.Name);
+				constant.name = new char[length + 1];
+				strcpy(constant.name, vDesc.Name);
+				constant.vsData = NULL;
+				constant.gsData = shader.gsConstMem[i] + vDesc.StartOffset;
+				constant.psData = NULL;
+				constant.vsBuffer = -1;
+				constant.gsBuffer = i;
+				constant.psBuffer = -1;
+				constants.add(constant);
+			} else {
+				constants[merge].gsData = shader.gsConstMem[i] + vDesc.StartOffset;
+				constants[merge].gsBuffer = i;
+			}
+		}
+		shader.gsDirty[i] = false;
+#endif
 	uint maxConst = constants.getCount();
 	for (uint i = 0; i < shader.nGSCBuffers; i++)
 	{
 		gsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
 		cbDesc.ByteWidth = sbDesc.Size;
 		device->CreateBuffer(&cbDesc, NULL, &shader.gsConstants[i]);
-
 		shader.gsConstMem[i] = new ubyte[sbDesc.Size];
 		for (uint k = 0; k < sbDesc.Variables; k++)
 		{
 			D3D11_SHADER_VARIABLE_DESC vDesc;
 			gsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
 			int merge = -1;
 			for (uint i = 0; i < maxConst; i++)
 			{
@@ -1777,7 +1830,6 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					break;
 				}
 			}
-
 			if (merge < 0)
 			{
 				ConstantD3D11 constant;
@@ -1804,22 +1856,56 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				constants[merge].gsBuffer = i;
 			}
 		}
+		//shader.gsDirty[i] = false;
 	}
-
+#if 0
+	maxConst = constants.getCount();
+	for (uint i = 0; i < shader.nPSCBuffers; i++){
+		psRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
+		cbDesc.ByteWidth = sbDesc.Size;
+		device->CreateBuffer(&cbDesc, NULL, &shader.psConstants[i]);
+		shader.psConstMem[i] = new ubyte[sbDesc.Size];
+		for (uint k = 0; k < sbDesc.Variables; k++){
+			D3D10_SHADER_VARIABLE_DESC vDesc;
+			psRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
+			int merge = -1;
+			for (uint i = 0; i < maxConst; i++){
+				if (strcmp(constants[i].name, vDesc.Name) == 0){
+					merge = i;
+					break;
+				}
+			}
+			if (merge < 0){
+				Constant constant;
+				size_t length = strlen(vDesc.Name);
+				constant.name = new char[length + 1];
+				strcpy(constant.name, vDesc.Name);
+				constant.vsData = NULL;
+				constant.gsData = NULL;
+				constant.psData = shader.psConstMem[i] + vDesc.StartOffset;
+				constant.vsBuffer = -1;
+				constant.gsBuffer = -1;
+				constant.psBuffer = i;
+				constants.add(constant);
+			} else {
+				constants[merge].psData = shader.psConstMem[i] + vDesc.StartOffset;
+				constants[merge].psBuffer = i;
+			}
+		}
+		shader.psDirty[i] = false;
+	}
+#endif
 	maxConst = constants.getCount();
 	for (uint i = 0; i < shader.nPSCBuffers; i++)
 	{
 		psRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
 		cbDesc.ByteWidth = sbDesc.Size;
 		device->CreateBuffer(&cbDesc, NULL, &shader.psConstants[i]);
-
 		shader.psConstMem[i] = new ubyte[sbDesc.Size];
 		for (uint k = 0; k < sbDesc.Variables; k++)
 		{
 			D3D11_SHADER_VARIABLE_DESC vDesc;
 			psRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
 			int merge = -1;
 			for (uint i = 0; i < maxConst; i++)
 			{
@@ -1829,7 +1915,6 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					break;
 				}
 			}
-
 			if (merge < 0)
 			{
 				ConstantD3D11 constant;
@@ -1856,12 +1941,12 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				constants[merge].psBuffer = i;
 			}
 		}
+		//shader.psDirty[i] = false;
 	}
-
+	maxConst = constants.getCount();
 	for (uint i = 0; i < shader.nCSCBuffers; i++)
 	{
 		csRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
 		// No idea what this is and why we're getting it here for some shaders. Just ignore and move on.
 		if (sbDesc.Type == D3D_CT_RESOURCE_BIND_INFO)
 		{
@@ -1869,49 +1954,13 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			shader.csConstants[i] = nullptr;
 			continue;
 		}
-
 		cbDesc.ByteWidth = sbDesc.Size;
 		device->CreateBuffer(&cbDesc, NULL, &shader.csConstants[i]);
-
 		shader.csConstMem[i] = new ubyte[sbDesc.Size];
 		for (uint k = 0; k < sbDesc.Variables; k++)
 		{
 			D3D11_SHADER_VARIABLE_DESC vDesc;
 			csRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
-			ConstantD3D11 constant;
-			constant.name=vDesc.Name;
-			    //constant.type=vDesc.Type;
-			    constant.size=vDesc.Size;
-			constant.vsData = NULL;
-			constant.gsData = NULL;
-			constant.psData = NULL;
-			constant.csData = shader.csConstMem[i] + vDesc.StartOffset;
-			constant.hsData = NULL;
-			constant.dsData = NULL;
-			constant.vsBuffer = -1;
-			constant.gsBuffer = -1;
-			constant.psBuffer = -1;
-			constant.csBuffer = i;
-			constant.hsBuffer = -1;
-			constant.dsBuffer = -1;
-			constants.add(constant);
-		}
-	}
-
-	for (uint i = 0; i < shader.nHSCBuffers; i++)
-	{
-		hsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
-		cbDesc.ByteWidth = sbDesc.Size;
-		device->CreateBuffer(&cbDesc, NULL, &shader.hsConstants[i]);
-
-		shader.hsConstMem[i] = new ubyte[sbDesc.Size];
-		for (uint k = 0; k < sbDesc.Variables; k++)
-		{
-			D3D11_SHADER_VARIABLE_DESC vDesc;
-			hsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
 			int merge = -1;
 			for (uint i = 0; i < maxConst; i++)
 			{
@@ -1921,7 +1970,54 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					break;
 				}
 			}
-
+			if (merge < 0)
+			{
+				ConstantD3D11 constant;
+				constant.name=vDesc.Name;
+			    	//constant.type=vDesc.Type;
+			    	constant.size=vDesc.Size;
+				constant.vsData = NULL;
+				constant.gsData = NULL;
+				constant.psData = NULL;
+				constant.csData = shader.csConstMem[i] + vDesc.StartOffset;
+				constant.hsData = NULL;
+				constant.dsData = NULL;
+				constant.vsBuffer = -1;
+				constant.gsBuffer = -1;
+				constant.psBuffer = -1;
+				constant.csBuffer = i;
+				constant.hsBuffer = -1;
+				constant.dsBuffer = -1;
+				constants.add(constant);
+			}
+			else
+			{
+				constants[merge].csData = shader.csConstMem[i] + vDesc.StartOffset;
+				constants[merge].csBuffer = i;
+			}
+		}
+		//shader.csDirty[i] = false;
+	}
+	maxConst = constants.getCount();
+	for (uint i = 0; i < shader.nHSCBuffers; i++)
+	{
+		hsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
+		cbDesc.ByteWidth = sbDesc.Size;
+		device->CreateBuffer(&cbDesc, NULL, &shader.hsConstants[i]);
+		shader.hsConstMem[i] = new ubyte[sbDesc.Size];
+		for (uint k = 0; k < sbDesc.Variables; k++)
+		{
+			D3D11_SHADER_VARIABLE_DESC vDesc;
+			hsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
+			int merge = -1;
+			for (uint i = 0; i < maxConst; i++)
+			{
+				if (strcmp(constants[i].name.c_str(), vDesc.Name) == 0)
+				{
+					merge = i;
+					break;
+				}
+			}
 			if (merge < 0)
 			{
 				ConstantD3D11 constant;
@@ -1948,20 +2044,19 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				constants[merge].hsBuffer = i;
 			}
 		}
+		//shader.hsDirty[i] = false;
 	}
+	maxConst = constants.getCount();
 	for (uint i = 0; i < shader.nDSCBuffers; i++)
 	{
 		dsRefl->GetConstantBufferByIndex(i)->GetDesc(&sbDesc);
-
 		cbDesc.ByteWidth = sbDesc.Size;
 		device->CreateBuffer(&cbDesc, NULL, &shader.dsConstants[i]);
-
 		shader.dsConstMem[i] = new ubyte[sbDesc.Size];
 		for (uint k = 0; k < sbDesc.Variables; k++)
 		{
 			D3D11_SHADER_VARIABLE_DESC vDesc;
 			dsRefl->GetConstantBufferByIndex(i)->GetVariableByIndex(k)->GetDesc(&vDesc);
-
 			int merge = -1;
 			for (uint i = 0; i < maxConst; i++)
 			{
@@ -1971,7 +2066,6 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					break;
 				}
 			}
-
 			if (merge < 0)
 			{
 				ConstantD3D11 constant;
@@ -1998,6 +2092,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				constants[merge].dsBuffer = i;
 			}
 		}
+		//shader.dsDirty[i] = false;
 	}
 
 	shader.nConstants = constants.getCount();
@@ -2020,7 +2115,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 	uint nMaxDSRes = dsRefl? dsDesc.BoundResources : 0;
 	uint nMaxCSRes = csRefl? csDesc.BoundResources : 0;
 
-	int maxResources = nMaxVSRes + nMaxGSRes + nMaxPSRes;
+	int maxResources = nMaxVSRes + nMaxGSRes + nMaxPSRes + nMaxHSRes + nMaxDSRes + nMaxCSRes;
 	if (maxResources)
 	{
 		shader.textures.resize(maxResources);
@@ -2039,6 +2134,9 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				shader.textures[shader.nTextures].vsIndex = siDesc.BindPoint;
 				shader.textures[shader.nTextures].gsIndex = -1;
 				shader.textures[shader.nTextures].psIndex = -1;
+				shader.textures[shader.nTextures].csIndex = -1;
+				shader.textures[shader.nTextures].hsIndex = -1;
+				shader.textures[shader.nTextures].dsIndex = -1;
 				shader.nTextures++;
 			}
 			else if (siDesc.Type == D3D10_SIT_SAMPLER)
@@ -2046,7 +2144,10 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 				shader.samplers[shader.nSamplers].name=siDesc.Name;
 				shader.samplers[shader.nSamplers].vsIndex = siDesc.BindPoint;
 				shader.samplers[shader.nSamplers].gsIndex = -1;
-				shader.samplers[shader.nSamplers].psIndex = -1;						
+				shader.samplers[shader.nSamplers].psIndex = -1;	
+				shader.samplers[shader.nSamplers].csIndex = -1;
+				shader.samplers[shader.nSamplers].hsIndex = -1;
+				shader.samplers[shader.nSamplers].dsIndex = -1;			
                     stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
 				shader.nSamplers++;
 			}
@@ -2074,6 +2175,9 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					shader.textures[shader.nTextures].vsIndex = -1;
 					shader.textures[shader.nTextures].gsIndex = siDesc.BindPoint;
 					shader.textures[shader.nTextures].psIndex = -1;
+				shader.textures[shader.nTextures].csIndex = -1;
+				shader.textures[shader.nTextures].hsIndex = -1;
+				shader.textures[shader.nTextures].dsIndex = -1;
 					shader.nTextures++;
 				}
 				else
@@ -2097,7 +2201,10 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					shader.samplers[shader.nSamplers].name=siDesc.Name;
 					shader.samplers[shader.nSamplers].vsIndex = -1;
 					shader.samplers[shader.nSamplers].gsIndex = siDesc.BindPoint;
-					shader.samplers[shader.nSamplers].psIndex = -1;						
+					shader.samplers[shader.nSamplers].psIndex = -1;	
+				shader.samplers[shader.nSamplers].csIndex = -1;
+				shader.samplers[shader.nSamplers].hsIndex = -1;
+				shader.samplers[shader.nSamplers].dsIndex = -1;						
                     stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
 					shader.nSamplers++;
 				}
@@ -2130,6 +2237,9 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					shader.textures[shader.nTextures].vsIndex = -1;
 					shader.textures[shader.nTextures].gsIndex = -1;
 					shader.textures[shader.nTextures].psIndex = siDesc.BindPoint;
+				shader.textures[shader.nTextures].csIndex = -1;
+				shader.textures[shader.nTextures].hsIndex = -1;
+				shader.textures[shader.nTextures].dsIndex = -1;
 					shader.nTextures++;
 				}
 				else
@@ -2153,13 +2263,202 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 					shader.samplers[shader.nSamplers].name=siDesc.Name;
 					shader.samplers[shader.nSamplers].vsIndex = -1;
 					shader.samplers[shader.nSamplers].gsIndex = -1;
-					shader.samplers[shader.nSamplers].psIndex = siDesc.BindPoint;						
+					shader.samplers[shader.nSamplers].psIndex = siDesc.BindPoint;	
+				shader.samplers[shader.nSamplers].csIndex = -1;
+				shader.samplers[shader.nSamplers].hsIndex = -1;
+				shader.samplers[shader.nSamplers].dsIndex = -1;						
                     stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
 					shader.nSamplers++;
 				}
 				else
 				{
 					shader.samplers[merge].psIndex = siDesc.BindPoint;
+				}
+			}
+		}
+		maxTexture = shader.nTextures;
+		maxSampler = shader.nSamplers;
+		for (uint i = 0; i < nMaxCSRes; i++)
+		{
+			csRefl->GetResourceBindingDesc(i, &siDesc);
+
+			if (siDesc.Type == D3D10_SIT_TEXTURE)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxTexture; i++)
+				{
+					if (strcmp(shader.textures[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.textures[shader.nTextures].name=siDesc.Name;
+					shader.textures[shader.nTextures].vsIndex = -1;
+					shader.textures[shader.nTextures].gsIndex = -1;
+					shader.textures[shader.nTextures].csIndex = siDesc.BindPoint;
+				shader.textures[shader.nTextures].psIndex = -1;
+				shader.textures[shader.nTextures].hsIndex = -1;
+				shader.textures[shader.nTextures].dsIndex = -1;
+					shader.nTextures++;
+				}
+				else
+				{
+					shader.textures[merge].csIndex = siDesc.BindPoint;
+				}
+			}
+			else if (siDesc.Type == D3D10_SIT_SAMPLER)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxSampler; i++)
+				{
+					if (strcmp(shader.samplers[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.samplers[shader.nSamplers].name=siDesc.Name;
+					shader.samplers[shader.nSamplers].vsIndex = -1;
+					shader.samplers[shader.nSamplers].gsIndex = -1;
+					shader.samplers[shader.nSamplers].csIndex = siDesc.BindPoint;	
+				shader.samplers[shader.nSamplers].psIndex = -1;
+				shader.samplers[shader.nSamplers].hsIndex = -1;
+				shader.samplers[shader.nSamplers].dsIndex = -1;						
+                    stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
+					shader.nSamplers++;
+				}
+				else
+				{
+					shader.samplers[merge].csIndex = siDesc.BindPoint;
+				}
+			}
+		}
+		maxTexture = shader.nTextures;
+		maxSampler = shader.nSamplers;
+		for (uint i = 0; i < nMaxHSRes; i++)
+		{
+			hsRefl->GetResourceBindingDesc(i, &siDesc);
+
+			if (siDesc.Type == D3D10_SIT_TEXTURE)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxTexture; i++)
+				{
+					if (strcmp(shader.textures[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.textures[shader.nTextures].name=siDesc.Name;
+					shader.textures[shader.nTextures].vsIndex = -1;
+					shader.textures[shader.nTextures].gsIndex = -1;
+					shader.textures[shader.nTextures].hsIndex = siDesc.BindPoint;
+				shader.textures[shader.nTextures].csIndex = -1;
+				shader.textures[shader.nTextures].psIndex = -1;
+				shader.textures[shader.nTextures].dsIndex = -1;
+					shader.nTextures++;
+				}
+				else
+				{
+					shader.textures[merge].hsIndex = siDesc.BindPoint;
+				}
+			}
+			else if (siDesc.Type == D3D10_SIT_SAMPLER)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxSampler; i++)
+				{
+					if (strcmp(shader.samplers[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.samplers[shader.nSamplers].name=siDesc.Name;
+					shader.samplers[shader.nSamplers].vsIndex = -1;
+					shader.samplers[shader.nSamplers].gsIndex = -1;
+					shader.samplers[shader.nSamplers].hsIndex = siDesc.BindPoint;	
+				shader.samplers[shader.nSamplers].csIndex = -1;
+				shader.samplers[shader.nSamplers].psIndex = -1;
+				shader.samplers[shader.nSamplers].dsIndex = -1;						
+                    stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
+					shader.nSamplers++;
+				}
+				else
+				{
+					shader.samplers[merge].hsIndex = siDesc.BindPoint;
+				}
+			}
+		}
+		maxTexture = shader.nTextures;
+		maxSampler = shader.nSamplers;
+		for (uint i = 0; i < nMaxDSRes; i++)
+		{
+			dsRefl->GetResourceBindingDesc(i, &siDesc);
+
+			if (siDesc.Type == D3D10_SIT_TEXTURE)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxTexture; i++)
+				{
+					if (strcmp(shader.textures[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.textures[shader.nTextures].name=siDesc.Name;
+					shader.textures[shader.nTextures].vsIndex = -1;
+					shader.textures[shader.nTextures].gsIndex = -1;
+					shader.textures[shader.nTextures].dsIndex = siDesc.BindPoint;
+				shader.textures[shader.nTextures].csIndex = -1;
+				shader.textures[shader.nTextures].hsIndex = -1;
+				shader.textures[shader.nTextures].psIndex = -1;
+					shader.nTextures++;
+				}
+				else
+				{
+					shader.textures[merge].dsIndex = siDesc.BindPoint;
+				}
+			}
+			else if (siDesc.Type == D3D10_SIT_SAMPLER)
+			{
+				int merge = -1;
+				for (uint i = 0; i < maxSampler; i++)
+				{
+					if (strcmp(shader.samplers[i].name.c_str(), siDesc.Name) == 0)
+					{
+						merge = i;
+						break;
+					}
+				}
+				if (merge < 0)
+				{
+					shader.samplers[shader.nSamplers].name=siDesc.Name;
+					shader.samplers[shader.nSamplers].vsIndex = -1;
+					shader.samplers[shader.nSamplers].gsIndex = -1;
+					shader.samplers[shader.nSamplers].dsIndex = siDesc.BindPoint;	
+				shader.samplers[shader.nSamplers].csIndex = -1;
+				shader.samplers[shader.nSamplers].hsIndex = -1;
+				shader.samplers[shader.nSamplers].psIndex = -1;						
+                    stx_Variables::AddSampler(shaders.size(), siDesc.Name, siDesc.BindPoint);
+					shader.nSamplers++;
+				}
+				else
+				{
+					shader.samplers[merge].dsIndex = siDesc.BindPoint;
 				}
 			}
 		}
