@@ -156,6 +156,8 @@ def rrr(v):
 	f.write('')
 	ff=open('../run.bat','w')
 	ff.write('')
+	ff.write('copy Dependencies\\\\SDL2-2.0.14\\\\lib\\\\x86\\\\SDL2.dll bin\\\\SDL2.dll\n')
+	ff.write('copy Dependencies\\\\vulkan\\\\vulkan-1.dll bin\\\\vulkan-1.dll\n')
 	cc=0
 	for i in v:
 	        if i.gettype()=='application':
