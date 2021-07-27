@@ -2874,9 +2874,24 @@ void RendererHLSLD3D11::applyTextures(){
 	if (fillSRV(srViews, min, max, selectedTexturesVS, currentTexturesVS, selectedTextureSlicesVS, currentTextureSlicesVS, textures.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->VSSetShaderResources(min, max - min + 1, srViews);
 	}
-	//if (fillSRV(srViews, min, max, selectedTexturesGS, currentTexturesGS, selectedTextureSlicesGS, currentTextureSlicesGS, textures.getArray())){
-	//	device->GSSetShaderResources(min, max - min + 1, srViews);
-	//}
+	#if 0
+	if(size)
+	if (fillSRV(srViews, min, max, selectedTexturesGS, currentTexturesGS, selectedTextureSlicesGS, currentTextureSlicesGS, textures.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->GSSetShaderResources(min, max - min + 1, srViews);
+	}
+	if(size)
+	if (fillSRV(srViews, min, max, selectedTexturesCS, currentTexturesCS, selectedTextureSlicesCS, currentTextureSlicesCS, textures.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->CSSetShaderResources(min, max - min + 1, srViews);
+	}
+	if(size)
+	if (fillSRV(srViews, min, max, selectedTexturesDS, currentTexturesDS, selectedTextureSlicesDS, currentTextureSlicesDS, textures.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->DSSetShaderResources(min, max - min + 1, srViews);
+	}
+	if(size)
+	if (fillSRV(srViews, min, max, selectedTexturesHS, currentTexturesHS, selectedTextureSlicesHS, currentTextureSlicesHS, textures.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->HSSetShaderResources(min, max - min + 1, srViews);
+	}
+	#endif
 	if(size)
 	if (fillSRV(srViews, min, max, selectedTexturesPS, currentTexturesPS, selectedTextureSlicesPS, currentTextureSlicesPS, textures.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->PSSetShaderResources(min, max - min + 1, srViews);
@@ -2890,7 +2905,12 @@ void RendererHLSLD3D11::setSamplerState(const char *samplerName, const SamplerSt
 	const SamplerD3D11 *s = getSampler(shaders[selectedShader].samplers.getArray(), shaders[selectedShader].nSamplers, samplerName);
 	if (s){
 		if (s->vsIndex >= 0) selectedSamplerStatesVS[s->vsIndex] = samplerState;
-		//if (s->gsIndex >= 0) selectedSamplerStatesGS[s->gsIndex] = samplerState;
+		#if 0
+		if (s->gsIndex >= 0) selectedSamplerStatesGS[s->gsIndex] = samplerState;
+		if (s->csIndex >= 0) selectedSamplerStatesCS[s->csIndex] = samplerState;
+		if (s->hsIndex >= 0) selectedSamplerStatesHS[s->hsIndex] = samplerState;
+		if (s->dsIndex >= 0) selectedSamplerStatesDS[s->dsIndex] = samplerState;
+		#endif
 		if (s->psIndex >= 0) selectedSamplerStatesPS[s->psIndex] = samplerState;
 	}
 #ifdef _DEBUG
@@ -2936,9 +2956,20 @@ void RendererHLSLD3D11::applySamplerStates(){
 	if (fillSS(samplers, min, max, selectedSamplerStatesVS, currentSamplerStatesVS, samplerStates.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->VSSetSamplers(min, max - min + 1, samplers);
 	}
-	//if(size) if (fillSS(samplers, min, max, selectedSamplerStatesGS, currentSamplerStatesGS, samplerStates.getArray())){
-	//	device->GSSetSamplers(min, max - min + 1, samplers);
-	//}
+	#if 0
+	if(size) if (fillSS(samplers, min, max, selectedSamplerStatesGS, currentSamplerStatesGS, samplerStates.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->GSSetSamplers(min, max - min + 1, samplers);
+	}
+	if(size) if (fillSS(samplers, min, max, selectedSamplerStatesCS, currentSamplerStatesCS, samplerStates.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->CSSetSamplers(min, max - min + 1, samplers);
+	}
+	if(size) if (fillSS(samplers, min, max, selectedSamplerStatesHS, currentSamplerStatesHS, samplerStates.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->HSSetSamplers(min, max - min + 1, samplers);
+	}
+	if(size) if (fillSS(samplers, min, max, selectedSamplerStatesDS, currentSamplerStatesDS, samplerStates.getArray())){
+		RendererHLSLD3D11::GetDeviceContext()->DSSetSamplers(min, max - min + 1, samplers);
+	}
+	#endif
 	if(size)
 	if (fillSS(samplers, min, max, selectedSamplerStatesPS, currentSamplerStatesPS, samplerStates.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->PSSetSamplers(min, max - min + 1, samplers);
