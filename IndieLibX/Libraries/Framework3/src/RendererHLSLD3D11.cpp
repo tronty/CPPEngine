@@ -2874,7 +2874,7 @@ void RendererHLSLD3D11::applyTextures(){
 	if (fillSRV(srViews, min, max, selectedTexturesVS, currentTexturesVS, selectedTextureSlicesVS, currentTextureSlicesVS, textures.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->VSSetShaderResources(min, max - min + 1, srViews);
 	}
-	#if 0
+	#if 1
 	if(size)
 	if (fillSRV(srViews, min, max, selectedTexturesGS, currentTexturesGS, selectedTextureSlicesGS, currentTextureSlicesGS, textures.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->GSSetShaderResources(min, max - min + 1, srViews);
@@ -2905,7 +2905,7 @@ void RendererHLSLD3D11::setSamplerState(const char *samplerName, const SamplerSt
 	const SamplerD3D11 *s = getSampler(shaders[selectedShader].samplers.getArray(), shaders[selectedShader].nSamplers, samplerName);
 	if (s){
 		if (s->vsIndex >= 0) selectedSamplerStatesVS[s->vsIndex] = samplerState;
-		#if 0
+		#if 1
 		if (s->gsIndex >= 0) selectedSamplerStatesGS[s->gsIndex] = samplerState;
 		if (s->csIndex >= 0) selectedSamplerStatesCS[s->csIndex] = samplerState;
 		if (s->hsIndex >= 0) selectedSamplerStatesHS[s->hsIndex] = samplerState;
@@ -2956,7 +2956,7 @@ void RendererHLSLD3D11::applySamplerStates(){
 	if (fillSS(samplers, min, max, selectedSamplerStatesVS, currentSamplerStatesVS, samplerStates.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->VSSetSamplers(min, max - min + 1, samplers);
 	}
-	#if 0
+	#if 1
 	if(size) if (fillSS(samplers, min, max, selectedSamplerStatesGS, currentSamplerStatesGS, samplerStates.getArray())){
 		RendererHLSLD3D11::GetDeviceContext()->GSSetSamplers(min, max - min + 1, samplers);
 	}
@@ -3004,7 +3004,7 @@ void RendererHLSLD3D11::setShaderConstantRaw(const char *name, const void *data,
 					shaders[selectedShader].psDirty[c->psBuffer] = true;
 				}
 			}
-            #if 0 // ????
+            #if 1 // ????
 			if (c->gsData){
 				if (stx_memcmp(c->gsData, data, size)){
 					stx_memcpy(c->gsData, data, size);
