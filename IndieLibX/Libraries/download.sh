@@ -5,6 +5,7 @@
 #
 source ../make.cnf
 
+git clone https://github.com/TroyShaw/Pacman.git
 git clone https://github.com/luminoso/concurrent-pacman.git
 git clone https://code.ua.pt/git/gboard
 git clone https://code.ua.pt/git/dbc-concurrency-library

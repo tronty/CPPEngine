@@ -213,15 +213,15 @@ installNDK()
 		#mv ./android-ndk-$NDK_VERSION-$OS_-$bitness $HOME/android-ndk-$NDK_VERSION-$OS_-$bitness
 		if [[ $OSTYPE == linux* ]]; then
     			echo 'export NDK=android-ndk-$NDK_VERSION-$OS_-$bitness' >>$HOME/.bashrc
-    			echo 'export SDL2=2.0.14' >>$HOME/.bashrc
-    			echo 'export SDL2_VERSION=SDL2-2.0.14' >>$HOME/.bashrc
+    			echo 'export SDL2=$SDL2_VERSION' >>$HOME/.bashrc
+    			echo 'export SDL2_VERSION=SDL2-$SDL2_VERSION' >>$HOME/.bashrc
     			echo 'export MESA_GL_VERSION_OVERRIDE=3.3' >>$HOME/.bashrc
     			echo 'export MESA_GL_VERSION_OVERRIDE=4.3' >>$HOME/.bashrc
 		fi		
 		if [[ $OSTYPE == darwin* ]]; then
     			echo 'export NDK=android-ndk-$NDK_VERSION-$OS_-$bitness' >>$HOME/.bash_profile
-    			echo 'export SDL2=2.0.14' >>$HOME/.bash_profile
-    			echo 'export SDL2_VERSION=SDL2-2.0.14' >>$HOME/.bash_profile
+    			echo 'export SDL2=$SDL2_VERSION' >>$HOME/.bash_profile
+    			echo 'export SDL2_VERSION=SDL2-$SDL2_VERSION' >>$HOME/.bash_profile
     			echo 'export MESA_GL_VERSION_OVERRIDE=3.3' >>$HOME/.bash_profile
     			echo 'export MESA_GL_VERSION_OVERRIDE=4.3' >>$HOME/.bash_profile
 		fi
@@ -486,6 +486,9 @@ installlinuxpackages()
   		apt-get -y install ant
 		apt-get -y install libsdl1.2-dev
 		apt-get -y install libsdl-image1.2-dev
+		apt-get -y install libsdl-gfx1.2-dev
+		apt-get -y install libsdl-mixer1.2-dev
+		apt-get -y install libsdl-ttf2.0-dev
 		apt-get -y install libsdl2-dev
 		apt-get -y install libsdl2-image-dev
 		apt-get -y install bison
