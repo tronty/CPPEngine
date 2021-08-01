@@ -19,6 +19,27 @@ GUIFrame::GUIFrame() : GUIPanel("GUI MAIN PANEL")
 		std::string f2=stx_convertpath(f);
   Image3 img;
   img.loadImageLibImage(f2.c_str(), false);
+  ubyte *fDest0 = (ubyte *)img.getPixels();
+  int cc=getChannelCount(img.getFormat());
+  LOG_PRINT("fDest0=%x\n", fDest0);
+  LOG_PRINT("cc=%d\n", cc);
+	for (int y = 0; y < 35; y++){
+	for (int x = 130; x < 165; x++){
+  LOG_PRINT("(y=%d, x=%d)\n", y, x);
+	ubyte *fDest = fDest0 + (y*img.getWidth() + x)*cc;
+	if(*(fDest+0)==192 && *(fDest+1)==192 && *(fDest+2)==192 && *(fDest+3)==255)
+	{
+	#if 0
+		*(fDest+0)=0;
+		*(fDest+1)=0; 
+		*(fDest+2)=0;
+	#else
+		*(fDest+0)=255;
+		*(fDest+1)=128; 
+		*(fDest+2)=64;
+	#endif
+	}
+	}}
   //img.flipY();
   elementsTexture=IRenderer::GetRendererInstance()->addTexture(&img,false,IRenderer::GetRendererInstance()->GetlinearClamp());
   #if 0

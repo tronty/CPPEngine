@@ -143,7 +143,7 @@ void GUICheckBox::render(float clockTick)
 			//LOG_FNLN_NONE;
 			ret=IRenderer::GetRendererInstance()->drawCircle(xPos + 17, yTop + 20, 4, col);
 	#elif 1
-		IRenderer::GetRendererInstance()->RenderTex(GUIFrame::elementsTexture, D3DXFROMWINEVECTOR2(xPos + 10 /* + 17 */, yTop + 11 /* + 20 */), D3DXFROMWINEVECTOR2(12.0f,100.0f), D3DXFROMWINEVECTOR2(0.64f,0.0f), D3DXFROMWINEVECTOR2(0.14f,1.0f));
+		IRenderer::GetRendererInstance()->RenderTex(GUIFrame::elementsTexture, D3DXFROMWINEVECTOR2(xPos + 9 /* + 17 */, yTop + 10 /* + 20 */), D3DXFROMWINEVECTOR2(12.0f,100.0f), D3DXFROMWINEVECTOR2(0.64f,0.0f), D3DXFROMWINEVECTOR2(0.14f,1.0f));
 	#endif
 			if(ret){LOG_PRINT_NONE("%s:%s:%d:ret=%x\n",__FILE__,__FUNCTION__,__LINE__,ret);}
 		}
@@ -163,7 +163,7 @@ void GUICheckBox::render(float clockTick)
 			if(ret){LOG_PRINT_NONE("%s:%s:%d:ret=%x\n",__FILE__,__FUNCTION__,__LINE__,ret);}
 			ret=IRenderer::GetRendererInstance()->drawLine(xPos + 15, yTop + 25, xPos + 21, yTop + 14, colblack, 2);
 	#elif 1
-		IRenderer::GetRendererInstance()->RenderTex(GUIFrame::elementsTexture, D3DXFROMWINEVECTOR2(xPos + 8 /* + 13 */, yTop + 12 /* + 21 */), D3DXFROMWINEVECTOR2(16.0f,100.0f), D3DXFROMWINEVECTOR2(0.50f,0.0f), D3DXFROMWINEVECTOR2(0.14f,1.0f));
+		IRenderer::GetRendererInstance()->RenderTex(GUIFrame::elementsTexture, D3DXFROMWINEVECTOR2(xPos + 7 /* + 13 */, yTop + 12 /* + 21 */), D3DXFROMWINEVECTOR2(16.0f,100.0f), D3DXFROMWINEVECTOR2(0.50f,0.0f), D3DXFROMWINEVECTOR2(0.14f,1.0f));
 	#else
 	const D3DXFROMWINEVECTOR4 &texCoords = descriptor->getTexCoords();
 	IRenderer::GetRendererInstance()->Begin(PRIM_TRIANGLE_STRIP);
