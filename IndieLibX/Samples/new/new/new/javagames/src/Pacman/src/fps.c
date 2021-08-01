@@ -1,25 +1,26 @@
 #include "fps.h"
 
-#include <SDL/SDL_framerate.h>
+//include <SDL2/SDL_framerate.h>
+#include <SDL2/SDL.h>
 
-static FPSmanager fpsManager;
+//static FPSmanager fpsManager;
 static int numTicks;
 
 void fps_init(int hz)
 {
-	SDL_initFramerate(&fpsManager);
+//	SDL_initFramerate(&fpsManager);
 	fps_sethz(hz);
 }
 
 void fps_sethz(int hz)
 {
-	SDL_setFramerate(&fpsManager, hz);
+//	SDL_setFramerate(&fpsManager, hz);
 }
 
 void fps_sleep(void)
 {
 	numTicks++;
-	SDL_framerateDelay(&fpsManager);
+//	SDL_framerateDelay(&fpsManager);
 }
 
 unsigned int ticks_game(void)

@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #define NUM_FONTS 7
 

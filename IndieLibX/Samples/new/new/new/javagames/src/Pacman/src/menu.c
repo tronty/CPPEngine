@@ -2,7 +2,8 @@
 
 #include <stdbool.h>
 
-#include <SDL/SDL_keysym.h>
+//include <SDL2/SDL_keysym.h>
+#include <SDL2/SDL.h>
 
 #include "input.h"
 #include "ghost.h"

@@ -1,6 +1,7 @@
 #include "imageutil.h"
 
-#include <SDL/SDL_gfxPrimitives.h>
+//include <SDL2/SDL_gfxPrimitives.h>
+#include <SDL2/SDL.h>
 
 SDL_Surface* clone_image(SDL_Surface* src)
 {
@@ -15,9 +16,9 @@ void replace_pixel(SDL_Surface *image, SDL_Color newColor)
 		{
 			Uint32 pixel = get_pixel(image, x, y);
 			SDL_Color c;
-			SDL_GetRGBA(pixel, image->format, &c.r, &c.g, &c.b, &c.unused);
+			SDL_GetRGBA(pixel, image->format, &c.r, &c.g, &c.b, &c.a);
 
-			if (c.unused == 255) pixelRGBA(image, x, y, newColor.r, newColor.g, newColor.b, newColor.unused);
+			// ??? if (c.a == 255) pixelRGBA(image, x, y, newColor.r, newColor.g, newColor.b, newColor.a);
 		}
 	}
 }

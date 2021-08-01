@@ -283,6 +283,7 @@ class Configuration:
 			self.renderer='VULKAN'
 		else:
 			self.renderer='D3D11'
+			#self.renderer='GLSL1_1'
 		self.renderer='VULKAN'
 	elif getRealOS()=='Darwin':
 		self.buildtool='GNUMAKE'
@@ -4074,7 +4075,8 @@ class ProjectVC:
 			txt=txt.replace('<\\','</')
 			#txt=txt.replace('\\\\','\\')
 			#txt=txt.replace('\\','\\')
-			txt=txt.replace('hlsl2glsl.lib','')
+			if not os.path.exists('../lib/hlsl2glsl.lib'):
+				txt=txt.replace('hlsl2glsl.lib','')
 
 			exedir2=exedir.replace('/','\\')
 			txt=txt.replace('bin',exedir2)
@@ -4100,7 +4102,8 @@ class ProjectVC:
 			txt=txt.replace('<\\','</')
 			#txt=txt.replace('\\\\','\\')
 			#txt=txt.replace('\\','\\')
-			txt=txt.replace('hlsl2glsl.lib','')
+			if not os.path.exists('../lib/hlsl2glsl.lib'):
+				txt=txt.replace('hlsl2glsl.lib','')
 
 	    		#txt=re.sub(r'\s+', ' ', txt)
 
@@ -4124,7 +4127,8 @@ class ProjectVC:
 			txt=txt.replace('<\\','</')
 			#txt=txt.replace('\\\\','\\')
 			#txt=txt.replace('\\','\\')
-			txt=txt.replace('hlsl2glsl.lib','')
+			if not os.path.exists('../lib/hlsl2glsl.lib'):
+				txt=txt.replace('hlsl2glsl.lib','')
 
 	    		#txt=re.sub(r'\s+', ' ', txt)
 
@@ -6615,6 +6619,7 @@ if __name__ == "__main__":
 			renderer='VULKAN'
 		else:
 			renderer='D3D11'
+			#renderer='GLSL1_1'
 		buildtool='NMAKE'
 
 	#print '#:2'

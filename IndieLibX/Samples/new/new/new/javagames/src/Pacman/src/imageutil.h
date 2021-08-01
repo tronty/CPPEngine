@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 //Clones the image, creating and returning a new copy
 //Warning: this allocates memory and the created surface will need to be disposed

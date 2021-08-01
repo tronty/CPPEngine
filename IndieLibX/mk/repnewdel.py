@@ -2,7 +2,9 @@ import os, sys, re
 
 def replaceString(outtext):
 
-    outtext=re.sub(r'\bapp\.initGUI\b', 'BaseApp::initGUI', outtext)
+    #outtext=re.sub(r'\bapp\.initGUI\b', 'BaseApp::initGUI', outtext)
+    outtext=re.sub(r'\<SDL\/SDL\.h\>', '<SDL2/SDL.h>', outtext)
+    outtext=re.sub(r'\<SDL\/', '<SDL2/', outtext)
 
     #outtext=re.sub(r'\bSTX_PRINTF\b', 'printf', outtext)
     #outtext=re.sub(r'\bSTX_PRINT\b', 'printf', outtext)
@@ -668,7 +670,8 @@ def myfunmem(dummy, dirr, filess):
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
 
-os.path.walk('../Samples/new/new_/R2VB_VTF', myfun, 13)
+os.path.walk('../Samples/new/new/new/javagames/src/Pacman', myfun, 13)
+#os.path.walk('../Samples/new/new_/R2VB_VTF', myfun, 13)
 exit(0)
 
 v1=['spine-2.3', 'c3dbool', 'masters-grammar-interpreter', 'STX', 'ContentStreaming', 'MeshRenderer2', 'MeshRenderer3', 'Framework', 'NatureSceneLibrary', 'Framework3', 'nova-0.15.0', 'FW3', 'NSGUI', 'otl', 'otl_', 'otl-nightly', 'RadeonTerrainDemoLibrary', 'Image3', 'sdkmesh-to-obj', 'IndieLib']

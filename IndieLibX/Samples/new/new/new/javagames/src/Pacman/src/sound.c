@@ -1,6 +1,6 @@
 #include "sound.h"
 
-#include <SDL/SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 
 //sound filenames
 //static const char *EFFECT_FILES[] = {"wakawaka.wav", "bdc"};
@@ -17,6 +17,7 @@ static int levelStartChanel;
 
 void load_sounds(void)
 {
+	#if 0
 	//22050 is sound frequency
 	//MIX_DEFAULT_FORMAT is the sound format
 	//2 is number of channels to use, we use 2 for stereo sound
@@ -37,6 +38,7 @@ void load_sounds(void)
 	//}
 
 	levelStart = Mix_LoadWAV("sound/pacintro.wav");
+	#endif
 
 	set_sound_volume(0.5);
 	set_sound_muted(true);
@@ -49,14 +51,14 @@ void dispose_sounds(void)
 		//Mix_FreeChunk(effects[i]);
 	//}
 
-	Mix_FreeChunk(levelStart);
+	//Mix_FreeChunk(levelStart);
 
-	Mix_FreeMusic(music);
+	//Mix_FreeMusic(music);
 }
 
 void set_sound_volume(float vol)
 {
-	Mix_VolumeChunk(levelStart, vol * MIX_MAX_VOLUME);
+	//Mix_VolumeChunk(levelStart, vol * MIX_MAX_VOLUME);
 	volume = vol;
 }
 
@@ -69,7 +71,7 @@ void set_sound_muted(bool isMuted)
 {
 	if (isMuted)
 	{
-		Mix_VolumeChunk(levelStart, 0);
+		//Mix_VolumeChunk(levelStart, 0);
 	}
 	else
 	{
@@ -86,6 +88,7 @@ bool is_sound_muted(void)
 
 void play_sound(SoundEffect effectName)
 {
+	#if 0
 	Mix_Chunk *chunk;
 	int *channel;
 
@@ -97,6 +100,7 @@ void play_sound(SoundEffect effectName)
 	}
 
 	*channel = Mix_PlayChannel(-1, chunk, 0);
+	#endif
 }
 
 void play_music(void)
@@ -106,6 +110,7 @@ void play_music(void)
 
 void stop_sound(SoundEffect effectName)
 {
+	#if 0
 	int channel;
 
 	switch (effectName)
@@ -117,6 +122,7 @@ void stop_sound(SoundEffect effectName)
 	}
 
 	Mix_HaltChannel(channel);
+	#endif
 }
 
 void stop_music(void)

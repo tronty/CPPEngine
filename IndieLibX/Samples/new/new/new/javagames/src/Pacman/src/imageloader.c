@@ -1,11 +1,13 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_imageFilter.h>
-#include <SDL/SDL_rotozoom.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#if 0
+#include <SDL2/SDL_imageFilter.h>
+#include <SDL2/SDL_rotozoom.h>
+#endif
 
 #include "imageloader.h"
 
-#define DIR "images/"
+#define DIR "../../IndieLib_resources/new/javagames/Pacman/images/"
 
 #define PNT_DIR "pts/"
 
@@ -345,11 +347,11 @@ void dispose_fruit_images(void)
 
 void load_misc_images(void)
 {
-	smallPellet = load_image(DIR "smallpellet.png");
-	largePellet = load_image(DIR "largepellet.png");
+	smallPellet = load_image(DIR "../../IndieLib_resources/new/javagames/Pacman/smallpellet.png");
+	largePellet = load_image(DIR "../../IndieLib_resources/new/javagames/Pacman/largepellet.png");
 
-	ptsWhiteImage = load_image(DIR "ptswhite.png");
-	ptsPeachImage = load_image(DIR "ptspeach.png");
+	ptsWhiteImage = load_image(DIR "../../IndieLib_resources/new/javagames/Pacman/ptswhite.png");
+	ptsPeachImage = load_image(DIR "../../IndieLib_resources/new/javagames/Pacman/ptspeach.png");
 
 	char dirStr[256];
 
@@ -454,7 +456,7 @@ SDL_Surface *load_image(const char *filename)
 	if(loadedImage != NULL)
 	{
 		//Create an optimized image
-		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
+		optimizedImage = loadedImage;//SDL_DisplayFormatAlpha(loadedImage);
 
 		//Free the old image
 		SDL_FreeSurface(loadedImage);

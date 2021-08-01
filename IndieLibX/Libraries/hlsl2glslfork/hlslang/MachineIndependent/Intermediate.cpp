@@ -13,7 +13,7 @@
 #include <float.h>
 #include <limits.h>
 
-#ifdef _MSC_VER
+#if 0//def _MSC_VER
 #define __stdmin__ 	(((x) < (y)) ? (x) : (y))
 #define __stdmax__ 	(((x) > (y)) ? (x) : (y))
 #else

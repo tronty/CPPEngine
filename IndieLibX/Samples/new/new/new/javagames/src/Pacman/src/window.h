@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 //Initializes the window to the given length, width and title.
 bool init_window(const char* title, int width, int height);

@@ -1396,13 +1396,13 @@ int argc, char *argv[]
 	#endif
 	pfd.iLayerType = PFD_MAIN_PLANE;
 
-	hDc = GetDC( STX_Service::GetWindowInstance()->GetHWND() );
-	PixelFormat = ChoosePixelFormat( m_hDC, &pfd );
-	SetPixelFormat( m_hDC, PixelFormat, &pfd);
+	m_hdc = GetDC( STX_Service::GetWindowInstance()->GetHWND() );
+	PixelFormat = ChoosePixelFormat( m_hdc, &pfd );
+	SetPixelFormat( m_hdc, PixelFormat, &pfd);
 
-	hGlrc = wglCreateContext( hDc);
+	HGLRC hGlrc = wglCreateContext( m_hdc);
 
-	wglMakeCurrent( m_hDC, hGlrc );
+	wglMakeCurrent( m_hdc, hGlrc );
 
 
 #else

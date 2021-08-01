@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdbool.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #define BOARD_LENGTH 28
 #define BOARD_HEIGHT 31

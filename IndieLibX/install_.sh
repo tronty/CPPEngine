@@ -491,6 +491,7 @@ installlinuxpackages()
 		apt-get -y install libsdl-ttf2.0-dev
 		apt-get -y install libsdl2-dev
 		apt-get -y install libsdl2-image-dev
+		apt-get -y install libsdl2-mixer-dev
 		apt-get -y install bison
 		apt-get -y install flex
 		apt-get -y install libtool

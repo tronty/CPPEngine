@@ -4,6 +4,7 @@ static SDL_Surface *screen;
 
 bool init_window(const char* title, int width, int height)
 {
+#if 0
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
 	{
 		return false;
@@ -17,7 +18,7 @@ bool init_window(const char* title, int width, int height)
 	}
 
 	SDL_WM_SetCaption(title, NULL);
-
+#endif
 	return true;
 }
 
@@ -50,5 +51,5 @@ void apply_surface(int x, int y, SDL_Surface* source)
 
 void flip_screen(void)
 {
-	SDL_Flip(screen);
+	// ??? SDL_Flip(screen);
 }
