@@ -1,0 +1,757 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+<style type="text/css">
+table, body {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px;}
+h3.title {font-size: 16px; background: #eeeeee; width: 100%; padding: 3px;}
+span.gamacode {
+	/*font-family: "courier new";*/
+	display: block;
+	padding-left: 20px;
+	text-align: left;
+}
+</style>
+
+<title>Gamasutra - Features - Dynamic 2D Imposters: A Simple, Efficient DirectX 9 Implementation</title>
+</head><body><div style="width: 750px; margin: auto;">
+<div style="border: 2px solid rgb(204, 204, 204); width: 100%;"><a href="http://www.gamasutra.com/"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/gamalogo.gif" border="0"></a>
+	<a href="javascript:window.print()"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/print.gif" style="border: 0pt none; float: right; margin-top: 10px;"></a>
+</div>
+<div style="clear: both;"></div>
+<h3 class="title">Dynamic 2D Imposters: A Simple, Efficient DirectX 9 Implementation</h3>
+By Ashley Davis
+<a href="http://www.gamasutra.com/view/feature/2501/dynamic_2d_imposters_a_simple_.php"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/index_davis_lg.jpg" style="border: 0pt none; margin: 5px;" align="right"></a><p>
+<strong>Introduction</strong>
+</p>
+<p>
+The
+technique of using 2D imposters is becoming more and more popular in
+the world of computer games. The aim is, without loss of detail, to
+reduce the geometric complexity of a 3D scene by caching portions of
+the scene as images. 3D objects in the scene are captured into separate
+images. When the final scene is generated the cached images, or
+imposters as they are known, are rendered in place of the 3D objects.
+In this way an imposter is a simplified representation of a complex 3D
+object. As modern games grow larger and demand more detail than ever
+before developers are increasingly looking for new and innovative
+level-of-detail algorithms. The common place practice of using a
+progressively lower detail series of hand-authored meshes is not
+necessarily enough to meet the demands of modern games and more
+advanced solutions such as 2D imposters are required. As the topic of
+imposters is gaining acceptance and importance in the industry,
+numerous good articles and chapters have already been written, however
+I have not yet seen an article that covers the implementation of an
+imposter system. This article provides some basic theory, but is mostly
+concerned with, as the title suggests a simple and efficient system for
+dynamically generating and rendering 2D imposters.
+</p>
+<p>
+Imposters
+can be used in many situations, however they are very well suited for
+complex and detailed games that have a large amount of distant static
+background geometry. In these games the users' attention is likely to
+be in the foreground and they will not notice the imposters in the
+background. Less time spent processing and rendering geometry leaves
+the game more time for the things that really make the game: logic and
+AI.
+</p>
+<p>
+Imposter
+generation falls into two categories. Static or offline imposters are
+those that are generated offline, usually by an artist.
+Statically-generated imposters have been in use for many years and are
+more commonly known as sprites, particles or billboards. The classic
+example in this case is the often seen "billboard tree" constructed
+from billboards at right-angles. This tree is an example of an imposter
+that has four viewpoints. This article is about dynamically-generated
+imposters. They are similar in concept to static imposters and are
+still implemented as billboards; however they are regenerated at
+runtime by rendering an image of a 3D object to a texture.
+</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="143" width="222">
+	<tbody>
+		<tr>
+			<td rowspan="2" bgcolor="#ccc999" valign="top" width="11">
+			<div align="right">
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10">
+			</div>
+			</td>
+			<td colspan="3" rowspan="2" bgcolor="#ccc999" valign="top"><br>
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/Figure1.jpg" alt="" height="124" width="550">  </td>
+			<td align="right" bgcolor="#ccc999" valign="top" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+		</tr>
+		<tr valign="top">
+			<td align="left" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+			<td colspan="3" bgcolor="#ccc999" valign="top">
+			<strong>Figure 1. Screenshots from <em>Tycoon City: New York</em>.
+			A modern PC game that is due for release in early 2006 and simulates
+			has a detailed city environment. Far-left has no imposters. Middle has
+			barely noticeable imposters in the background. Far-right shows imposter
+			outlines. </strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+This
+article is aimed at developers who want a starting point for creating
+their own imposter system. The code presented in the article is
+intended to be simple and adaptable to different environments and
+needs. Development of an imposter system is complicated by numerous
+issues. It is essentially an R&amp;D task and requires experimentation
+to solve the mathematical, visual and performance aspects that come
+with the territory. To read this article I assume that you are
+experienced with the C/C++ programming language and have an
+understanding of 3D graphics concepts. You should at least be familiar
+with the DirectX 9 API and you might want to have the SDK help to hand.
+</p>
+<p>
+<strong>Theory </strong>
+</p>
+<p>
+A
+2D imposter is a simplification of a complex 3D object, implemented as
+a billboard that is textured with a rendered image of the 3D object.
+The purpose of using imposters is to reduce the time required to render
+a 3D scene. It works by caching images of 3D objects and using these
+images in place of the real objects. Using imposters to decrease the
+amount of work performed each frame results in less time spent
+rendering. In DirectX this equates to a reduction in polygon and
+texture upload, draw calls, state changes, and more importantly, less
+CPU processing of geometry.
+</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="106" width="222">
+	<tbody>
+		<tr>
+			<td rowspan="2" bgcolor="#ccc999" valign="top" width="11">
+			<div align="right">
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10">
+			</div>
+			</td>
+			<td colspan="3" rowspan="2" bgcolor="#ccc999" valign="top"><br>
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/Figure2.jpg" alt="" height="127" width="500">  </td>
+			<td align="right" bgcolor="#ccc999" valign="top" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+		</tr>
+		<tr valign="top">
+			<td align="left" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+			<td colspan="3" bgcolor="#ccc999" valign="top">
+			<strong>Figure
+			2. An imposter generated from a truck. This shows the 3D object behind
+			its 2D imposter. The green lines converge on the camera position that
+			was used to generate the imposter.</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+Generation of an imposter consists of the following steps:
+</p>
+<ul>
+	<li>Determine the vertices of the imposter billboard </li>
+	<li>Compute the view and projection matrices required for render-to-texture </li>
+	<li>Initialize appropriate render-state and render the imposter to the texture </li>
+</ul>
+<p>
+Imposter
+billboard vertices are derived from the bounding box of the 3D object.
+The billboard is such that in screen-space, from the current viewpoint,
+it fully encompasses the 3D object. The billboard and the current
+camera position are used to compute the necessary view and projection
+matrices. The final stage in generating an imposter is to initialize
+render-state and render the 3D object into the texture. This texture is
+called the imposter texture throughout this article. The imposter
+texture must contain an alpha channel. The alpha represents where in
+the texture the imposter is: opaque (alpha = 1.0) where the imposter
+is; and transparent (alpha = 0.0) where the imposter is not.
+</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="288" width="222">
+	<tbody>
+		<tr>
+			<td rowspan="2" bgcolor="#ccc999" valign="top" width="11">
+			<div align="right">
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10">
+			</div>
+			</td>
+			<td colspan="3" rowspan="2" bgcolor="#ccc999" valign="top"><br>
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/Figure3.jpg" alt="" height="400" width="400">  </td>
+			<td align="right" bgcolor="#ccc999" valign="top" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+		</tr>
+		<tr valign="top">
+			<td align="left" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+			<td colspan="3" bgcolor="#ccc999" valign="top">
+			<strong>Figure 3. Image of four 3D objects rendered into a texture. The cyan area of the texture is transparent (alpha = 0.0).</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+Once
+the imposter is cached it is used for multiple frames of rendering.
+Imposters are rendered into the final 3D scene using alpha testing or
+alpha blending and are placed at the position of the 3D object they are
+replacing. The key to imposters bringing a performance gain is to reuse
+cached imposters over as many frames as possible. To this end imposters
+should only be regenerated when it becomes necessary to maintain the
+illusion of a cohesive 3D scene. There are certain conditions that will
+make the imposter illusion become apparent. There are global conditions
+such as camera viewing angle and light color and direction. There are
+local conditions such as animation, position, and orientation of the 3D
+object. When these conditions become so extreme that imposters become
+noticeably two-dimensional, they must be regenerated. The variation
+between the appearance of a 2D imposter and the 3D object it represents
+is what I call "imposter error."
+</p>
+<p>
+<strong>Visual Quality Concerns </strong>
+</p>
+<p>
+<strong> </strong>For
+imposters to be useful they need to not only be more efficient than
+rendering the 3D object, they also need to look as good, or (if a small
+sacrifice in quality is acceptable) almost as good as the real thing.
+With practice and experimentation most of the visual quality problems
+are solvable.
+</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="143" width="222">
+	<tbody>
+		<tr>
+			<td rowspan="2" bgcolor="#ccc999" valign="top" width="11">
+			<div align="right">
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10">
+			</div>
+			</td>
+			<td colspan="3" rowspan="2" bgcolor="#ccc999" valign="top"><br>
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/Figure4.jpg" alt="" height="150" width="300">  </td>
+			<td align="right" bgcolor="#ccc999" valign="top" width="176"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="176"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+		</tr>
+		<tr valign="top">
+			<td align="left" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+			<td colspan="3" bgcolor="#ccc999" valign="top">
+			<strong>Figure
+			4. Side by side screenshots of a 3D object next to its imposter. Note
+			that at a distance the two are almost indistinguishable.</strong>                  </td>
+		</tr>
+	</tbody>
+</table>
+<p>
+The biggest visual problems are:
+</p>
+<ul>
+	<li> Use of alpha </li>
+	<li>The visual popping that occurs when changing from 3D object to imposter </li>
+	<li>Imposters look pixelated due to insufficient render texture resolution </li>
+	<li>Imposter error becomes too large due to changes in environmental conditions or changes in viewpoint </li>
+</ul>
+<p>
+The
+common DirectX alpha blending mode &#8220;source alpha-inverse source alpha&#8221;
+cannot be used in models that are going to be impostered. This is
+easily solved by using low-detail non-alpha versions of models when
+rendering them as imposters. Note that alpha-testing can be used with
+imposters to implement transparency. Pre-multiplied alpha can also be
+used as discussed in <em>Game Programming Gems 2</em>.
+</p>
+<p>
+Visual
+popping is almost unnoticeable with good use of time-based alpha
+blending. You can even alpha-fade between imposter viewing angles so
+that imposter regeneration is barely noticeable, however that is not
+implemented in this article as it requires a larger render-texture
+budget. It should be noted that when alpha blending is used, imposters
+need to be depth-sorted and rendered back-to-front for the
+transparencies to work correctly. If alpha-fading is not required, it
+is possible to use alpha-testing instead which makes the depth sort
+unnecessary. There are many high-performance sort algorithms available.
+</p>
+<p>
+Selecting
+the right texture resolution is important. A texture resolution that is
+too low will mean that imposters look pixelated. Additionally if the
+camera gets too close to an imposter or the imposter is too large then
+a low resolution texture becomes very obvious. For this article I have
+empirically selected the texture resolution of 64-by-64 for each
+imposter. The problem with hard coding a texture resolution is that it
+doesn't work very well with different sized objects or object distance.
+For example, larger and closer imposters will require a higher
+resolution than smaller and more distant imposters. For simplicity in
+this article, I will stick with the hard-code resolution; however the
+section <em>Taking Imposters Further </em>discusses extensions to the imposter system to efficiently handle run-time selection of different texture resolutions.
+</p>
+<p>
+When
+imposter error becomes too extreme, imposters need to be regenerated
+before the problem becomes noticeable by the user. The conditions that
+cause imposter error will have more or less impact depending on the
+type of game, but typically they are based on camera viewing angle
+changes, object animation, movement and rotation, and lighting changes.
+</p>
+<p>
+In this article the conditions are dealt with in the following ways:
+</p>
+<ul>
+	<li><strong>Changes to camera viewing angle and object position. </strong>A
+	simple comparison of the angle between camera vectors against a
+	threshold angle. If the angle is greater than the threshold, the
+	imposter is regenerated. </li>
+	<li><strong>Lighting and object animation changes. </strong>Each
+	imposter tracks its &#8220;time since last regeneration.&#8221; Once this time has
+	exceeded X number of seconds the imposter is regenerated. </li>
+</ul>
+<p>
+Note
+that changes to object orientation are not tested for in the sample
+code. However, it is a simple condition to support. The test of the
+angle between camera vectors needs to be performed in model-space
+rather than world-space so that it will account for changes in object
+orientation.
+</p>
+<p>
+It
+should be noted at this point that use of hardware fogging can help
+hide the visual problems associated with imposters. Fog is your friend,
+just remember that you only need to fog the imposter billboard and not
+the 3D object, otherwise you may end up with double fog!
+</p>
+<hr name="false">
+<p>
+<strong>Runtime Efficiency Concerns </strong>
+</p>
+<p>
+Aren't
+imposters meant to make rendering more efficient? The answer is yes,
+however if an imposter system is implemented naïvely you may find that
+it doesn't quite solve your efficiency problems.
+</p>
+<p>
+The
+naïve implementation is the simplistic approach of using one render
+texture for each imposter. This approach should only ever be used
+during prototyping (when solving visual issues) as it has a detrimental
+impact on performance. The naïve implementation requires a render
+target change for each imposter that is generated and requires a
+DirectX draw call for each imposter that is rendered. Changing render
+targets is an expensive operation. Executing a draw call for a small
+amount of geometry is also an expensive operation. To get the most out
+of imposters, multiple imposter textures need to be packed onto each
+render texture. The bigger the render texture and the smaller the
+imposter texture, the better, as we can fit more imposters in the same
+render texture. Packing texture in this way means that only one render
+target change is needed to generate multiple imposters and only a
+single draw call is required to render multiple imposters. Therefore,
+the more imposters that can be squeezed into a render texture, the more
+efficient the system becomes.
+</p>
+<p>
+Regenerating
+imposters, although more efficient when using texture packing, is still
+the most expensive part of this system. Therefore we want to regenerate
+imposters as little as possible. It is important to tweak threshold
+values so that imposters are only regenerated when imposter error
+becomes obviously noticeable by the user.
+</p>
+<p>
+As
+imposters are regularly regenerated, a dynamic DirectX vertex buffer is
+used to pack imposter vertices for draw calls. A dynamic vertex buffer
+is a vertex buffer that is created with flags that specify that DirectX
+should optimize the vertex buffer for usage where the vertex buffer is
+updated each frame.
+</p>
+<p>
+Finally,
+it should be mentioned that the imposter render texture should never be
+locked. Locking a render texture can cause the graphics system to flush
+and stall which will really kill performance.
+</p>
+<p>
+<strong>Step-by-step Implementation</strong>
+</p>
+<p>
+The
+following section describes the code necessary for efficient imposter
+generation and rendering. The code listings that are included are from
+the sample application that comes with the article. The sample code has
+been compiled with the DirectX 9 October 2005 SDK and it makes heavy
+use of the DirectX Extensions library (D3DX).
+</p>
+<p>
+The
+code listings are presented in a step-by-step fashion and introduced in
+order of the most important techniques in the imposter system. The
+first steps involve usage of the render textures. Then we look at the
+techniques for building imposter billboards and the matrices required
+for render to texture. Next, for the purposes of demonstration and
+example, the naïve inefficient imposter implementation is presented.
+Subsequently, the efficient approach using texture packing is
+discussed. Finally, there is a section that demonstrates how to
+determine when an imposter requires regeneration.
+</p>
+<p>
+<strong>1. Render Texture Allocation </strong>
+</p>
+<p>
+The first thing needed in an imposter system is a render texture. The code in <strong><a href="listing1.html">Listing 1</a> </strong> creates the render texture using <em>D3DXCreateTexture </em> and <em>D3DXCreateRenderToSurface</em>. The DirectX code is encapsulated in the function <em>RenderTexture::Init </em>
+which is called to initialize the render texture. For runtime
+efficiency this function should only be called when the game starts up.
+Parameters to <em>Init </em>specify the resolution of the texture. The texture is created with the format <em>D3DFMT_A8R8G8B8 </em>
+which has 8-bits each for red, green, blue, and alpha channels. The
+alpha channel is required as it is the alpha mask that defines the area
+of the texture that contains the imposter. To create a render texture
+rather than a normal texture, <em>D3DUSAGE_RENDERTARGET </em> is specified as the <em>Usage </em> parameter. For the <em>Pool </em> parameter, <em>D3DPOOL_DEFAULT </em> is used and this places the texture in the memory pool that is most efficient for its use: video memory.
+</p>
+<p>
+<strong>2. Render to Texture </strong>
+</p>
+<p>
+Rendering
+to a texture is similar to rendering a normal scene. When rendering a
+DirectX scene, the rendering needs to be executed between calls to the <em>IDirect3DDevice9 </em> functions, <em>BeginScene </em> and <em>EndScene</em>. <em>BeginScene </em> is called first. Rendering is then performed using DirectX API functions. <em>EndScene </em> is called when rendering is complete. When rendering to texture, the <em>ID3DXRenderToSurface </em> functions <em>BeginScene </em> and <em>EndScene </em> are called instead of those in <em>IDirect3DDevice9</em>. In <strong><a href="listing2.html">Listing 2</a></strong><em>, BeginScene </em> and <em>EndScene </em> functions are added to the <em>RenderTexture </em> class to encapsulate the DirectX versions of these functions.
+</p>
+<p>
+We have now covered the basics of render texture usage and created the <em>RenderTexture </em> class that simplifies the use of render textures. <strong><a href="listing3.html">Listing 3</a> </strong>presents a simple example of using the <em>RenderTexture </em> class.
+</p>
+<p>
+<strong>3. Generating Imposter Billboards</strong>
+</p>
+<p>
+The
+first stage of imposter generation is to generate geometry for the
+imposter billboard. The billboard that is required is that which in
+screen-space fully covers the 3D object from the current viewpoint.
+</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" height="433" width="222">
+	<tbody>
+		<tr>
+			<td rowspan="2" bgcolor="#ccc999" valign="top" width="11">
+			<div align="right">
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_left.gif" alt="" align="top" height="11" width="10">
+			</div>
+			</td>
+			<td colspan="3" rowspan="2" bgcolor="#ccc999" valign="top"><br>
+			<img src="dynamic_2d_imposters_a_simple_.php_tiedostot/Figure5.jpg" alt="" height="414" width="500">  </td>
+			<td align="right" bgcolor="#ccc999" valign="top" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_top_right.gif" alt="" align="top" height="11" width="10"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" align="right" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_right.gif" alt="" align="bottom" height="11" width="10"></td>
+		</tr>
+		<tr valign="top">
+			<td align="left" bgcolor="#ccc999" valign="bottom" width="11"><img src="dynamic_2d_imposters_a_simple_.php_tiedostot/corner_bottom_left.gif" alt="" align="bottom" height="11" width="10"></td>
+			<td colspan="3" bgcolor="#ccc999" valign="top">
+			<strong>Figure 5. Image showing the 3D object (bounding box in yellow) projected onto the imposter billboard (outlined in red).</strong>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+The
+billboard geometry is derived from the bounding box of the 3D object.
+First, the bounding box is projected into screen-space. Then, working
+in screen-space, a 2D bounding box is generated that encloses the
+points of the 3D bounding box. This 2D bounding box is the imposter
+billboard in screen-space. While determining the 2D bounding box, the
+depth values of each point are compared to determine the minimum depth
+value of all points. Finally the screen-space points and the minimum
+depth value are unprojected into world-space and are used as the
+positions of the imposter billboard.
+</p>
+<p>
+<strong><a href="listing4.html">Listing 4</a> </strong>presents the <em>ImposterVertex </em>and <em>Imposter </em> structures. These store the data required by a 2D imposter. <em>ImposterVertex </em>
+represents each vertex of the imposter billboard. Imposter vertices
+have position, color, and texture-coordinates. The color is used for
+alpha-fade transitions from 3D object to imposter. The <em>Imposter </em>
+structure represents an individual imposter billboard. In addition to
+other useful data, it contains the vertices that make up the billboard.
+</p>
+<p>
+<strong><a href="listing5.html">Listing 5</a> </strong> contains the <em>CreateBillboard </em>function that enscapsulates the code to compute an imposter billboard. <em>D3DXVec3ProjectArray </em> is called to perform the projection into screen-space. Subsequently <em>D3DXVec3UnprojectArray </em>
+is called to unproject from screen-space into world-space. Also
+computed are the center point of the billboard and the distances to the
+nearest and furthest points on the bounding box. This data is used in
+the next section for computing the matrices required for rendering to
+the texture. Calculated from the imposter center is the direction
+vector to the camera position. The imposter center and camera direction
+are used to help determine when an imposter requires regeneration.
+</p>
+<p>
+<strong>4. Generation View and Projection Matrices</strong>
+</p>
+<p>
+View
+and projection matrices are required in order to render to the texture.
+The matrices are computed for a particular imposter in <em>CreateMatrices </em>in <strong><a href="listing6.html">Listing 6</a></strong>. The matrices are generated using the functions <em>D3DXMatrixLookAtLH </em> and <em>D3DXMatrixPerspectiveLH</em>.
+The view matrix is computed with the current camera position and the
+camera is reorientated to look directly at the center of the imposter
+billboard. The projection matrix is computed using the billboard as the
+projection plane and the near and far plane distances that were
+calculated in <strong><a href="listing5.html">Listing 5</a>.</strong>
+</p>
+<p>
+<strong>5. Rendering a Mesh to the Imposter Texture</strong>
+</p>
+<p>
+With
+an imposter billboard and the right matrices we can now take a look at
+how to render an imposter to a texture. This section presents the naïve
+approach to imposter generation. The approach presented here is
+sufficient for prototyping an imposter system, however it is
+inefficient as it changes render target for each imposter that is
+generated.
+</p>
+<p>
+The code for rendering a mesh to the imposter texture is presented in <strong><a href="listing7.html">Listing 7</a></strong>. <em>BeginScene </em> is called to begin rendering to render texture. The imposter is then rendered into the texture and <em>EndScene </em>
+is called. It is important to note that this is inefficient as it is
+changing render target for each imposter that is generated. When
+rendering the imposter to the texture, the billboard is first
+constructed by calling <em>CreateImposterBillboard</em>. Next <em>CreateMatrices </em> is called to compute view and projection matrices. These matrices are plugged into DirectX by calling <em>SetTransform</em>.
+Before rendering, the mesh render state is initialized and the
+background is cleared. It is important to note that fog is disabled as
+it is the imposter billboard that will be fogged and not the mesh that
+is rendered into the imposter texture. Also, alpha-blending is disabled
+as this is a feature cannot be used when rendering imposters (see <em>Visual Quality Concerns</em>).
+</p>
+<p>
+In later sections, a more efficient implementation using texture packing is developed.
+</p>
+<p>
+<strong>6. Rendering an Imposter Billboard</strong>
+</p>
+<p>
+Continuing on with the naïve imposter implementation, <strong><a href="listing8.html">Listing 8</a> </strong> presents code that renders a single billboard. <em>SetTexture </em>is called to bind the render texture and <em>DrawPrimitiveUP </em> is called to render the billboard.
+</p>
+<p>
+Before calling <em>DrawPrimitveUP </em>render-state
+is initialized. It should be noted that fog is enabled here. The mesh
+that was rendered to the texture was not fogged, so fog needs to be
+enabled when the imposter is rendered. Note also the use of
+alpha-testing so that only the area of the render texture where the
+imposter exists (where alpha is equal to 1.0) will be blended into the
+scene. Alpha-blending is enabled here for the alpha-fade transitions
+that smoothly blend from 3D object to 2D imposter.
+</p>
+<p>
+Again,
+this approach is very inefficient but is useful for demonstration and
+prototyping. It is inefficient not only due to the call to <em>DrawPrimitiveUP</em>, but because the biggest expense is that there is one draw call required for each imposter.
+</p>
+<p>
+<strong>7. Using Texture Packing for Efficient Imposter Generation and Rendering</strong>
+</p>
+<p>
+So
+far we have developed several useful functions for generation and
+rendering of 2D imposters. In the previous two sections, a simplistic
+and naïve technique for imposter generation and rendering was
+presented. Using a single render texture for each imposter is very
+expensive. When generating and rendering multiple imposters per frame,
+the performance costs quickly add up. This section presents an
+efficient implementation that packs multiple imposters into a single
+texture. Texture packing has the dual effect of reducing render target
+changes and reducing draw calls required to generate and render
+imposters.
+</p>
+<p>
+The
+render texture is divided up into regions each of which is used as an
+imposter texture. When regenerating multiple imposters that are in the
+same texture only one render target change is required. When rendering
+imposter billboards we can copy all billboard vertices to a single
+dynamic DirectX vertex buffer. Imposter billboards that are contained
+in the same texture are all rendered with a single draw call.
+</p>
+<p>
+The
+first step is to divide up the render texture and generate texture
+coordinates for each imposter. The texture coordinates map the imposter
+to the region of the render texture that it occupies. <strong><a href="listing9.html">Listing 9</a> </strong> presents the <em>AllocImposters </em>
+function. Parameters to the function specify the number of imposters
+that are required in the U and V axis of the render texture. The
+imposter texture is divided up and texture coordinates are assigned to
+each imposter. Note that the <em>Imposter </em> objects are
+pre-allocated as a array. It makes sense to allocate in this way as
+computer games are typically limited in the amount of memory they can
+consume, so it is better to pre-allocate memory when possible.
+</p>
+<p>
+The texture coordinates generated in <strong><a href="listing9.html">Listing 9</a> </strong> are used both when generating and rendering imposters. When generating imposters, we need to call the <em>IDirect3DDevice9 </em> function <em>SetViewport </em> to set the renderable area of the render texture. The function <em>InitImposterViewport </em> in <strong><a href="listing10.html">Listing 10</a> </strong> demonstrates how the texture coordinates are used to set the viewport. After calling <em>SetViewport </em> subsequent rendering will only be output to the specified region of the render texture.
+</p>
+<p>
+With
+the ability to render to regions of the render texture, we are now able
+to pack multiple imposters into a single texture. To do this we take
+the <em>GenerateImposter </em> function presented in <strong><a href="listing7.html">Listing 7</a> </strong> and modifiy it to handle multiple imposters. The modified version of the function presented in <strong><a href="listing11.html">Listing 11</a> </strong> is now called <em>GenerateImposters</em>. The important thing to note is that there is only a single call to <em>BeginScene </em> after which a loop is executed that generates multiple imposters. Note that before rendering the 3D object to the texture <em>InitImposterViewport </em> is called to render to the correct region of the texture.
+</p>
+<p>
+With
+multiple imposter packed into a single texture, we now look at a more
+efficient method of rendering imposter billboards. First, a dynamic
+DirectX vertex buffer is created. A dynamic vertex buffer is the right
+choice for imposter rendering. As we are going to be depth-sorting
+imposters, they are potentially rendered in a different order each
+frame. Therefore, we need to copy vertices to a dynamic vertex buffer
+each frame. It is worth noting that if you don't use depth-sorting, you
+could experiment with using a static vertex buffer that is only updated
+as imposters are periodically regenerated, however the caching code
+required is beyond the scope of this article. Example code for creating
+a dynamic vertex buffer is presented in <strong><a href="listing12.html">Listing 12</a></strong>.
+</p>
+<p>
+The <em>RenderImposterBillboards </em>function is presented in <strong><a href="listing13.html">Listing 13</a></strong>.
+This functions renders all imposters that are packed in a texture. For
+alpha-blending to work, the imposters are first sorted so that they are
+rendered in back-to-front order. The vertices of the sorted billboards
+are then coped into the dynamic vertex buffer. Last, the render state
+is initialized and a single call to <em>DrawPrimitive </em> is executed to render the billboards.
+</p>
+<p>
+<strong>8. Testing for Imposter Regeneration</strong>
+</p>
+<p>
+Finally,
+we need to determine when imposters require regeneration. It is
+impractical to regenerate all imposters every frame. This would be more
+expensive than rendering the 3D objects in the first place. Cached
+imposters should be reused over as many frames as possible and not
+regenerated until imposter error becomes noticeable by the user. <strong><a href="listing14.html">Listing 14</a> </strong>
+presents two tests that determine when an imposter requires
+regeneration. The first test checks the time since the imposter was
+last regenerated. If this time is greater than the threshold value,
+then the imposter needs regeneration. The second test examines the
+angle between the current camera vector and the camera vector that was
+computed when the imposter was last generated. If this angle is greater
+than the threshold angle, then the imposter needs regeneration. In
+either case, when the imposter is to be regenerated the <em>requiresRegenerate </em> member of the <em>Imposter </em> structure is set to true.
+</p>
+<hr name="false">
+<p>
+<strong>Taking Imposters Further </strong>
+</p>
+<p>
+There are numerous ways in which the imposter system presented here can be improved.
+</p>
+<p>
+<strong>Viewing Angle Tests</strong>
+</p>
+<p>
+The
+sample code does not account for changes in orientation of the 3D
+object. To provide for this, the viewing angle test should be
+calculated in model-space rather than world-space. Then the test will
+take into account not only the camera viewing angle and model position,
+but also the orientation of the model. An even better test is to
+compare the angles between the vectors from the camera position to the
+near and far points on the object's bounding box. This test is more
+expensive but accounts for not only the camera viewing angle, but also
+the size, position, orientation, and distance of the object. This test
+is documented in <em>Real-Time Rendering</em>.
+</p>
+<p>
+<strong>Calculating Texture Resolution at Runtime</strong>
+</p>
+<p>
+For
+the sample code, I selected the imposter texture resolution offline and
+hard-coded it into the application. A more general purpose imposter
+system may want to calculate the texture resolution at runtime based on
+the size and distance of the 3D object and the resolution of the
+screen. Smaller and more distance objects will use a smaller texture
+resolution, larger and closer objects will use a larger texture
+resolution. <em>Real-Time Rendering</em> presents a useful formula for calculating texture resolution.
+</p>
+<p>
+Supporting
+arbitrary imposter texture resolutions will help make imposters have
+better visual quality; however coding support for arbitrary texture
+resolutions is complicated and the code difficult to optimise. We don't
+want to make things harder for ourselves so I suggest a simpler
+approach. Select a number of discrete texture resolutions, for example
+32x32, 64x64 and 128x128. Create a render texture for each discrete
+resolution. At runtime, compute the desired arbitrary resolution and
+then map this into one of the pre-defined discrete resolutions.
+</p>
+<p>
+<strong>Load Balancing Imposter Regeneration </strong>
+</p>
+<p>
+What
+happens when numerous imposters, or even worse all imposters, need to
+be regenerated in a single frame? The simple answer to this is to apply
+load balancing so that at most only X imposters are regenerated in a
+single frame. The value for X can be determined empirically or by some
+combination of machine specification and the amount of load being
+placed on it by the rest of the game. It is for this reason that, in
+the sample code, the code that tests for regeneration and the code that
+performs the regeneration are decoupled. By separating these phases, it
+is possible to test all imposters every frame to determine if they need
+regeneration, then, of those that require regeneration, only process X
+imposters.
+</p>
+<p>
+Load
+balancing in this way introduces a problem. It is possible to have
+imposters that are marked as needing regeneration but are still waiting
+to be regenerated. At some point imposter error for the imposters that
+are awaiting regeneration may become too great and the illusion will
+break down. These errors can be quite obvious and may prevent users
+from becoming immersed in the scene. These effects are reduced somewhat
+by sorting imposters based on camera distance and the amount of time
+since their last regeneration. This allows the closest and oldest
+imposters to get first chance at regeneration. This does make the
+problem less noticeable; however there is still a chance that a user
+may be able see noticeable imposter error. For imposters where the
+error has become noticeable, the only option is to throw the imposter
+out completely and revert to the 3D object. This can be implemented as
+another viewing angle test. When the viewing angle becomes greater than
+the threshold the imposter alpha-fades back to the 3D object. The 3D
+object remains in place until the system catches up and has time to
+regenerate the imposter.
+</p>
+<p>
+&nbsp;
+</p>
+<p>
+<strong>References and Further Reading </strong>
+</p>
+<p>
+<em>Real-Time Rendering: Real-Time Rendering</em>, Tomas Moller and Eric Hanes
+</p>
+<p>
+&#8220;Imposters: Adding Clutter&#8221;, in <em>Game Programming Gems 2</em>, Tom Forsyth
+</p>
+<p>
+"Billboard Clouds for Extreme Model Simplification," Xavier Decorety, Gernot Schauflerz, François Silliony, and Julie Dorseyz
+</p>
+<p>
+"Multi-layered impostors for accelerated rendering," Xavier Decorety, Gernot Schauflerz, François Silliony, and Julie Dorseyz
+</p>
+<p>
+"Let There be Clouds! Fast, Realistic Cloud-Rendering in <em>Microsoft Flight Simulator 2004: A Century of Flight"</em>, <a href="http://www.gamasutra.com//">www.gamasutra.com</a>, Niniane Wang
+</p>
+<p align="center">
+_____________________________________________________
+</p>
+<p>
+&nbsp;
+</p>
+<p>
+&nbsp;
+</p>
+
+
+<p style="background: none repeat scroll 0% 0% rgb(238, 238, 238); text-align: center; padding: 5px;"><a href="http://www.gamasutra.com/view/feature/2501/dynamic_2d_imposters_a_simple_.php">Return to the full version of this article with comments</a><br>Copyright © 2010 UBM Techweb</p>
+
+
+</div>
+</body></html>

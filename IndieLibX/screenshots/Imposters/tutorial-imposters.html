@@ -1,0 +1,360 @@
+<html><head>
+
+<title>troylawlor.com - Imposters tutorial</title>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="keywords" content="Troy Lawlor, Troy, Lawlor, Prayer, game engine, Natal, Unreal, Surreal Software, WBIE, Warner Brothers, Newton, programming, C++, DirectX, OpenGL, music, Conversation Hearts, Alaska, University of Alaska Fairbanks, UAF, HAARP, High Frequency Auroral Research Program">
+<meta name="description" content="Troy Lawlor's code, tutorials, music, resume, and contact information.">
+
+<style type="text/css">
+
+.title {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 227px;
+	background: url(
+images/nav/title1.jpg) no-repeat;
+}
+
+</style>
+
+
+<link rel="stylesheet" href="tutorial-imposters_tiedostot/troystyle.css">
+
+</head><body>
+
+<div class="title">
+<div class="mainmenu">
+<a href="http://www.troylawlor.com/index.html">me</a>
+<br><a href="http://www.linkedin.com/in/troylawlor">linkedin</a>
+<br>code
+<br><a href="http://www.troylawlor.com/etc.html">etc.</a>
+</div>
+</div>
+
+<div class="page">
+
+<div class="sidebar">
+
+<div class="sidebarmenu">
+<a href="http://www.troylawlor.com/code.html">index</a>
+<br><a href="http://www.troylawlor.com/prayer.html">prayer</a>
+<br><a href="http://www.troylawlor.com/pighog.html">PIG/HOG</a>
+<br><a href="http://www.troylawlor.com/481.html">CS481 demos</a>
+<br><a href="http://www.troylawlor.com/tutorial-fbo.html">tutorial-fbo</a>
+<br>tutorial-imposters
+</div>
+
+</div>
+
+<div class="content">
+
+<div class="innercontent">
+
+<div class="article1"><div class="articleTitle">
+introduction
+</div></div>
+
+<p>Imposters are a must for any game or demo with large draw distances. 
+ Even if you have an excellent LOD system, drawing tens to hundreds of 
+polys with complex shaders for an object that occupies a tiny portion of
+ the screen is wasteful.  The classic argument against imposters is that
+ the user can easily tell when they 'pop' into view, but a well 
+implemented imposter system should be nearly undetectable even by those 
+aware of it.  This tutorial will give a bare-bones look at how to create
+ an imposter in OpenGL.
+
+</p><p><span class="caution">Note: The code in this tutorial should be 
+taken as pseudo-code.  It hasn't been compiled or tested.  It is meant 
+only to demonstrate the technique.</span>
+
+</p><p>For purposes of clarity, we'll treat our Imposter class like a 
+struct and pass it into functions that do the updating and drawing.  
+We'll be using the RenderTexture class developed in the <a href="http://www.troylawlor.com/tutorial-fbo.html">Frame Buffer Object tutorial</a>
+ to store and update our imposter texture.  Having one fbo/texture per 
+imposter is incredibly wasteful, but easier to begin with.  At the end, 
+I'll discuss a few improvements that could be made.
+
+</p><p>Here is our simple Imposter class.  The purpose of each variable will become more clear as the tutorial progresses.
+
+</p><div class="code">
+<pre><span class="rword">class</span> <span class="idnt">Imposter</span> <span class="brcs">{</span>
+	<span class="rword">public</span><span class="symb">:</span>
+	<span class="idnt">RenderTexture</span> <span class="idnt">renderTexture</span><span class="symb">;</span>  <span class="cmnt">//  the texture that will store our imposter</span>
+	<span class="idnt">Vector</span> <span class="idnt">verts</span><span class="symb">[</span><span class="num">4</span><span class="symb">]</span><span class="symb">;</span>  <span class="cmnt">//  the world-space billboard vertices we'll be using to draw the imposter</span>
+	<span class="idnt">Vector</span> <span class="idnt">center</span><span class="symb">;</span>  <span class="cmnt">//  the center of the billboard</span>
+	<span class="idnt">Vector</span> <span class="idnt">cameraVec</span><span class="symb">;</span>  <span class="cmnt">//  a unit vector pointing from the center towards the camera</span>
+
+	<span class="idnt">Imposter</span><span class="symb">(</span><span class="symb">)</span> <span class="symb">:</span> <span class="idnt">renderTexture</span><span class="symb">(</span><span class="idnt">GL_RGBA</span>, <span class="num">256</span>, <span class="num">256</span><span class="symb">)</span> <span class="brcs">{</span><span class="brcs">}</span>
+<span class="brcs">}</span><span class="symb">;</span>
+</pre>
+</div>
+
+<p>The first step is to calculate an axis-aligned bounding box for the 
+object you want to imposter.  Here is a simple function that will 
+calculate the AABB for a jumble of world-space vertices:
+
+</p><div class="code">
+<pre><span class="cmnt">//  a little demonstration bounding box class</span>
+<span class="rword">class</span> <span class="idnt">BoundsAABB</span> <span class="brcs">{</span>
+	<span class="rword">public</span><span class="symb">:</span>
+		<span class="idnt">Vector</span> <span class="idnt">mins</span><span class="symb">;</span>
+		<span class="idnt">Vector</span> <span class="idnt">maxs</span><span class="symb">;</span>
+		<span class="cmnt">//  this function just lets us iterate over the vertices of the bounding box easily</span>
+		<span class="idnt">Vector</span> <span class="rword">operator</span><span class="symb">[</span><span class="symb">]</span> <span class="symb">(</span><span class="rword">int</span> <span class="idnt">i</span><span class="symb">)</span> <span class="brcs">{</span>
+			<span class="rword">case</span> <span class="num">0</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">mins</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">1</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">maxs</span>.<span class="idnt">x</span>,<span class="idnt">mins</span>.<span class="idnt">y</span>,<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">2</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">mins</span>.<span class="idnt">x</span>,<span class="idnt">maxs</span>.<span class="idnt">y</span>,<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">3</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">mins</span>.<span class="idnt">x</span>,<span class="idnt">mins</span>.<span class="idnt">y</span>,<span class="idnt">maxs</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">4</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">maxs</span>.<span class="idnt">x</span>,<span class="idnt">maxs</span>.<span class="idnt">y</span>,<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">5</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">maxs</span>.<span class="idnt">x</span>,<span class="idnt">mins</span>.<span class="idnt">y</span>,<span class="idnt">maxs</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">6</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">mins</span>.<span class="idnt">x</span>,<span class="idnt">maxs</span>.<span class="idnt">y</span>,<span class="idnt">maxs</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+			<span class="rword">case</span> <span class="num">7</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">maxs</span><span class="symb">;</span>
+			<span class="rword">default</span><span class="symb">:</span> <span class="rword">return</span> <span class="idnt">mins</span><span class="symb">;</span>
+			
+		<span class="brcs">}</span>		
+<span class="brcs">}</span><span class="symb">;</span>
+
+<span class="idnt">BoundsAABB</span> <span class="idnt">calculateAABB</span><span class="symb">(</span> <span class="rword">const</span> <span class="idnt">Vector</span><span class="symb">[</span><span class="symb">]</span> <span class="idnt">vertices</span>, <span class="rword">int</span> <span class="idnt">totalVertices</span> <span class="symb">)</span> <span class="brcs">{</span>
+	<span class="idnt">BoundsAABB</span> <span class="idnt">b</span><span class="symb">;</span>
+	<span class="idnt">b</span>.<span class="idnt">mins</span> <span class="symb">=</span> <span class="idnt">vertices</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="idnt">b</span>.<span class="idnt">maxs</span> <span class="symb">=</span> <span class="idnt">vertices</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="rword">for</span><span class="symb">(</span><span class="rword">int</span> <span class="idnt">i</span><span class="symb">=</span><span class="num">1</span><span class="symb">;</span> <span class="idnt">i</span><span class="symb">&lt;</span><span class="idnt">totalVertices</span><span class="symb">;</span> <span class="symb">+</span><span class="symb">+</span><span class="idnt">i</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">x</span> <span class="symb">=</span> <span class="idnt">min</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">x</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">x</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">y</span> <span class="symb">=</span> <span class="idnt">min</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">y</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">y</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">z</span> <span class="symb">=</span> <span class="idnt">min</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">z</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">b</span>.<span class="idnt">maxs</span>.<span class="idnt">x</span> <span class="symb">=</span> <span class="idnt">max</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">x</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">x</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">b</span>.<span class="idnt">maxs</span>.<span class="idnt">y</span> <span class="symb">=</span> <span class="idnt">max</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">y</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">y</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">b</span>.<span class="idnt">maxs</span>.<span class="idnt">z</span> <span class="symb">=</span> <span class="idnt">max</span><span class="symb">(</span><span class="idnt">vertices</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">z</span>, <span class="idnt">b</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="brcs">}</span>
+	<span class="rword">return</span> <span class="idnt">b</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre>
+</div>
+
+<div class="article2"><div class="articleTitle">
+updating &amp; drawing
+</div></div>
+
+<p>Now let's write a function to update our imposter.  This function 
+assumes the projection and modelview matrices are set up just as they 
+would be for rendering an actual frame.
+
+</p><div class="code">
+
+<span class="rword">void</span> <span class="idnt">startUpdateImposter</span><span class="symb">(</span> <span class="idnt">Imposter</span> <span class="symb">&amp;</span><span class="idnt">imposter</span>, <span class="idnt">BoundsAABB</span> <span class="idnt">bounds</span>, <span class="idnt">Vector</span> <span class="idnt">cameraPos</span> <span class="symb">)</span> <span class="brcs">{</span>
+
+</div>		
+
+<p>Our first goal is to calculate the vertices of the billboard we will use to draw the imposter.  To do this takes three steps.
+
+</p><p>1.  Project the world-space coordinates of our object's AABB into screen-space.
+
+</p><div class="code">
+<pre>	<span class="rword">double</span> <span class="idnt">modelview</span><span class="symb">[</span><span class="num">16</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="rword">double</span> <span class="idnt">projection</span><span class="symb">[</span><span class="num">16</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="idnt">GLint</span> <span class="idnt">viewport</span><span class="symb">[</span><span class="num">4</span><span class="symb">]</span><span class="symb">;</span>
+	
+	<span class="idnt">glGetDoublev</span><span class="symb">(</span><span class="idnt">GL_MODELVIEW_MATRIX</span>, <span class="idnt">modelview</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glGetDoublev</span><span class="symb">(</span><span class="idnt">GL_PROJECTION_MATRIX</span>, <span class="idnt">projection</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glGetIntegerv</span><span class="symb">(</span><span class="idnt">GL_VIEWPORT</span>,<span class="idnt">viewport</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  project world-space object AABB vertices into screen-space</span>
+	<span class="idnt">Vector</span> <span class="idnt">screenVerts</span><span class="symb">[</span><span class="num">8</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="rword">for</span><span class="symb">(</span><span class="rword">int</span> <span class="idnt">i</span><span class="symb">=</span><span class="num">0</span><span class="symb">;</span> <span class="idnt">i</span><span class="symb">&lt;</span><span class="num">8</span><span class="symb">;</span> <span class="symb">+</span><span class="symb">+</span><span class="idnt">i</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="rword">double</span> <span class="idnt">x</span>,<span class="idnt">y</span>,<span class="idnt">z</span><span class="symb">;</span>
+		<span class="idnt">gluProject</span><span class="symb">(</span><span class="idnt">bounds</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">x</span>,<span class="idnt">bounds</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">y</span>,<span class="idnt">bounds</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">z</span>,<span class="idnt">modelview</span>,<span class="idnt">projection</span>,<span class="idnt">viewport</span>,<span class="symb">&amp;</span><span class="idnt">x</span>,<span class="symb">&amp;</span><span class="idnt">y</span>,<span class="symb">&amp;</span><span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">screenVerts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">x</span>,<span class="idnt">y</span>,<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="brcs">}</span>
+</pre>
+</div>
+
+<p>2.  Now we determine a tight bounding box around these screen-space vertices using the calculateAABB function defined above.
+
+</p><div class="code">
+<pre>	<span class="idnt">BoundsAABB</span> <span class="idnt">billboardBounds</span> <span class="symb">=</span> <span class="idnt">calculateAABB</span><span class="symb">(</span> <span class="idnt">screenVerts</span>, <span class="num">8</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">Vector</span> <span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="num">4</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="cmnt">//  we create the four billboard quad vertices by extracting all of the billboard bounds with minimum z</span>
+	<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">x</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">y</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="num">1</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">billboardBounds</span>.<span class="idnt">maxs</span>.<span class="idnt">x</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">y</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="num">2</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">billboardBounds</span>.<span class="idnt">maxs</span>.<span class="idnt">x</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">maxs</span>.<span class="idnt">y</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="num">3</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">x</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">maxs</span>.<span class="idnt">y</span>, <span class="idnt">billboardBounds</span>.<span class="idnt">mins</span>.<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+</pre>
+</div>
+
+<p>3.  Finally, we unproject these screen-space billboard vertices back 
+into world-space.  These world-space vertices form the quad that we will
+ use to draw our imposter.
+
+</p><div class="code">
+<pre>	<span class="rword">for</span><span class="symb">(</span><span class="rword">int</span> <span class="idnt">i</span><span class="symb">=</span><span class="num">0</span><span class="symb">;</span> <span class="idnt">i</span><span class="symb">&lt;</span><span class="num">4</span><span class="symb">;</span> <span class="symb">+</span><span class="symb">+</span><span class="idnt">i</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="rword">double</span> <span class="idnt">x</span>,<span class="idnt">y</span>,<span class="idnt">z</span><span class="symb">;</span>
+		<span class="idnt">gluUnProject</span><span class="symb">(</span><span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">x</span>,<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">y</span>,<span class="idnt">screenQuadVerts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span>.<span class="idnt">z</span>,<span class="idnt">modelview</span>,<span class="idnt">projection</span>,<span class="idnt">viewport</span>,<span class="symb">&amp;</span><span class="idnt">x</span>,<span class="symb">&amp;</span><span class="idnt">y</span>,<span class="symb">&amp;</span><span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="cmnt">//  store our unprojected world-space vertices in the imposter for later use</span>
+		<span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="idnt">x</span>,<span class="idnt">y</span>,<span class="idnt">z</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="brcs">}</span>
+</pre>
+</div>
+
+<p>A handy value to have around is the center of our imposter billboard.  This can be calculated just by averaging the vertices.
+
+</p><div class="code"><pre>	<span class="idnt">imposter</span>.<span class="idnt">center</span> <span class="symb">=</span> <span class="idnt">Vector</span><span class="symb">(</span><span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">for</span><span class="symb">(</span><span class="rword">int</span> <span class="idnt">i</span><span class="symb">=</span><span class="num">0</span><span class="symb">;</span> <span class="idnt">i</span><span class="symb">&lt;</span><span class="num">4</span><span class="symb">;</span> <span class="symb">+</span><span class="symb">+</span><span class="idnt">i</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="idnt">imposter</span>.<span class="idnt">center</span> <span class="symb">+</span><span class="symb">=</span> <span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="idnt">i</span><span class="symb">]</span><span class="symb">;</span>
+	<span class="brcs">}</span>
+	<span class="idnt">imposter</span>.<span class="idnt">center</span> <span class="symb">*</span><span class="symb">=</span> <span class="num">0.25</span><span class="symb">;</span></pre>
+</div>
+
+<p>Another handy value is a vector pointing from the camera to the 
+imposter.  We can use this later as a metric for deciding when to update
+ the imposter.
+
+</p><div class="code"><pre>	<span class="idnt">imposter</span>.<span class="idnt">cameraVec</span> <span class="symb">=</span> <span class="idnt">cameraPos</span> <span class="symb">-</span> <span class="idnt">imposter</span>.<span class="idnt">center</span><span class="symb">;</span>
+	<span class="idnt">imposter</span>.<span class="idnt">cameraVec</span>.<span class="idnt">normalize</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+</pre>
+</div>
+
+<p>Now that we've calculated the billboard vertices and center, let's 
+render the texture for our imposter.  We set up the projection matrix 
+with the near plane right on the imposter, and the far plane just far 
+enough to cover the whole object.  This way we get maximum use out of 
+the depth buffer.  The modelview matrix is set up so the camera is 
+facing the center of the imposter from its current position.
+
+</p><div class="code">
+<pre>	<span class="rword">float</span> <span class="idnt">nearPlane</span> <span class="symb">=</span> <span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">center</span> <span class="symb">-</span> <span class="idnt">cameraPos</span><span class="symb">)</span>.<span class="idnt">length</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">float</span> <span class="idnt">farPlane</span> <span class="symb">=</span> <span class="idnt">nearPlane</span> <span class="symb">+</span> <span class="symb">(</span><span class="idnt">bounds</span>.<span class="idnt">maxs</span><span class="symb">-</span><span class="idnt">bounds</span>.<span class="idnt">mins</span><span class="symb">)</span>.<span class="idnt">length</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	
+	<span class="idnt">glMatrixMode</span><span class="symb">(</span><span class="idnt">GL_PROJECTION</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glPushMatrix</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glLoadIdentity</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	
+	<span class="cmnt">//  calculate the width and height of our imposter's vertices</span>
+	<span class="rword">float</span> <span class="idnt">w</span> <span class="symb">=</span> <span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">1</span><span class="symb">]</span> <span class="symb">-</span> <span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span><span class="symb">)</span>.<span class="idnt">length</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">float</span> <span class="idnt">h</span> <span class="symb">=</span> <span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">3</span><span class="symb">]</span> <span class="symb">-</span> <span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span><span class="symb">)</span>.<span class="idnt">length</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  setup a projection matrix with near plane points exactly covering the object</span>
+	<span class="idnt">glFrustum</span><span class="symb">(</span><span class="symb">-</span><span class="idnt">w</span>/<span class="num">2</span>,<span class="idnt">w</span>/<span class="num">2</span>,<span class="symb">-</span><span class="idnt">h</span>/<span class="num">2</span>,<span class="idnt">h</span>/<span class="num">2</span>,<span class="idnt">nearPlane</span>,<span class="idnt">farPlane</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="idnt">glMatrixMode</span><span class="symb">(</span><span class="idnt">GL_MODELVIEW</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glPushMatrix</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glLoadIdentity</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  face the camera towards the imposter</span>
+	<span class="idnt">gluLookAt</span><span class="symb">(</span><span class="idnt">cameraPos</span>.<span class="idnt">x</span>,<span class="idnt">cameraPos</span>.<span class="idnt">y</span>,<span class="idnt">cameraPos</span>.<span class="idnt">z</span>,<span class="idnt">imposter</span>.<span class="idnt">center</span>.<span class="idnt">x</span>,<span class="idnt">imposter</span>.<span class="idnt">center</span>.<span class="idnt">y</span>,<span class="idnt">imposter</span>.<span class="idnt">center</span>.<span class="idnt">z</span>,<span class="num">0</span>,<span class="num">1</span>,<span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+	
+	<span class="idnt">imposter</span>.<span class="idnt">renderTexture</span>.<span class="idnt">startRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  clear the render texture to 0(be sure to set the alpha to 0 too!)</span>
+	<span class="idnt">glClearColor</span><span class="symb">(</span> <span class="num">0.0f</span>, <span class="num">0.0f</span>, <span class="num">0.0f</span>, <span class="num">0.0f</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glClear</span><span class="symb">(</span><span class="idnt">GL_COLOR_BUFFER_BIT</span> <span class="symb">|</span> <span class="idnt">GL_DEPTH_BUFFER_BIT</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glColor4f</span><span class="symb">(</span><span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span>,<span class="num">1</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre>
+</div>
+
+<p>That concludes the startUpdateImposter function.  At this point 
+you'll want to draw your object just as you would for a regular pass.  
+When you are done, call the next function, finishUpdateImposter.
+
+</p><div class="code">
+<pre><span class="rword">void</span> <span class="idnt">finishUpdateImposter</span><span class="symb">(</span> <span class="idnt">Imposter</span> <span class="symb">&amp;</span><span class="idnt">imposter</span> <span class="symb">)</span> <span class="brcs">{</span>
+	<span class="idnt">imposter</span>.<span class="idnt">renderTexture</span>.<span class="idnt">finishRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="idnt">glMatrixMode</span><span class="symb">(</span><span class="idnt">GL_PROJECTION</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glPopMatrix</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glMatrixMode</span><span class="symb">(</span><span class="idnt">GL_MODELVIEW</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glPopMatrix</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre>
+</div>
+
+<p>We have now rendered the object into the imposter's texture.  Now we can actually draw the imposter billboard.
+
+</p><div class="code">
+<pre><span class="rword">void</span> <span class="idnt">drawImposter</span><span class="symb">(</span> <span class="idnt">Imposter</span> <span class="symb">&amp;</span><span class="idnt">imposter</span> <span class="symb">)</span> <span class="brcs">{</span>
+	<span class="idnt">imposter</span>.<span class="idnt">renderTexture</span>.<span class="idnt">bind</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="idnt">glBegin</span><span class="symb">(</span><span class="idnt">GL_QUADS</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glTexCoord2f</span><span class="symb">(</span><span class="num">0</span>,<span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glVertex3fv</span><span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">0</span><span class="symb">]</span>.<span class="idnt">v</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glTexCoord2f</span><span class="symb">(</span><span class="num">1</span>,<span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glVertex3fv</span><span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">1</span><span class="symb">]</span>.<span class="idnt">v</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glTexCoord2f</span><span class="symb">(</span><span class="num">1</span>,<span class="num">1</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glVertex3fv</span><span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">2</span><span class="symb">]</span>.<span class="idnt">v</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glTexCoord2f</span><span class="symb">(</span><span class="num">0</span>,<span class="num">1</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glVertex3fv</span><span class="symb">(</span><span class="idnt">imposter</span>.<span class="idnt">verts</span><span class="symb">[</span><span class="num">3</span><span class="symb">]</span>.<span class="idnt">v</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glEnd</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre>
+</div>
+
+<p>The question arises: just how often do we need to update the 
+imposter?  That is a subject that has received considerable research.  
+My <a href="http://lawlor.cs.uaf.edu/%7Eolawlor/academic/thesis/">brother's thesis</a> is a good place to start.  For a bare-bones implementation, a brain-dead function like this will work suprisingly well:
+
+</p><div class="code">
+<pre><span class="rword">bool</span> <span class="idnt">doesImposterNeedUpdate</span><span class="symb">(</span><span class="rword">const</span> <span class="idnt">Imposter</span> <span class="symb">&amp;</span><span class="idnt">imposter</span>, <span class="idnt">Vector</span> <span class="idnt">cameraPos</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="idnt">Vector</span> <span class="idnt">newCameraVec</span> <span class="symb">=</span> <span class="idnt">cameraPos</span> <span class="symb">-</span> <span class="idnt">imposter</span>.<span class="idnt">center</span><span class="symb">;</span>
+	<span class="idnt">newCameraVec</span>.<span class="idnt">normalize</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">dotProduct</span><span class="symb">(</span><span class="idnt">newCameraVec</span>,<span class="idnt">imposter</span>.<span class="idnt">cameraVec</span><span class="symb">)</span><span class="symb">&lt;</span><span class="num">0.99999</span><span class="symb">)</span> <span class="rword">return</span> <span class="rword">true</span><span class="symb">;</span>
+	<span class="rword">else</span> <span class="rword">return</span> <span class="rword">false</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre>
+</div>
+
+<div class="article3"><div class="articleTitle">
+improvements
+</div></div>
+
+<p>Now let's discuss a few improvements that are needed in order to make the imposter system efficient.
+
+</p><p>1.  Multiple imposters need to share a single texture.  If you 
+are drawing a lot of small imposters, the cost of switching textures 
+each time can be significant.  In my <a href="http://www.troylawlor.com/prayer.html">Prayer engine</a>,
+ I have an ImposterManager class that manages multiple 
+ImposterCollection objects.  Each ImposterCollection object has a large 
+RenderTexture.  Each new Imposter requests some space from the 
+ImposterManager, which searches for an appropriately sized free area in 
+the existing ImposterCollection objects, or allocates a new 
+ImposterCollection if required.  This way all of the imposters can 
+batched into groups that share a texture at draw time.
+
+</p><p>2.  As an object gets further away, it requires a lower 
+resolution imposter texture.  It is silly to use a 256x256 imposter 
+texture on an object that occupies a handful of pixels on the screen.  
+Using the screen-space coordinates calculated in the startUpdateImposter
+ function, you can determine the required width and height of the 
+imposter texture.  If you are using a single texture per imposter, you 
+can just round up to the nearest power of two.  Otherwise, you can 
+allocate more precise custom texture sizes in your common imposter 
+texture if you so desire.
+
+</p><p>3.  All of the imposters that share a texture should be batched 
+together into one call to glBegin(GL_QUADS).  Even better, you can stuff
+ them into a <a href="http://www.spec.org/gpc/opc.static/vbo_whitepaper.html">vertex buffer object</a> and use <a href="http://gl-craftsman.matrix.jp/80000/800100/ogles_ref/glBufferSubData.html">glBufferSubData</a> to update only the billboard vertices that have changed.
+
+</p><p>4.  In the unlikely case that a bunch of imposters have to be 
+updated in a single frame, it might be a good idea to set a limit as to 
+how any imposters can be updated per frame and queue the rest.  I 
+haven't had to do this in <a href="http://www.troylawlor.com/prayer.html">Prayer</a>
+ yet, but when we have large towns in the distance it could become a 
+problem.  If a lot of buildings are clustered around the same point, 
+they will likely all need to be updated around the same time.
+
+<br><br>
+
+</p></div>
+
+<div class="footer">
+<font size="-1" color="#aaaaaa">
+©2007 Troy Lawlor.  All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;
+</font> tlawlor @ gmail . com
+</div>
+
+</div>
+
+</div>
+
+</body></html>

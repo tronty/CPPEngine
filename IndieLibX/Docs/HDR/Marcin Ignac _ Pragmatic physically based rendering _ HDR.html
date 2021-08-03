@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en"><head> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
+	<title>Marcin Ignac : Pragmatic physically based rendering : HDR</title>
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://marcinignac.com/rss/">
+	<link rel="stylesheet" type="text/css" href="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/screen.css"> 
+	<link rel="stylesheet" href="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/print.css" type="text/css" media="print"> 
+	<!--[if IE]><link rel="stylesheet" href="/themes/marcinignac/css/ie.css" type="text/css" media="screen, projection" /><![endif]-->	
+	<link rel="stylesheet" href="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/site.css" type="text/css" media="screen" title="stylesheet" charset="utf-8">
+	<link rel="stylesheet" href="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/site.css" type="text/css" media="print"> 
+	<script type="text/javascript" src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/jquery.js"></script>
+	<script type="text/javascript" src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/actions.js"></script>
+  <script src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/stat.es" defer="defer" async="async"></script>
+  <!--<script type="text/javascript" src="http://localhost/vorg-web-inspiration/bookmarkletcode"></script>-->
+	<!--
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-514984-9']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+	-->
+</head>
+<body>
+<div class="container"> 
+	<h4 id="websitetitle" class="span-24 last">
+		<a href="http://marcinignac.com/" title="Return to the the frontpage">Marcin Ignac</a>
+	</h4>	
+	<div id="navcontainer" class="span-24 last">
+			<ul id="navlist">
+      <li><a href="http://marcinignac.com/projects/category/featured/" title="Projects">Projects</a></li>
+			<li><a href="http://marcinignac.com/experiments/" title="Experiments">Experiments</a></li>
+			<li><a href="http://marcinignac.com/blog/" title="Read the posts">Blog</a></li>  		
+			<li><a href="http://marcinignac.com/about/" title="About">About</a></li>
+		</ul>
+	</div>
+
+ 
+<div class="post ">  
+	<h2><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/">Pragmatic physically based rendering : HDR</a></h2>
+	<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/300.jpg" alt=""></p>
+
+<h1>Pragmatic PBR - HDR</h1>
+
+<p>This blog post is a part of series about implementing PBR in WebGL from scratch:</p>
+
+<ol>
+<li><a href="http://marcinignac.com/blog/pragmatic-pbr-intro">Intro</a></li>
+<li><a href="http://marcinignac.com/blog/pragmatic-pbr-setup-and-gamma">Setup &amp; Gamma</a></li>
+<li><strong><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr">HDR</a></strong></li>
+</ol>
+
+<h2>What is HDR?</h2>
+
+<p>Traditional images (e.g. your average JPG photo) represent RGB color 
+values as numbers from 0..255 (or 0..1 in GLSL) for each Red, Green and 
+Blue component. This is not how light behaves in real life e.g. sunshine
+ is 1000s times brighter than a lightbulb. In oder to fit the lighting 
+information (pixel brightness / color) into that LDR (Low Dynamic Range)
+ space some of the information has to be lost. That's clearly visible 
+when you take a photo against the sun and suddenly everything else is 
+black or the opposite you focus on your face but the whole background is
+ overexposed and white.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/300_hdr.jpg" alt=""></p>
+
+<p>HDR - High Dynamic Range images on the other side allow you to store 
+image data with values above 255. That allows you to capture both the 
+dark and bright areas at the same time. We can then adjust the exposure 
+of the photo in realtime to focus on the desired range or apply process 
+called tonemapping to avoid over or under exposing the image.</p>
+
+<h2>301-load-cubemap (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/301-load-cubemap">code</a>)</h2>
+
+<p>One of the best source of HDR images are so called environment maps. 
+They fully capture the environment around you not only at 360' but also 
+above and below.</p>
+
+<p>We can represent an environment as a cube surrounding the viewer hence the name of such textures in WebGL : <em>CubeMaps</em>. Below you can see a cross representation of a CubeMap with 6 sides facing the axes X, Y and Z.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_cube_cross_and_debug.jpg" alt=""></p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_cube_anim.gif" alt=""></p>
+
+<p>In the GPU memory the faces are represented as a 2D textures in the following order:
+<span style="color:red">+X</span>,
+<span style="color:red">-X</span>,
+<span style="color:green">+Y</span>,
+<span style="color:green">-Y</span>,
+<span style="color:blue">+Z</span>,
+<span style="color:blue">-Z</span>.
+Therefore it would be a bit cumbersome to upload such a texture to the 
+GPU in a cross representation so a better way is to load all the faces 
+separately.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_cube_faces_debug.png" alt="">
+<img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_cube_faces.jpg" alt=""></p>
+
+<h4>Cubemap Orientation</h4>
+
+<p>There is only one problem. If you look carefully at the animation of the folding cube you will notice that <span style="color:blue">+Z</span> side of the cube is facing away from us. In WebGL the convention is that <span style="color:blue">+Z</span>
+ should face towards the viewer. We call that orientation right handed 
+because if you count on your right hand 1,2,3 for X,Y,Z starting from 
+your thumb you your fingers will form an orthogonal basis with the Z 
+axis pointing towards you.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_cube_orientation.png" alt=""></p>
+
+<p>Cubemaps spec comes from the time when RenderMap ruled the world and <a href="https://www.opengl.org/registry/specs/ARB/texture_cube_map.txt">Renderman it's using Left-Handed Coordinate system</a>
+ so do the cubemaps. That means to we will need to flip the X axis in 
+our shader whenever we sample from a CubeMap texture. Additionally you 
+will need to point your camera towards <span style="color:blue">+Z</span> instead of the usual <span style="color:blue">-Z</span>
+ in order to start at expected direction. Otherwise you might end up 
+looking at the wall like in case of the Pisa texture we are using.</p>
+
+<p>The Pisa texture comes from <a href="http://gl.ict.usc.edu/Data/HighResProbes/">High-Resolution Light Probe Image Gallery
+</a> but it doesn't specify where exactly it was taken. I've been 
+struggling so much with "should I flip Z or X?" that I decided to find 
+the source and decide once and for all what's left and what's right.</p>
+
+<p><a href="https://www.google.com/maps/@43.7222461,10.3980709,3a,75y,283.86h,85.5t/data=!3m6!1e1!3m4!1s-cEOTnId34DBxCCQgeIbGQ!2e0!7i13312!8i6656"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_pisa_streetview.jpg" alt=""></a>
+<a href="https://www.google.com/maps/@43.7222461,10.3980709,3a,75y,283.86h,85.5t/data=!3m6!1e1!3m4!1s-cEOTnId34DBxCCQgeIbGQ!2e0!7i13312!8i6656">Click to see the streetview</a></p>
+
+<h4>Loading the CubeMaps</h4>
+
+<p>Here is how load the CubeMap in PEX:</p>
+
+<pre><code class="javascript hljs">Window.create({
+    settings: {
+        width: <span class="hljs-number">1024</span>,
+        height: <span class="hljs-number">576</span>,
+        fullscreen: isBrowser
+    },
+    resources: {
+        <span class="hljs-comment">//first we load 6 images, one per face</span>
+        envMap_px: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_posx.jpg'</span> },
+        envMap_nx: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_negx.jpg'</span> },
+        envMap_py: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_posy.jpg'</span> },
+        envMap_ny: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_negy.jpg'</span> },
+        envMap_pz: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_posz.jpg'</span> },
+        envMap_nz: { image: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_negz.jpg'</span> },
+    },
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-comment">//then we create cubemap texture</span>
+        <span class="hljs-comment">//we specify face index to match the +X, -X, +Y, -Y, +Z, -Z order</span>
+        <span class="hljs-keyword">this</span>.envMap = ctx.createTextureCube([
+            { face: <span class="hljs-number">0</span>, data: res.envMap_px },
+            { face: <span class="hljs-number">1</span>, data: res.envMap_nx },
+            { face: <span class="hljs-number">2</span>, data: res.envMap_py },
+            { face: <span class="hljs-number">3</span>, data: res.envMap_ny },
+            { face: <span class="hljs-number">4</span>, data: res.envMap_pz },
+            { face: <span class="hljs-number">5</span>, data: res.envMap_nz }
+        ])
+    }
+})
+</code></pre>
+
+<h4>Reflections</h4>
+
+<p>Today we will focus only on specular (sharp) reflections on mirror 
+like surfaces (e.g. polished chrome ball). From the [law of 
+reflection](https://en.wikipedia.org/wiki/Reflection_(physics) we know 
+that for such surfaces the reflected ray <code>R</code> will bounce of the surface at the same angle as the incoming ray <code>I</code> relatively to the surface normal <code>N</code> so <code>Î¸â == Î¸â</code></p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_reflection_angle.png" alt=""></p>
+
+<p>In GLSL we can use built-in function <code>reflect</code> that is implemented as follows:</p>
+
+<pre><code class="glsl hljs"><span class="hljs-keyword">vec3</span> <span class="hljs-built_in">reflect</span>(<span class="hljs-keyword">vec3</span> I, <span class="hljs-keyword">vec3</span> N) {
+    <span class="hljs-keyword">return</span> I - <span class="hljs-number">2.0</span> * <span class="hljs-built_in">dot</span>(N, I) * N;
+}
+</code></pre>
+
+<p>Note: Why substraction? Both <code>-N*dot(N, I)</code> and <code>N</code> seem to point in the same direction... Yes but but <code>dot(N, I)</code> is negative here e.g for the vectors above:</p>
+
+<pre><code class="javascript hljs">I = [<span class="hljs-number">0.7</span>, -<span class="hljs-number">0.7</span>, <span class="hljs-number">0.0</span>]
+N = [<span class="hljs-number">0.0</span>,  <span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>]
+dot(N, I) = -<span class="hljs-number">0.7</span>
+</code></pre>
+
+<p>Not that we know how to reflect vectors we can see that there are two
+ possible scenarios. Either the view ray from the camera will hit the 
+object and bounce back or will continue until hitting the skybox 
+surrounding the scene.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/301-reflections/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_reflections.png" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 210.5px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/301-reflections/">Open live version in a separate window</a></p>
+
+<p>Therefore we will need two shaders. One for the Skybox and one for the Sphere (or any other reflective surface).</p>
+
+<p>It's important to remember in which coordinate space we calculate our
+ reflection. Normals are usually in the view (eye) space and it's easy 
+to calculate view ray (eyeDir) in view space as the camera position is <code>[0,0,0]</code>
+ so we just negate the vertex position. But the cubemap textures are 
+addressed by a vector in the world space so we need to move our 
+computation there.</p>
+
+<p>Full source for the reflection shader.</p>
+
+<p><em>301-load-cubemap/Reflection.frag:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-comment">//envMapCube returns a ray flipped along X axis axis</span>
+<span class="hljs-preprocessor">#pragma glslify: envMapCube  = require(../local_modules/glsl-envmap-cube)</span>
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-keyword">mat4</span> uInverseViewMatrix;
+<span class="hljs-keyword">uniform</span> <span class="hljs-keyword">samplerCube</span> uEnvMap;
+
+<span class="hljs-keyword">varying</span> <span class="hljs-keyword">vec3</span> ecPosition;
+<span class="hljs-keyword">varying</span> <span class="hljs-keyword">vec3</span> ecNormal;
+
+<span class="hljs-keyword">void</span> main() {
+    <span class="hljs-comment">//direction towards they eye (camera) in the view (eye) space</span>
+    <span class="hljs-keyword">vec3</span> ecEyeDir = <span class="hljs-built_in">normalize</span>(-ecPosition);
+    <span class="hljs-comment">//direction towards the camera in the world space</span>
+    <span class="hljs-keyword">vec3</span> wcEyeDir = <span class="hljs-keyword">vec3</span>(uInverseViewMatrix * <span class="hljs-keyword">vec4</span>(ecEyeDir, <span class="hljs-number">0.0</span>));
+    <span class="hljs-comment">//surface normal in the world space</span>
+    <span class="hljs-keyword">vec3</span> wcNormal = <span class="hljs-keyword">vec3</span>(uInverseViewMatrix * <span class="hljs-keyword">vec4</span>(ecNormal, <span class="hljs-number">0.0</span>));
+
+    <span class="hljs-comment">//reflection vector in the world space. We negate wcEyeDir as the reflect function expect incident vector pointing towards the surface</span>
+    <span class="hljs-keyword">vec3</span> reflectionWorld = <span class="hljs-built_in">reflect</span>(-wcEyeDir, <span class="hljs-built_in">normalize</span>(wcNormal));
+
+    <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-built_in">textureCube</span>(uEnvMap, envMapCube(reflectionWorld));
+}
+</code></pre>
+
+<p>For the skybox the shader is much simpler.</p>
+
+<p><em>301-load-cubemap/Skybox.vert:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-comment">//Matrix uniforms go here</span>
+<span class="hljs-comment">//...</span>
+
+<span class="hljs-keyword">varying</span> <span class="hljs-keyword">vec3</span> wcNormal;
+
+<span class="hljs-keyword">void</span> main() {
+  <span class="hljs-comment">//we will use skybox position as it's normal</span>
+  wcNormal = aPosition.xyz;
+  <span class="hljs-built_in">gl_Position</span> = uProjectionMatrix * uViewMatrix * uModelMatrix * aPosition;
+}
+</code></pre>
+
+<p><em>301-load-cubemap/Skybox.frag:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-comment">//envMapCube returns a ray flipped along X axis</span>
+<span class="hljs-preprocessor">#pragma glslify: envMapCube  = require(../local_modules/glsl-envmap-cube)</span>
+
+<span class="hljs-keyword">varying</span> <span class="hljs-keyword">vec3</span> wcNormal;
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-keyword">samplerCube</span> uEnvMap;
+
+<span class="hljs-keyword">void</span> main() {
+    <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-built_in">textureCube</span>(uEnvMap, envMapCube(<span class="hljs-built_in">normalize</span>(wcNormal)));
+}
+</code></pre>
+
+<p>You can play with the live version that includes debug mode showing 
+the sides of the cube and third person view showing you the whole scene.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/301-load-cubemap/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/301_load_cubemap.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 237px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/301-load-cubemap/">Open live version in a separate window</a></p>
+
+<h2>302-load-equirect (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/302-load-equirect">code</a>)</h2>
+
+<p>Another popular format for the environment maps are spherical environment maps or equirectangular panoramas.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/302-load-equirect/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/302_latlong_and_debug.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 88px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/302-load-equirect/">Open live version in a separate window</a></p>
+
+<p>The obvious upside of this format is that we now have only one image 
+to load. The downside is that both the up and the down face are very 
+distorted but they usually contain the sky and the floor so it's not a 
+big issue in practice.</p>
+
+<p>A great resource for getting free HDR env maps in this format is <a href="http://www.hdrlabs.com/sibl/archive.html">Smart IBL Archive</a> or the previously mentioned <a href="http://gl.ict.usc.edu/Data/HighResProbes/">High-Resolution Light Probe Image Gallery
+</a>.</p>
+
+<p>The only GLSL code that changes is the vector we use to sample 
+texture. That's handled. The conversion from world space ray to the 2d 
+texture coordinate is handled by <code>glsl-envmap-equirect</code>.</p>
+
+<p><em>302-load-equrect/Skybox.frag:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-preprocessor">#ifdef GL_ES</span>
+<span class="hljs-keyword">precision</span> <span class="hljs-keyword">highp</span> <span class="hljs-keyword">float</span>;
+<span class="hljs-preprocessor">#endif</span>
+
+<span class="hljs-comment">//returns 2d texture coordinate for panorama based on world space ray</span>
+<span class="hljs-preprocessor">#pragma glslify: envMapEquirect  = require(../local_modules/glsl-envmap-equirect)</span>
+
+...
+
+<span class="hljs-keyword">void</span> main() {
+    ...
+    <span class="hljs-comment">//word space 3d -&gt; texture space 2d</span>
+    <span class="hljs-built_in">gl_FragColor</span> = <span class="hljs-built_in">texture2D</span>(uEnvMap, envMapEquirect(reflectionWorld));
+}
+</code></pre>
+
+<p>The env map code is based on the GPU Gems article about [Ambient 
+Occlusion](http://http.developer.nvidia.com/GPUGems/gpugems_ch17.html 
+and) and the <a href="http://gl.ict.usc.edu/Data/HighResProbes/">High-Resolution Light Probe Image Gallery</a>.</p>
+
+<p><em>glsl-envmap-equirect.glsl:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-keyword">vec2</span> envMapEquirect(<span class="hljs-keyword">vec3</span> wcNormal, <span class="hljs-keyword">float</span> flipEnvMap) {
+  <span class="hljs-comment">//I assume envMap texture has been flipped the WebGL way (pixel 0,0 is a the bottom)</span>
+  <span class="hljs-comment">//therefore we flip wcNorma.y as acos(1) = 0</span>
+  <span class="hljs-keyword">float</span> phi = <span class="hljs-built_in">acos</span>(-wcNormal.y);
+  <span class="hljs-keyword">float</span> theta = <span class="hljs-built_in">atan</span>(flipEnvMap * wcNormal.x, wcNormal.z) + PI;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">vec2</span>(theta / TwoPI, phi / PI);
+}
+
+<span class="hljs-keyword">vec2</span> envMapEquirect(<span class="hljs-keyword">vec3</span> wcNormal) {
+    <span class="hljs-comment">//-1.0 for left handed coordinate system oriented texture (usual case)</span>
+    <span class="hljs-keyword">return</span> envMapEquirect(wcNormal, -<span class="hljs-number">1.0</span>);
+}
+</code></pre>
+
+<h2>303-fullscreenquad-skybox (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/303-fullscreenquad-skybox">code</a>)</h2>
+
+<p>Even though we use a 2D texture we are still rendering a whole cube 
+around the camera. That's a waste of both vertex and pixel shader power.
+ Wouldn't it be better if we render only as much as we see on the screen
+ and not a single pixel more? In a
+GameDev StackExchange thread on <a href="http://gamedev.stackexchange.com/questions/60313/implementing-a-skybox-with-glsl-version-330">Implementing a skybox with GLSL version 330</a>
+ we can find a solution to that problem. By rendering a fullscreen quad 
+and then un-projecting the vertices back into the world space we can 
+calculate a correct sampling vector for our environment map.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/303-fullscreenquad-skybox/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/303_fullscreen_quad.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 237px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/303-fullscreenquad-skybox/">Open live version in a separate window</a></p>
+
+<p><em>303-fullscreenquad-skybox/main.js:</em></p>
+
+<pre><code class="javascript hljs"><span class="hljs-keyword">var</span> skyboxPositions = [[-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[-<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]];
+<span class="hljs-keyword">var</span> skyboxFaces = [ [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]];
+<span class="hljs-keyword">var</span> skyboxAttributes = [
+    { data: skyboxPositions, location: ctx.ATTRIB_POSITION },
+];
+<span class="hljs-keyword">var</span> skyboxIndices = { data: skyboxFaces };
+<span class="hljs-keyword">this</span>.skyboxMesh = ctx.createMesh(skyboxAttributes, skyboxIndices);
+</code></pre>
+
+<p><em>303-fullscreenquad-skybox/SkyboxQuad.vert:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-keyword">attribute</span> <span class="hljs-keyword">vec4</span> aPosition;
+
+<span class="hljs-preprocessor">#pragma glslify: inverse = require('glsl-inverse')</span>
+<span class="hljs-preprocessor">#pragma glslify: transpose = require('glsl-transpose')</span>
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-keyword">mat4</span> uProjectionMatrix;
+<span class="hljs-keyword">uniform</span> <span class="hljs-keyword">mat4</span> uViewMatrix;
+
+<span class="hljs-keyword">varying</span> <span class="hljs-keyword">vec3</span> wcNormal;
+
+<span class="hljs-keyword">void</span> main() {
+    <span class="hljs-keyword">mat4</span> inverseProjection = <span class="hljs-built_in">inverse</span>(uProjectionMatrix);
+    <span class="hljs-keyword">mat3</span> inverseModelview = <span class="hljs-built_in">transpose</span>(<span class="hljs-keyword">mat3</span>(uViewMatrix));
+
+    <span class="hljs-comment">//transform from the normalized device coordinates back to the view space</span>
+    <span class="hljs-keyword">vec3</span> unprojected = (inverseProjection * aPosition).xyz;
+
+    <span class="hljs-comment">//transfrom from the view space back to the world space</span>
+    <span class="hljs-comment">//and use it as a sampling vector</span>
+    wcNormal = inverseModelview * unprojected;
+
+    <span class="hljs-built_in">gl_Position</span> = aPosition;
+}
+</code></pre>
+
+<h2>304-load-hdr (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/304-load-hdr">code</a>)</h2>
+
+<p>Finally! We are ready to load a High-Dynamic Range image. High 
+dynamic range images require a different image format than LDR ones due 
+to the bigger precision and more bits per pixel. One of the most popular
+ is <a href="https://en.wikipedia.org/wiki/RGBE_image_format">RGBE</a> first introduced in <a href="https://en.wikipedia.org/wiki/Radiance_%28software%29#HDR_image_format">Radiance</a> software and sometimes called HDR Radiance. RGBE files usually have <em>.hdr</em> or <em>.rgbe</em> file extension.</p>
+
+<p>Storing full double precision floats would require a lot of space so 
+instead in RGBE we store R,G,B channels and a shared exponent taken from
+ the brightest value out of them. Additionally Run Length Encoding is 
+preformed to shrink the size even more.</p>
+
+<p>Source code of these series includes my port <code>parse-hdr</code> of a <a href="https://code.google.com/r/cys12345-research/source/browse/hdr/image_processor/RGBE.java?r=7d84e9fd866b24079dbe61fa0a966ce8365f5726">Java parser</a> by Kenneth Russell.</p>
+
+<p>There are two approaches to load RGBE file:</p>
+
+<p>a) Load RGBE values into normal 8bit per channel texture and decode the values in a shader.</p>
+
+<p><em>glsl-rgbe2rgb:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-keyword">vec3</span> rgbe2rgb(<span class="hljs-keyword">vec4</span> rgbe) {
+  <span class="hljs-keyword">return</span> (rgbe.rgb * <span class="hljs-built_in">pow</span>(<span class="hljs-number">2.0</span>, rgbe.a * <span class="hljs-number">255.0</span> - <span class="hljs-number">128.0</span>));
+}
+</code></pre>
+
+<p>The downside of this approach is with gl.LINEAR interpolation we will
+ get artifacts as we interpolate between encoded values (left image 
+below). If we switch to gl.NEAREST we get either blocky pixels (right 
+image below) or have to perform the sampling ourself by reading the 
+texture 4 times, decoding the HDR colors and applying interpolation 
+ourselves.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/304_banding.jpg" alt=""></p>
+
+<p>b) Decode the RGBE pixel values into floating point RGB values after 
+loading the image and upload them to a texture with gl.FLOAT data type. 
+The downside is that now we require  <a href="https://www.khronos.org/registry/webgl/extensions/OES_texture_float/">OES_texture_float</a> extension support (that will be in the core in WebGL 2.0).</p>
+
+<p>This approach is preferred though and therefore implemented in the <code>parse-hdr</code> module.</p>
+
+<p>Let's load the file hdr file.</p>
+
+<p><em>304-load-hdr/index.js:</em></p>
+
+<pre><code class="javascript hljs"><br><span class="hljs-keyword">var</span> parseHdr     = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../local_modules/parse-hdr'</span>);
+
+Window.create({
+    <span class="hljs-comment">//...</span>
+    resources: {
+        envMap: { binary: ASSETS_DIR + <span class="hljs-string">'/envmaps/pisa_latlong_256.hdr'</span> }
+    },
+    init: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">var</span> hdrInfo = parseHdr(res.envMap);
+        <span class="hljs-keyword">this</span>.envMap = ctx.createTexture2D(
+            hdrInfo.data,
+            hdrInfo.shape[<span class="hljs-number">0</span>],
+            hdrInfo.shape[<span class="hljs-number">1</span>],
+            <span class="hljs-comment">//floating point texture</span>
+            <span class="hljs-comment">//requires OES_texture_float extension</span>
+            { type: ctx.FLOAT }
+        );
+    }
+    <span class="hljs-comment">//...</span>
+})
+</code></pre>
+
+<p>If you run the following example for the first time you will notice 
+everything is very black. RGBE texture pixel values are stored in the 
+linear space so we need to convert them to the gamma space before 
+rendering. You can click the <code>Gamma</code> checkbox to enable gamma correction.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/304-load-hdr/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/304_load_hdr.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 103.5px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/304-load-hdr/">Open live version in a separate window</a></p>
+
+<h2>305-exposure-basic (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/305-exposure-basic">code</a>)</h2>
+
+<p>As we said before HDR images have a lot more information in both the 
+lower and the higher range of pixel brightness values. That allows us to
+ change the exposure just like in a real camera.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/305-exposure-basic/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/305_exposure_basic.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 128.5px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/305-exposure-basic/">Open live version in a separate window</a></p>
+
+<p>The simplest way to do it is to multiplay the color by a constant, of
+ course as any calculations we do it in the linear space before applying
+ the gamma correction.</p>
+
+<p><em>305-exposure-basic/Reflection.frag:</em></p>
+
+<pre><code class="glsl hljs">...
+<span class="hljs-built_in">gl_FragColor</span>.rgb = <span class="hljs-built_in">texture2D</span>(uEnvMap, envMapEquirect(reflectionWorld)).rgb;
+
+<span class="hljs-built_in">gl_FragColor</span>.rgb *= uExposure;
+
+<span class="hljs-keyword">if</span> (uCorrectGamma) {
+    <span class="hljs-built_in">gl_FragColor</span>.rgb = toGamma(<span class="hljs-built_in">gl_FragColor</span>.rgb);
+}
+...
+</code></pre>
+
+<p>You've probably noticed that for any value of exposure above 0.6 the 
+sky gets overexposed and washed out of any color resulting in full 
+white. That's because the color values go beyond 1 and are getting 
+clamped. We can fix that by applying a process called tonemapping.</p>
+
+<h2>306-tonemap-reinhard (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/306-tonemap-reinhard">code</a>)</h2>
+
+<p><a href="https://en.wikipedia.org/wiki/Tone_mapping">Tonemapping</a> 
+is a process of bringing HDR values (0..â) into the LDR range (0..1) 
+that can be safely (without clamping) displayed on the screen.</p>
+
+<p>One of the simplest tonemapping functions is so called Reinhard (from
+ the Erick Reinhard which introduced it in his paper called <a href="http://www.cmap.polytechnique.fr/~peyre/cours/x2005signal/hdr_photographic.pdf">"Photographic Tone Reproduction for Digital Images"</a>) where we divide the color value by itself increased by 1 i.e.: <code>N = N / (N + 1)</code>. Here goes a graph of a few example values before and after.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/306_tonemap_func.png" alt=""></p>
+
+<p>Implementation in GLSL:</p>
+
+<p><em>glsl-tonemap-reinhard:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-keyword">vec3</span> tonemapReinhard(<span class="hljs-keyword">vec3</span> color) {
+  <span class="hljs-keyword">return</span> color / (color + <span class="hljs-keyword">vec3</span>(<span class="hljs-number">1.0</span>));
+}
+</code></pre>
+
+<p><em>306-tonemap-reinhard/Reflection.frag:</em></p>
+
+<pre><code class="glsl hljs"><span class="hljs-built_in">gl_FragColor</span>.rgb = <span class="hljs-built_in">texture2D</span>(uEnvMap, envMapEquirect(reflectionWorld)).rgb;
+
+<span class="hljs-built_in">gl_FragColor</span>.rgb *= uExposure;
+
+<span class="hljs-keyword">if</span> (uTonemap) {
+    <span class="hljs-built_in">gl_FragColor</span>.rgb = tonemapReinhard(<span class="hljs-built_in">gl_FragColor</span>.rgb);
+}
+
+<span class="hljs-keyword">if</span> (uCorrectGamma) {
+    <span class="hljs-built_in">gl_FragColor</span>.rgb = toGamma(<span class="hljs-built_in">gl_FragColor</span>.rgb);
+}
+</code></pre>
+
+<p>It should be a bit easier to see how the pixels change on the images 
+below. The graphs show values of the pixels from the row highlighted 
+with a straight line. You can notice that tonemapping gets rid of the 
+brightness spikes the areas with the most light but it also flattens the
+ saturation of the image.</p>
+
+<p><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/306_tonemap.jpg" alt=""></p>
+
+<p>And the final working demo so we can see it in action. Notice how the overexposing is gone even for higher values of exposure.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/306-tonemap-reinhard/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/306_tonemap_reinhard.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 128.5px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/306-tonemap-reinhard/">Open live version in a separate window</a></p>
+
+<h2>307-tonemap-compare (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/307-tonemap-compare">code</a>)</h2>
+
+<p>In <a href="http://filmicgames.com/archives/75">Filmic Tonemapping Operators</a>
+ blog post John Hable describes 2 aditional tonemapping functions that 
+try to solve the problem the saturation loss present in Reinhard: Filmic
+ (an optimized version by Jim Hejl and Richard Burgess-Dawson simulating
+ camera's film response) and Uncharted2 (from the name of the game it 
+was first developed for). One thing to note is that Filmic operator 
+doesn't need the Gamma correction to be applied at the end as it has it 
+built-in already. There is even more info about these operators in 
+John's talk on <a href="http://www.slideshare.net/ozlael/hable-john-uncharted2-hdr-lighting">Uncharted2 Hdr Lighting</a>.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/307-tonemap-compare/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/307_tonemap_compare.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 309px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/307-tonemap-compare/">Open live version in a separate window</a></p>
+
+<h2>308-exposure-camera (<a href="https://github.com/vorg/pragmatic-pbr/blob/master/308-exposure-camera">code</a>)</h2>
+
+<p>The exposure controls we were using so far were very primitive - a 
+simple multiplier. It works ok in the most of cases it works ok, but if 
+you are missing real cameral controls like Aperture, Shutter Speed and 
+ISO then <a href="https://twitter.com/PadraicHennessy">Padraic Hennessy</a> has wrote series of blog posts about <a href="https://placeholderart.wordpress.com/2014/11/21/implementing-a-physically-based-camera-manual-exposure/">Implementing a Physically Based Camera: Manual Exposure</a>.
+ This is more of a bonus than an integral part of what we are trying to 
+build (at least until we get into Depth of Field and Bokeh) so I won't 
+go into the details here just yet. Useful Wikipedia articles that helped
+ me understand what he is writing about: <a href="https://en.wikipedia.org/wiki/Middle_gray">Middle_gray</a>, <a href="https://en.wikipedia.org/wiki/Film_speed#Standard_output_sensitivity_.28SOS.29">Film_speed &amp; Standard_output_sensitivity</a>.</p>
+
+<p><a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/308-exposure-camera/" style="position: relative; display: block;"><img src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/308_exposure_camera.jpg" alt=""><div style="width: 60px; height: 60px; background: rgba(0, 0, 0, 0) url(&quot;play.png&quot;) repeat scroll 0% 0%; position: absolute; left: 445px; top: 237px;"></div></a>
+<a href="http://marcinignac.com/blog/pragmatic-pbr-hdr/308-exposure-camera/">Open live version in a separate window</a></p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href="http://www.hdrlabs.com/sibl/archive.html">Smart IBL Archive</a></li>
+<li><a href="http://gl.ict.usc.edu/Data/HighResProbes/">High-Resolution Light Probe Image Gallery</a>.</li>
+</ul>
+
+<h2>Next</h2>
+
+<p>In the next post we will focus on Image Based Lighting (IBL) a 
+technique that allows to capture complex lighting information in a HDR 
+texture(s) and I would argue is one of the keys for the Physically Based
+ Rendering realism.</p>
+
+<h2>Comments, feedback and contributing</h2>
+
+<p>Please leave any comments below, on twitter <a href="http://twitter.com/marcinignac">@marcinignac</a> or via positing issues or pull request on Github for this page <a href="https://github.com/vorg/pragmatic-pbr/blob/master/300-hdr.md">pragmatic-pbr/300-hdr.md</a>.</p>
+
+<p><link rel="stylesheet" href="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/github-gist-bg.css">
+<script src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/highlight.js"></script>
+<script src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/highlight-init.js"></script>
+<script type="text/javascript" src="Marcin%20Ignac%20:%20Pragmatic%20physically%20based%20rendering%20:%20HDR_tiedostot/examples.js"></script></p>
+	<div class="metadata">
+    Publication Date: 2015-08-25<br><br>			<div class="taxonomy_links">
+		<h6>Categories:</h6>
+		<a href="http://marcinignac.com/blog/category//"></a>, <a href="http://marcinignac.com/blog/category//"></a>	</div>
+	  
+			<div class="taxonomy_links">
+		<h6>Tags:</h6>
+		<a href="http://marcinignac.com/blog/tag/technology/">technology</a>, <a href="http://marcinignac.com/blog/tag/process/">process</a>, <a href="http://marcinignac.com/blog/tag/programming/">programming</a>	</div>
+	  
+			<div class="taxonomy_links">
+		<h6>Technologies:</h6>
+		<a href="http://marcinignac.com/blog/technology/webgl/">webgl</a>, <a href="http://marcinignac.com/blog/technology/javascript/">javascript</a>, <a href="http://marcinignac.com/blog/technology/pex/">pex</a>	</div>
+	  
+	</div>
+</div>    
+<!--
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'marcinignac'; // required: replace example with your forum shortname
+
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+    // var disqus_identifier = 'unique_dynamic_id_1234';
+    var disqus_url = 'http://marcinignac.com/blog/pragmatic-pbr-hdr/';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+--><div class="span-24" id="footer">
+	Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.
+	<br>
+	All content © 2010 by <a href="http://marcinignac.com/about">Marcin Ignac</a>
+	<br>	
+	Powered by <strong>Base</strong>	
+</div>	
+</div><!--container-->
+  
+</body></html>

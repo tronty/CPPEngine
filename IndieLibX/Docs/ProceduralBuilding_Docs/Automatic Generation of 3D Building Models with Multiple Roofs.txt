@@ -1,0 +1,393 @@
+TSINGHUA SCIENCE AND TECHNOLOGY
+ISSN   1007-0214   59/67   pp368-374
+Volume 13, Number S1, October 2008
+
+
+
+
+    Automatic Generation of 3D Building Models with Multiple Roofs
+
+                                          Kenichi Sugihara**, Yoshitugu Hayashi†
+
+         Faculty of Information Media, Gifu Keizai University, Kitagata chou 5-50 Ogaki city Gifu Prefecture, Japan;
+          † Graduate School of Environmental Studies, Nagoya University, Furou-chou Chikusa-ku, Nagoya, Japan
+
+       Abstract: Based on building footprints (building polygons) on digital maps, we are proposing the GIS and
+       CG integrated system that automatically generates 3D building models with multiple roofs. Most building
+       polygons’ edges meet at right angles (orthogonal polygon). The integrated system partitions orthogonal
+       building polygons into a set of rectangles and places rectangular roofs and box-shaped building bodies on
+       these rectangles. In order to partition an orthogonal polygon, we proposed a useful polygon expression in
+       deciding from which vertex a dividing line is drawn. In this paper, we propose a new scheme for partitioning
+       building polygons and show the process of creating 3D roof models.
+
+       Key words: 3D building model; 3D urban model; automatic generation; CG; GIS; polygon partitioning
+
+
+
+
+Introduction
+Based on building footprints or building polygons on
+digital maps (Fig. 1), we are proposing the GIS and
+CG integrated system that automatically generates 3D
+building models with multiple roofs. A 3D urban
+model (Fig. 2) is an important information infrastruc-                    Fig. 1   Building polygons on a digital map
+ture that can be utilized in several fields, e.g., land-
+scape evaluation and urban planning, disaster preven-
+tion simulation, tourism, and many other business
+practices. In addition, disclosure of information about
+public projects such as city planning or historic build-
+ings restoration to the public to encourage their par-
+ticipation is a new application area where a 3D city
+model can be of great use. To facilitate “public in-
+volvement”, 3D models simulating a real city can be of
+great use.
+   However, using 3D modeling software such as 3D
+                                                                     Fig. 2   An automatically generated 3D urban model
+Studio Max or SketchUp to create these 3D models has
+consumed enormous time and labor. For example,                   laborious modeling steps: (1) generation of primitives
+when manually modeling a house with roofs by con-                of appropriate size, such as box, prism or polyhedron
+structive solid geometry (CSG), one must follow these            that will form parts of a house; (2) boolean operation
+                                                                 among these primitives to form the shapes of parts of a
+   Received: 2008-05-30
+                                                                 house such as making holes in a building body for
+** To whom correspondence should be addressed.
+   E-mail: sugihara@gifu-keizai.ac.jp                            doors and windows; (3) rotation of parts of a house; (4)
+  Kenichi Sugihara et alġAutomatic Generation of 3D Building Models with Multiple Roofs                          369
+
+positioning of parts of a house; and (5) texture map-         researches on generation of 3D urban models are in
+ping onto these parts.                                        full swing. Procedural modeling is an effective tech-
+   In order to automate these laborious steps, we pro-        nique to create 3D models from sets of rules such as L-
+posed a GIS and CG integrated system[1] that auto-            systems, fractals, and generative modeling language.
+matically generates 3D building models from building             Müller et al.[3,4] have created the archaeological site
+polygons on a digital map. As shown in Fig. 1, most           of Pompeii and a suburbia model of Beverly Hills by
+building polygons’ edges meet at right angles (or-            using a shape grammar with production rules. They
+thogonal polygon). A complicated orthogonal polygon           import data from a GIS database and try to classify
+can be partitioned into a set of rectangles. The inte-        imported mass models as basic shapes in their shape
+grated system partitions orthogonal building polygons         vocabulary. If this is not possible, they use a general
+into a set of rectangles and places rectangular roofs and     extruded footprint together with a general roof ob-
+box-shaped building bodies on these rectangles. In or-        tained by a straight skeleton computation[5].
+der to partition an orthogonal polygon, we proposed a            The straight skeleton can be used as the set of ridge
+useful polygon expression (RL expression) and a parti-        lines of a building roof, based on walls in the form of
+tion scheme in deciding from which vertex a dividing          the initial polygon[6]. However the roofs created by the
+line (DL) is drawn[2].                                        straight skeleton are limited to a hipped roof or a gable
+   In this paper, we propose a new scheme for parti-          roof with their ridges parallel to a long edge of the rec-
+tioning building polygons and show the process of cre-        tangle into which a building polygon is supposed to be
+ating a basic gable roof model. We also present auto-         partitioned. There are some roofs whose ridges are ver-
+matically generated 3D models of a Japanese ancient           tical to a long edge of the rectangle, and these roofs are
+temple and pagoda, based on the generation progress           independently formed on individual rectangles as
+of a basic roof.                                              shown in Fig. 3. For this reason, we have investigated
+   Since a 3D urban model is an important information         partitioning an orthogonal building polygon into a set
+infrastructure that can be utilized in several fields, the    of rectangles.
+
+
+
+
+  Fig. 3 Left: Ortho image from Google Earth; Upper middle: Building footprints or building polygons; Lower middle:
+  Partitioning into a set of rectangles; Right: An automatically generated 3D building model
+
+   Laycock and Day[7] have combined the straight              choosing a roof model for each rectangle and merging
+skeleton method and polygon partitioning in the fol-          the roof models for polygons with a small number of
+lowing steps: (1) Partition the polygon into a set of rec-    vertices. However, for polygons with a large number of
+tangles by horizontal and vertical lines from all reflex      vertices, implementation of partitioning by all DLs
+vertices; (2) Construct the straight skeleton and grow        (lines from all reflex vertices) often results in unneces-
+an axis aligned rectangle (AAR) from each of the lines;       sarily many rectangles and collecting and merging
+(3) For each AAR, collect the rectangles which are in-        steps become so cumbersome that they don’t succeed
+terior to AAR and union them to obtain an exterior            in doing this.
+boundary; (4) Assign a roof model to each exterior               Therefore, we try to select a suitable DL for parti-
+boundary; (5) Merge the roof models.                          tioning or a suitable separation of overlapping rectan-
+   This method seems effective in independently               gles, depending on the RL expression of a polygon,
+    370                                                                      Tsinghua Science and Technology, October 2008, 13(S1): 368-374
+
+and the length of DLs and the edge of a polygon.                                  respectively. The number of shapes that a polygon can
+                                                                                  take depends on the number of vertices of a polygon.
+1    Proposed Polygon Expression                                                     The advantage of this RL expression is as follows.
+                                                                                     (1) RL expression specifies the shape pattern of an
+An orthogonal polygon can be replaced by a combina-
+                                                                                  orthogonal polygon without regard to the length of its
+tion of rectangles. When following edges of a polygon
+                                                                                  edges.
+clockwise, an edge turns to the right or to the left by
+                                                                                     (2) This expression decides from which vertex a di-
+90°. So, it is possible to assume that an orthogonal
+                                                                                  viding line is drawn.
+polygon can be expressed as a set of its edges’ turning
+direction. We proposed a useful polygon expression
+                                                                                  2 Partitioning Scheme
+(RL expression) in specifying the shape pattern of an
+orthogonal polygon[1].                                                            Since the interior angle of a ‘L’ vertex is 270°, two
+   For example, a polygon with 16 vertices shown in                               DLs can be drawn from a ‘L’ vertex. In our proposal,
+Fig. 4 is expressed as a set of its edges’ turning direc-                         among many possible DLs, the DL that satisfies the
+tion: LRRRLRRLRRLRLLRR, where R and L mean a                                      following conditions is selected to be implemented a
+change of an edge’s direction to the right and to the left,                       partition.
+                                                  3                                  (1) A DL that cuts off ‘one rectangle’.
+                                                  R
+                                     2                                               (2) Among two DLs from a same ‘L’ vertex, a
+                                     R
+                                              1                   4
+                                                                                  shorter DL is selected to cut off a rectangle.
+                                              L
+                                                       14         R 5                (3) A DL whose length is shorter than the width of a
+                                                       L            L             ‘main roof’ that a ‘branch roof’ is supposed to extend
+                                16
+                                                                13       6        to.
+                                R
+                                                            11 12 L      R
+                                         15                 L R
+                                                                                     Stage 2 in Fig. 5 shows an orthogonal polygon with
+                                         R                                        all possible DLs shown as thin dotted lines and DLs
+                                                  10             8 7
+                                                  R              L R
+                                                                                  that satisfy condition (1), shown as thick dotted lines.
+                                                            9
+                                                            R                     A ‘branch roof’ is the roof that is cut off by DL and ex-
+                                This polygon is expressed as                      tends to a main roof. The example of a branch roof is
+                                LRRRLRRLRRLRLLRR                                  shown as the rectangle of vertex 6, 7, 8, and 9 cut off
+    Fig. 4 Satellite imagery provided by Google Earth                             by DL. A ‘main roof’ is the roof that is extended by a
+    and one building contour                                                      branch roof.
+
+
+
+
+              Building polygon expression              From ‘L’ vertex, two possible DLs can be       Upper left geometry (‘LRRRL’) is
+                                                       drawn. Among DLs, a shorter DL that cuts       evaluated as an independent rectangle
+           LRRRLLRRLRRLRRLRLLRR                        off one rectangle or a DL whose length is      when the area overlapped with a body
+                                                       shorter than the width of a ‘main roof’ can    polygon is small.
+                                                       be selected.
+
+
+
+
+          After partitions, 3D building models                  Partitions will continue until the     Upper left geometry is separated. A
+          are automatically generated on di-                    number of vertices of a body poly-     DL that satisfies the conditions is se-
+          vided rectangles by using CSG.                        gon is four.                           lected to be implemented a partition.
+                      Fig. 5   Partitioning process of an orthogonal building polygon into a set of rectangles
+    Kenichi Sugihara et alġAutomatic Generation of 3D Building Models with Multiple Roofs                             371
+
+    Why we set up these conditions is that like breaking                              pt(jsf)       pt(jpb)
+down a tree into a collection of branches, we will cut
+off along ‘thin’ part of branches of a polygon. So, we
+propose a scheme of prioritizing the DL that cuts off a
+branch roof, based on the length of the DL. Since each
+                                                                                        FCP
+roof has the same gradient in most multiple-roofed                                 FC
+                                                                                               BCP
+buildings, a roof of longer width is higher than a roof
+                                                                                  (a) Len(FCP)˘Len(jpb)
+of shorter width and ‘probable multi-roofed buildings’
+take the form of narrower branch roofs diverging from                             pt(jsf)         pt(jpb)
+a wider and higher main roof. Narrower branch roofs
+are formed by dividing a polygon along a shorter DL
+and the width of a branch roof is equal to the length of
+the DL.
+                                                                                                  BCP
+    Figure 5 shows a partitioning process of an orthogo-
+                                                                                        FCP
+nal building polygon into a set of rectangles. In the
+                                                                                  (b) Len(FCP)˚Len(jpb)
+process, the DLs that satisfy the conditions mentioned
+are selected to be implemented a partition.                                        pt(jsf)        pt(jpb)
+    By cutting off one rectangle, the number of the ver-
+tices of a body polygon is reduced by two or four.
+    After partitioning independent branches, the edges’
+lengths and RL data are recalculated to find new
+branches. Partitioning continues until the number of                                 FCP          BCP
+the vertices of a body polygon is four. After being par-                        (c) Len(FCP)˙Len(jpb)
+titioned into a set of rectangles, the system places 3D           Fig. 6 nR=2, three cases of DL depending on the com-
+building models on these rectangles.                              parison between Len(FCP) and Len(jpb)
+
+3     How to Partition Branches                                 is three. The way of drawing DL depends on the com-
+                                                                parison between Len(FCP) and Len(j2sf) and the com-
+The vertices of a polygon are numbered in clockwise             parison between Len(jsf) and Len(jpb), where ’j2sf’ is
+order as shown in Fig. 5. The system counts the num-            the index to specify the vertex that succeeds FCP by
+ber of consecutive ‘R’ vertices, nR, between ‘L’ vertices.      two vertex. In the 3rd case of nR=3, the rectangle con-
+If nR is two or more, then it can be a branch. One or           sisting of vertices: pt(jsf), pt(j2sf), pt(jpb), and pt(A) is
+two DLs can be drawn from ‘L’ vertex in a clockwise             not partitioned but separated as an independent one
+or counterclockwise direction, depending on the length          when the system evaluates ‘nR=3’ type as independent
+of the adjacent edges of ‘L’ vertex.                            and prioritizes separating.
+   Figure 6 shows three cases of drawing DL when nR                Figure 8 shows three cases of drawing DL when nR
+is two. In Fig. 6, forward cutting point (FCP) is the           is four. The way of drawing DL depends on the com-
+point that precedes consecutive ‘R’ vertices and from           parison between Len(jsf) and Len(j2pb) where ’j2pb’ is
+which a DL can be drawn forwardly. Backward cutting             the index to specify the vertex that precedes BCP by
+point (BCP) is the point that succeeds consecutive ‘R’          two vertices. The partition method of nR=4 or more is
+vertices and from which DL can be drawn backwardly.             the same as the method of nR=3, except 1st case of
+The way of drawing DL depends on the comparison                 nR=4 where the vertices of pt(jsf), pt(j2sf), pt(j2pb),
+between Len(FCP) and Len(jpb).                                  and pt(jpb) form one rectangle (1st case of Fig. 8). This
+   ’jsf’ is the index to specify the vertex that succeeds       is because the system cut off ‘one rectangle’ only when
+FCP by one vertex and ‘jpb’ is the index to specify the         nR=2 or nR=3. If nR=4 or more, the branch that is
+vertex that precedes BCP by one vertex. Len(FCP)                formed by these 4 or more ‘R’ vertices will be self-
+means the length of a edge between FCP and jsf.                 intersecting.
+   Figure 7 shows three cases of drawing DL when nR
+  372                                                         Tsinghua Science and Technology, October 2008, 13(S1): 368-374
+
+                                                                                    pt(j2sf)                 pt(j2pb)
+                  pt(j2sf)                 pt(jpb)
+
+
+
+                                                                                      pt(jsf)                  pt(jpb)
+                  pt(jsf)
+                                                                                                FCP          BCP
+                                 FCP            BCP
+
+           (a) Len(FCP)˘Len(j2sf), Len(jsf)˘Len(jpb)                                  (a) Len(jsf)=Len(j2pb)
+                       pt(jsf)                 pt(j2sf)                           pt(j2sf)                   pt(j2pb)
+
+
+
+                                                                                   pt(jsf)      FCP
+                                               pt(jpb)
+                          FCP
+                                         BCP                                                          BCP pt(jpb)
+           (b) Len(FCP)˚Len(j2sf), Len(jsf)˚Len(jpb)                                 (b) Len(jsf)˘Len(j2pb)
+              pt(jsf)                              pt(j2sf)                         pt(j2sf)                 pt(j2pb)
+
+
+
+                         FCP
+                                                                                      pt(jsf)          BCP
+                                                                                                              pt(jpb)
+                                                                                                FCP
+               pt(A)                              pt((jpb)
+                                   BCP
+           (c) Len(FCP)˘Len(j2sf), Len(jsf)˚Len(jpb)                                  (c) Len(jsf)˚Len(j2pb)
+  Fig. 7 nR=3, three cases of DL depending on the com-             Fig. 8 nR=4, if Len(jsf)=Len(j2pb), then it forms rec-
+  parison between Len(FCP) and Len(j2sf) and the com-              tangle. Otherwise, same as nR=3
+  parison between Len(jsf) and Len(jpb)
+
+   Figure 9 shows a variety of shapes of orthogonal                “RRRRLLRRRRLL”. But, shorter DLs are different in
+building polygons with DLs implemented and 3D                      two polygons and different DLs are selected to cut off
+building models automatically generated from parti-                a rectangle by the proposed scheme. The rectangle par-
+tioned building polygons. Two polygons at the lower                titioned is extended to a wider and higher main roof so
+left side of Fig. 9 are expressed as the same                      that it will form a narrower and lower branch roof.
+
+
+
+
+              RRRRLLRRRRLL RRRRLLRRRRLL
+
+
+
+
+  Fig. 9     Complicated building orthogonal polygons with dividing lines and 3D building models automatically generated
+    Kenichi Sugihara et alġAutomatic Generation of 3D Building Models with Multiple Roofs                                       373
+
+
+4      How to Create Roof Models                                                                        ș
+                                                                                                                dh
+The integrated system partitions orthogonal building
+                                                                               thick_rf prism                        rf_offs
+polygons into a set of rectangles and places rectangular                                        0.5w_S·tan
+                                                                                                                ș
+roofs and box-shaped building bodies on these rectan-                                                                    eaves23
+gles. The positioning of parts of a building is imple-                                                   0.5w_S
+mented in following steps. After measuring the length
+                                                                                              edge23
+and the gradient of the edges of the partitioned rectan-                                      (=w_S)
+gle, the edges are categorized into a long edge and a
+short edge. The vertices of the rectangle are numbered
+                                                                      Here, ‘thick_rf’ is a thickness of a roof board. ș is an angle
+clockwise with the upper left vertex of a long edge be-               of a roof slope with a horizontal plane. ‘rf_offs’ is the offset
+ing numbered ‘pt1’ as shown in Fig. 10.                               of a roof board from a prism.
+
+                pt12                   eaves                          The width of a roof board is as follows.㩷 㩷
+                (=0.5(pt1+pt2))                       eaves           wid_rfb=side23L  eaves23+rf_offs  tan T 㩷
+                                              pt2
+                                                                      Here, side23L=0.5  w_S  1  tan T .
+                                                                                                            2
+                                  cp_rf1     edge23
+                      edge12                 (=w_S)                   The height of a roof board is as follows.
+               pt1                                                    hei_rf st_heit  0.5  (side23L  eaves23  rf_offs  tanT ) 
+                      (=w_L)
+                                                                           sinT  thick_rf  cosT +rf_offs / cosT + 0.5  tanT  w_S.
+                                                      pt3             Here, ‘st_heit’ is start height, equal to (floor-to-floor
+                     edge41             cp_rf2
+                                                                      height)×(the number of stories).㩷
+                              edge34
+                                                                       Fig. 11 Front view of a gable roof and explanation of
+                      pt4                  pt34
+                                           (=0.5(pt3+pt4))             parameters of a gable roof
+
+                         0.5(eaves23  cos T  rf_offs  sinT )      Also, the other complicated shapes of roofs, such as a
+        ratio_s 0.25                                           
+                                         w_S                         temple roof, consist of many thin boxes. Figures 12
+                  thick_rf  sin T                                   and 13 show automatically generated 3D models with
+                                   ,
+                       w_S                                           complicated shapes of roofs restoring a Japanese an-
+        cp_rf1=(1.0  ratio_s)  pt12  ratio_s  pt34,
+                                                                     cient temple and a pagoda. ‘cp’s of these thin boxes are
+        cp_rf2 ratio_s  pt12  (1.0  ratio_s)  pt34.
+                                                                     also placed on the point that divides the line through
+    Here, ‘thick_rf’ is a thickness of a roof board. ‘eaves23’ is
+    the length of eaves in a direction of edge23. ș is an angle      pt12 and pt34.
+    of a roof slope with a horizontal plane. ‘rf_offs’ is the off-
+    set of a roof board from a prism as shown in Fig. 11.㩷
+    Fig. 10 Ground plan of a gable roof and explanation
+    of parameters of a gable roof
+
+   The control point (‘cp’) of a building part is placed
+at the point that divides edge12 and edge23 at a certain
+ratio. ‘cp’s are different in each primitive. For example,
+a prism is used for the construction under roof boards.
+In 3D Studio Max we use for the creation of 3D mod-
+els, the ‘cp’ of a prism lies in one of the vertex of the
+base triangle in an upright position when a prism is                   Fig. 12 An automatically generated 3D models restor-
+newly created. After rotating a prism by 90° around x-                 ing Japanese ancient temples called Mino Kokubunji
+
+axis, the ‘cp’ and the rotation in degrees around z-axis               As shown in Fig. 14, a hipped roof is a type of roof
+depend on the gradient of edge12.                                    with two triangular sides and two trapezoidal ones
+   The top of a gable roof consists of two roof boards               downwards to the walls. While ‘cp’ of the trapezoid is
+(two thin boxes). Since the ‘cp’ of a box lies in a center           placed on the point that divides the line through pt12
+of a base, it is placed on the point that divides the line           and pt34, ‘cp’ of the triangle is placed on the point that
+through pt12 and pt34 at the ratio shown in Fig.10.                  divides the line through pt23 and pt41.
+    374                                                     Tsinghua Science and Technology, October 2008, 13(S1): 368-374
+
+
+
+
+    Fig. 13 An automatically generated 3D models restor-
+    ing Japanese ancient pagoda
+                                                                    Fig. 15 An automatically generated 3D urban model
+                                                                    A building with a hipped roof stands along a road
+
+                                                                 models restoring a Japanese ancient temple and a pa-
+                                                                 goda, based on the generation process of a basic roof.
+                                                                 Future work will be directed towards the development
+                                                                 of methods for: (1) importing elevation data from
+                                                                 DEM (digital elevation model) or some other source of
+                                                                 remote sensing in stead of using the number of stories
+                                                                 from GIS database; (2) 3D reconstruction algorithm to
+                                                                 generate any objects in 3D urban model by using
+                                                                 Computer Vision that defines the geometry of the cor-
+    Fig. 14 Proposed 3D urban model (2-story terrace             respondences between multiple stereo views and leads
+    houses generated from N-vertices orthogonal polygons)        to 3D reconstruction.
+
+                                                                 References
+5     Application and Conclusions
+                                                                 [1] Sugihara K, Hayashi Y. Automatic generation of 3D build-
+For residents, citizens or even students as well as the              ing models from building polygons on GIS. In: ICCCBE-
+specialist of urban planning, a 3D urban model is quite              XI Proceedings of the 11th ICCCBE. Montreal, Canada,
+effective in understanding what will be built, what im-              2006: 14-16.
+age of the town will be or what if this alternative plan         [2] Kenichi Sugihara. Generalized building polygon partition-
+is realized. This model can act as a simulator to realize            ing for automatic generation of 3D building models. In:
+                                                                     ACM SIGGRAPH 2006 Posters Session. Massachusetts,
+alternative ideas of urban planning virtually.
+                                                                     Boston, 2006.
+   Here are examples of 3D models created by the au-             [3] Müller P, Wonka P, Haegler S, et al. Procedural modeling of
+tomatic generation system. Figure 15 shows a pro-                    buildings. ACM Transactions on Graphics, 2006, 25(3):
+posed 3D urban model where a variety of shapes of 2-                 614-623.
+story terrace houses are built. Figures 14 and 15 show           [4] Parish Y I H, Müller P. Procedural modeling of cities. In:
+                                                                     Proceedings of ACM SIGGRAPH 2001. New York, USA,
+3-D models restoring ancient temple called Mino Ko-
+                                                                     2001: 301-308.
+kubunji and Kokubun-niji. Excavation revealed that               [5] Aichholzer O, Aurenhammer F, Alberts D, et al. A novel
+there used to be 7- and 5-story pagodas and 2-story big              type of skeleton for polygons. Journal of Universal Com-
+gate, accommodations for monks, cereals storehouse                   puter Science, 1995, 1(12): 752-761.
+surrounded by walls with small roofs.                            [6] Aichholzer O, Aurenhammer F. Straight skeletons for gen-
+   In this paper, we propose a new scheme for parti-                 eral polygonal figures in the plane. In: Proc. 2nd Ann. Int.
+                                                                     Conf. Computing and Combinatorics (COCOON’96).
+tioning building polygons and show the process of cre-
+                                                                     Hong Kong, 1996: 117-126.
+ating a basic gable roof model. By applying polygon              [7] Laycock R G, Day A M. Automatically generating roof
+partitioning algorithm, the system divides polygons                  models from building footprints. In: Proceedings and Ap-
+along the thin parts of its branches. We also present 3D             plications. New York, USA, 2003: 346-351.
+

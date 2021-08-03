@@ -1,0 +1,1516 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"></head><body><center>
+  <img src="texture.php_files/csusb.png">
+<br>   <a style="text-decoration:none" href="http://cse.csusb.edu/tongyu/courses/cs520/"><img src="texture.php_files/520.png" border="0"></a>
+</center>
+<center>
+<table>
+<tbody><tr><td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/syllabus.php">Syllabus</a> &nbsp;
+</td>
+<td>
+<!--<a href='/tongyu/courses/cs520/labs/index.php'>Labs</a> &nbsp;-->
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/blank.php">Blank</a> 
+</td>
+<td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/hw/index.php">Homework</a> &nbsp;
+</td>
+<td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/quiz/index.php">Quizzes</a> &nbsp; 
+</td>
+<td>
+<!--
+<a href='/tongyu/courses/cs520/forum/forum_read.php'>Forum Read</a> &nbsp; 
+-->
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/index.php">Notes</a> &nbsp;
+</td>
+<td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/labs/index.php">Labs</a> &nbsp;
+</td><td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/score/score_login.php">Scores</a> &nbsp;
+</td><td>
+<a href="http://cse.csusb.edu/tongyu/courses/cs520/blank.php">Blank</a> 
+</td>
+<td>
+<!--
+<a href='/tongyu/courses/cs520/forum/forum.php'>Forum Login</a> &nbsp; 
+-->
+</td>
+</tr>
+</tbody></table>
+	<p></p>
+</center>
+<center>
+</center><center><font size="5" color="orange"><b>Lecture Notes</b></font></center>Dr. Tong Lai Yu, 2010<table><tbody><tr><td><ol></ol><table><tbody><tr><td>1. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/intro.php">Introduction</a></td></tr><tr><td></td></tr><tr><td>2. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/glsl.php">OpenGL Shading Language ( GLSL ) I</a></td></tr><tr><td>3. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/glsl1.php">GLSL II</a></td></tr><tr><td></td></tr><tr><td>4. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/curves.php">Curve and Surface Design</a></td></tr></tbody></table>
+</td><td>
+<table><tbody><tr><td>5. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/mesh.php">Modeling Shapes with Polygonal Meshes</a></td></tr><tr><td>6. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/texture.php">Texture Mapping</a></td></tr><tr><td>7. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/shadow.php">Casting Shadows</a></td></tr><tr><td>8. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/raster.php">Tools for Raster Display</a></td></tr><tr><td>9. <a href="http://cse.csusb.edu/tongyu/courses/cs520/notes/external.php">Parsing External Objects</a></td></tr></tbody></table></td>
+</tr>
+</tbody></table><br>
+
+<font size="5" color="green"><b>Texture Mapping</b></font>
+<!--
+<p>
+
+  <ul><ul>
+	<table>
+	<tr>
+	<td><i>I know of no more encouraging fact,</i></td>
+	</tr>
+	<tr>
+	<td><i>than the unquestionable ability of man,</i></td>
+	</tr>
+	<tr><td><i>to elevate his life by conscious endeavor.</i></td></tr>
+	<tr><td align=right> Henry David Thoreau</td>
+	</tr>
+	</table>
+  </ul></ul>
+-->
+<p>
+</p><ol>
+<li><font size="4" color="blue"><b>Mapping Methods</b></font>
+  <p>Apply discrete data for surface rendering
+  </p><p>Three major techniques:
+   </p><ul>
+   <li><b>Texture mapping</b> -- uses a pattern ( or texture ) to determine
+	the color of a fragment.  Can be 1, 2, 3, or 4 dimensional.
+   <p></p></li><li><b>Bump mapping</b> -- distorts the normal vectors during shading process
+	to make the surface appear to have small variations in shape like
+	the bumps on a real orange.
+	<br>
+	<table>
+	<tbody><tr>
+	<td width="160">
+	<img src="texture.php_files/orange-smooth.png">
+	<br>Sphere without bump mapping.
+	</td>
+	<td width="50">&nbsp;</td>
+	<td width="160">
+	<img src="texture.php_files/orange-bumpmap.png">
+	<br>Bump map
+	</td>
+	<td width="50">&nbsp;</td>
+	<td width="160">
+	<img src="texture.php_files/orange-bumpy.png">
+	<br>Sphere with bump map resembling an orange
+	</td>
+	</tr>
+	</tbody></table>
+   <p></p></li><li><b>Environment mapping</b> ( reflection mapping ) --
+	the texture is used to store the image of the environment surrounding the rendered object.
+	Examples:
+	<br>
+	<table>
+	<tbody><tr>
+	<td width="180">
+	<img src="texture.php_files/spoon.jpg">
+	</td>
+	<td width="50">&nbsp;</td>
+	<td width="180">
+	<img src="texture.php_files/silverteapot.jpg">
+	</td>
+	<td width="50">&nbsp;</td>
+	<td width="180">
+	<img src="texture.php_files/cube-mapped-reflection.jpg">
+	</td>
+	</tr>
+	</tbody></table>
+   </li></ul>
+</li>
+<p>
+</p><li><font size="4" color="blue"><b>Two Dimensional Texture Mapping</b></font>
+  <p>
+  </p><ul>
+	<li><b>Texels</b> -- texture elements
+	<p></p></li><li><b>Texture coordinates</b> -- s, t  
+        <p></p></li><li><b>Texture pattern</b> T(s, t)
+	<p></p></li><li>A <b>Texture map</b> associates a texel with each point on
+	a geometric object that is itself mapped to screen coordinates
+	for display.
+	<p></p></li><li>If homogeneous coordinates (x, y, z, w) are used, then
+		<ul>
+		x = x(s, t)
+		<br>y = y(s, t)
+		<br>z = z(s, t)
+		<br>w = w(s, t)
+		</ul>
+	<p></p></li><li>Given a point (x, y, z, w), inverse functions give texel T(s,t):
+		<ul>
+		s = s(x, y, z, w)
+		<br>t = t(x, y, z, w)
+		</ul>
+	<p></p></li><li>For parametric (u, v) surfaces, we need an additional function to
+	map from (u, v) to (x, y, z, w). We also need the mapping from (u, v)
+	to (s, t) and its inverse.
+		<ul>
+		<img src="texture.php_files/texture-para.png">
+		<!-- (xs, ys) are screen coordinates -->
+		</ul>
+	<p></p></li><li>Parametric surface:
+		<ul>
+		<img src="texture.php_files/parametric.png">
+		</ul>
+	<p></p></li><li>Linear-mapping a point on texture T(s,t) to a point on p(u,v):
+		<ul>
+		<i>u </i> = a<i>s</i> + b<i>t</i> + c
+		<br><i>v</i> = d<i>s</i> + e<i>t</i> + f	
+		</ul>
+		The mapping is invertible if ae &#8800; bd.
+	<p></p></li><li>Linear mapping makes it easy to map a texture to a group of parametric
+		surface patches.
+		<ul>
+		<img src="texture.php_files/linear-map.png">
+		<p><img src="texture.php_files/linear-map-eqn.png">
+		</p></ul>
+	<p></p></li><li>Example: For a surface of revolution,
+		<p></p><ul> 
+	<!--	p(u, v) = ( c<sub>x</sub>(u) cos(v),c<sub>x</sub>(u) sin(v),
+		c<sub>z</sub>(u)) -->
+		p(u, v) = ( r(u) cos(v), r(u) sin(v), h(u))
+		<p>0 &#8804; u &#8804; 1 and 0 &#8804; v &#8804; 2&#960; , then
+		<br>s = u, and t = v / 2&#960;
+		</p><p>
+		<img src="texture.php_files/surfrev-tex.png">
+		</p></ul>	 
+  </li></ul>
+<p>
+</p></li><li><font size="4" color="blue"><b>Assigning  Texture Coordinates</b></font>
+<p>To apply texture maps to an arbitrary surface, it is convenient to 
+define the surface parametrically by a function p(u, v).
+
+</p><p><b><u>Example</u></b>: Map a texture onto the side of a cylinder ( excluding 
+	the top and bottom sides ) :
+   </p><ul>
+    <li>Cylinder's side surface:
+	<ul>
+	p(&#952;,y) = (r sin &#952;, r cos &#952; )
+	<p>Here (u, v) = (&#952;, y) 
+	</p></ul>
+	
+    <p></p></li><li>y : -h/2 to h/2
+    <p></p></li><li>Assigning texture coordinates:
+	<ul>
+	<li>s = &#952; / 2&#960;, 
+	</li><li>t = ( y + h/2 ) / h
+	<p>
+	</p></li></ul>
+	So s varies from 0 to 1 as &#952; changes from 0 to 2&#960;,
+	<br> t varies from 0 to 1 as y changes from -h/2 to h/2
+   </li></ul> 
+<p><b><u>Example</u></b>:Map texture to sphere
+   </p><p></p><ul>
+	<li>Define the sphere parametrically:
+	  <ul>
+		p( &#952; , &#966; ) = ( <i>r</i> sin &#952; cos &#966;, <i>r</i> sin &#952; sin &#966;,
+					<i>r</i> cos &#952; )
+	  </ul>
+	where 
+	  <ul>
+	     <li>r = radius, 
+	     </li><li> &#952; = angle from z-axis ( 0 &#8804; &#952; &#8804; &#960; ),
+	     </li><li>&#966; = angle from x-axis ( 0 &#8804; &#966; &#8804; 2&#960; ) 
+	  </li></ul>
+        <p></p></li><li>Assigning texture coordinates:
+	<ul>
+	<li> s = &#966;/2&#960;
+	</li><li> t = &#952;/&#960;
+	</li></ul>
+	<p></p></li><li>Given a point (x, y, z), we can obtain (s, t) :
+	 <ul>
+	 <li> t = cos<sup>-1</sup> ( z / r ) / &#960;  
+	  </li><li> s = cos<sup>-1</sup>( x / r sin ( t  &#960; ) ) / 2 &#960;
+	 </li></ul>
+	<p>
+	<table>
+	<tbody><tr><td bgcolor="#e0e0e0">
+	<pre>#define PI 3.141592654
+#define TWOPI 6.283185308
+
+void SphereMap( double x, double y, double z, double radius, double *s, double *t)
+{
+   *t = acos(z/radius) / PI;
+   if (y &gt;= 0)
+      *s = acos(x/(radius * sin(PI*(*t)))) / TWOPI;
+   else
+      *s = (PI + acos(x/(radius * sin(PI*(*t))))) / TWOPI;
+}
+	</pre>
+	</td></tr>
+	</tbody></table>
+  </p><p></p></li><li>The exact north and south poles of the sphere, each of which needs to be "spread" out along the 
+whole edge t=0 and t=1. In the formula above this is where sin(t &#960;) = 0.
+    <p></p></li><li>The whole line at North Pole and South Pole texture map to a single point
+	at the poles.
+	<ul>
+	<img src="texture.php_files/sphere-tex.gif">
+	</ul> 
+    </li></ul>
+<p></p></li><li><font size="4" color="blue"><b>Mipmapping and Antialiasing</b></font>
+<p></p><ul>
+   <li>Mipmaps are images for increasing rendering speed and minimizing aliasing effects.
+  <p> </p></li><li> Texture mapping using point sampling often causes aliasing. <p></p>
+	<ul>
+	e.g. miss blue stripes<br>
+	<img src="texture.php_files/alias.png">
+	</ul> 
+   </li><li>A better but slower option is to use area averaging but
+    <br>
+Curved preimage may occur when we project a pixel backward.
+	<ul>
+	<img src="texture.php_files/preimage.png">
+	</ul> 
+   <p></p></li><li> Interpolating texture map pixels can smooth out rugged features.
+   <p></p></li><li>Mipmapping is a common technique to smooth out texture maps.
+   <p></p></li><li>Mip ~ many in one
+   <p></p></li><li>Precompute a family of lower resolution texture maps and display one with
+	resolution best matches that of the screen
+   <p></p></li><li>Assume texture map of dimension M x N, where M and N are powers of 2.
+    <p></p></li><li>Map of reduced resolution (M/2) x (N/2) is obtained by averaging four pixel values
+    <p></p></li><li>Recursively apply the process to obtain maps with arbitrarily low resolution
+    <p></p></li><li>When view closer, use high resolution maps, and when view from a distance, use
+	low resolution
+    <p></p></li><li>The memory used by successive mipmaps is
+	<ul>
+	1 + 1/4 + 1/16 + 1/64 + .... = 4/3
+	</ul>	
+       <p></p><ul>
+  	<img src="texture.php_files/scallop.gif">
+       </ul>
+     </li><li>Controlling Filtering
+       <ul>
+	<table>
+	<tbody><tr><td>
+  	<img src="texture.php_files/mag-min.png">
+	<br>Mapping texels to pixels. (a)Magnification. (b) Minification.
+	<br>In both cases, the fastest strategy is to use
+the value of the nearest point sampling.
+  	</td></tr>
+	</tbody></table>
+	<img src="texture.php_files/texture-control.gif">
+       <p>e.g.	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                  GL_NEAREST); 
+	</p><p>&nbsp; &nbsp; &nbsp; &nbsp; glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+                  GL_NEAREST);
+       </p></ul>
+   </li></ul>
+<p></p></li><li><font size="4" color="blue"><b>Texture Mapping an Image with OpenGL</b></font>
+<p><b>Texture mapping</b> -- applying a graphics image, a picutre, or
+	a pattern to a surface. 
+ </p><p> <b>Properties of texture maps</b>:
+    </p><ul>
+	<p></p><li>a texture map can apply an actual picture to a surface
+	such as a label on a can or a picture on a billboard or
+	can apply semirepetitive patterns such as wood grain or stone
+	surfaces
+	<p></p></li><li>more generally, a texture map can hold any kind of information
+	that affects the appearance of a surface
+	<p></p></li><li>can be done by table look up;
+	the individual values in a texture array are often called <b>texels</b> 
+	<p></p></li><li>used often in real-time rendering settings such as
+	games to reduce computational load
+	<p></p></li><li>can hold colors that are applied to a surface to
+	overwrite current color of objects ( in this case no lightling 
+	calculations should be performed )
+	<p></p></li><li>can hold attributes such as color, brightness, or
+	transparency to blend with existing colors
+	<p></p></li><li>can hold attributes such as reflectivity coefficients,
+	normal displacements or other parameters in the lighting model
+    </li></ul>
+  <ul>
+  <table>
+  <tbody><tr><td><img src="texture.php_files/texfig.gif"></td>
+  	<td><img src="texture.php_files/checker.gif"></td>
+   </tr><tr>
+  	<td colspan="2"><img src="texture.php_files/distort.gif"></td>
+   </tr>
+   </tbody></table>
+  </ul>
+<p><b>Steps in Texture Mapping</b>:
+  </p><p>
+  </p><ul>
+   <p></p><li><b>Enable Texture Mapping</b>:
+	<p>
+	</p><ul>
+	<b>glEnable</b> ( GL_TEXTURE_1D );
+	<br><b>glEnable</b> ( GL_TEXTURE_2D );
+	<br><b>glDisable</b> ( GL_TEXTURE_1D );
+	<br><b>glDisable</b> ( GL_TEXTURE_2D );
+
+	</ul>
+  <p></p></li><li><b>Create a Texture Object and Specify a Texture for That Object</b>:
+	<p>
+	</p><ul>
+	data describing a texture may consist of one, two, three, or four 
+	elements per texel, representing anything from a modulation constant 
+	to an (R, G, B, A) quadruple.
+	<p>e.g.
+	</p><p>
+	GLuint handles[2];
+	<br>glGenTextures(2, handles);
+	</p><p>glBindTexture(GL_TEXTURE_2D, handles[0]);
+	<br>// Initialize texture parameters and load a texture with glTexImage2D
+	</p><p>glBindTexture(GL_TEXTURE_2D, handles[1]);
+	<br>// Initialize texture parameters and load another texture
+	</p></ul>
+   <p></p></li><li><b>Indicate How the Texture Is to Be Applied to Each Pixel</b>:
+	<p>
+	</p><ul>
+	You can choose any of four possible functions for computing the final 
+	RGBA value from the fragment color and the texture-image data:
+	<ol>
+	 <li><b>decal</b> mode -- the texture color is the final color; 
+		the texture is painted on top of the fragment ( Demo ... )
+	</li><li><b>replace</b> mode -- a variant of the decal mode
+	</li><li><b>modulate</b> mode -- use texture to modulate or  scale the fragment's color; 
+	this technique is useful for combining the effects of lighting with 
+	texturing
+	</li><li><b>constant</b> mode -- a constant color is blended with that of 
+		the fragment, based on the texture value
+	<p>e.g. glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	</p></li></ol>
+	</ul>
+   <p></p></li><li><b>Draw the Scene, Supplying Both Texture and Geometric Coordinates</b>:
+	<p>
+	</p><ul>
+	Need to specify both texture coordinates and geometric coordinates .
+	<br>e.g. 2-D textural map, 
+	<ol>
+	texture coordinates: [0.0, 1.0]
+	<br>object coordinates: anything
+	<br>e.g. brick wall, we can assign texture coordinates
+	 <br>(0,0), (1,0), (1,1), (0,1)
+	<br>We must also indicate how texture coordinates outside the range [0.0,1.0] should be treated.
+	</ol>
+	</ul>
+    <p></p></li><li><b>Delete the texture from memory when it is no longer used</b>:
+	<p>
+	</p><ul>
+		<b>glDeleteTextures</b>(2, handles);
+	</ul>
+  </li></ul>
+<p>
+  <b>Texture Names</b>:
+ </p><p>To start things off, we first need a texture name. This is 
+essentially a number that OpenGL uses to index all the different 
+textures.
+  </p><ul>
+  <font color="green"><b>
+  <pre>GLuint texture;
+
+// allocate a texture name
+glGenTextures( 1, &amp;texture );
+</pre>
+ </b> </font>
+  </ul>
+<p>Now that we have our texture name, we can switch between different 
+textures we want using the function glBindTxeture. This essentially 
+chooses what texture we are working with. 
+  </p><ul>
+  <font color="green"><b>
+<pre>// select our current texture
+glBindTexture( GL_TEXTURE_2D, texture );
+</pre>
+ </b> </font>
+  </ul>
+<p>
+<b>Texture Parameters</b>:
+  </p><p>
+  Now we can begin to work on our current texture. 
+ Before we start, we should set one little texture environment state
+which tells OpenGL how the texture will act when it is rendered into
+a scene.
+  </p><ul>
+  <font color="green"><b>
+  <pre>// select modulate to mix texture with color for shading
+glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+  </pre>
+   </b> </font>
+  </ul>
+<p>
+Next, we have four texture parameters we need to setup. Here is where we can 
+setup such wonderful effects like bilinear and trilinear texture filtering, 
+and mipmapping. We also can setup whether the texture wraps over at the edges 
+or is clamped at the ends. The most common feature used is  'repeating'. 
+</p><p>
+  </p><ul>
+  <font color="green"><b>
+  <pre>// when texture area is small, bilinear filter the closest mipmap
+glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                 GL_LINEAR_MIPMAP_NEAREST );
+// when texture area is large, bilinear filter the original
+glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+// the texture wraps over at the edges (repeat)
+glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+  </pre>
+   </b> </font>
+  </ul>
+
+
+<p>
+</p></li><li><font size="4" color="blue"><b>Sample examples</b></font>
+  <p>
+   <b><u>A Checker board</u></b>
+  </p><p>
+  <table>
+  <tbody><tr><td>
+  <table>
+  <tbody><tr><td bgcolor="#e0e0e0">
+  <pre>//checker.cpp
+#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+/*  Create checkerboard texture  */
+#define checkImageWidth 64
+#define checkImageHeight 64
+static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
+
+static GLuint texName;
+
+void makeCheckImage(void)
+{
+   int i, j, c;
+    
+   for (i = 0; i &lt; checkImageHeight; i++) {
+      for (j = 0; j &lt; checkImageWidth; j++) {
+         c = ((((i&amp;0x8)==0)^((j&amp;0x8))==0))*255;
+         checkImage[i][j][0] = (GLubyte) c;
+         checkImage[i][j][1] = (GLubyte) c;
+         checkImage[i][j][2] = (GLubyte) c;
+         checkImage[i][j][3] = (GLubyte) 255;
+      }
+   }
+}
+
+void init(void)
+{    
+   glClearColor (0.0, 0.0, 0.0, 0.0);
+   glShadeModel(GL_FLAT);
+   glEnable(GL_DEPTH_TEST);
+
+   makeCheckImage();
+   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+   glGenTextures(1, &amp;texName);
+   glBindTexture(GL_TEXTURE_2D, texName);
+
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
+                   GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+                   GL_NEAREST);
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, checkImageWidth, 
+                checkImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 
+                checkImage);
+}
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glEnable(GL_TEXTURE_2D);
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+   glBindTexture(GL_TEXTURE_2D, texName);
+   glBegin(GL_QUADS);
+   glTexCoord2f(0.0, 0.0); glVertex3f(-2.0, -1.0, 0.0);
+   glTexCoord2f(0.0, 1.0); glVertex3f(-2.0, 1.0, 0.0);
+   glTexCoord2f(1.0, 1.0); glVertex3f(0.0, 1.0, 0.0);
+   glTexCoord2f(1.0, 0.0); glVertex3f(0.0, -1.0, 0.0);
+
+   glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 0.0);
+   glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 0.0);
+   glTexCoord2f(1.0, 1.0); glVertex3f(2.41421, 1.0, -1.41421);
+   glTexCoord2f(1.0, 0.0); glVertex3f(2.41421, -1.0, -1.41421);
+   glEnd();
+   glFlush();
+   glDisable(GL_TEXTURE_2D);
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 30.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   glTranslatef(0.0, 0.0, -3.6);
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+   switch (key) {
+      case 27:
+         exit(0);
+         break;
+   }
+}
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize(250, 250);
+   glutInitWindowPosition(100, 100);
+   glutCreateWindow(argv[0]);
+   init();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutKeyboardFunc(keyboard);
+   glutMainLoop();
+   return 0; 
+}
+  </pre>
+  </td></tr>
+  </tbody></table>
+  </td>
+  <td>
+    <p><img src="texture.php_files/checker.gif">
+  </p></td>
+  </tr>
+  </tbody></table>
+
+  </p><p><b><u>Cube with texture images</u></b>
+  </p><p>
+  <table>
+  <tbody><tr><td>
+  <table>
+  <tbody><tr><td bgcolor="#e0e0e0">
+  <pre>/*
+ * cubemap.cpp ( Demo for CS 520 ):  Draw a cube with texture images. The cube can be rotated
+ * by pressing keys 'x', 'X', 'y', 'Y', 'z', 'Z'.
+ * Images are downloaded from Internet.  
+ * @Author: T.L. Yu, 2008F
+ *
+ */
+
+#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include "imageio.h"
+
+int texImageWidth;
+int texImageHeight;
+int window;
+static GLuint texName[6];			//texture names
+int anglex= 0, angley = 0, anglez = 0;		//rotation angles
+
+//images for texture maps for 6 faces of cube
+char maps[][20] = {"cubemap_fr.png",  "cubemap_bk.png",  "cubemap_rt.png", "cubemap_lf.png",
+		 "cubemap_up.png", "cubemap_dn.png" };
+
+//load texture image
+GLubyte *makeTexImage( char *loadfile )
+{
+   int i, j, c, width, height;
+   GLubyte *texImage;
+  
+   /*
+     Only works for .png or .tif images.  NULL is returned if errors occurred.
+     loadImageRGA() is from imageio library downloaded from Internet.
+   */ 
+   texImage = loadImageRGBA( (char *) loadfile, &amp;width, &amp;height);	
+   texImageWidth = width;
+   texImageHeight = height;
+
+   return texImage;
+}
+
+void init(void)
+{    
+   glClearColor (0.2, 0.2, 0.8, 0.0);
+   glShadeModel(GL_FLAT);
+
+   glEnable(GL_DEPTH_TEST);
+
+   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+   //texName is global
+   glGenTextures(6, texName);
+  for ( int i = 0; i &lt; 6; ++i ) {	
+    GLubyte *texImage = makeTexImage( maps[i] );
+    if ( !texImage ) {
+      printf("\nError reading %s \n", maps[i] );
+      continue;
+    }
+    glBindTexture(GL_TEXTURE_2D, texName[i]);		//now we work on texName
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texImageWidth, 
+                texImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texImage);
+
+    delete texImage;					//free memory holding texture image
+  }
+}
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glEnable(GL_TEXTURE_2D);
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+   float x0 = -1.0, y0 = -1, x1 = 1, y1 = 1, z0 = 1;
+   float face[6][4][3] =  { {{x0, y0, z0}, {x1, y0, z0}, {x1, y1, z0}, {x0, y1, z0}},	//front
+    		{{x0, y1, -z0}, {x1, y1, -z0}, {x1, y0, -z0}, {x0, y0, -z0}},		//back
+		{{x1, y0, z0}, {x1, y0, -z0}, {x1, y1, -z0}, {x1, y1, z0}},		//right 
+		{{x0, y0, z0}, {x0, y1, z0}, {x0, y1, -z0}, {x0, y0, -z0}},		//left 
+		{{x0, y1, z0}, {x1, y1, z0}, {x1, y1, -z0}, {x0, y1, -z0}},		//top 
+		{{x0, y0, z0}, {x0, y0, -z0}, {x1, y0, -z0}, {x1, y0, z0}}		//bottom 
+		};
+   glEnable( GL_CULL_FACE );
+   glCullFace ( GL_BACK );
+  
+   glPushMatrix(); 
+   glRotatef( anglex, 1.0, 0.0, 0.0);			//rotate the cube along x-axis
+   glRotatef( angley, 0.0, 1.0, 0.0);			//rotate along y-axis	
+   glRotatef( anglez, 0.0, 0.0, 1.0);			//rotate along z-axis
+
+   for ( int i = 0; i &lt; 6; ++i ) {			//draw cube with texture images
+     glBindTexture(GL_TEXTURE_2D, texName[i]);
+     glBegin(GL_QUADS);
+       glTexCoord2f(0.0, 0.0); glVertex3fv ( face[i][0] ); 	
+       glTexCoord2f(1.0, 0.0); glVertex3fv ( face[i][1] );	
+       glTexCoord2f(1.0, 1.0); glVertex3fv ( face[i][2] );
+       glTexCoord2f(0.0, 1.0); glVertex3fv ( face[i][3] );
+     glEnd();
+   }
+
+   glPopMatrix();
+   glFlush();
+   glDisable(GL_TEXTURE_2D);
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch(key) {
+    case 'x':
+      anglex = ( anglex + 3 ) % 360;
+      break;
+    case 'X':
+      anglex = ( anglex - 3 ) % 360;
+      break;
+    case 'y':
+      angley = ( angley + 3 ) % 360;
+      break;
+    case 'Y':
+      angley = ( angley - 3 ) % 360;
+      break;
+    case 'z':
+      anglez = ( anglez + 3 ) % 360;
+      break;
+    case 'Z':
+      anglez = ( anglez - 3 ) % 360;
+      break;
+    case 27: /* escape */
+        glutDestroyWindow(window);
+        exit(0);
+  }
+  glutPostRedisplay();
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(60.0, (GLfloat) w/(GLfloat) h, 1.0, 30.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt ( 0, 0, 5, 0, 0, 0, 0, 1, 0 );
+}
+
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize(500, 500);
+   glutInitWindowPosition(100, 100);
+   window = glutCreateWindow(argv[0]);
+   init();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutKeyboardFunc(keyboard);
+   glutMainLoop();
+   return 0; 
+}
+  </pre>
+  </td></tr>
+  </tbody></table>
+  </td>
+  <td>
+    <p><img src="texture.php_files/cubemap.png">
+  </p></td>
+  </tr>
+  </tbody></table>
+
+  </p><p>
+  <table width="600">
+  <tbody><tr><td bgcolor="#e0ffe0">
+	void <b>glTexImage2D</b>(GLenum target, GLint level, GLint internalFormat, 
+	GLsizei width, GLsizei height, GLint border, 
+	GLenum format, GLenum type, 
+	const GLvoid *pixels);
+  </td></tr>
+  <tr><td bgcolor="#e0e0ff">
+	Defines a two-dimensional texture. The target parameter is set to 
+	either the constant GL_TEXTURE_2D or GL_PROXY_TEXTURE_2D. You use 
+	the level parameter if you're supplying multiple resolutions of the 
+	texture map; with only one resolution, level should be 0.
+  </td></tr>
+  </tbody></table>
+  </p><p>
+  <table width="600">
+  <tbody><tr><td bgcolor="#e0ffe0">
+void <b>glCopyTexImage2D</b>(GLenum target, GLint level, 
+GLint internalFormat,
+GLint x, GLint y, GLsizei width, GLsizei height, 
+GLint border);
+  </td></tr>
+  <tr><td bgcolor="#e0e0ff">
+Creates a two-dimensional texture, using framebuffer data to define the texels.
+ The pixels are read from the current GL_READ_BUFFER and are processed exactly
+ as if glCopyPixels() had been called but stopped before final conversion. 
+The settings of glPixelTransfer*() are applied.
+<br>
+The target parameter must be set to the constant GL_TEXTURE_2D. The level, 
+internalFormat, and border parameters have the same effects that they have 
+for glTexImage2D(). The texture array is taken from a screen-aligned pixel 
+rectangle with the lower-left corner at coordinates specified by the (x, y) 
+parameters. The width and height parameters specify the size of this pixel 
+rectangle. Both width and height must have the form 2m+2b, where m is a 
+nonnegative integer (which can have a different value for width than for 
+height) and b is the value of border.
+  </td></tr>
+  </tbody></table>
+  </p><p><b><u>Sphere with texture images</u></b>
+  </p><p>Adopted from <a href="http://local.wasp.uwa.edu.au/~pbourke/texture_colour/texturemap/" target="_new">
+	http://local.wasp.uwa.edu.au/~pbourke/texture_colour/texturemap/</a>
+   </p><p></p><ul>
+     <li>May use GL_TRIANGLE_STRIP  ( faster ) or GL_QUAD_STRIP
+	<ul>
+	<table>
+	<tbody><tr>
+	<td><img src="texture.php_files/triangles.gif">
+	</td><td width="20">&nbsp;</td>
+	<td><img src="texture.php_files/quads.gif">
+	</td><td width="20">&nbsp;</td>
+	<td><img src="texture.php_files/nz.gif">
+	</td></tr>
+	</tbody></table>
+      </ul>
+
+  	<table width="600">
+  	<tbody><tr><td bgcolor="#e0ffe0">
+	<pre>/*
+   Create a sphere centered at c, with radius r, 
+   and precision n.
+   Draw a point for zero radius spheres
+*/
+
+typedef struct {
+  double x;
+  double y;
+  double z;
+} XYZ;
+
+void CreateSphere(XYZ c,double r,int n)
+{
+   int i,j;
+   double phi1,phi2,theta, s, t;
+   XYZ e,p;
+
+   if (r &lt; 0)
+      r = -r;
+   if (n &lt; 0)
+      n = -n;
+   if (n &lt; 4 || r &lt;= 0) {
+      glBegin(GL_POINTS);
+      glVertex3f(c.x,c.y,c.z);
+      glEnd();
+      return;
+   }
+
+   for (j=0;j &lt; n; j++) {
+      phi1 = j * TWOPI / n;
+      phi2 = (j + 1) * TWOPI / n;	//next phi
+
+      glBegin(GL_QUAD_STRIP);
+      for (i=0;i &lt; = n;i++) {
+         theta = i * PI / n;
+
+        e.x = sin ( theta ) * cos ( phi2 );
+	e.y = sin ( theta ) * sin ( phi2 );
+        e.z = cos ( theta );
+        p.x = c.x + r * e.x;
+        p.y = c.y + r * e.y;
+        p.z = c.z + r * e.z;
+
+        glNormal3f(e.x,e.y,e.z);
+        s = phi2 / TWOPI;          // column
+        t = 1 - theta/PI;          // row
+	glTexCoord2f(s, t);
+        glVertex3f(p.x,p.y,p.z);
+
+        e.x = sin ( theta ) * cos ( phi1 );
+	e.y = sin ( theta ) * sin ( phi1 );
+        e.z = cos ( theta );
+        p.x = c.x + r * e.x;
+        p.y = c.y + r * e.y;
+        p.z = c.z + r * e.z;
+
+        glNormal3f(e.x,e.y,e.z);
+        s = phi1/TWOPI;        // column
+        t = 1 - theta/PI;      // row
+        glTexCoord2f(s, t);
+ 
+	glVertex3f(p.x,p.y,p.z);
+      }
+      glEnd();
+   }
+}</pre>
+	</td>
+    <td>
+	<img src="texture.php_files/earth-tex.png">
+	<br><img src="texture.php_files/earth.png">
+    </td>
+     </tr>
+	</tbody></table>
+ 
+   </li></ul>
+<!--
+<p>
+<li><font size=4 color=blue><b>UV Mapping</b></font>
+  <p>
+  <ul>
+	<img src='../images/texture/uv_u.png'></img>
+  <p>
+	<img src='../images/texture/uv_v.png'></img>
+  </ul>
+  <p>Map 3D model to 2D image 
+  <p>The map transforms a 3D object( X, Y, Z coordinates ) onto a texture image 
+	( U V coordinates ), creating the effect of painting the image onto
+ 	the surface of the 3D object.
+   <p>
+   <table>
+    <tr><td>
+	<img src='../images/texture/uv-mapc50.png'></img>
+	<br>Left image is without uv mapping; right image with uv mapping
+    </td>
+    <td>	
+    <img src='../images/texture/uv-unwrapping50.png'></img>
+	<br>A representation of the UV mapping of a cube, which 
+	can then be textured by the net of a polyhedron.
+    </td>
+    </tr>
+    </table>
+    <br>UV coordinates can be generated for each vertex of a polygon mesh.
+	This can be done by unfolding the triangle mesh at the seams, automatically laying 
+	out the triangles on a flat page.  Once the mesh is unwrapped, the artist can 
+	paint a texture on each triangle individually, using the unwrapped mesh as a template.
+-->
+<p>
+</p></li><li><font size="4" color="blue"><b>Environment Mapping</b></font>
+	<p>
+	</p><ul>
+	<li>A type of <b>reflection mapping</b>, particularly useful in animation.
+	<p></p></li><li>Law of Reflection:
+	   <ol>
+	     <li>Angle of reflection is equal and opposite to the incident angle, with respect to the surface normal.
+	     </li><li>Consequence of this law: If a point P is a distance d in front of the surface (measured in the
+ 		direction of the surface normal), 
+		then its reflected point P' appears to be the same distance d behind the surface.
+		<br><img src="texture.php_files/reflection-law.png">
+	  </li></ol>
+
+	<p></p></li><li>Faking a reflection of a flat surface is quite simple:  make a duplicate of the 
+		scene, but subjected to a reflection transformation so that all the 
+		duplicated objects are behind the reflecting surface.
+	<p></p></li><li>Faking the reflection from a complex surface (such as a sphere) is more difficult.
+		One way to do it is to use environment mapping:
+	<ol>
+	 <li>Use a wide angle projection from the center of the complex (e.g. spherical) 
+		object towards the camera position, and save the image.
+	 </li><li> Use this image as a spherical texture map for the object. Use OpenGL's 
+		automatic texture coordinate generation utilities.
+	</li></ol>
+	<p></p></li><li>Introducted by Blinn and Newell in 1976.
+        <p></p></li><li>A two step process.
+	<p></p></li><li>Consider specular reflection from a surface
+	   <ul>
+		<img src="texture.php_files/scene-mirror.png">
+	   </ul>
+	<p></p></li><li>We first render the scene without the mirror polygon.
+	<p></p></li><li>Place  the camera at the center of the mirror pointed in the direction
+		of the mirror normal, and thus obtain the scene of the environment
+		as seen by the mirror.
+	<p></p></li><li>Put the mirror polygon back back and paste the previously obtained image of
+		the scene as texture onto the mirror.
+	<p></p></li><li>To obtain more accurate images, we can project the environment onto a sphere
+	   <ul> 
+		<img src="texture.php_files/environment-map.png">
+	   </ul>
+<!--
+	<p><li>OpenGL also provides a tool to perform  approximate environment
+	mapping for the case where the texture is wrapped around a large enclosing
+	cube:
+	  <p><ul>
+	   <table>
+	   <tr><td bgcolor=#e0ffe0>
+	    glTexGen(GL_S, GL_TEXTURE_GEN_MODE, GL_CUBE_MAP);
+	   </td></tr>
+	   <tr><td bgcolor=#e0ffe0>
+	    glTexGen(GL_T, GL_TEXTURE_GEN_MODE, GL_CUBE_MAP);
+	   </td></tr>
+	   <tr><td bgcolor=#e0ffe0>
+	     glEnable(GL_TEXTURE_GEN_S);
+	   </td></tr>
+	   <tr><td bgcolor=#e0ffe0>
+	     glEnable(GL_TEXTURE_GEN_T);
+	   </td></tr>
+	   </table>
+	  </ul>
+-->
+	<p></p></li><li>The equations for generating texture coordinates can be obtained by
+		reflection mapping:
+	   <ul> 
+		<!--<img src='../images/texture/reflection-map.png'></img>-->
+		<img src="texture.php_files/reflect.png">
+	   <li>Assume  texture map in the plane z = -d with d &gt; 0 ( from the viewer's point of view )
+	  <p> </p></li><li>Project backwards orthogonally towards a unit sphere centered at the origin.
+	   <p></p></li><li>Normal of a unit sphere with center at origin, at point ( x, y, z, 1 ) is
+		(x, y, z, 0 ). The unit normal at (x, y, z) on the sphere is
+		<ol>
+		<b>n</b> = (x, y, z) = (s, t, &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup>)
+		</ol>
+	  <p></p></li><li>Suppose our camera is position at infinity looking towards the -z direction.
+	   <p></p></li><li>The direction of reflection can be computed by
+		<ol>
+		<b>r</b> = 2(<b>n . v</b>)<b>n</b> - <b>v</b>  &nbsp; &nbsp; &nbsp; --- (1)
+		</ol>
+		where
+		<ol>
+		<b>v</b> = (0, 0, 1) is the direction of the vertex V on the object to the eye.
+		<br><b>n</b> = (s, t, &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup>) is the unit normal
+		</ol>
+
+		So,
+		<ol>
+		 <b>n . v</b> = &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup> )
+		 
+		</ol>
+	     <p></p></li><li>From (1) we can solve for s and t:
+		<ol>
+		<b>r</b><sub>x</sub> = 2  &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup> ) s &nbsp; &nbsp; -- (2a)
+		<br><b>r</b><sub>y</sub> = 2  &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup> ) t &nbsp; &nbsp; -- (2b)
+		<br><b>r</b><sub>z</sub> = 2  (1.0 - s<sup>2</sup> - t<sup>2</sup> ) - 1 &nbsp; &nbsp; -- (2c)
+		</ol>
+	      <p>From (2c), we have
+		</p><ol>
+		 &#8730;(1.0 - s<sup>2</sup> - t<sup>2</sup> ) = &#8730;( (<b>r</b><sub>z</sub> + 1 ) / 2 )  &nbsp; &nbsp; -- (2d)
+		</ol>
+		<p>Substituting (2d) into (2a) and (2b), we obtain,
+		</p><ol>
+		<img src="texture.php_files/env-eqn1.png">
+		<!--
+		s = <b>r</b><sub>x</sub> / &radic;( 2(<b>r</b><sub>z</sub> + 1 ) )
+		<br>t = <b>r</b><sub>y</sub> / &radic;( 2(<b>r</b><sub>z</sub> + 1 ) )
+		-->
+		</ol>
+		<p>
+		Note that
+		</p><ol>
+		<img src="texture.php_files/env-eqn2.png">
+		<!--
+		&radic;( 2(<b>r</b><sub>z</sub> + 1 ) ) = &radic;(r<sub>x</sub><sup>2</sup> + r<sub>y</sub><sup>2</sup> + (r<sub>z</sub>+1)<sup>2</sup> ) as
+	 <p>r<sub>x</sub><sup>2</sup> + r<sub>y</sub><sup>2</sup> + r<sub>z</sub><sup>2</sup> = 1.  
+		-->
+		</ol>
+	   </li></ul>
+	<p></p></li><li>OpenGL supports a variation of this method called <b>sphere mapping</b>:
+	  <p></p><ul>
+	   <table>
+	   <tbody><tr><td bgcolor="#e0ffe0">
+	    glTexGen(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	   </td></tr>
+	   <tr><td bgcolor="#e0ffe0">
+	    glTexGen(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	   </td></tr>
+	   <tr><td bgcolor="#e0ffe0">
+	     glEnable(GL_TEXTURE_GEN_S);
+	   </td></tr>
+	   <tr><td bgcolor="#e0ffe0">
+	     glEnable(GL_TEXTURE_GEN_T);
+	   </td></tr>
+	   </tbody></table>
+	<p><b><u>Example</u></b>
+	</p><p>
+   	<table><tbody><tr><td bgcolor="#e0ffe0">
+   	<pre>/*
+ * CS 520: environment-map.cpp 
+ * Demonstrates the creation of environment map using the command
+ * glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, 500, 500, 0);
+ * The scene can be rotated by pressing keys 'x', 'X', 'y', 'Y', 'z', 'Z'.
+ * @Author: T.L. Yu, 2008F 
+ *
+ */
+
+#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+int window;
+int anglex= 0, angley = 0, anglez = 0;		//rotation angles
+
+void init(void)
+{    
+   glClearColor (0.9, 0.9, 0.8, 0.0);
+   glShadeModel(GL_FLAT);
+   glEnable(GL_DEPTH_TEST);
+
+   float light_ambient[4] = { 0.1, 0.1, 0.1, 1.0 };     // r, g, b, a
+   float light_diffuse[4] = { 0.9, 0.8, 0.9, 1.0 };     // r, g, b, a
+   float light_position[4] = { 1.0, 1.0, 1.0 , 0.0 };   // x, y, z, w 
+   
+   glEnable(GL_LIGHTING);
+   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+   glEnable(GL_LIGHT0);
+   
+   // enable automatic texture coordinate generation
+   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+   glEnable(GL_TEXTURE_GEN_S);
+   glEnable(GL_TEXTURE_GEN_T);
+
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   glEnable(GL_TEXTURE_2D);
+}
+
+//rotate the objects
+void rotate()
+{
+   glRotatef( anglex, 1.0, 0.0, 0.0);			//rotate along x-axis
+   glRotatef( angley, 0.0, 1.0, 0.0);			//rotate along y-axis	
+   glRotatef( anglez, 0.0, 0.0, 1.0);			//rotate along z-axis
+}
+
+//arbitrarily draw something
+void drawScene()
+{
+   glDisable(GL_LIGHTING);
+   glDisable(GL_TEXTURE_2D);
+   glColor3f ( 1, 0, 0 );
+   glPointSize ( 8 );
+   //draw a red point
+   glBegin ( GL_POINT );
+      glVertex3f ( 1, 2, 2 );
+   glEnd();
+   glColor3f ( 0, 1, 0 );
+   //draw a green triangle
+   glBegin ( GL_TRIANGLES);
+      glVertex3f ( 2, 2, -2 );
+      glVertex3f ( 2, 3, -3 );
+      glVertex3f ( 2, 2, -3 );
+   glEnd();
+   glColor3f ( 0.1, 0.1, 0.8 );
+   //draw a blue teapot at left side
+   glPushMatrix();
+   glTranslatef( -1.0, -1.0, 2.5 );
+   glRotatef( 45, 1, 1, 1 );
+   glutSolidTeapot( 1 );
+   glPopMatrix(); 
+   glEnable(GL_TEXTURE_2D);
+   glEnable(GL_LIGHTING);
+}
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   //blend texture with lighting
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+   
+   glLoadIdentity();
+   gluLookAt ( 0, 0, 0, 5, 0, 0, 0, 0, 1 );	//put camera at center of origin
+   glScalef ( 1, -1, 1 );			//flip left-right 
+   rotate();
+   drawScene();
+   
+   //Use current framebuffer image as texture
+   glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, 500, 500, 0);
+
+   //clear frame buffer to draw sphere with scene
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glLoadIdentity();
+   //put camera back at the observational point
+   gluLookAt ( 5, 0, 0, 0, 0, 0, 0, 0, 1 );	
+   rotate();
+   drawScene();
+   glutSolidSphere( 1.0, 20, 20 );	// draw a sphere with this sphere map
+   glFlush();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch(key) {
+    case 'x':
+      anglex = ( anglex + 3 ) % 360;
+      break;
+    case 'X':
+      anglex = ( anglex - 3 ) % 360;
+      break;
+    case 'y':
+      angley = ( angley + 3 ) % 360;
+      break;
+    case 'Y':
+      angley = ( angley - 3 ) % 360;
+      break;
+    case 'z':
+      anglez = ( anglez + 3 ) % 360;
+      break;
+    case 'Z':
+      anglez = ( anglez - 3 ) % 360;
+      break;
+    case 'r':
+      anglex = angley = anglez = 0;
+      break;
+    case 27: /* escape */
+        glutDestroyWindow(window);
+        exit(0);
+  }
+  glutPostRedisplay();
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+    glOrtho(-4.0, 4.0, -4.0 * (GLfloat) h / (GLfloat) w,
+            4.0 * (GLfloat) h / (GLfloat) w, -10.0, 10.0);
+
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt ( 5, 0, 0, 0, 0, 0, 0, 0, 1 );
+}
+
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize(500, 500);
+   glutInitWindowPosition(100, 100);
+   window = glutCreateWindow(argv[0]);
+   init();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutKeyboardFunc(keyboard);
+   glutMainLoop();
+   return 0; 
+}
+	</pre>
+	</td>
+	<td valign="top">
+	<img src="texture.php_files/env-spheremap.png">
+	</td>
+	</tr>
+	</tbody></table>
+	  </p></ul>
+
+	</li></ul>
+<p>
+</p></li><li><font size="4" color="blue"><b>Bump Mapping</b></font>
+	<p>
+	</p><ul>
+	<li>Textures not effective for modeling rough surfaces, such as orange skins and roads.
+ 	<p></p></li><li>Instead, we perturb the surface normals slightly, 
+leading to slight alternation of lighting and, giving the illusion of a 
+rough surface.
+	<p></p></li><li>First reported by Jim Blinn in 1988.
+<!--
+	<p><li>Allows us to render objects so that they appear to have fine details
+	( bumps ) that give the surface a rough appearance affected by the light
+	position.
+-->
+	<p></p></li><li>The normal at a point on a surface
+		characterizes the shape of the surface at that point.
+	<p></p></li><li>By perturbing the normal, we create a surface of small variations ( bump map ).
+	<p></p></li><li>The normal at the point p(u,v) is given by
+	<ul>
+		<img src="texture.php_files/bump-normal.png">
+	</ul>
+	where
+	<ul>
+		<img src="texture.php_files/bump-p.png">
+	</ul>
+	<p></p></li><li>Suppose we move the surface by a small amount d(u,v) in the normal direction:
+	<ul>
+		<font size="4"><b>p'</b>(u,v) = <b>p</b>(u,v) + d(u,v) <b>n</b></font>
+	</ul>
+	<p></p></li><li>Normal at the perturbed point <b>p'</b>:	
+	<ul>
+		<font size="4"><b>n'</b> = <b>p</b><sub>u</sub>' x <b>p</b><sub>v</sub>'</font>
+	</ul>
+	<p></p></li><li>We can compute the two partial derivatives by differentiating the equation
+		for <b>p</b>':
+	<ul> 
+		<img src="texture.php_files/bump-p1.png">
+	</ul>
+	<p>If |d(u,v)| &lt;&lt; 1, we can drop the last terms in the equations and we have
+	(note that <b>n x n</b> = <b>0</b>):	
+	</p><ul> 
+		<img src="texture.php_files/bump-n2.png">
+<!--		<img src='../images/texture/bump-n1.png'></img> -->
+	</ul> 
+	<p></p></li><li>The displacement <b>&#948;</b> = <b>n'</b> - <b>n</b> must lie
+		in the tangenet plane at p.
+	<p></p></li><li>Therefore, given the bump map d(u,v), we find <b>n'</b> at each u,v location on the 
+		surface, and use <b>n'</b> for lighting calculations.
+	<p></p></li><li>We need two arrays to hold the values of &#8706;d/&#8706; u and
+	&#8706;d/&#8706; v. This can be done using an image processing technique.
+	Suppose we have a sampled version of d(u, v) as an array of pixels
+	D = [d<sub>ij</sub>].  Then,
+	<ul> 
+		<img src="texture.php_files/bump-dd.png">
+	</ul> 
+	</li></ul>
+<p>
+</p></li><li><font size="4" color="blue"><b>More Texture Examples of using OpenGL</b></font>
+<p><u><b>Spherical Map</b></u>:
+  </p><p></p><ul>
+   <table><tbody><tr><td bgcolor="#e0e0e0">
+   <pre>// enable automatic texture coordinate generation
+glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+glEnable(GL_TEXTURE_GEN_S);
+glEnable(GL_TEXTURE_GEN_T);
+
+// suppose that the texture has been loaded to texImage
+glBindTexture(GL_TEXTURE_2D, texImage);
+glPushMatrix();
+glutSolidTeapot(1); 		// draw a teapot with this sphere map
+glBindTexture(GL_TEXTURE_2D, texImage);
+glTranslatef(1.5,1.5,0.0);
+glutSolidSphere(1.0,20,20);	// draw a sphere with this sphere map
+glPopMatrix();
+
+glDisable(GL_TEXTURE_GEN_S);
+glDisable(GL_TEXTURE_GEN_T);
+   </pre>
+  </td></tr></tbody></table>
+   </ul>
+<p><u><b>Cube Maps</b></u>:
+ </p><p></p><ul>
+	<li>In the cube map method, instead of having a sphere surrounding a point, we have 
+		a cube surrounding a point.
+       <p></p></li><li>A cube consists of six faces. Therefore, we take a picture of the environment 
+		from the point towards each of the six faces.
+       <p></p></li><li> We then use this as the environment map.
+       <p></p></li><li>The s and t texture coordinates to use for any vertex, like in the sphere map, 
+	are dependant on the normal of the vertex.
+   </li></ul>
+<p><u><b>Automatic Texture Coordinates Generation</b></u>:
+  </p><p></p><ul>
+      <li>Automatic texture coordinates generation can be used for purposes other than spherical environment mapping.
+      <p></p></li><li>They can simply be used to automatically generate the texture coordinates of an object.
+      <p></p></li><li>Use GL_OBJECT_LINEAR instead of GL_SPHERE_MAP if you want to use the vertex coordinates rather 
+	than vertex normals to generate texture coordinates.
+  <p>	
+	<table width="600">
+  	<tbody><tr><td bgcolor="#e0ffe0">
+	<pre>/*
+ * env-torus.cpp ( Demo for CS 520 ):  Draw a torus with texture images using
+ * automatic texture coordinates generation.  Modulate mode is used so that
+ * texture color is combined with lighting effects. 
+ * The torus can be rotated by pressing keys 'x', 'X', 'y', 'Y', 'z', 'Z'.
+ * Texture image is downloaded from Internet.  
+ * @Author: T.L. Yu, 2008F
+ *
+ */
+
+#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;math.h&gt;
+#include "imageio.h"
+
+int texImageWidth;
+int texImageHeight;
+int window;
+static GLuint texName;				//texture name
+int anglex= 0, angley = 0, anglez = 0;		//rotation angles
+
+char maps[] = {"glass.png"};		//texture file
+
+//load texture image
+GLubyte *makeTexImage( char *loadfile )
+{
+   int i, j, c, width, height;
+   GLubyte *texImage;
+  
+   /*
+     Only works for .png or .tif images.  NULL is returned if errors occurred.
+     loadImageRGA() is from imageio library downloaded from Internet.
+   */ 
+   texImage = loadImageRGBA( (char *) loadfile, &amp;width, &amp;height);	
+   texImageWidth = width;
+   texImageHeight = height;
+
+   return texImage;
+}
+
+void init(void)
+{
+   float light_ambient[4] = { 0.1, 0.1, 0.1, 1.0 }; 	// r, g, b, a
+   float light_diffuse[4] = { 1.0, 1.0, 0.9, 1.0 }; 	// r, g, b, a
+   //directional used
+   float light_position[4] = { 1.0, 1.0, 1.0 , 0.0 }; 	// x, y, z, w 
+    
+   glClearColor (0, 0, 0, 0.0);				//black
+   glShadeModel(GL_FLAT);
+
+   glEnable(GL_DEPTH_TEST);
+   glEnable(GL_LIGHTING);
+   glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+   glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+   glEnable(GL_LIGHT0);
+
+
+   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+   //texName is global
+   glGenTextures(1, &amp;texName);
+   // enable automatic texture coordinate generation
+   GLubyte *texImage = makeTexImage( maps );
+   if ( !texImage ) {
+      printf("\nError reading %s \n", maps );
+      return;
+   }
+
+    glBindTexture(GL_TEXTURE_2D, texName);		//now we work on texName
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); //mix with light
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texImageWidth, 
+               texImageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texImage);
+
+    delete texImage;					//free memory holding texture image
+    
+   //automatic texture coordinates generation
+   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+   glEnable(GL_TEXTURE_GEN_S);
+   glEnable(GL_TEXTURE_GEN_T);
+   glEnable(GL_TEXTURE_2D);
+}
+
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+   glPushMatrix(); 
+   glRotatef( anglex, 1.0, 0.0, 0.0);		//rotate along x-axis
+   glRotatef( angley, 0.0, 1.0, 0.0);		//rotate along y-axis	
+   glRotatef( anglez, 0.0, 0.0, 1.0);		//rotate along z-axis
+
+   glutSolidTorus(1.0, 2, 30,30);
+   glPopMatrix();
+   glFlush();
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+  switch(key) {
+    case 'x':
+      anglex = ( anglex + 3 ) % 360;
+      break;
+    case 'X':
+      anglex = ( anglex - 3 ) % 360;
+      break;
+    case 'y':
+      angley = ( angley + 3 ) % 360;
+      break;
+    case 'Y':
+      angley = ( angley - 3 ) % 360;
+      break;
+    case 'z':
+      anglez = ( anglez + 3 ) % 360;
+      break;
+    case 'Z':
+      anglez = ( anglez - 3 ) % 360;
+      break;
+    case 'r':
+      anglex = angley = anglez = 0;
+      break;
+    case 27: /* escape */
+        glutDestroyWindow(window);
+        exit(0);
+  }
+  glutPostRedisplay();
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+    glOrtho(-4.0, 4.0, -4.0 * (GLfloat) h / (GLfloat) w,
+            4.0 * (GLfloat) h / (GLfloat) w, -10.0, 10.0);
+
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   gluLookAt ( 5, 0, 0, 0, 0, 0, 0, 0, 1 );
+}
+
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize(500, 500);
+   glutInitWindowPosition(100, 100);
+   window = glutCreateWindow(argv[0]);
+   init();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutKeyboardFunc(keyboard);
+   glutMainLoop();
+   return 0; 
+}
+	</pre>
+	</td>
+	<td valign="top">
+
+	<img src="texture.php_files/glass.png">
+	<br><img src="texture.php_files/torus-glass.png">
+      </td>
+      </tr>
+      </tbody></table>
+   </p></li></ul>
+</li></ol>
+
+</body></html>

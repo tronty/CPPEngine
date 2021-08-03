@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>Set breakpoint in C or C++ code programmatically for gdb on Linux - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico?v=4f32ecc8f43d">
+    <link rel="apple-touch-icon image_src" href="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="stackoverflow.com">
+    <meta property="og:type" content="website">    
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&amp;a">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Set breakpoint in C or C++ code programmatically for gdb on Linux">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="How can I set a breakpoint in C or C++ code programatically that will work for gdb on Linux?
+
+I.e.:
+
+int main(int argc, char** argv)
+{
+    /* set breakpoint here! */
+    int a = 3;
+    a++;  /*  In ">
+    <meta property="og:url" content="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux">
+    <link rel="canonical" href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux">
+
+    
+    
+    
+    
+    <link rel="stylesheet" type="text/css" href="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'Set breakpoint in C or C++ code programmatically for gdb on Linux'" href="http://stackoverflow.com/feeds/question/4326414">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        
+
+
+    
+    
+        
+<link href="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/adFeedback.css" rel="stylesheet"></head>
+<body class="question-page new-topbar">
+    <noscript><div id="noscript-padding"></div></noscript>
+    
+        
+        
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+<div class="topbar-dialog siteSwitcher-dialog dno">
+    <div class="header">
+        <h3><a href="http://stackoverflow.com/">current community</a></h3>
+    </div>
+    <div class="modal-content current-site-container">
+        <ul class="current-site">
+                <li>
+                        <div class="related-links">
+                    <a href="http://chat.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+
+
+
+    <a href="http://stackoverflow.com/" class="current-site-link site-link js-gps-track" data-id="1" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-stackoverflow" title="Stack Overflow"></div>
+        Stack Overflow
+    </a>
+
+                </li>
+                <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    
+
+
+
+    <a href="http://meta.stackoverflow.com/" class="site-link js-gps-track" data-id="552" data-gps-track="
+            site.switch({ target_site:552, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-stackoverflowmeta" title="Meta Stack Overflow"></div>
+        Meta Stack Overflow
+    </a>
+
+                </li>
+                            <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    <a class="site-link js-gps-track" href="http://careers.stackoverflow.com/?utm_source=stackoverflow.com&amp;utm_medium=site-ui&amp;utm_campaign=multicollider" data-gps-track="site_switcher.click({ item_type:9 })">
+                        <div class="site-icon favicon favicon-careers" title="Stack Overflow Careers"></div>
+                        Stack Overflow Careers
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="header" id="your-communities-header">
+        <h3>
+your communities        </h3>
+            
+    </div>
+    <div class="modal-content" id="your-communities-section">
+            
+            <div class="call-to-login">
+<a href="https://stackoverflow.com/users/signup?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://stackoverflow.com/users/login?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+            </div>
+    </div>
+    <div class="header">
+        <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a></h3>
+        <a href="http://blog.stackoverflow.com/" class="fr">company blog</a>
+    </div>
+    <div class="modal-content">
+            <div class="child-content"></div>
+    </div>
+</div>
+        </div>
+
+        <div class="network-items">
+
+            <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 155 Stack Exchange sites">
+                <span class="hidden-text">Stack Exchange</span>
+            </a>
+
+    <a href="#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#" class="topbar-icon icon-achievements yes-hover js-achievements-button" data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://stackoverflow.com/users/signup?ssrc=head&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" class="login-link">sign up</a>
+                                <a href="https://stackoverflow.com/users/login?ssrc=head&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" class="login-link">log in</a>
+
+                        <a href="http://stackoverflow.com/tour">tour</a>
+                            <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+        help
+        <span class="triangle"></span>
+    </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://stackoverflow.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                    <li>
+                        <a href="http://meta.stackoverflow.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                            Meta
+                            <span class="item-summary">
+                                Discuss the workings and policies of this site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                        About Us
+                        <span class="item-summary">
+                            Learn more about Stack Overflow the company
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://business.stackoverflow.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                        Business
+                        <span class="item-summary">
+                            Learn more about hiring developers or posting ads with us
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+                    </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" placeholder="Search Q&amp;A" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">
+                    Stack Overflow
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                            <li><a id="nav-jobs" href="http://stackoverflow.com/jobs">Jobs</a></li>
+                        <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://stackoverflow.com/help/badges">Badges</a></li>
+                                            </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content" class="snippet-hidden">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+
+<div id="herobox">
+    <div id="hero-content">
+            <div id="close"><a title="click to minimize">_</a></div>
+        <div id="blurb">
+            Stack Overflow is a community of 4.7 million programmers, just like you, helping each other.
+            <br>
+                <br>Join them; it only takes a minute:<br>
+            <br>
+            <a href="http://stackoverflow.com/users/signup?ssrc=hero&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" id="tell-me-more" class="button">Sign up</a>
+        </div>
+        <div id="desc">
+            <b>Join the Stack Overflow community to:</b>
+            <ol id="hiw">
+                <li id="q">Ask programming questions
+                </li>
+                <li id="an">Answer and help your peers
+                </li>
+                <li id="b">Get recognized for your expertise
+                </li>
+            </ol>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    
+</div>
+			<div id="question-header">
+                <h1 itemprop="name"><a href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux" class="question-hyperlink">Set breakpoint in C or C++ code programmatically for gdb on Linux</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="4326414" id="question">
+
+    
+                <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="4326414" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">63</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>18</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p><strong>How can I set a breakpoint in C or C++ code programatically that will work for gdb on Linux?</strong></p>
+
+<p><em>I.e.:</em></p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">int</span><span class="pln"> main</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> argc</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">char</span><span class="pun">**</span><span class="pln"> argv</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="com">/* set breakpoint here! */</span><span class="pln">
+    </span><span class="kwd">int</span><span class="pln"> a </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">;</span><span class="pln">
+    a</span><span class="pun">++;</span><span class="pln">  </span><span class="com">/*  In gdb&gt; print a;  expect result to be 3 */</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+    </div>
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/c%2b%2b" class="post-tag js-gps-track" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag js-gps-track" title="show questions tagged 'c'" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/linux" class="post-tag js-gps-track" title="show questions tagged 'linux'" rel="tag">linux</a> <a href="http://stackoverflow.com/questions/tagged/gdb" class="post-tag js-gps-track" title="show questions tagged 'gdb'" rel="tag">gdb</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/q/4326414" title="short permalink to this question" class="short-link" id="link-post-4326414">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4326414/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4326414/revisions" title="show all edits to this post">edited <span title="2011-01-05 17:09:07Z" class="relativetime">Jan 5 '11 at 17:09</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2010-12-01 16:17:35Z" class="relativetime">Dec 1 '10 at 16:17</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/40411/j-polfer"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/751c02390a5ff96c759e6a386180616b.png" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/40411/j-polfer">J. Polfer</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">7,214</span><span title="4 gold badges"><span class="badge1"></span><span class="badgecount">4</span></span><span title="34 silver badges"><span class="badge2"></span><span class="badgecount">34</span></span><span title="71 bronze badges"><span class="badge3"></span><span class="badgecount">71</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4326414" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-4702898" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">4</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Very much a side note (sorry 
+to nitpick), but if you're worried about portability then you're 
+probably also worried about correctness - hence <code>int main</code> rather than <code>void main</code>.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/499449/stuart-golodetz" title="14,482 reputation" class="comment-user">Stuart Golodetz</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4702898_4326414"><span title="2010-12-01 18:49:57Z" class="relativetime-clean">Dec 1 '10 at 18:49</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-5063134" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@Stuart - Fixed.  Should have done that a while ago.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/40411/j-polfer" title="7,214 reputation" class="comment-user owner">J. Polfer</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment5063134_4326414"><span title="2011-01-05 17:10:08Z" class="relativetime-clean">Jan 5 '11 at 17:10</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-46063022" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@J.Polfer: The <code>return 0</code> is not necessary, though, and is just noise!</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/560648/lightness-races-in-orbit" title="198,947 reputation" class="comment-user">Lightness Races in Orbit</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment46063022_4326414"><span title="2015-03-06 15:19:48Z" class="relativetime-clean">Mar 6 '15 at 15:19</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-4326414" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								4 Answers
+                                <span style="display:none;" itemprop="answerCount">4</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active">
+            active</a>
+        <a href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest">
+            oldest</a>
+        <a class="youarehere" href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="4326474"></a>
+<div id="answer-4326474" class="answer accepted-answer" data-answerid="4326474" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="4326474" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">60</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>One way is to signal an interrupt:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;csignal&gt;</span><span class="pln">
+
+</span><span class="com">// Generate an interrupt</span><span class="pln">
+std</span><span class="pun">::</span><span class="kwd">raise</span><span class="pun">(</span><span class="pln">SIGINT</span><span class="pun">);</span></code></pre>
+
+<p>In C:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;signal.h&gt;</span><span class="pln">
+</span><span class="kwd">raise</span><span class="pun">(</span><span class="pln">SIGINT</span><span class="pun">);</span></code></pre>
+
+<p><strong>UPDATE</strong>: <a href="http://msdn.microsoft.com/en-us/library/xdkz3x12%28VS.71%29.aspx">MSDN states</a> that Windows doesn't really support <code>SIGINT</code>, so if portability is a concern, you're probably better off using <code>SIGABRT</code>.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4326474" title="short permalink to this answer" class="short-link" id="link-post-4326474">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4326474/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4326474/revisions" title="show all edits to this post">edited <span title="2015-06-17 14:39:30Z" class="relativetime">Jun 17 '15 at 14:39</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1408435/antoine-pietri"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/71495525c34fc28434ddf7b4b4574eaf.png" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1408435/antoine-pietri">Antoine Pietri</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">319</span><span title="2 silver badges"><span class="badge2"></span><span class="badgecount">2</span></span><span title="14 bronze badges"><span class="badge3"></span><span class="badgecount">14</span></span>
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2010-12-01 16:22:59Z" class="relativetime">Dec 1 '10 at 16:22</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/94237/h%c3%a5vard-s"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/494580750294e6e6e037e76609898e68.jpeg" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/94237/h%c3%a5vard-s">Håvard S</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 13,873" dir="ltr">13.9k</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="38 silver badges"><span class="badge2"></span><span class="badgecount">38</span></span><span title="58 bronze badges"><span class="badge3"></span><span class="badgecount">58</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4326474" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="4" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-4701086" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">This is more portable, right?</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/40411/j-polfer" title="7,214 reputation" class="comment-user owner">J. Polfer</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4701086_4326474"><span title="2010-12-01 16:23:45Z" class="relativetime-clean">Dec 1 '10 at 16:23</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-4701116" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I don't know other debuggers, but gdb is pretty flexible about <a href="http://www.delorie.com/gnu/docs/gdb/gdb_39.html" rel="nofollow">signal handling</a>.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/119963/jefromi" title="204,986 reputation" class="comment-user">Jefromi</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4701116_4326474"><span title="2010-12-01 16:25:33Z" class="relativetime-clean">Dec 1 '10 at 16:25</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-15000999" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">3</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">We found SIGTRAP better on some Unices</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/102345/jbrwilkinson" title="3,712 reputation" class="comment-user">JBRWilkinson</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment15000999_4326474"><span title="2012-07-08 09:24:47Z" class="relativetime-clean">Jul 8 '12 at 9:24</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-44694487" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">in Windows, MSVC you can use __debug_break, DebugBreak or _asm {int 3}.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/1001395/fernando-gonzalez-sanchez" title="993 reputation" class="comment-user">Fernando Gonzalez Sanchez</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment44694487_4326474"><span title="2015-01-27 01:11:31Z" class="relativetime-clean">Jan 27 '15 at 1:11</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-49030406" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@FernandoGonzalezSanchez: actually the function name is <code>__debugbreak()</code> and <i>NOT</i> <code>__debug_break()</code>, as you can see <a href="https://msdn.microsoft.com/it-it/library/f408b4et.aspx" rel="nofollow">here</a></span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/3464462/morix-dev" title="1,500 reputation" class="comment-user">Morix Dev</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment49030406_4326474"><span title="2015-05-27 07:08:36Z" class="relativetime-clean">May 27 '15 at 7:08</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-4326474" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link  dno" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link " title="expand to show all comments on this post" href="#" onclick="">show <b>4</b> more comments</a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1630804481"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiYnQiOjAsImNtIjozMjI1MTQsImNoIjoxMTc4LCJjayI6e30sImNyIjoxMjY3ODQ2LCJkaSI6IjFiZTljYjEyZmYzNDRjZDA4YjhhMGUxNjFmNDUwZDRiIiwiZG0iOjEsImZjIjoxMzY2MzQ3LCJmbCI6ODY0MjI2LCJpcCI6IjkxLjE1NS40Ny41MyIsImt3IjoiYysrLGMsbGludXgsZ2RiIiwibnciOjIyLCJwYyI6MCwiZWMiOjAsInByIjoxNTY4LCJydCI6MSwicmYiOiJodHRwczovL3d3dy5nb29nbGUuY29tIiwic3QiOjgyNzcsInVrIjoidWUxLTlhNWVjOGY2NzE3YTQ4NjliYTZhYWEyNTEzNzJkYTY1Iiwiem4iOjQ0LCJ0cyI6MTQ2MTk1MjcwNzQ1MywiYmYiOnRydWUsInBuIjoiYWR6ZXJrMTYzMDgwNDQ4MSIsInVyIjoiaHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL2pvYnMvd2h5LWpvYnM_bWVkPXpyayZyZWY9Y2FuZGlkYXRlcy1hZGQtY3ZfbGItY2FyZWVycy1iaXRidWNrZXQifQ&amp;s=_I3Uk_c0F29_bIcn4xibjYGDyGA" rel="nofollow" target="_blank" title=""><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/b027fb42cc2d4f2693aed08b41250d61.png" title="" alt="" border="0" height="90" width="728"></a><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/i_002.gif" style="position:absolute;" border="0" height="0px" width="0px"><div class="adzerk-vote-controls" style="display: none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input value="12" name="downvoteReason" type="radio">Uninteresting</label></li><li><label><input value="13" name="downvoteReason" type="radio">Misleading</label></li><li><label><input value="14" name="downvoteReason" type="radio">Offensive</label></li><li><label><input value="15" name="downvoteReason" type="radio">Repetitive</label></li><li><label><input value="16" name="downvoteReason" type="radio">Other</label></li></ul><a href="#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div></div>
+  
+<a name="4326567"></a>
+<div id="answer-4326567" class="answer" data-answerid="4326567" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="4326567" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">20</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>In a project I work on, we do this:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">raise</span><span class="pun">(</span><span class="pln">SIGABRT</span><span class="pun">);</span><span class="pln">  </span><span class="com">/* To continue from here in GDB: "signal 0". */</span></code></pre>
+
+<p>(In our case we wanted to crash hard if this happened outside the 
+debugger, generating a crash report if possible. That's one reason we 
+used SIGABRT. Doing this portably across Windows, Mac, and Linux took 
+several attempts. We ended up with a few #ifdefs, helpfully commented 
+here: <a href="http://hg.mozilla.org/mozilla-central/file/98fa9c0cff7a/js/src/jsutil.cpp#l66">http://hg.mozilla.org/mozilla-central/file/98fa9c0cff7a/js/src/jsutil.cpp#l66</a> .)</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4326567" title="short permalink to this answer" class="short-link" id="link-post-4326567">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4326567/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2010-12-01 16:31:58Z" class="relativetime">Dec 1 '10 at 16:31</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/94977/jason-orendorff"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/8341c5bff3dcbd8ed34d9d68bd4169f2.jpeg" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/94977/jason-orendorff">Jason Orendorff</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 22,409" dir="ltr">22.4k</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="37 silver badges"><span class="badge2"></span><span class="badgecount">37</span></span><span title="68 bronze badges"><span class="badge3"></span><span class="badgecount">68</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4326567" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-6703851" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">As usual windows does not look like the others :)</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/343957/mathk" title="3,473 reputation" class="comment-user">mathk</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment6703851_4326567"><span title="2011-04-29 22:58:06Z" class="relativetime-clean">Apr 29 '11 at 22:58</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-4326567" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="4326432"></a>
+<div id="answer-4326432" class="answer" data-answerid="4326432" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="4326432" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">13</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>By looking <a href="http://www.technochakra.com/software-breakpoints/">here</a>, I found the following way:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> argc</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">char</span><span class="pun">**</span><span class="pln"> argv</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">asm</span><span class="pun">(</span><span class="str">"int $3"</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">int</span><span class="pln"> a </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">;</span><span class="pln">
+    a</span><span class="pun">++;</span><span class="pln">  </span><span class="com">//  In gdb&gt; print a;  expect result to be 3</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>This seems a touch hackish to me.  And I think this only works on x86 architecture.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/4326432" title="short permalink to this answer" class="short-link" id="link-post-4326432">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/4326432/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/4326432/revisions" title="show all edits to this post">edited <span title="2010-12-01 16:38:30Z" class="relativetime">Dec 1 '10 at 16:38</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature owner" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2010-12-01 16:19:20Z" class="relativetime">Dec 1 '10 at 16:19</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/40411/j-polfer"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/751c02390a5ff96c759e6a386180616b.png" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/40411/j-polfer">J. Polfer</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">7,214</span><span title="4 gold badges"><span class="badge1"></span><span class="badgecount">4</span></span><span title="34 silver badges"><span class="badge2"></span><span class="badgecount">34</span></span><span title="71 bronze badges"><span class="badge3"></span><span class="badgecount">71</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-4326432" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-4701169" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">2</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">And only with compilers supporting the AT&amp;T assembly syntax. In particular, Microsoft's compiler (<code>cl.exe</code>) does not support this syntax, but uses a different syntax.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/94237/h%c3%a5vard-s" title="13,873 reputation" class="comment-user">Håvard S</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4701169_4326432"><span title="2010-12-01 16:30:07Z" class="relativetime-clean">Dec 1 '10 at 16:30</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-4701452" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">the question was about linux, so i guess we can assume that the gcc syntax will work for x86.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/56432/js" title="1,183 reputation" class="comment-user">js.</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4701452_4326432"><span title="2010-12-01 16:55:28Z" class="relativetime-clean">Dec 1 '10 at 16:55</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-4701552" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">BTW - I did try the above on 
+my x86 machine and it did work.  I was curious if there was a better way
+ of doing it.  Looks like there is.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/40411/j-polfer" title="7,214 reputation" class="comment-user owner">J. Polfer</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment4701552_4326432"><span title="2010-12-01 17:02:53Z" class="relativetime-clean">Dec 1 '10 at 17:02</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-34578889" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I am using mingw on windows 
+so the other suggestions can't help me. Raising SIGINT signal just 
+terminates the application, SIGTRAP is not defined in mingw headers... 
+Using int instruction actually sends SIGTRAP and gdb breaks nicely on 
+the appropriate line.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/287933/machta" title="177 reputation" class="comment-user">Machta</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment34578889_4326432"><span title="2014-03-27 17:49:05Z" class="relativetime-clean">Mar 27 '14 at 17:49</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-54211580" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">In Linux, <code>int 3</code> raises a SIGTRAP.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/895245/ciro-santilli-%e5%b7%b4%e6%8b%bf%e9%a6%ac%e6%96%87%e4%bb%b6-%e5%85%ad%e5%9b%9b%e4%ba%8b%e4%bb%b6-%e6%b3%95%e8%bd%ae%e5%8a%9f" title="36,005 reputation" class="comment-user">Ciro Santilli 巴拿馬文件 六四事件 法轮功</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment54211580_4326432"><span title="2015-10-18 21:25:19Z" class="relativetime-clean">Oct 18 '15 at 21:25</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-4326432" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="29068234"></a>
+<div id="answer-29068234" class="answer" data-answerid="29068234" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="29068234" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">6</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p><code>__asm__("int $3");</code> should work:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">int</span><span class="pln"> main</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> argc</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">char</span><span class="pun">**</span><span class="pln"> argv</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="com">/* set breakpoint here! */</span><span class="pln">
+    </span><span class="kwd">int</span><span class="pln"> a </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">;</span><span class="pln">
+    __asm__</span><span class="pun">(</span><span class="str">"int $3"</span><span class="pun">);</span><span class="pln">
+    a</span><span class="pun">++;</span><span class="pln">  </span><span class="com">/*  In gdb&gt; print a;  expect result to be 3 */</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/29068234" title="short permalink to this answer" class="short-link" id="link-post-29068234">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/29068234/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2015-03-16 01:13:37Z" class="relativetime">Mar 16 '15 at 1:13</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/171318/hek2mgl"><div class="gravatar-wrapper-32"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/ePRKy.jpg" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/171318/hek2mgl">hek2mgl</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 70,461" dir="ltr">70.5k</span><span title="7 gold badges"><span class="badge1"></span><span class="badgecount">7</span></span><span title="71 silver badges"><span class="badge2"></span><span class="badgecount">71</span></span><span title="94 bronze badges"><span class="badge3"></span><span class="badgecount">94</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-29068234" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-60378558" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Awesome, thanks!</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/2302781/leishman" title="331 reputation" class="comment-user">leishman</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment60378558_29068234"><span title="2016-04-03 01:22:35Z" class="relativetime-clean">Apr 3 at 1:22</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-29068234" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/4326414/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="4326414" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="https://www.google.com" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+
+            
+    
+
+
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li style="left: 0px;" class="wmd-button" id="wmd-bold-button"><span style="background-position: 0px -20px;"></span></li><li style="left: 25px;" class="wmd-button" id="wmd-italic-button"><span style="background-position: -20px -20px;"></span></li><li style="left: 50px;" class="wmd-spacer" id="wmd-spacer1"><span style="background-position: -40px -20px;"></span></li><li style="left: 75px;" class="wmd-button" id="wmd-link-button"><span style="background-position: -40px -20px;"></span></li><li style="left: 100px;" class="wmd-button" id="wmd-quote-button"><span style="background-position: -60px -20px;"></span></li><li style="left: 125px;" class="wmd-button" id="wmd-code-button"><span style="background-position: -80px -20px;"></span></li><li style="left: 150px;" class="wmd-button" id="wmd-image-button"><span style="background-position: -100px -20px;"></span></li><li style="left: 175px;" class="wmd-spacer" id="wmd-spacer2"><span style="background-position: -120px -20px;"></span></li><li style="left: 200px;" class="wmd-button" id="wmd-olist-button"><span style="background-position: -120px -20px;"></span></li><li style="left: 225px;" class="wmd-button" id="wmd-ulist-button"><span style="background-position: -140px -20px;"></span></li><li style="left: 250px;" class="wmd-button" id="wmd-heading-button"><span style="background-position: -160px -20px;"></span></li><li style="left: 275px;" class="wmd-button" id="wmd-hr-button"><span style="background-position: -180px -20px;"></span></li><li style="left: 300px;" class="wmd-spacer" id="wmd-spacer3"><span style="background-position: -200px -20px;"></span></li><li style="left: 325px;" class="wmd-button" id="wmd-undo-button"><span style="background-position: -200px -20px;"></span></li><li style="left: 350px;" class="wmd-button" id="wmd-redo-button"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="d7b64f2b644e9484c6cb7a3b13fbe4c7" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://stackoverflow.com/users/login?ssrc=question_page&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f4326414%2fset-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux%23new-answer">log in</a></h3>
+                        
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" size="30" maxlength="100" value="" tabindex="106" placeholder="required, but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="btn-clear discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://stackoverflow.com/questions/tagged/c%2b%2b" class="post-tag" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged 'c'" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/linux" class="post-tag" title="show questions tagged 'linux'" rel="tag">linux</a> <a href="http://stackoverflow.com/questions/tagged/gdb" class="post-tag" title="show questions tagged 'gdb'" rel="tag">gdb</a>  or <a href="http://stackoverflow.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2010-12-01 16:17:35Z"><b>5 years ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>34374 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://stackoverflow.com/questions/4326414/set-breakpoint-in-c-or-c-code-programmatically-for-gdb-on-linux?lastactivity" class="lastactivity-link" title="2015-06-17 14:39:30Z">10 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+						
+			
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1978688254"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NSwiYnQiOjAsImNtIjozMjI1MTQsImNoIjoxMTc4LCJjayI6e30sImNyIjoxMjg3MDU0LCJkaSI6IjY3ZGVlNzYwZjg5NDQ2NzJiMzY3YWRlMDUyYzZmODk2IiwiZG0iOjEsImZjIjoxNDEwMDA3LCJmbCI6ODY0MjI1LCJpcCI6IjkxLjE1NS40Ny41MyIsImt3IjoiYysrLGMsbGludXgsZ2RiIiwibnciOjIyLCJwYyI6MCwiZWMiOjAsInByIjoxNjA0LCJydCI6MSwicmYiOiJodHRwczovL3d3dy5nb29nbGUuY29tIiwic3QiOjgyNzcsInVrIjoidWUxLTlhNWVjOGY2NzE3YTQ4NjliYTZhYWEyNTEzNzJkYTY1Iiwiem4iOjQ1LCJ0cyI6MTQ2MTk1MjcwNzQ1NCwiYmYiOnRydWUsInBuIjoiYWR6ZXJrMTk3ODY4ODI1NCIsInVyIjoiaHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL2pvYnMvcmVtb3RlP21lZD16cmsmcmVmPWNhbmRpZGF0ZXMtd2ZoX3NiLXdmaC1wYWphbWFzIn0&amp;s=cW9nsOl5y_PAqKEBkh8drFEacyw" rel="nofollow" target="_blank" title=""><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/cdcbb54172c84350a1d5165d6d8dcc76.png" title="" alt="" border="0" height="250" width="300"></a><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/i.gif" style="position:absolute;" border="0" height="0px" width="0px"><div class="adzerk-vote-controls" style="display:none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input value="12" name="downvoteReason" type="radio">Uninteresting</label></li><li><label><input value="13" name="downvoteReason" type="radio">Misleading</label></li><li><label><input value="14" name="downvoteReason" type="radio">Offensive</label></li><li><label><input value="15" name="downvoteReason" type="radio">Repetitive</label></li><li><label><input value="16" name="downvoteReason" type="radio">Other</label></li></ul><a href="#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div></div>
+        <div id="hireme">
+            
+        </div>
+			<div class="module" id="chat-feature">
+    
+
+    
+<h4><a title="166 users active in 51 rooms the last 60 minutes" href="http://chat.stackoverflow.com/" id="h-chat-link">166 People Chatting</a></h4>
+
+<div class="related" id="ad502-rooms"><div class="ad502-room"><h3 class="ad502-room-h3"><span class="ad502-room-title" title="JavaScript"><a href="http://chat.stackoverflow.com/rooms/17">JavaScript</a></span></h3><span title="2016-04-29 15:30:08Z" class="ad502-last-message">2 hours ago - <a href="http://chat.stackoverflow.com/users/1150599">corvid</a></span><br><div class="ad502-users"><a href="http://chat.stackoverflow.com/users/785745"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/f9fc3249a341a64ee2721637915cd301.jpeg" title="Kendall Frey: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/1596138"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/SIjyi.jpg" title="Josiah: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/774078"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/WvDon.jpg" title="Sterling Archer: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/1947276"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/89dSf.png" title="little pootis: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/1150599"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/ndWQ0.jpg" title="corvid: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/829835"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/N6iem.png" title="rlemon: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/400654"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/afc1068910df4dd83c2fc3af0255af11.png" title="Kevin B: 2 hours ago" height="23" width="23"></a></div></div><div class="ad502-room"><h3 class="ad502-room-h3"><span class="ad502-room-title" title="PHP"><a href="http://chat.stackoverflow.com/rooms/11">PHP</a></span></h3><span title="2016-04-29 15:30:04Z" class="ad502-last-message">2 hours ago - <a href="http://chat.stackoverflow.com/users/214577">Oldskool</a></span><br><div class="ad502-users"><a href="http://chat.stackoverflow.com/users/4406723"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/8ab21b114150ab031a564f3a2efec72b.png" title="Xerakon: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/5516378"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/vYbFn.png" title="Devilion: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/214577"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/IEKbS.png" title="Oldskool: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/2153758"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/3659fff22e890aaa5d7b03e799f9047f.png" title="bwoebi: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/538216"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/e91a4b631b4bb7f0c477626617dd3926.jpeg" title="Levi Morrison: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/3605516"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/lXtaD.jpg" title="Anmol Raghuvanshi Version 2.0: 2 hours ago" height="23" width="23"></a><a href="http://chat.stackoverflow.com/users/895378"><img src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/9528c56f504c757154aea93a457ff74c.jpeg" title="rdlowrey: 2 hours ago" height="23" width="23"></a></div></div></div>
+
+
+</div>  
+    
+            <div class="module sidebar-linked">
+	<h4 id="h-linked">Linked</h4>
+	<div class="linked" data-tracker="lq=1">
+<div class="spacer">
+	<a href="http://stackoverflow.com/q/7323240?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">3</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/7323240/debugging-android-native-applications-built-with-vs-android?lq=1" class="question-hyperlink">Debugging Android native applications built with vs-android</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/13039652?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">2</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/13039652/continue-after-assert-with-android-ndk-and-gdb?lq=1" class="question-hyperlink">Continue after assert with Android NDK and GDB</a>
+</div>			</div>
+</div>
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/79023?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">160
+    </div>
+</a><a href="http://stackoverflow.com/questions/79023/is-there-a-c-gdb-gui-for-linux?rq=1" class="question-hyperlink">Is there a C++ gdb GUI for Linux?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/100444?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">60
+    </div>
+</a><a href="http://stackoverflow.com/questions/100444/gdb-how-to-set-breakpoints-on-future-shared-libraries-with-a-command-flag?rq=1" class="question-hyperlink">gdb: how to set breakpoints on future shared libraries with a --command flag</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/2044179?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">9
+    </div>
+</a><a href="http://stackoverflow.com/questions/2044179/gdb-set-a-breakpoint-for-a-sigbus-handler?rq=1" class="question-hyperlink">gdb: set a breakpoint for a SIGBUS handler</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/2045509?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">25
+    </div>
+</a><a href="http://stackoverflow.com/questions/2045509/how-to-save-settings-in-gdb?rq=1" class="question-hyperlink">How to save settings in gdb?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/2353701?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">3
+    </div>
+</a><a href="http://stackoverflow.com/questions/2353701/c-code-on-linux-under-gdb-runs-differently-if-run-standalone?rq=1" class="question-hyperlink">C code on Linux under gdb runs differently if run standalone?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/3487537?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">3
+    </div>
+</a><a href="http://stackoverflow.com/questions/3487537/difficulty-getting-gdb-to-load-debugging-symbols?rq=1" class="question-hyperlink">Difficulty getting GDB to load debugging symbols</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/20891195?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">3
+    </div>
+</a><a href="http://stackoverflow.com/questions/20891195/gdb-c-code-in-linux-address-out-of-bounds?rq=1" class="question-hyperlink">gdb C code in linux - Address out of bounds</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/23553527?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">3
+    </div>
+</a><a href="http://stackoverflow.com/questions/23553527/gdb-error-in-re-settings-breakpoint-cannot-access-memory?rq=1" class="question-hyperlink">gdb error in re-settings breakpoint (cannot access memory)</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/25044824?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">2
+    </div>
+</a><a href="http://stackoverflow.com/questions/25044824/not-able-to-set-breakpoints-in-gdb?rq=1" class="question-hyperlink">Not able to set breakpoints in gdb</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/25325847?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/25325847/debugging-program-that-catches-sigkill-under-linux?rq=1" class="question-hyperlink">Debugging program that catches SIGKILL under Linux</a>
+</div>
+
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-crypto" title="Cryptography Stack Exchange"></div><a href="http://crypto.stackexchange.com/questions/34938/rsa-encryption-using-multiplication" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:281 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    RSA encryption using multiplication
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="http://tex.stackexchange.com/questions/307011/regular-polygon-with-tip-on-the-bottom" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Regular Polygon with tip on the bottom
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/322524/word-to-describe-someone-who-goes-to-all-the-events-in-town" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Word to describe someone who goes to all the events in town!
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/66042/i-broke-an-appliance-at-a-company-supplied-house-should-i-turn-myself-in" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I broke an appliance at a company-supplied house -- should I turn myself in?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-superuser" title="Super User"></div><a href="http://superuser.com/questions/1070830/why-does-the-output-of-generate-unintelligible-text" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:3 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why does the output of &gt; generate unintelligible text?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-raspberrypi" title="Raspberry Pi Stack Exchange"></div><a href="http://raspberrypi.stackexchange.com/questions/46610/rpi-is-it-possible-to-add-ram-to-raspberry-pi" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:447 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    RPI - Is it possible to add RAM to Raspberry Pi?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-cooking" title="Seasoned Advice"></div><a href="http://cooking.stackexchange.com/questions/68628/is-butter-ever-the-same-after-having-been-melted" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:49 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is butter ever the same after having been melted?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-askubuntu" title="Ask Ubuntu"></div><a href="http://askubuntu.com/questions/764931/command-line-if-not-working-as-expected" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:89 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Command line IF not working as expected
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/67473/can-i-import-a-gun-shaped-console-controller-from-the-united-states-into-the-uk" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can I import a gun-shaped console controller‎ from the United States into the UK?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/36917042/pairwise-circular-python-for-loop" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Pairwise circular Python 'for' loop
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-diy" title="Home Improvement Stack Exchange"></div><a href="http://diy.stackexchange.com/questions/89589/does-a-receptacle-have-to-supply-the-max-current-that-it-is-rated-for" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:73 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Does a receptacle have to supply the max current that it is rated for?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/279981/cloned-system-network-interfaces" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Cloned system + network interfaces
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-gis" title="Geographic Information Systems Stack Exchange"></div><a href="http://gis.stackexchange.com/questions/191732/arcgis-10-3-1-cannot-display-simple-tiff-image-created-with-gimp-graphic-softwa" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:79 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    ArcGIS 10.3.1 cannot display simple TIFF image created with GIMP (graphic software)
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="http://puzzling.stackexchange.com/questions/31592/whats-the-next-symbol-in-this-sequence" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What's the next symbol in this sequence
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1763978/can-you-use-both-sides-of-an-equation-to-prove-equality" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can you use both sides of an equation to prove equality?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-webmasters" title="Webmasters Stack Exchange"></div><a href="http://webmasters.stackexchange.com/questions/92872/terminology-is-there-a-term-for-the-moment-when-a-lot-of-users-visit-log-onto-y" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:45 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Terminology: Is there a term for the moment when a 
+lot of users visit/log onto your website at the same time?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/40878/you-need-to-disguise-instructions-manual-as-diary-of-a-madman-how" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    You need to disguise instructions/manual as Diary of a Madman. How?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/322413/what-does-it-imply-when-someone-is-called-lucifer-in-the-flesh" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What does it imply when someone is called “Lucifer in the flesh”?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/321750/what-non-religious-expressions-can-i-use-instead-of-thank-god" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What non-religious expressions can I use instead of "Thank God"?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/67493/berlin-tegel-airport-to-halle-saale" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Berlin Tegel Airport to Halle (Saale)
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="http://puzzling.stackexchange.com/questions/31601/where-is-detective-tom-hiding" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Where is detective Tom hiding?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-money" title="Personal Finance &amp; Money Stack Exchange"></div><a href="http://money.stackexchange.com/questions/63545/bond-gain-is-greater-than-remaining-coupon-payments-time-to-sell" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:93 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Bond gain is greater than remaining coupon payments. Time to sell?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/36941526/why-cant-atomicboolean-be-a-replacement-for-boolean" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why can't AtomicBoolean be a replacement for Boolean?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stats" title="Cross Validated"></div><a href="http://stats.stackexchange.com/questions/210022/understanding-the-solution-of-this-integral" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:65 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Understanding the solution of this integral
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://stackoverflow.com/feeds/question/4326414" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	
+<noscript>
+    <div><img src="/posts/4326414/ivc/3c98" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">default</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="http://stackoverflow.com/tour">tour</a>
+                    <a href="http://stackoverflow.com/help">help</a>
+                    <a href="http://blog.stackoverflow.com/?blb=1">blog</a>
+                        <a href="http://chat.stackoverflow.com/">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="http://stackoverflow.com/contact">contact us</a></b>
+                        <b><a href="http://meta.stackoverflow.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://programmers.stackexchange.com/" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="http://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (13)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (9)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="http://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="http://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (5)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="http://careers.stackoverflow.com/">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2016 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2016.4.28.3523
+            </div>
+        </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Stack Overflow works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+
+
+    
+        
+    
+    
+<img style="display: none;" src="Set%20breakpoint%20in%20C%20or%20C++%20code%20programmatically%20for%20gdb%20on%20Linux%20-%20Stack%20Overflow_tiedostot/to.gif"></body></html>

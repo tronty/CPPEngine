@@ -1,0 +1,231 @@
+Automatically Generating Roof Models from Building
+                    Footprints
+                   R. G. Laycock                                                      A. M. Day
+          School of Information Systems                                     School of Information Systems
+            University of East Anglia                                         University of East Anglia
+               Norwich, NR4 7TJ                                                  Norwich, NR4 7TJ
+         robert.laycock@uea.ac.uk                                              amd@sys.uea.ac.uk
+
+                                                   ABSTRACT
+Modelling Large Urban Environments using traditional modelling techniques would prove too time consuming a
+process. Consequently a method is required for generating large urban environments quickly without requiring a
+labour intensive process or expensive data. Some approaches to resolve this problem have been undertaken
+through the use of procedural modelling or statistics. However the test subject is usually a dense urban
+environment where the primary buildings are of the skyscraper style. This paper presents the initial design and
+implementation towards a method for modelling a large environment based on building footprint information. It
+shows the use of the straight skeleton method with modifications to allow several different roof styles to be
+generated.
+
+Keywords
+Roof Modelling, Straight Skeleton, Virtual Environments, Building Footprint, Rectilinear Polygon
+                                                                 These building are subsequently extruded and
+1. INTRODUCTION                                                  textured based on data recorded from the
+The ability to model Large Urban Environments in a               environment. This approach has the advantage of
+computer has many important applications in                      representing the real world more accurately, but
+industrial, recreational and educational fields. A               requires time for data capture as well as roof
+variety of projects have been undertaken around the              modelling. The roof modelling is a manual
+world to develop applications that model dense urban             procedure.
+environments. These range from those that attempt to
+model a particular town or city [Urba] to those that             3. MOTIVATIONS
+create purely artificial environments [Ing96a].                  In summary the aim of this work is to produce a
+                                                                 method which will enable the generation of a model
+2. PREVIOUS WORK                                                 which represents a particular location. To achieve this
+One approach to generate a large environment is to               several algorithms are required to automatically
+model some of the landmark buildings and surround                construct a roof model of various styles for any given
+them with randomly positioned vernacular buildings.              building footprint.
+To improve on this Flack et al, [Flack01], use the
+road network obtained by digitising the road layout              4. OUTLINE
+from the raster map. This permits the buildings to be            This paper illustrates a method for generating a three
+positioned more accurately into the scene. Recently              dimensional urban environment based on Ordnance
+Yap et al, [Yap02a], have documented a method for                Survey LandLine.Plus building footprint data, [Orda].
+modelling Manhattan. Their approach begins by                    The method has the following stages.
+partitioning a city block map into building footprints.          Input: LandLine.Plus data, Building Features
+Permission to make digital or hard copies of all or part of      Stage 1: Building Footprint Generation
+this work for personal or classroom use is granted without
+fee provided that copies are not made or distributed for         Stage 2: Roof Modelling
+profit or commercial advantage and that copies bear this         Stage 3: Building Height Determination
+notice and the full citation on the first page. To copy
+otherwise, or republish, to post on servers or to redistribute   Stage 4: Roof and Wall Texture Generation
+to lists, requires prior specific permission and/or a fee.       Stages 1 and 2 will now be explained.
+WSCG POSTERS proceedings
+WSCG’2003, February 3-7, 2003, Plzen, Czech Republic.
+Copyright UNION Agency – Science Press
+5. BUILDING FOOTPRINT                                       6. ROOF MODELLING FOR SIMPLE
+GENERATION                                                  POLYGONS
+Ordnance Survey LandLine.Plus data is available for         Once the set of building footprints has been obtained,
+coverage of the United Kingdom. The data contains           each footprint then requires to be capped with a roof.
+information on many features such as building               One method for modelling a hip roof is to use the
+footprints, road networks and the location of trees.        straight skeleton as documented in [Fel98a]. Below is
+Unfortunately the data is held with no topological          a summary of how this can be achieved.
+structure. Consequently the building footprints have
+                                                            Procedure: Hip Roof Modelling
+to be constructed by connecting the line segments in
+the data file. The following summarises the algorithm       Input: Polygonal Footprint
+that has been developed for stage 1. Figure 1               Step 1: Construct the Straight Skeleton
+illustrates the steps involved in building footprint
+                                                            Step 2: Determine the distance, d, each vertex is
+generation.
+                                                            from its supporting edge.
+Procedure: Building Footprint Generation.
+                                                            Step 3: Perform a boundary walk, using the least
+Input: LandLine.Plus data in NTF format                     interior angle, to determine the roof planes.
+Step 1: Read in the data and collect all building           Step 4: Raise the vertices according to their distance
+footprint line segments and roof indicator points.          from the supporting edge.
+Step 2: Use the Merge-Find Set data structure to            Figure 2 illustrates the hip roof algorithm.
+group connected line segments
+                                                             Input                        Step 1
+Step 3: For each group of connected line segments
+determine the exterior boundary
+Step 4: Perform validation to introduce further
+vertices at junction points.
+Step 5: Partition the connected set of line segments                                     Step 3
+                                                             Step 2
+into building footprints, using roof indicators. From
+the roof indicator construct a horizontal ray. Perform
+a boundary walk from the first line this ray intersects.                                                   2
+Always take the next connected line segment which                                                     1
+                                                                           d
+makes the least interior angle.
+Step 6: Process the connected set of line segments to        Step 4
+obtain a list of vertices and a list of integers indexing
+the vertex list.
+Output: A linked list of building footprints where
+each footprint is a linked list of integers. The integers
+index the vertex list to return the vertices on the
+building footprints boundary.                               Figure 2: Hip Roof Modelling, [Fel98a]
+  Step 1:                      Steps 2,3,4:                 In a large urban environment more roof styles can be
+                                                            observed other than the hip roof. To generate a model
+                                                            which resembles the real world location more roof
+                                                  2
+                                                            types should be created for any given simple
+                                   1                        polygonal footprint. The next two sections illustrate
+                                                            some modifications to the straight skeleton to permit
+                                                            different roof styles to be constructed.
+  Step 5:                      Output:                      6.1 The Gable Roof Style
+                                                  5         The gable roof style is obtained by altering step 1 of
+                                                            the hip roof method. This is done to enable the roof
+                                  1           4             planes at either end of the building to have an infinite
+                                                            gradient. Figure 3 presents the results and
+                                        3                   modifications required.
+                               2
+      Horizontal Ray
+Figure 1: Building Footprint Generation Algorithm
+                                                           Procedure:         Roof   Modelling         for   Rectilinear
+                                                           Polygons.
+                                                           Step 1: Partition the polygon into a set of rectangles,
+                                                           R, by shooting horizontal and vertical rays from all
+                                                           reflex vertices
+Figure 3: Left: Gable Roof Adjustment, Right: Gable        Step 2: Construct the straight skeleton and identify
+Roof Style.                                                the horizontal and vertical lines.
+Step 1: Identify a vertex that was created by the          Step 3: Grow an axis aligned rectangle, AAR, from
+intersection of two bisectors. These bisectors emanate     each of the lines determined in step 2.
+from the corners of the original polygon.                  Step 4: For each AAR collect the rectangles from R
+Step 2: Move the vertex from its original intersection     which are interior to AAR. Perform set difference on
+position to the midpoint of the line which is incident     the collection of rectangles found.
+to both the bisectors that created the intersection        Step 5: Union the rectangles to obtain an exterior
+point.                                                     boundary.
+6.2 Additional Roof Styles                                 Step 6: Assign a roof model to each exterior
+                                                           boundary. Merge the Roof Models. See merge cases
+The following summarises three modifications made
+                                                           in figure 6.
+to the straight skeleton approach to vary the roof style
+created.                                                   Step 1:                           Step 2:
+Mansard                                                                                                 7     8     9
+                                                                       7        8        9
+1) Determine the distance at which the first split or                                                   5     6
+                                                                       5        6
+edge event occurs during the computation of the                                                         3     4
+                                                                                4              2
+straight skeleton.                                                2       3
+2) Shrink the polygon to 85% of this distance.
+3) The roof planes are formed from the original                                                 0       1
+                                                                0     1
+polygon edges and those edges determined in step 2.
+Gambrel
+Extend the mansard roof style by repeating steps 3         Step 3:                           Step 4:
+and 4.                                                                7        8     9       Red: {0,1,2,3}
+Thus enabling the roof to exhibit different gradients                          6             Green: {2,3,4}
+                                                                      5
+within the roof planes.                                                                      Blue: {3,4,5,6,7,8}
+                                                              2       3        4             Pink: {7,8,9}
+Dutch Hip                                                                                    After Set Difference
+This is created by first constructing a mansard roof                                         Red: {0,1,2}
+style followed by the gable roof style.                        0      1
+                                                                                             Green: {}
+7.  ROOF    MODELLING                            FOR                                         Blue: {4,5,6,7,8}
+RECTILINEAR POLYGONS                                                                         Pink: {9}
+Using the straight skeleton as the basis for roof          Step 5:                           Step 6:
+modelling has its advantages in terms of speed of                     7        8     9                  7     8     9
+computation and the ability to be modified to                         5        6                        5     6
+generate different roof styles for any simple polygon.                3        4
+                                                               2                                2       3     4
+However many vernacular buildings start their life as
+simple footprints with few vertices and become more
+complicated through the addition of extensions. Each           0      1                         0       1
+extension having it’s own roof model, which is
+subsequently merged with the original building.            Figure 4: Rectilinear Polygon Algorithm
+Consequently a method is required for partitioning a
+building footprint into pieces, assigning roof models      Figure 4 illustrates the roof modelling algorithm for
+to each of the pieces and merging the roof pieces to       rectilinear polygons. Figure 5 shows the three
+achieve the final roof model. Below is an algorithm        dimensional view of the roof generated. Figure 6
+for achieving this with rectilinear polygons.              presents the two cases used to merge the roof models.
+                                                        8. CONCLUSION
+                                                        This paper has described a new method for
+                                                        generating buildings from Ordnance Survey
+                                                        LandLine.Plus building features. The approach uses
+                                                        the Merge Find Set data structure to connect building
+                                                        features into building footprints. These footprints
+                                                        enable the buildings to be positioned into the correct
+Figure 5: Roof Model obtained from the rectilinear      locations. Thus providing more accuracy in realising
+roofing algorithm                                       the actual physical location to be modelled. This is
+                                                        one advantage of this approach over other methods
+                                                        using statistics or a road network as a basis for the
+  Case 1: Two polygons have one collinear edge
+                                                        model. Furthermore this paper introduces new
+                                                        techniques for generating various roof styles for any
+                                                        simple polygon such as the gable or mansard roof
+                                                        styles. In addition to this a method for constructing
+                                                        roofs for rectilinear polygons is described. This
+                                                        approach permits building footprints to be partitioned
+  Case 2: Two polygons have two collinear edges.        into several roof models rather than a complete roof
+                                                        model for the entire polygon.
+                                                        Having achieved an urban environment with variation
+                                                        in roof type the next steps will involve generating the
+                                                        wall and roof texture. This will need to be achieved
+                                                        in such a way as to use minimal storage, be fast to
+Figure 6: Merge cases used in the rectilinear roofing   render and variable in the materials that it imitates.
+algorithm.
+                                                        9. ACKNOWLEDGMENTS
+7. Results
+Table 1 shows the times taken for aggregating the       We wish to thank EPSRC for funding the Rapid
+line segments into building footprints. Table 2         World Modelling Project [Rap00a].
+indicates the times required for performing the roof    11. REFERENCES
+modelling. The first row of these tables refer to the
+500m2 urban environment and the second row refers        [Yap02a] C. K. Yap, H. Bierman, A. Hertzman, C.
+to the 1000m2 rural environment. The computer used          Li, J. Meyer, H. K. Pao, T. Paxia, A Different
+to time the programs was a Pentium III 1GHz. In             Manhattan Project: Automatic Statistical Model
+table 1 the times are dependent on the number of line       Generation, Proc. 14th Ann. Symp., Electronic
+segments but are significantly affected by the number       Imaging 2002, San Jose, California, Jan 2002
+of buildings which share the same line segments. This   [Rap00a] Rapid World Modelling Project,
+can be seen by observing the increase between the           http://www.sys.uea.ac.uk\research/rwm/rwm1.htm
+rural and urban environments.                           [Fel98a] P. Felkel, S. Obdrmalek, Straight Skeleton
+                                                            Implementation, 14th Spring Conference on
+ Area, m2     Number      Number of      Footprint          Computer Graphics, pp 210-218, Budmerice,
+              of Lines    Buildings     Generation, s       Slovakia, April 1998.
+ 500*500       11800         636             11.31      [Orda] Ordnance Survey Web Site,
+                                                            http://www.ordsvy.gov.uk/
+1000*1000      3440          230             0.92
+                                                        [Ing96a] R. Ingram, S. Benford, J. Bowers, Building
+Table 1: Building Footprint Generation Times.               Virtual Cities: applying urban planning principles
+ Area, m2              Roof Modelling Time, s               to the design of virtual environments, Proceedings
+                                                            of the ACM Symposium on Virtual Reality
+                Hip      Mansard    Dutch       Flat        Software and Technology (VRST96), pp 83-91,
+                                     Hip                    1996.
+  500*500      22.42       5.5      31.03       1.83    [Urba] Urban Simulation Team,
+                                                            http://www.ust.ucla.edu/ustweb/ust.html
+1000*1000       6.23      0.92        6.59      0.36
+                                                        [Flack01] P. A. Flack, J. Willmott, S. P. Browne, A.
+Table 2: Roof Modelling Times.                              M. Day, D. B. Arnold: Scene Assembly For Large
+                                                            Scale Reconstructions. Proceedings of VAST
+                                                            2001, Athens.
+

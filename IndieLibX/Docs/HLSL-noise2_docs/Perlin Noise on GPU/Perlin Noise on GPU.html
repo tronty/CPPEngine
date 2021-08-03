@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  
+  <title>Perlin Noise on GPU</title>
+</head><body>
+<br>
+<br>
+<div style="text-align: center;"><font size="+1"><font style="font-family: Times New Roman; font-weight: bold;" size="+2">Implementation of Perlin Noise on GPU<br>
+An Independent study<br>
+<font size="+1">(Fall 2007)</font><br>
+by</font><span style="font-weight: bold;"><br>
+</span>LEENA KORA<br>
+</font></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<font size="+1"><span style="font-weight: bold;">Abstract</span>:</font>&nbsp;
+The aim of my independent study was to implement Perlin noise on GPU
+using Cg and compare old method of producing Perlin Noise with the new
+improved method. <br>
+<br>
+<font size="+1"><span style="font-weight: bold;">Explaination:</span></font><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Noise is an important building
+block for adding natural looking variety to procedural textures. In the
+real world, nothing is perfectly uniform, and noise provides a
+controlled way of adding this randomness to our shaders. Perlin noise
+is one way of &nbsp;generating an effecient random noise.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;Perlin's&nbsp;noise has following characteristics.<br>
+<ul>
+  <li>It produces a repeatable pseudorandom value for each input value.</li>
+  <li>It has known range.</li>
+  <li>It doesn't show obvious repeating patterns.</li>
+  <li>Its spatial frequency is invariant under translation.&nbsp;</li>
+  <li>It has band-limited spatial frequency.</li>
+</ul>
+&nbsp;&nbsp;&nbsp; <font size="+1">Old Perlin Noise algorithm is as follows<br>
+</font><br>
+&nbsp;&nbsp;&nbsp; 1. Given an input point<br>
+&nbsp;&nbsp;&nbsp; 2. For each of its neighboring grid points:<br>
+&nbsp;&nbsp;&nbsp; Pick a "pseudo-random" direction vector<br>
+&nbsp;&nbsp;&nbsp; Compute linear function (dot product)<br>
+&nbsp;&nbsp;&nbsp; 3. Linearly combine with a weighted sum, using a cubic ease curve in each dimension, such as 3t2-2t3,<br>
+&nbsp;&nbsp;&nbsp; as the interpolant. so the fade function in the below implementation returns " t*t*(3.0-2.0*t)"<br>
+&nbsp;&nbsp;&nbsp; 4)To compute the pseudo-random gradient, we can first precompute a table of permutations P[n], and a<br>
+&nbsp;&nbsp;&nbsp; table of gradients G[n].<br>
+<br>
+&nbsp;&nbsp;&nbsp; <font size="+1">New Perlin Noise algorithm is as follows</font><br>
+<br>
+&nbsp;&nbsp;&nbsp; This algorithm has two main stages.<br>
+&nbsp;&nbsp;&nbsp; 1) The first stage generates a repeatable
+pseudorandom value for every integer (x,y,z) position in 3D space.
+Improved Perlin noise algorithm uses a hash function. The hash function
+is based on a permutation table that contains &nbsp;&nbsp;&nbsp; the
+integers from 0 to 255 in random order.First table is indexed based on
+the x-coordinate of the position. Then the y coordinate is added to the
+value at this position in the table, and the result is used to look up
+in the table &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; again. After this
+process is repeated for the z cordinate, the result is a pseudorandom
+integer for every possible (x, y, z) position.<br>
+&nbsp;&nbsp;&nbsp; 2) In the second stage, this pseudorandom integer is
+used to index into a table of 3D gradient vectors. In the improved
+algorithm, only eight different gradients are used. A scalar value is
+calculated by taking the dot product &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; between the gradient and the functional position
+within the noise space. The final value is obtained by interpolating
+between the noise values for each of the neighboring eight points in
+space.<br>
+&nbsp;&nbsp;&nbsp; So the fade function in the below implementation returns "t*t*t*(t*(t*6.0-15.0)+10.0)".<br>
+<br>
+&nbsp; &nbsp; &nbsp;<font size="+1"><span style="font-weight: bold;">Tools used for implementation: </span></font>Cg for implementing shaders, opengl and glut for GUI and window management respectively. <br>
+<br>
+<br>
+<br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;<font size="+1"> Perlin Noise</font><br>
+<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>Below snap shots show noise generated using both old and new(improved) Perlin noise method. <br>
+<br>
+<span style="font-weight: bold;"></span><span style="font-style: italic;">&nbsp;&nbsp;&nbsp; Link for the Code: &nbsp;<a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/PNoiseCode.txt">Simple_Perlin_Noise_Code</a></span><span style="font-weight: bold;"><br>
+</span><br>
+&nbsp;&nbsp;&nbsp;
+<table style="text-align: left; width: 1202px; height: 604px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/OldPerlinM.png"><img style="border: 0px solid ; width: 608px; height: 633px;" alt="OldPerlinM.png" src="Perlin%20Noise%20on%20GPU_tiedostot/OldPerlinM.png"></a></td>
+      <td><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/NewPerlinM.png"><img style="border: 0px solid ; width: 605px; height: 634px;" alt="NewPerlinM.png" src="Perlin%20Noise%20on%20GPU_tiedostot/NewPerlinM.png"></a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><span style="font-weight: bold;">Old Perlin Noise</span></td>
+      <td style="text-align: center; font-weight: bold;">Improved Perlin Noise</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<font size="+1"><br>
+</font><span style="font-weight: bold;"><font size="+1">Marble Texture</font><br>
+<br>
+</span>&nbsp;&nbsp;&nbsp; Below snap shot shows marble texture generated using Improved Perlin noise algorithm.<br>
+<br>
+<span style="font-style: italic;">Link for the Code: &nbsp;<a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/MarbleCode.txt">Marble_Texture_Code</a></span><br>
+<br>
+<table style="text-align: left; width: 614px; height: 673px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 429px;"><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/MarbleNpn.png"><img style="border: 0px solid ; width: 605px; height: 633px;" alt="MarbleNpn.png" src="Perlin%20Noise%20on%20GPU_tiedostot/MarbleNpn.png"></a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center; font-weight: bold;">Marble Texture using Improved Perlin Noise</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<span style="font-weight: bold;"><font size="+1">Wood Texture</font><br>
+<br>
+&nbsp;&nbsp;&nbsp; </span>Below snap shot shows wood texture using improved Perlin noise algorithm.<br>
+<br>
+<span style="font-style: italic;">Link for the Code: &nbsp;<a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/WoodCode.txt">Wood_Texture_Code</a></span><br>
+<br>
+<table style="text-align: left; width: 618px; height: 674px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 278px;"><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/WoodNpn.png"><img style="border: 0px solid ; width: 606px; height: 634px;" alt="WoodNpn.png" src="Perlin%20Noise%20on%20GPU_tiedostot/WoodNpn.png"></a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><span style="font-weight: bold;">Wood texture using Improved Perlin Noise</span></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<span style="font-weight: bold;"><font size="+1">Cloud Texture</font><br>
+<br>
+&nbsp;&nbsp;&nbsp; </span>Below snap shot shows cloud texture using improved Perlin noise algorithm.<br>
+<br>
+<span style="font-style: italic;">Link for the Code: &nbsp;<a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/CloudsCode.txt">Cloud_Texture_Code</a></span><br>
+<br>
+<table style="text-align: left; width: 620px; height: 674px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 330px;"><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/FakeCloudsNpn.png"><img style="border: 0px solid ; width: 607px; height: 634px;" alt="FakeCloudsNpn.pngFakeCloudsNpn.png" src="Perlin%20Noise%20on%20GPU_tiedostot/FakeCloudsNpn.png"></a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><span style="font-weight: bold;">Cloud texture using Improved Perlin Noise</span></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<span style="font-weight: bold;"><font size="+1">Fur Texture</font><br>
+<br>
+&nbsp;&nbsp;&nbsp; </span>Below snap shot shows fur texture using improved Perlin noise algorithm.<br>
+<br>
+<span style="font-style: italic;">Link for the Code: <a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/FurCode.txt">Fur_Texture_Code</a></span><br>
+<br>
+<table style="text-align: left; width: 615px; height: 674px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 294px;"><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/FurNpn.png"><img style="border: 0px solid ; width: 601px; height: 634px;" alt="FurNpn.png" src="Perlin%20Noise%20on%20GPU_tiedostot/FurNpn.png"></a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center; font-weight: bold;">Fur texture using Improved Perlin Noise</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<br>
+<font size="+1">&nbsp;<span style="font-weight: bold;">Following are some of the mixed color textures generated using Improved Perlin Noise.<br>
+<br>
+</span></font>
+<table style="text-align: left; width: 567px; height: 60px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/MixedColorsNpn.png"><img style="border: 0px solid ; width: 608px; height: 633px;" alt="MixedColorsNpn.png" src="Perlin%20Noise%20on%20GPU_tiedostot/MixedColorsNpn.png"></a></td>
+    </tr>
+    <tr>
+      <td><a href="http://www.sci.utah.edu/%7Eleenak/IndStudy_reportfall/Diff2.png"><img style="border: 0px solid ; width: 607px; height: 633px;" alt="Diff2.png" src="Perlin%20Noise%20on%20GPU_tiedostot/Diff2.png"></a></td>
+    </tr>
+  </tbody>
+</table>
+<font size="+1"><span style="font-weight: bold;"><br>
+</span></font><br>
+<font size="+1"><font style="font-style: italic; font-weight: bold;" size="+2">References</font><br style="font-style: italic; font-weight: bold; text-decoration: underline;">
+<span style="font-weight: bold;"><br>
+1) </span>Chapter 26 titled as "Implementing Improved Perlin Noise" of the GPU Gems 2 Book by Tim Sweeney , Epic Games <br>
+<br>
+2) &nbsp;http://freespace.virgin.net/hugo.elias/models/m_perlin.htm<br>
+<br>
+3) &nbsp;http://www.cs.utah.edu/classes/cs6620/13-6up.pdf<br>
+<br>
+<span style="font-weight: bold;"></span></font>
+<div align="left"><b><a href="javascript:history.go(-1)" class="style3">Back</a></b> </div>
+</body></html>

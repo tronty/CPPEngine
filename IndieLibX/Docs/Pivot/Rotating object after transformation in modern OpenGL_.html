@@ -1,0 +1,3761 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" id="vbulletin_html" lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta id="e_vb_meta_bburl" name="vb_meta_bburl" content="https://www.opengl.org/discussion_boards">
+<!-- base href="https://www.opengl.org/discussion_boards/" --><!--[if IE]></base><![endif]-->
+<meta name="generator" content="vBulletin 4.2.3">
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+
+	<link rel="Shortcut Icon" href="https://www.opengl.org/discussion_boards/assets/images/favicon.ico" type="image/x-icon">
+
+
+
+
+
+
+
+
+	
+		
+	
+
+
+
+
+
+
+	<link rel="alternate" type="application/rss+xml" title="OpenGL Discussion and Help Forums RSS Feed" href="https://www.opengl.org/discussion_boards/external.php?type=RSS2">
+	
+		<link rel="alternate" type="application/rss+xml" title="OpenGL Discussion and Help Forums - OpenGL coding: beginners - RSS Feed" href="https://www.opengl.org/discussion_boards/external.php?type=RSS2&amp;forumids=6">
+	
+
+
+
+	<link rel="stylesheet" type="text/css" href="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/css_003.css">
+
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="css.php?styleid=1&amp;langid=1&amp;d=1464788253&amp;td=ltr&amp;sheet=popupmenu-ie.css,vbulletin-ie.css,vbulletin-chrome-ie.css,vbulletin-formcontrols-ie.css,editor-ie.css" />
+	<![endif]-->
+
+
+
+
+
+	<meta name="keywords" content="0.0f, 1.0f, 0.5f, view, camera, matrix, glmvec30.0f, objects, operatingsystem.keyboard.actionpressed, //=====================================================================================================================, operatingsystem.keyboard.keypressed, glfw_release, draw, frame, float, orbit, cameratilt, object, terrainsize, cube, code, bool, cube2pivot, world, true, 0.05f, false, quad, glmtranslateglmmat4, result, input, triggers, inverted, order, direction, ambientlightcolor, face, projection, scalefactor, back, leftthumbstickx, diffuselightdirection, move, color, screen, light, purpose, notes, diffuselightcolor, glmrotateglmmat4">
+	<meta name="description" content="I've seen a lot of posts that explain how to rotate an object around a point rather than around its own axis, via translating the object first and then applying the rotation. However, almost every post I see uses old functions like translatef and rotatef. 
+ 
+How would this be achieved in modern OpenGL, using the MVP (Model, View and Projection) framework? 
+ 
+For example, say I have this: 
+ 
+glm::mat4 RotationMatrix = glm::toMat4(myRotation); 
+glm::mat4 TranslationMatrix = translate(mat4(),">
+
+	<title> Rotating object after transformation in modern OpenGL?</title>
+	<link rel="canonical" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+		<link rel="stylesheet" type="text/css" href="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/css_002.css">
+	
+	<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="css.php?styleid=1&amp;langid=1&amp;d=1464788253&amp;td=ltr&amp;sheet=toolsmenu-ie.css,postlist-ie.css,showthread-ie.css,postbit-ie.css,poll-ie.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/css.css">
+
+</head>
+
+<body>
+
+<div id="masthead">
+<a href="http://khronos.org/"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/khronos_group_masthead.png" alt="Part of the Khronos Group" title="Part of the Khronos Group" width="287" height="20"></a>
+</div>
+
+<div id="header-frame">
+<div id="ogl_header">
+<div id="ogl_branding">
+<a href="https://www.opengl.org/"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/opengl_logo.jpg" alt="OpenGL.org" title="The Industry's Foundation for High Performance Graphics" width="220" height="97"></a>
+<div>
+<h1>The Industry's Foundation for High Performance Graphics</h1>
+<h4>from games to virtual reality, mobile phones to supercomputers</h4>
+</div>
+</div>
+<div id="nav" class="clearfix">
+
+<ul id="navlist" class="clearfix">
+
+<li style="display:none"><a href="http://www.opengl.org/">Home</a></li>
+
+<li><a href="https://www.opengl.org/documentation/">Documentation</a>
+<ul>
+   <li><a href="https://www.opengl.org/documentation/current_version/">About OpenGL 4.5</a></li>
+   <li><a href="https://www.opengl.org/documentation/glsl/">OpenGL Shading Language</a></li>
+   <li><a href="https://www.opengl.org/documentation/extensions/">About OpenGL Extensions</a></li>
+   <li><a href="https://khronos.org/registry/OpenGL/index_gl.php">OpenGL Registry</a></li>
+   <li><a href="https://www.khronos.org/bugzilla/enter_bug.cgi?product=OpenGL">Spec Feedback</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man/">OpenGL 4 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man3/">OpenGL 3.3 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/sdk/docs/man2/">OpenGL 2.1 Reference Pages</a></li>
+   <li><a href="https://www.opengl.org/documentation/implementations/">OS/Platform Implementations</a></li>
+   <li><a href="https://www.khronos.org/developers/books/">OpenGL Books</a></li>
+</ul>
+</li>
+
+<li><a href="https://www.opengl.org/resources/">Coding Resources</a>
+<ul>
+    <li><a href="https://www.opengl.org/sdk/">OpenGL SDK</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Getting_Started">Getting Started</a></li>
+    <li><a href="https://khronos.org/registry/OpenGL/index_gl.php">OpenGL Registry</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/FAQ">FAQ</a></li>
+    <li><a href="https://www.opengl.org/resources/libraries/">GLUT &amp; Utility Libraries</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Language_bindings">Programming Language Bindings</a></li>
+    <li><a href="https://www.khronos.org/opengl/wiki/Code_Resources">Sample Code &amp; Tutorials</a></li>
+    <li><a href="https://www.opengl.org/resources/benchmarks/">Benchmarks</a></li>
+    <li><a href="https://www.opengl.org/community/newsgroups/">Mailing Lists &amp; News Groups</a></li>
+    <li><a href="http://stackoverflow.com/questions/tagged/opengl">OpenGL StackOverflow</a></li>
+    <li><a href="https://www.opengl.org/archives/">Archived Resources</a></li>
+</ul>
+</li>
+    <li><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></li>
+    <li><a href="https://www.opengl.org/discussion_boards/">Forums</a></li>
+    <li id="about"><a href="https://www.opengl.org/about/">About OpenGL</a>
+    <ul>
+        <li><a href="https://www.khronos.org/about/contact">Contact Us</a></li>
+        <li><a href="https://www.khronos.org/legal/trademarks/">OpenGL logo</a></li>
+        <li><a href="https://www.khronos.org/jobs/">Jobs</a></li>
+    </ul>
+</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+
+<div class="above_body"> <!-- closing tag is in template navbar -->
+<div id="header" class="floatcontainer doc_header">
+	
+	<div id="toplinks" class="toplinks">
+		
+			<ul class="nouser">
+			
+				<li><a href="https://www.opengl.org/discussion_boards/register.php?s=b15c8f83840d4394eae0c4ead07d8208" rel="nofollow">Register</a></li>
+			
+				<li><a rel="help" href="https://www.opengl.org/discussion_boards/faq.php?s=b15c8f83840d4394eae0c4ead07d8208">Help</a></li>
+				<li>
+			
+			<form id="navbar_loginform" action="login.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, 1)">
+				<fieldset id="logindetails" class="logindetails">
+					<div>
+						<div>
+					<input class="textbox default-value" name="vb_login_username" id="navbar_username" size="10" accesskey="u" tabindex="101" value="User Name" type="text">
+					<input class="textbox" tabindex="102" name="vb_login_password" id="navbar_password" size="10" style="display: none;" type="password">
+					<input class="textbox default-value" tabindex="102" name="vb_login_password_hint" id="navbar_password_hint" size="10" value="Password" style="display: inline;" type="text">
+					<input class="loginbutton" tabindex="104" value="Log in" title="Enter your username and password in the boxes provided to login, or click the 'register' button to create a profile for yourself." accesskey="s" type="submit">
+						</div>
+					</div>
+				</fieldset>
+				<div id="remember" class="remember">
+					<label for="cb_cookieuser_navbar"><input name="cookieuser" value="1" id="cb_cookieuser_navbar" class="cb_cookieuser_navbar" accesskey="c" tabindex="103" type="checkbox"> Remember Me?</label>
+				</div>
+
+				<input name="s" value="b15c8f83840d4394eae0c4ead07d8208" type="hidden">
+				<input name="securitytoken" value="guest" type="hidden">
+				<input name="do" value="login" type="hidden">
+				<input name="vb_login_md5password" type="hidden">
+				<input name="vb_login_md5password_utf" type="hidden">
+			</form>
+			
+				</li>
+				
+			</ul>
+		
+	</div>
+	<div class="ad_global_header">
+		 
+		 
+	</div>
+	<hr>
+</div>
+<div id="navbar" class="navbar">
+	<ul id="navtabs" class="navtabs floatcontainer">
+		
+		
+	
+		<li id="vbtab_whatsnew">
+			<a class="navtab" href="https://www.opengl.org/discussion_boards/activity.php?s=b15c8f83840d4394eae0c4ead07d8208">What's New?</a>
+		</li>
+		
+		
+
+	
+		<li class="selected" id="vbtab_forum">
+			<a class="navtab" href="https://www.opengl.org/discussion_boards/forum.php?s=b15c8f83840d4394eae0c4ead07d8208">Forum</a>
+		</li>
+		
+		
+			<ul class="floatcontainer">
+				
+					
+						
+							<li id="vbflink_newposts"><a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=getnew&amp;contenttype=vBForum_Post">New Posts</a></li>
+						
+					
+				
+					
+						
+							<li id="vbflink_faq"><a href="https://www.opengl.org/discussion_boards/faq.php?s=b15c8f83840d4394eae0c4ead07d8208">FAQ</a></li>
+						
+					
+				
+					
+						
+							<li id="vbflink_calendar"><a href="https://www.opengl.org/discussion_boards/calendar.php?s=b15c8f83840d4394eae0c4ead07d8208">Calendar</a></li>
+						
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_actions">
+							<a href="javascript://" class="popupctrl" id="yui-gen1">Forum Actions</a>
+							<ul class="popupbody" id="yui-gen0">
+								
+									<li id="vbalink_mfr"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=markread&amp;markreadhash=guest">Mark Forums Read</a></li>
+								
+							</ul>
+						</li>
+					
+				
+					
+						<li class="popupmenu" id="vbmenu_qlinks">
+							<a href="javascript://" class="popupctrl" id="yui-gen3">Quick Links</a>
+							<ul class="popupbody" id="yui-gen2">
+								
+									<li id="vbqlink_posts"><a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=getdaily&amp;contenttype=vBForum_Post">Today's Posts</a></li>
+								
+									<li id="vbqlink_leaders"><a href="https://www.opengl.org/discussion_boards/showgroups.php?s=b15c8f83840d4394eae0c4ead07d8208">View Site Leaders</a></li>
+								
+							</ul>
+						</li>
+					
+				
+			</ul>
+		
+
+	
+		<li id="tab_ntyx_200">
+			<a class="navtab" href="http://www.khronos.org/message_boards/">Khronos Forums</a>
+		</li>
+		
+		
+
+	
+		<li id="tab_njm3_787">
+			<a class="navtab" href="http://www.opengl.org/wiki/Getting_Started">OpenGL: Getting Started</a>
+		</li>
+		
+		
+
+		
+	</ul>
+	
+		<div id="globalsearch" class="globalsearch">
+			<form action="search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=process" method="post" id="navbar_search" class="navbar_search">
+				
+				<input name="securitytoken" value="guest" type="hidden">
+				<input name="do" value="process" type="hidden">
+				<span class="textboxcontainer"><span><input name="query" class="textbox" tabindex="99" type="text"></span></span>
+				<span class="buttoncontainer"><span><input class="searchbutton" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/search.png" name="submit" onclick="document.getElementById('navbar_search').submit;" tabindex="100" type="image"></span></span>
+			</form>
+			<ul class="navbar_advanced_search">
+				<li><a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208" accesskey="4">Advanced Search</a></li>
+				
+			</ul>
+		</div>
+	
+</div>
+</div><!-- closing div for above_body -->
+
+<div class="body_wrapper">
+<div id="breadcrumb" class="breadcrumb">
+	<ul class="floatcontainer">
+		<li class="navbithome"><a href="https://www.opengl.org/discussion_boards/index.php?s=b15c8f83840d4394eae0c4ead07d8208" accesskey="1"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/navbit-home.png" alt="Home" title="Home"></a></li>
+		
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forum.php?s=b15c8f83840d4394eae0c4ead07d8208">Forum</a></li>
+
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/3-OpenGL-Developers-Forum?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL Developers Forum</a></li>
+
+	<li class="navbit"><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/6-OpenGL-coding-beginners?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL coding: beginners</a></li>
+
+		
+	<li class="navbit lastnavbit"><span> Rotating object after transformation in modern OpenGL?</span></li>
+
+	</ul>
+	<hr>
+</div>
+
+ 
+<div id="adplacement">
+
+<a href="https://beta.opengl.org/ads/www/delivery/ck.php?oaparams=2__bannerid=115__zoneid=0__cb=0bccfea360__oadest=https%3A%2F%2Fkhr.io%2Fgdc" target="_blank"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/2d904c406b719ba977c8c2734e132bd9.png" alt="" title="" border="0" width="728" height="90"></a><div id="beacon_0bccfea360" style="position: absolute; left: 0px; top: 0px; visibility: hidden;"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/lg.gif" alt="" style="width: 0px; height: 0px;" width="0" height="0"></div>
+
+
+</div>
+
+
+
+	<form action="profile.php?do=dismissnotice" method="post" id="notices" class="notices">
+		<input name="do" value="dismissnotice" type="hidden">
+		<input name="s" value="s=b15c8f83840d4394eae0c4ead07d8208&amp;" type="hidden">
+		<input name="securitytoken" value="guest" type="hidden">
+		<input id="dismiss_notice_hidden" name="dismiss_noticeid" value="" type="hidden">
+		<input name="url" value="" type="hidden">
+		<ol>
+			<li class="restore" id="navbar_notice_1">
+	
+	First time visitors, please read our  <a href="https://www.opengl.org/discussion_boards/faq.php?s=b15c8f83840d4394eae0c4ead07d8208" target="_blank"><b>FAQ</b></a> and our <a href="https://www.opengl.org/discussion_boards/showthread.php/176139-Forum-Posting-Guidelines"><strong>Forum Rules and Guidelines</strong></a>. You must <a href="https://www.opengl.org/discussion_boards/register.php?s=b15c8f83840d4394eae0c4ead07d8208" target="_blank"><b>register</b></a>
+		before you can post.
+</li>
+		</ol>
+	</form>
+
+
+
+
+
+	<div id="above_postlist" class="above_postlist">
+		
+		<div id="pagination_top" class="pagination_top">
+		
+			<div id="postpagestats_above" class="postpagestats">
+				Results 1 to 9 of 9
+			</div>
+		</div>
+	</div>
+	<div id="pagetitle" class="pagetitle">
+		<h1>
+			Thread: <span class="threadtitle"><a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208" title="Reload this Page">Rotating object after transformation in modern OpenGL?</a></span>
+		</h1>
+		
+			
+<span id="fb-root"></span>
+
+
+<fb:like href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL" font="tahoma" layout="standard" show_faces="false" width="300" action="like" colorscheme="light" data-share="true"></fb:like>
+		
+	</div>
+	<div id="thread_controls" class="thread_controls toolsmenu">
+		<div>
+		<ul id="postlist_popups" class="postlist_popups popupgroup">
+			
+			
+			<li class="popupmenu" id="threadtools">
+				<h6><a class="popupctrl" href="javascript://" id="yui-gen5">Thread Tools</a></h6>
+				<ul class="popupbody" id="yui-gen4">
+					<li><a href="https://www.opengl.org/discussion_boards/printthread.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;t=199416&amp;pp=10&amp;page=1" accesskey="3" rel="nofollow">Show Printable Version</a></li>
+					
+						<li><a href="https://www.opengl.org/discussion_boards/sendmessage.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=sendtofriend&amp;t=199416" rel="nofollow">Email this Page…</a></li>
+					
+					<li>
+						
+					</li>
+					
+				</ul>
+			</li>
+
+			
+
+			
+
+			
+
+			
+				<li class="popupmenu" id="displaymodes">
+					<h6><a class="popupctrl" href="javascript://" id="yui-gen7">Display</a></h6>
+					<ul class="popupbody" id="yui-gen6">
+						<li><label>Linear Mode</label></li>
+						<li><a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;mode=hybrid"> Switch to Hybrid Mode</a></li>
+						<li><a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286381&amp;mode=threaded#post1286381"> Switch to Threaded Mode</a></li>
+					</ul>
+				</li>
+			
+
+			
+			</ul>
+		</div>
+	</div>
+
+<div id="postlist" class="postlist restrain">
+	
+
+	
+		<ol id="posts" class="posts" start="1">
+			
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286381">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-16-2017,&nbsp;<span class="time">05:09 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286381" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286381&amp;viewfull=1#post1286381" class="postcounter">#1</a><a id="postcount1286381" name="1"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen8">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" title="eratic-magician is offline" id="yui-gen10"><strong>eratic-magician</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen9">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=41234&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=41234" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="eratic-magician is offline" title="eratic-magician is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Feb 2017</dd>
+					
+					
+					<dt>Posts</dt> <dd>25</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+				<h2 class="title icon">
+					Rotating object after transformation in modern OpenGL?
+				</h2>
+				
+
+
+						
+							
+							
+						
+						
+				<div class="content">
+					<div id="post_message_1286381">
+						<blockquote class="postcontent restore ">
+							I've seen a lot of posts that explain how to rotate an object 
+around a point rather than around its own axis, via translating the 
+object first and then applying the rotation. However, almost every post I
+ see uses old functions like translatef and rotatef.<br>
+<br>
+How would this be achieved in modern OpenGL, using the MVP (Model, View and Projection) framework?<br>
+<br>
+For example, say I have this:<br>
+<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:84px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">glm::mat4 RotationMatrix = glm::toMat4(myRotation);
+glm::mat4 TranslationMatrix = translate(mat4(), myTranslation);
+glm::mat4 ScaleMatrix = scale(mat4(), glm::vec3(0.1f, 0.1f, 0.1f));
+glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScaleMatrix;
+glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;</pre></div></div>
+</div><br>
+This appears to move the object and rotate it along its own axis.<br>
+<br>
+How can I move the object and <b>THEN </b> rotate it with this style of 
+OpenGL? E.g. moving an object in front of the camera position, then 
+rotating it around the camera position using the camera's orientation 
+(so that wherever you look, the object is drawn in front of you).
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286381" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286383">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-16-2017,&nbsp;<span class="time">07:51 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286383" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286383&amp;viewfull=1#post1286383" class="postcounter">#2</a><a id="postcount1286383" name="2"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen11">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" title="BBeck1 is offline" id="yui-gen13"><strong>BBeck1</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen12">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39453&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39453" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="BBeck1 is offline" title="BBeck1 is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>112</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286383">
+						<blockquote class="postcontent restore ">
+							It's all in the order of multiplication. This is the foundation 
+of rigid animation. For example, if you have a car with hub caps that 
+spin backwards regardless of how the wheel spins, then the car body 
+would be a parent, the wheel would be a child of the parent, and the hub
+ cap would be a child of the wheel. Each would have their own 
+object/world matrix to contain their position and orientation. But you 
+don't use the wheel or the hub's matrix directly. Instead you multiply 
+the child by the parent and use the result to position and orient it. 
+This allows the child to be attached to the parent and relative to the 
+parent but move freely on it's own.<br>
+<br>
+I would challenge you to not build your model matrix every frame, but 
+rather let the model matrix store the position and orientation of the 
+model from one frame to another. Let it be the ultimate place to store 
+the position and orientation of the object. You can decompose it when 
+you need and get the position. (I think it's the last column in the 
+matrix, or is it last row, I can never remember). You can also get a 
+forward, up, or right vector out of it as needed.<br>
+<br>
+If you do it every frame, you have to move the model back to the origin 
+to rotate or scale and then move it back to where it was within a single
+ frame. No one will know it happened. Otherwise, scale will be skewed, 
+and rotation will orbit the origin. You could do your translations last 
+so that things would occur at the origin. When you're at the origin, the
+ object's center and the origin match and so you rotate around the 
+object's center. If you translate first, they don't match and rotations 
+become orbits around the origin. Scaling is even uglier.<br>
+<br>
+Here's how I do a rotation:<br>
+<br>
+		Triangle.Transform(glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f)));<br>
+<br>
+I pass an empty identity matrix to glm::rotate and a rotation giving me a rotation matrix. The Transform method is as follows:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">void HandCodedObjectClass::Transform(glm::mat4 TransformationMatrix)
+{
+	WorldMatrix *= TransformationMatrix;
+}</pre></div></div>
+</div><br>
+So, I'm just combining a rotation with whatever is already in the 
+object's world matrix. The bad part of this is that the order of 
+multiplication is hard coded. I think like this it's a rotation, but you
+ might want an orbit instead and then you would have to reverse the 
+order of multiplication/combination.<br>
+<br>
+For an example of how to rotate relative to another object I have this:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:48px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">	Cube2Pivot = Cube2Pivot * glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f));
+	Cube2.WorldMatrix = Cube.WorldMatrix * Cube2Pivot * Cube2World;</pre></div></div>
+</div><br>
+Here I have one cube orbiting another cube that you can move through the
+ scene. Cube2Pivot is a matrix that determines the position and 
+orientation of the second cube relative to the first (Cube).<br>
+<br>
+If you are going to use the camera, realize that the camera is just like
+ any other object's world matrix except it is inversed. To turn it into a
+ regular world matrix, you must invert it. Then you can treat it like 
+any other object's world matrix.<br>
+<br>
+You might download my basic engine code on <a href="http://virtuallyprogramming.com/OGL45/OGL45.html" target="_blank" rel="nofollow">my website</a>.
+ The code in that project is pretty basic. There's a video on that web 
+page that shows what the code does. So you can see what it does without 
+downloading the code and see whether it's worth your time to download. 
+The code above is from a slightly more complex version of the same code 
+with these changes:<br>
+<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:312px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">#include
+ "Game.h"
+&nbsp;
+using namespace OGLGameNameSpace;
+&nbsp;
+&nbsp;
+Game::Game(void)
+{
+}
+&nbsp;
+&nbsp;
+Game::~Game(void)
+{
+}
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Initialize()
+//
+//	Purpose: 
+//		To allow any code you want to run once at startup not associated 
+with art assets.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		bool - The program will close if it returns false assuming a 
+catastrophic error has occured.
+//
+//  Notes:
+//		
+//
+//=====================================================================================================================
+bool
+ Game::Initialize()
+{
+	bool GameObjectInitializedProperly = false;		//Must be set to true to 
+keep the program from closing.
+&nbsp;
+&nbsp;
+	CameraHeight = 1.68f;		//Roughly the average eye height in meters of an
+ average man. Our camera will stay at this level to make it feel like we
+ are in the scene.
+	CameraTilt = 0.0f;			//Will tilt the camera up and down.
+&nbsp;
+	GameObjectInitializedProperly = true; //This should probably be set by 
+error checking, but we don't have any error checking here.
+	View = glm::lookAt(glm::vec3(0.0f, CameraHeight, 2.0f), glm::vec3(0.0f,
+ CameraHeight, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));	//1.63 meters is 
+roughly the height of the average man's eyes.
+	//Projection = glm::perspective(0.96f, 1.770833f, 0.1f, 700.0f);	//0.96
+ is 55 degrees and 1.7708333 is the width to height ratio on my 
+computer.
+	Projection = glm::perspective(0.96f, OperatingSystem.AspectRatio(), 
+0.1f, 700.0f);	//0.96 is 55 degrees and 1.7708333 is the width to height
+ ratio on my computer.
+&nbsp;
+	glEnable(GL_CULL_FACE);		//Turn back face culling on.
+	glCullFace(GL_BACK);		//Set back face culling to remove the back face 
+rather than the front face. Back is default. Included here for clarity.
+	glEnable(GL_DEPTH_TEST);	//Enable the depth buffer so that things are 
+drawn correctly.
+	glEnable(GL_FRAMEBUFFER_SRGB);	//Needed to prepare frame buffer for 
+sRGB color.
+&nbsp;
+&nbsp;
+	DiffuseLightDirection = glm::normalize(glm::vec3(1.0f, -1.0f, -1.0f));	
+//Direction that the primary light of the scene is "shining" in.
+	AmbientLightColor = glm::vec4(0.05f, 0.05f, 0.1f, 1.0f);					//Light 
+color in the "shadows".
+	DiffuseLightColor = glm::vec4(1.0f, 1.0f, 0.9f, 1.0f);					//Direct 
+light color.
+&nbsp;
+	return GameObjectInitializedProperly;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::LoadContent()
+//
+//	Purpose: 
+//		To allow any code you want to run once at startup associated with 
+art assets.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		bool - The program will close if it returns false assuming a 
+catastrophic error has occured.
+//
+//  Notes:
+//		Here we are creating all the objects in the scene. The switch 
+statement makes it easy to manage this and add more
+//	objects of your own. You merely define all the objects vertices it 
+will need to be drawn and then list the index order
+//	of every vertex to specify what order it will be drawn in. These 
+examples merely count the number of vertices for the
+//	index which is largely pointless. However, the design means you 
+"could" reuse vertices or specify them out of order and
+//	use the index buffer to specify what order to draw them in.
+//
+//		You'll quickly notice that the number of vertices you have to 
+specify for even the most simple of objects is nearly
+//	unacceptable. There are better ways, but we're learning the most 
+straight forward way here which we will build on later.
+//
+//		Textures were created with Paint.Net by saving as .DDS files with 
+mip maps.
+//
+//=====================================================================================================================
+bool
+ Game::LoadContent()
+{
+	bool NoCatastrophicFailuresOccured = false;	//Close the program if even
+ one mesh fails to initialize correctly.
+	float ScaleFactor = 200.0f;
+	float TerrainSize = 500.0f;
+&nbsp;
+&nbsp;
+	//GrassTexture.Load("Textures/Grass.dds", true);
+	GrassTexture.Load("Textures/FloorTiles.jpg", true);
+	//GrassTexture.Load("Textures/MudWall.jpg", true);
+&nbsp;
+	GrassTexture.Bind(0);
+&nbsp;
+	NoCatastrophicFailuresOccured = 
+Shader.LoadShader("Shaders/BlinnPhong.vrt", "Shaders/BlinnPhong.frg");
+&nbsp;
+	glClearColor(0.392156862745098f, 0.5843137254901961f, 
+0.9294117647058824f, 1.0f);	//XNA's "Cornflower Blue"
+&nbsp;
+&nbsp;
+	GLfloat TriangleVertexBuffer[] = {
+		0.0f, 0.5f, 0.0f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,
+ 1.0f,
+		0.45f, -0.5, 0.0f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		0.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.45f, -0.5f, 0.0f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		0.0f, 0.0f, 
+1.0f, 1.0f
+	};
+&nbsp;
+	GLuint TriangleIndices[] = {
+		0,1,2
+	};
+	Triangle.DefineMesh(3, TriangleVertexBuffer, 3, TriangleIndices, 
+nullptr);
+&nbsp;
+&nbsp;
+	GLfloat CubeVertexBuffer[] = {
+		//Front Quad. 
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		//Right Quad.
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		//Bottom Quad. 
+		  0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 -0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 -0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		 -0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		  0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		  0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Back Quad. 
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Left Quad.
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Top Quad. 
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+	};
+&nbsp;
+	GLuint CubeIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
+14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 
+32, 33, 34, 35 };
+	Cube.DefineMesh(VERTICESINCUBE, CubeVertexBuffer, VERTICESINCUBE, 
+CubeIndices, nullptr);
+	Cube2.DefineMesh(VERTICESINCUBE, CubeVertexBuffer, VERTICESINCUBE, 
+CubeIndices, nullptr);
+&nbsp;
+	GLfloat GroundVertexBuffer[] = {
+		-TerrainSize, 0.0f,  TerrainSize,	       0.0f, ScaleFactor,	0.0f, 
+1.0f, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		 TerrainSize, 0.0f,  TerrainSize,	ScaleFactor, ScaleFactor,	0.0f, 
+1.0f, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		 TerrainSize, 0.0f, -TerrainSize,	ScaleFactor, 0.0f,			0.0f, 1.0f, 
+0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		-TerrainSize, 0.0f, -TerrainSize,		 0.0f,	 0.0f,			0.0f, 1.0f, 0.0f,	
+1.0f, 1.0f, 1.0f, 1.0f
+	};
+&nbsp;
+	GLuint GroundIndices[] = {
+		0,1,2,
+		0,2,3
+	};
+	Ground.DefineMesh(4, GroundVertexBuffer, 6, GroundIndices, 
+&amp;GrassTexture);
+&nbsp;
+	Cube2Pivot = glm::mat4();
+	Triangle.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 1.63f, 
+0.0f)));
+	Cube.Transform(glm::translate(glm::mat4(), glm::vec3(-3.0f, 2.5f, 
+-3.0f)));
+	//Cube2.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+1.0f)));
+	Cube2World = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 3.0f));
+&nbsp;
+	return NoCatastrophicFailuresOccured;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::UnloadContent()
+//
+//	Purpose: 
+//		To allow any code you want to run as the program closes in order to 
+cleanup.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		All the game objects you create need their Shutdown() methods called
+ to release the associate vertex and index buffers.
+//	Since Shaders are owned by this class, it is also responsible for 
+calling the Shutdown() method of any shaders created.
+//
+//=====================================================================================================================
+void
+ Game::UnloadContent()
+{
+	//glDeleteVertexArrays(1, &amp;vao);
+	//glDeleteBuffers(1, &amp;vbo);
+	//glDeleteBuffers(1, &amp;ibo);
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Update()
+//
+//	Purpose: 
+//		To do everything that needs to be done in one frame except draw 
+stuff to the screen.
+//
+//	Input:
+//		float TimeDelta - Amount of time that has passed since the last 
+frame occured in milliseconds.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		This is where most of your game code will be. It gets called every 
+frame to change anything that needs to be changed
+//	or done during that frame. It runs in a loop that needs to be called 
+at least 30 times per second but there's nothing
+//	to control how often it gets called. Things would move at 
+unpredictable rates if we did not use TimeDelta to take in to
+//	account the amount of time that has passed since the last frame.
+//
+//		We start out by processing the keyboard and game controller input to
+ change the camera's position and direction. You
+//	can also toggle full screen on and off.
+//
+//		The camera movement this frame is stored as a 3D vector that we 
+treat more like a 2D vector. The facing normal should 
+//	point in the direction we want the camera to face. And as a normal 
+should have a length of 1. Any movement during the 
+//	frame is cumulative from the various controls. When you move it uses 
+either the CameraFacingNormal or a normal rotated 90
+//	degrees away from the camera facing. It's basic vector addition to 
+add the movement to the camera position.
+//
+//		XMMatrixLookAtRH is used to create a view matrix to simulate the 
+camera every frame. Generally, I would say it is a 
+//	good idea to not continuously recreate the view matrix but it's 
+easier then maintaining a view matrix between frames and
+//	this is really early in this tutorial series.
+//
+//		Finally some very simple rigid animation is thrown in to show you 
+not only how to do it, but that it can be done and how
+//	easy it is to do. Experiment by turning the rotations off and on and 
+changing their directions and speed. 
+//
+//		The scene is lit with a simple Blinn-Phong shader that has 
+"directional" lighting as opposed to point lights or
+//	spot lights. Directional lighting is nothing more than a direction 
+that the light shines in. It is a normalized vector
+//	describing a direction and it has a color. That's all it is. Look at 
+the shader for more detail. By rotating that direction
+//	the light source seems to orbit the scene similar to a day and night 
+cycle except the light shines through solid objects.
+//
+//=====================================================================================================================
+void
+ Game::Update()
+{
+	const float MaxTiltAngle = glm::radians(45.0);
+	const unsigned char* Buttons;
+	int JoyStick1Present = false;
+	int NumberOfJoyStickAxes = 0;
+	int NumberOfJoyStickButtons = 0;
+	const float* AxesArray = nullptr;
+	float LeftThumbStickY = 0.0f;
+	float LeftThumbStickX = 0.0f;
+	float Triggers = 0.0f;	//XBox 360 controller triggers are a single axis
+ for both triggers. Positive = Left. Negative = Right.
+	float RightThumbStickY = 0.0f;
+	float RightThumbStickX = 0.0f;
+	bool AButton = false;
+	bool BButton = false;
+&nbsp;
+&nbsp;
+	if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_ESCAPE &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed == GLFW_PRESS) 
+OperatingSystem.ShutDown();
+&nbsp;
+	JoyStick1Present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	if (JoyStick1Present)
+	{
+		AxesArray = glfwGetJoystickAxes(GLFW_JOYSTICK_1, 
+&amp;NumberOfJoyStickAxes);
+		Buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, 
+&amp;NumberOfJoyStickButtons);
+		LeftThumbStickY = AxesArray[0];
+		LeftThumbStickX = AxesArray[1];
+		Triggers = AxesArray[2];
+		RightThumbStickY = AxesArray[3];
+		RightThumbStickX = AxesArray[4];
+&nbsp;
+		//Camera Controls with XBox 360 controller.
+		if (RightThumbStickX &gt; 0.2 || RightThumbStickX &lt; -0.2) View = 
+glm::rotate(glm::mat4(), RightThumbStickX *0.06f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+		if (LeftThumbStickX &gt; 0.2 || LeftThumbStickX &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -LeftThumbStickX * 
+0.1f)) * View;	//*0.1f to slow it down. Negative to flip the axis. -0.2 
+for deadzone.
+&nbsp;
+		if (RightThumbStickY &gt; 0.2 || RightThumbStickY &lt; -0.2) 
+CameraTilt += 0.03 * RightThumbStickY;
+		if (LeftThumbStickY &gt; 0.2 || LeftThumbStickY &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(-LeftThumbStickY * 0.1f, 0.0f, 
+0.0f)) * View;
+&nbsp;
+		if (Triggers &gt; 0.2 || Triggers &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(0.0f, Triggers*0.1f, 0.0f)) * 
+View;
+&nbsp;
+		if (Buttons[0] == '\x1') AButton = true;
+		if (Buttons[1] == '\x1') BButton = true;
+		if (Buttons[6] == '\x1') OperatingSystem.ShutDown();
+	}
+&nbsp;
+&nbsp;
+		//Camera Controls with keyboard.
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_W &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.05f)) *
+ View;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_S &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.05f))
+ * View;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_E &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			CameraTilt += 0.1;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_Q &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			CameraTilt -= 0.1;
+		if (OperatingSystem.Keyboard.ModePressed == GLFW_MOD_SHIFT)
+		{
+			//Keys while Shift keys are also held down.
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_A &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+				View = glm::translate(glm::mat4(), glm::vec3(0.1f, 0.0f, 0.0f)) * 
+View;
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_D &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+				View = glm::translate(glm::mat4(), glm::vec3(-0.1f, 0.0f, 0.0f)) * 
+View;
+		}
+		else
+		{
+			//Keys when shift keys are not being held down.
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_D &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::rotate(glm::mat4(1.0f), 0.05f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_A &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::rotate(glm::mat4(1.0f), -0.05f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+		}
+&nbsp;
+&nbsp;
+		//Yellow cube controls.
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_I &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+0.05f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_K &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+-0.05f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_L &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(-1), glm::vec3(0.0f, 1.0f, 0.0f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_J &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1),
+ glm::vec3(0.0f, 1.0f, 0.0f)));
+&nbsp;
+&nbsp;
+		if (CameraTilt &gt; MaxTiltAngle) CameraTilt = MaxTiltAngle;
+		if (CameraTilt &lt; -MaxTiltAngle) CameraTilt = -MaxTiltAngle;
+&nbsp;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_Y &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube2Pivot =   glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1),
+ glm::vec3(0.0f, 0.0f, 1.0f)) * Cube2Pivot;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_H &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube2Pivot = glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(-1), 
+glm::vec3(0.0f, 0.0f, 1.0f)) * Cube2Pivot;
+&nbsp;
+		Triangle.Transform(glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f)));
+		Cube2Pivot = Cube2Pivot * glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f));
+		Cube2.WorldMatrix = Cube.WorldMatrix * Cube2Pivot * Cube2World;
+&nbsp;
+&nbsp;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Draw()
+//
+//	Purpose: 
+//		To do draw a single frame on the computer screen.
+//
+//	Input:
+//		float TimeDelta - Amount of time that has passed since the last 
+frame occured in milliseconds.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		Since all the drawing code is tucked away neatly elsewhere, this 
+method ends up being very short and sweet. There's
+//	basically nothing to it. The first two lines clear the backbuffer in 
+corn flower blue which is a constant. And then
+//	it clears the depth stencil. You can clear the screen in any color 
+you like.
+//
+//		Then each game object's Draw() method needs to be called to tell it 
+to draw it self to the back buffer. The parameters
+//	for the shader have to be sent here.
+//
+//		Finaly, the swapchain is told to make the backbuffer the frontbuffer
+ and draw it to the screen by presenting it and
+//	the image appears on the computer monitor. 
+//
+//=====================================================================================================================
+void
+ Game::Draw()
+{
+	glm::mat4 TiltedView = glm::rotate(glm::mat4(), CameraTilt, 
+glm::vec3(1.0, 0.0, 0.0)) * View;
+&nbsp;
+&nbsp;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+&nbsp;
+	Triangle.Draw(TiltedView, Projection, &amp;Shader, 
+DiffuseLightDirection, AmbientLightColor, DiffuseLightColor);
+	Cube.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection, 
+AmbientLightColor, DiffuseLightColor);
+	Cube2.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection, 
+AmbientLightColor, DiffuseLightColor);
+	Ground.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection,
+ AmbientLightColor, DiffuseLightColor);
+&nbsp;
+}
+//=====================================================================================================================</pre></div></div>
+</div><br>
+The comments were from a previous version that doesn't exactly match the current code.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286383" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286385">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-17-2017,&nbsp;<span class="time">03:35 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286385" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286385&amp;viewfull=1#post1286385" class="postcounter">#3</a><a id="postcount1286385" name="3"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen14">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" title="john_connor is offline" id="yui-gen16"><strong>john_connor</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen15">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39496&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39496" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="john_connor is offline" title="john_connor is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>458</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286385">
+						<blockquote class="postcontent restore ">
+							<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/quote_icon.png" alt="Quote" title="Quote"> Originally Posted by <strong>eratic-magician</strong>
+					<a href="https://www.opengl.org/discussion_boards/showthread.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286381#post1286381" rel="nofollow"><img class="inlineimg" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/viewpost-right.png" alt="View Post" title="View Post"></a>
+				</div>
+				<div class="message">How would this be achieved in modern OpenGL, using the MVP (Model, View and Projection) framework?<br>
+<br>
+...<br>
+<br>
+This appears to move the object and rotate it along its own axis.</div>
+			
+		</div>
+	</div>
+</div>i also had this problem and it took me any hours to figure it out 
+once and for all: my approach would be wrapping it up into a class, 
+hiding the math behind it and only use class methods to operate with the
+ data<br>
+<br>
+what data ?<br>
+my solution is to store only vec3 position to represent a worldspace 
+position, and a quaternion to represent the rotation, scaling is another
+ issue and has nothing to do with and "orientation". afaik BBeck1's 
+version is to store the complete matrix, that way you dont need to 
+rebuild the "model-to-world" matrix later.<br>
+however, derived from that "orientation" class, i can easily create 
+another "camera" class or an "AbstractSceneObject" class (whatever that 
+should be, if it needs a "model-to-world" matrix later somewhere, i'll 
+derive that class from "orientation")<br>
+<br>
+take a look at the "orientation" class:<br>
+<a href="https://sites.google.com/site/john87connor/home/3-2-scene-orientation-camera" target="_blank" rel="nofollow">https://sites.google.com/site/john87...ntation-camera</a><br>
+<br>
+first you need to define a (right-handed) coordinate system, that "no 
+rotation at all" will represent, my favorite way is to use the screens 
+x-axis for "right", the screen y-axis for "up" ( because thats how the 
+window appears to me) and the z-axis for "forward"<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:60px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">#define DEFAULT_DIRECTION_FORWARD      (glm::vec3(0, 0, 1))
+#define DEFAULT_DIRECTION_UP                   (glm::vec3(0, 1, 0))
+#define DEFAULT_DIRECTION_RIGHT             (glm::vec3(1, 0, 0))</pre></div></div>
+</div><br>
+based on these values, if you want a point in space to rotate (using a 
+rotation matrix), you need to define that rotation around that 
+coordinate system, for example you want to "roll" an spaceship (that 
+means rotation around its "forward" direction), you need to create the 
+rotation matrix around the constant "forward" axis (which is in my case 
+vec3(0, 0, 1)), and rotate the the spaceship using that rotation matrix<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">void Orientation::Roll(float angle)
+{
+    m_rotation = glm::rotate(m_rotation, angle, DEFAULT_DIRECTION_FORWARD);
+}</pre></div></div>
+</div>here i rotate the "orientation"s quaternion member "m_rotation" 
+(positive angle will rotate "to the right") around a constant axis, so 
+that the rotation will be "added" to previous rotation<br>
+<br>
+<b>thats all</b><br>
+<br>
+later if you want to build the "model-to-world" matrix including scaling, you can use:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">glm::mat4 Orientation::Transformation(const glm::vec3&amp; scalefactor) const
+{
+    return glm::translate(m_position) * glm::toMat4(m_rotation) * glm::scale(scalefactor);
+}</pre></div></div>
+</div>"vec3 scalefactor" is not part of an orientation, so it has to 
+come from somewhere else ... (if needed, in the headder i've set it to 
+vec3(1, 1, 1) if none is provided)
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				<!-- edit note -->
+				<blockquote class="postcontent lastedited">
+					
+						Last edited by john_connor; 03-17-2017 at <span class="time">03:43 AM</span>.
+					
+					
+				</blockquote>
+				<!-- / edit note -->
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer"><a href="https://sites.google.com/site/john87connor/home" target="_blank" rel="nofollow">My C++ / OpenGL Code Examples</a></div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286385" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286391">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-17-2017,&nbsp;<span class="time">01:45 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286391" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286391&amp;viewfull=1#post1286391" class="postcounter">#4</a><a id="postcount1286391" name="4"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen17">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" title="eratic-magician is offline" id="yui-gen19"><strong>eratic-magician</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen18">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=41234&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=41234" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="eratic-magician is offline" title="eratic-magician is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Feb 2017</dd>
+					
+					
+					<dt>Posts</dt> <dd>25</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286391">
+						<blockquote class="postcontent restore ">
+							<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/quote_icon.png" alt="Quote" title="Quote"> Originally Posted by <strong>BBeck1</strong>
+					<a href="https://www.opengl.org/discussion_boards/showthread.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286383#post1286383" rel="nofollow"><img class="inlineimg" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/viewpost-right.png" alt="View Post" title="View Post"></a>
+				</div>
+				<div class="message">It's all in the order of multiplication. This 
+is the foundation of rigid animation. For example, if you have a car 
+with hub caps that spin backwards regardless of how the wheel spins, 
+then the car body would be a parent, the wheel would be a child of the 
+parent, and the hub cap would be a child of the wheel. Each would have 
+their own object/world matrix to contain their position and orientation.
+ But you don't use the wheel or the hub's matrix directly. Instead you 
+multiply the child by the parent and use the result to position and 
+orient it. This allows the child to be attached to the parent and 
+relative to the parent but move freely on it's own.<br>
+<br>
+I would challenge you to not build your model matrix every frame, but 
+rather let the model matrix store the position and orientation of the 
+model from one frame to another. Let it be the ultimate place to store 
+the position and orientation of the object. You can decompose it when 
+you need and get the position. (I think it's the last column in the 
+matrix, or is it last row, I can never remember). You can also get a 
+forward, up, or right vector out of it as needed.<br>
+<br>
+If you do it every frame, you have to move the model back to the origin 
+to rotate or scale and then move it back to where it was within a single
+ frame. No one will know it happened. Otherwise, scale will be skewed, 
+and rotation will orbit the origin. You could do your translations last 
+so that things would occur at the origin. When you're at the origin, the
+ object's center and the origin match and so you rotate around the 
+object's center. If you translate first, they don't match and rotations 
+become orbits around the origin. Scaling is even uglier.<br>
+<br>
+Here's how I do a rotation:<br>
+<br>
+		Triangle.Transform(glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f)));<br>
+<br>
+I pass an empty identity matrix to glm::rotate and a rotation giving me a rotation matrix. The Transform method is as follows:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:72px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">void HandCodedObjectClass::Transform(glm::mat4 TransformationMatrix)
+{
+	WorldMatrix *= TransformationMatrix;
+}</pre></div></div>
+</div><br>
+So, I'm just combining a rotation with whatever is already in the 
+object's world matrix. The bad part of this is that the order of 
+multiplication is hard coded. I think like this it's a rotation, but you
+ might want an orbit instead and then you would have to reverse the 
+order of multiplication/combination.<br>
+<br>
+For an example of how to rotate relative to another object I have this:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:48px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">	Cube2Pivot = Cube2Pivot * glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f));
+	Cube2.WorldMatrix = Cube.WorldMatrix * Cube2Pivot * Cube2World;</pre></div></div>
+</div><br>
+Here I have one cube orbiting another cube that you can move through the
+ scene. Cube2Pivot is a matrix that determines the position and 
+orientation of the second cube relative to the first (Cube).<br>
+<br>
+If you are going to use the camera, realize that the camera is just like
+ any other object's world matrix except it is inversed. To turn it into a
+ regular world matrix, you must invert it. Then you can treat it like 
+any other object's world matrix.<br>
+<br>
+.</div>
+			
+		</div>
+	</div>
+</div>Your entire post is very helpful, cheers. I just have a few questions:<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				If you do it every frame, you have to move the model back to the 
+origin to rotate or scale and then move it back to where it was within a
+ single frame.
+			
+		</div>
+	</div>
+</div>Which origin do you mean? The world's origin (where the model 
+would render without any transformations) or the model's origin? I'm 
+leaning more towards this approach, I'm just unsure about how you'd 
+alter this code:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:108px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">// Rotate bullet based on camera angles
+glm::mat4 BulletRotationMatrix = glm::toMat4(bulletRotations[i]);
+// Translate it by getPosition(), the camera's x, y and z, -1 on the z-axis
+glm::mat4 BulletTranslationMatrix = translate(mat4(), bulletPositions[i]);
+glm::mat4 BulletScaleMatrix = scale(mat4(), glm::vec3(0.1f, 0.1f, 0.1f));
+glm::mat4 ModelMatrix2 = BulletTranslationMatrix * BulletRotationMatrix * BulletScaleMatrix;
+glm::mat4 MVP2 = ProjectionMatrix * ViewMatrix * ModelMatrix2;</pre></div></div>
+</div><br>
+to do what you said. Would I translate to the world origin first, -bulletPositions[i] first etc.<br>
+<br>
+Second, you mentioned:<br>
+<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				You can decompose it [the matrix] when you need and get the 
+position. (I think it's the last column in the matrix, or is it last 
+row, I can never remember)
+			
+		</div>
+	</div>
+</div>Do you know how exactly you'd get the last row/column? Say my 
+object is being rotated as planned, I'm guessing I'd need the last 
+row/column of the world-matrix (MVP = ProjectionMatrix * ViewMatrix * 
+ModelMatrix) or the ModelMatrix. I need this in the form of a glm::vec3.<br>
+<br>
+Hopefully the answers to those will help me out a lot, cheers.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286391" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286393">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-17-2017,&nbsp;<span class="time">04:19 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286393" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286393&amp;viewfull=1#post1286393" class="postcounter">#5</a><a id="postcount1286393" name="5"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen20">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" title="john_connor is offline" id="yui-gen22"><strong>john_connor</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen21">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39496&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39496" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="john_connor is offline" title="john_connor is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>458</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286393">
+						<blockquote class="postcontent restore ">
+							if you want to apply a rotation to a "model-to-world" 
+transformation matrix, you have to do that in "model space", otherwise 
+you rotate the translation part also, which will result in the bullet 
+being at another <b><u>position</u></b><br>
+<br>
+example:<br>
+vertex position = (0, 0, 0)<br>
+<br>
+1. we create a simple transformation:<br>
+-- translation to (1, 0, 0)<br>
+-- rotation around y axis (90°)<br>
+translated_vertex_position = (1, 0, 0)<br>
+<br>
+2. apply another rotation<br>
+-- rotation around y axis (90°)<br>
+==&gt; the result wont be (as one might expect) rotation = 180°, but also the position has changed, it'll be (0, 0, -1)<br>
+<br>
+read more about that here: (the "in practice" part)<br>
+<a href="https://learnopengl.com/#!Getting-started/Transformations" target="_blank" rel="nofollow">https://learnopengl.com/#!Getting-st...ransformations</a><br>
+<br>
+to fix that, you have to temporarily translate the "model-to-world" 
+transformation matrix back to the origin (the "world space" origin), 
+then apply the rotation, finally translating the result matrix back to 
+its former position (in "world space")
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer"><a href="https://sites.google.com/site/john87connor/home" target="_blank" rel="nofollow">My C++ / OpenGL Code Examples</a></div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286393" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286400">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-18-2017,&nbsp;<span class="time">09:39 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286400" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286400&amp;viewfull=1#post1286400" class="postcounter">#6</a><a id="postcount1286400" name="6"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen23">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" title="BBeck1 is offline" id="yui-gen25"><strong>BBeck1</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen24">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39453&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39453" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="BBeck1 is offline" title="BBeck1 is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>112</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286400">
+						<blockquote class="postcontent restore ">
+							<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/quote_icon.png" alt="Quote" title="Quote"> Originally Posted by <strong>eratic-magician</strong>
+					<a href="https://www.opengl.org/discussion_boards/showthread.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286391#post1286391" rel="nofollow"><img class="inlineimg" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/viewpost-right.png" alt="View Post" title="View Post"></a>
+				</div>
+				<div class="message">Which origin do you mean? The world's origin 
+(where the model would render without any transformations) or the 
+model's origin? I'm leaning more towards this approach, I'm just unsure 
+about how you'd alter this code:<br>
+to do what you said. Would I translate to the world origin first, -bulletPositions[i] first etc.<br>
+<br>
+Second, you mentioned:<br>
+<br>
+Do you know how exactly you'd get the last row/column? Say my object is 
+being rotated as planned, I'm guessing I'd need the last row/column of 
+the world-matrix (MVP = ProjectionMatrix * ViewMatrix * ModelMatrix) or 
+the ModelMatrix. I need this in the form of a glm::vec3.<br>
+<br>
+Hopefully the answers to those will help me out a lot, cheers.</div>
+			
+		</div>
+	</div>
+</div>It's "probably" the world origin. Because you are keeping it 
+pretty simple here, you probably don't have cases where the origin 
+becomes any more complicated than that. The reason I hesitate to just 
+proclaim it as the world origin is that when you get into rigid 
+animation and you start chaining these matrices into parent/child 
+relationships that are 4 or 5 generations deep, each parent's position 
+and orientation is the "origin" for each child. So, you have origins 
+that are not at the world origin. Also, when you reverse the order of 
+multiplication of the matrices, you are changing back and forth between 
+the world axis and the local axis of the object, and thus your origin is
+ changing as well.<br>
+<br>
+But in the case of using the "trick" to move the object to the origin, 
+rotate it, and then moving it back, we're probably talking about the 
+world origin in this case. Basically, you just want to extract the 
+position out of the matrix, translate by the negated position to reduce 
+the position to 0,0,0, do your rotation, and then add that same position
+ back to it (because you stored it before negating it) so that it 
+returns to the new position in a new orientation. If you do all that in a
+ single frame, it <u>all</u> is concluded before the draw call and so 
+the move to the origin is never actually drawn to the screen and the 
+user has no knowledge that it happened, yet the object rotates instead 
+of orbits.<br>
+<br>
+You can probably achieve the same results by simply changing this line to:<br>
+glm::mat4 ModelMatrix2 = BulletRotationMatrix * BulletScaleMatrix * BulletTranslationMatrix;<br>
+<br>
+If you rotate and scale before you translate for the first time, you 
+were already at the origin and thus did not need to move it there.<br>
+<br>
+As far as how to decompose and get the position out of the object's matrix here is an example where I did it in <a href="http://virtuallyprogramming.com/OGL45/OGL45.html" target="_blank" rel="nofollow">my engine code</a>:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:60px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">ConversionMatrix = glm::inverse(View);
+CameraPos = (glm::vec3) ConversionMatrix[3];	//Get the camera position from the view matrix.
+Shader-&gt;SetUniform("CameraPosition", CameraPos);</pre></div></div>
+</div><br>
+In the above case, I need to know the position of the camera. In my 
+code, I store the camera's position and orientation in the View matrix 
+at all times and so the value remains from frame to frame. I decompose 
+it to answer questions such as where it is positioned as shown above. 
+The view matrix is just like an object's world matrix except it is 
+inversed which means that it is backwards. I first create an inversed 
+version of the view matrix to make it no different from any object's 
+world matrix. Then with that inversed view matrix, I grab the last 
+column I believe it is with "ConversionMatrix[3]". Here I've viewing the
+ matrix as 4 columns (numbered 0 through 3) of glm::vec4's. I convert it
+ to a Vec3 in order to turn it into a 3D vector value of x,y, and z and 
+then put it to use. In this particular case, I think I'm feeding the 
+camera position as a vec3 to the shader to calculate specular reflection
+ off the object. But this position info could be used for anything. If 
+you are working with a world matrix of an object, you don't need to 
+worry about the inverse part; you just grab that 4th column and turn it 
+into a vec3. I think the first 3 columns will give you a "Forward", 
+"Up", and "Right" vector (x,y,z) that you could grab in the same way, 
+but may want to normalize. Scaling may interfere with some of the math 
+here, I'm not sure. I rarely scale and certainly don't scale with a view
+ matrix. I generally try and make things to scale when I'm in Blender 
+before I import into my program.<br>
+<br>
+I was looking for an example of moving the object back to the origin to 
+rotate it in my code and didn't find one in a quick look. I've really 
+been avoiding this method for the past couple of years. I used to use it
+ for everything and thought it was the only way it could be done in the 
+early days. Now I avoid it in favor of storing orientation and position 
+in the object's matrix. (You can store the orientation as a quaternion 
+as well, which may have some advantages in some cases, but I prefer a 
+matrix because the shader will probably want a matrix rather than a 
+quaternion and I find a matrix works as well if not better than a 
+quaternion for most of my uses and thus avoids having to convert it to a
+ matrix before sending it to a shader. A quaternion is very similar to a
+ 3by3 matrix and by using a 4by4 matrix you can store position and scale
+ as well as orientation, which a quaternion cannot do. Quaternions 
+certainly have their place though.)<br>
+<br>
+Anyway with your code, I don't think you need to translate to the origin
+ but rather just need to do the translation after the rotation and 
+scale. Otherwise it would look something like this:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:144px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">// Rotate bullet based on camera angles
+glm::mat4 BulletRotationMatrix = glm::toMat4(bulletRotations[i]);
+// Translate it by getPosition(), the camera's x, y and z, -1 on the z-axis
+glm::mat4 BulletTranslationMatrix = translate(mat4(), bulletPositions[i]);
+glm::mat4 BulletScaleMatrix = scale(mat4(), glm::vec3(0.1f, 0.1f, 0.1f));
+glm::mat4 ModelMatrix2 = BulletTranslationMatrix
+ModelMatrix2 = ModelMatrix2 * translate(mat4(), (glm:vec3) -ModelMatrix2[3]);  //Undoing the previous line
+ModelMatrix2 = ModelMatrix2 * BulletRotationMatrix * BulletScaleMatrix;
+ModelMatrix2 = ModelMatrix2 * BulletTranslationMatrix; //Restoring it to its previous position.
+glm::mat4 MVP2 = ProjectionMatrix * ViewMatrix * ModelMatrix2;</pre></div></div>
+</div><br>
+<br>
+But for this code, that doesn't make much sense since you can do the same thing like this by doing the translation last:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:108px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">// Rotate bullet based on camera angles
+glm::mat4 BulletRotationMatrix = glm::toMat4(bulletRotations[i]);
+// Translate it by getPosition(), the camera's x, y and z, -1 on the z-axis
+glm::mat4 BulletTranslationMatrix = translate(mat4(), bulletPositions[i]);
+glm::mat4 BulletScaleMatrix = scale(mat4(), glm::vec3(0.1f, 0.1f, 0.1f));
+glm::mat4 ModelMatrix2 = BulletRotationMatrix * BulletScaleMatrix * BulletTranslationMatrix;
+glm::mat4 MVP2 = ProjectionMatrix * ViewMatrix * ModelMatrix2;</pre></div></div>
+</div><br>
+<br>
+It's basically a mantra that you will hear all over the internet that you need to rotate and scale before you translate.<br>
+<br>
+<a href="https://msdn.microsoft.com/en-us/library/eews39w7(v=vs.110).aspx" target="_blank" rel="nofollow">https://msdn.microsoft.com/en-us/lib...v=vs.110).aspx</a><br>
+<br>
+I don't really think of it this way anymore. Because I always store the 
+position and orientation info in the matrix, I have to do the operations
+ in whatever order is called for at the time. I don't have the luxury of
+ choosing the order. If the object needs to be moved and then rotated I 
+can't choose to rotate it and then move it. Not to mention the order is 
+constantly changing and reversing. Instead, I learn to control which 
+axis is being used (world or local) by reversing the order of 
+multiplication. Then it doesn't matter what came before. All I'm doing 
+is that one operation, which is mostly unaffected by what came before.<br>
+<br>
+It's a bit difficult to get comfortable with matrices. I wasn't at 
+first. It took me many years to get where I am now. At first, I did 
+everything with vectors because I had figured out vectors and fell in 
+love with them. Then I started using matrices more and more and 
+understanding them better as I went along. Eventually, I came to choose 
+matrices over not only vectors but quaternions as well (in most cases 
+but not all). I eventually learned to have faith that the matrices could
+ do their job of holding positions and orientations quite well and they 
+didn't need me to micro-manage them or to even know what was going on 
+inside of them. You eventually have to come to this place for animation.
+ Matrices are the core of animation. You can use quaternions instead and
+ for some things like SLERP quaternions are superior, but even then the 
+quaternions are being used much in the same way that matrices would be. 
+For rigid animation I would still generally prefer matrices, but for 
+skinned animation you need to interpolate frames in between your key 
+frames, which is where quaternions really pull ahead of matrices in 
+their abilities. But my point is that getting comfortable using matrices
+ is something you will want to strive for because you will be using them
+ a lot if you code your own animation stuff.<br>
+<br>
+You might study rigid animation to get a better idea of how I see 
+matrices. Learning to link them will give you a greater understanding.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				<!-- edit note -->
+				<blockquote class="postcontent lastedited">
+					
+						Last edited by BBeck1; 03-18-2017 at <span class="time">10:08 AM</span>.
+					
+					
+				</blockquote>
+				<!-- / edit note -->
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286400" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286409">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-18-2017,&nbsp;<span class="time">05:39 PM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286409" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286409&amp;viewfull=1#post1286409" class="postcounter">#7</a><a id="postcount1286409" name="7"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen26">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" title="eratic-magician is offline" id="yui-gen28"><strong>eratic-magician</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen27">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/41234-eratic-magician?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=41234&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=41234" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="eratic-magician is offline" title="eratic-magician is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Newbie</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>Feb 2017</dd>
+					
+					
+					<dt>Posts</dt> <dd>25</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286409">
+						<blockquote class="postcontent restore ">
+							Thanks for all the help you guys, both posts are extremely 
+useful, I've honestly understood more from these posts about matrices 
+than days of reading so thanks.<br>
+<br>
+<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/quote_icon.png" alt="Quote" title="Quote"> Originally Posted by <strong>BBeck1</strong>
+					
+				</div>
+				<div class="message">You can probably achieve the same results by simply changing this line to:<br>
+glm::mat4 ModelMatrix2 = BulletRotationMatrix * BulletScaleMatrix * BulletTranslationMatrix;</div>
+			
+		</div>
+	</div>
+</div>Apologies if I'm wrong, but this doesn't seem to work. It 
+repositions the bullet a bit but doesn't result in the bullet orbiting 
+around the camera (which is what I'm going for, sorry if that wasn't 
+clear).<br>
+After thoroughly reading through these posts and trying a few different 
+things, it seems my bullet still won't do what I need. I'm basically 
+trying to get it to appear as though it would if drawn without the 
+ViewMatrix multiplication, in that it doesn't matter which way you 
+rotate the camera, it'll always be attached to the camera. Only, I need 
+this to be done in world space, hence the idea of the bullet model 
+orbiting the camera (which is were I thought that the rotating <b>AFTER</b>
+ translating would play in). It seems as though your suggestion is more 
+about rotating an object on it's own axis even after a transformation. 
+Again though, apologies if I'm wrong (I'm still figuring this all out).<br>
+<br>
+Getting the position of my bullet worked perfectly though (as far as I 
+can tell anyway), so thanks for explaining that. This seems to give me 
+my bullet's world position:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:36px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">glm::vec3 bulletCoordinates = (glm::vec3) MVP2[3];</pre></div></div>
+</div>
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				<!-- edit note -->
+				<blockquote class="postcontent lastedited">
+					
+						Last edited by eratic-magician; 03-18-2017 at <span class="time">05:45 PM</span>.
+					
+					
+				</blockquote>
+				<!-- / edit note -->
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286409" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286412">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-19-2017,&nbsp;<span class="time">05:29 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286412" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286412&amp;viewfull=1#post1286412" class="postcounter">#8</a><a id="postcount1286412" name="8"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen29">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" title="john_connor is offline" id="yui-gen31"><strong>john_connor</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen30">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39496-john_connor?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39496&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39496" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="john_connor is offline" title="john_connor is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>458</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+				<div class="content">
+					<div id="post_message_1286412">
+						<blockquote class="postcontent restore ">
+							do you remember what i posted a few days ago (<a href="https://www.opengl.org/discussion_boards/showthread.php/199399-Model-not-staying-rendered-%28And-trying-to-get-it-s-world-position%29?p=1286321&amp;viewfull=1#post1286321" target="_blank">in another topic</a>) ? with that approach you'd have solved that problem ...<br>
+<br>
+simulating the bullet(s) is easy, its just s(t) = v * t, the camera can 
+be "moved" the same way or you could move the cam only in response to 
+some input, like key pressing / joystick axis / etc ...<br>
+<br>
+if you want to animate the camera to move around a flying bullet, create
+ a new "animation" which has to be advanced each frame, you can wrap it 
+into a "function object", using <a href="http://www.cplusplus.com/reference/functional/function/function/" target="_blank" rel="nofollow">c++ 11 and &lt;functional&gt;</a><br>
+<br>
+output = none<br>
+input = frametime, &amp;scene<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:36px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">std::function&lt;void(float,
+ Scene&amp;)&gt; my_animation = .........  // lambda expression, code to
+ rotate the camera around the bullet</pre></div></div>
+</div>to execute the code in the lambda expression:<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:48px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">float frametime = 1.0f / 60;
+my_animation(frametime, myscene);</pre></div></div>
+</div>
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				
+				
+				
+					<blockquote class="signature restore"><div class="signaturecontainer"><a href="https://sites.google.com/site/john87connor/home" target="_blank" rel="nofollow">My C++ / OpenGL Code Examples</a></div></blockquote>
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286412" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+<li class="postbitlegacy postbitim postcontainer old" id="post_1286413">
+<!-- see bottom of postbit.css for .userinfo .popupmenu styles -->
+
+	<div class="posthead">
+			<span class="postdate old">
+				
+					<span class="date">03-19-2017,&nbsp;<span class="time">06:16 AM</span></span>
+				
+			</span>
+			<span class="nodecontrols">
+				
+					<a name="post1286413" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;p=1286413&amp;viewfull=1#post1286413" class="postcounter">#9</a><a id="postcount1286413" name="9"></a>
+				
+				
+				
+			</span>
+	</div>
+	<div class="postdetails">
+		<div class="userinfo">
+			<div class="username_container">
+			
+				<div class="popupmenu memberaction" id="yui-gen32">
+	<a class="username offline popupctrl" href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" title="BBeck1 is offline" id="yui-gen34"><strong>BBeck1</strong></a>
+	<ul class="popupbody memberaction_body" id="yui-gen33">
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/member.php/39453-BBeck1?s=b15c8f83840d4394eae0c4ead07d8208" class="siteicon_profile">
+				View Profile
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=finduser&amp;userid=39453&amp;contenttype=vBForum_Post&amp;showposts=1" class="siteicon_forum" rel="nofollow">
+				View Forum Posts
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=newpm&amp;u=39453" class="siteicon_message" rel="nofollow">
+				Private Message
+			</a>
+		</li>
+		
+		
+		
+		
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+				<img class="inlineimg onlinestatus" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/user-offline.png" alt="BBeck1 is offline" title="BBeck1 is offline" border="0">
+
+			
+			</div>
+			<span class="usertitle">
+				Junior Member
+			</span>
+			
+				<span class="rank">Regular Contributor</span>
+			
+			
+			
+			 
+			
+				<hr>
+				<dl class="userinfo_extra">
+					<dt>Join Date</dt> <dd>May 2016</dd>
+					
+					
+					<dt>Posts</dt> <dd>112</dd>	
+					
+				</dl>
+				
+				
+				<div class="imlinks">
+					    
+				</div>
+			
+		</div>
+		<div class="postbody">
+			<div class="postrow has_after_content">
+				
+				
+
+
+						
+						
+							
+						
+				<div class="content">
+					<div id="post_message_1286413">
+						<blockquote class="postcontent restore ">
+							I didn't realize you wanted the bullet to orbit the camera.<br>
+<br>
+To orbit the camera, you need to do a little rigid animation. The camera
+ becomes the parent to the child object orbiting it. To do that you 
+multiply the parent times the child (or is it child times parent, flip 
+it and try it the other way if it doesn't work) and use the result for 
+the child's world matrix. Because the camera is the view matrix instead 
+of a world matrix, you have to invert it. So, it becomes: inverted view 
+matrix times object's world matrix equals the matrix you actually use 
+for the object. So, you never use the object's world matrix directly. 
+That will cause the object to be attached to the camera and if you 
+rotate the object's world matrix (not the result matrix) then the result
+ matrix will cause the object to orbit the camera. I think reversing the
+ order of multiplication between the inverted camera and the object's 
+matrix will determine if the rotation of the object is on it's own axis 
+or orbiting the camera.<br>
+<br>
+Other than that, everything should work pretty much the same. You could 
+do a scale and rotate of the object's world matrix, then translate it 
+relative to the camera, then multiply it by the inverted view matrix, 
+and use that result as if it were the object's world matrix. You would 
+still need to do your projection/world/view multiplication. So, the view
+ data goes in twice, once inverted and once normal. That's because the 
+object is to orbit the camera.<br>
+<br>
+<br>
+I usually do the opposite and have the camera orbit an object and thus 
+become a "chase camera". Move the object and the camera remains 
+attached. But there's no reason you can't have object's orbit the 
+camera. The chase camera is done by taking an object's world matrix and 
+multiplying the view matrix and using the result matrix as the view 
+matrix to actually draw with. I'm not sure if the view matrix needs to 
+be inverted for that; I would have to play with it a bit to find out. I 
+haven't done a chase camera in awhile. I think the last one I did was in
+ Unity. I doubt it needs to be inverted for that.<br>
+<br>
+I don't know if this is helpful, but here's some code where I've got 
+object's orbiting on command. The comments are a little off since some 
+of this code was copied and pasted from another project and reworked. 
+But it's basically <a href="http://virtuallyprogramming.com/OGL45/OGL45.html" target="_blank" rel="nofollow">my engine code on my website</a>
+ except I've added a second cube that orbits the first cube. It orbits 
+by itself, but keyboard commands can move the main cube. I think I 
+actually had 3 matrices involved in that, the main cube, a pivot point, 
+and the second cube. I think the pivot point allows the orbit to be 
+changed of the second cube with the Y and H keys. The I and K keys move 
+the main cube around and the second cube stays attached and continues to
+ orbit.<br>
+<br>
+<div class="bbcode_container">
+                <div class="bbcode_description">Code :</div>
+                <div class="bbcode_code" style="height:312px;"><div class="" style="font-family:monospace;"><pre style="font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;">#include
+ "Game.h"
+&nbsp;
+using namespace OGLGameNameSpace;
+&nbsp;
+&nbsp;
+Game::Game(void)
+{
+}
+&nbsp;
+&nbsp;
+Game::~Game(void)
+{
+}
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Initialize()
+//
+//	Purpose: 
+//		To allow any code you want to run once at startup not associated 
+with art assets.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		bool - The program will close if it returns false assuming a 
+catastrophic error has occured.
+//
+//  Notes:
+//		
+//
+//=====================================================================================================================
+bool
+ Game::Initialize()
+{
+	bool GameObjectInitializedProperly = false;		//Must be set to true to 
+keep the program from closing.
+&nbsp;
+&nbsp;
+	CameraHeight = 1.68f;		//Roughly the average eye height in meters of an
+ average man. Our camera will stay at this level to make it feel like we
+ are in the scene.
+	CameraTilt = 0.0f;			//Will tilt the camera up and down.
+&nbsp;
+	GameObjectInitializedProperly = true; //This should probably be set by 
+error checking, but we don't have any error checking here.
+	View = glm::lookAt(glm::vec3(0.0f, CameraHeight, 2.0f), glm::vec3(0.0f,
+ CameraHeight, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));	//1.63 meters is 
+roughly the height of the average man's eyes.
+	//Projection = glm::perspective(0.96f, 1.770833f, 0.1f, 700.0f);	//0.96
+ is 55 degrees and 1.7708333 is the width to height ratio on my 
+computer.
+	Projection = glm::perspective(0.96f, OperatingSystem.AspectRatio(), 
+0.1f, 700.0f);	//0.96 is 55 degrees and 1.7708333 is the width to height
+ ratio on my computer.
+&nbsp;
+	glEnable(GL_CULL_FACE);		//Turn back face culling on.
+	glCullFace(GL_BACK);		//Set back face culling to remove the back face 
+rather than the front face. Back is default. Included here for clarity.
+	glEnable(GL_DEPTH_TEST);	//Enable the depth buffer so that things are 
+drawn correctly.
+	glEnable(GL_FRAMEBUFFER_SRGB);	//Needed to prepare frame buffer for 
+sRGB color.
+&nbsp;
+&nbsp;
+	DiffuseLightDirection = glm::normalize(glm::vec3(1.0f, -1.0f, -1.0f));	
+//Direction that the primary light of the scene is "shining" in.
+	AmbientLightColor = glm::vec4(0.05f, 0.05f, 0.1f, 1.0f);					//Light 
+color in the "shadows".
+	DiffuseLightColor = glm::vec4(1.0f, 1.0f, 0.9f, 1.0f);					//Direct 
+light color.
+&nbsp;
+	return GameObjectInitializedProperly;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::LoadContent()
+//
+//	Purpose: 
+//		To allow any code you want to run once at startup associated with 
+art assets.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		bool - The program will close if it returns false assuming a 
+catastrophic error has occured.
+//
+//  Notes:
+//		Here we are creating all the objects in the scene. The switch 
+statement makes it easy to manage this and add more
+//	objects of your own. You merely define all the objects vertices it 
+will need to be drawn and then list the index order
+//	of every vertex to specify what order it will be drawn in. These 
+examples merely count the number of vertices for the
+//	index which is largely pointless. However, the design means you 
+"could" reuse vertices or specify them out of order and
+//	use the index buffer to specify what order to draw them in.
+//
+//		You'll quickly notice that the number of vertices you have to 
+specify for even the most simple of objects is nearly
+//	unacceptable. There are better ways, but we're learning the most 
+straight forward way here which we will build on later.
+//
+//		Textures were created with Paint.Net by saving as .DDS files with 
+mip maps.
+//
+//=====================================================================================================================
+bool
+ Game::LoadContent()
+{
+	bool NoCatastrophicFailuresOccured = false;	//Close the program if even
+ one mesh fails to initialize correctly.
+	float ScaleFactor = 200.0f;
+	float TerrainSize = 500.0f;
+&nbsp;
+&nbsp;
+	//GrassTexture.Load("Textures/Grass.dds", true);
+	GrassTexture.Load("Textures/FloorTiles.jpg", true);
+	//GrassTexture.Load("Textures/MudWall.jpg", true);
+&nbsp;
+	GrassTexture.Bind(0);
+&nbsp;
+	NoCatastrophicFailuresOccured = 
+Shader.LoadShader("Shaders/BlinnPhong.vrt", "Shaders/BlinnPhong.frg");
+&nbsp;
+	glClearColor(0.392156862745098f, 0.5843137254901961f, 
+0.9294117647058824f, 1.0f);	//XNA's "Cornflower Blue"
+&nbsp;
+&nbsp;
+	GLfloat TriangleVertexBuffer[] = {
+		0.0f, 0.5f, 0.0f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,
+ 1.0f,
+		0.45f, -0.5, 0.0f,		0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		0.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.45f, -0.5f, 0.0f,	0.0f, 0.0f,			0.0f, 0.0f, -1.0f,		0.0f, 0.0f, 
+1.0f, 1.0f
+	};
+&nbsp;
+	GLuint TriangleIndices[] = {
+		0,1,2
+	};
+	Triangle.DefineMesh(3, TriangleVertexBuffer, 3, TriangleIndices, 
+nullptr);
+&nbsp;
+&nbsp;
+	GLfloat CubeVertexBuffer[] = {
+		//Front Quad. 
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		//Right Quad.
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		//Bottom Quad. 
+		  0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 -0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 -0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		 -0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		  0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		  0.5f, -0.5f, 0.5f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Back Quad. 
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		0.0f, 0.0f, -1.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Left Quad.
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+&nbsp;
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,		-1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 
+0.0f, 1.0f,
+&nbsp;
+		//Top Quad. 
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+&nbsp;
+		 0.5f, 0.5f, 0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f, 
+1.0f,
+		 0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+		-0.5f, 0.5f, -0.5f,		0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 0.0f,
+ 1.0f,
+	};
+&nbsp;
+	GLuint CubeIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
+14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 
+32, 33, 34, 35 };
+	Cube.DefineMesh(VERTICESINCUBE, CubeVertexBuffer, VERTICESINCUBE, 
+CubeIndices, nullptr);
+	Cube2.DefineMesh(VERTICESINCUBE, CubeVertexBuffer, VERTICESINCUBE, 
+CubeIndices, nullptr);
+&nbsp;
+	GLfloat GroundVertexBuffer[] = {
+		-TerrainSize, 0.0f,  TerrainSize,	       0.0f, ScaleFactor,	0.0f, 
+1.0f, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		 TerrainSize, 0.0f,  TerrainSize,	ScaleFactor, ScaleFactor,	0.0f, 
+1.0f, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		 TerrainSize, 0.0f, -TerrainSize,	ScaleFactor, 0.0f,			0.0f, 1.0f, 
+0.0f,	1.0f, 1.0f, 1.0f, 1.0f,
+		-TerrainSize, 0.0f, -TerrainSize,		 0.0f,	 0.0f,			0.0f, 1.0f, 0.0f,	
+1.0f, 1.0f, 1.0f, 1.0f
+	};
+&nbsp;
+	GLuint GroundIndices[] = {
+		0,1,2,
+		0,2,3
+	};
+	Ground.DefineMesh(4, GroundVertexBuffer, 6, GroundIndices, 
+&amp;GrassTexture);
+&nbsp;
+	Cube2Pivot = glm::mat4();
+	Triangle.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 1.63f, 
+0.0f)));
+	Cube.Transform(glm::translate(glm::mat4(), glm::vec3(-3.0f, 2.5f, 
+-3.0f)));
+	//Cube2.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+1.0f)));
+	Cube2World = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 3.0f));
+&nbsp;
+	return NoCatastrophicFailuresOccured;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::UnloadContent()
+//
+//	Purpose: 
+//		To allow any code you want to run as the program closes in order to 
+cleanup.
+//
+//	Input:
+//		None.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		All the game objects you create need their Shutdown() methods called
+ to release the associate vertex and index buffers.
+//	Since Shaders are owned by this class, it is also responsible for 
+calling the Shutdown() method of any shaders created.
+//
+//=====================================================================================================================
+void
+ Game::UnloadContent()
+{
+	//glDeleteVertexArrays(1, &amp;vao);
+	//glDeleteBuffers(1, &amp;vbo);
+	//glDeleteBuffers(1, &amp;ibo);
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Update()
+//
+//	Purpose: 
+//		To do everything that needs to be done in one frame except draw 
+stuff to the screen.
+//
+//	Input:
+//		float TimeDelta - Amount of time that has passed since the last 
+frame occured in milliseconds.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		This is where most of your game code will be. It gets called every 
+frame to change anything that needs to be changed
+//	or done during that frame. It runs in a loop that needs to be called 
+at least 30 times per second but there's nothing
+//	to control how often it gets called. Things would move at 
+unpredictable rates if we did not use TimeDelta to take in to
+//	account the amount of time that has passed since the last frame.
+//
+//		We start out by processing the keyboard and game controller input to
+ change the camera's position and direction. You
+//	can also toggle full screen on and off.
+//
+//		The camera movement this frame is stored as a 3D vector that we 
+treat more like a 2D vector. The facing normal should 
+//	point in the direction we want the camera to face. And as a normal 
+should have a length of 1. Any movement during the 
+//	frame is cumulative from the various controls. When you move it uses 
+either the CameraFacingNormal or a normal rotated 90
+//	degrees away from the camera facing. It's basic vector addition to 
+add the movement to the camera position.
+//
+//		XMMatrixLookAtRH is used to create a view matrix to simulate the 
+camera every frame. Generally, I would say it is a 
+//	good idea to not continuously recreate the view matrix but it's 
+easier then maintaining a view matrix between frames and
+//	this is really early in this tutorial series.
+//
+//		Finally some very simple rigid animation is thrown in to show you 
+not only how to do it, but that it can be done and how
+//	easy it is to do. Experiment by turning the rotations off and on and 
+changing their directions and speed. 
+//
+//		The scene is lit with a simple Blinn-Phong shader that has 
+"directional" lighting as opposed to point lights or
+//	spot lights. Directional lighting is nothing more than a direction 
+that the light shines in. It is a normalized vector
+//	describing a direction and it has a color. That's all it is. Look at 
+the shader for more detail. By rotating that direction
+//	the light source seems to orbit the scene similar to a day and night 
+cycle except the light shines through solid objects.
+//
+//=====================================================================================================================
+void
+ Game::Update()
+{
+	const float MaxTiltAngle = glm::radians(45.0);
+	const unsigned char* Buttons;
+	int JoyStick1Present = false;
+	int NumberOfJoyStickAxes = 0;
+	int NumberOfJoyStickButtons = 0;
+	const float* AxesArray = nullptr;
+	float LeftThumbStickY = 0.0f;
+	float LeftThumbStickX = 0.0f;
+	float Triggers = 0.0f;	//XBox 360 controller triggers are a single axis
+ for both triggers. Positive = Left. Negative = Right.
+	float RightThumbStickY = 0.0f;
+	float RightThumbStickX = 0.0f;
+	bool AButton = false;
+	bool BButton = false;
+&nbsp;
+&nbsp;
+	if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_ESCAPE &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed == GLFW_PRESS) 
+OperatingSystem.ShutDown();
+&nbsp;
+	JoyStick1Present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	if (JoyStick1Present)
+	{
+		AxesArray = glfwGetJoystickAxes(GLFW_JOYSTICK_1, 
+&amp;NumberOfJoyStickAxes);
+		Buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, 
+&amp;NumberOfJoyStickButtons);
+		LeftThumbStickY = AxesArray[0];
+		LeftThumbStickX = AxesArray[1];
+		Triggers = AxesArray[2];
+		RightThumbStickY = AxesArray[3];
+		RightThumbStickX = AxesArray[4];
+&nbsp;
+		//Camera Controls with XBox 360 controller.
+		if (RightThumbStickX &gt; 0.2 || RightThumbStickX &lt; -0.2) View = 
+glm::rotate(glm::mat4(), RightThumbStickX *0.06f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+		if (LeftThumbStickX &gt; 0.2 || LeftThumbStickX &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -LeftThumbStickX * 
+0.1f)) * View;	//*0.1f to slow it down. Negative to flip the axis. -0.2 
+for deadzone.
+&nbsp;
+		if (RightThumbStickY &gt; 0.2 || RightThumbStickY &lt; -0.2) 
+CameraTilt += 0.03 * RightThumbStickY;
+		if (LeftThumbStickY &gt; 0.2 || LeftThumbStickY &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(-LeftThumbStickY * 0.1f, 0.0f, 
+0.0f)) * View;
+&nbsp;
+		if (Triggers &gt; 0.2 || Triggers &lt; -0.2) View = 
+glm::translate(glm::mat4(), glm::vec3(0.0f, Triggers*0.1f, 0.0f)) * 
+View;
+&nbsp;
+		if (Buttons[0] == '\x1') AButton = true;
+		if (Buttons[1] == '\x1') BButton = true;
+		if (Buttons[6] == '\x1') OperatingSystem.ShutDown();
+	}
+&nbsp;
+&nbsp;
+		//Camera Controls with keyboard.
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_W &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.05f)) *
+ View;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_S &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -0.05f))
+ * View;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_E &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			CameraTilt += 0.1;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_Q &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			CameraTilt -= 0.1;
+		if (OperatingSystem.Keyboard.ModePressed == GLFW_MOD_SHIFT)
+		{
+			//Keys while Shift keys are also held down.
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_A &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+				View = glm::translate(glm::mat4(), glm::vec3(0.1f, 0.0f, 0.0f)) * 
+View;
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_D &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+				View = glm::translate(glm::mat4(), glm::vec3(-0.1f, 0.0f, 0.0f)) * 
+View;
+		}
+		else
+		{
+			//Keys when shift keys are not being held down.
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_D &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::rotate(glm::mat4(1.0f), 0.05f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+			if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_A &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			View = glm::rotate(glm::mat4(1.0f), -0.05f, glm::vec3(0.0f, 1.0f, 
+0.0f)) * View;
+		}
+&nbsp;
+&nbsp;
+		//Yellow cube controls.
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_I &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+0.05f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_K &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 
+-0.05f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_L &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(-1), glm::vec3(0.0f, 1.0f, 0.0f)));
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_J &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube.Transform(glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1),
+ glm::vec3(0.0f, 1.0f, 0.0f)));
+&nbsp;
+&nbsp;
+		if (CameraTilt &gt; MaxTiltAngle) CameraTilt = MaxTiltAngle;
+		if (CameraTilt &lt; -MaxTiltAngle) CameraTilt = -MaxTiltAngle;
+&nbsp;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_Y &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube2Pivot =   glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(1),
+ glm::vec3(0.0f, 0.0f, 1.0f)) * Cube2Pivot;
+		if (OperatingSystem.Keyboard.KeyPressed == GLFW_KEY_H &amp;&amp; 
+OperatingSystem.Keyboard.ActionPressed != GLFW_RELEASE)
+			Cube2Pivot = glm::rotate(glm::mat4(), glm::radians&lt;float&gt;(-1), 
+glm::vec3(0.0f, 0.0f, 1.0f)) * Cube2Pivot;
+&nbsp;
+		Triangle.Transform(glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f)));
+		Cube2Pivot = Cube2Pivot * glm::rotate(glm::mat4(), 
+glm::radians&lt;float&gt;(1), glm::vec3(0.0f, 1.0f, 0.0f));
+		Cube2.WorldMatrix = Cube.WorldMatrix * Cube2Pivot * Cube2World;
+&nbsp;
+&nbsp;
+}
+//=====================================================================================================================
+&nbsp;
+&nbsp;
+//=====================================================================================================================
+//
+  Game::Draw()
+//
+//	Purpose: 
+//		To do draw a single frame on the computer screen.
+//
+//	Input:
+//		float TimeDelta - Amount of time that has passed since the last 
+frame occured in milliseconds.
+//
+//	Output:
+//		None.
+//
+//  Notes:
+//		Since all the drawing code is tucked away neatly elsewhere, this 
+method ends up being very short and sweet. There's
+//	basically nothing to it. The first two lines clear the backbuffer in 
+corn flower blue which is a constant. And then
+//	it clears the depth stencil. You can clear the screen in any color 
+you like.
+//
+//		Then each game object's Draw() method needs to be called to tell it 
+to draw it self to the back buffer. The parameters
+//	for the shader have to be sent here.
+//
+//		Finaly, the swapchain is told to make the backbuffer the frontbuffer
+ and draw it to the screen by presenting it and
+//	the image appears on the computer monitor. 
+//
+//=====================================================================================================================
+void
+ Game::Draw()
+{
+	glm::mat4 TiltedView = glm::rotate(glm::mat4(), CameraTilt, 
+glm::vec3(1.0, 0.0, 0.0)) * View;
+&nbsp;
+&nbsp;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+&nbsp;
+	Triangle.Draw(TiltedView, Projection, &amp;Shader, 
+DiffuseLightDirection, AmbientLightColor, DiffuseLightColor);
+	Cube.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection, 
+AmbientLightColor, DiffuseLightColor);
+	Cube2.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection, 
+AmbientLightColor, DiffuseLightColor);
+	Ground.Draw(TiltedView, Projection, &amp;Shader, DiffuseLightDirection,
+ AmbientLightColor, DiffuseLightColor);
+&nbsp;
+}
+//=====================================================================================================================</pre></div></div>
+</div><br>
+Also, it might be worth noting that I don't use the View matrix to draw.
+ I use it to control the camera, but I wanted to limit the angle at 
+which the camera can pitch up and down. So, I never allow the View 
+matrix to pitch but rather maintain that as a separate float which I 
+apply right before drawing and then use the result (TiltedView) to 
+actually draw with. So, that's an example of not using the View to draw 
+directly, but rather using a modified View to draw. I just build and 
+apply a rotation matrix to the View, for the pitch, right before 
+drawing.
+						</blockquote>
+					</div>
+
+					
+				</div>
+			</div>
+			
+			<div class="after_content">
+				
+				<!-- edit note -->
+				<blockquote class="postcontent lastedited">
+					
+						Last edited by BBeck1; 03-19-2017 at <span class="time">06:30 AM</span>.
+					
+					
+				</blockquote>
+				<!-- / edit note -->
+				
+				
+				
+				
+				
+			</div>
+			
+			<div class="cleardiv"></div>
+		</div>
+	</div>
+		<div class="postfoot">
+			<!-- <div class="postfoot_container"> -->
+			<div class="textcontrols floatcontainer">
+				<span class="postcontrols">
+					<img style="display:none" id="progress_1286413" src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/progress.gif" alt="">
+					
+					
+					
+					
+				</span>
+				<span class="postlinking">
+					
+						
+					
+
+					
+					
+					
+					
+
+					
+					
+
+					
+					
+					
+					
+					
+				</span>
+			<!-- </div> -->
+			</div>
+		</div>
+	<hr>
+</li>
+
+		</ol>
+		<div class="separator"></div>
+		<div class="postlistfoot">
+			
+		</div>
+
+	
+
+</div>
+
+<div id="below_postlist" class="noinlinemod below_postlist">
+	
+	<div id="pagination_bottom" class="pagination_bottom">
+	
+		<div class="clear"></div>
+<div class="navpopupmenu popupmenu nohovermenu" id="showthread_navpopup">
+	
+		<span class="shade">Quick Navigation</span>
+		<a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208" class="popupctrl" id="yui-gen36"><span class="ctrlcontainer">OpenGL coding: beginners</span></a>
+		<a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL#top" class="textcontrol" onclick="document.location.hash='top';return false;">Top</a>
+	
+	<ul class="navpopupbody popupbody" id="yui-gen35">
+		
+		<li class="optionlabel">Site Areas</li>
+		<li><a href="https://www.opengl.org/discussion_boards/usercp.php?s=b15c8f83840d4394eae0c4ead07d8208">Settings</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/private.php?s=b15c8f83840d4394eae0c4ead07d8208">Private Messages</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/subscription.php?s=b15c8f83840d4394eae0c4ead07d8208">Subscriptions</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/online.php?s=b15c8f83840d4394eae0c4ead07d8208">Who's Online</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/search.php?s=b15c8f83840d4394eae0c4ead07d8208">Search Forums</a></li>
+		<li><a href="https://www.opengl.org/discussion_boards/forum.php?s=b15c8f83840d4394eae0c4ead07d8208">Forums Home</a></li>
+		
+			<li class="optionlabel">Forums</li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/3-OpenGL-Developers-Forum?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL Developers Forum</a>
+					<ol class="d1">
+						
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/16-Items-of-Importance-to-the-OpenGL-Community?s=b15c8f83840d4394eae0c4ead07d8208">Items of Importance to the OpenGL Community</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/5-User-Hardware-Software-Gaming-Help?s=b15c8f83840d4394eae0c4ead07d8208">User Hardware, Software, &amp; Gaming Help</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/10-Math-and-Algorithms?s=b15c8f83840d4394eae0c4ead07d8208">Math and Algorithms</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/6-OpenGL-coding-beginners?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL coding: beginners</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/7-OpenGL-coding-advanced?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL coding: advanced</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/15-OpenGL-Shading-Language?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL Shading Language</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/13-OpenGL-under-Windows?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL under Windows</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/8-OpenGL-on-Linux?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL on Linux</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/9-OpenGL-on-Macintosh?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL on Macintosh</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/14-OpenGL-Toolkits-%28e-g-GLUT-GLFW-GLM%29?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL Toolkits (e.g. GLUT, GLFW, GLM)</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/17-OpenGL-drivers?s=b15c8f83840d4394eae0c4ead07d8208">OpenGL drivers</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/12-High-level-APIs-%28e-g-Inventor-Performer-Optimizer%29?s=b15c8f83840d4394eae0c4ead07d8208">High-level APIs (e.g. Inventor, Performer, Optimizer)</a></li>
+			
+		
+			
+				<li><a href="https://www.opengl.org/discussion_boards/forumdisplay.php/11-Suggestions-for-the-next-release-of-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208">Suggestions for the next release of OpenGL</a></li>
+			
+		
+			
+					</ol>
+				</li>
+			
+		
+		
+	</ul>
+</div>
+<div class="clear"></div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+	<!-- next / previous links -->
+	<div class="navlinks">
+		
+			<strong>«</strong>
+			<a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;goto=nextoldest" rel="nofollow">Previous Thread</a>
+			|
+			<a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL?s=b15c8f83840d4394eae0c4ead07d8208&amp;goto=nextnewest" rel="nofollow">Next Thread</a>
+			<strong>»</strong>
+		
+	</div>
+	<!-- / next / previous links -->
+
+<div id="thread_info" class="thread_info block">
+	
+	
+	
+	
+	
+	
+	<div class="options_block_container">
+		
+		<div class="options_block">
+			<h4 class="collapse blockhead options_correct">
+				<a class="collapse" id="collapse_posting_rules" href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL#top"><img src="Rotating%20object%20after%20transformation%20in%20modern%20OpenGL%3F_tiedostot/collapse_40b.png" alt=""></a>
+				Posting Permissions
+			</h4>
+			<div id="posting_rules" class="thread_info_block blockbody formcontrols floatcontainer options_correct">
+				
+<div id="forumrules" class="info_subblock">
+
+	<ul class="youcandoblock">
+		<li>You <strong>may not</strong> post new threads</li>
+		<li>You <strong>may not</strong> post replies</li>
+		<li>You <strong>may not</strong> post attachments</li>
+		<li>You <strong>may not</strong> edit your posts</li>
+		<li>&nbsp;</li>
+	</ul>
+	<div class="bbcodeblock">
+		<ul>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=bbcode" target="_blank">BB code</a> is <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=showsmilies" target="_blank">Smilies</a> are <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=bbcode#imgcode" target="_blank">[IMG]</a> code is <strong>On</strong></li>
+			<li><a href="https://www.opengl.org/discussion_boards/misc.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=bbcode#videocode" target="_blank">[VIDEO]</a> code is <strong>Off</strong></li>
+			<li>HTML code is <strong>Off</strong></li>
+		</ul>
+	</div>
+	<p class="rules_link"><a href="https://www.opengl.org/discussion_boards/misc.php?s=b15c8f83840d4394eae0c4ead07d8208&amp;do=showrules" target="_blank">Forum Rules</a></p>
+
+</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="clear: left">
+   
+   
+</div>
+
+<div id="footer" class="floatcontainer footer">
+
+	<form action="forum.php" method="get" id="footer_select" class="footer_select">
+
+		
+			<select name="styleid" onchange="switch_id(this, 'style')">
+				<optgroup label="Quick Style Chooser"><option class="hidden"></option></optgroup>
+				
+					
+					<optgroup label="&nbsp;Standard Styles">
+									
+					
+	<option value="1" class="" selected="selected">-- OpenGL Style</option>
+
+	<option value="4" class="">---- OpenGL Dark Style</option>
+
+					
+					</optgroup>
+										
+				
+				
+					
+					<optgroup label="&nbsp;Mobile Styles">
+					
+					
+	<option value="12" class="">-- Mobile</option>
+
+					
+					</optgroup>
+										
+				
+			</select>	
+		
+		
+		
+	</form>
+
+	<ul id="footer_links" class="footer_links">
+		<li><a href="https://www.opengl.org/discussion_boards/sendmessage.php?s=b15c8f83840d4394eae0c4ead07d8208" rel="nofollow" accesskey="9">Contact Us</a></li>
+		<li><a href="https://www.opengl.org/">OpenGL.org</a></li>
+		
+		
+		<li><a href="https://www.opengl.org/discussion_boards/archive/index.php?s=b15c8f83840d4394eae0c4ead07d8208">Archive</a></li>
+		
+		
+		
+		<li><a href="https://www.opengl.org/discussion_boards/showthread.php/199416-Rotating-object-after-transformation-in-modern-OpenGL#top" onclick="document.location.hash='top'; return false;">Top</a></li>
+	</ul>
+	
+	
+	
+	
+	
+        
+</div>
+</div> <!-- closing div for body_wrapper -->
+
+<div class="below_body">
+<div id="footer_time" class="shade footer_time">All times are GMT -7. The time now is <span class="time">06:36 AM</span>.</div>
+
+<div id="footer_copyright" class="shade footer_copyright">
+	<!-- Do not remove this copyright notice -->
+	Powered by <a href="https://www.vbulletin.com/" id="vbulletinlink">vBulletin®</a> Version 4.2.3 <br>Copyright © 2018 vBulletin Solutions, Inc. All rights reserved. 
+	<!-- Do not remove this copyright notice -->	
+</div>
+<div id="footer_morecopyright" class="shade footer_morecopyright">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	
+	
+</div>
+ 
+
+</div>
+
+</body></html>
