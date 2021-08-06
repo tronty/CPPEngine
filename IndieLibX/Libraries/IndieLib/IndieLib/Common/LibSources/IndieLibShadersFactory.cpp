@@ -11,7 +11,7 @@ struct IndieLibShadersFactory
 {
 	static std::string GetShader(const char* aShaderName);
 };
-
+#endif
 std::string IndieLibShadersFactory::GetShader(const char* aShaderName)
 {
 	std::string contents;
@@ -49,4 +49,4 @@ std::string IndieLibShadersFactory::GetShader(const char* aShaderName)
 	contents=buf;
 	return contents;
 }
-#endif
+
