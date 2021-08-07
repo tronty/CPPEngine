@@ -23,7 +23,7 @@ VsOut main(VsIn In)
 {
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv = In.uv;
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
 	return Out;
 }
 
@@ -192,7 +192,11 @@ float4 main(VsOut IN): COLOR
 	
 
 	float3 pos_intersect;
-	if (intersect_ray_road(pos_cam, dir_ray, pos_intersect))
+	#if 0
+	intersect_ray_road(pos_cam, dir_ray, pos_intersect);
+    	fragColor = float4(col_road_map(pos_intersect), 1.0);
+    	#else
+    	if (intersect_ray_road(pos_cam, dir_ray, pos_intersect))
 	{
 		fragColor = float4(col_road_map(pos_intersect), 1.0);
 	}
@@ -200,6 +204,7 @@ float4 main(VsOut IN): COLOR
 	{
 		fragColor = float4(col_sky(fragCoord.xy), 1.0);
 	}
+	#endif
 	return fragColor;
 }
 

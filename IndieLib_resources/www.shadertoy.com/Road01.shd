@@ -23,7 +23,7 @@ VsOut main(VsIn In)
 {
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv = In.uv;
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
 	return Out;
 }
 
@@ -171,6 +171,10 @@ float4 main(VsOut IN): COLOR
     float3 rd = (mul(inverseViewMatrix , float4(viewRayDir.x, viewRayDir.y, viewRayDir.z, 0.0))).xyz;
     float resT;
     
+    #if 0
+    castRay(ro, rd, resT);
+    fragColor = float4(terrainColor(ro, rd, resT), 1.0);
+    #else
     if (castRay(ro, rd, resT))
     {
         fragColor = float4(terrainColor(ro, rd, resT), 1.0);
@@ -179,6 +183,7 @@ float4 main(VsOut IN): COLOR
     {
         fragColor = float4(skyColor(fragCoord), 1.0);
     }
+    #endif
     return fragColor;
 }
 
