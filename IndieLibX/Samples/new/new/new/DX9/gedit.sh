@@ -1,1 +1,0 @@
-gedit ./ParallaxOcclusionMapping/ParallaxOcclusionMapping.cpp ./HDR/App.cpp ./HDRLighting/GlareDefD3D.cpp ./HDRLighting/HDRLighting.cpp ./HDRCubeMap/HDRCubeMap.cpp ./HDRPipeline/HDRPipeline.cpp ./HDRPipeline/Luminance.cpp ./HDRPipeline/PostProcess.cpp ./HDRPipeline/enumeration.cpp ./HDRPipeline/HDRScene.cpp ./HDRFormats/hdrformats.cpp &
