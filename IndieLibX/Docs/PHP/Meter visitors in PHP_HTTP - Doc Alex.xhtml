@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-GB">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en-GB" />
+<title>Meter visitors in PHP/HTTP - Doc Alex</title>
+<meta name="language" content="en-GB" />
+<meta name="description" content="Meter of visitors in PHP based on HTTP conditional requests" />
+<meta name="keywords" content="meter,visitors,HTTP,PHP,cache" />
+<meta name="viewport" content="initial-scale=1.0,width=device-width" />
+<link rel="stylesheet" type="text/css" href="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/general.css" title="Normal" />
+<link rel="author" href="https://alexandre.alapetite.fr/cv/" xml:lang="fr-FR" title="Alexandre Alapetite" />
+<link rel="start" href="https://alexandre.alapetite.fr/index.en.html" />
+<link rel="up" href="https://alexandre.alapetite.fr/doc-alex/index.en.html" />
+<link rel="help" href="https://alexandre.alapetite.fr/divers/apropos/index.en.html" />
+<link rel="search" href="https://alexandre.alapetite.fr/divers/recherche/index.en.html" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by-sa/2.0/fr/" />
+<link rel="alternate" hreflang="fr-FR" href="https://alexandre.alapetite.fr/doc-alex/compteur/index.fr.html" xml:lang="fr-FR" title="Compteur visites en français" />
+<link rel="appendix" type="text/plain" href="https://alexandre.alapetite.fr/doc-alex/compteur/meter.png.php.txt" title="Meter script to download" />
+<link rel="appendix" hreflang="fr-FR" href="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/compteur.xhtml" title="Comments" />
+</head>
+
+<body>
+<address><small>by <a href="https://alexandre.alapetite.fr/cv/alexandre-alapetite.en.html">Alexandre Alapetite</a> on 2005-02-27;
+updated on 2008-03-28</small></address>
+<h1 id="intro">Meter of visitors in <abbr title="Hypertext Preprocessor">PHP</abbr>/<abbr title="HyperText Transfer Protocol">HTTP</abbr></h1>
+<p>
+I will introduce on this page a meter system, which is light and relatively reliable.
+It is programmed with <abbr>PHP</abbr>, using the <a href="https://alexandre.alapetite.fr/doc-alex/php-http-304/index.en.html"><abbr>HTTP</abbr> cache and conditional requests mechanism</a>.
+</p>
+<div class="langue"><a href="https://alexandre.alapetite.fr/doc-alex/compteur/index.fr.html" rel="alternate" hreflang="fr-FR"><img src="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/fr.gif" alt="français" width="34" height="34" /></a></div>
+<hr class="n2" />
+
+<h2 id="exemple">Example</h2>
+<p>
+This example generates a <abbr title="Portable Network Graphics">PNG</abbr> picture.
+</p>
+<p>
+Estimated amount of visitors of this page: <img src="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/meter.png" alt="[Meter]" title="Number of visitors" height="18" />
+</p>
+<hr class="n2" />
+
+<h2 id="installation">Installation</h2>
+<p>
+The installation procedure consist in downloading the script and one library, to put them in one same directory,
+on a Web server running <abbr>PHP</abbr>, and to change their extension to <code>.php</code>
+</p>
+<ol>
+<li id="download">Download <a href="https://alexandre.alapetite.fr/doc-alex/compteur/meter.png.php.txt" type="text/plain">the <strong>script of the meter</strong> (1.3)</a>   <small>(2008-03-28)</small></li>
+<li>Download <a href="https://alexandre.alapetite.fr/doc-alex/php-http-304/http-conditional.php.txt" type="text/plain">the library for <abbr>HTTP</abbr> conditional requests</a>   <small>(<a href="https://alexandre.alapetite.fr/doc-alex/php-http-304/index.en.html">more info</a>)</small></li>
+</ol>
+<p>
+It is now needed to ensure that <abbr>PHP</abbr> is allowed to read and write in the directory where those two files have been places.<br />
+In particular, the script will save the amount of visitors in the file <code>meter.txt</code>,
+and create during each execution a temporary file <code>mutex2.txt</code>
+that is erased as soon as the script ends, some milliseconds later.
+</p>
+<hr class="n2" />
+
+<h2 id="Test">Testing</h2>
+<p>
+In order to test that everything is working, use your Web browser to see the file <code>meter.png.php</code><br />
+If testing locally, the address will look like <code>http://localhost/test/meter.png.php</code>
+</p>
+<p>
+If it does not work, comment temporarily the two lines <code>error_reporting(E_ERROR);</code> and <code>header('Content-type: image/png');</code>
+in order to see some possible error messages.
+When doing that, it is normal to see some strange text beginning by <code>‰PNG</code> or similar.
+</p>
+<!--<p>
+Check my <a href="../apache-php/apache2-php5.html" hreflang="fr-FR">documentation on setting up <abbr>PHP</abbr> with Apache</a> for more details. <small>(in French)</small>
+</p>-->
+<hr class="n2" />
+
+<h2 id="use">Utilisation</h2>
+<p>
+Once the meter is working, alone, it is time to include it in a Web page.
+This is done simply by adding a picture, whose address is the one of the meter script.
+</p>
+<pre class="incode mini">
+&lt;html&gt;
+ ...
+ &lt;img src="meter.png.php" height="18" alt="[Meter]" title="Number of visitors" /&gt;
+ ...
+&lt;/html&gt;
+</pre>
+<p>
+The width of the picture is automatic, and will increase when needed.
+</p>
+<hr class="n2" />
+
+<h2 id="code">Code</h2>
+<p>
+Here is the code of the script for the meter.
+</p>
+<pre class="incode mini"><em><a href="https://alexandre.alapetite.fr/doc-alex/compteur/meter.png.php.txt" type="text/plain" hreflang="en-GB">meter.png.php</a></em>
+
+&lt;?php
+$session=1800; <cite>//In seconds</cite>
+$fmeter='meter.txt';
+
+error_reporting(E_ERROR);
+header('Content-type: image/png');
+require_once('<a href="https://alexandre.alapetite.fr/doc-alex/php-http-304/http-conditional.php.txt" type="text/plain">http-conditional.php</a>');
+<cite>//Details about this library on <a href="https://alexandre.alapetite.fr/doc-alex/php-http-304/index.en.html">https://alexandre.alapetite.fr/doc-alex/php-http-304/</a></cite>
+
+$begin=time();
+$lastModif=max($begin-$session,filemtime($fmeter));
+if (httpConditional($lastModif,$session,0,true,true))
+ exit(); <cite>//Cache 30 minutes, private, compression</cite>
+
+ignore_user_abort(true);
+<cite>//&lt;aquire_mutex&gt;</cite>
+$mutexFile1='mutex1.txt'; <cite>//File to use for mutex method#1</cite>
+$mutexFile2='mutex2.txt'; <cite>//File to use for mutex method#2</cite>
+$mutexOK=false;
+$mutexMethod=0;
+if (file_exists($mutexFile1))
+{<cite>//Mutex method#1 (best, but does not work on many systems)</cite>
+ $mutexMethod=1;
+ $fp=fopen($mutexFile1,'w+');
+ $mutexOK=flock($fp,LOCK_EX);
+}
+else
+{<cite>//Mutex method#2 (assumes fopen() is atomic)</cite>
+ $mutexMethod=2;
+ if (file_exists($mutexFile2)&amp;&amp;($begin-filemtime($mutexFile2)&gt;30))
+ {<cite>//In case a previous old execution failed to clean the mutex file.
+  //Resistant on concurrent processes</cite>
+  @chmod($mutexFile2,0666);
+  unlink($mutexFile2);
+ }
+ $attempt=1;
+ while (($attempt&lt;50)&amp;&amp;(@fopen($mutexFile2,'x')===false))
+ {
+  $begin2=time();
+  usleep($attempt*5000); <cite>//Sleep in milliseconds</cite>
+  $usleep2=1000000;
+  while (($usleep2&gt;0)&amp;&amp;(time()-$begin2&gt;$attempt*5000))
+   $usleep2--; <cite>//If usleep() does not work</cite>
+  $attempt++;
+ }
+ $mutexOK=($attempt&lt;50);
+}
+<cite>//&lt;/aquire_mutex&gt;</cite>
+if ($mutexOK)
+{
+ if($myMeter=fopen($fmeter,'r'))
+ {<cite>//Read curent meter</cite>
+  $meter=trim(fgets($myMeter,12));
+  $lastIP=trim(fgets($myMeter,36));
+  fclose($myMeter);
+  if (!is_numeric($meter))
+   $meter=0;
+ }
+ else
+ {
+  $meter=0;
+  $lastIP=md5('127.0.0.0');
+ }
+ $IP=md5($_SERVER['REMOTE_ADDR']);
+ if (((time()-$clientCacheDate)&gt;$session)&amp;&amp;
+     !(($clientCacheDate&lt;632003440)&amp;&amp;($IP==$lastIP)))
+     <cite>//Small protection against multiple refresh</cite>
+ {<cite>//If the session has expired, increment the meter</cite>
+  $meter++;
+  if($myMeter=fopen($fmeter,'w'))
+  {
+   fputs($myMeter,$meter."\n");
+   fputs($myMeter,$IP."\n");
+   fclose($myMeter);
+  }
+  clearstatcache();
+  <cite>//Update HTTP headers with new "Last-Modified" and "ETag"</cite>
+  httpConditionalRefresh(filemtime($fmeter));
+ }
+}
+else $meter='?';
+<cite>//&lt;release_mutex&gt;</cite>
+switch ($mutexMethod)
+{
+ case 1:
+  flock($fp,LOCK_UN);
+  fclose($fp);
+  break;
+ case 2:
+  @chmod($mutexFile2,0666);
+  unlink($mutexFile2);
+  break;
+}
+<cite>//&lt;/release_mutex&gt;</cite>
+$font=5;
+$im=imagecreate(5+2*$font*strlen($meter),18);
+$bg=imagecolorallocate($im,255,255,255);
+imagecolortransparent($im,$bg);
+$tc=imagecolorallocate($im,0,0,0);
+imagestring($im,$font,4,2,$meter,$tc);
+imagepng($im);
+imagedestroy($im);
+?&gt;
+</pre>
+<hr class="n2" />
+
+<h2 id="licence">Licence</h2>
+<p>
+<a href="https://alexandre.alapetite.fr/divers/apropos/index.en.html#by-sa">This content is protected</a> by a licence
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/2.0/fr/">
+Creative Commons <cite>Attribution-ShareAlike 2.0 France</cite> <code>"BY-SA (FR)"</code>
+<img alt="[Creative Commons License]" src="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/cc.gif" title="CC BY-SA (FR)" width="88" height="31" /></a>
+</p>
+<hr class="n2" />
+
+<h2 id="comments">Comments</h2>
+<ul>
+<li><a href="https://alexandre.alapetite.fr/blog/system/notes.php?title=Meter&amp;page=p6q64786r22757564707q6s636s2375647s6r6s276s6p626s2" hreflang="fr-FR" rel="nofollow">Post your comments.</a>
+   <small>(Multilingual French, Danish, English)</small>
+   (Then <a id="refresh" href="#comments">refresh</a> if you cannot see your message)</li>
+</ul>
+<p><object class="notes" data="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/compteur.xhtml" type="text/html" standby="Comments">
+object: <a href="https://alexandre.alapetite.fr/blog/notes/compteur.html" hreflang="fr-FR">View comments</a>
+</object></p>
+<script src="Meter%20visitors%20in%20PHP_HTTP%20-%20Doc%20Alex_tiedostot/comments.js"></script>
+<ul>
+<li><a href="https://alexandre.alapetite.fr/blog/notes/compteur.html" hreflang="fr-FR">View comments only</a></li>
+</ul>
+
+<div class="sb"><a href="https://alexandre.alapetite.fr/" title="Original Web-site" class="top" accesskey="1">https://alexandre.alapetite.fr</a></div>
+<hr />
+<p><a href="https://alexandre.alapetite.fr/doc-alex/index.en.html">Back</a></p>
+</body>
+</html>

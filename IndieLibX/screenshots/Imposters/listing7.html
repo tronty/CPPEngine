@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 7</title>
+</head>
+<body>
+<pre>
+/// Generate a single imposter.
+/// ** BEWARE ** this is the inefficient imposter generation method and is for example only.
+bool GenerateImposter(const D3DXVECTOR3& curCameraPos, const D3DXVECTOR3& curCameraUp,
+			  const D3DXMATRIX& viewMatrix, const D3DXMATRIX& projMatrix,
+			  const D3DXMATRIX& worldTransform, Mesh* pMesh,
+			  RenderTexture* pImposterRenderTexture, Imposter* pImposter)
+{
+	if (!pImposterRenderTexture->BeginScene())
+	{
+		return false;
+	}
+
+	D3DXVECTOR3 boundingBoxVerts[NUM_BOX_VERTS];
+
+	pMesh->GetBoundingBoxVerts(boundingBoxVerts);
+
+	// Create the imposter geometry, view and projection matrices.
+
+	float nearPlane, farPlane;
+	g_pImposterSystem->CreateImposterBillboard(
+curCameraPos, viewMatrix, projMatrix,
+				worldTransform, boundingBoxVerts,
+pMesh->GetBoundingSphere().radius,
+				pImposter, nearPlane, farPlane);
+
+	// Initialise texture coordinates for imposter billboard.
+
+	pImposter->verts[0].uv = D3DXVECTOR2(0, 0);
+	pImposter->verts[1].uv = D3DXVECTOR2(1, 0);
+	pImposter->verts[2].uv = D3DXVECTOR2(0, 1);
+	pImposter->verts[3].uv = D3DXVECTOR2(1, 0);
+	pImposter->verts[4].uv = D3DXVECTOR2(1, 1);
+	pImposter->verts[5].uv = D3DXVECTOR2(0, 1);
+
+	D3DXMATRIX imposterViewMatrix, imposterProjMatrix;
+	g_pImposterSystem->CreateMatrices(curCameraPos, curCameraUp,
+						imposterViewMatrix, imposterProjMatrix,
+             					pImposter, nearPlane, farPlane);
+
+	// Initialise DirectX transforms.
+
+	LPDIRECT3DDEVICE9 pD3DDevice = DXUTGetD3DDevice();
+	pD3DDevice->SetTransform(D3DTS_VIEW, &imposterViewMatrix);
+	pD3DDevice->SetTransform(D3DTS_PROJECTION, &imposterProjMatrix);
+
+	// Set the world transform for the model.
+
+	pD3DDevice->SetTransform(D3DTS_WORLD, &worldTransform);
+
+	// Setup render state.
+
+	pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+	pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+	// Clear the texture.
+
+D3DCOLOR color = D3DCOLOR_RGBA(0, 0, 0, 0);
+	pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, color, 1.0f, 0);
+
+	// Render the mesh to the imposter.
+
+	pMesh->Render();
+
+	pImposterRenderTexture->EndScene();
+
+	return true;
+}
+
+</pre>
+</body>
+</html>

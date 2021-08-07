@@ -1,0 +1,392 @@
+<!--?xml version='1.0'?-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+  <title>libnoise: Tutorial 8: Creating spherical planetary terrain</title>
+  <link rel="stylesheet" type="text/css" href="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/style.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+ </head>
+ <body>
+  <table class="layout">
+   <tbody><tr>
+    <td class="sidebar" rowspan="2">
+     <p>
+      Navigation menu
+     </p>
+     <ul class="toc">
+      <li>
+       <a href="http://libnoise.sourceforge.net/index.html">Main</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/downloads/index.html">Downloads</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/coherentnoise/index.html">What is coherent noise?</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/noisegen/index.html">Generating coherent noise</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/glossary/index.html">Glossary</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/examples/index.html">Examples</a>
+       <ul class="toc">
+        <li>
+         <a href="http://libnoise.sourceforge.net/examples/textures/index.html">Procedural textures</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/examples/complexplanet/index.html">Complex planetary surface</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/examples/worms/index.html">Perlin worms</a>
+        </li>
+       </ul>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/docs/index.html">Docs</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/tutorials/index.html">Tutorials</a>
+       <ul class="toc">
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial1.html">Tutorial 1</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial2.html">Tutorial 2</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial3.html">Tutorial 3</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial4.html">Tutorial 4</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial5.html">Tutorial 5</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial6.html">Tutorial 6</a>
+        </li>
+        <li>
+         <a href="http://libnoise.sourceforge.net/tutorials/tutorial7.html">Tutorial 7</a>
+        </li>
+        <li>
+         <strong>Tutorial 8</strong>
+        </li>
+       </ul>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/cvs/index.html">CVS</a>
+      </li>
+      <li>
+       <a href="http://libnoise.sourceforge.net/links/index.html">Links</a>
+      </li>
+     </ul>
+    </td>
+    <td class="header">
+     <p>
+      <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/libnoise.png" alt="libnoise logo">
+     </p>   
+     <p>
+      A portable, open-source, coherent noise-generating library for C++
+     </p>
+     <hr>
+    </td>
+   </tr>
+   <tr>
+    <td class="content">
+
+<!-- start rich gooey content -->
+
+<div class="section">
+ <h1>Tutorial 8: Creating spherical planetary terrain</h1>
+ <p>
+  In this tutorial, you'll generate a terrain height map that can be
+  seamlessly wrapped around a sphere.  These kinds of height maps are ideal
+  for creating your own planets.
+ </p>
+</div>
+<div class="section">
+ <h2>Table of contents</h2>
+ <ol>
+  <li>
+   <a href="#sphere">Configuring the spherical-noise map builder</a>
+  </li>
+  <li>
+   <a href="#zoom">Zooming in</a>
+  </li>
+  <li>
+   <a href="#conclusion">Conclusion</a>
+  </li>
+ </ol>
+</div>
+<div class="section">
+ <h2><a name="sphere">Configuring the spherical noise-map builder</a></h2>
+ <p>
+  In all of these tutorials so far, you've created a terrain height map
+  using a <em>planar noise-map builder</em>.  This builder generates its
+  input values along the surface of a two-dimensional plane.  Because
+  libnoise works with three-dimensional input values, the noiseutils library
+  provides some builders that generate these values along the surface of a
+  specific three-dimensional object.
+ </p>
+ <p>
+  In this tutorial, you'll use a <em>spherical noise-map builder</em>.
+  This type of builder generates its input values along the surface of a
+  sphere.  It describes these input values using a spherical coordinate
+  system (latitude/longitude) instead of a planar coordinate system
+  (<i>x</i>, <i>z</i>).  It then "flattens" these coordinates onto a plane
+  so that it can write
+  <a href="http://libnoise.sourceforge.net/glossary/index.html#coherentnoise">coherent noise</a> into
+  a two-dimensional height map.  This process is called <em>spherical
+  mapping</em>.
+ </p>
+ <p>
+  To create a spherical noise-map builder, you'll replace the
+  <span class="code">NoiseMapBuilderPlane</span> object with a
+  <span class="code">NoiseMapBuilderSphere</span> object.
+ </p>
+ <p>
+  In preparation for this tutorial, open the source file you created in
+  the <a href="http://libnoise.sourceforge.net/tutorials/tutorial7.html">previous tutorial</a> and erase all the code
+  in it.  Add the following code:
+ </p>
+<pre class="code"><span class="changecode">#include &lt;noise/noise.h&gt;
+#include "noiseutils.h"
+
+using namespace noise;
+
+int main (int argc, char** argv)
+{
+  module::Perlin myModule;
+
+  utils::NoiseMap heightMap;
+
+  utils::RendererImage renderer;
+  utils::Image image;
+  renderer.SetSourceNoiseMap (heightMap);
+  renderer.SetDestImage (image);
+  renderer.ClearGradient ();
+  renderer.AddGradientPoint (-1.0000, utils::Color (  0,   0, 128, 255)); // deeps
+  renderer.AddGradientPoint (-0.2500, utils::Color (  0,   0, 255, 255)); // shallow
+  renderer.AddGradientPoint ( 0.0000, utils::Color (  0, 128, 255, 255)); // shore
+  renderer.AddGradientPoint ( 0.0625, utils::Color (240, 240,  64, 255)); // sand
+  renderer.AddGradientPoint ( 0.1250, utils::Color ( 32, 160,   0, 255)); // grass
+  renderer.AddGradientPoint ( 0.3750, utils::Color (224, 224,   0, 255)); // dirt
+  renderer.AddGradientPoint ( 0.7500, utils::Color (128, 128, 128, 255)); // rock
+  renderer.AddGradientPoint ( 1.0000, utils::Color (255, 255, 255, 255)); // snow
+  renderer.EnableLight ();
+  renderer.SetLightContrast (3.0);
+  renderer.SetLightBrightness (2.0);
+  renderer.Render ();
+
+  utils::WriterBMP writer;
+  writer.SetSourceImage (image);
+  writer.SetDestFilename ("tutorial.bmp");
+  writer.WriteDestFile ();
+  
+  return 0;
+}</span>
+</pre>
+ <p>
+  At this point, this source file is similar to the file you created at the
+  end of the <a href="http://libnoise.sourceforge.net/tutorials/tutorial3.html">third tutorial</a>, but the
+  <span class="code">NoiseMapBuilderPlane</span> object has been removed.
+ </p>
+ <p>
+  Now, you'll create a
+  <span class="code">NoiseMapBuilderSphere</span> object and pass the
+  <a href="http://libnoise.sourceforge.net/glossary/index.html#perlinnoise">Perlin-noise</a> module to
+  it.  Add the following highlighted code:
+ </p>
+<pre class="code">  utils::NoiseMap heightMap;
+  <span class="changecode">utils::NoiseMapBuilderSphere heightMapBuilder;
+  heightMapBuilder.SetSourceModule (myModule);
+  heightMapBuilder.SetDestNoiseMap (heightMap);</span>
+</pre>
+ <p>
+  Next, you'll specify the size of the terrain height map to generate.
+  Because you're generating a spherical height map, its width should be
+  double its height in order to reduce warping.  For this tutorial, you'll
+  specify a size of 512 x 256 points.  Add the following highlighted code:
+ </p>
+<pre class="code">  utils::NoiseMap heightMap;
+  utils::NoiseMapBuilderSphere heightMapBuilder;
+  heightMapBuilder.SetSourceModule (myModule);
+  heightMapBuilder.SetDestNoiseMap (heightMap);
+  <span class="changecode">heightMapBuilder.SetDestSize (512, 256);</span>
+</pre>
+ <p>
+  Now, you'll need to set the (latitude, longitude) coordinates of the
+  bounding rectangle in which to retrieve the
+  <a href="http://libnoise.sourceforge.net/glossary/index.html#coherentnoise">coherent-noise</a> values.
+  Because you're generating a terrain height map for an entire planet,
+  you'll set these coordinates such that it encompasses the entire planet.
+  This bounding rectangle is bounded 90 degrees south, 90 degrees north,
+  180 degrees west, and 180 degrees east.  Add the following highlighted
+  code:
+ </p>
+<pre class="code">  utils::NoiseMap heightMap;
+  utils::NoiseMapBuilderSphere heightMapBuilder;
+  heightMapBuilder.SetSourceModule (myModule);
+  heightMapBuilder.SetDestNoiseMap (heightMap);
+  heightMapBuilder.SetDestSize (512, 256);
+  <span class="changecode">heightMapBuilder.SetBounds (-90.0, 90.0, -180.0, 180.0);</span>
+</pre>
+ <p>
+  Coordinates in the eastern and northern hemispheres are positive.
+  Coordinates in the western and southern hemispheres are negative.
+ </p>
+ <p>
+  Now you can build the spherical height map.  Add the following highlighted
+  code:
+ </p>
+<pre class="code">  utils::NoiseMap heightMap;
+  utils::NoiseMapBuilderSphere heightMapBuilder;
+  heightMapBuilder.SetSourceModule (myModule);
+  heightMapBuilder.SetDestNoiseMap (heightMap);
+  heightMapBuilder.SetDestSize (512, 256);
+  heightMapBuilder.SetBounds (-90.0, 90.0, -180.0, 180.0);
+  <span class="changecode">heightMapBuilder.Build ();</span>
+</pre>
+ <p>
+  Now you're ready to render the spherical height map.  Compile and run the
+  program, then open the <span class="code">tutorial.bmp</span> file:
+ </p>
+ <p>
+  <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/sphericalheightmap.jpg" alt="Rendering of a spherical terrain height map">
+ </p>
+ <p>
+  This image has some interesting properties:
+ </p>
+ <ul>
+  <li>
+   The left and right edges seamlessly join together.  Open this image in
+   your favorite image editor to see for yourself.
+  </li>
+  <li>
+   It becomes increasingly distorted with distance from the equator.
+   Maximum distortion occurs at the poles.  (These distortions disappear
+   when you wrap it around a sphere.)
+  </li>
+ </ul>
+ <p>
+  If you use a 3D application to wrap this image around a sphere, you'll
+  create a planet that has no texture distortions nor seams.  For example,
+  this image has been applied to a planet in
+  <a href="http://celestia.sourceforge.net/">Celestia</a>, a real-time visual
+  space simulator:
+ </p>
+ <p>
+  <a href="http://libnoise.sourceforge.net/tutorials/images/celestia.jpg"><img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/celestia.jpg" alt="Spherical terrain height map in Celestia"></a>
+ </p>
+ <p>
+  If you have Celestia and you feel comfortable with modifying the
+  <span class="code">solarsys.ssc</span>, you can wrap this image around a
+  planet, and then spin the planet in any direction and not find any
+  texture seams, other than some minor artifacting near the poles.
+  (Modifying this file is beyond the scope of the tutorial.)
+ </p>
+</div>
+<div class="section">
+ <h2><a name="zoom">Zooming in</a></h2>
+ <p>
+  In this section, you'll zoom into a small area of the planet and render
+  the terrain height map from that area.  You'll zoom into an area defined
+  by a bounding rectangle, 30-degrees on a side, with the following
+  coordinates:
+ </p>
+ <ul>
+  <li>Southernmost coordinate: N 0°</li>
+  <li>Northernmost coordinate: N 30°</li>
+  <li>Westernmost coordinate: E 50°</li>
+  <li>Easternmost coordinate: E 80°</li>
+ </ul>
+ <p>
+  To zoom into that area, modify the following highlighted code:
+ </p>
+<pre class="code">  heightMapBuilder.SetDestNoiseMap (heightMap);
+  heightMapBuilder.SetDestSize (512, 256);
+  <span class="changecode">heightMapBuilder.SetBounds (0.0, 30.0, 50.0, 80.0);</span>
+  heightMapBuilder.Build ();
+</pre>
+ <p>
+  Because this bounding rectangle is actually a square, the terrain height
+  map should also be square.  Modify the following highlighted code:
+ </p>
+<pre class="code">  heightMapBuilder.SetDestNoiseMap (heightMap);
+  <span class="changecode">heightMapBuilder.SetDestSize (256, 256);</span>
+  heightMapBuilder.SetBounds (0.0, 30.0, 50.0, 80.0);
+  heightMapBuilder.Build ();
+</pre>
+ <p>
+  Once again, compile and run the program, then open the
+  <span class="code">tutorial.bmp</span> file:
+ </p>
+ <p>
+  <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/zoomsphericalheightmap.jpg" alt="Zoomed-in rendering of a spherical terrain height map">
+ </p>
+ <p>
+  Unfortunately, the terrain height map lacks detail at this zoom level.
+  This is because the number of
+  <a href="http://libnoise.sourceforge.net/glossary/index.html#octave">octaves</a> that is used to
+  generate the <a href="http://libnoise.sourceforge.net/glossary/index.html#perlinnoise">Perlin noise</a>
+  is rather small.  To add more detail, you'll need to increase the number
+  of octaves.  Modify the following highlighted code:
+ </p>
+<pre class="code">  module::Perlin myModule;
+  <span class="changecode">myModule.SetOctaveCount (10);</span>
+</pre>
+ <p>
+  Compile and run the program again, then open the
+  <span class="code">tutorial.bmp</span> file:
+ </p>
+ <p>
+  <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/zoomsphericalheightmap2.jpg" alt="Detailed zoomed-in rendering of a spherical terrain height map">
+ </p>
+ <p>
+  Notice that this rendering has more detail than the previous rendering.
+ </p>
+</div>
+<div class="section">
+ <h2><a name="conclusion">Conclusion</a></h2>
+ <p>
+  In this tutorial, you've created a spherical height map that is suitable
+  for generating entire planets.  You've seen how renderings of these height
+  maps can be seamlessly wrapped around spherical objects in 3D
+  applications.  You've also zoomed into a small area of the height map and
+  increased its detail.
+ </p>
+ <p>
+  With all of the tutorials you've done, you have learned enough about
+  libnoise to create immense worlds to explore.  See what you can come up
+  with.
+ </p>
+</div>
+<div class="section">
+ <a href="http://libnoise.sourceforge.net/tutorials/tutorial7.html">&lt;&lt; Previous tutorial</a>
+</div>
+
+<!-- end rich gooey content -->
+
+    </td>
+   </tr>
+   <tr>
+    <td class="footer" colspan="2">
+     <p>
+      © 2003-2005 Jason Bevins
+     </p>
+     <p>
+      <a href="http://validator.w3.org/check?uri=referer"><img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/valid-xhtml10.png" alt="Valid XHTML 1.0!" width="88" height="31"></a>
+      <a href="http://jigsaw.w3.org/css-validator/"><img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/vcss.gif" alt="Valid CSS!" width="88" height="31">
+      </a>
+      <a href="http://sourceforge.net/">
+       <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/sflogo.png" alt="SourceForge.net Logo" width="88" height="31">
+      </a>
+      <img src="libnoise%20Tutorial%208%20Creating%20spherical%20planetary%20terrain_tiedostot/notepad.jpg" alt="Designed with Microsoft Notepad.exe">
+     </p>
+    </td>
+   </tr>
+  </tbody></table>
+ 
+
+</body></html>
