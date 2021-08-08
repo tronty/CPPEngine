@@ -1,0 +1,27 @@
+
+struct vert2frag
+{
+    float4 HPosition    : POSITION;
+    float4 Color0       : COLOR0;
+    float4 tc0		: TEXCOORD0;
+    float4 tc1		: TEXCOORD1;
+};
+
+
+half4 main(
+            vert2frag       IN,
+			const uniform float scaling,
+			const uniform samplerRECT teximage : TEXUNIT0,
+			const uniform samplerRECT texoffset : TEXUNIT1
+            ) : COLOR
+{ 
+	half4 texture;
+	half2 offset;
+	float2	newtexcoord;
+	offset = h2texRECT(texoffset, IN.tc1.xy);
+	offset = offset * 2.0 - 1.0;
+	offset *= scaling;
+	newtexcoord = IN.tc0.xy + offset;
+	texture = texRECT(teximage, newtexcoord);
+    return texture;
+}

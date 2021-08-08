@@ -1,0 +1,61 @@
+[Vertex shader]
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0: TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 t0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = pos;
+	Out.tc0 = t0;
+
+	return Out;
+}
+
+
+[Fragment shader]
+
+sampler2D PivotM;
+sampler2D RotationDeg;	
+
+float4x4 Euler2floax4x4(float3 e)
+{
+	float				fCos, fSin;
+	float4x4			tm, m;
+
+	fCos = cos(e.x*3.14159f/180.0f);
+	fSin = sin(e.x*3.14159f/180.0f);
+	float4x4 MX = float4x4(1.0f, 0.0f, 0.0f, 0.0f,
+							0.0f, fCos, -fSin, 0.0f,
+							0.0f, fSin, fCos, 0.0f,
+							0.0f, 0.0f, 0.0f, 1.0f);
+
+	fCos = cos(e.y*3.14159f/180.0f);
+	fSin = sin(e.y*3.14159f/180.0f);
+	float4x4 MY = float4x4(fCos, 0.0f, -fSin, 0.0f,
+							0.0f, 1.0f, 0.0f, 0.0f,
+							fSin, 0.0f, fCos, 0.0f,
+							0.0f, 0.0f, 0.0f, 1.0f);
+
+	fCos = cos(e.z*3.14159f/180.0f);
+	fSin = sin(e.z*3.14159f/180.0f);
+	float4x4 MZ = float4x4(fCos,  -fSin, 0.0f, 0.0f,
+							fSin, fCos, 0.0f, 0.0f,
+							0.0f,  0.0f, 1.0f, 0.0f,
+							0.0f,  0.0f, 0.0f, 1.0f);   
+	tm = mul(MX, MY); 
+	m = mul(tm, MZ);
+	
+	return m;
+}
+
+float4 main(float2 t0: TEXCOORD0) : COLOR {
+	float3 Euler = tex2D(RotationDeg, float2(0.5f, 0.5f)).xyz;
+	float4x4 rm = Euler2floax4x4(Euler);
+	rm[3] = tex2D(PivotM, float2(0.875f, 0.5f));
+	
+	return rm[t0.x*4.0f];
+}
+

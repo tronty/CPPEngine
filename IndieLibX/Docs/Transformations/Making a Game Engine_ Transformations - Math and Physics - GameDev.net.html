@@ -1,0 +1,4829 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Making a Game Engine: Transformations - Math and Physics - GameDev.net</title>
+<!--[if lt IE 9]>
+			<link rel="stylesheet" type="text/css" href="https://www.gamedev.net/uploads/themes/css_built_7/5e61784858ad3c11f00b5706d12afe52_ie8.css.46208221aec403fb360f3cc29cd88cc8.css">
+		    
+		<![endif]-->
+		
+<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+	
+		
+			
+				<meta name="description" content="See Also:
+Making a Game Engine: Core Design Principles
+
+Moving objects around in a scene is not hard to do. You simply draw objects at different locations ea...">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:title" content="Making a Game Engine: Transformations">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:type" content="object">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:url" content="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:description" content="See Also:
+Making a Game Engine: Core Design Principles
+
+Moving objects around in a scene is not hard to do. You simply draw objects at different locations ea...">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:updated_time" content="2014-01-30T06:19:27Z">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:image" content="https://www.gamedev.net/uploads/bfcd6066d8d5125f7be929b08e17dddd.jpg">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:site_name" content="GameDev.net">
+			
+		
+	
+
+	
+		
+			
+				<meta property="og:locale" content="en_US">
+			
+		
+	
+
+<meta name="theme-color" content="#3d6594">
+<link rel="canonical" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/">
+<link rel="alternate" type="application/rss+xml" title="GameDev.net" href="https://www.gamedev.net/rss/1-gamedevnet.xml/"><link rel="alternate" type="application/rss+xml" title="GameDev.net Forums" href="https://www.gamedev.net/rss/2-gamedevnet-forums.xml/"><link rel="alternate" type="application/rss+xml" title="GameDev.net Blogs" href="https://www.gamedev.net/rss/3-gamedevnet-blogs.xml/"><link rel="alternate" type="application/rss+xml" title="GameDev.net News" href="https://www.gamedev.net/rss/4-gamedevnet-news.xml/"><link rel="alternate" type="application/rss+xml" title="GameDev.net Jobs" href="https://www.gamedev.net/rss/5-gamedevnet-jobs.xml/">
+
+		
+
+
+	
+		<link href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/css.css" rel="stylesheet">
+	
+
+
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/2cdd2c4add71ba3c2ce53dcb7b9aa72a_spaciouslogin.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/341e4a57816af3ba440d891ca87450ff_framework.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/05e81b71abe4f22d6eb8d1a929494829_responsive.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/812f6b3e6ee98834ba1106b1efe4bd34_discord.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/90eb5adf50a8c640f633d47fd7eb1778_core.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/5a0da001ccc2200dc5625c3f3934497d_core_responsive.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/9037af43189dec1f1ca4d162227a3350_record.css" media="all">
+
+	<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/97c0a48072ce601c9764cb6b00a6588a_page.css" media="all">
+
+
+
+
+<link rel="stylesheet" href="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/258adbb6e4f3e83cd3b355f84e3fa002_custom.css" media="all">
+
+
+
+		
+		
+
+	<link rel="shortcut icon" href="https://www.gamedev.net/uploads/themes/monthly_2017_04/favicon.ico.59546a253c4cfb8defa436b7865b4736.ico">
+
+	<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head><body class="ipsApp ipsApp_front ipsJS_has ipsClearfix cCmsDatabase_articles ipsApp_noTouch cWithGuestTerms ipsLayout_sidebarUsed" data-controller="core.front.core.app" data-message="" data-pageapp="cms" data-pagelocation="front" data-pagemodule="pages" data-pagecontroller="page" itemscope="" itemtype="http://schema.org/WebSite"><div id="MathJax_Message" style="display: none;"></div><meta itemprop="url" content="https://www.gamedev.net/">
+<a href="#elContent" class="ipsHide" title="Go to main content on this page" accesskey="m">Jump to content</a>
+		
+		
+<div id="ipsLayout_header" class="ipsClearfix">
+  
+
+  
+
+
+  
+<ul id="elMobileNav" class="ipsList_inline ipsResponsive_hideDesktop ipsResponsive_block" data-controller="core.front.core.mobileNav" data-default="cms_records1">
+	
+		
+			
+			
+				
+				
+			
+				
+				
+			
+				
+					<li id="elMobileBreadcrumb">
+						<a href="https://www.gamedev.net/articles/programming/math-and-physics/">
+							<span>Math and Physics</span>
+						</a>
+					</li>
+				
+				
+			
+				
+				
+			
+		
+	
+	
+	
+	<li>
+		<a data-action="defaultStream" class="ipsType_light" href="https://www.gamedev.net/discover/"><i class="icon-newspaper"></i></a>
+	</li>
+
+	
+		<li class="ipsJS_show">
+			<a href="https://www.gamedev.net/search/" data-action="mobileSearch"><i class="fa fa-search"></i></a>
+		</li>
+	
+	<li data-ipsdrawer="" data-ipsdrawer-drawerelem="#elMobileDrawer">
+		<a href="#">
+			
+			
+				
+			
+			
+			
+			<i class="fa fa-navicon"></i>
+		</a>
+	</li>
+</ul>
+  <header>
+    <div class="ipsLayout_container">
+      <div class="ipsPos_left">
+        
+
+
+<a href="https://www.gamedev.net/" id="elLogo" accesskey="1"><img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/gamedev-logo-2017-368x76.png" alt="GameDev.net"></a>
+
+      </div>
+      
+      	
+
+	
+
+<nav class="ipsLayout_container ipsPos_left" data-controller="core.front.core.navBar" id="ips_uid_601_2">
+  <div class="ipsNavBar_primary ipsNavBar_noSubBars ipsClearfix">
+    <ul data-role="primaryNavBar ipsList_inline" class="ipsResponsive_showDesktop ipsResponsive_block">
+
+      
+      
+      
+
+      
+        
+          
+          
+            
+          
+      <!-- class='ipsNavBar_active' data-active -->
+          <li id="elNavSecondary_37" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_37" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_37" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="37" data-ipsmenu-withstem="false" data-navdefault="">
+                Browse <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_37_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			
+			<li id="elNavigation_af5efc1503fa6ac38fb9d0021f1e2687" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Articles &amp; Tutorials
+				</a>
+				<ul id="elNavigation_af5efc1503fa6ac38fb9d0021f1e2687_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/">
+					All Categories
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/audio/">
+					Audio
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/business/">
+					Business
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/game-design/">
+					Game Design
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/industry/">
+					Industry
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/programming/">
+					Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/articles/visual-arts/">
+					Visual Arts
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/calendar/">
+					Calendar
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/news/">
+					News
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/gallery/">
+					Gallery
+				</a>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_40" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_40" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_40" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="40" data-ipsmenu-withstem="false">
+                Forums <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_40_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/71-for-beginners/">
+					Beginners
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_23c3e90387f9b8e510ddb918adfd7cb2" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Programming
+				</a>
+				<ul id="elNavigation_23c3e90387f9b8e510ddb918adfd7cb2_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/5-graphics-and-gpu-programming/">
+					Graphics and GPU Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/6-artificial-intelligence/">
+					Artificial Intelligence
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/7-math-and-physics/">
+					Math and Physics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/8-networking-and-multiplayer/">
+					Networking and Multiplayer
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/9-general-and-gameplay-programming/">
+					General and Gameplay Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/10-engines-and-middleware/">
+					Engines and Middleware
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_1c10474c1d400af2a4c715e7ffdb18f9" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Visual Arts
+				</a>
+				<ul id="elNavigation_1c10474c1d400af2a4c715e7ffdb18f9_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/12-2d-and-3d-art/">
+					2D and 3D Art
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/13-critique-and-feedback/">
+					Critique and Feedback
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_badd004d72a75e4409195f65f3af6375" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Business
+				</a>
+				<ul id="elNavigation_badd004d72a75e4409195f65f3af6375_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/21-career-development/">
+					Career Development
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/22-production-and-management/">
+					Production and Management
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/23-business-and-law/">
+					Business and Law
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_bb4d95c46e642673b887257817b1a977" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Audio
+				</a>
+				<ul id="elNavigation_bb4d95c46e642673b887257817b1a977_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/18-music-and-sound-fx/">
+					Music and Sound FX
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_32f00bfec2fbb22ea09de1f2f69347ed" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Game Design
+				</a>
+				<ul id="elNavigation_32f00bfec2fbb22ea09de1f2f69347ed_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/19-game-design-and-theory/">
+					Game Design and Theory
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/20-writing-for-games/">
+					Writing for Games
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_d644243f15d17af161bfea3e9dc9a64c" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Community
+				</a>
+				<ul id="elNavigation_d644243f15d17af161bfea3e9dc9a64c_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/25-gdnet-lounge/">
+					GDNet Lounge
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/26-gdnet-comments-suggestions-and-ideas/">
+					GDNet Comments, Suggestions, and Ideas
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/27-coding-horrors/">
+					Coding Horrors
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/28-your-announcements/">
+					Your Announcements
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/29-hobby-project-classifieds/">
+					Hobby Project Classifieds
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/30-indie-showcase/">
+					Indie Showcase
+				</a>
+			</li>
+		
+	
+
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_a06496dec22bd893ce7c608b4b43f326" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Affiliates
+				</a>
+				<ul id="elNavigation_a06496dec22bd893ce7c608b4b43f326_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/33-nehe-productions/">
+					NeHe Productions
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/34-angelcode/">
+					AngelCode
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_3fb307c61d0cd71ae7665ff8efdf857c" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Topical
+				</a>
+				<ul id="elNavigation_3fb307c61d0cd71ae7665ff8efdf857c_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/73-virtual-and-augmented-reality/">
+					Virtual and Augmented Reality
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/75-news/">
+					News
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/">
+					All Forums
+				</a>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_43" data-role="navBarItem" data-navapp="core" data-navext="CustomItem">
+            
+            
+              <a href="https://www.gamedev.net/blogs/" data-navitem-id="43">
+                Blogs
+              </a>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_41" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_41" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_41" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="41" data-ipsmenu-withstem="false">
+                Careers <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_41_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/contractors/">
+					Contractors
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/forums/forum/29-hobby-project-classifieds/">
+					Hobby Projects
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_052db6df838a72f29c3c1871eddd2be2" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					Game Jobs
+				</a>
+				<ul id="elNavigation_052db6df838a72f29c3c1871eddd2be2_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/jobs/">
+					Browse
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://gamedev.jobs/post-a-job/" target="_blank">
+					Post a Job
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_42" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_42" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_42" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="42" data-ipsmenu-withstem="false">
+                Community <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_42_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/leaderboard/">
+					Leaderboard
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/online/">
+					Online Users
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/guidelines/">
+					Guidelines
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/community/chat/">
+					GameDev.net Chat
+				</a>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_2" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_2" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_2" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="2" data-ipsmenu-withstem="false">
+                Search <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_2_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/discover/">
+					All Activity
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li id="elNavigation_713977f1037d694206e53dee87b9ef09" class="ipsMenu_item ipsMenu_subItems">
+				<a href="">
+					My Activity Streams
+				</a>
+				<ul id="elNavigation_713977f1037d694206e53dee87b9ef09_menu" class="ipsMenu ipsMenu_auto ipsHide">
+					
+
+	
+		
+			<li class="ipsMenu_item" data-streamid="28">
+				<a href="https://www.gamedev.net/discover/28/">
+					Latest Topics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item" data-streamid="44">
+				<a href="https://www.gamedev.net/discover/44/">
+					Featured Blogs
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/search/">
+					Search
+				</a>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+          
+          
+      <!--  -->
+          <li id="elNavSecondary_14" data-role="navBarItem" data-navapp="core" data-navext="Menu">
+            
+            
+              <a href="#" id="elNavigation_14" data-ipsmenu="" data-ipsmenu-appendto="#elNavSecondary_14" data-ipsmenu-activeclass="ipsNavActive_menu" data-navitem-id="14" data-ipsmenu-withstem="false">
+                Store <i class="fa fa-caret-down"></i>
+              </a>
+              <ul id="elNavigation_14_menu" class="ipsMenu ipsMenu_auto ipsHide">
+                
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/store/">
+					Store
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://www.gamedev.net/info/gdnetplus.html/">
+					GDNet+ Memberships
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li class="ipsMenu_item">
+				<a href="https://gamedev.market/" target="_blank">
+					GameDev Marketplace
+				</a>
+			</li>
+		
+	
+
+              </ul>
+            
+          </li>
+        
+      
+        
+      
+        
+      
+
+      <li class="ipsHide" id="elNavigationMore" data-role="navMore">
+        <a href="#" data-ipsmenu="" data-ipsmenu-appendto="#elNavigationMore" id="elNavigationMore_dropdown">More <i class="fa fa-caret-down"></i></a><ul class="ipsHide ipsMenu ipsMenu_auto" id="elNavigationMore_dropdown_menu" data-role="moreDropdown"></ul>
+        <ul class="ipsNavBar_secondary ipsHide" data-role="secondaryNavBar">
+          <li class="ipsHide" id="elNavigationMore_more" data-role="navMore">
+            <a href="#" data-ipsmenu="" data-ipsmenu-appendto="#elNavigationMore_more" id="elNavigationMore_more_dropdown">More <i class="fa fa-caret-down"></i></a>
+            
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<ul id="elUserNav" class="ipsList_inline cSignedOut ipsClearfix ipsResponsive_hidePhone ipsResponsive_block">
+		
+		
+	
+
+
+	<li class="cUserNav_icon ipsHide" id="elCart_container"></li>
+	<li class="elUserNav_sep ipsHide" id="elCart_sep"></li>
+
+<li id="elSignInLink">
+			
+				<a href="https://www.gamedev.net/login/" data-ipsmenu-closeonclick="false" data-ipsmenu="" id="elUserSignIn">
+					Existing user? Sign In &nbsp;<i class="fa fa-caret-down"></i>
+				</a>
+			
+			
+<div id="elUserSignIn_menu" class="ipsMenu ipsMenu_auto ipsHide">
+	<div data-role="loginForm">
+		
+			<div class="ipsColumns ipsColumns_noSpacing">
+				<div class="ipsColumn ipsColumn_wide" id="elUserSignIn_internal">
+		
+		
+			
+				
+<form accept-charset="utf-8" class="ipsPad ipsForm ipsForm_vertical" method="post" action="https://www.gamedev.net/login/" data-ipsvalidation="" novalidate="">
+	<input name="login__standard_submitted" value="1" type="hidden">
+	
+		<input name="csrfKey" value="239a961bf1c417d8f481a8a866d7b142" type="hidden">
+	
+	<h4 class="ipsType_sectionHead">Sign In</h4>
+	<br><br>
+	<ul class="ipsList_reset">
+		
+			
+				
+					<li class="ipsFieldRow ipsFieldRow_noLabel ipsFieldRow_fullWidth">
+						<input required="" placeholder="Display Name or Email Address" name="auth" id="auth" type="text">
+					</li>
+				
+			
+				
+					<li class="ipsFieldRow ipsFieldRow_noLabel ipsFieldRow_fullWidth">
+						<input required="" placeholder="Password" name="password" id="password" type="password">
+					</li>
+				
+			
+				
+					
+<li class="ipsFieldRow ipsFieldRow_checkbox ipsClearfix " id="9c7ffa65f11c317804907d1e35f70d9d">
+	
+		
+		
+<input name="remember_me" value="0" type="hidden">
+<span class="ipsCustomInput">
+	<input name="remember_me_checkbox" value="1" id="check_9c7ffa65f11c317804907d1e35f70d9d" data-toggle-id="9c7ffa65f11c317804907d1e35f70d9d" checked="checked" aria-checked="true" type="checkbox">
+	
+	<span></span>
+</span>
+
+
+		
+		<div class="ipsFieldRow_content">
+			<label class="ipsFieldRow_label" for="check_9c7ffa65f11c317804907d1e35f70d9d">Remember me </label>
+			
+
+
+<span class="ipsFieldRow_desc">
+	Not recommended on shared computers
+</span>
+			
+			
+		</div>
+	
+</li>
+				
+			
+				
+					
+<li class="ipsFieldRow ipsFieldRow_checkbox ipsClearfix " id="447c4ee74bbd7ef2ff264d7b7231e3e7">
+	
+		
+		
+<input name="signin_anonymous" value="0" type="hidden">
+<span class="ipsCustomInput">
+	<input name="signin_anonymous_checkbox" value="1" id="check_447c4ee74bbd7ef2ff264d7b7231e3e7" data-toggle-id="447c4ee74bbd7ef2ff264d7b7231e3e7" aria-checked="false" type="checkbox">
+	
+	<span></span>
+</span>
+
+
+		
+		<div class="ipsFieldRow_content">
+			<label class="ipsFieldRow_label" for="check_447c4ee74bbd7ef2ff264d7b7231e3e7">Sign in anonymously </label>
+			
+			
+			
+		</div>
+	
+</li>
+				
+			
+		
+		<li class="ipsFieldRow ipsFieldRow_fullWidth">
+			<br>
+			<button type="submit" class="ipsButton ipsButton_primary ipsButton_small" id="elSignIn_submit">Sign In</button>
+			<br>
+			<p class="ipsType_right ipsType_small">
+				<a href="https://www.gamedev.net/lostpassword/" data-ipsdialog="" data-ipsdialog-title="Forgot your password?">Forgot your password?</a>
+			</p>
+		</li>
+	</ul>
+</form>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+		
+				</div>
+				<div class="ipsColumn ipsColumn_wide">
+					<div class="ipsPad" id="elUserSignIn_external">
+						<div class="ipsAreaBackground_light ipsPad_half">
+							<p class="ipsType_reset ipsType_small ipsType_center"><strong>Or sign in with one of these services</strong></p>
+							<br>
+							
+								
+							
+								
+									<div class="ipsPad_half ipsType_center">
+										
+
+<a href="https://login.live.com/oauth20_authorize.srf?client_id=cbacce32-8b60-405f-bf02-e4ff5db904a5&amp;scope=wl.signin%20wl.emails%20wl.offline_access&amp;response_type=code&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/microsoft/auth.php&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_microsoft">
+	<span class="ipsSocial_icon"><i class="fa fa-windows"></i></span>
+	<span class="ipsSocial_text">Sign in with Microsoft</span>
+</a>
+									</div>
+								
+							
+								
+									<div class="ipsPad_half ipsType_center">
+										
+
+<a href="https://www.facebook.com/dialog/oauth?client_id=111606688673&amp;scope=email,user_posts,publish_actions&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/facebook/auth.php&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_facebook">
+	<span class="ipsSocial_icon"><i class="fa fa-facebook"></i></span>
+	<span class="ipsSocial_text">Sign in with Facebook</span>
+</a>
+									</div>
+								
+							
+								
+									<div class="ipsPad_half ipsType_center">
+										
+<a href="https://www.gamedev.net/login/?loginProcess=twitter&amp;ref=aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_twitter">
+	<span class="ipsSocial_icon"><i class="fa fa-twitter"></i></span>
+	<span class="ipsSocial_text">Sign in with Twitter</span>
+</a>
+									</div>
+								
+							
+								
+									<div class="ipsPad_half ipsType_center">
+										
+<a href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;client_id=431469176926-pgca579pdqff2rgfpglpgp9s2ovq6ovb.apps.googleusercontent.com&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/google/auth.php&amp;scope=https://www.googleapis.com/auth/plus.login%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&amp;access_type=offline&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_google">
+	<span class="ipsSocial_icon"><i class="fa fa-google-plus"></i></span>
+	<span class="ipsSocial_text">Sign in with Google</span>
+</a>
+									</div>
+								
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	</div>
+</div>
+		</li>
+		
+			<li>
+				<a href="https://www.gamedev.net/register/" data-ipsdialog="" data-ipsdialog-size="narrow" data-ipsdialog-title="Sign Up" id="elRegisterButton" class="ipsButton ipsButton_normal ipsButton_primary">
+						Sign Up
+				</a>
+			</li>
+		
+	</ul>
+
+      
+    </div>
+  </header>
+</div>
+
+
+		<main role="main" id="ipsLayout_body" class="ipsLayout_container"><div id="ipsLayout_contentArea">
+				<div id="ipsLayout_contentWrapper">
+					
+<nav class="ipsBreadcrumb ipsBreadcrumb_1 ipsFaded_withHover">
+	
+		
+
+
+	<a href="#" id="elRSS" class="ipsPos_right ipsType_large" data-ipstooltip="" data-ipsmenu="" _title="Available RSS feeds"><i class="fa fa-rss-square"></i></a>
+	<ul id="elRSS_menu" class="ipsMenu ipsMenu_auto ipsHide">
+		
+			<li class="ipsMenu_item"><a title="GameDev.net" href="https://www.gamedev.net/rss/1-gamedevnet.xml/">GameDev.net</a></li>
+		
+			<li class="ipsMenu_item"><a title="GameDev.net Forums" href="https://www.gamedev.net/rss/2-gamedevnet-forums.xml/">GameDev.net Forums</a></li>
+		
+			<li class="ipsMenu_item"><a title="GameDev.net Blogs" href="https://www.gamedev.net/rss/3-gamedevnet-blogs.xml/">GameDev.net Blogs</a></li>
+		
+			<li class="ipsMenu_item"><a title="GameDev.net News" href="https://www.gamedev.net/rss/4-gamedevnet-news.xml/">GameDev.net News</a></li>
+		
+			<li class="ipsMenu_item"><a title="GameDev.net Jobs" href="https://www.gamedev.net/rss/5-gamedevnet-jobs.xml/">GameDev.net Jobs</a></li>
+		
+	</ul>
+
+	
+
+	<ul class="ipsList_inline ipsPos_right">
+<li>
+<a class="ipsType_light " href="https://www.gamedev.net/community/chat/">
+<i class="fa fa-comments"> </i>
+<span>
+GDNet Chat
+</span>
+</a>
+</li>
+		
+		<li>
+			<a data-action="defaultStream" class="ipsType_light " href="https://www.gamedev.net/discover/"><i class="icon-newspaper"></i> <span>All Activity</span></a>
+		</li>
+		
+	</ul>
+<ul data-role="breadcrumbList">
+<li>
+			<a title="Home" href="https://www.gamedev.net/">
+				<span><i class="fa fa-home"></i> Home <i class="fa fa-angle-right"></i></span>
+			</a>
+		</li>
+		
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/">
+						<span>Articles <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/programming/">
+						<span>Programming <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/">
+						<span>Math and Physics <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					Making a Game Engine: Transformations
+				
+			</li>
+		
+	</ul></nav>
+					
+					<div id="ipsLayout_mainArea">
+						<a id="elContent"></a>
+						
+						
+						
+
+	<div class="cWidgetContainer " data-role="widgetReceiver" data-orientation="horizontal" data-widgetarea="header">
+		<ul class="ipsList_reset">
+			
+				
+					
+					<li class="ipsWidget ipsWidget_horizontal ipsBox" data-blockid="plugin_23_adleaderboard_u2w58iw02" data-blockconfig="true" data-blocktitle="block_adleaderboard" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+    <div class="adunit ad_leaderboard display-none" data-adunit="Ad_Leaderboard_Header" data-size-mapping="sizemap_leaderboard" data-dimensions="970x90,728x90,468x60,320x50" data-targeting="{&quot;gdnetplus&quot;:&quot;0&quot;}" id="Ad_Leaderboard_Header-auto-gen-id-1"></div>
+
+</li>
+				
+					
+					<li class="ipsWidget ipsWidget_horizontal ipsBox" data-blockid="app_cms_Database_thav1d8yc" data-blockconfig="true" data-blocktitle="Database" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+<article itemscope="" itemtype="https://schema.org/Article">
+	<meta itemprop="mainEntityOfPage" content="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/">
+    <span style="display:none">02/15/14 09:17  PM</span>
+	<meta itemprop="dateModified" content="2014-02-15T19:17:06Z">
+	<meta itemprop="datePublished" content="2014-02-15T19:17:06Z">
+	<meta itemprop="author" content="HappyCoder">
+	<meta itemprop="headline" content="Making a Game Engine: Transformations">
+	<div itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization">
+		<meta itemprop="name" content="GameDev.net">
+		<div itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject">
+			<meta itemprop="url" content="https://www.gamedev.net/uploads/defaults/gamedev-logo-500px-blacktext.png">
+			<meta itemprop="width" content="424">
+			<meta itemprop="height" content="86">
+		</div>
+	</div>
+<div class="ipsPageHeader ipsClearfix">
+
+	<div class="ipsPos_right ipsResponsive_noFloat ipsResponsive_hidePhone">
+		
+
+<div data-followapp="cms" data-followarea="records1" data-followid="3566" data-controller="core.front.core.followButton">
+	
+		<span class="ipsType_light ipsType_blendLinks ipsResponsive_hidePhone ipsResponsive_inline"><i class="fa fa-info-circle"></i> <a href="https://www.gamedev.net/login/" title="Go to the sign in page">Sign in to follow this</a>&nbsp;&nbsp;</span>
+	
+	
+
+	<div class="ipsFollow ipsPos_middle ipsButton ipsButton_link ipsButton_verySmall ipsButton_disabled" data-role="followButton">
+		
+			<span>Followers</span>
+			<span class="ipsCommentCount">0</span>
+		
+	</div>
+
+</div>
+	</div>
+
+	<h1 class="ipsType_pageTitle ipsContained_container">
+		
+
+		
+
+		
+		
+			<div class="ipsType_break ipsContained">Making a Game Engine: Transformations</div>
+			<meta itemprop="name" content="Making a Game Engine: Transformations">
+		
+	</h1>
+    <div class="ipsType_light" itemprop="articleSection">Math and Physics</div>
+
+	
+		<div itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
+			
+			<meta itemprop="ratingValue" content="5">
+			
+			
+			<meta itemprop="reviewCount" content="1">
+			
+			<meta itemprop="bestRating" content="5">
+			
+<div class="ipsClearfix ipsRating  ipsRating_large">
+	
+	<ul class="ipsRating_collective">
+		
+			
+				<li class="ipsRating_on">
+					<i class="fa fa-star"></i>
+				</li>
+			
+		
+			
+				<li class="ipsRating_on">
+					<i class="fa fa-star"></i>
+				</li>
+			
+		
+			
+				<li class="ipsRating_on">
+					<i class="fa fa-star"></i>
+				</li>
+			
+		
+			
+				<li class="ipsRating_on">
+					<i class="fa fa-star"></i>
+				</li>
+			
+		
+			
+				<li class="ipsRating_on">
+					<i class="fa fa-star"></i>
+				</li>
+			
+		
+	</ul>
+</div>&nbsp;&nbsp; <span class="ipsType_normal ipsType_light"><a href="#replies">(0 reviews)</a></span>
+		</div>
+	
+
+
+</div>
+
+<hr class="ipsHr">
+
+<div class="ipsPhotoPanel ipsPhotoPanel_tiny ipsClearfix ipsSpacer_bottom">
+	
+
+
+	<a href="https://www.gamedev.net/profile/120205-happycoder/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/120205-happycoder/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to HappyCoder's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-120205.png" alt="HappyCoder">
+	</a>
+
+	<div>
+		<p itemprop="name" class="ipsType_reset ipsType_large ipsType_blendLinks">
+            
+                By James Lambert
+                <!--James Lambert-->
+            
+			
+		</p>
+		<ul class="ipsList gd_articleByline">
+			<li><time datetime="2014-02-15T19:17:06Z" title="02/15/14 09:17  PM" data-short="3 y">February 15, 2014</time></li>
+            <li>Posted By 
+<a href="https://www.gamedev.net/profile/120205-happycoder/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/120205-happycoder/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to HappyCoder's profile" class="ipsType_break">HappyCoder</a></li>
+			<!--
+				
+					James Lambert
+				
+			
+				
+			
+				
+			
+				
+					Any graphical game needs a way to place objects on the screen, move them, rotate them, and even grow or shrink them. Transformation matrices offer a very elegant solution to this problem.
+				
+			
+				
+			-->
+		</ul>
+	</div>
+</div>
+
+
+
+<div class="ipsContained ipsSpacer_top">
+	<div class="ipsClearfix">
+		
+			<div itemprop="image" itemscope="" itemtype="https://schema.org/ImageObject">
+				<img class="ipsImage ipsPos_left ipsPad" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/bfcd6066d8d5125f7be929b08e17dddd.jpg">
+			    <meta itemprop="url" content="https://www.gamedev.net/uploads/bfcd6066d8d5125f7be929b08e17dddd.jpg">
+			    <meta itemprop="width" content="250">
+			    <meta itemprop="height" content="150">
+			</div>
+		
+		<section itemprop="articleBody" class="ipsType_richText ipsType_normal" data-controller="core.front.core.lightboxedImages"><b>See Also:</b>
+<a href="http://www.gamedev.net/page/resources/_/technical/game-programming/making-a-game-engine-core-design-principles-r3210">Making a Game Engine: Core Design Principles</a>
+
+Moving objects around in a scene is not hard to do. You simply draw 
+objects at different locations each frame. Adding rotation, and resizing
+ on top of that makes the code a little trickier but still not hard to 
+manage. But then start trying to move objects relative to another such 
+as putting a sword in a character's hand and things can get really 
+tricky. The sword should stay in the character's hand regardless of what
+ direction they rotate or where they move. This is where using matrices 
+to represent these transformations is extremely valuable.
+
+<h2>Coordinate Systems</h2>
+
+In order for a coordinate to have any meaning there needs to be a point 
+of reference to base that coordinate off of. Imagine you have a dot on a
+ piece of paper. The dot does not have a coordinate unless you come up 
+with a way to measure its location. One way would be to determine the 
+distance the point is from the left side of the page and its distance 
+from the bottom. These two measurements give the coordinate meaning 
+since it has a point of reference, the bottom left corner of the page. 
+The point of reference is known as a basis and any point measured 
+relative to the same basis are said to be in the same coordinate system.
+ If a worm were on a ball you could devise a way to measure the location
+ of the worm on the ball. This coordinate would be the worm's location 
+in the ball's coordinate space.
+<center>
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-01565200-1391470300.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19760" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-01565200-1391470300.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="WormOnBall.png"></a>
+</center>
+The ball itself also has a location but its location is measured in 
+world coordinates. Let's assume that the location of the ball is 
+measured from the bottom left corner of the image to the center of the 
+ball. If you were to throw that ball the worm would move with the ball. 
+The position of the worm in world coordinates would move as the ball 
+moves, even though its position in ball coordinates stay the same. 
+Transformations give us a way to convert between these coordinate 
+systems relatively easy using matrices allowing us to easily keep the 
+worm on the ball as it travels through the air.
+<center>
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-13593700-1391470304.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19761" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-13593700-1391470304.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="WormOnBallThrown.png"></a>
+</center>
+Matrices have a lot of useful properties that lend themselves to solving
+ many complex problems. We will be using them to transform objects on 
+the screen. This article will focus on three simple transformations: 
+translation, rotation, and scaling. I will be using 2D transformations 
+for the sake of simplicity. The principles in the article also apply to 
+3D transformations. If you want to do 3D transformations, search around 
+on the web for 3D transformation matrices. The jump from 2D to 3D is 
+trivial with the exception of rotations. I am assuming you already know 
+what matrices are and how to multiply them, what the inverse and 
+transpose of a matrix are, and other basic matrix operations. (For help 
+with matrices, try <a href="http://www.gamedev.net/page/resources/_/technical/math-and-physics/math-for-game-developers-intro-to-matrices-r3097">this video series</a>)
+
+So far this talk of coordinate spaces and matrices may seem to be 
+complicated things when all you need to do is move or rotate objects. 
+How exactly do these things help move objects on the screen anyway? 
+Well, imagine you define a character sprite with a width of 50 and a 
+height of 100. You could define four points that represent the corners 
+of the sprite image (-25, 0), (-25, 0), (25, 100), (25, 0). These points
+ represent the corners of the sprite relative to the character. So what 
+whappens when the character moves? The transform of the player converts 
+the points of the sprite to world space. Then the camera transform 
+converts from world space to screen space to be drawn. If the player 
+clicks on the screen you can use the inverse of these transforms to 
+determine where on the character they clicked.
+
+<h2>Basic Transformations</h2>
+
+<b>Translation</b>
+
+A translation simply changes an object's location. The matrix used to represent this is pretty simple too.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-95041500-1391464294.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19757" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-95041500-1391464294.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TranslationMatrix.png"></a>
+
+T[sub]x[/sub] and T[sub]y[/sub] is the number of units to move in the x and y directions respectively.
+
+<b>Rotation</b>
+
+Rotates points around the origin.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-99256300-1391464509.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19758" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-99256300-1391464509.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="RotationMatrix.png"></a>
+
+The above matrix will rotate counter clockwise by ? radians.
+
+<b>Scaling</b>
+
+Scaling an object changes its size. Scalar values in the range (0, 1) 
+make objects smaller. A scale of 1 keeps it the same size, a scale 
+greater than 1 makes it bigger. Really all the scale is doing is taking 
+the current size and multiplying by the scale value.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-42112600-1391470598.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19762" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-42112600-1391470598.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="ScaleMatrix.png"></a>
+
+Scales along the x and y directions by S[sub]x[/sub] and S[sub]y[/sub] 
+respectively. When S[sub]x[/sub] = S[sub]y[/sub] the size will change 
+uniformly. If you only modify a single value then the object will 
+stretch meaning you can make an object wider by setting S[sub]x[/sub] to
+ a value greater than 1 and keeping y the same. You can even make a 
+value negative which will flip the object.
+
+<h2>Using Matrices as Transforms</h2>
+
+<b>Transforming Points</b>
+
+Now that we have a few different transformation matrices we need a way 
+to transform points using them. To do this you simply treat the point as
+ a 1x3 matrix padding the extra slots with a 1 and multiplying it with 
+the transform matrix.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-29367300-1392317582.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19883" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-29367300-1392317582.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TransformPoint.png"></a>
+
+The result of that multiplication is a another 1x3 matrix. Just taking 
+the top two elements of the resulting matrix gives a new x, y pair of 
+the point in the new coordinate system.
+
+<b>Transforming Directions</b>
+
+Transforming a direction is slightly different than transforming a point. Take a look at the example below.
+<center>
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-47320600-1391577836.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19797" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-47320600-1391577836.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TransformDirection.png"></a>
+</center>
+The ball has been squashed. This is achieved by scaling the y direction 
+down while keeping the x the same. If directions were transformed using 
+the same matrix that were used to transform points, then you would get 
+the red arrow as a result, but notice how the red arrow is no longer 
+perpendicular to the ball. We want the green arrow that still is. To get
+ that result, use the following equation.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-22472600-1391578056.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19798" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-22472600-1391578056.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TransformDirectionEquation.png"></a>
+
+As shown above, to get the proper matrix for transforming direction you 
+need the inverse transpose of the transform matrix. You can avoid 
+transposing a 3x3 matrix if you simply do a row vector multiplication in
+ front of the matrix. Also take note that the third element is a 0 
+instead of a 1. This makes transforming a direction uneffected by any 
+translations. This is proper behavior for transforming a direction since
+ directions still point the same way regaurdless of where they are moved
+ to.
+
+<b>Concatenating transforms</b>
+
+The three basic tranformations listed above aren't that useful on their 
+own. To make things interesting we want to be able to join them together
+ allowing objects to be translated, rotated, and scaled simultaneously. 
+To do this we simply multiply the matrices together.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-01666000-1391472853.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19764" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-01666000-1391472853.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="MatrixConcat.png"></a>
+
+The resulting matrix, <i>M</i>, is a combination of scaling an object, rotating it, then translating it. Keep in mind that the order of <i>T</i>, <i>R</i> and <i>S</i> does matter. Since <i>S</i> is the right-most matrix its transformation will be applied first when transforming a point followed by <i>R</i>, followed by <i>T</i>.
+ To see this grab some object nearby, such as a pencil, and hold it so 
+it is pointing to the right. Now imagine that the pencil is first scaled
+ by half in the x direction making the pencil shorter but not changing 
+its thickness. Then the pencil is rotated 90 upward. The result is a 
+short pencil with the same width pointing upward. Now switch the 
+transformation order. First rotate it upward then scale. The resulting 
+trasnform is a pencil of the same length but different width. So pay 
+attention to the transform order.
+<center>
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-99094700-1391573393.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19796" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-99094700-1391573393.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TransformOrder.png"></a>
+</center>
+One thing to note is that roatations pivot around the origin. This means
+ if you move an object up ten units then rotate it clockwise 90 degrees 
+it will end up 10 units to the right. If you want the object to pivot 
+around its own center, rotate it first then move it. 
+
+Since matrices can be multiplied to concatenate transforms you can 
+easily keep an object at the same position relative to another, like the
+ example of the worm on a ball described above. You first create a 
+transform using the position and orientation of the worm on the ball. 
+This transform represents the conversion of the worm's local coordinates
+ to the ball coordinates. You then create the transform of the ball 
+relative to world coordinates. Since the worm is on the ball, to find 
+the transform from worm coordinates to world coordinates you simply 
+multiply them together.
+
+<code class="hljs nginx">
+<span class="hljs-attribute">Matrix</span> insectToWorldTransform = ballToWorldTransform * insectToBallTransform;
+</code>
+
+<h2>Column Vector vs Row Vector</h2>
+
+Before moving into the next section I should mention the difference 
+between column vectors and row vectors. I have been using column vectors
+ in this article. This means vectors are represented as a 3x1 matrix 
+that is multiplied on the right of the transform.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-29367300-1392317582.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19883" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-29367300-1392317582.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TransformPoint.png"></a>
+
+The alternative are row vectors. A row vector is a 1x3 matrix and is multiplied on the left of the matrix.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-16501600-1392319098.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19888" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-16501600-1392319098.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="RowMajor.png"></a>
+
+Mathematically, these two methods are the same. Either one works. Some 
+prefer how compact column vectors are to write out on paper. Others find
+ row vectors to be more intiuative. The important thing is to pick one 
+and be consistent with it. However, the graphics package you are using 
+may require matrices for row vectors or column vectors. If you are using
+ the other method you will need to convert your matrices before passing 
+them in. To do so, simply transpose the matrix. As an example, the 
+translate matrix using column vectors is
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-95041500-1391464294.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19757" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-95041500-1391464294.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="TranslationMatrix.png"></a>
+
+The same matrix for row vectors is
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-93863800-1392318466.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19887" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-93863800-1392318466.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="Column Transpose.png"></a>
+
+Also, keep in mind that when using row vectors the order to multiply matrices in is reversed.
+
+<a href="https://www.gamedev.net/uploads/monthly_02_2014/ccs-120205-0-09498200-1392318273.png" class="ipsAttachLink ipsAttachLink_image" data-ipslightbox="" data-ipslightbox-group="g47260"><img data-fileid="19886" src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/ccs-120205-0-09498200-1392318273.png" class="ipsImage ipsImage_thumbnailed" style="margin:10px;" alt="ConvertToColumnVector.png"></a>
+
+So using row vectors, the left most matrix is applied first to the point
+ and the matrix on the far right is applied last. An easy way to 
+remember the difference is the matrix closest to the vector is applied 
+first. This means the order is left to right using row matrices and 
+right to left using column matrices.
+
+<h2>Transform Class</h2>
+
+Now that we have covered some basics of how transforms work let's build a
+ transform class. Since we don't want to deal with matrices at a high 
+level, we will allow the transform to be manipulated using a position, 
+rotation, and scale. The transform class will also have children to 
+allow for a heirarchy. When the parent transform moves all of the 
+children move with it and the children's position, rotation, and scale 
+will be defined relative to its parent. Finally the transform will 
+extend the component class that is attached to a game object. Game 
+objects and components are touched upon in <a href="http://www.gamedev.net/page/resources/_/technical/game-programming/making-a-game-engine-core-design-principles-r3210">this article</a>.
+
+<code class="hljs cs">
+<span class="hljs-keyword">class</span> <span class="hljs-title">Transform</span> <span class="hljs-title">extends</span> <span class="hljs-title">Component</span>
+{
+    <span class="hljs-comment">// the parent transform of this transform</span>
+    <span class="hljs-comment">// if it is null then the parent transform</span>
+    <span class="hljs-comment">// is the world coordinate system</span>
+	<span class="hljs-keyword">private</span> Transform parent;
+    <span class="hljs-comment">// all of the transforms that have this</span>
+    <span class="hljs-comment">// transform set as their parent</span>
+    <span class="hljs-keyword">private</span> Transform[] children;
+    
+    <span class="hljs-comment">// the position relative to the parent transform</span>
+    <span class="hljs-keyword">private</span> Vector2 localPosition = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-number">0.0</span>f, <span class="hljs-number">0.0</span>f);
+    <span class="hljs-comment">// rotation relative to the parent</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">float</span> localRotation = <span class="hljs-number">0.0</span>f;
+    <span class="hljs-comment">// scale relative to the parent</span>
+    <span class="hljs-keyword">private</span> Vector2 localScale = <span class="hljs-keyword">new</span> Vector2(<span class="hljs-number">1.0</span>f, <span class="hljs-number">1.0</span>f);
+    
+    <span class="hljs-comment">// specifies if the localToWorldTransform</span>
+    <span class="hljs-comment">// needs to be recalulated</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">bool</span> isDirty = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">// the transform that converts local coordinates</span>
+    <span class="hljs-comment">// to world coordinates</span>
+    <span class="hljs-keyword">private</span> Matrix localToWorldMatrix = Matrix.identity;
+    
+    <span class="hljs-comment">// specifies if the worldToLocalMatrix</span>
+    <span class="hljs-comment">// needs to be recalculated</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">bool</span> isInverseDirty = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">// the transform that converts world cooridnates</span>
+    <span class="hljs-comment">// to local coordinates</span>
+    <span class="hljs-keyword">private</span> Matrix worldToLocalMatrix = Matrix.identity;
+    
+    <span class="hljs-comment">/*
+     * Whenever any change happens that changes the localToWorldMatrix
+     * this should be called. That way the next time localToWorldMatrix
+     * is requested it will be recalculated
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setDirty</span>(<span class="hljs-params"></span>)
+    </span>{
+    	<span class="hljs-comment">// only update dirty boolean if it isn't already dirty</span>
+        <span class="hljs-keyword">if</span> (!isDirty)
+        {
+     		isDirty = <span class="hljs-literal">true</span>;
+            isInverseDirty = <span class="hljs-literal">true</span>;
+            
+            <span class="hljs-comment">// set all children to be dirty since any modification</span>
+            <span class="hljs-comment">// of a parent transform also effects its children's</span>
+            <span class="hljs-comment">// localToWorldTransform</span>
+            <span class="hljs-keyword">foreach</span> (Transform child <span class="hljs-keyword">in</span> children)
+            {
+                child.setDirty();
+            }
+        }
+    }
+    
+    <span class="hljs-comment">// change the parent transform.</span>
+    <span class="hljs-comment">// setting it to null makes the</span>
+    <span class="hljs-comment">// transform a child of world coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setParent</span>(<span class="hljs-params">Transform <span class="hljs-keyword">value</span></span>)
+    </span>{
+        <span class="hljs-comment">// remove this from the previous parent</span>
+        <span class="hljs-keyword">if</span> (parent != <span class="hljs-literal">null</span>)
+        {
+        	parent.children.<span class="hljs-keyword">remove</span>(<span class="hljs-keyword">this</span>);
+        }
+        
+        <span class="hljs-comment">// assign new parent</span>
+        parent = <span class="hljs-keyword">value</span>;
+        
+        <span class="hljs-comment">// add this to new parent</span>
+        <span class="hljs-keyword">if</span> (parent)
+        {
+            parent.children.<span class="hljs-keyword">add</span>(<span class="hljs-keyword">this</span>);   
+        }
+        
+        <span class="hljs-comment">// changes parents effects </span>
+        <span class="hljs-comment">// the world position</span>
+        setDirty();
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Transform <span class="hljs-title">getParent</span>(<span class="hljs-params"></span>)
+    </span>{
+    	<span class="hljs-keyword">return</span> parent;   
+    }
+    
+    <span class="hljs-comment">// calculates the transform matrix that converts</span>
+    <span class="hljs-comment">// from local coordinates to the coordinate space</span>
+    <span class="hljs-comment">// of the parent transform</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Matrix <span class="hljs-title">calculateLocalToParentMatrix</span>(<span class="hljs-params"></span>)
+    </span>{
+        <span class="hljs-comment">// Matrix.translate creates a translation matrix</span>
+        <span class="hljs-comment">// that shifts by (localPosition.x, localPosition.y)</span>
+        <span class="hljs-comment">// Matrix.rotate rotates by localRotation radians</span>
+        <span class="hljs-comment">// Matrix.scale scales by a factor of (localScale.x, localScale.y)</span>
+        <span class="hljs-comment">// These are the basic transforms that are described previously</span>
+        <span class="hljs-comment">// in this article</span>
+        <span class="hljs-keyword">return</span> Matrix.translate(localPosition) * 
+                Matrix.rotate(localRotation) * 
+                Matrix.scale(localScale);
+    }
+    
+    <span class="hljs-comment">// gets the matrix that converts from local</span>
+    <span class="hljs-comment">// coordinates to world coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Matrix <span class="hljs-title">getLocalToWorldMatrix</span>(<span class="hljs-params"></span>)
+    </span>{
+        <span class="hljs-comment">// if the dirty flag is set, the the</span>
+        <span class="hljs-comment">// localToWorldMatrix is out of date</span>
+        <span class="hljs-comment">// and needs to be reclaculated</span>
+    	<span class="hljs-keyword">if</span> (isDirty)
+        {
+            <span class="hljs-keyword">if</span> (parent == <span class="hljs-literal">null</span>)
+            {
+           		<span class="hljs-comment">// if the parent is null then the parent is</span>
+           		<span class="hljs-comment">// the world so the localToWorldMatrix</span>
+           	 	<span class="hljs-comment">// is the same as local to parent matrix</span>
+                localToWorldMatrix = calculateLocalToParentMatrix();
+            }
+           	<span class="hljs-keyword">else</span>
+            {
+                <span class="hljs-comment">// if there is a parent, then the localToWorldMatrix</span>
+                <span class="hljs-comment">// is calcualted recursively using the parent's localToWorldMatrix</span>
+                <span class="hljs-comment">// concatenated with the local to parent matrix</span>
+                localToWorldMatrix = parent.getLocalToWorldMatrix() * calculateLocalToParentMatrix();
+            }
+            
+            <span class="hljs-comment">// clear the dirty flag since the </span>
+            <span class="hljs-comment">// matrix is now up to date</span>
+            isDirty = <span class="hljs-literal">false</span>;
+        }
+        
+        <span class="hljs-keyword">return</span> localToWorldMatrix;
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Matrix <span class="hljs-title">getWorldToLocalMatrix</span>(<span class="hljs-params"></span>)
+    </span>{
+        <span class="hljs-keyword">if</span> (isInverseDirty)
+        {
+            <span class="hljs-comment">// the inverse is out of date</span>
+            <span class="hljs-comment">// so it needs to be updated</span>
+            
+            <span class="hljs-comment">// the worldToLocalMatrix is the inverse of</span>
+            <span class="hljs-comment">// the localToWorldMatrix</span>
+         	worldToLocalMatrix = getLocalToWorldMatrix().inverse(); 
+            
+            <span class="hljs-comment">// clear the dirty flag since the </span>
+            <span class="hljs-comment">// matrix is now up to date</span>
+            isInverseDirty = <span class="hljs-literal">false</span>;
+        }
+        
+        <span class="hljs-keyword">return</span> worldToLocalMatrix;
+    }
+    
+    <span class="hljs-comment">// transforms a point from local coordinates to world coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Vector2 <span class="hljs-title">transformPoint</span>(<span class="hljs-params">Vector2 point</span>)
+    </span>{
+        <span class="hljs-comment">// matrix multiply padding the extra element with a 1</span>
+     	Matrix1x3 transformResult = getLocalToWorldMatrix() * Matrix1x3(point.x, point.y, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector2(transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]);
+    }
+    
+    <span class="hljs-comment">// transforms a direction from local coordinates to world coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Vector2 <span class="hljs-title">transformDirection</span>(<span class="hljs-params">Vector2 point</span>)
+    </span>{
+        <span class="hljs-comment">// matrix multiply padding the extra element with a 0</span>
+        <span class="hljs-comment">// notice that the worldToLocalMatrix is used here</span>
+        <span class="hljs-comment">// and the point is multiplied as a row matrix before the</span>
+        <span class="hljs-comment">// transform matrix. This is the proper way to transform</span>
+        <span class="hljs-comment">// directions as described before in this article</span>
+     	Matrix3x1 transformResult = Matrix3x1(point.x, point.y, <span class="hljs-number">0</span>) * getWorldToLocalMatrix();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector2(transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]);
+    }
+    
+    <span class="hljs-comment">// transforms a point from world coordinates to local coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Vector2 <span class="hljs-title">inverseTransformPoint</span>(<span class="hljs-params">Vector2 point</span>)
+    </span>{
+        <span class="hljs-comment">// same logic as transformPoint only with the inverse matrix</span>
+     	Matrix1x3 transformResult = getWorldToLocalMatrix() * Matrix1x3(point.x, point.y, <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector2(transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]);
+    }
+    
+    <span class="hljs-comment">// transforms a direction from world coordinates to local coordinates</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Vector2 <span class="hljs-title">inverseTransformDirection</span>(<span class="hljs-params">Vector2 point</span>)
+    </span>{
+        <span class="hljs-comment">// same logic as transformDirection only with the inverse of the </span>
+        <span class="hljs-comment">// inverse localToWorldMatrix which is just the localToWorldMatrix</span>
+     	Matrix3x1 transformResult = Matrix3x1(point.x, point.y, <span class="hljs-number">0</span>) * getLocalToWorldMatrix();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vector2(transformResult[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], transformResult[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]);
+    }
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Vector2 <span class="hljs-title">getLocalPosition</span>(<span class="hljs-params"></span>)
+    </span>{
+    	<span class="hljs-keyword">return</span> localPosition;
+    }
+    
+    <span class="hljs-comment">// sets the position relative to the parent</span>
+    <span class="hljs-comment">// and marks the transform as dirty</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setLocalPosition</span>(<span class="hljs-params">Vector2 <span class="hljs-keyword">value</span></span>)
+    </span>{
+        localPosition = <span class="hljs-keyword">value</span>;
+        <span class="hljs-comment">// set the dirty flag since the localToWorldMatrix needs to be updated</span>
+        setDirty();
+    }
+    
+    <span class="hljs-comment">/* localRoation and localScale should also have getters and setters
+     * like the local position does. Be sure to call setDirty in the 
+     * setters for each of them */</span>
+}
+</code>
+
+There is a lot of code there so let me explain the key points. First of 
+all, I am using a dirty flag to indicate when the transform matrices are
+ out of date. That allows the position, rotation, and scale to be 
+changed multiple times and the matrix is only actually recalculated once
+ it is requested, reducing the amount of uneeded recalculations. Also 
+take note that the dirty flag is only set if the transform is not 
+already dirty. This is to keep the <em>setDirty</em> call from 
+propagating to all of the children every time the transform is modified 
+and only setting the dirty flag when necessary.
+
+The inverse matrix is also stored in the transform to keep from having 
+to calculate it everytime it is needed. It has its own dirty flag so it 
+isn't calculated if it isn't needed.
+
+<h2>Using the Transform Class</h2>
+
+Now that we have a transform class, let's see how it can be used. First of all, the <em>localToWorldMatrix</em> can be used in draw calls. Most drawing libraries will allow you to specify a matrix to position objects on the screen.
+
+<code class="hljs java">
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Renderer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span>
+</span>{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">render</span><span class="hljs-params">(graphics)</span>
+    </span>{
+    	graphics.setTransformMatrix(<span class="hljs-keyword">this</span>.gameObject.transform.getLocalToWorldMatrix());
+        graphics.drawSprite(<span class="hljs-keyword">this</span>.frame);
+    }
+    
+    <span class="hljs-comment">// whatever else the renderer does</span>
+    <span class="hljs-comment">// would go here</span>
+    ...
+}
+</code>
+
+Keep in mind the above code doesn't account for the view transform. 
+Think of the view transform as the camera for the scene. If you wanted 
+to be able to scroll the view of the scene you should specify a camera 
+object and multiply all transforms by the <em>worldToLocalMatrix</em> from the transform of the camera.
+
+<code class="hljs css">
+    	<span class="hljs-selector-tag">graphics</span><span class="hljs-selector-class">.setTransformMatrix</span>(
+            <span class="hljs-selector-tag">camera</span><span class="hljs-selector-class">.transform</span><span class="hljs-selector-class">.getWorldToLocalMatrix</span>() *
+            <span class="hljs-selector-tag">gameObject</span><span class="hljs-selector-class">.transform</span><span class="hljs-selector-class">.getLocalToWorldMatrix</span>());
+</code>
+
+The transform could be used in game logic code
+
+<code class="hljs java">
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Mine</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Behavoir</span>
+</span>{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">float</span> deltaTime, InputState input)</span>
+    </span>{
+        <span class="hljs-comment">// transforming the zero vector gets that </span>
+        <span class="hljs-comment">// transform's origin in world coordinates</span>
+    	Vector2 playerWorldPosition = player.transform.transformPoint(<span class="hljs-keyword">new</span> Vector2(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>));
+        
+        <span class="hljs-comment">// take the players world position and convert it the mine's</span>
+        <span class="hljs-comment">// local coordinates</span>
+        Vector2 playerLocalPosition = <span class="hljs-keyword">this</span>.transform.inverseTransformPoint(playerWorldPosition);
+        
+        <span class="hljs-comment">// since playerLocalPosition is the players position relative to the mine</span>
+        <span class="hljs-comment">// the magnitude of the position is the distance from the mine to the player</span>
+        <span class="hljs-keyword">if</span> (playerLocalPosition.magnitudeSquared() &lt; sensorRange * sensorRange)
+        {
+            <span class="hljs-keyword">this</span>.detonate();
+        }
+    }
+}
+</code>
+
+<h2>Conclusion</h2>
+
+Transforms may take a while to fully grasp but once understood help 
+simplify problems that would otherwise be a huge challenge to tackle. 
+Hopefully this article helped you understand how to use them in your 
+games better.
+
+<h2>Article Update Log</h2>
+
+<span style="font-weight:bold;">5 Feb 2014</span>: Initial release</section>
+
+		
+
+		
+	</div>
+	<!--
+		<hr class='ipsHr ipsClear ipsClearfix'>
+		
+			
+				
+<span class='ipsBadge ipsBadge_style6'>Content License: GameDev.net Open License</span>
+			
+		
+	-->
+	
+
+	
+	
+
+	<hr class="ipsHr ipsClear ipsClearfix">
+	
+	
+	
+		&nbsp;&nbsp;<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=report&amp;d=1&amp;id=3566" data-ipsdialog="" data-ipsdialog-size="medium" data-ipsdialog-title="Report Article" data-ipsdialog-remotesubmit="" data-ipsdialog-flashmessage="Thanks for your report." title="Report Article">Report Article</a>
+	
+	
+</div>
+
+
+<div class="ipsResponsive_showPhone ipsResponsive_block ipsSpacer_top">
+	
+
+<div data-followapp="cms" data-followarea="records1" data-followid="3566" data-controller="core.front.core.followButton">
+	
+		<span class="ipsType_light ipsType_blendLinks ipsResponsive_hidePhone ipsResponsive_inline"><i class="fa fa-info-circle"></i> <a href="https://www.gamedev.net/login/" title="Go to the sign in page">Sign in to follow this</a>&nbsp;&nbsp;</span>
+	
+	
+
+	<div class="ipsFollow ipsPos_middle ipsButton ipsButton_link ipsButton_verySmall ipsButton_disabled" data-role="followButton">
+		
+			<span>Followers</span>
+			<span class="ipsCommentCount">0</span>
+		
+	</div>
+
+</div>
+</div>
+
+<div class="ipsGrid ipsGrid_collapsePhone ipsPager ipsClearfix ipsSpacer_top">
+	<div class="ipsGrid_span6 ipsType_left ipsPager_prev">
+		
+			<a href="https://www.gamedev.net/articles/programming/math-and-physics/" title="Go to Math and Physics" rel="up">
+				<span class="ipsPager_type">Go to articles</span>
+				<span class="ipsPager_title ipsType_light ipsTruncate ipsTruncate_line">Math and Physics</span>
+			</a>
+		
+	</div>
+	
+</div>
+
+
+	<hr class="ipsHr">
+	
+
+	<ul class="ipsList_inline ipsList_noSpacing ipsClearfix" data-controller="core.front.core.sharelink">
+		
+			<li>
+<a href="http://twitter.com/share?text=Making%20a%20Game%20Engine%3A%20Transformations&amp;url=https%3A%2F%2Fwww.gamedev.net%2Farticles%2Fprogramming%2Fmath-and-physics%2Fmaking-a-game-engine-transformations-r3566%2F" class="cShareLink cShareLink_twitter" target="_blank" data-role="shareLink" title="Share on Twitter" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-twitter"></i>
+</a></li>
+		
+			<li>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.gamedev.net%2Farticles%2Fprogramming%2Fmath-and-physics%2Fmaking-a-game-engine-transformations-r3566%2F" class="cShareLink cShareLink_facebook" target="_blank" data-role="shareLink" title="Share on Facebook" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-facebook"></i>
+</a></li>
+		
+			<li>
+<a href="https://plus.google.com/share?url=https%3A%2F%2Fwww.gamedev.net%2Farticles%2Fprogramming%2Fmath-and-physics%2Fmaking-a-game-engine-transformations-r3566%2F" class="cShareLink cShareLink_google" target="_blank" data-role="shareLink" title="Share on Google+" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-google-plus"></i>
+</a></li>
+		
+			<li>
+<a href="http://digg.com/submit?url=https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/" class="cShareLink cShareLink_digg" target="_blank" data-role="shareLink" title="Share on Digg" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-digg"></i>
+</a></li>
+		
+			<li>
+<a href="https://del.icio.us/save?jump=close&amp;noui=1&amp;v=5&amp;provider=GameDev.net&amp;url=https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/&amp;title=Making%20a%20Game%20Engine:%20Transformations" class="cShareLink cShareLink_delicious" target="_blank" data-role="shareLink" title="Save to Delicious" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-delicious"></i>
+</a></li>
+		
+			<li>
+<a href="http://www.reddit.com/submit?url=https%3A%2F%2Fwww.gamedev.net%2Farticles%2Fprogramming%2Fmath-and-physics%2Fmaking-a-game-engine-transformations-r3566%2F&amp;title=Making+a+Game+Engine%3A+Transformations" class="cShareLink cShareLink_reddit" target="_blank" title="Share on Reddit" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-reddit"></i>
+</a></li>
+		
+			<li>
+<a href="http://www.stumbleupon.com/submit?url=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" class="cShareLink cShareLink_stumble" target="_blank" title="Share on StumbleUpon" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-stumbleupon"></i>
+</a></li>
+		
+			<li>
+<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.gamedev.net%2Farticles%2Fprogramming%2Fmath-and-physics%2Fmaking-a-game-engine-transformations-r3566%2F&amp;title=Making+a+Game+Engine%3A+Transformations" class="cShareLink cShareLink_linkedin" target="_blank" data-role="shareLink" title="Share on LinkedIn" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-linkedin"></i>
+</a></li>
+		
+			<li>
+<a href="http://pinterest.com/pin/create/button/?url=https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/&amp;media=" class="cShareLink cShareLink_pinterest" target="_blank" data-role="shareLink" title="Share on Pinterest" data-ipstooltip="" rel="noopener noreferrer">
+	<i class="fa fa-pinterest"></i>
+</a></li>
+		
+	</ul>
+
+
+
+</article>
+<br>
+
+	<a id="replies"></a>
+	<h2 class="ipsType_sectionTitle ipsType_reset">User Feedback</h2>
+	
+<div data-controller="core.front.core.commentsWrapper" data-tabsid="c9cc66aa50960366d3168b0ba0a8def2">
+	
+<div class="ipsTabs ipsClearfix" id="elTabs_c9cc66aa50960366d3168b0ba0a8def2" data-ipstabbar="" data-ipstabbar-contentarea="#ipsTabs_content_c9cc66aa50960366d3168b0ba0a8def2">
+	<a href="#elTabs_c9cc66aa50960366d3168b0ba0a8def2" data-action="expandTabs"><i class="fa fa-caret-down"></i></a>
+	<ul role="tablist">
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?tab=reviews" id="c9cc66aa50960366d3168b0ba0a8def2_tab_reviews" class="ipsTabs_item ipsTabs_activeItem" title="0 Reviews" role="tab" aria-selected="true">
+					0 Reviews
+				</a>
+			</li>
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?tab=comments" id="c9cc66aa50960366d3168b0ba0a8def2_tab_comments" class="ipsTabs_item" title="8 Comments" role="tab">
+					8 Comments
+				</a>
+			</li>
+		
+	</ul>
+</div>
+<section id="ipsTabs_content_c9cc66aa50960366d3168b0ba0a8def2" class="ipsTabs_panels ipsTabs_contained">
+	
+		
+			<div id="ipsTabs_elTabs_c9cc66aa50960366d3168b0ba0a8def2_c9cc66aa50960366d3168b0ba0a8def2_tab_reviews_panel" class="ipsTabs_panel" aria-labelledby="c9cc66aa50960366d3168b0ba0a8def2_tab_reviews" aria-hidden="false" style="display: block;">
+				
+<div data-controller="core.front.core.commentFeed" data-autopoll="" data-commentstype="reviews" data-baseurl="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/" data-lastpage="" data-feedid="records1--reviews" id="reviews">
+	
+		
+		<div id="elRecordReviewForm">
+			
+
+
+
+	<div class="ipsType_center ipsPad cGuestTeaser">
+		
+			<h2 class="ipsType_pageTitle">Create an account or sign in to leave a review</h2>
+			<p class="ipsType_light ipsType_normal ipsType_reset">You need to be a member in order to leave a review</p>
+		
+
+		<div class="ipsBox ipsPad ipsSpacer_top">
+			<div class="ipsGrid ipsGrid_collapsePhone">
+				<div class="ipsGrid_span6 cGuestTeaser_left">
+					<h2 class="ipsType_sectionHead">Create an account</h2>
+					<p class="ipsType_normal ipsType_reset ipsType_light ipsSpacer_bottom">Sign up for a new account in our community. It's easy!</p>
+					<a href="https://www.gamedev.net/register/" class="ipsButton ipsButton_primary ipsButton_small">Register a new account</a>
+				</div>
+				<div class="ipsGrid_span6 cGuestTeaser_right">
+					<h2 class="ipsType_sectionHead">Sign in</h2>
+					<p class="ipsType_normal ipsType_reset ipsType_light ipsSpacer_bottom">Already have an account? Sign in here.</p>
+					<a href="https://www.gamedev.net/login/?ref=aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvYXJ0aWNsZXMvcHJvZ3JhbW1pbmcvbWF0aC1hbmQtcGh5c2ljcy9tYWtpbmctYS1nYW1lLWVuZ2luZS10cmFuc2Zvcm1hdGlvbnMtcjM1NjYvI3JlcGx5Rm9ybQ==" data-ipsdialog="" data-ipsdialog-size="medium" data-ipsdialog-title="Sign In Now" class="ipsButton ipsButton_primary ipsButton_small">Sign In Now</a>
+				</div>
+			</div>
+			
+				<hr class="ipsHr">
+				<ul class="ipsList_inline ipsList_noSpacing">
+					
+					
+					
+					
+					<li class="ipsType_center ipsPos_center cGuestTeaser_social">
+						
+
+<a href="https://login.live.com/oauth20_authorize.srf?client_id=cbacce32-8b60-405f-bf02-e4ff5db904a5&amp;scope=wl.signin%20wl.emails%20wl.offline_access&amp;response_type=code&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/microsoft/auth.php&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_microsoft">
+	<span class="ipsSocial_icon"><i class="fa fa-windows"></i></span>
+	<span class="ipsSocial_text">Sign in with Microsoft</span>
+</a>
+					</li>
+					
+					
+					
+					<li class="ipsType_center ipsPos_center cGuestTeaser_social">
+						
+
+<a href="https://www.facebook.com/dialog/oauth?client_id=111606688673&amp;scope=email,user_posts,publish_actions&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/facebook/auth.php&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_facebook">
+	<span class="ipsSocial_icon"><i class="fa fa-facebook"></i></span>
+	<span class="ipsSocial_text">Sign in with Facebook</span>
+</a>
+					</li>
+					
+					
+					
+					<li class="ipsType_center ipsPos_center cGuestTeaser_social">
+						
+<a href="https://www.gamedev.net/login/?loginProcess=twitter&amp;ref=aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_twitter">
+	<span class="ipsSocial_icon"><i class="fa fa-twitter"></i></span>
+	<span class="ipsSocial_text">Sign in with Twitter</span>
+</a>
+					</li>
+					
+					
+					
+					<li class="ipsType_center ipsPos_center cGuestTeaser_social">
+						
+<a href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;client_id=431469176926-pgca579pdqff2rgfpglpgp9s2ovq6ovb.apps.googleusercontent.com&amp;redirect_uri=https://www.gamedev.net/applications/core/interface/google/auth.php&amp;scope=https://www.googleapis.com/auth/plus.login%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&amp;access_type=offline&amp;state=front-239a961bf1c417d8f481a8a866d7b142-aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQvbG9naW4v" class="ipsButton ipsButton_verySmall ipsButton_fullWidth ipsSocial ipsSocial_google">
+	<span class="ipsSocial_icon"><i class="fa fa-google-plus"></i></span>
+	<span class="ipsSocial_text">Sign in with Google</span>
+</a>
+					</li>
+					
+					
+				</ul>
+			
+		</div>
+	</div>
+
+
+		</div>
+	
+	
+		<hr class="ipsHr">
+		<div class="ipsClearfix ipsSpacer_bottom">
+			
+			<div class="ipsClearfix ipsPos_right ipsResponsive_hidePhone">
+				<ul class="ipsButtonRow ipsClearfix">
+					<li data-action="tableFilter">
+						<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?d=1&amp;tab=reviews&amp;page=1&amp;sort=helpful" class="ipsButtonRow_active" data-action="filterClick">Most Helpful</a>
+					</li>
+					<li data-action="tableFilter">
+						<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?d=1&amp;tab=reviews&amp;page=1&amp;sort=newest" class="" data-action="filterClick">Newest</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div data-role="commentFeed" data-controller="core.front.core.moderation">
+			<form action="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?csrfKey=239a961bf1c417d8f481a8a866d7b142&amp;do=multimodReview" method="post" data-ipspageaction="" data-role="moderationTools">
+				
+				
+					
+					
+					
+
+	<article id="review-20818" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-20818"></a>
+		
+<div id="review-20818_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="20818" data-quotedata="{&quot;userid&quot;:228665,&quot;username&quot;:&quot;BraneSatch&quot;,&quot;timestamp&quot;:1428087595,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:20818}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/228665-branesatch/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/228665-branesatch/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to BraneSatch's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/B.png" alt="BraneSatch">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=20818&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=20818" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_20818" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/228665-branesatch/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/228665-branesatch/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to BraneSatch's profile" class="ipsType_break">BraneSatch</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 147
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2015-04-03T18:59:55Z" title="04/03/15 09:59  PM" data-short="2 y">April 3, 2015</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-20818" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_20818_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=20818" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-20335" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-20335"></a>
+		
+<div id="review-20335_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="20335" data-quotedata="{&quot;userid&quot;:138011,&quot;username&quot;:&quot;h4tt3n&quot;,&quot;timestamp&quot;:1418901903,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:20335}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/138011-h4tt3n/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/138011-h4tt3n/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to h4tt3n's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/H.png" alt="h4tt3n">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=20335&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=20335" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_20335" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/138011-h4tt3n/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/138011-h4tt3n/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to h4tt3n's profile" class="ipsType_break">h4tt3n</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 1974
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-12-18T11:25:03Z" title="12/18/14 01:25  PM" data-short="2 y">December 18, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-20335" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_20335_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=20335" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-17990" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-17990"></a>
+		
+<div id="review-17990_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="17990" data-quotedata="{&quot;userid&quot;:218337,&quot;username&quot;:&quot;?can&quot;,&quot;timestamp&quot;:1392687195,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:17990}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/218337-%25e9%2598%25bfcan/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/218337-%25e9%2598%25bfcan/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to ?can's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/C.png" alt="?can">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=17990&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17990" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_17990" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/218337-%25e9%2598%25bfcan/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/218337-%25e9%2598%25bfcan/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to ?can's profile" class="ipsType_break">?can</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 120
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-02-18T01:33:15Z" title="02/18/14 03:33  AM" data-short="3 y">February 18, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-17990" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_17990_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17990" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-17960" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-17960"></a>
+		
+<div id="review-17960_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="17960" data-quotedata="{&quot;userid&quot;:208567,&quot;username&quot;:&quot;Alessio1989&quot;,&quot;timestamp&quot;:1392514913,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:17960}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/208567-alessio1989/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/208567-alessio1989/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to Alessio1989's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/A.png" alt="Alessio1989">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=17960&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17960" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_17960" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/208567-alessio1989/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/208567-alessio1989/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to Alessio1989's profile" class="ipsType_break">Alessio1989</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 4634
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-02-16T01:41:53Z" title="02/16/14 03:41  AM" data-short="3 y">February 16, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-17960" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_17960_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17960" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-17926" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-17926"></a>
+		
+<div id="review-17926_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="17926" data-quotedata="{&quot;userid&quot;:195158,&quot;username&quot;:&quot;Dario Oliveri&quot;,&quot;timestamp&quot;:1392298626,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:17926}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/195158-demonrad/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/195158-demonrad/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to Dario Oliveri's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/D.png" alt="Dario Oliveri">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=17926&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17926" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_17926" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/195158-demonrad/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/195158-demonrad/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to Dario Oliveri's profile" class="ipsType_break">Dario Oliveri</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 290
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-02-13T13:37:06Z" title="02/13/14 03:37  PM" data-short="3 y">February 13, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-17926" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_17926_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17926" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-17904" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-17904"></a>
+		
+<div id="review-17904_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="17904" data-quotedata="{&quot;userid&quot;:2352,&quot;username&quot;:&quot;Saruman&quot;,&quot;timestamp&quot;:1392191433,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:17904}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/2352-joew/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/2352-joew/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to Saruman's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-thumb-2352.jpg" alt="Saruman">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=17904&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17904" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_17904" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/2352-joew/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/2352-joew/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to Saruman's profile" class="ipsType_break">Saruman</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 4339
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-02-12T07:50:33Z" title="02/12/14 09:50  AM" data-short="3 y">February 12, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-17904" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_17904_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17904" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+					
+					
+					
+
+	<article id="review-17900" class="ipsComment ipsComment_parent ipsClearfix ipsClear ">
+		<a id="review-17900"></a>
+		
+<div id="review-17900_wrap" data-controller="core.front.core.comment" data-commentapp="cms" data-commenttype="records1-review" data-commentid="17900" data-quotedata="{&quot;userid&quot;:204936,&quot;username&quot;:&quot;Zaoshi Kaba&quot;,&quot;timestamp&quot;:1392113377,&quot;contentapp&quot;:&quot;cms&quot;,&quot;contenttype&quot;:&quot;records1&quot;,&quot;contentid&quot;:null,&quot;contentcommentid&quot;:17900}" class="ipsComment_content ipsType_medium">
+	<div class="ipsComment_header ipsPhotoPanel ipsPhotoPanel_small ipsPhotoPanel_notPhone">
+		
+
+
+	<a href="https://www.gamedev.net/profile/204936-zaoshi-kaba/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/204936-zaoshi-kaba/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_small ipsPos_left" title="Go to Zaoshi Kaba's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/Z.png" alt="Zaoshi Kaba">
+	</a>
+
+		<div>
+			<p class="ipsPos_right ipsType_reset">
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=reportReview&amp;review=17900&amp;d=1" data-ipsdialog="" data-ipsdialog-remotesubmit="" data-ipsdialog-size="medium" data-ipsdialog-flashmessage="Thanks for your report." data-ipsdialog-title="Report" data-action="reportComment" title="Report">Report</a> · 
+				
+
+				<a class="ipsType_blendLinks" href="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17900" data-ipstooltip="" title="Share this review" data-ipsmenu="" data-ipsmenu-closeonclick="false" id="elShareComment_17900" data-role="shareComment"><i class="fa fa-share-alt"></i></a>
+				
+			</p>
+			<h3 class="ipsComment_author ipsType_blendLinks">
+				<strong class="ipsType_normal">
+<a href="https://www.gamedev.net/profile/204936-zaoshi-kaba/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/204936-zaoshi-kaba/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fmath-and-physics%252Fmaking-a-game-engine-transformations-r3566%252F" title="Go to Zaoshi Kaba's profile" class="ipsType_break">Zaoshi Kaba</a></strong>
+				
+
+	
+		<span title="Member's total reputation" data-ipstooltip="" class="ipsRepBadge ipsRepBadge_positive">
+	
+			<i class="fa fa-plus-circle"></i> 8434
+	
+		</span>
+	
+
+			</h3>
+			<p class="ipsComment_meta ipsType_medium ipsType_light">
+				<time datetime="2014-02-11T10:09:37Z" title="02/11/14 12:09  PM" data-short="3 y">February 11, 2014</time>
+				
+				
+			</p>
+			<ul class="ipsList_inline ipsClearfix ipsRating ipsRating_large">
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+					<li class="ipsRating_on">
+						<i class="fa fa-star"></i>
+					</li>
+				
+			</ul>&nbsp;&nbsp; 
+		</div>
+	</div>
+	<div class="ipsPad">
+		<div id="review-17900" data-role="commentContent" class="ipsType_richText ipsType_normal ipsContained" data-controller="core.front.core.lightboxedImages">
+			
+		</div>
+
+		
+			
+		
+
+		
+			<div class="ipsItemControls">
+				
+					
+
+	<div data-controller="core.front.core.reaction" class="ipsItemControls_right ipsClearfix ">	
+		<div class="ipsReact ipsPos_right">
+			
+				<div class="ipsReact_reactCountOnly ipsAreaBackground_light ipsType_blendLinks ipsHide" data-role="reactCount">
+					
+					0
+					
+				</div>
+			
+			
+			
+		</div>
+	</div>
+
+
+				
+				
+			</div>
+		
+	</div>
+	
+	<div class="ipsMenu ipsMenu_wide ipsHide cPostShareMenu" id="elShareComment_17900_menu">
+		<div class="ipsPad">
+			<h4 class="ipsType_sectionHead">Share this review</h4>
+			<hr class="ipsHr">
+			<h5 class="ipsType_normal ipsType_reset">Link to review</h5>
+			<input value="https://www.gamedev.net/articles/programming/math-and-physics/making-a-game-engine-transformations-r3566/?do=findReview&amp;review=17900" class="ipsField_fullWidth" type="text">
+		</div>
+	</div>
+</div>
+	</article>
+
+				
+				
+<input name="csrfKey" value="239a961bf1c417d8f481a8a866d7b142" type="hidden">
+
+
+			</form>
+		</div>
+		
+	
+</div>
+			</div>
+		
+	
+		
+	
+</section>
+
+</div>
+
+
+<br>
+
+</li>
+				
+			
+		</ul>
+	</div>
+
+						
+<div id="elCmsPageWrap" data-pageid="1">
+
+<div>
+	
+
+</div>
+</div>
+						
+
+	<div class="cWidgetContainer " data-role="widgetReceiver" data-orientation="horizontal" data-widgetarea="footer">
+		<ul class="ipsList_reset">
+			
+				
+					
+					<li class="ipsWidget ipsWidget_horizontal ipsBox" data-blockid="plugin_23_adleaderboard_kg5ij66q9" data-blockconfig="true" data-blocktitle="block_adleaderboard" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+    <div class="adunit ad_leaderboard display-none" data-adunit="Ad_Leaderboard_Header" data-size-mapping="sizemap_leaderboard" data-dimensions="970x90,728x90,468x60,320x50" data-targeting="{&quot;gdnetplus&quot;:&quot;0&quot;}" id="Ad_Leaderboard_Header-auto-gen-id-2"></div>
+
+</li>
+				
+			
+		</ul>
+	</div>
+
+					</div>
+					
+
+	<div id="ipsLayout_sidebar" class="ipsLayout_sidebarright " data-controller="core.front.widgets.sidebar">
+		
+		
+		
+
+	<div class="cWidgetContainer " data-role="widgetReceiver" data-orientation="vertical" data-widgetarea="sidebar">
+		<ul class="ipsList_reset">
+			
+				
+					
+					<li class="ipsWidget ipsWidget_vertical ipsBox" data-blockid="plugin_23_adbox_wmec3x4tm" data-blockconfig="true" data-blocktitle="block_adbox" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+    <div class="adunit ad_box display-none" data-adunit="Ad_Box_Sidebar" data-size-mapping="sizemap_box_sidebar" data-dimensions="300x250,336x280,250x250,200x200" data-targeting="{&quot;gdnetplus&quot;:&quot;0&quot;}" id="Ad_Box_Sidebar-auto-gen-id-3"></div>
+
+</li>
+				
+					
+					<li class="ipsWidget ipsWidget_vertical ipsBox" data-blockid="app_cms_Categories_b298l88s1" data-blocktitle="Database Category Menu" data-blockerrormessage="This block cannot be shown. This could be because it is unable to show on this specific page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+
+
+	<h3 class="ipsWidget_title ipsType_reset">Categories</h3>
+	<div class="ipsSideMenu ipsAreaBackground_reset ipsPad_half">
+		<ul class="ipsSideMenu_list">
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/audio/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">27</span><strong class="ipsType_normal">Audio</strong></a>
+					
+						<ul class="ipsSideMenu_list">
+							
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/audio/music-and-sound-fx/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">27</strong>Music and Sound FX</a>
+									
+								</li>
+							
+						</ul>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/business/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">190</span><strong class="ipsType_normal">Business</strong></a>
+					
+						<ul class="ipsSideMenu_list">
+							
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/business/business-and-law/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">121</strong>Business and Law</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/business/career-development/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">33</strong>Career Development</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/business/production-and-management/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">36</strong>Production and Management</a>
+									
+								</li>
+							
+						</ul>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/game-design/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">175</span><strong class="ipsType_normal">Game Design</strong></a>
+					
+						<ul class="ipsSideMenu_list">
+							
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/game-design/game-design-and-theory/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">173</strong>Game Design and Theory</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/game-design/writing-for-games/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">2</strong>Writing for Games</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/game-design/ux-for-games/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">0</strong>UX for Games</a>
+									
+								</li>
+							
+						</ul>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/industry/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">229</span><strong class="ipsType_normal">Industry</strong></a>
+					
+						<ul class="ipsSideMenu_list">
+							
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/industry/interviews/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">169</strong>Interviews</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/industry/event-coverage/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">60</strong>Event Coverage</a>
+									
+								</li>
+							
+						</ul>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/programming/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">1130</span><strong class="ipsType_normal">Programming</strong></a>
+					
+						<ul class="ipsSideMenu_list">
+							
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/programming/artificial-intelligence/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">51</strong>Artificial Intelligence</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/programming/general-and-gameplay-programming/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">596</strong>General and Gameplay Programming</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/programming/graphics/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">318</strong>Graphics and GPU Programming</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/programming/engines-and-middleware/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><strong class="ipsPos_right ipsType_small">51</strong>Engines and Middleware</a>
+									
+								</li>
+							
+							
+								<li>
+									
+										<a href="https://www.gamedev.net/articles/programming/" class="ipsSideMenu_item"><span class="ipsType_light ipsType_small">(and 2 more)</span></a>
+										
+						</li></ul>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/visual-arts/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">62</span><strong class="ipsType_normal">Visual Arts</strong></a>
+					
+				</li>
+			
+				<li>
+					<a href="https://www.gamedev.net/articles/archive/" class="ipsSideMenu_item ipsTruncate ipsTruncate_line"><span class="ipsBadge ipsBadge_style1 ipsPos_right">34</span><strong class="ipsType_normal">Archive</strong></a>
+					
+				</li>
+			
+		</ul>
+		<p class="ipsType_center">
+			<a href="https://www.gamedev.net/articles/?show=categories" class="">Show all categories &nbsp;<i class="fa fa-caret-right"></i></a>
+		</p>
+	</div>
+</li>
+				
+					
+					<li class="ipsWidget ipsWidget_vertical ipsBox" data-blockid="plugin_23_adbox_m57rzshgn" data-blockconfig="true" data-blocktitle="block_adbox" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+    <div class="adunit ad_box display-none" data-adunit="Ad_Box_Sidebar" data-size-mapping="sizemap_box_sidebar" data-dimensions="300x250,336x280,250x250,200x200" data-targeting="{&quot;gdnetplus&quot;:&quot;0&quot;}" id="Ad_Box_Sidebar-auto-gen-id-4"></div>
+
+</li>
+				
+					
+					<li class="ipsWidget ipsWidget_vertical ipsBox" data-blockid="plugin_25_latesttopics_3u8bb7ek3" data-blockconfig="true" data-blocktitle="block_latesttopics" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+<div class="ipsBox ipsSpacer_bottom">
+    <a href="https://www.gamedev.net/activity"><h2 class="ipsType_sectionTitle ipsType_reset">Latest Forum Activity</h2></a>
+    <div class="ipsClearfix">
+
+        
+            <ol class="ipsDataList ipsDataList_reducedSpacing" itemscope="" itemtype="http://schema.org/ItemList">
+                <meta itemprop="itemListOrder" content="Descending">
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/241878-martin1999/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/241878-martin1999/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to Martin1999's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/M.png" alt="Martin1999">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="8 replies">8</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691447-need-help-in-creating-questmissiontask/" title="View the topic Need help in creating quest/mission/task." class="ipsDataItem_title">Need help in creating quest/mission/task.</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/241878-martin1999/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/241878-martin1999/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to Martin1999's profile" class="ipsType_break">Martin1999</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T08:45:50Z" title="08/13/17 08:45  AM" data-short="30 min">30 minutes ago</time> by Martin1999</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/249782-dhanrajsinh2492/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/249782-dhanrajsinh2492/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to dhanrajsinh2492's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/D_002.png" alt="dhanrajsinh2492">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right ipsFaded" data-ipstooltip="" title="0 replies">0</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691463-learn-2d-game-development-with-unity/" title="View the topic Learn 2D Game Development with Unity" class="ipsDataItem_title">Learn 2D Game Development with Unity</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/249782-dhanrajsinh2492/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/249782-dhanrajsinh2492/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to dhanrajsinh2492's profile" class="ipsType_break">dhanrajsinh2492</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T08:40:44Z" title="08/13/17 08:40  AM" data-short="35 min">35 minutes ago</time> by dhanrajsinh2492</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/203216-altay/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/203216-altay/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to altay's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/A_002.png" alt="altay">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="1 reply">1</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691462-rendering-scene-for-each-light-source/" title="View the topic Rendering scene for each light source?" class="ipsDataItem_title">Rendering scene for each light source?</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/203216-altay/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/203216-altay/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to altay's profile" class="ipsType_break">altay</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T08:34:48Z" title="08/13/17 08:34  AM" data-short="41 min">41 minutes ago</time> by JoeJ</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/60632-suliman/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/60632-suliman/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to suliman's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/S.png" alt="suliman">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="24 replies">24</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/665827-hiding-savedata-to-prevent-save-backup/" title="View the topic Hiding savedata to prevent save backup" class="ipsDataItem_title">Hiding savedata to prevent save backup</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/60632-suliman/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/60632-suliman/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to suliman's profile" class="ipsType_break">suliman</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T06:16:13Z" title="08/13/17 06:16  AM" data-short="2 hr">2 hours ago</time> by jbadams</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/231493-alberth/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/231493-alberth/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to Alberth's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-thumb-231493.png" alt="Alberth">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="5 replies">5</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691354-why-a-confirmation-on-mark-all-topics-read/" title="View the topic Why a confirmation on &quot;mark all topics read&quot;?" class="ipsDataItem_title">Why a confirmation on "mark all topics read"?</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/231493-alberth/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/231493-alberth/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to Alberth's profile" class="ipsType_break">Alberth</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T06:03:07Z" title="08/13/17 06:03  AM" data-short="3 hr">3 hours ago</time> by Alberth</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/99658-vanillasnake/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/99658-vanillasnake/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to VanillaSnake21's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-thumb-99658.jpg" alt="VanillaSnake21">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="5 replies">5</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691454-how-to-correctly-scale-a-set-of-bezier-curves/" title="View the topic How to correctly scale a set of bezier curves?" class="ipsDataItem_title">How to correctly scale a set of bezier curves?</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/99658-vanillasnake/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/99658-vanillasnake/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to VanillaSnake21's profile" class="ipsType_break">VanillaSnake21</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T06:00:57Z" title="08/13/17 06:00  AM" data-short="3 hr">3 hours ago</time> by Alberth</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/236276-hebi/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/236276-hebi/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to Hebi's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-236276.jpg" alt="Hebi">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="1 reply">1</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691461-rpg-ai-and-fairness-players-characters-stats-public-to-ai/" title="View the topic RPG AI and Fairness - player's characters stats public to AI" class="ipsDataItem_title">RPG AI and Fairness - player's characters stats public to AI</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/236276-hebi/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/236276-hebi/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to Hebi's profile" class="ipsType_break">Hebi</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T05:56:33Z" title="08/13/17 05:56  AM" data-short="3 hr">3 hours ago</time> by Alberth</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/249062-topple28/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/249062-topple28/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to topple28's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/cool.jpeg" alt="topple28">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="1 reply">1</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691455-advice-or-help-for-beginner-making-games-on-old-pc/" title="View the topic Advice or help for beginner making games on old PC." class="ipsDataItem_title">Advice or help for beginner making games on old PC.</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/249062-topple28/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/249062-topple28/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to topple28's profile" class="ipsType_break">topple28</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T05:43:40Z" title="08/13/17 05:43  AM" data-short="3 hr">3 hours ago</time> by Alberth</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/146744-slicer4ever/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/146744-slicer4ever/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to slicer4ever's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/photo-thumb-146744.png" alt="slicer4ever">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="117 replies">117</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691339-woa-v-the-competition-thread/" title="View the topic WoA V - The Competition Thread" class="ipsDataItem_title">WoA V - The Competition Thread</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/146744-slicer4ever/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/146744-slicer4ever/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to slicer4ever's profile" class="ipsType_break">slicer4ever</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T05:11:44Z" title="08/13/17 05:11  AM" data-short="4 hr">4 hours ago</time> by josehzz</span>
+							</p>
+						</div>
+					</li>
+                
+                    <li itemprop="ItemListElement" class="ipsDataItem">
+						<div class="ipsDataItem_icon ipsPos_top"> <!-- -->
+							
+
+
+	<a href="https://www.gamedev.net/profile/208915-sondre-drakensson/" data-ipshover="" data-ipshover-target="https://www.gamedev.net/profile/208915-sondre-drakensson/?do=hovercard" class="ipsUserPhoto ipsUserPhoto_tiny" title="Go to PosthasteGames's profile">
+		<img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/asha103.jpg" alt="PosthasteGames">
+	</a>
+
+						</div>
+						<div class="ipsDataItem_main cWidgetComments">
+							<div class="ipsCommentCount ipsPos_right " data-ipstooltip="" title="1 reply">1</div>
+
+							<div class="ipsType_break ipsContained">
+								
+                                <!-- ->setQueryString( 'do', 'getNewComment' ) -->
+								<a href="https://www.gamedev.net/forums/topic/691458-support-my-first-personal-game-on-patreon-sci-fi-satire-game/" title="View the topic Support my first personal game on Patreon! Sci-fi satire game" class="ipsDataItem_title">Support my first personal game on Patreon! Sci-fi satire game</a>
+							</div>
+							<p class="ipsType_reset ipsType_medium ipsType_blendLinks ipsContained">
+								<!--<span>By 
+<a href='https://www.gamedev.net/profile/208915-sondre-drakensson/' data-ipsHover data-ipsHover-target='https://www.gamedev.net/profile/208915-sondre-drakensson/?do=hovercard&amp;referrer=https%253A%252F%252Fwww.gamedev.net%252Farticles%252Fprogramming%252Fartificial-intelligence%252Fthe-core-mechanics-of-influence-mapping-r2799%252F' title="Go to PosthasteGames's profile" class="ipsType_break">PosthasteGames</a></span><br>-->
+								<span class="ipsType_light">updated <time datetime="2017-08-13T04:48:43Z" title="08/13/17 04:48  AM" data-short="4 hr">4 hours ago</time> by Hodgman</span>
+							</p>
+						</div>
+					</li>
+                
+            </ol>
+        
+    </div>
+</div>
+</li>
+				
+					
+					<li class="ipsWidget ipsWidget_vertical ipsBox" data-blockid="plugin_23_adskyscraper_den64klrp" data-blockconfig="true" data-blocktitle="block_adskyscraper" data-blockerrormessage="This block cannot be shown. This could be because it needs configuring, is unable to show on this page, or will show after reloading this page." data-controller="core.front.widgets.block">
+
+    <div class="adunit ad_skyscraper display-none" data-adunit="Ad_Skyscraper_Sidebar" data-size-mapping="sizemap_skyscraper_sidebar" data-dimensions="300x600,160x600,120x600" data-targeting="{&quot;gdnetplus&quot;:&quot;0&quot;}" id="Ad_Skyscraper_Sidebar-auto-gen-id-5"></div>
+
+</li>
+				
+			
+		</ul>
+	</div>
+
+	</div>
+
+					
+<nav class="ipsBreadcrumb ipsBreadcrumb_ ipsFaded_withHover">
+	
+
+	<ul class="ipsList_inline ipsPos_right">
+<li>
+<a class="ipsType_light " href="https://www.gamedev.net/community/chat/">
+<i class="fa fa-comments"> </i>
+<span>
+GDNet Chat
+</span>
+</a>
+</li>
+		
+		<li>
+			<a data-action="defaultStream" class="ipsType_light " href="https://www.gamedev.net/discover/"><i class="icon-newspaper"></i> <span>All Activity</span></a>
+		</li>
+		
+	</ul>
+<ul data-role="breadcrumbList">
+<li>
+			<a title="Home" href="https://www.gamedev.net/">
+				<span><i class="fa fa-home"></i> Home <i class="fa fa-angle-right"></i></span>
+			</a>
+		</li>
+		
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/">
+						<span>Articles <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/programming/">
+						<span>Programming <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					<a href="https://www.gamedev.net/articles/programming/math-and-physics/">
+						<span>Math and Physics <i class="fa fa-angle-right"></i></span>
+					</a>
+				
+			</li>
+		
+			<li>
+				
+					Making a Game Engine: Transformations
+				
+			</li>
+		
+	</ul></nav>
+				</div>
+			</div>
+			
+		</main><footer id="ipsLayout_footer" class="ipsClearfix"><div class="ipsLayout_container">
+				
+				
+
+
+
+<div class="ipsGrid ipsGrid_collapsePhone ipsSpacer_top ipsSpacer_half" id="elFooterLinks">
+    <div class="ipsGrid_span2">
+        
+
+
+<a href="https://www.gamedev.net/" id="elLogo" accesskey="1"><img src="Making%20a%20Game%20Engine:%20Transformations%20-%20Math%20and%20Physics%20-%20GameDev.net_tiedostot/gamedev-logo-2017-368x76.png" alt="GameDev.net"></a>
+
+         <!--<ul class="ipsList_inline ipsType_center ipsSpacer_top">
+            <li><i class="fa fa-facebook-square fa-2x"></i></li>
+            <li><i class="fa fa-twitter-square fa-2x"></i></li>
+            <li><i class="fa fa-linkedin-square fa-2x"></i></li>
+            <li><i class="fa fa-steam-square fa-2x"></i></li>
+        </ul>-->
+    </div>
+    <div class="ipsGrid_span1">
+    </div>
+    <div class="ipsGrid_span2">
+        <h3>Resources</h3>
+        <ul class="ipsList">
+            <li><a href="https://www.gamedev.net/articles">Articles &amp; Tutorials</a></li>
+            <li><a href="https://www.gamedev.net/blogs">Blogs</a></li>
+            <li><a href="https://www.gamedev.net/calendar">Calendar</a></li>
+            <li><a href="https://www.gamedev.net/forums">Forums</a></li>
+            <li><a href="https://www.gamedev.net/gallery">Gallery</a></li>
+        </ul>
+    </div>
+    <div class="ipsGrid_span2">
+        <h3>Community</h3>
+        <ul class="ipsList">
+            <!--<li><a href="/iotd">Image of the Day</a></li>-->
+            <li><a href="https://www.gamedev.net/activity">Activity</a></li>
+            <li><a href="https://www.gamedev.net/guidelines">Guidelines</a></li>
+            <li><a href="https://gamedev.market/">GameDev Market</a></li>
+            <li><a href="https://gamedev.jobs/">GameDev Jobs</a></li>
+            <li><a href="https://www.gamedev.net/leaderboard">Leaderboard</a></li>
+        </ul>
+    </div>
+    <div class="ipsGrid_span2">
+        <h3>About</h3>
+        <ul class="ipsList">
+            <li><a href="https://www.gamedev.net/info/about">About Us</a></li>
+            <li><a href="https://www.gamedev.net/terms">Terms of Service</a></li>
+            
+                <li>
+                    <a href="https://www.gamedev.net/privacy">
+                        Privacy Policy
+                    </a>
+                </li>
+            
+            
+                <li>
+                    <a href="https://www.gamedev.net/contact/">
+                        Contact Us
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+    <div class="ipsGrid_span2">
+        <h3>Social</h3>
+        <ul class="ipsList_inline">
+            <li><a href="#"><i class="fa fa-facebook-square fa-2x"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter-square fa-2x"></i></a></li>
+            <li><a href="#"><i class="fa fa-linkedin-square fa-2x"></i></a></li>
+            <li><a href="#"><i class="fa fa-steam-square fa-2x"></i></a></li>
+        </ul>
+    </div>
+    <div class="ipsGrid_span1">
+    </div>
+</div>
+<ul class="ipsList_inline ipsType_center ipsSpacer_top" id="elFooterLinks">
+    
+    
+</ul>
+
+<p class="ipsType_center">Copyright (c) 1999-2017 GameDev.net, LLC</p>
+
+
+<div id="hurtgamedev" class="ipsHide" style="margin-top:20%" data-dialog="">
+    <div>
+        <div class="ipsBox ipsSpacer_bottom">
+            <div class="ipsPad_double">
+                <div class="ipsMessage ipsMessage_error">We've detected an ad blocker!</div>
+                <div class="ipsPad" style="text-align:center">
+                    <div class="ipsType_veryLarge">
+                        We've detected an ad blocker.
+                    </div>
+                    <div class="ipsType_large">
+                        Please whitelist GameDev.net for access to our game development community.<br>
+                        Don't like ads? Consider our <a href="https://www.gamedev.net/info/gdnetplus.html">GDNet+ Memberships</a> for a no-ad experience.
+                    </div>
+                    <div class="ipsPad">
+                        <div data-action="dialogClose" class="ipsButton ipsButton_veryLarge ipsButton_important ipsPos_center">Yes, I'll Whitelist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+	
+
+
+<p id="elCopyright">
+	<span id="elCopyright_userLine">Copyright (c) 1999-2017 GameDev.net, LLC</span>
+	<a rel="nofollow" title="Invision Community" href="https://www.invisioncommunity.com/">Powered by Invision Community</a>
+</p>
+			</div>
+		</footer>
+		
+<div id="elMobileDrawer" class="ipsDrawer ipsHide">
+	<a href="#" class="ipsDrawer_close" data-action="close"><span>×</span></a>
+	<div class="ipsDrawer_menu">
+		<div class="ipsDrawer_content">
+<ul id="elUserNav_mobile" class="ipsList_inline signed_in ipsClearfix">
+	
+
+
+</ul>
+
+			
+
+			<div class="ipsSpacer_bottom ipsPad">
+				<ul class="ipsToolList ipsToolList_vertical">
+					
+						<li>
+							<a href="https://www.gamedev.net/login/" class="ipsButton ipsButton_light ipsButton_small ipsButton_fullWidth">Existing user? Sign In</a>
+						</li>
+						
+							<li>
+								<a href="https://www.gamedev.net/register/" data-ipsdialog="" data-ipsdialog-size="narrow" data-ipsdialog-title="Sign Up" id="elRegisterButton_mobile" class="ipsButton ipsButton_small ipsButton_fullWidth ipsButton_important">Sign Up</a>
+							</li>
+						
+					
+
+					
+				</ul>
+</div>
+
+			<ul class="ipsDrawer_list">
+				
+
+				
+				
+				
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Browse</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Articles &amp; Tutorials</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/">
+					All Categories
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/audio/">
+					Audio
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/business/">
+					Business
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/game-design/">
+					Game Design
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/industry/">
+					Industry
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/programming/">
+					Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/articles/visual-arts/">
+					Visual Arts
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/calendar/">
+					Calendar
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/news/">
+					News
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/gallery/">
+					Gallery
+				</a>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Forums</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/71-for-beginners/">
+					Beginners
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Programming</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/5-graphics-and-gpu-programming/">
+					Graphics and GPU Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/6-artificial-intelligence/">
+					Artificial Intelligence
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/7-math-and-physics/">
+					Math and Physics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/8-networking-and-multiplayer/">
+					Networking and Multiplayer
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/9-general-and-gameplay-programming/">
+					General and Gameplay Programming
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/10-engines-and-middleware/">
+					Engines and Middleware
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Visual Arts</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/12-2d-and-3d-art/">
+					2D and 3D Art
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/13-critique-and-feedback/">
+					Critique and Feedback
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Business</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/21-career-development/">
+					Career Development
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/22-production-and-management/">
+					Production and Management
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/23-business-and-law/">
+					Business and Law
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Audio</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/18-music-and-sound-fx/">
+					Music and Sound FX
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Game Design</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/19-game-design-and-theory/">
+					Game Design and Theory
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/20-writing-for-games/">
+					Writing for Games
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Community</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/25-gdnet-lounge/">
+					GDNet Lounge
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/26-gdnet-comments-suggestions-and-ideas/">
+					GDNet Comments, Suggestions, and Ideas
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/27-coding-horrors/">
+					Coding Horrors
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/28-your-announcements/">
+					Your Announcements
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/29-hobby-project-classifieds/">
+					Hobby Project Classifieds
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/30-indie-showcase/">
+					Indie Showcase
+				</a>
+			</li>
+		
+	
+
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Affiliates</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/33-nehe-productions/">
+					NeHe Productions
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/34-angelcode/">
+					AngelCode
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Topical</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/73-virtual-and-augmented-reality/">
+					Virtual and Augmented Reality
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/75-news/">
+					News
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/">
+					All Forums
+				</a>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+						
+						
+							<li><a href="https://www.gamedev.net/blogs/">Blogs</a></li>
+						
+					
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Careers</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/contractors/">
+					Contractors
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/forums/forum/29-hobby-project-classifieds/">
+					Hobby Projects
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">Game Jobs</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/jobs/">
+					Browse
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://gamedev.jobs/post-a-job/" target="_blank">
+					Post a Job
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Community</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/leaderboard/">
+					Leaderboard
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/online/">
+					Online Users
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/guidelines/">
+					Guidelines
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/community/chat/">
+					GameDev.net Chat
+				</a>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Search</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/discover/">
+					All Activity
+				</a>
+			</li>
+		
+	
+
+	
+		
+			
+			<li class="ipsDrawer_itemParent">
+				<h4 class="ipsDrawer_title"><a href="#">My Activity Streams</a></h4>
+				<ul class="ipsDrawer_list">
+					<li data-action="back"><a href="#">Back</a></li>
+					
+					
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/discover/28/">
+					Latest Topics
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/discover/44/">
+					Featured Blogs
+				</a>
+			</li>
+		
+	
+
+				</ul>
+			</li>
+		
+	
+
+	
+
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/search/">
+					Search
+				</a>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+						
+						
+							<li class="ipsDrawer_itemParent">
+								<h4 class="ipsDrawer_title"><a href="#">Store</a></h4>
+								<ul class="ipsDrawer_list">
+<li data-action="back"><a href="#">Back</a></li>
+									
+									
+										
+
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/store/">
+					Store
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://www.gamedev.net/info/gdnetplus.html/">
+					GDNet+ Memberships
+				</a>
+			</li>
+		
+	
+
+	
+		
+			<li>
+				<a href="https://gamedev.market/" target="_blank">
+					GameDev Marketplace
+				</a>
+			</li>
+		
+	
+
+									
+										
+								</ul>
+</li>
+						
+					
+				
+					
+				
+					
+				
+			</ul>
+</div>
+	</div>
+</div>
+		
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+			
+
+
+
+		
+		
+		
+		
+
+
+
+
+
+
+
+	
+
+
+
+
+	
+
+
+
+<div id="elGuestTerms" class="ipsPad_half ipsJS_hide" data-role="guestTermsBar" data-controller="core.front.core.guestTerms" style="display: block;">
+	<div class="ipsLayout_container">
+		<div class="ipsGrid ipsGrid_collapsePhone">
+			<div class="ipsGrid_span10">
+				<h2 class="ipsType_sectionHead">Important Information</h2>
+				<p class="ipsType_reset ipsType_medium cGuestTerms_contents">By using GameDev.net, you agree to our <a href="https://www.gamedev.net/terms/">Terms of Use</a> and <a href="https://www.gamedev.net/guidelines/">Guidelines</a>.</p>
+			</div>
+			<div class="ipsGrid_span2">
+				<a href="https://www.gamedev.net/index.php?app=core&amp;module=system&amp;controller=terms&amp;do=dismiss&amp;ref=aHR0cHM6Ly93d3cuZ2FtZWRldi5uZXQv" class="ipsButton ipsButton_veryLight ipsButton_large ipsButton_fullWidth" data-action="dismissTerms"><i class="fa fa-check"></i>&nbsp; I accept</a>
+			</div>
+		</div>
+	</div>
+</div>
+		<!--ipsQueryLog-->
+		<!--ipsCachingLog-->
+		
+	
+<span style="visibility: hidden; position: absolute; top: -300px; width: 1px; height: 1px; overflow: hidden; left: -300px;"><span class="ipsLoading ipsLoading_noAnim" style="display: block;"></span></span>  <div id="ipsTooltip" class="ipsTooltip ipsType_noBreak ipsTooltip_top ipsTooltip_right" role="tooltip" style="display: none; left: 836.5px; top: 33px; position: absolute; z-index: 5050;" animating="false">Available RSS feeds</div></body></html>

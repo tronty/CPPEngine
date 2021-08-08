@@ -1,0 +1,135 @@
+//-----------------------------------------------------------------------------
+// File: physics.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+struct VsOut {
+	float4 pos: POSITION;
+	float3 texCoord: TEXCOORD0;
+};
+
+float2 halfPixel;
+
+VsOut main(float4 pos: POSITION){
+	VsOut Out;
+
+	Out.pos = pos;
+	Out.texCoord.xy = pos.xy * float2(0.5, -0.5) + 0.5 + halfPixel;
+	Out.texCoord.z = 0;
+
+	return Out;
+}
+
+[Fragment shader]
+
+/*
+	This shader does the cloth physics simulation. The same shader is used for both the single and multi-pass
+	implementation. The single pass implementation uses the entire shader below, while the multipass uses
+	preprocessor defines to split it into four passes (first, two middle, and a last pass) that each fit within
+	64 ALU instructions.
+*/
+
+sampler2D Pos;
+sampler2D Dir;
+sampler2D Normal;
+
+float3 springs[NODE_COUNT];
+
+struct PsOut {
+#if defined(FIRST_PASS) || defined(LAST_PASS)
+	float4 pos: COLOR0;
+	float4 dir: COLOR1;
+#else
+	float4 dir: COLOR0;
+#endif
+};
+
+float damp;
+float4 frameTime;
+
+float3 windDir;
+
+PsOut main(const float3 texCoord: TEXCOORD0){
+	PsOut Out;
+
+	// Sample this node's attributes
+	float4 pos = tex2D(Pos, texCoord.xy);
+	float4 dir = tex2D(Dir, texCoord.xy);
+	float3 normal = tex2D(Normal, texCoord.xy);
+
+	// Air resistance
+	float3 airDir = reflect(dir, normal);
+
+
+#ifdef FIRST_PASS
+	// Drop some energy to keep the spring system stable.
+	// We cannot let there be a net gain of energy.
+	dir.xyz *= damp;
+
+	// Gravity
+	dir.y -= frameTime.z;
+#endif
+
+	// Compute the forces from the springs to neighboring nodes
+	float3 newDir = 0.0;
+	for (int i = 0; i < NODE_COUNT; i++){
+		float3 springCoord = texCoord + springs[i];
+
+		// Only include texCoords that goes inside the [0,1] range.
+		float3 nodePos = tex2D(Pos, springCoord).xyz;
+
+		float3 d = nodePos - pos.xyz;
+
+		float inside;
+#ifdef FIRST_PASS
+		 // Shoehorn the multipass shader into four passes by using a special case for the first four springs
+		if (i < 4)
+			inside = any(d);
+		else
+#endif
+			inside = float(all(springCoord.xy == saturate(springCoord.xy)));
+
+		/*
+			Compute the force a spring to another node applies to this node.
+			The unstretched length of the spring is in springCoord.z
+		*/
+		float t = 1.0 - springCoord.z / length(d);
+
+		newDir += inside * d * t;
+	}
+	dir.xyz += frameTime.w * newDir;
+
+#ifdef LAST_PASS
+	// Air resistance
+	dir.xyz += frameTime.y * airDir;
+
+	// Wind interaction
+	dir.xyz += abs(dot(windDir, normal)) * windDir;
+
+
+	/*
+		The system should be stable enough, but this adds another level of protection
+		by not allowing any velocity go to beyond 50.0 (rarely happens normally).
+	*/
+	dir.xyz *= saturate(50.0 / length(dir.xyz));
+
+	// Lock vertices that are tagged as unmovable
+	dir.xyz *= dir.w;
+
+	// Move the node according the the current direction
+	pos.xyz += frameTime.x * dir.xyz;
+#endif
+
+#if defined(FIRST_PASS) || defined(LAST_PASS)
+	Out.pos = pos;
+#endif
+	Out.dir = dir;
+
+	return Out;
+}

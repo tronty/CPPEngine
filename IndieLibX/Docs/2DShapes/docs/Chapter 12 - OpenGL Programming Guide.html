@@ -1,0 +1,1100 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Chapter 12 - OpenGL Programming Guide </title>
+
+</head>
+
+<body bgcolor="#ffffff">
+<div align="left">
+<table width="95%" cellspacing="0" cellpadding="1" border="0" bgcolor="#226666">
+<tbody><tr><td>
+<table width="100%" cellspacing="0" cellpadding="15" border="0" bgcolor="#F2FFF6">
+<tbody><tr align="center"><td>
+<font size="4" color="#226666"><b>OpenGL Programming Guide</b></font>
+</td></tr>
+</tbody></table>
+</td></tr>
+<tr bgcolor="#ffffff" align="right"><td>
+ 
+<a href="https://www.glprogramming.com/red/index.html" onmouseover="status='OpenGL Programming Guide Index';return true" onmouseout="status=''">
+<font color="#000000">Programming Guide</font></a> &gt; 
+Chapter 12
+</td></tr>
+</tbody></table>
+</div>
+<br><br>
+
+<div align="left">
+<table width="95%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td>
+
+<h2>Chapter 12<br>
+Evaluators and NURBS</h2>
+
+<hr style="color:#226666;" size="1" noshade="noshade">
+
+<b></b><p><b>Chapter Objectives</b> </p>
+<b></b><p><b>Advanced</b> </p>
+<p>After reading this chapter, you'll be able to do the following: </p>
+
+<ul>
+<li>Use OpenGL evaluator commands to draw basic curves and surfaces<br>
+</li>
+<li>Use the GLU's higher-level NURBS facility to draw more complex curves and surfaces</li></ul>
+
+<p>Note that this chapter presumes a number of prerequisites; they're listed in <a href="#name1">"Prerequisites."</a> </p>
+<p>At the lowest level, graphics hardware draws points, line segments, 
+and polygons, which are usually triangles and quadrilaterals. Smooth 
+curves and surfaces are drawn by approximating them with large numbers 
+of small line segments or polygons. However, many useful curves and 
+surfaces can be described mathematically by a small number of parameters
+ such as a few <i>control points</i>. Saving the 16 control points for a
+ surface requires much less storage than saving 1000 triangles together 
+with the normal vector information at each vertex. In addition, the 1000
+ triangles only approximate the true surface, but the control points 
+accurately describe the real surface. </p>
+<p>Evaluators provide a way to specify points on a curve or surface (or 
+part of one) using only the control points. The curve or surface can 
+then be rendered at any precision. In addition, normal vectors can be 
+calculated for surfaces automatically. You can use the points generated 
+by an evaluator in many ways - to draw dots where the surface would be, 
+to draw a wireframe version of the surface, or to draw a fully lighted, 
+shaded, and even textured version. </p>
+<p>You can use evaluators to describe any polynomial or rational 
+polynomial splines or surfaces of any degree. These include almost all 
+splines and spline surfaces in use today, including B-splines, NURBS 
+(Non-Uniform Rational B-Spline) surfaces, Bezier curves and surfaces, 
+and Hermite splines. Since evaluators provide only a low-level 
+description of the points on a curve or surface, they're typically used 
+underneath utility libraries that provide a higher-level interface to 
+the programmer. The GLU's NURBS facility is such a higher-level 
+interface - the NURBS routines encapsulate lots of complicated code. 
+Much of the final rendering is done with evaluators, but for some 
+conditions (trimming curves, for example) the NURBS routines use planar 
+polygons for rendering. </p>
+<p>This chapter contains the following major sections. </p>
+
+<ul>
+<li><a href="#name1">"Prerequisites"</a> discusses what knowledge is assumed for this chapter. It also gives several references where you can obtain this information.<br>
+</li>
+<li><a href="#name2">"Evaluators"</a> explains how evaluators work and how to control them using the appropriate OpenGL commands.<br>
+</li>
+<li><a href="#name3">"The GLU NURBS Interface"</a> describes the GLU routines for creating NURBS surfaces.</li></ul>
+
+<br>
+<a name="name1">
+<h2>Prerequisites</h2>
+<p>Evaluators make splines and surfaces that are based on a Bezier (or 
+Bernstein) basis. The defining formulas for the functions in this basis 
+are given in this chapter, but the discussion doesn't include 
+derivations or even lists of all their interesting mathematical 
+properties. If you want to use evaluators to draw curves and surfaces 
+using other bases, you must know how to convert your basis to a Bezier 
+basis. In addition, when you render a Bezier surface or part of it using
+ evaluators, you need to determine the granularity of your subdivision. 
+Your decision needs to take into account the trade-off between 
+high-quality (highly subdivided) images and high speed. Determining an 
+appropriate subdivision strategy can be quite complicated - too 
+complicated to be discussed here. </p>
+<p>Similarly, a complete discussion of NURBS is beyond the scope of this
+ book. The GLU NURBS interface is documented here, and programming 
+examples are provided for readers who already understand the subject. In
+ what follows, you already should know about NURBS control points, knot 
+sequences, and trimming curves. </p>
+<p>If you lack some of these prerequisites, the following references will help. </p>
+
+<ul>
+<li>Farin, Gerald E., <i>Curves and Surfaces for Computer-Aided Geometric Design, Fourth Edition</i>. San Diego, CA: Academic Press, 1996.<br>
+</li>
+<li>Farin, Gerald E., <i>NURB Curves and Surfaces: from Projective Geometry to Practical Use.</i> Wellesley, MA: A. K. Peters Ltd., 1995.<br>
+</li>
+<li>Farin, Gerald E., editor, <i>NURBS for Curve and Surface Design</i>, Society for Industrial and Applied Mathematics, Philadelphia, PA, 1991.<br>
+</li>
+<li>Hoschek, Josef and Dieter Lasser, <i>Fundamentals of Computer Aided Geometric Design.</i> Wellesley, MA: A. K. Peters Ltd., 1993.<br>
+</li>
+<li>Piegl, Les and Wayne Tiller, <i>The NURBS Book</i>. New York, NY: Springer-Verlag, 1995.</li></ul>
+
+<b></b><p><b>Note: </b>Some terms used in this chapter might have 
+slightly different meanings in other books on spline curves and 
+surfaces, since there isn't total agreement among the practitioners of 
+this art. Generally, the OpenGL meanings are a bit more restrictive. For
+ example, OpenGL evaluators always use Bezier bases; in other contexts, 
+evaluators might refer to the same concept, but with an arbitrary basis.
+ </p>
+
+<br>
+</a><a name="name2">
+<h2>Evaluators</h2>
+<p>A Bezier curve is a vector-valued function of one variable </p>
+<b></b><p><b>C</b>(<var>u</var>) = [<b>X</b>(<var>u</var>) <b>Y</b>(<var>u</var>) <b>Z</b>(<var>u</var>)] </p>
+<p>where <var>u</var> varies in some domain (say [0,1]). A Bezier surface patch is a vector-valued function of two variables </p>
+<b></b><p><b>S</b>(<var>u,v</var>) = [<b>X</b>(<var>u,v</var>) <b>Y</b>(<var>u,v</var>) <b>Z</b>(<var>u,v</var>)] </p>
+<p>where <var>u</var> and <var>v</var> can both vary in some domain. The
+ range isn't necessarily three-dimensional as shown here. You might want
+ two-dimensional output for curves on a plane or texture coordinates, or
+ you might want four-dimensional output to specify RGBA information. 
+Even one-dimensional output may make sense for gray levels. </p>
+<p>For each <var>u</var> (or <var>u</var> and <var>v</var>, in the case of a surface), the formula for <b>C()</b> (or <b>S()</b>) calculates a point on the curve (or surface). To use an evaluator, first define the function <b>C()</b> or <b>S()</b>, enable it, and then use the <b>glEvalCoord1()</b> or <b>glEvalCoord2()</b> command instead of <b>glVertex*()</b>.
+ This way, the curve or surface vertices can be used like any other 
+vertices - to form points or lines, for example. In addition, other 
+commands automatically generate series of vertices that produce a 
+regular mesh uniformly spaced in <var>u</var> (or in <var>u</var> and <var>v</var>).
+ One- and two-dimensional evaluators are similar, but the description is
+ somewhat simpler in one dimension, so that case is discussed first. </p>
+<h3>One-Dimensional Evaluators</h3>
+<p>This section presents an example of using one-dimensional evaluators 
+to draw a curve. It then describes the commands and equations that 
+control evaluators. </p>
+<h4>One-Dimensional Example: A Simple Bezier Curve</h4>
+<p>The program shown in Example 12-1 draws a cubic Bezier curve using four control points, as shown in Figure 12-1. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image129.gif"></p>
+<b></b><p><b>Figure 12-1 : </b>Bezier Curve </p>
+
+<b></b><p><b>Example 12-1 : </b>Bezier Curve with Four Control Points: bezcurve.c</p>
+<pre>#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;GL/glut.h&gt;
+
+GLfloat ctrlpoints[4][3] = {
+        { -4.0, -4.0, 0.0}, { -2.0, 4.0, 0.0}, 
+        {2.0, -4.0, 0.0}, {4.0, 4.0, 0.0}};
+
+void init(void)
+{
+   glClearColor(0.0, 0.0, 0.0, 0.0);
+   glShadeModel(GL_FLAT);
+   glMap1f(GL_MAP1_VERTEX_3, 0.0, 1.0, 3, 4, &amp;ctrlpoints[0][0]);
+   glEnable(GL_MAP1_VERTEX_3);
+}
+
+void display(void)
+{
+   int i;
+
+   glClear(GL_COLOR_BUFFER_BIT);
+   glColor3f(1.0, 1.0, 1.0);
+   glBegin(GL_LINE_STRIP);
+      for (i = 0; i &lt;= 30; i++) 
+         glEvalCoord1f((GLfloat) i/30.0);
+   glEnd();
+   /* The following code displays the control points as dots. */
+   glPointSize(5.0);
+   glColor3f(1.0, 1.0, 0.0);
+   glBegin(GL_POINTS);
+      for (i = 0; i &lt; 4; i++) 
+         glVertex3fv(&amp;ctrlpoints[i][0]);
+   glEnd();
+   glFlush();
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   if (w &lt;= h)
+      glOrtho(-5.0, 5.0, -5.0*(GLfloat)h/(GLfloat)w, 
+               5.0*(GLfloat)h/(GLfloat)w, -5.0, 5.0);
+   else
+      glOrtho(-5.0*(GLfloat)w/(GLfloat)h, 
+               5.0*(GLfloat)w/(GLfloat)h, -5.0, 5.0, -5.0, 5.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+}
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+   glutInitWindowSize (500, 500);
+   glutInitWindowPosition (100, 100);
+   glutCreateWindow (argv[0]);
+   init ();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutMainLoop();
+   return 0;
+}
+</pre>
+<p>A cubic Bezier curve is described by four control points, which appear in this example in the <var>ctrlpoints[][]</var> array. This array is one of the arguments to <b>glMap1f()</b>. All the arguments for this command are as follows: </p>
+<dl>
+<dt>GL_MAP1_VERTEX_3   Three-dimensional control points are provided and three-dimensional vertices are produced </dt>
+<dt>0.0   Low value of parameter <var>u</var> </dt>
+<dt>1.0   High value of parameter <var>u</var> </dt>
+<dt>3   The number of floating-point values to advance in the data between one control point and the next </dt>
+<dt>4   The order of the spline, which is the degree+1: in this case, the degree is 3 (since this is a cubic curve) </dt>
+<var><dt>&amp;ctrlpoints[0][0]   Pointer to the first control point's data</dt>
+</var></dl>
+<p>Note that the second and third arguments control the parameterization of the curve - as the variable <var>u</var> ranges from 0.0 to 1.0, the curve goes from one end to the other. The call to <b>glEnable()</b> enables the one-dimensional evaluator for three-dimensional vertices. </p>
+<p>The curve is drawn in the routine <b>display() </b>between the <b>glBegin() </b>and <b>glEnd()</b> calls. Since the evaluator is enabled, the command <b>glEvalCoord1f()</b> is just like issuing a <b>glVertex()</b> command with the coordinates of a vertex on the curve corresponding to the input parameter <var>u</var>. </p>
+<h4>Defining and Evaluating a One-Dimensional Evaluator </h4>
+<p>The Bernstein polynomial of degree <var>n</var> (or order <var>n</var>+1) is given by </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image130.gif"></p>
+<p>If Pi represents a set of control points (one-, two-, three-, or even four- dimensional), then the equation </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image131.gif"></p>
+<p>represents a Bezier curve as <var>u</var> varies from 0.0 to 1.0. To represent the same curve but allowing <var>u</var> to vary between <var>u</var>1 and <var>u</var>2 instead of 0.0 and 1.0, evaluate </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image132.gif"></p>
+<p>The command <b>glMap1()</b> defines a one-dimensional evaluator that uses these equations. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>glMap1</b>{fd}(GLenum </i><var>target</var><i>, </i><var>TYPEu1</var><i>, </i><var>TYPE</var><i>u2, GLint </i><var>stride</var><i>, <br>
+GLint </i><var>order</var><i>, </i><var>const TYPE*points</var><i>); </i></dt><i>
+</i><dd><i>Defines a one-dimensional evaluator. The </i><var>target</var><i> parameter specifies what the control points represent, as shown in </i><i>Table 12-1</i><i>, and therefore how many values need to be supplied in </i><var>points</var><i>. The points can represent vertices, RGBA color data, normal vectors, or texture coordinates. For</i> </dd>
+<i></i><dd><i>example, with GL_MAP1_COLOR_4, the evaluator generates 
+color data along a curve in four-dimensional (RGBA) color space. You 
+also use the parameter values listed in </i><i>Table 12-1</i><i> to enable each defined evaluator before you invoke it. Pass the appropriate value to <b>glEnable()</b> or <b>glDisable()</b> to enable or disable the evaluator.</i> </dd>
+<i></i><dd><i>The second two parameters for <b>glMap1*()</b>, u1 and u2, indicate the range for the variable </i><var>u</var><i>. The variable </i><var>stride</var><i>
+ is the number of single- or double-precision values (as appropriate) in
+ each block of storage. Thus, it's an offset value between the beginning
+ of one control point and the beginning of the next. </i></dd><i>
+</i><dd><i>The </i><var>order</var><i> is the degree plus one, and it should agree with the number of control points. The </i><var>points</var><i> parameter points to the first coordinate of the first control point. Using the example data structure for <b>glMap1*()</b>, use the following for </i><var>points</var><i>:</i></dd><i>
+</i></dl><i>
+</i><pre>(GLfloat *)(&amp;ctlpoints[0].x)
+
+<b>Table 12-1 : </b>Types of Control Points for glMap1*()</pre>
+<table width="406" cellspacing="1" cellpadding="8" border="">
+<tbody><tr><td width="53%" valign="TOP">
+<p align="CENTER"><b>Parameter</b></p></td>
+<td width="47%" valign="TOP">
+<b></b><p align="CENTER"><b>Meaning</b></p></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_VERTEX_3</p></td>
+<td width="47%" valign="TOP">
+<var><p>x, y, z vertex coordinates</p></var></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_VERTEX_4</p></td>
+<td width="47%" valign="TOP">
+<var><p>x, y, z, w vertex coordinates</p></var></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_INDEX</p></td>
+<td width="47%" valign="TOP">
+<p>color index</p></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_COLOR_4</p></td>
+<td width="47%" valign="TOP">
+<p>R, G, B, A</p></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_NORMAL</p></td>
+<td width="47%" valign="TOP">
+<p>normal coordinates</p></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_TEXTURE_COORD_1</p></td>
+<td width="47%" valign="TOP">
+<var><p>s texture coordinates</p></var></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_TEXTURE_COORD_2</p></td>
+<td width="47%" valign="TOP">
+<var><p>s, t texture coordinates</p></var></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_TEXTURE_COORD_3</p></td>
+<td width="47%" valign="TOP">
+<var><p>s, t, r texture coordinates</p></var></td>
+</tr>
+<tr><td width="53%" valign="TOP">
+<p>GL_MAP1_TEXTURE_COORD_4</p></td>
+<td width="47%" valign="TOP">
+<var><p>s, t, r, q texture coordinates</p></var></td>
+</tr>
+</tbody></table>
+
+
+<p>More than one evaluator can be evaluated at a time. If you have both a
+ GL_MAP1_VERTEX_3 and a GL_MAP1_COLOR_4 evaluator defined and enabled, 
+for example, then calls to <b>glEvalCoord1()</b> generate both a 
+position and a color. Only one of the vertex evaluators can be enabled 
+at a time, although you might have defined both of them. Similarly, only
+ one of the texture evaluators can be active. Other than that, however, 
+evaluators can be used to generate any combination of vertex, normal, 
+color, and texture-coordinate data. If more than one evaluator of the 
+same type is defined and enabled, the one of highest dimension is used. </p>
+<p>Use<b> glEvalCoord1*()</b> to evaluate a defined and enabled one-dimensional map. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>glEvalCoord1</b>{fd}(</i><var>TYPE u</var><i>);<br>
+void <b>glEvalCoord1</b>{fd}<b>v</b>(</i><var>TYPE *u</var><i>);</i> </dt>
+<i></i><dd><i>Causes evaluation of the enabled one-dimensional maps. The argument </i><var>u</var><i> is the value (or a pointer to the value, in the vector version of the command) of the domain coordinate.</i></dd><i>
+</i></dl><i>
+</i><p>For evaluated vertices, values for color, color index, normal 
+vectors, and texture coordinates are generated by evaluation. Calls to <b>glEvalCoord*()</b> do not use the current values for color, color index, normal vectors, and texture coordinates. <b>glEvalCoord*()</b> also leaves those values unchanged. </p>
+<h4>Defining Evenly Spaced Coordinate Values in One Dimension</h4>
+<p>You can use <b>glEvalCoord1()</b> with any values for <var>u</var>, 
+but by far the most common use is with evenly spaced values, as shown 
+previously in Example 12-1. To obtain evenly spaced values, define a 
+one-dimensional grid using <b>glMapGrid1*()</b> and then apply it using <b>glEvalMesh1()</b>. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>glMapGrid1</b>{fd}(GLint </i><var>n</var><i>, </i><var>TYPEu1</var><i>, </i><var>TYPEu2</var><i>); </i></dt><i>
+</i><dd><i>Defines a grid that goes from </i><var>u1</var><i> to </i><var>u2</var><i> in </i><var>n</var><i> steps, which are evenly spaced.</i> </dd>
+<i></i><dt><i>void <b>glEvalMesh1</b>(GLenum </i><var>mode</var><i>, GLint </i><var>p1</var><i>, GLint </i><var>p2</var><i>);</i> </dt>
+<i></i><dd><i>Applies the currently defined map grid to all enabled evaluators. The </i><var>mode</var><i>
+ can be either GL_POINT or GL_LINE, depending on whether you want to 
+draw points or a connected line along the curve. The call has exactly 
+the same effect as issuing a <b>glEvalCoord1()</b> for each of the steps between and including </i><var>p1</var><i> and </i><var>p2</var><i>, where 0 &lt;= </i><var>p1</var><i>, </i><var>p2</var><i> &lt;= </i><var>n</var><i>. Programmatically, it's equivalent to the following: </i></dd><i>
+</i></dl><i>
+</i><pre>glBegin(GL_POINTS);    /* OR glBegin(GL_LINE_STRIP); */
+ for (i = p1; i &lt;= p2; i++) <br>
+    glEvalCoord1(u1 + i*(u2-u1)/n);<br>
+glEnd();</pre>
+<i></i><dl><i>
+</i><dd><i>except that if </i><var>i</var><i> = 0 or </i><var>i</var><i> = </i><var>n</var><i>, then <b>glEvalCoord1()</b> is called with exactly </i><var>u1</var><i> or </i><var>u2</var><i> as its parameter.</i></dd><i>
+</i></dl><i>
+</i><h3>Two-Dimensional Evaluators</h3>
+<p>In two dimensions, everything is similar to the one-dimensional case, except that all the commands must take two parameters, <var>u</var> and <var>v</var>,
+ into account. Points, colors, normals, or texture coordinates must be 
+supplied over a surface instead of a curve. Mathematically, the 
+definition of a Bezier surface patch is given by </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image133.gif"></p>
+<p>where <i>P</i>ij are a set of <i>m*n</i> control points, and the <i>B</i>i are the same Bernstein polynomials for one dimension. As before, the <i>P</i>ij can represent vertices, normals, colors, or texture coordinates. </p>
+<p>The procedure to use two-dimensional evaluators is similar to the procedure for one dimension. </p><dir>
+<dir>
+
+<p>Define the evaluator(s) with <b>glMap2*()</b>.<br>
+</p>
+<p>Enable them by passing the appropriate value to <b>glEnable()</b>.<br>
+</p>
+<p>Invoke them either by calling <b>glEvalCoord2()</b> between a <b>glBegin()</b> and <b>glEnd()</b> pair or by specifying and then applying a mesh with <b>glMapGrid2()</b> and <b>glEvalMesh2()</b>.</p></dir>
+</dir>
+
+<h4>Defining and Evaluating a Two-Dimensional Evaluator </h4>
+<p>Use <b>glMap2*()</b> and <b>glEvalCoord2*()</b> to define and then invoke a two-dimensional evaluator. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>glMap2</b>{fd}(GLenum </i><var>target</var><i>, </i><var>TYPEu1</var><i>, </i><var>TYPEu2</var><i>, GLint </i><var>ustride</var><i>, <br>
+GLint </i><var>uorder</var><i>,</i><var> TYPEv1</var><i>, </i><var>TYPEv2</var><i>, GLint </i><var>vstride</var><i>, <br>
+GLint </i><var>vorder</var><i>, </i><var>TYPE points</var><i>); </i></dt><i>
+</i><dd><i>The </i><var>target</var><i> parameter can have any of the values in </i><i>Table 12-1</i><i>, except that the string MAP1 is replaced with MAP2. As before, these values are also used with <b>glEnable()</b> to enable the corresponding evaluator. Minimum and maximum values for both </i><var>u </var><i>and </i><var>v</var><i> are provided as </i><var>u1</var><i>, </i><var>u2</var><i>, </i><var>v1</var><i>, and </i><var>v2</var><i>. The parameters </i><var>ustride</var><i> and </i><var>vstride</var><i>
+ indicate the number of single- or double-precision values (as 
+appropriate) between independent settings for these values, allowing 
+users to select a subrectangle of control points out of a much larger 
+array. For example, if the data appears in the form</i></dd><i>
+</i></dl><i>
+</i><pre>GLfloat ctlpoints[100][100][3];</pre>
+<i></i><dl><i>
+</i><dd><i><br>
+and you want to use the 4x4 subset beginning at ctlpoints[20][30], choose </i><var>ustride</var><i> to be 100*3 and </i><var>vstride</var><i> to be 3. The starting point, </i><var>points</var><i>, should be set to &amp;ctlpoints[20][30][0]. Finally, the order parameters, </i><var>uorder</var><i> and </i><var>vorder</var><i>, can be different, allowing patches that are cubic in one direction and quadratic in the other, for example. </i></dd><i>
+</i><dt><i>void <b>glEvalCoord2</b>{fd}(</i><var>TYPE u, TYPE v</var><i>); <br>
+void <b>glEvalCoord2</b>{fd}<b>v</b>(</i><var>TYPE *values</var><i>);</i> </dt>
+<i></i><dd><i>Causes evaluation of the enabled two-dimensional maps. The arguments </i><var>u </var><i>and</i><var> v</var><i> are the values (or a pointer to the </i><var>values</var><i>
+ u and v, in the vector version of the command) for the domain 
+coordinates. If either of the vertex evaluators is enabled 
+(GL_MAP2_VERTEX_3 or GL_MAP2_VERTEX_4), then the normal to the surface 
+is computed analytically. This normal is associated with the generated 
+vertex if automatic normal generation has been enabled by passing 
+GL_AUTO_NORMAL to <b>glEnable()</b>. If it's disabled, the corresponding
+ enabled normal map is used to produce a normal. If no such map exists, 
+the current normal is used. </i></dd><i>
+</i></dl><i>
+</i><h4>Two-Dimensional Example: A Bezier Surface</h4>
+<p>Example 12-2 draws a wireframe Bezier surface using evaluators, as 
+shown in Figure 12-2. In this example, the surface is drawn with nine 
+curved lines in each direction. Each curve is drawn as 30 segments. To 
+get the whole program, add the <b>reshape()</b> and <b>main()</b> routines from Example 12-1. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image134.gif"></p>
+<b></b><p><b>Figure 12-2 : </b>Bezier Surface </p>
+
+<b></b><p><b>Example 12-2 : </b>Bezier Surface: bezsurf.c</p>
+<pre>#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;GL/glut.h&gt;
+
+GLfloat ctrlpoints[4][4][3] = {
+   {{-1.5, -1.5, 4.0}, {-0.5, -1.5, 2.0}, 
+    {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}}, 
+   {{-1.5, -0.5, 1.0}, {-0.5, -0.5, 3.0}, 
+    {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}}, 
+   {{-1.5, 0.5, 4.0}, {-0.5, 0.5, 0.0}, 
+    {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}}, 
+   {{-1.5, 1.5, -2.0}, {-0.5, 1.5, -2.0}, 
+    {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}
+};
+
+void display(void)
+{
+   int i, j;
+
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glColor3f(1.0, 1.0, 1.0);
+   glPushMatrix ();
+   glRotatef(85.0, 1.0, 1.0, 1.0);
+   for (j = 0; j &lt;= 8; j++) {
+      glBegin(GL_LINE_STRIP);
+      for (i = 0; i &lt;= 30; i++)
+         glEvalCoord2f((GLfloat)i/30.0, (GLfloat)j/8.0);
+      glEnd();
+      glBegin(GL_LINE_STRIP);
+      for (i = 0; i &lt;= 30; i++)
+         glEvalCoord2f((GLfloat)j/8.0, (GLfloat)i/30.0);
+      glEnd();
+   }
+   glPopMatrix ();
+   glFlush();
+}
+
+void init(void)
+{
+   glClearColor (0.0, 0.0, 0.0, 0.0);
+   glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4,
+           0, 1, 12, 4, &amp;ctrlpoints[0][0][0]);
+   glEnable(GL_MAP2_VERTEX_3);
+   glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);
+   glEnable(GL_DEPTH_TEST);
+   glShadeModel(GL_FLAT);
+}</pre>
+<h4>Defining Evenly Spaced Coordinate Values in Two Dimensions</h4>
+<p>In two dimensions, the <b>glMapGrid2*()</b> and <b>glEvalMesh2()</b> commands are similar to the one-dimensional versions, except that both <var>u</var> and <var>v</var> information must be included. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>glMapGrid2</b>{fd}(GLint </i><var>nu</var><i>, </i><var>TYPEu1</var><i>, </i><var>TYPEu2</var><i>, <br>
+GLint </i><var>nv</var><i>, </i><var>TYPEv1</var><i>, </i><var>TYPEv2</var><i>); <br>
+void <b>glEvalMesh2</b>(GLenum </i><var>mode</var><i>, GLint </i><var>i1</var><i>, GLint </i><var>i2</var><i>, GLint </i><var>j1</var><i>, GLint </i><var>j2</var><i>);</i> </dt>
+<i></i><dd><i>Defines a two-dimensional map grid that goes from </i><var>u1</var><i> to </i><var>u2</var><i> in </i><var>nu</var><i> evenly spaced steps, from </i><var>v1</var><i> to </i><var>v2</var><i> in </i><var>nv</var><i> steps (<b>glMapGrid2*()</b>), and then applies this grid to all enabled evaluators (<b>glEvalMesh2()</b>). The only significant difference from the one-dimensional versions of these two commands is that in <b>glEvalMesh2()</b> the </i><var>mode</var><i>
+ parameter can be GL_FILL as well as GL_POINT or GL_LINE. GL_FILL 
+generates filled polygons using the quad-mesh primitive. Stated 
+precisely, <b>glEvalMesh2()</b> is nearly equivalent to one of the following three code fragments. (It's nearly equivalent because when</i><var> i</var><i> is equal to </i><var>nu</var><i> or </i><var>j</var><i> to </i><var>nv</var><i>, the parameter is exactly equal to </i><var>u2</var><i> or </i><var>v2</var><i>, not to </i><var>u1</var><i>+</i><var>nu</var><i>*(</i><var>u2</var><i>-</i><var>u1</var><i>)/</i><var>nu</var><i>, which might be slightly different due to round-off error.)</i></dd><i>
+</i></dl><i>
+</i><pre>glBegin(GL_POINTS);                /* mode == GL_POINT */ <br>
+for (i = nu1; i &lt;= nu2; i++) <br>
+    for (j = nv1; j &lt;= nv2; j++) <br>
+        glEvalCoord2(u1 + i*(u2-u1)/nu, v1+j*(v2-v1)/nv);<br>
+glEnd();</pre>
+<p>or</p>
+<pre>for (i = nu1; i &lt;= nu2; i++) {     /* mode == GL_LINE */<br>
+    glBegin(GL_LINES); <br>
+        for (j = nv1; j &lt;= nv2; j++) <br>
+            glEvalCoord2(u1 + i*(u2-u1)/nu, v1+j*(v2-v1)/nv); <br>
+    glEnd(); <br>
+} <br>
+for (j = nv1; j &lt;= nv2; j++) { <br>
+    glBegin(GL_LINES); <br>
+    for (i = nu1; i &lt;= nu2; i++)  <br>
+        glEvalCoord2(u1 + i*(u2-u1)/nu, v1+j*(v2-v1)/nv); <br>
+    glEnd(); <br>
+}</pre>
+<p>or</p>
+<pre>for (i = nu1; i &lt; nu2; i++) {     /* mode == GL_FILL */ <br>
+    glBegin(GL_QUAD_STRIP);<br>
+    for (j = nv1; j &lt;= nv2; j++) { <br>
+        glEvalCoord2(u1 + i*(u2-u1)/nu, v1+j*(v2-v1)/nv);<br>
+        glEvalCoord2(u1 + (i+1)*(u2-u1)/nu, v1+j*(v2-v1)/nv);<br>
+    glEnd(); <br>
+}</pre>
+<p>Example 12-3 shows the differences necessary to draw the same Bezier surface as Example 12-2, but using <b>glMapGrid2()</b> and <b>glEvalMesh2()</b> to subdivide the square domain into a uniform 8x8 grid. This program also adds lighting and shading, as shown in Figure 12-3. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image135.gif"></p>
+<b></b><p><b>Figure 12-3 : </b>Lit, Shaded Bezier Surface Drawn with a Mesh </p>
+
+<b></b><p><b>Example 12-3 : </b>Lit, Shaded Bezier Surface Using a Mesh: bezmesh.c</p>
+<pre>void initlights(void)
+{
+   GLfloat ambient[] = {0.2, 0.2, 0.2, 1.0};
+   GLfloat position[] = {0.0, 0.0, 2.0, 1.0};
+   GLfloat mat_diffuse[] = {0.6, 0.6, 0.6, 1.0};
+   GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
+   GLfloat mat_shininess[] = {50.0};
+
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+
+   glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+   glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+}
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glPushMatrix();
+   glRotatef(85.0, 1.0, 1.0, 1.0);
+   glEvalMesh2(GL_FILL, 0, 20, 0, 20);
+   glPopMatrix();
+   glFlush();
+}
+
+void init(void)
+{
+   glClearColor(0.0, 0.0, 0.0, 0.0);
+   glEnable(GL_DEPTH_TEST);
+   glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4,
+           0, 1, 12, 4, &amp;ctrlpoints[0][0][0]);
+   glEnable(GL_MAP2_VERTEX_3);
+   glEnable(GL_AUTO_NORMAL);
+   glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);
+   initlights();
+}</pre>
+<h3>Using Evaluators for Textures </h3>
+<p>Example 12-4 enables two evaluators at the same time: The first 
+generates three-dimensional points on the same Bezier surface as Example
+ 12-3, and the second generates texture coordinates. In this case, the 
+texture coordinates are the same as the <var>u</var> and <var>v</var> coordinates of the surface, but a special flat Bezier patch must be created to do this. </p>
+</a><p><a name="name2">The flat patch is defined over a square with 
+corners at (0, 0), (0, 1), (1, 0), and (1, 1); it generates (0, 0) at 
+corner (0, 0), (0, 1) at corner (0, 1), and so on. Since it's of order 
+two (linear degree plus one), evaluating this texture at the point (<var>u, v</var>) generates texture coordinates (<var>s, t</var>). It's enabled at the same time as the vertex evaluator, so both take effect when the surface is drawn. (See </a><a href="https://www.glprogramming.com/red/appendixi.html#plate19">"Plate 19" in Appendix I</a>.) If you want the texture to repeat three times in each direction, change every 1.0 in the array <var>texpts[][][]</var> to 3.0. Since the texture wraps in this example, the surface is rendered with nine copies of the texture map. </p>
+
+<b></b><p><b>Example 12-4 : </b>Using Evaluators for Textures: texturesurf.c</p>
+<pre>#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;math.h&gt;
+
+GLfloat ctrlpoints[4][4][3] = {
+   {{ -1.5, -1.5, 4.0}, { -0.5, -1.5, 2.0}, 
+    {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}}, 
+   {{ -1.5, -0.5, 1.0}, { -0.5, -0.5, 3.0}, 
+    {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}}, 
+   {{ -1.5, 0.5, 4.0}, { -0.5, 0.5, 0.0}, 
+    {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}}, 
+   {{ -1.5, 1.5, -2.0}, { -0.5, 1.5, -2.0}, 
+    {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}
+};
+GLfloat texpts[2][2][2] = {{{0.0, 0.0}, {0.0, 1.0}}, 
+                        {{1.0, 0.0}, {1.0, 1.0}}};
+
+void display(void)
+{
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glColor3f(1.0, 1.0, 1.0);
+   glEvalMesh2(GL_FILL, 0, 20, 0, 20);
+   glFlush();
+}
+#define imageWidth 64
+#define imageHeight 64
+GLubyte image[3*imageWidth*imageHeight];
+
+void makeImage(void)
+{
+   int i, j;
+   float ti, tj;
+   
+   for (i = 0; i &lt; imageWidth; i++) {
+      ti = 2.0*3.14159265*i/imageWidth;
+      for (j = 0; j &lt; imageHeight; j++) {
+         tj = 2.0*3.14159265*j/imageHeight;
+         image[3*(imageHeight*i+j)] = 
+              (GLubyte) 127*(1.0+sin(ti));
+         image[3*(imageHeight*i+j)+1] = 
+              (GLubyte) 127*(1.0+cos(2*tj));
+         image[3*(imageHeight*i+j)+2] = 
+              (GLubyte) 127*(1.0+cos(ti+tj));
+      }
+   }
+}
+
+void init(void)
+{
+   glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4,
+           0, 1, 12, 4, &amp;ctrlpoints[0][0][0]);
+   glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 
+           0, 1, 4, 2, &amp;texpts[0][0][0]);
+   glEnable(GL_MAP2_TEXTURE_COORD_2);
+   glEnable(GL_MAP2_VERTEX_3);
+   glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);
+   makeImage();
+   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
+                   GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+                   GL_NEAREST);
+   glTexImage2D(GL_TEXTURE_2D, 0, 3, imageWidth, imageHeight, 0,
+                GL_RGB, GL_UNSIGNED_BYTE, image);
+   glEnable(GL_TEXTURE_2D);
+   glEnable(GL_DEPTH_TEST);
+   glShadeModel (GL_FLAT);
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   if (w &lt;= h)
+      glOrtho(-4.0, 4.0, -4.0*(GLfloat)h/(GLfloat)w, 
+              4.0*(GLfloat)h/(GLfloat)w, -4.0, 4.0);
+   else
+      glOrtho(-4.0*(GLfloat)w/(GLfloat)h, 
+              4.0*(GLfloat)w/(GLfloat)h, -4.0, 4.0, -4.0, 4.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   glRotatef(85.0, 1.0, 1.0, 1.0);
+}
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize (500, 500);
+   glutInitWindowPosition (100, 100);
+   glutCreateWindow (argv[0]);
+   init ();
+   glutDisplayFunc(display);
+   glutReshapeFunc(reshape);
+   glutMainLoop();
+   return 0;
+}</pre>
+
+<br>
+<a name="name3">
+<h2>The GLU NURBS Interface</h2>
+<p>Although evaluators are the only OpenGL primitive available to draw 
+curves and surfaces directly, and even though they can be implemented 
+very efficiently in hardware, they're often accessed by applications 
+through higher-level libraries. The GLU provides a NURBS (Non-Uniform 
+Rational B-Spline) interface built on top of the OpenGL evaluator 
+commands. </p>
+<h3>A Simple NURBS Example</h3>
+</a><p><a name="name3">If you understand NURBS, writing OpenGL code to 
+manipulate NURBS curves and surfaces is relatively easy, even with 
+lighting and texture mapping. Follow these steps to draw NURBS curves or
+ untrimmed NURBS surfaces. (See </a><a href="#name4">"Trim a NURBS Surface"</a> for information about trimmed surfaces.) </p><dir>
+<dir>
+
+<p>If you intend to use lighting with a NURBS surface, call <b>glEnable()</b> with GL_AUTO_NORMAL to automatically generate surface normals. (Or you can calculate your own.) <br>
+</p>
+<p>Use <b>gluNewNurbsRenderer()</b> to create a pointer to a NURBS object, which is referred to when creating your NURBS curve or surface.<br>
+</p>
+<p>If desired, call <b>gluNurbsProperty()</b> to choose rendering values, such as the maximum size of lines or polygons that are used to render your NURBS object.<br>
+</p>
+<p>Call <b>gluNurbsCallback()</b> if you want to be notified when an 
+error is encountered. (Error checking may slightly degrade performance 
+but is still highly recommended.)<br>
+</p>
+<p>Start your curve or surface by calling <b>gluBeginCurve()</b> or <b>gluBeginSurface()</b>.<br>
+</p>
+<p>Generate and render your curve or surface. Call <b>gluNurbsCurve()</b> or <b>gluNurbsSurface()</b>
+ at least once with the control points (rational or nonrational), knot 
+sequence, and order of the polynomial basis function for your NURBS 
+object. You might call these functions additional times to specify 
+surface normals and/or texture coordinates.<br>
+</p>
+<p>Call <b>gluEndCurve()</b> or <b>gluEndSurface() </b>to complete the curve or surface.</p></dir>
+</dir>
+
+<p>Example 12-5 renders a NURBS surface in the shape of a symmetrical 
+hill with control points ranging from -3.0 to 3.0. The basis function is
+ a cubic B-spline, but the knot sequence is nonuniform, with a 
+multiplicity of 4 at each endpoint, causing the basis function to behave
+ like a Bezier curve in each direction. The surface is lighted, with a 
+dark gray diffuse reflection and white specular highlights. Figure 12-4 
+shows the surface as a lit wireframe. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image136.gif"></p>
+<b></b><p><b>Figure 12-4 : </b>NURBS Surface </p>
+
+<b></b><p><b>Example 12-5 : </b>NURBS Surface: surface.c</p>
+<pre>#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+#include &lt;GL/glut.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+GLfloat ctlpoints[4][4][3];
+int showPoints = 0;
+
+GLUnurbsObj *theNurb;
+
+void init_surface(void)
+{
+   int u, v;
+   for (u = 0; u &lt; 4; u++) {
+      for (v = 0; v &lt; 4; v++) {
+         ctlpoints[u][v][0] = 2.0*((GLfloat)u - 1.5);
+         ctlpoints[u][v][1] = 2.0*((GLfloat)v - 1.5);
+
+         if ( (u == 1 || u == 2) &amp;&amp; (v == 1 || v == 2))
+            ctlpoints[u][v][2] = 3.0;
+         else
+            ctlpoints[u][v][2] = -3.0;
+      }
+   }    
+}    
+
+void nurbsError(GLenum errorCode)
+{
+   const GLubyte *estring;
+
+   estring = gluErrorString(errorCode);
+   fprintf (stderr, "Nurbs Error: %s\n", estring);
+   exit (0);
+}
+   
+void init(void)
+{
+   GLfloat mat_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
+   GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+   GLfloat mat_shininess[] = { 100.0 };
+
+   glClearColor (0.0, 0.0, 0.0, 0.0);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+   glEnable(GL_LIGHTING);
+   glEnable(GL_LIGHT0);
+   glEnable(GL_DEPTH_TEST);
+   glEnable(GL_AUTO_NORMAL);
+   glEnable(GL_NORMALIZE);
+
+   init_surface();
+
+   theNurb = gluNewNurbsRenderer();
+   gluNurbsProperty(theNurb, GLU_SAMPLING_TOLERANCE, 25.0);
+   gluNurbsProperty(theNurb, GLU_DISPLAY_MODE, GLU_FILL);
+   gluNurbsCallback(theNurb, GLU_ERROR, 
+                    (GLvoid (*)()) nurbsError);
+}
+
+void display(void)
+{
+   GLfloat knots[8] = {0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
+   int i, j;
+
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   glPushMatrix();
+   glRotatef(330.0, 1.,0.,0.);
+   glScalef (0.5, 0.5, 0.5);
+
+   gluBeginSurface(theNurb);
+   gluNurbsSurface(theNurb, 
+                   8, knots, 8, knots,
+                   4 * 3, 3, &amp;ctlpoints[0][0][0], 
+                   4, 4, GL_MAP2_VERTEX_3);
+   gluEndSurface(theNurb);
+
+   if (showPoints) {
+      glPointSize(5.0);
+      glDisable(GL_LIGHTING);
+      glColor3f(1.0, 1.0, 0.0);
+      glBegin(GL_POINTS);
+      for (i = 0; i &lt; 4; i++) {
+         for (j = 0; j &lt; 4; j++) {
+            glVertex3f(ctlpoints[i][j][0], 
+                       ctlpoints[i][j][1], ctlpoints[i][j][2]);
+         }
+      }
+      glEnd();
+      glEnable(GL_LIGHTING);
+   }
+   glPopMatrix();
+   glFlush();
+}
+
+void reshape(int w, int h)
+{
+   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective (45.0, (GLdouble)w/(GLdouble)h, 3.0, 8.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   glTranslatef (0.0, 0.0, -5.0);
+}
+void keyboard(unsigned char key, int x, int y)
+{
+   switch (key) {
+      case `c':
+      case `C':
+         showPoints = !showPoints;
+         glutPostRedisplay();
+         break;
+      case 27:
+         exit(0);
+         break;
+      default:
+         break;
+   }
+}
+
+int main(int argc, char** argv)
+{
+   glutInit(&amp;argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+   glutInitWindowSize (500, 500);
+   glutInitWindowPosition (100, 100);
+   glutCreateWindow(argv[0]);
+   init();
+   glutReshapeFunc(reshape);
+   glutDisplayFunc(display);
+   glutKeyboardFunc (keyboard);
+   glutMainLoop();
+   return 0; 
+}</pre>
+<h3>Manage a NURBS Object</h3>
+<p>As shown in Example 12-5, <b>gluNewNurbsRenderer()</b> returns a new 
+NURBS object, whose type is a pointer to a GLUnurbsObj structure. You 
+must make this object before using any other NURBS routine. When you're 
+done with a NURBS object, you may use <b>gluDeleteNurbsRenderer()</b> to free up the memory that was used. </p>
+<i></i><dl><i>
+</i><dt><i>GLUnurbsObj* <b>gluNewNurbsRenderer</b> (void);</i> </dt>
+<i></i><dd><i>Creates a new NURBS object, </i><var>nobj</var><i>. Returns a pointer to the new object, or zero, if OpenGL cannot allocate memory for a new NURBS object.</i> </dd>
+<i></i><dt><i>void <b>gluDeleteNurbsRenderer</b> (GLUnurbsObj *</i><var>nobj</var><i>);</i> </dt>
+<i></i><dd><i>Destroys the NURBS object </i><var>nobj</var><i>.</i></dd><i>
+</i></dl><i>
+</i><h4>Control NURBS Rendering Properties</h4>
+<p>A set of properties associated with a NURBS object affects the way 
+the object is rendered. These properties include how the surface is 
+rasterized (for example, filled or wireframe) and the precision of 
+tessellation. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>gluNurbsProperty</b>(GLUnurbsObj *</i><var>nobj</var><i>, GLenum </i><var>property</var><i>, <br>
+GLfloat </i><var>value</var><i>); </i></dt><i>
+</i><dd><i>Controls attributes of a NURBS object, </i><var>nobj</var><i>. The </i><var>property</var><i>
+ argument specifies the property and can be GLU_DISPLAY_MODE, 
+GLU_CULLING, GLU_SAMPLING_METHOD, GLU_SAMPLING_TOLERANCE, 
+GLU_PARAMETRIC_TOLERANCE, GLU_U_STEP, GLU_V_STEP, or 
+GLU_AUTO_LOAD_MATRIX. The </i><var>value</var><i> argument indicates what the property should be.</i> </dd>
+<i></i><dd><i>The default value for GLU_DISPLAY_MODE is GLU_FILL, which 
+causes the surface to be rendered as polygons. If GLU_OUTLINE_POLYGON is
+ used for the display-mode property, only the outlines of polygons 
+created by tessellation are rendered. GLU_OUTLINE_PATCH renders the 
+outlines of patches and trimming curves. (See </i><a href="#name5"><i>"Create a NURBS Curve or Surface"</i></a><i>.)</i> </dd>
+<i></i><dd><i>GLU_CULLING can speed up performance by not performing 
+tessellation if the NURBS object falls completely outside the viewing 
+volume; set this property to GL_TRUE to enable culling (the default is 
+GL_FALSE).</i> </dd>
+<i></i><dd><i>Since a NURBS object is rendered as primitives, it's sampled at different values of its parameter(s) (</i><var>u</var><i> and </i><var>v</var><i>) and broken down into small line segments or polygons for rendering. If </i><var>property</var><i> is GLU_SAMPLING_METHOD, then </i><var>value</var><i>
+ is set to one of GLU_PATH_LENGTH (which is the default), 
+GLU_PARAMETRIC_ERROR, or GLU_DOMAIN_DISTANCE, which specifies how a 
+NURBS curve or surface should be tessellated. When </i><var>value</var><i>
+ is set to GLU_PATH_LENGTH, the surface is rendered so that the maximum 
+length, in pixels, of the edges of tessellated polygons is no greater 
+than what is specified by GLU_SAMPLING_TOLERANCE. When set to 
+GLU_PARAMETRIC_ERROR, then the value specified by 
+GLU_PARAMETRIC_TOLERANCE is the maximum distance, in pixels, between 
+tessellated polygons and the surfaces they approximate. When set to 
+GLU_DOMAIN_DISTANCE, the application specifies, in parametric 
+coordinates, how many sample points per unit length are taken in the </i><var>u</var><i> and </i><var>v</var><i> dimensions, using the values for GLU_U_STEP and GLU_V_STEP.</i> </dd>
+<i></i><dd><i>If </i><var>property</var><i> is GLU_SAMPLING_TOLERANCE and the sampling method is GLU_PATH_LENGTH, </i><var>value</var><i>
+ controls the maximum length, in pixels, to use for tessellated 
+polygons. The default value of 50.0 makes the largest sampled line 
+segment or polygon edge 50.0 pixels long. If </i><var>property</var><i> is GLU_PARAMETRIC_TOLERANCE and the sampling method is GLU_PARAMETRIC_ERROR, </i><var>value</var><i>
+ controls the maximum distance, in pixels, between the tessellated 
+polygons and the surfaces they approximate. The default value for 
+GLU_PARAMETRIC_TOLERANCE is 0.5, which makes the tessellated polygons 
+within one-half pixel of the approximated surface. If the sampling 
+method is GLU_DOMAIN_DISTANCE and </i><var>property</var><i> is either GLU_U_STEP or GLU_V_STEP, then </i><var>value</var><i>
+ is the number of sample points per unit length taken along the u or v 
+dimension, respectively, in parametric coordinates. The default for both
+ GLU_U_STEP and GLU_V_STEP is 100.</i> </dd>
+<i></i><dd><i>The GLU_AUTO_LOAD_MATRIX property determines whether the 
+projection matrix, modelview matrix, and viewport are downloaded from 
+the OpenGL server (GL_TRUE, the default), or whether the application 
+must supply these matrices with <b>gluLoadSamplingMatrices()</b> (GL_FALSE).</i> </dd>
+<i></i><dt><i>void <b>gluLoadSamplingMatrices</b> (GLUnurbsObj *</i><var>nobj</var><i>, const GLfloat </i><var>modelMatrix</var><i>[16], const GLfloat </i><var>projMatrix</var><i>[16], const GLint </i><var>viewport</var><i>[4]);</i> </dt>
+<i><dd>If the GLU_AUTO_LOAD_MATRIX is turned off, the modelview and projection matrices and the viewport specified in <b>gluLoadSamplingMatrices()</b> are used to compute sampling and culling matrices for each NURBS curve or surface.</dd>
+</i></dl><i>
+</i><p>If you need to query the current value for a NURBS property, you may use <b>gluGetNurbsProperty()</b>. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>gluGetNurbsProperty </b>(GLUnurbsObj </i><var>*nobj</var><i>, GLenum </i><var>property</var><i>, <br>
+GLfloat </i><var>*value</var><i>);</i> </dt>
+<i></i><dd><i>Given the </i><var>property</var><i> to be queried for the NURBS object </i><var>nobj</var><i>, return its current </i><var>value</var><i>.</i></dd><i>
+</i></dl><i>
+</i><h4>Handle NURBS Errors</h4>
+<p>Since there are 37 different errors specific to NURBS functions, it's
+ a good idea to register an error callback to let you know if you've 
+stumbled into one of them. In Example 12-5, the callback function was 
+registered with</p>
+<pre>gluNurbsCallback(theNurb, GLU_ERROR, (GLvoid (*)()) nurbsError);</pre>
+<i></i><dl><i>
+</i><dt><i>void <b>gluNurbsCallback</b> (GLUnurbsObj *</i><var>nobj</var><i>, GLenum </i><var>which</var><i>, <br>
+void (*</i><var>fn</var><i>)(GLenum </i><var>errorCode</var><i>));</i> </dt>
+<var><dd>which<i> is the type of callback; it must be GLU_ERROR. When a NURBS function detects an error condition, </i><var>fn</var><i> is invoked with the error code as its only argument. </i><var>errorCode</var><i> is one of 37 error conditions, named GLU_NURBS_ERROR1 through GLU_NURBS_ERROR37. Use <b>gluErrorString()</b> to describe the meaning of those error codes.</i></dd><i>
+</i></var></dl><i>
+</i><p>In Example 12-5, the <b>nurbsError()</b> routine was registered as the error callback function:</p>
+<pre>void nurbsError(GLenum errorCode)
+{
+   const GLubyte *estring;
+
+   estring = gluErrorString(errorCode);
+   fprintf (stderr, "Nurbs Error: %s\n", estring);
+   exit (0);
+}</pre>
+
+<a name="name5">
+<h3>Create a NURBS Curve or Surface</h3>
+<p>To render a NURBS surface, <b>gluNurbsSurface()</b> is bracketed by <b>gluBeginSurface()</b> and <b>gluEndSurface()</b>. The bracketing routines save and restore the evaluator state. </p>
+<i></i></a><dl><a name="name5"><i>
+</i><dt><i>void <b>gluBeginSurface</b> (GLUnurbsObj *nobj);<br>
+void <b>gluEndSurface</b> (GLUnurbsObj *nobj);</i> </dt>
+<i></i></a><dd><a name="name5"><i>After <b>gluBeginSurface()</b>, one or more calls to <b>gluNurbsSurface()</b>
+ defines the attributes of the surface. Exactly one of these calls must 
+have a surface type of GL_MAP2_VERTEX_3 or GL_MAP2_VERTEX_4 to generate 
+vertices. Use <b>gluEndSurface()</b> to end the definition of a surface. Trimming of NURBS surfaces is also supported between <b>gluBeginSurface()</b> and <b>gluEndSurface().</b> (See </i></a><a href="#name4"><i>"Trim a NURBS Surface"</i></a><i>.)</i> </dd>
+<i></i><dt><i>void <b>gluNurbsSurface</b> (GLUnurbsObj *</i><var>nobj</var><i>, GLint </i><var>uknot_count</var><i>, <br>
+GLfloat *</i><var>uknot</var><i>, GLint </i><var>vknot_count</var><i>, GLfloat *</i><var>vknot</var><i>, <br>
+GLint </i><var>u_stride</var><i>, GLint </i><var>v_stride</var><i>, GLfloat *</i><var>ctlarray</var><i>, <br>
+GLint </i><var>uorder</var><i>, GLint </i><var>vorder</var><i>, GLenum </i><var>type</var><i>); </i></dt><i>
+</i><dd><i>Describes the vertices (or surface normals or texture coordinates) of a NURBS surface, </i><var>nobj</var><i>. Several of the values must be specified for both </i><var>u</var><i> and </i><var>v</var><i> parametric directions, such as the knot sequences (</i><var>uknot</var><i> and </i><var>vknot</var><i>), knot counts (</i><var>uknot_count</var><i> and </i><var>vknot_count</var><i>), and order of the polynomial (</i><var>uorder</var><i> and </i><var>vorder</var><i>)
+ for the NURBS surface. Note that the number of control points isn't 
+specified. Instead, it's derived by determining the number of control 
+points along each parameter as the number of knots minus the order. 
+Then, the number of control points for the surface is equal to the 
+number of control points in each parametric direction, multiplied by one
+ another. The </i><var>ctlarray</var><i> argument points to an array of control points.</i> </dd>
+<i></i><dd><i>The last parameter, </i><var>type</var><i>, is one of the 
+two-dimensional evaluator types. Commonly, you might use 
+GL_MAP2_VERTEX_3 for nonrational or GL_MAP2_VERTEX_4 for rational 
+control points, respectively. You might also use other types, such as 
+GL_MAP2_TEXTURE_COORD_* or GL_MAP2_NORMAL to calculate and assign 
+texture coordinates or surface normals. For example, to create a lighted
+ (with surface normals) and textured NURBS surface, you may need to call
+ this sequence:</i></dd><i>
+</i></dl><i>
+</i><pre>gluBeginSurface(nobj);
+   gluNurbsSurface(nobj, ..., GL_MAP2_TEXTURE_COORD_2);
+   gluNurbsSurface(nobj, ..., GL_MAP2_NORMAL);
+   gluNurbsSurface(nobj, ..., GL_MAP2_VERTEX_3);
+gluEndSurface(nobj);</pre>
+<i></i><dl><i>
+</i><dd><i>The </i><var>u_stride</var><i> and </i><var>v_stride</var><i>
+ arguments represent the number of floating-point values between control
+ points in each parametric direction. The evaluator type, as well as its
+ order, affects the </i><var>u_stride</var><i> and </i><var>v_stride</var><i> values. In </i><i>Example 12-5</i><i>, </i><var>u_stride</var><i>
+ is 12 (4 * 3) because there are three coordinates for each vertex (set 
+by GL_MAP2_VERTEX_3) and four control points in the parametric </i><var>v</var><i> direction; </i><var>v_stride</var><i> is 3 because each vertex had three coordinates, and </i><var>v</var><i> control points are adjacent to one another.</i></dd><i>
+</i></dl><i>
+</i><p>Drawing a NURBS curve is similar to drawing a surface, except that all calculations are done with one parameter, <var>u</var>, rather than two. Also, for curves, <b>gluBeginCurve()</b> and <b>gluEndCurve()</b> are the bracketing routines. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>gluBeginCurve</b> (GLUnurbsObj </i><var>*nobj</var><i>);<br>
+void <b>gluEndCurve</b> (GLUnurbsObj </i><var>*nobj</var><i>);</i> </dt>
+<i><dd>After <b>gluBeginCurve()</b>, one or more calls to <b>gluNurbsCurve()</b>
+ define the attributes of the surface. Exactly one of these calls must 
+have a surface type of GL_MAP1_VERTEX_3 or GL_MAP1_VERTEX_4 to generate 
+vertices. Use <b>gluEndCurve()</b> to end the definition of a surface. </dd>
+</i><dt><i>void <b>gluNurbsCurve</b> (GLUnurbsObj *</i><var>nobj</var><i>, GLint </i><var>uknot_count</var><i>, <br>
+GLfloat *</i><var>uknot</var><i>, GLint </i><var>u_stride</var><i>, GLfloat *</i><var>ctlarray</var><i>, <br>
+GLint </i><var>uorder</var><i>, GLenum </i><var>type</var><i>);</i> </dt>
+<i></i><dd><i>Defines a NURBS curve for the object </i><var>nobj</var><i>. The arguments have the same meaning as those for <b>gluNurbsSurface()</b>.
+ Note that this routine requires only one knot sequence and one 
+declaration of the order of the NURBS object. If this curve is defined 
+within a <b>gluBeginCurve()/gluEndCurve()</b> pair, then the type can be any of the valid one-dimensional evaluator types (such as GL_MAP1_VERTEX_3 or GL_MAP1_VERTEX_4). </i></dd><i>
+</i></dl><i>
+</i>
+
+<a name="name4">
+<h3>Trim a NURBS Surface</h3>
+<p>To create a trimmed NURBS surface with OpenGL, start as if you were creating an untrimmed surface. After calling <b>gluBeginSurface()</b> and <b>gluNurbsSurface()</b> but before calling <b>gluEndSurface()</b>, start a trim by calling <b>gluBeginTrim()</b>. </p>
+<i></i><dl><i>
+</i><dt><i>void <b>gluBeginTrim</b> (GLUnurbsObj *</i><var>nobj</var><i>);<br>
+void <b>gluEndTrim</b> (GLUnurbsObj *</i><var>nobj</var><i>);</i> </dt>
+<i><dd>Marks the beginning and end of the definition of a trimming loop.
+ A trimming loop is a set of oriented, trimming curve segments (forming a
+ closed curve) that defines the boundaries of a NURBS surface.</dd>
+</i></dl><i>
+</i><p>You can create two kinds of trimming curves, a piecewise linear curve with <b>gluPwlCurve()</b> or a NURBS curve with <b>gluNurbsCurve()</b>.
+ A piecewise linear curve doesn't look like what's conventionally called
+ a curve, because it's a series of straight lines. A NURBS curve for 
+trimming must lie within the unit square of parametric (<var>u</var>,<var> v</var>)
+ space. The type for a NURBS trimming curve is usually GLU_MAP1_TRIM2. 
+Less often, the type is GLU_MAP1_TRIM3, where the curve is described in a
+ two-dimensional homogeneous space (<var>u', v', w</var>') by (<var>u, v</var>) = (<var>u'/w</var>', <var>v'/w</var>'). </p>
+<i></i><dl><i>
+</i><dt><i>void <b>gluPwlCurve</b> (GLUnurbsObj *</i><var>nobj</var><i>, GLint </i><var>count</var><i>, GLfloat *</i><var>array</var><i>, <br>
+GLint </i><var>stride</var><i>, GLenum </i><var>type</var><i>); </i></dt><i>
+</i><dd><i>Describes a piecewise linear trimming curve for the NURBS object </i><var>nobj</var><i>. There are </i><var>count</var><i> points on the curve, and they're given by </i><var>array</var><i>. The </i><var>type</var><i> can be either GLU_MAP1_TRIM_2 (the most common) or GLU_MAP1_TRIM_3 ((</i><var>u, v, w</var><i>) homogeneous parameter space). The type affects whether </i><var>stride</var><i>, the number of floating-point values to the next vertex, is 2 or 3.</i></dd><i>
+</i></dl><i>
+</i><p>You need to consider the orientation of trimming curves - that 
+is, whether they're counterclockwise or clockwise - to make sure you 
+include the desired part of the surface. If you imagine walking along a 
+curve, everything to the left is included and everything to the right is
+ trimmed away. For example, if your trim consists of a single 
+counterclockwise loop, everything inside the loop is included. If the 
+trim consists of two nonintersecting counterclockwise loops with 
+nonintersecting interiors, everything inside either of them is included.
+ If it consists of a counterclockwise loop with two clockwise loops 
+inside it, the trimming region has two holes in it. The outermost 
+trimming curve must be counterclockwise. Often, you run a trimming curve
+ around the entire unit square to include everything within it, which is
+ what you get by default by not specifying any trimming curves. </p>
+<p>Trimming curves must be closed and nonintersecting. You can combine 
+trimming curves, so long as the endpoints of the trimming curves meet to
+ form a closed curve. You can nest curves, creating islands that float 
+in space. Be sure to get the curve orientations right. For example, an 
+error results if you specify a trimming region with two counterclockwise
+ curves, one enclosed within another: The region between the curves is 
+to the left of one and to the right of the other, so it must be both 
+included and excluded, which is impossible. Figure 12-5 illustrates a 
+few valid possibilities. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image137.gif"></p>
+<b></b><p><b>Figure 12-5 : </b>Parametric Trimming Curves </p>
+
+<p>Figure 12-6 shows the same small hill as in Figure 12-4, this time 
+with a trimming curve that's a combination of a piecewise linear curve 
+and a NURBS curve. The program that creates this figure is similar to 
+that shown in Example 12-5; the differences are in the routines shown in
+ Example 12-6. </p>
+<p><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/Image138.gif"></p>
+<b></b><p><b>Figure 12-6 : </b>Trimmed NURBS Surface </p>
+
+<b></b><p><b>Example 12-6 : </b>Trimming a NURBS Surface: trim.c</p>
+<pre>void display(void)
+{
+   GLfloat knots[8] = {0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
+   GLfloat edgePt[5][2] = /* counter clockwise */
+      {{0.0, 0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0}, 
+       {0.0, 0.0}};
+   GLfloat curvePt[4][2] = /* clockwise */ 
+      {{0.25, 0.5}, {0.25, 0.75}, {0.75, 0.75}, {0.75, 0.5}};
+   GLfloat curveKnots[8] = 
+      {0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0};
+   GLfloat pwlPt[4][2] = /* clockwise */ 
+      {{0.75, 0.5}, {0.5, 0.25}, {0.25, 0.5}};
+
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glPushMatrix();
+   glRotatef(330.0, 1.,0.,0.);
+   glScalef (0.5, 0.5, 0.5);
+
+   gluBeginSurface(theNurb);
+   gluNurbsSurface(theNurb, 8, knots, 8, knots,
+                   4 * 3, 3, &amp;ctlpoints[0][0][0], 
+                   4, 4, GL_MAP2_VERTEX_3);
+   gluBeginTrim (theNurb);
+      gluPwlCurve (theNurb, 5, &amp;edgePt[0][0], 2,
+                   GLU_MAP1_TRIM_2);
+   gluEndTrim (theNurb);
+   gluBeginTrim (theNurb);
+      gluNurbsCurve (theNurb, 8, curveKnots, 2, 
+                     &amp;curvePt[0][0], 4, GLU_MAP1_TRIM_2);
+      gluPwlCurve (theNurb, 3, &amp;pwlPt[0][0], 2,
+                   GLU_MAP1_TRIM_2);
+   gluEndTrim (theNurb);
+   gluEndSurface(theNurb);
+        
+   glPopMatrix();
+   glFlush();
+}
+</pre>
+<p>In Example 12-6, <b>gluBeginTrim()</b> and <b>gluEndTrim()</b> bracket each trimming curve. The first trim, with vertices defined by the array <var>edgePt[][]</var>,
+ goes counterclockwise around the entire unit square of parametric 
+space. This ensures that everything is drawn, provided it isn't removed 
+by a clockwise trimming curve inside of it. The second trim is a 
+combination of a NURBS trimming curve and a piecewise linear trimming 
+curve. The NURBS curve ends at the points (0.9, 0.5) and (0.1, 0.5), 
+where it is met by the piecewise linear curve, forming a closed 
+clockwise curve. </p>
+
+<hr style="color:#226666;" size="1" noshade="noshade">
+</a><center><a name="name4">
+</a><a href="https://www.glprogramming.com/red/chapter11.html"><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/ArrowLeft.gif" border="0"></a>
+<a href="https://www.glprogramming.com/red/index.html"><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/ArrowHome.gif" border="0"></a>
+<a href="https://www.glprogramming.com/red/chapter13.html"><img src="Chapter%2012%20-%20OpenGL%20Programming%20Guide_tiedostot/ArrowRight.gif" border="0"></a>
+</center>
+
+</td></tr>
+</tbody></table>
+</div>
+
+
+
+
+</body></html>

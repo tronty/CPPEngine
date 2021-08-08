@@ -1,0 +1,131 @@
+/*********************************************************************NVMH3****
+Path:  NVSDK\Common\media\programs
+File:  cg_Volumelines.cg
+
+Copyright NVIDIA Corporation 2002
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+Comments:
+
+******************************************************************************/
+
+[Vertex shader]
+struct app2vert
+ {
+	float4 startpos	: POSITION;
+	float4 endpos	: PSIZE;
+	float4 color	: DIFFUSE;
+	float4 param8	: TEXCOORD0;
+	float3 param9	: TEXCOORD1;
+ };
+
+struct vfconn
+ {
+	float4 hpos		: POSITION;
+	float4 col0		: COLOR0;
+	float4 col1		: COLOR1;
+	float4 tex0		: TEXCOORD0;
+	float4 tex1		: TEXCOORD1;
+ };
+//
+// Vertex Program Entry : 
+//
+float4x4 ModelViewProj;
+float4x4 ModelView;
+float4x4 Projection;
+vfconn main(app2vert IN)
+ {
+	vfconn OUT;
+	OUT.col0 = IN.color;
+	//-------------------------------------------------------------------------------
+  //
+	// Transform 2 positions with modelview
+	//
+	float4 posstart = mul(ModelView, IN.startpos);
+	float4 posend = mul(ModelView, IN.endpos);
+	
+	//unit vector between EYE and CENTER of the line (param4.x = 1/2)
+	float3	middlepoint = normalize((posstart.xyz + posend.xyz)/2.0);
+	
+	//unit vector of the line direction
+	float3	lineoffset = posend.xyz - posstart.xyz; 
+	float3	linedir = normalize(lineoffset); 
+	float	sqlinelength = dot(lineoffset, lineoffset);
+	
+	//dot product in order to compute the texture coef
+	float	texcoef = abs(dot(linedir, middlepoint));
+	
+	//change texture coef depending on line length: y=(Sz/(l^2))(x-1)+1
+	texcoef = max(((texcoef - 1)*(sqlinelength / IN.param9.z)) + 1, 0);
+
+	//----------------------------------------------------------------------------
+
+	//
+	//modelview + projection on start and end points
+	//
+	posstart = mul(ModelViewProj, IN.startpos);
+	posend = mul(ModelViewProj, IN.endpos);
+	
+	//perspective transform to get projected point
+	float2 startpos2d = posstart.xy / posstart.w;
+	float2 endpos2d = posend.xy / posend.w;
+	
+	//vector between these 2 points
+	float2 linedir2d = normalize(startpos2d - endpos2d);
+	
+	//move corners with radius0 and radius1
+	posstart.xy = ((texcoef * IN.param8.x) * linedir2d.xy) + posstart.xy; // horizontal
+
+	linedir2d = IN.param9.x * linedir2d;
+
+	posstart.x = posstart.x + linedir2d.y; // vertical x
+	posstart.y = posstart.y - linedir2d.x; // vertical y
+	OUT.hpos = posstart;
+	//--------------------------------------------------------------------------------
+	//
+	//compute tex coords depending on texcoef
+	//
+	float blend;
+	float4 tex;
+	tex.zw = float2(0,1);
+	tex.y = min(15.0/16.0, texcoef); // we don't want more than 15/16
+	tex.x = modf(tex.y * 4.0, tex.y); 
+	blend = modf(tex.x * 4.0, tex.x); // integer part of tx * 4 and get the blend factor
+	tex.xy = (tex.xy / 4.0) + (IN.param8).zw; 
+	OUT.tex0 = tex;
+	//
+	// now get the second texture coord : increment
+	//
+	tex.y = min(texcoef + (1.0/16.0), 15.0/16.0);
+	tex.x = modf(tex.y * 4.0, tex.y);
+	tex.x = floor(tex.x * 4.0);
+	tex.xy = (tex.xy / 4) + (IN.param8).zw; 
+	OUT.tex1 = tex;
+
+	OUT.col1 = blend.xxxx;
+
+	return OUT;
+ }
+[Fragment shader]
+sampler2D texture0;
+sampler2D texture1;
+float4 main(in float4 blendFactor   : COLOR1,
+            in float4 texCoord0     : TEXCOORD0,
+            in float4 texCoord1     : TEXCOORD1
+            ) : COLOR
+{
+    float4 tex0 = tex2D(texture0, texCoord0.xy);
+    float4 tex1 = tex2D(texture1, texCoord1.xy);
+
+    return lerp(tex0, tex1, blendFactor);
+}
+

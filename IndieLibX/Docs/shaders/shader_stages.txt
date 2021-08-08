@@ -1,0 +1,109 @@
+GLSL:
+
+GLuint glCreateShader( 	GLenum shaderType);
+
+GL_COMPUTE_SHADER
+GL_VERTEX_SHADER
+GL_TESS_CONTROL_SHADER		Hull Shader in HLSL
+GL_TESS_EVALUATION_SHADER 	Domain Shader in HLSL
+GL_GEOMETRY_SHADER
+GL_FRAGMENT_SHADER		Pixel Shader in HLSL
+
+D3DX11
+
+    CreateComputeShader
+    CreateDomainShader		Tessellation Evaluation Shader in GLSL
+    CreateGeometryShader
+    CreateGeometryShaderWithStreamOutput
+    CreateHullShader		Tessellation Control Shader in GLSL
+    CreatePixelShader		Fragment Shader in GLSL
+    CreateVertexShader
+
+	ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "main", "main");
+	FormatDesc format[] =
+	{
+		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
+		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+	};
+	VertexFormatID vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
+
+	ShaderID shd = IRenderer::GetRendererInstance()->addHLSLShader(SHDTXT, "main", "main");
+	FormatDesc format3[] =
+	{
+		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+		0, TYPE_TEXCOORD, FORMAT_FLOAT, 4
+	};
+	VertexFormatID vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
+
+<Shaders  fragmentProcessor     = "PIXEL_SHADER"
+          vertexProcessor       = "VERTEX_SHADER"
+          geometryProcessor     = "GEOMETRY_SHADER"
+          controlProcessor      = "CONTROL_SHADER"
+          evaluationProcessor   = "EVALUATION_SHADER"
+          computeProcessor      = "COMPUTE_SHADER"
+          linkProcessors    = "true">
+  <COMPUTE_SHADER>
+    <RawData>
+    </RawData>
+  </COMPUTE_SHADER>
+  <EVALUATION_SHADER>
+    <RawData>
+    </RawData>
+  </EVALUATION_SHADER>
+  <CONTROL_SHADER>
+    <RawData>
+    </RawData>
+  </CONTROL_SHADER>
+  <GEOMETRY_SHADER>
+    <RawData>
+    </RawData>
+  </GEOMETRY_SHADER>
+  <VERTEX_SHADER>
+    <RawData>
+ 
+    <In name = "Position_" type = "float3" size = "1" x = "0" />
+    <In name = "Normal" type = "float3" size = "1" x = "1" />
+    <In name = "uv" type = "float2" size = "1" x = "2" />
+    <Out name = "Position" type = "float4" size = "1" x = "0" />
+    <Out name = "uv0" type = "float2" size = "1" x = "1" />
+    <Out name = "uv1" type = "float3" size = "1" x = "2" />
+      void main(void)
+      {
+        uv0 = uv;
+        uv1 = float4(Normal, 0.0);
+        Position    = ftransform();
+      }
+    </RawData>
+  </VERTEX_SHADER>
+
+  <PIXEL_SHADER>
+    <Uniform name = "weight" type = "sampler2D" size = "1" x = "0" />
+    <Uniform name = "fungus" type = "sampler2D" size = "1" x = "1" />
+    <Uniform name = "dirt"   type = "sampler2D" size = "1" x = "2" />
+    <Uniform name = "grass"  type = "sampler2D" size = "1" x = "3" />
+    <In name = "uv0" type = "float2" size = "1" x = "0" />
+    <In name = "uv1" type = "float3" size = "1" x = "1" />
+   <RawData>
+    
+      float4 main(void)
+      {
+        float4  weightSample  = tex2D(weight, uv0.xy),
+              fungusSample  = tex2D(fungus, uv0.xy*25.0),
+              grassSample   = tex2D(grass , uv0.xy*20.0),
+              dirtSample    = tex2D(dirt  , uv0.xy*20.0);
+
+        float weightScale1  = clamp(weightSample.y * 1.25, 0.0, 1.0),
+              weightScale2  = clamp(weightSample.x, 0.0, 1.0);
+     
+        float3  normal       = normalize(uv1.xyz);
+        float dotProduct   = clamp(dot(float3(0.73, 0.73, 0.0), normal), 0.0, 1.0);
+
+        float4  dirtAndGrass = dirtSample   * weightScale1 + (1.0 - weightScale1) * grassSample;
+        float4  color        = weightScale2 * dirtAndGrass + (1.0 - weightScale2) * fungusSample;
+        return color * dotProduct;
+      }
+    </RawData>
+  </PIXEL_SHADER>
+  
+</Shaders>
+
