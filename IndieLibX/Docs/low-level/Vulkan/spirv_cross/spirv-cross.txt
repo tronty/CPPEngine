@@ -1,0 +1,36 @@
+
+Libraries/SPIRV-Cross/README.md:
+
+### Creating a SPIR-V file from GLSL with glslang
+
+```
+glslangValidator -H -V -o test.spv test.frag
+```
+
+### Converting a SPIR-V file to GLSL ES
+
+```
+glslangValidator -H -V -o test.spv shaders/comp/basic.comp
+./spirv-cross --version 310 --es test.spv
+```
+
+#### Converting to desktop GLSL
+
+```
+glslangValidator -H -V -o test.spv shaders/comp/basic.comp
+./spirv-cross --version 330 test.spv --output test.comp
+
+
+
+  - Convert SPIR-V to readable, usable and efficient Metal Shading Language (MSL) [EXPERIMENTAL]
+  - Convert SPIR-V to readable, usable and efficient HLSL [EXPERIMENTAL]
+
+
+### Metal backend
+
+To test the roundtrip path GLSL -> SPIR-V -> MSL, `--msl` can be added, e.g. `./test_shaders.py --msl shaders-msl`.
+
+### HLSL backend
+
+To test the roundtrip path GLSL -> SPIR-V -> HLSL, `--hlsl` can be added, e.g. `./test_shaders.py --hlsl shaders-hlsl`.
+

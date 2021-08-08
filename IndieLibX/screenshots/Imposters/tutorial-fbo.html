@@ -1,0 +1,258 @@
+<html><head>
+
+<title>troylawlor.com - RenderTexture class and framebuffer object tutorial</title>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="keywords" content="Troy Lawlor, Troy, Lawlor, Prayer, game engine, Natal, Unreal, Surreal Software, WBIE, Warner Brothers, Newton, programming, C++, DirectX, OpenGL, music, Conversation Hearts, Alaska, University of Alaska Fairbanks, UAF, HAARP, High Frequency Auroral Research Program">
+<meta name="description" content="Troy Lawlor's code, tutorials, music, resume, and contact information.">
+
+<style type="text/css">
+
+.title {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 227px;
+	background: url(
+images/nav/title2.jpg) no-repeat;
+}
+
+</style>
+
+
+<link rel="stylesheet" href="tutorial-fbo_tiedostot/troystyle.css">
+
+</head><body>
+
+<div class="title">
+<div class="mainmenu">
+<a href="http://www.troylawlor.com/index.html">me</a>
+<br><a href="http://www.linkedin.com/in/troylawlor">linkedin</a>
+<br>code
+<br><a href="http://www.troylawlor.com/etc.html">etc.</a>
+</div>
+</div>
+
+<div class="page">
+
+<div class="sidebar">
+
+<div class="sidebarmenu">
+<a href="http://www.troylawlor.com/code.html">index</a>
+<br><a href="http://www.troylawlor.com/prayer.html">prayer</a>
+<br><a href="http://www.troylawlor.com/pighog.html">PIG/HOG</a>
+<br><a href="http://www.troylawlor.com/481.html">CS481 demos</a>
+<br>tutorial-fbo
+<br><a href="http://www.troylawlor.com/tutorial-imposters.html">tutorial-imposters</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<div class="innercontent">
+
+<div class="article1"><div class="articleTitle">
+RenderTexture class
+</div></div>
+
+<p>Framebuffer objects offer a fast and easy way to render into a
+texture. In this short tutorial, I'll be presenting a simple
+RenderTexture class. With such a class, rendering into a shadowmap is
+as easy as:
+</p><div class="code">
+<pre><span class="idnt">RenderTexture</span> <span class="idnt">myRenderTexture</span><span class="symb">(</span><span class="num">512</span>, <span class="num">512</span>, <span class="idnt">GL_DEPTH_COMPONENT</span><span class="symb">)</span><span class="symb">;</span>
+<span class="idnt">myRenderTexture</span>.<span class="idnt">startRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+<span class="cmnt">//  draw from light position</span>
+<span class="idnt">myRenderTexture</span>.<span class="idnt">finishRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+<span class="idnt">myRenderTexture</span>.<span class="idnt">bind</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+</pre>
+</div>
+
+<p>If you're on Windows or Linux, you'll have to use <a href="http://glew.sourceforge.net/install.html">GLEW</a>
+to access the framebuffer object extension. If you're using the latest
+version of Mac OS X, you shouldn't have to change anything.
+</p><p>Allocating and using a framebuffer object is a lot like
+allocating and using a texture. It all comes down to these three
+functions:
+</p><div class="code">
+<pre><span class="rword">void</span> <span class="idnt">glGenFramebuffersEXT</span> <span class="symb">(</span><span class="idnt">GLsizei</span> <span class="idnt">n</span>, <span class="idnt">GLuint</span> <span class="symb">*</span><span class="idnt">ids</span><span class="symb">)</span><span class="symb">;</span>
+<span class="rword">void</span> <span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GLenum</span> <span class="idnt">target</span>, <span class="idnt">GLuint</span> <span class="idnt">framebuffer</span><span class="symb">)</span><span class="symb">;</span>
+<span class="rword">void</span> <span class="idnt">glFramebufferTexture2DEXT</span> <span class="symb">(</span><span class="idnt">GLenum</span> <span class="idnt">target</span>, <span class="idnt">GLenum</span> <span class="idnt">attachment</span>,
+                                 <span class="idnt">GLenum</span> <span class="idnt">textarget</span>, <span class="idnt">GLuint</span> <span class="idnt">texture</span>,
+                                 <span class="idnt">GLint</span> <span class="idnt">level</span><span class="symb">)</span><span class="symb">;</span>
+</pre></div>glGenFramebuffers and glBindFramebuffer work exactly like
+their texture counterparts. To attach a framebuffer to a texture, you
+call glFramebufferTexture2D. Sounds simple, right? It is. Without
+further ado, here is a basic RenderTexture class:
+<div class="code">
+<pre><span class="rword">class</span> <span class="idnt">RenderTexture</span> <span class="brcs">{</span>
+	<span class="rword">private</span><span class="symb">:</span>
+		<span class="cmnt">//  we don't want to allow copies to be made</span>
+		<span class="idnt">RenderTexture</span><span class="symb">&amp;</span>  <span class="rword">operator</span> <span class="symb">=</span> <span class="symb">(</span><span class="rword">const</span> <span class="idnt">RenderTexture</span><span class="symb">&amp;</span> <span class="idnt">other</span><span class="symb">)</span> <span class="brcs">{</span><span class="brcs">}</span>
+		<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="rword">const</span> <span class="idnt">RenderTexture</span><span class="symb">&amp;</span> <span class="idnt">other</span><span class="symb">)</span> <span class="brcs">{</span><span class="brcs">}</span>
+
+	<span class="rword">protected</span><span class="symb">:</span>
+		<span class="idnt">GLuint</span> <span class="idnt">texID</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">fbo</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">width</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">height</span><span class="symb">;</span>
+
+	<span class="rword">public</span><span class="symb">:</span>
+		<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">p_width</span>, <span class="idnt">GLuint</span> <span class="idnt">p_height</span>, <span class="idnt">GLuint</span> <span class="idnt">format</span><span class="symb">)</span><span class="symb">;</span>
+		~<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">startRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">finishRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">bind</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">unit</span><span class="symb">=</span><span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span><span class="symb">;</span>
+
+<span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span><span class="idnt">RenderTexture</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">p_width</span>, <span class="idnt">GLuint</span> <span class="idnt">p_height</span>, <span class="idnt">GLuint</span> <span class="idnt">format</span><span class="symb">)</span> <span class="symb">:</span> <span class="idnt">width</span><span class="symb">(</span><span class="idnt">p_width</span><span class="symb">)</span>, <span class="idnt">height</span><span class="symb">(</span><span class="idnt">p_height</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="cmnt">//  allocate the texture that we will render into</span>
+	<span class="idnt">glGenTextures</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">texID</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glBindTexture</span><span class="symb">(</span><span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">format</span><span class="symb">=</span><span class="symb">=</span><span class="idnt">GL_DEPTH_COMPONENT</span><span class="symb">)</span>
+		<span class="idnt">glTexImage2D</span><span class="symb">(</span> <span class="idnt">GL_TEXTURE_2D</span>, <span class="num">0</span>, <span class="idnt">GL_DEPTH_COMPONENT24</span>, <span class="idnt">width</span>, <span class="idnt">height</span>, <span class="num">0</span>, <span class="idnt">GL_DEPTH_COMPONENT</span>, <span class="idnt">GL_UNSIGNED_BYTE</span>, <span class="idnt">NULL</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">else</span>
+		<span class="idnt">glTexImage2D</span><span class="symb">(</span><span class="idnt">GL_TEXTURE_2D</span>, <span class="num">0</span>, <span class="idnt">format</span>, <span class="idnt">width</span>, <span class="idnt">height</span>, <span class="num">0</span>, <span class="idnt">format</span>, <span class="idnt">GL_UNSIGNED_BYTE</span>, <span class="idnt">NULL</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  allocate a framebuffer object</span>
+	<span class="idnt">glGenFramebuffersEXT</span><span class="symb">(</span><span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">fbo</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">fbo</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  attach the framebuffer to our texture, which may be a depth texture</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">format</span><span class="symb">=</span><span class="symb">=</span><span class="idnt">GL_DEPTH_COMPONENT</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="idnt">glFramebufferTexture2DEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">GL_DEPTH_ATTACHMENT_EXT</span>, <span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="cmnt">//  disable drawing to any buffers, we only want the depth</span>
+		<span class="idnt">glDrawBuffer</span><span class="symb">(</span><span class="idnt">GL_NONE</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glReadBuffer</span><span class="symb">(</span><span class="idnt">GL_NONE</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="brcs">}</span> <span class="rword">else</span>
+		<span class="idnt">glFramebufferTexture2DEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">GL_COLOR_ATTACHMENT0_EXT</span>, <span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  you can check to see if the framebuffer is 'complete' with no errors</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">glCheckFramebufferStatusEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span><span class="symb">)</span><span class="symb">!</span><span class="symb">=</span><span class="idnt">GL_FRAMEBUFFER_COMPLETE_EXT</span><span class="symb">)</span>
+		<span class="cmnt">//  error!  might want to handle this somehow</span>
+		<span class="symb">;</span>
+
+	<span class="cmnt">//  unbind our framebuffer, return to default state</span>
+	<span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+
+<span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span>~<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="cmnt">//  free our texture</span>
+	<span class="idnt">glDeleteTextures</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">texID</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  free our framebuffer</span>
+	<span class="idnt">glDeleteFramebuffersEXT</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">fbo</span> <span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+
+<span class="rword">void</span> <span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span><span class="idnt">startRender</span><span class="symb">(</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="cmnt">//  bind the framebuffer</span>
+	<span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">fbo</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  set the viewport to our texture dimensions</span>
+	<span class="idnt">glViewport</span><span class="symb">(</span><span class="num">0</span>,<span class="num">0</span>,<span class="idnt">width</span>,<span class="idnt">height</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+
+<span class="rword">void</span> <span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span><span class="idnt">finishRender</span><span class="symb">(</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="cmnt">//  unbind our framebuffer, return to default state</span>
+	<span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  remember to restore the viewport when you are ready to render to the screen!</span>
+<span class="brcs">}</span>
+
+<span class="rword">void</span> <span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span><span class="idnt">bind</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">unit</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="idnt">glActiveTextureARB</span><span class="symb">(</span><span class="idnt">GL_TEXTURE0_ARB</span> <span class="symb">+</span> <span class="idnt">unit</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glBindTexture</span><span class="symb">(</span> <span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span> <span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span>
+</pre></div>One problem you'll notice if you try to use the z-buffer
+while rendering to the texture is that there is no depth buffer! The
+texture, of course, doesn't come with one. We need to allocate a render
+buffer to act as our depth buffer and attach it to the frame buffer.
+Let's give the user of the class an option of whether to have a depth
+buffer or not in the constructor's parameters. We only need to change
+the constructor and destructor to attach the depth buffer. Changes are
+highlighted:
+<div class="code"><pre><span class="rword">class</span> <span class="idnt">RenderTexture</span> <span class="brcs">{</span>
+	<span class="rword">private</span><span class="symb">:</span>
+		<span class="cmnt">//  we don't want to allow copies to be made</span>
+		<span class="idnt">RenderTexture</span><span class="symb">&amp;</span>  <span class="rword">operator</span> <span class="symb">=</span> <span class="symb">(</span><span class="rword">const</span> <span class="idnt">RenderTexture</span><span class="symb">&amp;</span> <span class="idnt">other</span><span class="symb">)</span> <span class="brcs">{</span><span class="brcs">}</span>
+		<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="rword">const</span> <span class="idnt">RenderTexture</span><span class="symb">&amp;</span> <span class="idnt">other</span><span class="symb">)</span> <span class="brcs">{</span><span class="brcs">}</span>
+	<span class="rword">protected</span><span class="symb">:</span>
+		<span class="idnt">GLuint</span> <span class="idnt">texID</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">fbo</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">width</span><span class="symb">;</span>
+		<span class="idnt">GLuint</span> <span class="idnt">height</span><span class="symb">;</span>
+		<span class="code_highlight">bool hasDepthBuffer;
+		GLuint depthBuffer;</span>
+
+	<span class="rword">public</span><span class="symb">:</span>
+		<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">p_width</span>, <span class="idnt">GLuint</span> <span class="idnt">p_height</span>, <span class="idnt">GLuint</span> <span class="idnt">format</span>, <span class="rword">bool</span> <span class="idnt">p_hasDepthBuffer</span><span class="symb">=</span><span class="rword">false</span><span class="symb">)</span><span class="symb">;</span>
+		~<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">startRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">finishRender</span><span class="symb">(</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="rword">void</span> <span class="idnt">bind</span><span class="symb">(</span><span class="idnt">GLuint</span> <span class="idnt">unit</span><span class="symb">=</span><span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+<span class="brcs">}</span><span class="symb">;</span>
+
+<span class="code_highlight">RenderTexture::RenderTexture(GLuint p_width, GLuint p_height, GLuint format, bool p_hasDepthBuffer) : width(p_width), height(p_height), hasDepthBuffer(p_hasDepthBuffer) {</span>
+	<span class="cmnt">//  allocate the texture that we will render into</span>
+	<span class="idnt">glGenTextures</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">texID</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glBindTexture</span><span class="symb">(</span><span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">format</span><span class="symb">=</span><span class="symb">=</span><span class="idnt">GL_DEPTH_COMPONENT</span><span class="symb">)</span>
+		<span class="idnt">glTexImage2D</span><span class="symb">(</span> <span class="idnt">GL_TEXTURE_2D</span>, <span class="num">0</span>, <span class="idnt">GL_DEPTH_COMPONENT24</span>, <span class="idnt">width</span>, <span class="idnt">height</span>, <span class="num">0</span>, <span class="idnt">GL_DEPTH_COMPONENT</span>, <span class="idnt">GL_UNSIGNED_BYTE</span>, <span class="idnt">NULL</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="rword">else</span>
+		<span class="idnt">glTexImage2D</span><span class="symb">(</span><span class="idnt">GL_TEXTURE_2D</span>, <span class="num">0</span>, <span class="idnt">format</span>, <span class="idnt">width</span>, <span class="idnt">height</span>, <span class="num">0</span>, <span class="idnt">format</span>, <span class="idnt">GL_UNSIGNED_BYTE</span>, <span class="idnt">NULL</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  allocate a framebuffer object</span>
+	<span class="idnt">glGenFramebuffersEXT</span><span class="symb">(</span><span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">fbo</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="idnt">glBindFramebufferEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">fbo</span><span class="symb">)</span><span class="symb">;</span>
+<span class="code_highlight">
+	if(hasDepthBuffer) {
+		//  allocate a renderbuffer for our depth buffer the same size as our texture
+		glGenRenderbuffersEXT(1, &amp;depthBuffer);
+		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthBuffer);
+		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, width, height);
+		//  attach the renderbuffer to our framebuffer
+		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthBuffer);
+	}
+</span>
+
+	<span class="cmnt">//  attach the framebuffer to our texture, which may be a depth texture</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">format</span><span class="symb">=</span><span class="symb">=</span><span class="idnt">GL_DEPTH_COMPONENT</span><span class="symb">)</span> <span class="brcs">{</span>
+		<span class="idnt">glFramebufferTexture2DEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">GL_DEPTH_ATTACHMENT_EXT</span>, <span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="cmnt">//  disable drawing to any buffers, we only want the depth</span>
+		<span class="idnt">glDrawBuffer</span><span class="symb">(</span><span class="idnt">GL_NONE</span><span class="symb">)</span><span class="symb">;</span>
+		<span class="idnt">glReadBuffer</span><span class="symb">(</span><span class="idnt">GL_NONE</span><span class="symb">)</span><span class="symb">;</span>
+	<span class="brcs">}</span> <span class="rword">else</span>
+		<span class="idnt">glFramebufferTexture2DEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span>, <span class="idnt">GL_COLOR_ATTACHMENT0_EXT</span>, <span class="idnt">GL_TEXTURE_2D</span>, <span class="idnt">texID</span>, <span class="num">0</span><span class="symb">)</span><span class="symb">;</span>
+
+	<span class="cmnt">//  you can check to see if the framebuffer is 'complete' with no errors</span>
+	<span class="rword">if</span><span class="symb">(</span><span class="idnt">glCheckFramebufferStatusEXT</span><span class="symb">(</span><span class="idnt">GL_FRAMEBUFFER_EXT</span><span class="symb">)</span><span class="symb">!</span><span class="symb">=</span><span class="idnt">GL_FRAMEBUFFER_COMPLETE_EXT</span><span class="symb">)</span>
+		<span class="cmnt">//  error!  might want to handle this somehow</span>
+		<span class="symb">;</span>
+<span class="brcs">}</span>
+
+<span class="idnt">RenderTexture</span><span class="symb">:</span><span class="symb">:</span>~<span class="idnt">RenderTexture</span><span class="symb">(</span><span class="symb">)</span> <span class="brcs">{</span>
+	<span class="cmnt">//  free our texture</span>
+	<span class="idnt">glDeleteTextures</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">texID</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="cmnt">//  free our framebuffer</span>
+	<span class="idnt">glDeleteFramebuffersEXT</span><span class="symb">(</span> <span class="num">1</span>, <span class="symb">&amp;</span><span class="idnt">fbo</span> <span class="symb">)</span><span class="symb">;</span>
+	<span class="code_highlight">//  free our renderbuffer
+	if(hasDepthBuffer) glDeleteRenderbuffersEXT(1, &amp;depthBuffer);</span>
+<span class="brcs">}</span>
+...
+</pre></div>
+
+<br><br>
+
+</div>
+
+<div class="footer">
+<font size="-1" color="#aaaaaa">
+©2007 Troy Lawlor.  All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;
+</font> tlawlor @ gmail . com
+</div>
+
+</div>
+
+</div>
+
+</body></html>

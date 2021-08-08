@@ -1,0 +1,33 @@
+//-----------------------------------------------------------------------------
+// File: hit.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+float4x4 mvp;
+
+struct VsOut {
+	float4 Pos      : POSITION;
+	float4 texCoord : TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 texCoord: TEXCOORD0){
+	VsOut Out;
+
+	pos.w = 1;
+	Out.Pos = mul(mvp, pos);
+	Out.texCoord = float4(texCoord, 0, 0);
+
+	return Out;
+}
+
+[Fragment shader]
+
+float4 main(float4 texCoord: TEXCOORD0) : COLOR {
+	return texCoord;
+}

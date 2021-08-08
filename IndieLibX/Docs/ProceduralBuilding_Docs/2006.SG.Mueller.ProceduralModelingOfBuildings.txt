@@ -1,0 +1,627 @@
+                                            Procedural Modeling of Buildings
+    Pascal Müller∗                Peter Wonka†                  Simon Haegler∗         Andreas Ulmer∗               Luc Van Gool∗
+     ETH Zürich              Arizona State University             ETH Zürich           ETH Zürich             ETH Zürich / K.U. Leuven
+
+
+
+
+Figure 1: This figure shows the application of CGA shape, a novel shape grammar for the procedural modeling of computer graphics
+architecture. First, the grammar generates procedural variations of the building mass model using volumetric shapes and then proceeds to
+create façade detail consistent with the mass model. Context sensitive rules ensure that entities like windows or doors do not intersect with
+other walls, that doors give out on terraces or the street level, that terraces are bounded by railings, etc.
+
+
+Abstract                                                                    time consuming to replicate these results with existing modeling
+                                                                            software.
+CGA shape, a novel shape grammar for the procedural modeling of
+CG architecture, produces building shells with high visual quality          We use a shape grammar (called CGA shape) with production rules
+and geometric detail. It produces extensive architectural models for        that iteratively evolve a design by creating more and more details.
+computer games and movies, at low cost. Context sensitive shape             In the context of buildings, the production rules first create a crude
+rules allow the user to specify interactions between the entities of        volumetric model of a building, called the mass model, then con-
+the hierarchical shape descriptions. Selected examples demonstrate          tinue to structure the façade and finally add details for windows,
+solutions to previously unsolved modeling problems, especially to           doors and ornaments. The main advantage of the method is that the
+consistent mass modeling with volumetric shapes of arbitrary ori-           creation of the hierarchical structure and the annotation of a model
+entation. CGA shape is shown to efficiently generate massive urban          is specified in the modeling process. This semantic information is
+models with unprecedented level of detail, with the virtual rebuild-        important for reusing design rules for procedural variations (see fig-
+ing of the archaeological site of Pompeii as a case in point.               ure 1) and thereby creating a large variety of architecture populating
+                                                                            a whole city.
+CR Categories: F.4.2 [Mathematical Logic and Formal Lan-                    The idea of modeling urban environments using shape grammars
+guages]: Grammars and Other Rewriting Systems I.3.5 [Com-                   was recently explored by Parish and Müller [2001] and Wonka et
+puter Graphics]: Computational Geometry and Object Modeling                 al. [2003]: On the one hand, Parish and Müller showed how to
+I.3.7 [Computer Graphics]: Three-Dimensional Graphics and Real-             generate large urban environments where each building consists of
+ism I.6.3 [Simulation and Modeling]: Applications J.6 [Computer-            simple mass models and shaders for façade detail. On the other
+Aided Engineering]: Computer-Aided Design (CAD)                             hand, Wonka et al. [2003] demonstrated how to generate geometric
+                                                                            details on façades of individual buildings. Ideally, we would like to
+Keywords: Procedural Modeling, Architecture, Chomsky Gram-                  combine these two ideas to generate large and detailed urban envi-
+mars, L-systems, Computer-Aided Design                                      ronments. However, there is a significant challenge in the context
+                                                                            of mass modeling that needs to be addressed and requires extensive
+                                                                            changes to both models. (1) Parish and Müller could generate sim-
+1     Introduction                                                          ple models by adding translated and rotated boxes and details were
+                                                                            added with a shader. This strategy cannot generate sufficient geo-
+The creation of compelling models is a crucial task in the develop-         metric detail and there will be numerous unwanted intersections of
+ment of successful movies and computer games. However, model-               architectural elements (see figure 2). (2) The split rules proposed by
+ing large three-dimensional environments, such as cities, is a very         Wonka et al. are only sufficient for simple mass models. Complex
+expensive process and can require several man years worth of la-            mass models will require an excessive amount of splits. Further,
+bor. In this paper we will employ procedural modeling using shape           the mass model cannot be easily changed because novel configura-
+grammars capable of efficiently creating large cities with high ge-         tions will need additional production rules and objects of arbitrary
+ometric detail and up to a billion polygons. It would be extremely          orientation cannot be handled easily.
+    ∗ e-mail:   {pmueller|shaegler|ulmeran|vangool}@vision.ee.ethz.ch       We present a grammar-based solution to generate detailed building
+    † e-mail:   peter.wonka@asu.edu                                         shells stemming from complex mass models. Our approach is based
+                                                                            on a new model for context sensitive shape rules that is suitable
+                                                                            for computer graphics architecture. The major contributions of this
+                                                                            paper are as follows:
+                                                                                  • We are the first to introduce a procedural approach to model
+                                                                                    detailed buildings with consistent mass models. The build-
+                                                                                    ings are not restricted to axis aligned shapes and include roof
+                                                                                    surfaces and rotated shapes. This also allows us to amplify
+      given mass models such as GIS databases consisting of ex-
+      truded two-dimensional building footprints.
+
+  • We are the first to address application related details in the
+    context of procedural modeling of buildings, such as the defi-
+    nition of the most important shape rules, the concise notation,
+    and modeling examples detailing various modeling strategies.
+    Our results will show massive urban models with unprece-
+    dented level of geometric detail.
+
+
+1.1    Related Work
+
+Procedural modeling can draw from a large spectrum of production
+systems such as Semi-Thue processes [Davis et al. 1994], Chomsky
+                                                                        Figure 2: The motivation for our novel shape grammar. The mod-
+grammars [Sipser 1996], graph grammars [Ehrig et al. 1999], shape
+                                                                        eled building consists of 14 volumetric primitives (cubes, roofs)
+grammars [Stiny 1975], and attributed grammars [Knuth 1968].
+                                                                        placed by a stochastic shape grammar. Left: Existing methods
+However, the mere specification of a production system is only the
+                                                                        of procedural architecture can either place shaders on the individ-
+basis. Several questions, such as the geometric interpretation, con-
+                                                                        ual volumes or use split rules for procedural refinement. In both
+cise notation, control of the derivation, and the design of actual
+                                                                        cases several unwanted intersections will cut windows (or other el-
+models, still have to be addressed.
+                                                                        ements) in unnatural ways, as the volumes are not aware of each
+For the geometric modeling of plants, Prusinkiewicz and Linden-         other. Right: Our approach allows the resolution of these conflicts.
+mayer showed that wonderful results can be achieved by using            Additionally, we can place geometry on polygons of different ori-
+L-systems to generate strings that are interpreted with a LOGO-         entation such as roof surfaces. This example was created using only
+style turtle [Prusinkiewicz and Lindenmayer 1991]. L-systems            6 rules.
+have been extended to query the turtle position [Prusinkiewicz
+et al. 1994], to incorporate general computer simulation [Měch and
+Prusinkiewicz 1996], self-sensitivity [Parish and Müller 2001], and    2    A Shape Grammar for CG Architecture
+user generated curves [Prusinkiewicz et al. 2001].
+                                                                        CGA Shape is an extension of set grammars, introduced by Wonka
+In architecture, shape grammars [Stiny 1975; Stiny 1980] were suc-      et al. [2003]. While the idea for the split rule was presented in pre-
+cessfully used for the construction and analysis of architectural de-   vious work, the actual definition of the split including the repeat
+sign [Downing and Flemming 1981; Duarte 2002; Flemming 1987;            split and the scaling of rules are our contribution. Further we in-
+Koning and Eizenberg 1981; Stiny and Mitchell 1978]. The orig-          troduce a component split, the basis for modeling with one-, two-,
+inal formulation of the shape grammar operates directly on an ar-       and three-dimensional shapes. The notation of the grammar and
+rangement of labeled lines and points. However, the derivation is       general rules to add, scale, translate, and rotate shapes are in-
+intrinsically complex and usually done manually, or by computer,        spired by L-systems [Prusinkiewicz and Lindenmayer 1991], but
+with a human deciding on the rules to apply. Shape grammars can         are extended for the modeling of architecture. While parallel
+be simplified to set grammars [Stiny 1982; Wonka et al. 2003] to        grammars like L-systems are suited to capture growth over time,
+make them more amenable to computer implementation. Cellular            a sequential application of rules allows for the characterization
+textures [Legakis et al. 2001] can be used to compute brick patterns    of structure i.e. the spatial distribution of features and compo-
+and generative mesh modeling can generate complex manifold sur-         nents [Prusinkiewicz et al. 2001]. Therefore, CGA Shape is a se-
+faces from simpler ones [Havemann 2005].                                quential grammar (similar to Chomsky grammars).
+
+While the framework defined by the grammar is one essential
+part of procedural modeling, it is then necessary to abstract
+rules that create architectural configurations. While a larger li-
+brary is necessary for this task, we would recommend start-
+ing with books that emphasize structure of architecture, such as
+a visual dictionary [Ching 1996], “The Logic of Architecture”
+by Mitchell [1990], “Space Syntax” [Hillier 1996], Design pat-
+terns [Alexander et al. 1977], and studies of symmetry [March and
+Steadman 1974; Shubnikov and Koptsik 1974; Weyl 1952].
+                                                                        Figure 3: Left: The scope of a shape. The point P, together with
+1.2    Overview                                                         the three axis X, Y , and Z and a size S define a box in space that
+                                                                        contains the shape. Right: A simple building mass model composed
+The paper is structured as follows: We will first explain the basic     of three shape primitives.
+shape grammar in section 2. In section 3 we will introduce exten-
+sions that allow to model complex shape configurations and shape        Shape: The grammar works with a configuration of shapes: a shape
+interactions. Selected examples in section 4, 5, and 6 will show        consists of a symbol (string), geometry (geometric attributes) and
+the application of the grammar to several modeling problems on          numeric attributes. Shapes are identified by their symbols which is
+a small scale. The results in section 7 will show the extension to      either a terminal symbol ∈ Σ, or a non-terminal symbol ∈ V . The
+larger urban environments. In section 8 we discusse our contribu-       corresponding shapes are called terminal shapes and non-terminal
+tion and advantages and disadvantages of the approach; conclusions      shapes. The most important geometric attributes are the position
+are given in section 9.                                                 P, three orthogonal vectors X, Y , and Z, describing a coordinate
+system, and a size vector S. These attributes define an oriented
+bounding box in space called scope (see figure 3).
+Production process: A configuration is a finite set of basic shapes.
+The production process can start with an arbitrary configuration of
+shapes A, called the axiom, and proceeds as follows: (1) Select
+an active shape with symbol B in the set (2) choose a production
+rule with B on the left hand side to compute a successor for B, a
+new set of shapes BNEW (3) mark the shape B as inactive and add
+the shapes BNEW to the configuration and continue with step (1).
+When the configuration contains no more non-terminals, the pro-                Figure 4: Left: A basic façade design. Right: A simple split that
+duction process terminates. Depending on the selection algorithm               could be used for the top three floors.
+in step one, the derivation tree [Sipser 1996] can be explored ei-
+ther depth-first or breadth-first. However, both of these concepts
+do not allow enough control over the derivation. Therefore, we as-             our experience not all architectural parts scale equally well, and it
+sign a priority to all rules according to the detail represented by            is important to have the possibility to distinguish between absolute
+the shape to obtain a (modified) breadth-first derivation: we sim-             values (values that do not scale) and relative values (values that do
+ply select the shape with the rule of highest priority in step one.            scale). Values are considered absolute by default and we will use
+This strategy guarantees that the derivation proceeds from low de-             the letter r to denote relative values, e.g.
+tail to high detail in a controlled manner. Please note, that we do             1: floor ; Subdiv(”X”,2,1r,1r,2){ B | A | A | B }
+not delete shapes, but rather mark them as inactive, after they have
+been replaced. This enables us to query the shape hierarchy, instead           where relative values ri are substituted as ri ∗ (Scope.sx −
+of only the active configuration.                                              ∑ absi )/ ∑ ri (Scope.sx represents the size of the x-length of the
+                                                                               current scope). Figure 4 right illustrates the application of the rule
+Notation: Production rules are defined in the following form:
+                                                                               above on two different sized floors (with x-length 12 and 10).
+ id: predecessor : cond ; successor : prob
+                                                                               Repeat: To allow for larger scale changes in the split rules, we
+where id is a unique identifier for the rule, predecessor ∈ V is a             often want to tile a specified element. For example:
+symbol identifying a shape that is to be replaced with successor,
+and cond is a guard (logical expression) that has to evaluate to true           1: floor ; Repeat(”X”,2){ B }
+in order for the rule to be applied. The rule is selected with proba-
+bility prob. For example, the rule                                             The floor will be tiled into as many elements of type B along the
+                                                                               x-axis of the scope as there is space. The number of repetitions is
+ 1: fac(h) : h > 9 ; floor(h/3) floor(h/3) floor(h/3)                          computed as repetitions = ⌈Scope.sx/2⌉ and we adjust the actual
+                                                                               size of the element accordingly.
+replaces the shape f ac with three shapes f loor, if the parameter h
+is greater than 9. To specify the successor shapes we use different            Component split: Up until this point all shapes (scopes) have been
+forms of rules explained in the remainder of this section.                     three-dimensional. The following command allows to split into
+                                                                               shapes of lesser dimensions:
+Scope rules: Similar to L-systems we use general rules to mod-
+ify shapes: T (tx ,ty ,tz ) is a translation vector that is added to the        1: a ; Comp(type, param){ A | B | ... | Z }
+scope position P, Rx(angle), Ry(angle), and Rz(angle) rotate the
+respective axis of the coordinate system, and S(sx , sy , sz ) sets the        Where type identifies the type of the component split with as-
+size of the scope. We use [ and ] to push and pop the current scope            sociated parameters param (if any). For example we write
+on a stack. Any non-terminal symbol ∈ V in the rule will be cre-               Comp(” f aces”){A} to create a shape with symbol A for each
+ated with the current scope. Similarly, the command I(ob jId) adds             face of the original three-dimensional shape. Similarly we use
+an instance of a geometric primitive with identifier ob jId. Typi-             Comp(”edges”){B} and Comp(”vertices”){C} to split into edges
+cal objects include a cube, a quad, and a cylinder, but any three-             and vertices respectively. To access only selected components we
+dimensional model can be used. The example below illustrates the               use commands such as Comp(”edge”, 3){A} to create a shape A
+design of the mass model depicted in figure 3 right:                           aligned with the third edge of the model or Comp(”side f aces”){B}
+                                                                               to access the side faces of a cube or polygonal cylinder. To encode
+ 1: A ; [ T(0,0,6) S(8,10,18) I(”cube”) ]                                      shapes of lesser dimension we use scopes where one or multiple
+     T(6,0,0) S(7,13,18) I(”cube”) T(0,0,16) S(8,15,8) I(”cylinder”)           axis have zero size. To go back to higher dimensions we can simply
+Basic split rule: The basic split rule splits the current scope along          use the size command S with a non-zero value in the correspond-
+one axis. For example, consider the rule to split the façade of fig-          ing dimension (e.g. to extrude a face shape along its normal and
+ure 4 left into four floors and one ledge:                                     therefore transforming it into a volumetric shape).
+
+ 1: fac ; Subdiv(”Y”,3.5,0.3,3,3,3){ floor | ledge | floor | floor | floor }
+
+The first parameter describes the split axis (”X”, ”Y ”, or ”Z”) and           3    Mass Modeling
+the remaining parameters describe the split sizes. Between the de-
+limiter { and } a list of shapes is given, separated by |. We also use         The grammar explained in the previous section is powerful enough
+similar split rules to split along multiple axis (”XY ”, ”XZ”,”Y Z”,           to specify complex shapes. The important remaining question is
+or ”XY Z”), nested splits, or nested combinations of splits and                how to use them. We will first give an overview of how to generate
+L-system rules.                                                                mass models and then explain how to create façade and roof details.
+                                                                               The proposed technique to solve the transition from mass modeling
+Scaling of rules: From the previous example we can see the first               to façade and roof modeling is the key insight presented in this pa-
+challenge. The split is dimensioned to work well with a scope of               per. We make use of two extensions that allow the specification of
+size y = 12.8, but for other scopes the rule has to be scaled. From            shape rules, the outcome of which depends on the spatial context.
+3.1   Assembling Solids                                                model, we are more restricted and can only make minor modifi-
+                                                                       cations to the mass model (if any). Currently we try to classify
+Building mass models are most naturally constructed as a union of      imported mass models as basic shapes already defined in our shape
+volumetric shapes [Le Corbusier 1985; Mitchell 1990]. The sim-         vocabulary. If this is not possible, we use a general extruded foot-
+plest construction uses a box as basic primitive. We can then gen-     print together with a general roof obtained by a straight skeleton
+erate simple mass models using scaling, translation or splits, such    computation [Aichholzer et al. 1995; Eppstein and Erickson 1999]
+as the basic building blocks L, H, U and T described by Schmitt        as shape primitives.
+[1993] (see figure 5).
+                                                                       Problem of complex surfaces: This form of modeling is very in-
+                                                                       tuitive and can create sufficiently complex building shapes. The
+                                                                       question is how to proceed from here. One approach to solve this
+                                                                       problem would be to compute the visible façade surfaces directly,
+                                                                       but this would lead to the following complications: (1) the visible
+                                                                       surfaces can be general polygons and it is not necessarily trivial
+                                                                       to compute them. (see figure 8). (2) It is not clear how to write
+                                                                       meaningful shape rules for general polygons. (3) There is no sim-
+                                                                       ple mechanism to assign non-terminal symbols for the façade gram-
+                                                                       mar, because the surfaces are the output of an algorithm, rather than
+      Figure 5: A basic shape vocabulary for mass modeling.            a production rule.
+
+The next level of difficulty is to use arbitrary rotations of shapes
+and to include a cylinder in the shape vocabulary. A nice exam-
+ple using rotation are the Petronas Towers in Malaysia. The CGA
+shape reconstruction of one of the two identical towers is depicted
+in figure 6. The tower also shows the use of tapering prevalent in
+the construction of many skyscrapers. Such a construction can no
+longer be achieved by a split grammar alone.
+
+
+                                                                       Figure 8: The union of simple volumetric shapes leads to complex
+                                                                       polygons on the building shell: the resulting polygons can be con-
+                                                                       cave, have many vertices, and multiple holes (marked red on the
+                                                                       left).
+
+                                                                       Modeling strategy: Our solution to the problem retains the sim-
+                                                                       plicity necessary for procedural modeling, while still working
+                                                                       on many configurations of mass models. First, we use three-
+                                                                       dimensional scopes to place three-dimensional shapes (volumes)
+Figure 6: CGA shape reconstruction of a Petronas Tower. The            to form a mass model. Then we generate two-dimensional scopes
+mass model of the tower (left) and the footprint (middle) reveal the   aligned with façade surfaces and roof surfaces by extracting the
+elementary assembling of cubes and cylinders. Right: The same          faces of the three-dimensional shapes with a component split. The
+façade rule has been applied onto the different types of solids.      resulting two-dimensional scopes will be correctly aligned and pa-
+                                                                       rameterized. Similarly we can extract edges by generating one-
+Further, it becomes necessary to include basic roof shapes, such as    dimensional scopes. Please note that this modeling strategy works
+the examples depicted in figure 7 and more general shapes, such as     for arbitrarily aligned polygons such as roof surfaces as well as
+general L-shapes and extruded general quadrilaterals.                  façade surfaces that are typically aligned with the up axis in the
+                                                                       world coordinate system. The grammar can then proceed to re-
+                                                                       fine the resulting quads and triangles (and in very limited cases
+                                                                       general polygons). It is also important to note that after a shape
+                                                                       (scope) is reduced to two-dimensions it is often replaced with a
+                                                                       three-dimensional one by subsequent rule applications. Our solu-
+                                                                       tion to a consistent design are two mechanisms: (1) testing spa-
+                                                                       tial overlap (occlusion) and (2) testing nearby important lines and
+                                                                       planes in the shape configuration (snap lines). These two mecha-
+                                                                       nisms are explained in the following.
+
+                                                                       3.2   Occlusion
+Figure 7: Selected roof types. From left to right: gambrel, cone,
+gabled, hipped, cross-gable, mansard.                                  An occlusion query tests for intersections between shapes. The
+                                                                       simplest query can test if the current shape (the shape selected for
+                                                                       derivation) is occluded by any other shape in the configuration. The
+Mass models can now be created in the following two fashions: (1)      result of this query can be either, no occlusion (”none”), partial oc-
+We are given a building lot as an axiom of the grammar. Then we        clusion (”part”), or full occlusion (” f ull”). For example, the rule
+are able to generate mass models, using scaling, translation, rota-    below tests if the façade part tile is occluded before it is replaced
+tion, and split operations. Care has to be taken that the building     by a door:
+mass does not protrude the parcel boundaries. (2) When import-
+ing data from a GIS database, or importing an existing architectural    1: tile : Shape.occ(”all”) == ”none” ; door
+There are several variations to query only a subset of the shape con-
+figuration: (1) We can make use of the fact that we store the deriva-
+tion tree. The previous query would test for occlusion against all
+shapes, including the inactive ones that already have been replaced
+by a shape rule. To test only against active shapes we can use the
+keyword ”active” in the query. (2) We can restrict the queries to a
+subset of shapes with a specific label, e.g. Shape.occ(”balcony”)
+tests only against shapes labeled balcony. (3) One of the most im-
+portant subsets contains all shapes in the derivation tree except the
+current shape’s predecessors. With this subset, we avoid the query-
+                                                                            Figure 10: Left: A building generated with snap lines. The thin
+ing of parent shapes, which, in the case of a split, always occlude
+                                                                            lines on the building show the scopes of the final shapes illustrating
+their successor shapes [Wonka et al. 2003]. A typical example is
+                                                                            the structure of the grammar. Note how the floor levels are automat-
+illustrated below (ε is the empty shape):
+                                                                            ically aligned over all solids, e.g. a higher floor was forced below
+ 1: tile : Shape.occ(”noparent”) == ”none” ; window                         the tapering (common skyscraper feature). Right: The snap lines
+ 2: tile : Shape.occ(”noparent”) == ”part” ; wall                           used during the construction.
+ 3: tile : Shape.occ(”noparent”) == ”full” ; ε
+
+The type of intersection computation can also be modified, to in-
+clude distance, e.g. Shape.occ(”noparent”, ”distance”, 4) tests if          3.4   Implementation
+the current shape enlarged by 4 is occluded. In theory, the precise
+computation would require morphological shape operations, so that           To store the shapes and snap lines for spatial queries, we use an
+we resort to simple approximations in practice. Another modifica-           octree [Berg et al. 2000] as acceleration data structure. The main
+tion is to test occlusion of sightlines, e.g. Shape.visible(”street”)       reason is simplicity of implementation, especially due to frequent
+tests if the shortest sightlines to the street geometry are occluded.       runtime modifications of the shape configuration. We also ex-
+                                                                            perimented with a discretized data structure (modified octree, see
+                                                                            figure 11). Another acceleration strategy is to replace occlusion
+3.3    Snapping                                                             queries of shapes with occlusion queries of scopes. For example,
+Occlusion makes it possible to avoid placing façade elements such          Scope.occ can be used to test the current scope for occlusion. To
+as windows and doors on the intersection of volumetric shapes con-          compute geometric intersections (e.g. for the determination of snap
+stituting the mass model. While this gives some improvement, we             lines), we use a splitting algorithm based on [Mäntylä 1986].
+can further improve the layout of the façade structure, if we alter ex-
+isting shape rules to snap to a dominant face or line (snap shapes) in
+the shape configuration. In the simplest form, all faces of the vol-
+umetric shapes of the mass model are stored as global construction
+planes. If we are selecting a planar (two-dimensional) scope on the
+side of a façade as the active rule, the scope can be intersected by
+the global construction planes defining snap lines. The snap lines
+work for a repeat split and a subdivision split as follows: (1) For
+the repeat rule the snap lines divide the scope into different parts
+and the repeat rule is invoked for each part separately. (2) For a
+subdivision rule the snap line just alters the closest split and leaves
+everything else unmodified. See figure 9 for a two dimensional ex-          Figure 11: Left: A volumetric model. Right: The approximate
+ample of a snap line changing the outcome of a repeat-split and a           occlusion data-structure intersected with the the occluded façade
+subdivide-split. Figure 10 shows an example model created with              surfaces is shown in red.
+the help of snap lines. The notation for snap lines is illustrated be-
+low. The keyword Snap inserts a snap shape (in case of rule 2 with
+label ”entrancesnap”) and we modify the splitting axis (e.g. ”XS”           4     A Simple Building Model
+instead of ”X”) to snap to existing snap shapes.
+ 1: floors ; Repeat(”Y”, f loor height){ floor Snap(”XZ”) }                 This section details an introductory example of modeling with our
+ 2: entrance ; Snap(”Y”,”entrancesnap”) door                                shape grammar. The example grammar will generate a simple
+ 3: floor ; Repeat(”XS”,tile width){ tile }                                 generic building including its roof from an arbitrary building foot-
+                                                                            print (see figure 12). This building footprint is the axiom of the
+                                                                            grammar. We aim to illustrate the following concepts:
+                                                                            Readability: The rules are human readable and can therefore be
+                                                                            reused and understood by other users. We use parameters that
+                                                                            are set in cursive font, e.g. building height and building angle
+                                                                            and we use shape symbols from a consistent architectural vocab-
+                                                                            ulary [Mitchell 1990].
+Figure 9: This figure illustrates the effect of snap lines (red). Left:
+A scope is split with a repeat split not reacting to the snap line (top).   Occlusion: The grammar can be applied to several footprints of a
+The snapped version of the repeat split first splits the scope with         city. Even this simple example works on concave footprints and
+the snap line and then invokes the repeat for each half separately,         avoids placing windows and doors where the building intersects
+thereby changing all shape sizes. Right: The subdivide split only           neighboring buildings (see figure 13 left). Rule 2 breaks down the
+alters the splitting line closest to the snap line. Only the two shapes     mass model into its side faces. Rule 3 identifies the street facing
+adjacent to the snap line are changed.                                      building side to place an entrance. Rule 7 uses the occlusion query
+                                                                            to avoid placing windows at the intersection of mass models.
+                                                                           14: roofedge ;
+                                                                                 Subdiv(”Y”,overlap,brick length-2*overlap,1r){ ε |
+                                                                                   roundbrick | Repeat(”Y”,brick length-overlap){ roundbrick } }
+                                                                           15: flatbrick ; S(1r,1r, f latbrick height) T(0,0,- f latbrick height)
+                                                                                 Rx(-3) I(”flatbrick.obj”)
+                                                                           16: roundbrick ; S(roundbrick w,Scope.sy+overlap,roundbrick h)
+                                                                                 T(-roundbrick w/2,-overlap,-roundbrick h)
+                                                                                 Rx(-3) I(”roundbrick.obj”)
+
+
+
+                                                                          5    A Model for Office Buildings
+                                                                          The following example shows firstly a small rule set to generate
+                                                                          various mass models using a stochastic grammar. The axiom of
+Figure 12: The top left shows a building generated with the rules         this grammar is a building lot, a two-dimensional shape. The rules
+described in section 4. The other three models were generated by          work as follows: First, the lot is extruded by building height with
+extending the grammar.                                                    a size command to yield a three-dimensional shape. This shape is
+                                                                          then split into two smaller shapes. One volumetric shape ( f acades)
+                                                                          that is the largest solid in the mass model and one shape that will
+                                                                          later be broken down into two side wings. This split is performed
+                                                                          by Rule 2. The rule also generates a gap between the side wings,
+                                                                          thereby creating a U-shape. Rule 3 shows the use of stochastic rules
+                                                                          to generate a variety of mass configurations. Please note that we
+                                                                          use a combination of random numbers and stochastic rule selection
+                                                                          to create a variety of side wing shapes with different heights and
+                                                                          widths. For example, there is a fifty percent chance that the side
+Figure 13: Left: The simple grammar is applied to three different         wing is as high as the largest solid. Rule 4 is the transition to façade
+footprints. Please note how the occlusion query avoids placing win-       modeling. An example model using these four rules is depicted in
+dows at the intersection of two neighboring buildings. Right: The         figure 14.
+roof is modeled by bricks on the roof planes and the roof edges.
+                                                                           PRIORITY 1:
+                                                                           1: lot ; S(1r,building height,1r)
+Roof construction: The placement of bricks on the roof construc-                Subdiv(”Z”,Scope.sz*rand(0.3,0.5),1r){ facades | sidewings }
+tion is illustrated in figure 13 right. The grammar works as follows:      2: sidewings ;
+Rule 12 splits the roof with a component split and generates scopes             Subdiv(”X”,Scope.sx*rand(0.2,0.6),1r){ sidewing | ε }
+aligned with the edges and the faces. Then the edges are covered                Subdiv(”X”,1r,Scope.sx*rand(0.2,0.6)){ ε | sidewing }
+with roundbrick and the faces with f latbrick. Please note how the         3: sidewing
+grammar generates overlapping bricks, i.e. the geometry is not just             ; S(1r,1r,Scope.sz*rand(0.4,1.0)) facades : 0.5
+a simple displacement map.                                                      ; S(1r,Scope.sy*rand(0.2,0.9),Scope.sz*rand(0.4,1.0))
+                                                                                   facades : 0.3
+                                                                                ; ε : 0.2
+ PRIORITY 1:
+                                                                           4: facades ; Comp(”sidefaces”){ facade }
+ 1: footprint ; S(1r,building height,1r) facades
+      T(0,building height,0) Roof(”hipped”,roo f angle){ roof }
+ PRIORITY 2:
+ 2: facades ; Comp(”sidefaces”){ facade }
+ 3: facade : Shape.visible(”street”)
+       ; Subdiv(”X”,1r,door width*1.5){ tiles | entrance } : 0.5
+       ; Subdiv(”X”,door width*1.5,1r){ entrance | tiles } : 0.5
+ 4: facade ; tiles
+ 5: tiles ; Repeat(”X”,window spacing){ tile }
+ 6: tile ; Subdiv(”X”,1r,window width,1r){ wall |
+       Subdiv(”Y”,2r,window height,1r){ wall | window | wall } | wall }
+ 7: window : Scope.occ(”noparent”) != ”none” ; wall
+ 8: window ; S(1r,1r,window depth) I(”win.obj”)
+ 9: entrance ; Subdiv(”X”,1r,door width,1r){ wall |
+       Subdiv(”Y”,door height,1r){ door | wall } | wall }
+ 10: door ; S(1r,1r,door depth) I(”door.obj”)
+ 11: wall ; I(”wall.obj”)
+ PRIORITY 3:
+ 12: roof ; Comp(”sidefaces”){ covering }
+       Comp(”sideedges”){ roofedge } Comp(”topedges”){ roofedge }
+ 13: covering ;
+       Repeat(”XY”, f latbrick width,brick length){ flatbrick }
+       Subdiv(”X”, f latbrick width,1r){ ε |                              Figure 14: Stochastic variations of building mass models generated
+        Repeat(”X”, f latbrick width){ roofedge } }                       with only four rules (starting with the building lot as axiom).
+The idea of the second part of this rule set is to first derive the dom-   6     A Model for Single Family Homes
+inant shape in the mass volume and force dominant planes of the
+construction (floors) on the other shapes. The rules also demon-           The shape grammar and shape queries can also be used to gen-
+strate the use of labeled and unlabeled snap lines. The first rule         erate and place other components in an urban environment. The
+generates the front façade and rule 7 will be used for the remain-        following example shows the nice interplay, between one, two and
+ing faces of the building. The second production subdivides the            three-dimensional modeling (see figure 16). The grammar in this
+ground floor into several parts, including a door and a labeled snap       example uses the following strategy: (1) split of the property edges
+line. This snap line is inserted as an inactive shape in the shape         with a component split and place shrubs near the fence, (2) split
+configuration. Rule 8 splits into individual floors ( f loor) and adds     the property to model the front yard, back yard and the main build-
+snap planes parallel to the ground floor. Please note that this rule       ing, (3) generate a sidewalk and place trees (generated with Green-
+snaps to existing snap planes as well as creating new ones. The            work’s Xfrog) in regular intervals next to the street, and (4) generate
+use of labeled snap lines is illustrated by rule 9 and 15. Rule 9          a driveway connected to the garage door and a pathway connected
+places a labeled snap line in the up direction, so that the fire es-       to the entrance door.
+cape is aligned with the façade structure. Details, such as windows,
+doors, entrance, and walls are build in similar way to the example         The nice aspect of our modeling system is that the initial stages
+in section 4. An example model is depicted in figure 15.                   of a grammar can work with overlapping, but well formed shapes
+                                                                           and then only later resolve conflicts with occlusion queries. For
+                                                                           example we resolve intersections between sidewalk and driveway
+ PRIORITY 2:                                                               and place trees and shrubs in sufficient distance from the house and
+ 5: facade : Shape.visible(”Street”) == 0 ;                                other vegetation.
+      Subdiv(”Y”,ground f loor height,1r,top f loor height)
+        { groundfloor | floors | topfloors } fireescape
+ 6: groundfloor ; Subdiv(”X”,1r,entrance width,1r){ groundtiles |
+      entrance SnapLines(”Y”,”entrancesnap”) | groundtiles }
+ PRIORITY 3:
+ 7: facade ; floors
+ 8: floors ; Repeat(”YS”, f loor height){ floor Snap(”XZ”) }
+ 9: floor ; Repeat(”XS”,tile width){ tile Snap(”Y”,”tilesnap”) }
+ ...
+ 15: wall : Shape.visible(”Street”) ; I(”frontwall.obj”)
+ PRIORITY 4:
+ 16: fireescape ; Subdiv(”XS”,1r,2*tile width,7r,”tilesnap”)
+       { epsilon | escapestairs | ε }
+ 17: escapestairs ; S(1r,1r, f ireescape depth)
+       T(0,0,- f ireescape depth) Subdiv(”YS”,ground f loor height,1r)
+         { ε | Repeat(”YS”, f loor height){ I(”fireescape.obj”) } }
+
+
+
+
+                                                                           Figure 16: Different buildings in a suburban environment. CGA
+                                                                           shape can also be employed for the procedural generation of the
+                                                                           building environment e.g. walkways or vegetation.
+
+
+
+                                                                           7     Results
+                                                                           7.1    User Interface and Workflow
+                                                                           The C++ implementation of CGA shape is integrated in the
+                                                                           CityEngine framework [Parish and Müller 2001]. Figure 17 shows
+                                                                           a screenshot of the CityEngine user interface. We can import most
+                                                                           forms of GIS data, including rasterized maps and Google Earth’s
+                                                                           KML format for building mass models. Similar to other modeling
+                                                                           applications we rely on many different views of the model guiding
+                                                                           an iterative design process. The most frequently used views are: (1)
+                                                                           An overview mode to show building footprints, streets, and parcel
+                                                                           boundaries. (2) A three-dimensional view of the partial derivation
+                                                                           of the grammar e.g. up until to the mass models. (3) Preview modes
+Figure 15: A procedurally generated building modeled with snap             of the final geometry of selected subsections. (4) Several tools to vi-
+lines. Note the alignment of important lines and planes in the con-        sualize the shape configurations, the scope of shapes, trim surfaces,
+struction.                                                                 snap lines and the topology of shape derivation trees for visual de-
+                                                                           bugging. (5) A rule editor for the shape grammar.
+To develop new rules, our implementation provides several interac-
+tive methods to restrict the derivation of the shape grammar to parts
+of the model (this includes one single building and parts of a build-
+ing). Once the user is happy with the results he can generate a larger
+and detailed model and write it to the disk. The actual computation
+of a model with 50 thousand polygons (like in figure 1 left) takes
+about one second. In addition, half a second is needed for writing
+such a model to the hard disk. To setup the lighting and camera an-
+imations we use Maya with simple building mass models. Render-
+ing a larger city requires a scalable rendering solution to work with
+billions of polygons. Therefore, we use Pixar’s RenderMan with
+its memory-saving instancing support (with delayed read archives)
+and reliable level-of-detail (LoD) functionality to create the render-
+ings. We modeled the different detail levels manually e.g. by inter-
+changing high-resolution terminals with low-resolution ones or by
+adjusting rules which produce high polygon counts.                       Figure 19: This figure shows a modern city model which was cre-
+                                                                         ated from scratch in two days only.
+
+
+
+
+Figure 17: Screenshot of the CityEngine, the CGA shape modeling
+environment. In the left panel of the main window is a GIS-like
+viewer to display the city layout and on the right an OpenGL pre-
+view to show selected parts of the generated geometry. The window
+in the front contains the rule editor.
+
+7.2   Examples
+First, we modeled Pompeii, an ancient Roman town destroyed in 79
+AD, in collaboration with archeologists who gave us ground plans
+and figures of selected building types. We used this information
+to abstract 190 design rules to model the complete city including
+the streets and placement of trees. The basic modeling concept was
+introduced in section 4. The resulting city has about 1.4 billion
+polygons in high LoD, 31 million polygons in middle LoD, and 170
+thousand polygons in low LoD. Figure 18 shows views of different
+elevations over the city and a view inside the street. The exterior
+lighting is simulated with ambient occlusion.                            Figure 20: Our wealthy suburbia model was inspired by Beverly
+                                                                         Hills. CGA shape was also used to distribute the tree models.
+As a usability test we invited a professional modeler to develop an
+example model. On the first day we explained the user interface,
+the workflow, and several example rule sets to demonstrate the rule
+syntax and modeling strategies. Afterwards, with minor help sup-         8    Discussion
+port from our side and the rules of section 5 as starting point, he
+independently created the small city model depicted in figure 19.        In this section we want to compare to previous work, identify con-
+As a conclusion, modeling with CGA shape proved to be easy and           tributions and open problems that are of interest for future research.
+efficient. Even the concept of snapping (which is suited for high-
+rise buildings) was understood and successfully applied.                 Comparison to mesh modeling tools: A comparison to exist-
+                                                                         ing modeling tools can only be done informally. It is possible to
+The third model is inspired by aerial images of Beverly Hills, but       use scripting in commercial modeling software to accelerate the
+the complete model is generated procedurally. We used about              modeling process. However, we believe that these scripts would
+150 rules, including rules for parcel subdivision, urban vegetation,     most likely only replicate parts of our shape grammar. We were
+swimming pools, sidewalks and streets. The basic modeling con-           in discussion with three software companies who are interested in
+cept was introduced in section 6. The complete model consists of         our procedural city modeling tools because current costs of con-
+about one thousand buildings for a total of about 700 million poly-      tent creation are a major challenge in the industry. As an example
+gons in full LoD (without the trees, which are only transformed          from the movie industry we can mention that the urban models for
+instances). See figure 20 for renderings of the model.                   Superman Returns took 15 man years to complete. Still, our mod-
+Figure 18: Various views of the procedural Pompeii model. Based on real building footprints, the city was generated with 190 manually
+written CGA shape rules. Hence, the whole model is a rule-based composition of 36 terminal objects (plus 4 tree types and the environment).
+
+
+els with up to a billion polygons are significantly more detailed than   Since it is possible to reuse rules and share rules with other users,
+the current modeling practice in the entertainment industry. How-        even inexperienced users will be able to quickly model satisfactory
+ever, the shape grammar introduced in this paper does not aim to         results by importing and modifying available rule sets. However,
+replace existing 3d modeling software, but relies on a tight integra-    carelessly written rules can be very contrived and will be only un-
+tion in a complete modeling environment. While the global struc-         derstood by the original author and may produce unwanted side
+ture, the positioning of individual shapes, level-of-detail control,     effects. We expect that modeling with CGA shape is most naturally
+and the data handling of large models is a strength of our frame-        understood by people with computer science background, but many
+work, the generation of smaller complex geometric details is some-       professional modelers are familiar with scripting and will be able to
+times inefficient. We used Maya to generate geometry, such as roof       use shape grammars.
+bricks, the capitals, and window grills. We belief that CGA shape
+is a significant step forward that reduces modeling times by orders      Architecture and computer graphics: Rules in architectural liter-
+of magnitude.                                                            ature are very powerful, but typically abstract and under specified,
+                                                                         so that they can only be applied by humans. The major contribution
+Efficiency and robustness: We found that designing with our              of our shape grammar is to adapt architectural concepts and derive a
+grammar is robust and efficient in most cases since no complex           set of specific shape rules that can be implemented and are powerful
+and error-prone geometric computations have to be executed (like         enough to generate detailed high quality models. While we believe
+boolean operation algorithms, which are very difficult to implement      that the application of CGA shape in computer graphics is very suc-
+reliably). We can formulate meaningful rules for simpler shapes          cessful, we acknowledge that the application to architectural design
+that together create complex polygonal surfaces on the building          is not yet explored and might require significant changes.
+shell. We believe that we found a very good tradeoff between visual
+quality and speed. A global optimization might be able to produce        Comparison to L-systems: Our work is inspired by pioneering
+better results, but it is much more difficult to model and modeling      work in plant modeling [Prusinkiewicz and Lindenmayer 1991;
+times could be prohibitively high. In contrast, the derivation of the    Měch and Prusinkiewicz 1996] and the beautiful images that were
+shape grammar is reasonably fast so that massive one billion poly-       created. Similarities include: (1) the notation of the rules, (2) the
+gon models can be generated in less than one day. A general dis-         idea of the scope is an evolution of the L-system turtle, and (3) the
+advantage of a procedural approach is that it sometimes generates        basic idea for the necessity of context sensitive rules. However, the
+configurations of shapes that are not plausible. This is especially      details and modeling challenges are fundamentally different. A ma-
+the case when starting from arbitrary building footprints given by a     jor distinction of our grammar is that we emphasize the concept of
+GIS dataset. In this context, we believe that it would be a promis-      shape, and rules replacing shapes with shapes, rather than building
+ing avenue of future research to employ shape grammars for shape         on string replacement. We also use a large set of shape rules not ex-
+understanding.                                                           isting in L-systems. Furthermore, the rules governing a biological
+                                                                         system do not directly relate to the modeling of buildings. We found
+Usability: The learning curve to use CGA shape is similar to that        that a direct application of L-Systems to architecture overempha-
+of other scripting languages. We make a conscious effort to write        sizes the idea of growth, a concept that is often counterproductive
+the rules in human readable form, as demonstrated in the paper.          for the procedural modeling of buildings.
+Comparison to Instant Architecture: We built on the idea of the           D UARTE , J. 2002. Malagueira Grammar – towards a tool for customizing
+split rule [Wonka et al. 2003] as an important ingredient for CGA            Alvaro Siza’s mass houses at Malagueira. PhD thesis, MIT School of
+shape. As split grammars maintain a strict hierarchy, modeling is            Architecture and Planning.
+fairly simple, but also limited. However, after introducing rules for     E HRIG , H., E NGELS , G., K REOWSKI , H.-J., AND ROZENBERG , G. 1999.
+combinations of shapes and more general volumetric shapes such               Handbook of Graph Grammars and Computing by Graph Transforma-
+as roofs, the strict hierarchy of the split-grammar can no longer            tion: Applications, Languages and Tools. World Scientific Publishing
+be enforced. We can confirm, that the idea of split rules is a very          Company.
+suitable primitive to generate façade details, but we did not find it    E PPSTEIN , D., AND E RICKSON , J. 1999. Raising roofs, crashing cycles,
+suitable for many forms of mass modeling. We made use of the con-            and playing pool: applications of a data structure for finding pairwise
+trol grammar to generate procedural variations together with sim-            interactions. In Proceedings of the 14th Annual Symposium on Compu-
+ple stochastic rules. We believe that our model of context sensitive         tational Geometry, ACM Press, 58–67.
+shape rules, together with the interplay of one, two, and three di-       F LEMMING , U. 1987. More than the sum of its parts: the grammar of queen
+mensional modeling are an elegant and efficient solution to a chal-          anne houses. Environment and Planning B 14, 323–350.
+lenging problem. Besides this major conceptual contribution, we           H AVEMANN , S. 2005. Generative Mesh Modeling. PhD thesis, TU Braun-
+are also the first to address application related details, such as the       schweig.
+definition of the most important shape rules, the concise notation,
+                                                                          H ILLIER , B. 1996. Space Is The Machine: A Configurational Theory Of
+and modeling examples detailing various modeling strategies.
+                                                                             Architecture. Cambridge University Press.
+Real-time rendering: Although we are currently collaborating to           K NUTH , D. 1968. Semantics of context-free languages. Mathematical
+build a real-time rendering solution this requires additional post-          Systems Theory 2, 2, 127–145.
+processing algorithms not yet developed. One main challenge for           KONING , H., AND E IZENBERG , J. 1981. The language of the prairie:
+this future work is to develop levels-of-detail techniques for mas-         Frank lloyd wrights prairie houses. Environment and Planning B 8, 295–
+sive city models. As we currently do not optimize for consistent            323.
+topology, existing algorithms would fail.                                 L E C ORBUSIER. 1985. Towards a New Architecture. Dover Publications.
+                                                                          L EGAKIS , J., D ORSEY, J., AND G ORTLER , S. J. 2001. Feature-based
+                                                                             cellular texturing for architectural models. In Proceedings of ACM SIG-
+9    Conclusion                                                              GRAPH 2001, ACM Press, E. Fiume, Ed., 309–316.
+This paper introduces CGA shape, a novel shape grammar for the            M ÄNTYL Ä , M. 1986. Boolean operations of 2-manifolds through vertex
+procedural modeling of building shells to obtain large scale city            neighborhood classification. ACM Transactions on Graphics 5, 1, 1–29.
+models. The paper is the first to address the aspect of volumetric        M ARCH , L., AND S TEADMAN , P. 1974. The Geometry of Environment.
+mass modeling of buildings including the design of roofs. These             MIT Press.
+two elements form the major contributions of this paper. Further-         M ĚCH , R., AND P RUSINKIEWICZ , P. 1996. Visual models of plants inter-
+more we introduced several extensions to the split grammar to ob-            acting with their environment. In Proceedings of ACM SIGGRAPH 96,
+tain a complete modeling system. We believe that our work is a               ACM Press, H. Rushmeier, Ed., 397–410.
+powerful adaption of Stiny’s seminal shape grammar idea for com-          M ITCHELL , W. J. 1990. The Logic of Architecture: Design, Computation,
+puter graphics and we demonstrate the creation of massive city               and Cognition. MIT Press.
+models that have significantly more geometric detail than any ex-         PARISH , Y. I. H., AND M ÜLLER , P. 2001. Procedural modeling of cities.
+isting urban model created in industry or academia.                         In Proceedings of ACM SIGGRAPH 2001, ACM Press, E. Fiume, Ed.,
+                                                                            301–308.
+                                                                          P RUSINKIEWICZ , P., AND L INDENMAYER , A. 1991. The Algorithmic
+Acknowledgments                                                              Beauty of Plants. Springer Verlag.
+The authors thank Robbie Müller for testing the ease of use, Tijl        P RUSINKIEWICZ , P., JAMES , M., AND M ĚCH , R. 1994. Synthetic topiary.
+Vereenooghe for archaeological consulting, and the anonymous re-             In Proceedings of ACM SIGGRAPH 94, ACM Press, A. Glassner, Ed.,
+viewers for their constructive comments on improving this paper.             351–358.
+This project is supported in part by EC IST Network of Excellence         P RUSINKIEWICZ , P., M ÜNDERMANN , P., K ARWOWSKI , R., AND L ANE ,
+EPOCH, EC IST Project CyberWalk, and NGA grant HM1582-05-                    B. 2001. The use of positional information in the modeling of plants.
+1-2004.                                                                      In Proceedings of ACM SIGGRAPH 2001, ACM Press, E. Fiume, Ed.,
+                                                                             289–300.
+                                                                          S CHMITT, G. 1993. Architectura et machina. Vieweg & Sohn.
+References                                                                S HUBNIKOV, A. V., AND KOPTSIK , V. A. 1974. Symmetry in Science and
+A ICHHOLZER , O., AURENHAMMER , F., A LBERTS , D., AND G AERTNER ,           Art. Plenum Press, New York.
+   B. 1995. A novel type of skeleton for polygons. Journal of Universal   S IPSER , M. 1996. Introduction to the Theory of Computation. Course
+   Computer Science 12, 12, 752–761.                                          Technology, Boston.
+A LEXANDER , C., I SHIKAWA , S., AND S ILVERSTEIN , M. 1977. A Pattern    S TINY, G., AND M ITCHELL , W. J. 1978. The palladian grammar. Envi-
+   Language: Towns, Buildings, Construction. Oxford University Press,        ronment and Planning B 5, 5–18.
+   New York.                                                              S TINY, G. 1975. Pictorial and Formal Aspects of Shape and Shape Gram-
+B ERG , M. D., K REVELD , M. V., OVERMARS , M., AND S CHWARZKOPF,            mars. Birkhauser Verlag, Basel.
+   O. 2000. Computational Geometry. Springer-Verlag.                      S TINY, G. 1980. Introduction to shape and shape grammars. Environment
+C HING , F. D. K. 1996. A Visual Dictionary of Architecture. Wiley.          and Planning B 7, 343–361.
+                                                                          S TINY, G. 1982. Spatial relations and grammars. Environment and Plan-
+DAVIS , M., S IGAL , R., W EYUKER , E. J., AND DAVIS , M. D. 1994.
+                                                                             ning B 9, 313–314.
+  Computability, Complexity, and Languages : Fundamentals of Theoreti-
+  cal Computer Science. Academic Press.                                   W EYL , H. 1952. Symmetry. Princeton University Press.
+D OWNING , F., AND F LEMMING , U. 1981. The bungalows of buffalo.         W ONKA , P., W IMMER , M., S ILLION , F., AND R IBARSKY, W. 2003. In-
+   Environment and Planning B 8, 269–293.                                   stant architecture. ACM Transactions on Graphics 22, 3, 669–677.
+

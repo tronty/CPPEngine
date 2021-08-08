@@ -1,0 +1,53 @@
+<Shaders  fragmentProcessor  = "PIXEL_SHADER"
+          vertexProcessor    = "VERTEX_SHADER"
+          linkProcessors     = "true">
+
+  <VERTEX_SHADER>
+    <Uniform name = "elapsedTime" type = "float" size = "1" x = "0" />
+    <RawData>
+
+      uniform float elapsedTime;
+ 
+      void main(void)
+      {
+        vec4 oldVertex = gl_Vertex;
+             
+        mat4 newMatrix = mat4(vec4(gl_MultiTexCoord2.xyz, 0.0),
+                              vec4(gl_Normal, 0.0),
+                              vec4(gl_MultiTexCoord1.xyz, 0.0),
+                              0.0, 0.0, 0.0, 1.0);
+                              
+        if(gl_MultiTexCoord0.y > 0.2)
+        {
+          float cosine   = cos(elapsedTime)*gl_MultiTexCoord0.z*10.0;
+          oldVertex.x   += cosine;
+          oldVertex.z   += cosine;
+        }  
+
+        vec4 finalVertex      = newMatrix  * oldVertex;
+             finalVertex.xyz += gl_MultiTexCoord3.xyz;
+
+        gl_TexCoord[0] = gl_MultiTexCoord0;
+        gl_Position    = gl_ModelViewProjectionMatrix* finalVertex;
+      }
+    </RawData>
+  </VERTEX_SHADER>
+
+  <PIXEL_SHADER>
+    <Uniform name = "grass"       type = "int"   size = "1" x = "0"   />
+    <Uniform name = "alphaBooster" type = "float" size = "1" x = "1.0" />
+    <RawData>
+
+      uniform sampler2D grass;
+      uniform float     alphaBooster;
+
+      void main(void)
+      {
+        vec4  grassSample = texture2D(grass, gl_TexCoord[0].xy);
+        float newAlpha    = grassSample.a*alphaBooster;
+	gl_FragColor      = vec4(grassSample.xyz, newAlpha);
+      }
+    </RawData>
+  </PIXEL_SHADER>
+  
+</Shaders>

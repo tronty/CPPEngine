@@ -1,0 +1,147 @@
+// From page 128
+struct Material {
+    float4 Ke       : MAT_EMISSIVE;
+    float4 Ka       : MAT_AMBIENT;
+    float4 Kd       : MAT_DIFFUSE;
+    float4 Ks       : MAT_SPECULAR;
+    float shininess : MAT_SPECULARPOWER;
+};
+
+// From page 138
+struct Light {
+    float3 position;
+    float4 color;
+    float kC;
+    float kL;
+    float kQ;
+    float3 direction;
+    float cosInnerCone;
+    float cosOuterCone;
+};
+
+sampler2D projectiveSampler;
+
+Material gMaterial;
+Light    gLight;
+float4x4 gModelViewProj : WORLDVIEWPROJECTION;
+float4x4 gTextureMatrix;
+float4   gGlobalAmbient : GLOBALAMBIENT;
+float3   gEyePosition; // Eye position in object space
+
+// This is based on the C9E5v_projTex from "The Cg Tutorial" (Addison-Wesley, ISBN
+// 0321194969) by Randima Fernando and Mark J. Kilgard.  See page 254.
+void C9E5v_projTex(float4 position      : POSITION,
+                   float3 normal        : NORMAL,
+
+               out float4 oPosition     : POSITION,
+               out float3 objectPos     : TEXCOORD0,
+               out float3 oNormal       : TEXCOORD1,
+               out float4 oTexCoordProj : TEXCOORD2,
+
+           UNIFORM float4x4 modelViewProj, 
+           UNIFORM float4x4 textureMatrix )
+{
+    oPosition = mul(modelViewProj, position);
+    objectPos = position.xyz;
+    oNormal = normal;
+
+    // Compute the texture coordinate for querying
+    // the projective texture.
+    oTexCoordProj = mul(textureMatrix, position );
+}
+
+// This is C5E7_attenuateLighting from "The Cg Tutorial" (Addison-Wesley, ISBN
+// 0321194969) by Randima Fernando and Mark J. Kilgard.  See page 135.
+
+// From page 135
+float C5E6_attenuation(float3 P, 
+                       Light light) 
+{
+    float d = distance(P, light.position);
+    return 1 / (light.kC + light.kL * d + light.kQ * d * d); 
+}
+
+// From page 139
+float C5E9_dualConeSpotlight(float3 P,
+                             Light  light)
+{
+    float3 V = normalize(P - light.position);
+    float cosOuterCone = light.cosOuterCone;
+    float cosInnerCone = light.cosInnerCone;
+    float cosDirection = dot(V, light.direction);
+
+    return smoothstep(cosOuterCone, cosInnerCone, cosDirection);
+}
+
+// From page 139
+void C5E10_spotAttenLighting(Light  light, 
+                             float3 P,
+                             float3 N,
+                             float3 eyePosition,
+                             float  shininess,
+
+                             out float4 diffuseResult,
+                             out float4 specularResult) 
+{
+    // Compute attenuation
+    float attenuationFactor = C5E6_attenuation(P, light);
+
+    // Compute spotlight effect
+    float spotEffect = C5E9_dualConeSpotlight(P, light);
+
+    // Compute the diffuse lighting
+    float3 L = normalize(light.position - P);
+    float diffuseLight = max(dot(N, L), 0);
+    diffuseResult = attenuationFactor * spotEffect * 
+        light.color * diffuseLight;
+
+    // Compute the specular lighting
+    float3 V = normalize(eyePosition - P);
+    float3 H = normalize(L + V);
+    float specularLight = pow(max(dot(N, H), 0), 
+        shininess);
+    if (diffuseLight <= 0) specularLight = 0;
+    specularResult = attenuationFactor * spotEffect * 
+        light.color * specularLight;
+}
+
+// Based on C5E4v_twoLights (page 131) but for just one per-fragment light
+void oneLight(float4 position     : TEXCOORD0,
+              float3 normal       : TEXCOORD1,
+              float4 texCoordProj : TEXCOORD2,
+
+         out float4 color         : COLOR,
+
+     UNIFORM float3   eyePosition,
+     UNIFORM float4   globalAmbient,
+     UNIFORM Light    light,
+     UNIFORM Material material,
+     UNIFORM sampler2D projectiveMap )
+{
+    // Calculate emissive and ambient terms
+    float4 emissive = material.Ke;
+    float4 ambient = material.Ka * globalAmbient;
+
+    // Loop over diffuse and specular contributions for each light
+    float4 diffuseLight;
+    float4 specularLight;
+
+    C5E10_spotAttenLighting(light, position.xyz, normal, 
+        eyePosition, material.shininess,
+        diffuseLight, specularLight);
+
+    // Now modulate diffuse and specular by material color
+    float4 diffuse = material.Kd * diffuseLight;
+    float4 specular = material.Ks * specularLight;
+
+    // Sample the projective texture
+    float4 projTexColor = float4( 1, 1, 1, 1 );
+    if ( texCoordProj.w > 0 )
+    {
+        projTexColor = tex2Dproj( projectiveMap, texCoordProj );
+    }
+
+    color = projTexColor * ( emissive + ambient + diffuse + specular ) ;
+    color.w = 1;
+}
+

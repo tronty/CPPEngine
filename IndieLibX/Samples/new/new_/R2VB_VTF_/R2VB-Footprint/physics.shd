@@ -1,0 +1,65 @@
+//-----------------------------------------------------------------------------
+// File: physics.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+struct VsOut {
+	float4 pos: POSITION;
+	float2 texCoord: TEXCOORD0;
+};
+
+float2 halfPixel;
+
+VsOut main(float4 pos: POSITION){
+	VsOut Out;
+
+	Out.pos = pos;
+	Out.texCoord = pos.xy * float2(0.5, -0.5) + 0.5 + halfPixel;
+
+	return Out;
+}
+
+[Fragment shader]
+
+struct PsOut {
+	float4 pos: COLOR0;
+	float4 dir: COLOR1;
+};
+
+sampler2D Pos;
+sampler2D Dir;
+sampler2D Rand;
+
+float frameTime;
+float2 randValue;
+
+PsOut main(float2 texCoord: TEXCOORD0){
+	PsOut Out;
+
+	float4 pos = tex2D(Pos, texCoord);
+	float4 dir = tex2D(Dir, texCoord);
+
+	float4 rand = tex2D(Rand, texCoord+randValue) * 10000.0f - 5000.0f;
+	rand.y = 0.0f;
+
+	pos.w += frameTime;
+	if (pos.w >= 8.0){
+		pos.w -= 8.0;
+		pos.xyz = float3(rand.x, (rand.y)+5000, rand.z);
+	} else {
+		dir.y -= 0.5f*frameTime; //gravity
+		dir.xyz += rand.xyz*0.01f*frameTime;
+		pos.xyz += dir;
+	}
+
+	Out.pos = pos;
+	Out.dir = dir;
+
+	return Out;
+}

@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <meta name="generator" content="ITzGeek 4.7.0">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Raj">
+
+  
+  
+  
+    
+  
+  
+
+<meta name="description" content="KVM is a hypervisor module in the Linux Kernel that helps you run multiple virtual machines on a Linux machine with the help of">
+
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/academicons.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/all.css" integrity="sha256-4w9DunooKSr3MFXHXWyFER38WmPdm361bQS/2KUWZbU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/jquery.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+
+    
+
+    
+
+    
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+        <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/osd.js"></script><script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/cookie.js"></script><script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/show_ads_impl_fy2019.js" id="google_shimpl"></script><script type="text/javascript" async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/analytics.js"></script><script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/lazysizes.js" integrity="sha256-Md1qLToewPeKjfAHU1zyPwOutccPAm5tahnaw7Osw0A=" crossorigin="anonymous" async=""></script>
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+      
+
+      
+      
+        
+      
+
+      
+    
+      
+
+      
+      
+
+      
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/css.css">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/academic.css">
+
+  
+
+
+
+
+
+<script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/js.js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-40519319-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="https://www.itzgeek.com/index.webmanifest">
+  <link rel="icon" type="image/png" href="https://www.itzgeek.com/images/icon_huecdaa2de257aaff3f164a754c64dd570_5344_32x32_fill_lanczos_center_2.png">
+  <link rel="apple-touch-icon" type="image/png" href="https://www.itzgeek.com/images/icon_huecdaa2de257aaff3f164a754c64dd570_5344_192x192_fill_lanczos_center_2.png">
+
+  <link rel="canonical" href="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/">
+
+  
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="twitter:site" content="@itzgeek">
+  <meta property="twitter:creator" content="@itzgeek">
+  
+  <meta property="og:site_name" content="ITzGeek - Linux, Windows, Virtualization, OpenSource &amp; Blogging">
+  <meta property="og:url" content="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/">
+  
+  
+  <meta property="og:title" content="How To Install KVM On Ubuntu 20.04 / Linux Mint 20 | ITzGeek">
+  
+  
+
+<meta property="og:description" content="KVM is a hypervisor module in the Linux Kernel that helps you run multiple virtual machines on a Linux machine with the help of">
+<meta property="og:image" content="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/featured.jpg">
+  <meta property="twitter:image" content="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/featured.jpg"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-07-09T20:34:26+05:30">
+    
+    <meta property="article:modified_time" content="2020-07-09T20:34:26+05:30">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/"
+  },
+  "headline": "How To Install KVM On Ubuntu 20.04 / Linux Mint 20",
+  
+  "image": [
+    "https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/featured.jpg"
+  ],
+  
+  "datePublished": "2020-07-09T20:34:26+05:30",
+  "dateModified": "2020-07-09T20:34:26+05:30",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Raj"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "ITzGeek",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.itzgeek.com/images/logo_1.png"
+    }
+  },
+  "description": "KVM is a hypervisor module in the Linux Kernel that helps you run multiple virtual machines on a Linux machine with the help of"
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <title>How To Install KVM On Ubuntu 20.04 / Linux Mint 20 | ITzGeek</title>
+  
+
+
+
+<script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/embed.js" data-timestamp="1610191561841"></script><script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/count-data.js"></script><link rel="prefetch" as="style" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/a_data/lounge.css"><link rel="prefetch" as="script" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/a_data/common.js"><link rel="prefetch" as="script" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/a_data/lounge.js"><link rel="prefetch" as="script" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/a_data/config.js"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A2shzsdPO+RKe83bUqT9oVkYwGZN6j9O7nrcOASNFPuQz8HefgVYb9qAqn6coNCSDIRtXoi6ybCrjEsYh3caFgIAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MTM0OTU4NjgsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><link rel="preload" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/integrator.js" as="script"><script type="text/javascript" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/integrator.js"></script><link rel="preload" href="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/integrator_002.js"></script></head>
+
+
+
+
+
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents">
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <p>Search</p>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <form role="search" method="get" class="search-form" action="https://www.itzgeek.com">
+        <input name="s" id="search-query" placeholder="Search..." autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        </form>
+        
+      </div>
+
+    </section>
+
+  </div>
+</aside>
+
+
+  
+
+
+
+
+
+
+  
+
+
+<nav class="itzgeek-top-menu navbar-expand-xl navbar-light">
+  <div class="container itzgeek-top-menu-c">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.itzgeek.com/about">About Us</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.itzgeek.com/advertise">Advertise With Us</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.itzgeek.com/contact-us">Contact Us</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.itzgeek.com/dmca">DMCA</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.tradepub.com/">E-Books</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:black" href="https://www.itzgeek.com/submit-articles">Submit Articles</a>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar navbar-hide" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="https://www.itzgeek.com/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/logo_huecdaa2de257aaff3f164a754c64dd570_5344_0x70_resize_lan.png" alt="ITzGeek - Linux, Windows, Virtualization, OpenSource &amp; Blogging"></a>
+
+    
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="logoad">
+<center>
+  <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle adslot_1" style="display:block" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="horizontal" data-adsbygoogle-status="done"></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</center>
+</div>
+
+        </div>
+
+  </nav>
+  <nav class="itzgeek-menu navbar-expand-lg navbar-light itzgeek-menu-hide">
+    <div class="container itzgeek-menu-c">
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="https://www.itzgeek.com/">HOME <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="https://www.itzgeek.com/category/how-tos/linux" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            LINUX
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="https://www.itzgeek.com/category/how-tos/linux/centos-how-tos">CentOS / RedHat</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/category/how-tos/linux/debian">Debian</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/category/how-tos/linux/fedora-how-tos">Fedora</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/category/how-tos/linux/linux-mint-how-tos">Linux Mint</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/category/how-tos/linux/ubuntu-how-tos">Ubuntu</a>
+          </div>
+        </li>
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="https://www.itzgeek.com/category/how-tos/virtualization" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            VIRTUALIZATION
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/docker">Docker</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/virtualbox">VirtualBox</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/?s=vmware">VMware</a>
+          </div>
+        </li>
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            DATABASE
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/mysql">MySQL / MariaDB</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/mongodb">MongoDB</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/postgresql">PostgrSQL</a>
+          </div>
+        </li>
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="https://www.itzgeek.com/tag/monitoring-tools" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            MONITORING TOOLS
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/cacti">Cacti</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/icinga-2">Icinga 2</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/nagios">Nagios</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="https://www.itzgeek.com/tag/zabbix">Zabbix</a>
+          </div>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="https://techloudgeek.com/">TechLoudGeek</a>
+        </li>
+              <li class="nav-item active">
+          <a class="nav-link" href="https://www.linuxvmimages.com/">LINUX VM IMAGES  <span class="badge badge-notify">NEW</span></a>
+        </li>
+      </ul>
+       <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+      </ul>
+
+  
+
+
+  </div>
+</div></nav>
+
+
+  <article class="article" style="height: auto !important;">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+
+<div class="article-container pt-3">
+<h1>How To Install KVM On Ubuntu 20.04 / Linux Mint 20</h1>
+
+  
+
+  
+
+
+<div class="article-metadata">
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jul 9, 2020
+  </span>
+      <span class="middot-divider"></span>
+  
+
+  
+  
+  
+  
+  <span class="article-date">
+    
+
+
+
+  
+  <span>
+<a href="#">Raj</a></span>
+
+  </span>
+
+  
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+  <span class="middot-divider"></span>
+  <a href="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/#disqus_thread">0 Comments</a>
+  
+
+
+  
+
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<div class="container" style="height: auto !important;">
+     <div class="row" style="height: auto !important;">
+       <div class="col-xl-3 d-none d-xl-block left-sidebar">
+            <div class="leftsidebartopad">
+<center>
+	<script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-7037661616978957" data-ad-slot="8796853743" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-google-query-id="CJC0sIHfju4CFZuNsgods2MH5g" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></ins></ins></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+</div>
+
+            <div class="table-of-contents">
+                  <h6>CONTENTS</h6>
+                <nav id="TableOfContents" class="nav flex-column">
+  <ul>
+    <li class="nav-item"><a href="#prerequisites" class="nav-link">Prerequisites</a>
+      <ul>
+        <li class="nav-item"><a href="#vt-support" class="nav-link">VT Support</a></li>
+        <li class="nav-item"><a href="#create-network-bridge-for-kvm" class="nav-link">Create Network Bridge For KVM</a></li>
+      </ul>
+    </li>
+    <li class="nav-item"><a href="#install-kvm" class="nav-link">Install KVM</a></li>
+    <li class="nav-item"><a href="#create-virtual-machine" class="nav-link">Create Virtual Machine</a>
+      <ul>
+        <li class="nav-item"><a href="#user-permission" class="nav-link">User Permission</a></li>
+        <li class="nav-item"><a href="#create-vm" class="nav-link">Create VM</a>
+          <ul>
+            <li class="nav-item"><a href="#command-line" class="nav-link">Command Line</a></li>
+            <li class="nav-item"><a href="#graphical-mode" class="nav-link active">Graphical Mode</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item"><a href="#manage-virtual-machine" class="nav-link">Manage Virtual Machine</a></li>
+    <li class="nav-item"><a href="#conclusion" class="nav-link">Conclusion</a></li>
+  </ul>
+</nav>
+                
+<div class="left-share-box" aria-hidden="true">
+        <h6>SHARE</h6>
+  <ul class="left-share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/&amp;t=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook fa-2x"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/&amp;text=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter fa-2x"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020&amp;body=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope fa-2x"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/&amp;title=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in fa-2x"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://reddit.com/submit?url=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/&amp;title=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020" target="_blank" rel="noopener" class="share-btn-reddit">
+          <i class="fab fa-reddit-alien fa-2x"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://pinterest.com/pin/create/link/?url=https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/&amp;description=How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20/%20Linux%20Mint%2020" target="_blank" rel="noopener" class="share-btn-pinterest">
+          <i class="fab fa-pinterest fa-2x"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+<ul>
+
+<div class="leftsidebarlargead">
+
+                <center>
+                  <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+                  
+                  <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-7037661616978957" data-ad-slot="4211368014" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:160px;background-color:transparent;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:160px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_003.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!2" data-google-query-id="CIHBsIHfju4CFQSdsgod1LUDwg" data-load-complete="true" width="160" height="600" frameborder="0"></iframe></ins></ins></ins>
+                  <script>
+                       (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+                </center>
+
+</div>
+
+       			</ul></div>
+
+       </div>
+
+       <div class="col-md-12 col-lg-9 col-xl-6 col-sm-12 col-xs-12 main-article" style="height: auto !important;">
+             <div class="article-container-post" style="height: auto !important;">
+                <div class="postad" style="height: auto !important;">
+<center>
+  <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_2_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_003.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!3" data-load-complete="true" data-google-query-id="CJe7sIHfju4CFQ3wsgodQkUI2w" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+</div>
+
+               
+<div class="itzgeek-multiposts">
+<div class="itzgeek-multiposts-h"><center>THIS DOCUMENT IS ALSO AVAILABLE FOR</center></div>
+<div class="row">
+<div class="col-12 justify-content-center flex-container-relurls">
+
+
+
+    
+
+    <a class="col-sm-3 btn btn-primary btn-lg btn-block" href="https://www.itzgeek.com/post/how-to-install-kvm-on-centos-8-rhel-8/" target="_blank">CentOS 8</a>
+    
+
+    <a class="col-sm-3 btn btn-primary btn-lg btn-block" href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-kvm-qemu-on-centos-7-rhel-7.html" target="_blank">CentOS 7</a>
+    
+
+    <a class="col-sm-3 btn btn-primary btn-lg btn-block" href="https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/how-to-install-and-set-up-kvm-on-ubuntu-18-04-lts-ubuntu-17-10.html" target="_blank">Ubuntu 18.04</a>
+    
+
+    <a class="col-sm-3 btn btn-primary btn-lg btn-block" href="https://www.itzgeek.com/how-tos/virtualization/how-to-install-kvm-on-fedora-22.html" target="_blank">Fedora</a>
+    
+
+</div>
+</div>
+</div>
+<div class="postad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_3_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_004.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!4" data-load-complete="true" data-google-query-id="CPvAsIHfju4CFZGNsgod2swL3w" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+
+
+            <div class="article-style" style="height: auto !important;">
+
+                
+                
+                   <p>
+<a href="https://www.linux-kvm.org/page/Main_Page" target="_blank" rel="noopener">KVM</a>
+ is a hypervisor module in the Linux Kernel that helps you run multiple 
+virtual machines on a Linux machine with the help of virtualization 
+extensions.</p>
+<p>KVM supports the wide variety of guest operating systems such as 
+<a href="https://www.itzgeek.com/category/how-tos/linux" target="_blank" rel="noopener">Linux</a>, 
+<a href="https://www.itzgeek.com/category/how-tos/windows" target="_blank" rel="noopener">Windows</a>, Unix family OSes, and much more. You can manage virtual machines using the command line or available graphical tools.</p>
+<p>
+<a href="https://virt-manager.org/" target="_blank" rel="noopener">Virt-Manager</a>
+ (Virtual Machine Manager) is the graphical application for managing KVM
+ based virtual machines. It supports creating, starting, stopping, and 
+managing virtual machines, as well as the migration of virtual machines 
+between KVM hosts.</p>
+<div class="itzgeek-info">The steps mentioned here afterward will work on Linux Mint as well.</div>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="vt-support">VT Support</h3>
+<p>KVM will work only if the system CPU has the support of hardware virtualization, either Intel VT or AMD-V.</p>
+<p>To find out whether your CPU supports VT features, run the following command.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>egrep -c '(vmx|svm)' /proc/cpuinfo
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre>4</pre>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_4_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_4_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_4" name="aswift_4" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!5" data-google-query-id="CLe_sIHfju4CFYZCkQUdM7oI6g" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<p>If the above command returns nonzero, then your hardware supports VT else it does not.</p>
+<h3 id="create-network-bridge-for-kvm">Create Network Bridge For KVM</h3>
+<p>The bridged network is a dedicated network interface to a virtual 
+machine that helps virtual machines to connect outside the host machine.</p>
+<p>Let us list the available network connections.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>nmcli connection show
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre>NAME                UUID                                  TYPE      DEVICE
+Wired connection 1  fbbdd6f9-0970-354e-8693-ff8050a85c77  ethernet  enp0s3
+</pre>
+<p>Now, we will create a virtual bridge network <span class="spancode">br0</span> with the help of physical interface <span class="spancode">enp0s3</span>.</p>
+<pre>sudo nmcli con add ifname <span class="prehighlighttextg">br0</span> type bridge con-name <span class="prehighlighttextg">br0</span>
+
+sudo nmcli con add type bridge-slave ifname <span class="prehighlighttextg">enp0s3</span> master <span class="prehighlighttextg">br0</span>
+</pre>
+<p>Next, we will assign the IP address of the physical interface to the 
+bridge interface as the Bridge network interface will act as the primary
+ network interface of your host system.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo nmcli con mod br0 ipv4.addresses 192.168.0.10/24
+
+sudo nmcli con mod br0 ipv4.gateway 192.168.0.1
+
+sudo nmcli con mod br0 ipv4.dns "8.8.8.8","192.168.0.1"
+
+sudo nmcli con mod br0 ipv4.method manual
+</code></pre>
+<p>KVM requires a few additional network settings. So, set them.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo nmcli con modify br0 bridge.stp no
+
+sudo nmcli con modify br0 bridge.forward-delay 0
+</code></pre>
+<p>Disable the physical interface and enable the network bridge.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo nmcli con down "Wired connection 1" &amp;&amp; sudo nmcli con up br0
+</code></pre>
+<div class="itzgeek-warning">Run the above command in the system terminal as you may lose SSH sessions when running them remotely.</div>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_5_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_5_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_5" name="aswift_5" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_006.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!6" data-google-query-id="CNnHsIHfju4CFXJDkQUdfWoLwQ" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<p>Finally, check the network connections.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo nmcli con show
+</code></pre>
+<pre>Output:
+
+NAME                 UUID                                  TYPE      DEVICE
+<span class="prehighlighttextg">br0                  ee117099-4935-4dde-a1f5-4981b0d9585e  bridge    br0
+bridge-slave-enp0s3  492b5c81-e59d-4150-9b24-0348cd0dd87c  ethernet  enp0s3</span>
+Wired connection 1   fbbdd6f9-0970-354e-8693-ff8050a85c77  ethernet  --
+</pre>
+<h2 id="install-kvm">Install KVM</h2>
+<p>Update the repository cache.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo apt update
+</code></pre>
+<p>Install the below packages for KVM set up.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo apt install -y virt-manager virt-viewer qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+</code></pre>
+<h2 id="create-virtual-machine">Create Virtual Machine</h2>
+<h3 id="user-permission">User Permission</h3>
+<p>Ensure users are part of the <span class="spancode">libvirt</span> group to create virtual machines. Use <span class="spancode">id</span> command to check if the user is part of the <span class="spancode">libvirt</span> group.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>id raj
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre>uid=1000(raj) gid=1000(raj) groups=1000(raj),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),120(lpadmin),131(lxd),132(sambashare),<span class="prehighlighttextg">134(libvirt)</span>
+</pre>
+<p>If the user is not part of <span class="spancode">libvirt</span> group, follow anyone the steps to fix it.</p>
+<p>To add an existing user to <span class="spancode">libvirt</span> group.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo usermod -aG libvirt raj
+</code></pre>
+<p><strong>OR</strong></p>
+<p>If you are creating a new user, use the below command.</p>
+<button class="copy-code-button" type="button">COPY</button><pre><code>sudo useradd -m -d /home/user_name -s /bin/bash -G libvirt user_name
+</code></pre>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_6_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_6_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_6" name="aswift_6" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!7" data-google-query-id="CMm4p5bfju4CFZvMsgodR00F-w" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<h3 id="create-vm">Create VM</h3>
+<p>Once you have installed KVM and other tools, it is all set to start our first virtual machine.</p>
+<h4 id="command-line">Command Line</h4>
+<button class="copy-code-button" type="button">COPY</button><pre><code>virt-install --name=centos_8_2 --ram=2048 --vcpus=1 --os-type=linux --os-variant=centos8 --cdrom=/tmp/CentOS-8.2.2004-x86_64-minimal.iso --network bridge=br0  --graphics vnc,listen=0.0.0.0 --noautoconsole --disk path=/var/lib/libvirt/images/centos_8_2.qcow2,size=10
+</code></pre>
+<p><strong>Output:</strong></p>
+<pre>Starting install...
+Allocating 'centos_8_2.qcow2'                                                                                                                                         |  10 GB  00:00:00
+Domain installation still in progress. You can reconnect to
+the console to complete the installation process.
+</pre>
+<p>You can use the VNC viewer to connect to the virtual machine console and complete the OS installation.</p>
+<div style="width:100%;background-color: coral;color:white;padding:15px;text-align:center">192.168.0.10:5900</div>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Access-Virtual-Machine-Console-with-VNC-Viewer.png" data-lightbox="image-1" data-title="Access Virtual Machine Console with VNC Viewer">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Access-Virtual-Machine-Console-with-VNC-Viewer.png" alt="Access Virtual Machine Console with VNC Viewer">
+   </a>
+  <figcaption>Access Virtual Machine Console with VNC Viewer</figcaption>
+</figure>
+<p>You can also use Virtual Machine Manager to take a virtual machine console.</p>
+<h4 id="graphical-mode">Graphical Mode</h4>
+<p><strong>Activities</strong> » Search for <strong>Virtual Machine Manager.</strong></p>
+<p><strong>OR</strong></p>
+<p>Run <span class="spancode">virt-manager</span> command in the terminal and bring up the Virtual Machine Manager.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Start-Virtual-Machine-Manager.png" data-lightbox="image-1" data-title="Start Virtual Machine Manager">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Start-Virtual-Machine-Manager.png" alt="Start Virtual Machine Manager">
+   </a>
+  <figcaption>Start Virtual Machine Manager</figcaption>
+</figure>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_7_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_7_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_7" name="aswift_7" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!8" data-google-query-id="CK33sqHfju4CFVXxsgodGUEP7w" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<p>Once it is opened, go to <strong>File</strong> » <strong>New Virtual Machine</strong>. The Virtual Machine Manager will start a new virtual machine wizard.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Create-New-Virtual-Machine.png" data-lightbox="image-1" data-title="Create New Virtual Machine">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Create-New-Virtual-Machine.png" alt="Create New Virtual Machine">
+   </a>
+  <figcaption>Create New Virtual Machine</figcaption>
+</figure>
+<p>Choose how you would like to install the operating system. Here I chose to install it from ISO image or CD-ROM.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/OS-Installation-Method.png" data-lightbox="image-1" data-title="OS Installation Method">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/OS-Installation-Method.png" alt="OS Installation Method">
+   </a>
+  <figcaption>OS Installation Method</figcaption>
+</figure>
+<p>Browse to the location of the ISO image by clicking on Browse and then Browse Local and select the ISO image.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Browse-for-ISO-Image.png" data-lightbox="image-1" data-title="Browse for ISO Image">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Browse-for-ISO-Image.png" alt="Browse for ISO Image">
+   </a>
+  <figcaption>Browse for ISO Image</figcaption>
+</figure>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Select-ISO-Image.png" data-lightbox="image-1" data-title="Select ISO Image">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Select-ISO-Image.png" alt="Select ISO Image">
+   </a>
+  <figcaption>Select ISO Image</figcaption>
+</figure>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_8_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_8_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_8" name="aswift_8" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!9" data-google-query-id="CI-Uu8Hfju4CFfdBkQUdnTcF1g" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<p>The new virtual machine wizard will try to detect the operating 
+system based on your OS image. If not, search for an operating system 
+version by typing the OS version.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/OS-Version.png" data-lightbox="image-1" data-title="OS Version">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/OS-Version.png" alt="OS Version">
+   </a>
+  <figcaption>OS Version</figcaption>
+</figure>
+<p>Configure CPU and memory allocation for the virtual machine.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/CPU-Memory-Information.png" data-lightbox="image-1" data-title="CPU &amp; Memory Information">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/CPU-Memory-Information.png" alt="CPU &amp; Memory Information">
+   </a>
+  <figcaption>CPU &amp; Memory Information</figcaption>
+</figure>
+<p>Here, mention the amount of storage you want to assign to a virtual 
+machine. Additionally, you can change the location of the disk image as 
+per your requirement.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Storage-Information.png" data-lightbox="image-1" data-title="Storage Information">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Storage-Information.png" alt="Storage Information">
+   </a>
+  <figcaption>Storage Information</figcaption>
+</figure>
+<p>On this page, you will get a summary of the virtual machine.</p>
+<p>Click the Network selection and ensure the bridged adaptor we created
+ earlier is chosen for the virtual machine. Finally, click on Finish.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Virtual-Machine-Summar-Network-Selection.png" data-lightbox="image-1" data-title="Virtual Machine Summary &amp; Network Selection">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Virtual-Machine-Summar-Network-Selection.png" alt="Virtual Machine Summary &amp; Network Selection">
+   </a>
+  <figcaption>Virtual Machine Summary &amp; Network Selection</figcaption>
+</figure>
+<div class="inpostad" style="height: auto !important;">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_9_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_9_anchor" style="display: block; border: medium none; height: 280px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1013px; background-color: transparent; overflow: visible;"><iframe id="aswift_9" name="aswift_9" style="left:0;position:absolute;top:0;border:0;width:1013px;height:280px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!a" data-google-query-id="CMTZ_tffju4CFRtIkQUdxy0L0A" data-load-complete="true" width="1013" height="280" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<p>Virtual Machine Manager will begin the creation of a virtual machine 
+depends on our input. Once the VM is created, Virtual Machine Manager 
+will start the console for OS installation.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Virtual-Machine-Running-on-KVM.png" data-lightbox="image-1" data-title="Virtual Machine Running on KVM">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Virtual-Machine-Running-on-KVM.png" alt="Virtual Machine Running on KVM">
+   </a>
+  <figcaption>Virtual Machine Running on KVM</figcaption>
+</figure>
+<h2 id="manage-virtual-machine">Manage Virtual Machine</h2>
+<p>With the help of Virtual Machine Manager, you can perform a virtual 
+machine’s life cycle actions such as start, power off, reset, clone, and
+ migration by right-clicking on the selected virtual machine.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Manage-Virtual-Machine-State.png" data-lightbox="image-1" data-title="Manage Virtual Machine State">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Manage-Virtual-Machine-State.png" alt="Manage Virtual Machine State">
+   </a>
+  <figcaption>Manage Virtual Machine State</figcaption>
+</figure>
+<p>You can view and manage a virtual machine by clicking the <strong>info</strong> icon in the virtual machine console. Here you can add, remove, and modify devices connected to a virtual machine.</p>
+<figure>
+    <a href="https://www.itzgeek.com/wp-content/uploads/2020/07/Manage-Vurtual-Machine-Configuration.png" data-lightbox="image-1" data-title="Manage Virtual Machine Configuration">
+    <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Manage-Vurtual-Machine-Configuration.png" alt="Manage Virtual Machine Configuration">
+   </a>
+  <figcaption>Manage Virtual Machine Configuration</figcaption>
+</figure>
+<h2 id="conclusion">Conclusion</h2>
+<p>That’s All. I hope you have learned how to install 
+<a href="https://www.itzgeek.com/tag/kvm" target="_blank" rel="noopener">KVM</a> on 
+<a href="https://www.itzgeek.com/tag/ubuntu-20.04" target="_blank" rel="noopener">Ubuntu 20.04</a> / 
+<a href="https://www.itzgeek.com/tag/linuxmint-20" target="_blank" rel="noopener">Linux Mint 20</a> and create a virtual machine with Virtual Machine Manager and command-line mode.</p>
+
+                
+
+            </div>
+                <div class="postad">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_10_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;"><ins id="aswift_10_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;"></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+
+
+             </div>
+              
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="#">ubuntu-20.04</a>
+  
+  <a class="badge badge-light" href="#">linuxmint-20</a>
+  
+  <a class="badge badge-light" href="#">kvm</a>
+  
+  <a class="badge badge-light" href="#">vrtualization</a>
+  
+</div>
+
+
+
+
+ <div class="row post-nav">
+  
+  <div class="float-left col-sm-12 col-md-6 col-lg-6 col-xs-12 itzgeek-previouspost post-nav-item">
+    <div class="meta-nav"> <i class="fa fa-arrow-left"></i> Prev Post</div>
+    <a href="https://www.itzgeek.com/post/how-to-install-plex-media-server-on-ubuntu-20-04-linux-mint-20/" rel="prev">How To Install Plex Media Server On Ubuntu 20.04 / Linux Mint 20</a>
+  </div>
+  
+  
+  <div class="float-right col-sm-12 col-md-6 col-lg-6 col-xs-12 itzgeek-nextpost post-nav-item">
+    <div class="bees-next meta-nav">Next Post <i class="fa fa-arrow-right"></i></div>
+    <a href="https://www.itzgeek.com/post/how-to-upgrade-to-linux-mint-20/" rel="next">How To Upgrade To Linux Mint 20 From Linux Mint 19 [Detailed Guide]</a>
+  </div>
+  
+</div>
+
+
+
+
+
+  
+  
+<div class="postad">
+  <center>
+    <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display: block; height: 280px;" data-ad-client="ca-pub-7037661616978957" data-ad-slot="3022014398" data-ad-format="auto" data-full-width-responsive="true" data-adsbygoogle-status="done"><ins id="aswift_11_expand" style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;"><ins id="aswift_11_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:1013px;background-color:transparent;"></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+<div class="related-posts">
+  <h6>RELATED POSTS</h6>
+      <div class="row ">
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-install-plex-media-server-on-ubuntu-20-04-linux-mint-20/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu5de8dc7e8e4868001f46398a876fb20f_37474_550x0_resi.jpg" alt="How To Install Plex Media Server On Ubuntu 20.04 / Linux Mint 20" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-install-plex-media-server-on-ubuntu-20-04-linux-mint-20/">How To Install Plex Media Server On Ubuntu 20.04 / Linux Mint 20</a>
+    </div>
+</div>
+
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-upgrade-to-ubuntu-20-04/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu8b7fad8701aaa8998bccee63d00edef2_86059_550x0_resi.jpg" alt="How To Upgrade To Ubuntu 20.04 From Ubuntu 18.04 / Ubuntu 19.10 [Detailed Guide]" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-upgrade-to-ubuntu-20-04/">How To Upgrade To Ubuntu 20.04 From Ubuntu 18.04 / Ubuntu 19.10 [Detailed Guide]</a>
+    </div>
+</div>
+
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-install-android-studio-on-ubuntu-20-04/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu7d48d877a7f84fbaad46baabc7258d0e_95685_550x0_resi.jpg" alt="How To Install Android Studio on Ubuntu 20.04" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-install-android-studio-on-ubuntu-20-04/">How To Install Android Studio on Ubuntu 20.04</a>
+    </div>
+</div>
+
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-install-eclipse-ide-on-ubuntu-20-04/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu71777208bc40c0e4f89ff5fab4f41878_96412_550x0_resi.jpg" alt="How To Install Eclipse IDE on Ubuntu 20.04" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-install-eclipse-ide-on-ubuntu-20-04/">How To Install Eclipse IDE on Ubuntu 20.04</a>
+    </div>
+</div>
+
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-install-elk-stack-on-ubuntu-20-04/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu64f9e1e5fe504ddaad29baf428f8335e_99244_550x0_resi.jpg" alt="How To Install Elasticsearch, Logstash, and Kibana (ELK Stack) on Ubuntu 20.04" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-install-elk-stack-on-ubuntu-20-04/">How To Install Elasticsearch, Logstash, and Kibana (ELK Stack) on Ubuntu 20.04</a>
+    </div>
+</div>
+
+    
+    
+
+
+
+
+<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+  
+
+
+    <div class="thumbnail">
+      <a href="https://www.itzgeek.com/post/how-to-install-ruby-on-rails-on-ubuntu-20-04/"><img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu866f4a1b9fb327a6e298a78881ef50b3_95515_550x0_resi.jpg" alt="How To Install Ruby On Rails On Ubuntu 20.04" width="100%" height="220"></a>
+    </div>
+    <div class="caption">
+      <a style="border-bottom: none" href="https://www.itzgeek.com/post/how-to-install-ruby-on-rails-on-ubuntu-20-04/">How To Install Ruby On Rails On Ubuntu 20.04</a>
+    </div>
+</div>
+
+    
+</div>
+</div>
+
+  
+
+
+
+<section id="comments">
+  
+    
+<div id="disqus_thread"><iframe id="dsq-app2249" name="dsq-app2249" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 394px !important;" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+<script>
+  let disqus_config = function () {
+    
+    
+    
+  };
+  (function() {
+    if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+      document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+      return;
+    }
+    var d = document, s = d.createElement('script'); s.async = true;
+    s.src = 'https://' + "itzgeekweb" + '.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+  
+</section>
+
+
+
+       </div>
+
+        <div class="col-md-12 col-lg-3 col-xl-3 col-sm-12 col-xs-12 right-sidebar">
+          <div class="rightsidebartopad">
+  <center>
+  <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+  
+  <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-7037661616978957" data-ad-slot="8796853743" data-adsbygoogle-status="done"><ins id="aswift_12_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_12_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_12" name="aswift_12" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_011.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!d" data-google-query-id="CNnOsYHfju4CFYyWsgodS-kM0g" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></ins></ins></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+  </center>
+</div>
+
+          <div class="recentpostsn">
+<h6>RECENT POSTS</h6>
+<div class="row">
+
+ 
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-install-virtualbox-on-linux-mint-20/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_huc562252c733b5a0cfafc9b751501f632_52665_550x0_resi.jpg" alt="How To Install VirtualBox On Linux Mint 20" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-install-virtualbox-on-linux-mint-20/">
+    <p>How To Install VirtualBox On Linux Mint 20</p></a>
+</div>
+
+
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-backup-and-restore-ubuntu-linux-mint-with-timeshift/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu06555da2129258cb1b70d00bfa10bca5_72653_550x0_resi.jpg" alt="How To Backup and Restore Ubuntu &amp; Linux Mint With Timeshift" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-backup-and-restore-ubuntu-linux-mint-with-timeshift/">
+    <p>How To Backup and Restore Ubuntu &amp; Linux Mint With Timeshift</p></a>
+</div>
+
+
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-upgrade-to-linux-mint-20/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu3b6c6a25dd04b6406f79faf78c8c0be6_108894_550x0_res.jpg" alt="How To Upgrade To Linux Mint 20 From Linux Mint 19 [Detailed Guide]" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-upgrade-to-linux-mint-20/">
+    <p>How To Upgrade To Linux Mint 20 From Linux Mint 19 [Detailed Guide]</p></a>
+</div>
+
+
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hufac460bdad3ef8463c048a54dc5ff9ec_59073_550x0_resi.jpg" alt="How To Install KVM On Ubuntu 20.04 / Linux Mint 20" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-install-kvm-on-ubuntu-20-04-linux-mint-20/">
+    <p>How To Install KVM On Ubuntu 20.04 / Linux Mint 20</p></a>
+</div>
+
+
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-install-plex-media-server-on-ubuntu-20-04-linux-mint-20/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu5de8dc7e8e4868001f46398a876fb20f_37474_550x0_resi.jpg" alt="How To Install Plex Media Server On Ubuntu 20.04 / Linux Mint 20" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-install-plex-media-server-on-ubuntu-20-04-linux-mint-20/">
+    <p>How To Install Plex Media Server On Ubuntu 20.04 / Linux Mint 20</p></a>
+</div>
+
+
+
+
+
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-4 thumbnail">
+  
+  
+  
+
+ <a href="https://www.itzgeek.com/post/how-to-install-android-studio-on-ubuntu-20-04/">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/featured_hu7d48d877a7f84fbaad46baabc7258d0e_95685_550x0_resi.jpg" alt="How To Install Android Studio on Ubuntu 20.04" style="width:100%">
+</a>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-8 caption">
+  <a href="https://www.itzgeek.com/post/how-to-install-android-studio-on-ubuntu-20-04/">
+    <p>How To Install Android Studio on Ubuntu 20.04</p></a>
+</div>
+
+
+</div>
+</div>
+
+          <div class="rightsidebarmiddlead">
+    <center>
+      <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+      
+      <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-7037661616978957" data-ad-slot="8796853743" data-adsbygoogle-status="done"><ins id="aswift_13_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_13_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_13" name="aswift_13" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads_003.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!e" data-google-query-id="CPeXsYHfju4CFZDGsgodWWAFJA" data-load-complete="true" width="300" height="250" frameborder="0"></iframe></ins></ins></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </center>
+</div>
+
+          <div class="recentpostsn">
+<h6>TOP POSTS</h6>
+<div class="row">
+
+
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-xrdp-on-centos-7-rhel-7.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Install-xrdp-on-CentOS-7-210x136.png" alt="Install xrdp on CentOS 7 / RHEL 7" style="width:100%">
+        <div class="caption">
+            <p>Install xrdp on CentOS 7 / RHEL 7</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-gnome-gui-on-centos-7-rhel-7.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/CentOS-7.jpg" alt="Install Gnome GUI on CentOS 7 / RHEL 7" style="width:100%">
+        <div class="caption">
+            <p>Install Gnome GUI on CentOS 7 / RHEL 7</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/mini-howtos/change-default-network-name-ens33-to-old-eth0-on-ubuntu-16-04.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Ubuntu-16.png" alt="Change default network name (ens33) to old “eth0” on Ubuntu…" style="width:100%">
+        <div class="caption">
+            <p>Change default network name (ens33) to old “eth0” on Ubuntu…</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-%ce%bctorrent-utorrent-on-ubuntu-14-04.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/uTorrent-Logo.png" alt="Install μTorrent (uTorrent) on Ubuntu 14.04" style="width:100%">
+        <div class="caption">
+            <p>Install μTorrent (uTorrent) on Ubuntu 14.04</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/configure-high-avaliablity-cluster-on-centos-7-rhel-7.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/Configure-High-Avaliablity-Cluster-on-CentOS-7-Infrastructur.png" alt="How To Configure High-Availability Cluster on CentOS 7 /…" style="width:100%">
+        <div class="caption">
+            <p>How To Configure High-Availability Cluster on CentOS 7 /…</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="col-md-4 col-sm-4 col-xs-4 col-lg-6">
+      <div class="thumbnail">
+        <a href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/configure-vnc-server-on-centos-7-rhel-7.html">
+          <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/VNC-Logo.jpg" alt="How To Install and Configure VNC Server in CentOS 7 / RHEL 7" style="width:100%">
+        <div class="caption">
+            <p>How To Install and Configure VNC Server in CentOS 7 / RHEL 7</p>
+       </div>
+        </a>
+      </div>
+    </div>
+    
+
+</div>
+</div>
+
+          <div class="rightsidebarad-sticky">
+<center>
+  <div id="serverhunter" style="display: none;"><a id="serverhunter_link" href="#" target="_blank" rel="nofollow noopener">
+  <img src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/JGM9rwe6Yb.jpg" alt="Server Hunter banner">
+  </a></div>
+  <script>
+    
+    try {
+      fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", { method: 'HEAD', mode: 'no-cors' })).then(function(response) {
+        
+        return true;
+      }).catch(function(error) {
+        
+        document.getElementById('serverhunter_link').href = 'https://www.serverhunter.com/landing/?ad=itzgeek&utm_source=itzgeek&utm_medium=cpc&utm_campaign=sidebar&utm_content=adblock';
+        document.getElementById('serverhunter').style.display = 'block';
+      });
+    } catch (error) {}
+  </script>
+  <script async="" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px" data-ad-client="ca-pub-7037661616978957" data-ad-slot="7065070958" data-adsbygoogle-status="done"><ins id="aswift_14_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_14_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_14" name="aswift_14" style="left:0;position:absolute;top:0;border:0;width:300px;height:600px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!f" data-google-query-id="CKP-sIHfju4CFRHBsgodhsAOyQ" data-load-complete="true" width="300" height="600" frameborder="0"></iframe></ins></ins></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+</div>
+
+        </div>
+
+      </div>
+</div>
+
+</article>
+
+      
+
+    
+    
+    
+      <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/jquery.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/imagesloaded.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/isotope.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/jquery_003.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+
+      
+
+    
+
+    
+    
+
+    
+    
+    <script>const code_highlighting = false;</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/fuse.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/jquery_002.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    <script id="dsq-count-scr" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/count.js" async=""></script>
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+      
+    
+      
+    
+      
+    
+    
+    
+    <script src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/academic.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+ <p class="powered-by">
+    © 2020 ITzGeek. All Rights Reserved. 
+
+
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-caret-square-up fa-3x"></i>
+        </span>
+      </a>
+    </span>
+    
+
+</p></footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<iframe style="display: none;"></iframe><div id="lightboxOverlay" tabindex="-1" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" tabindex="-1" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><div class="lb-nav"><a class="lb-prev" aria-label="Previous image" href=""></a><a class="lb-next" aria-label="Next image" href=""></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div><iframe id="google_osd_static_frame_6989040353000" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body><iframe id="google_esf" name="google_esf" src="How%20To%20Install%20KVM%20On%20Ubuntu%2020.04%20_%20Linux%20Mint%2020%20|%20ITzGeek_tiedostot/zrt_lookup.html" style="display: none;" data-ad-client="ca-pub-7037661616978957"></iframe></html>
