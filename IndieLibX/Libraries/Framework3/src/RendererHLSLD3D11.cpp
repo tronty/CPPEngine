@@ -1381,12 +1381,16 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 #endif
 	std::string vsText=def;
 	std::string fsText=def;
+	//std::string gsText = "";
 	vsText.append(defvs);
 	fsText.append(deffs);
+	//gsText.append(defgs);
 	if(vsText_)
 		vsText.append(vsText_);
 	if (fsText_)
-		fsText.append(fsText_);
+		fsText.append(fsText_); /*
+	if (gsText_)
+		gsText.append(gsText_); */
 
 		ShaderD3D11  shader;
 		stx_memset(&shader, 0, sizeof(ShaderD3D11));
@@ -1411,7 +1415,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		#endif
 		#endif
 
-	if (vsText.length())
+	if (vsMain)
 	{
 		#if 0
     		std::ofstream out("./vsText.txt");
@@ -1451,11 +1455,11 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.vertexShader == NULL)
+		if (!vsMain && (shader.vertexShader == NULL))
 			return SHADER_NONE;
 	}
 
-	if (gsText != NULL)
+	if (gsMain)
 	{
 		const char *target = (feature_level == D3D_FEATURE_LEVEL_11_0)? "gs_5_0" : (feature_level == D3D_FEATURE_LEVEL_10_1)? "gs_4_1" : "gs_4_0";
 
@@ -1486,11 +1490,11 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.geometryShader == NULL)
+		if (!gsMain && (shader.geometryShader == NULL))
 			return SHADER_NONE;
 	}
 
-	if (fsText.length())
+	if (fsMain)
 	{
 		#if 0
     		std::ofstream out("./fsText.txt");
@@ -1528,11 +1532,11 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.pixelShader == NULL)
+		if (!fsMain && (shader.pixelShader == NULL))
 			return SHADER_NONE;
 	}
 
-	if (csText != NULL)
+	if (csMain)
 	{
 		const char *target = "cs_5_0";
 
@@ -1561,11 +1565,11 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.computeShader == NULL)
+		if (!csMain && (shader.computeShader == NULL))
 			return SHADER_NONE;
 	}
 
-	if (hsText != NULL)
+	if (hsMain)
 	{
 		const char *target = "hs_5_0";
 
@@ -1594,11 +1598,11 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.hullShader == NULL)
+		if (!hsMain && (shader.hullShader == NULL))
 			return SHADER_NONE;
 	}
 
-	if (dsText != NULL)
+	if (dsMain)
 	{
 		const char *target = "ds_5_0";
 
@@ -1627,7 +1631,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		SAFE_RELEASE(shaderBuf);
 		SAFE_RELEASE(errorsBuf);
 
-		if (shader.domainShader == NULL)
+		if (!dsMain && (shader.domainShader == NULL))
 			return SHADER_NONE;
 	}
 

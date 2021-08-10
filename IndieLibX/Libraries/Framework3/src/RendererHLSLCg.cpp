@@ -6375,15 +6375,21 @@ out << "\nmainPS:\n";
 out << mainPS.c_str();
 out.close();
 #endif
-#if 1
+#if 0
     m_vTechniques[i].m_vPasses[j].Shader = IRenderer::GetRendererInstance()->addShader(
 	val1.c_str(), 
 	mainVS.c_str(), mainPS.c_str()   // aFileName.c_str()
 	); // ???? mainVS <-> mainPS swapped
-#else
+#elif 1
+/*
+ShaderID RendererHLSLD3D11::addHLSLShaderVrtl(
+const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain,
+												const unsigned int flags)
+*/
     m_vTechniques[i].m_vPasses[j].Shader = IRenderer::GetRendererInstance()->addHLSLShaderVrtl(
 val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(),
-mainVS.c_str(), mainGS.c_str(), mainPS.c_str(), mainCS.c_str(), mainHS.c_str(), mainDS.c_str());
+mainVS.c_str(), mainGS.c_str(), mainPS.c_str(), mainCS.c_str(), mainHS.c_str(), mainDS.c_str(), 0);
 #endif
  	LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
 LOG_FNLN;
