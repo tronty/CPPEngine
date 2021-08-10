@@ -36,7 +36,7 @@ struct PSOut
     float4 color : SV_Target;
 };
 
-uint    g_StackDepth=0;
+uint    g_StackDepth=1;
 float   g_ScreenAspectRatio=4.0/3.0;
 
 PSInQuad VSMainQuad(VSIn input)
