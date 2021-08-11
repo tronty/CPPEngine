@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/ -->
+<html class="js no-touch cssanimations csstransforms csstransforms3d csstransitions fontface wf-proximanova1proximanova2-n3-active wf-proximanova1proximanova2-n4-active wf-proximanova1proximanova2-n6-active wf-active"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><div class="fit-vids-style">­<style>               .fluid-width-video-wrapper {                 width: 100%;                              position: relative;                       padding: 0;                            }                                                                                   .fluid-width-video-wrapper iframe,        .fluid-width-video-wrapper object,        .fluid-width-video-wrapper embed {           position: absolute;                       top: 0;                                   left: 0;                                  width: 100%;                              height: 100%;                          }                                       </style></div>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+        
+        
+
+            
+<title>How to keep Homebrew and XQuartz updated automatically</title>
+<meta name="description" content="If you use Homebrew (and you should), eventually you may need to install XQuartz, &quot;open-source effort to develop a version of the X.Org X Window System that run...">
+        <link rel="canonical" href="./How to keep Homebrew and XQuartz updated automatically_files/How to keep Homebrew and XQuartz updated automatically.html">
+
+        
+        <!-- Fontkit -->
+        
+        <style type="text/css">body{font-family:"proxima-nova-1","proxima-nova-2","Helvetica","Arial",sans-serif;}</style><link rel="stylesheet" href="http://o.aolcdn.com/os/engadget/k/nyf5lca-d.css">
+
+        <!-- Meta -->
+
+        
+        
+
+        
+            <meta name="google-site-verification" content="7JgyWgCnJ0p6cMe5IDgN04oFCKsoUZicRDKzE0X_yGg">
+
+        
+            
+
+            <meta name="robots" content="noodp,noydir">
+                    <meta name="bitly-verification" content="f57da7265213">
+            <meta name="p:domain_verify" content="fb69533f2acad78bdd89abf093c35a28">
+            <meta name="msvalidate.01" content="5ABD8A078F3356F3A6A8C8643C31FB8F">
+            <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+            <meta name="application-name" content="Engadget">
+        
+
+        <!-- FB -->
+        <meta property="fb:admins" content="11710688">
+        <meta property="fb:app_id" content="166243446745061">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/">
+        <meta property="og:site_name" content="Engadget">
+
+            
+<meta property="og:title" content="How to keep Homebrew and XQuartz updated automatically">
+<meta property="og:description" content="If you use Homebrew (and you should), eventually you may need to install XQuartz, &quot;open-source effort to develop a version of the X.Org X Window System that run...">
+
+    <meta property="og:image" content="http://o.aolcdn.com/dims-global/dims/GLOB/5/600/315/http://o.aolcdn.com/hss/storage/midas/9dc38d2045b02867fbde1ec0ea6241e5/200258666/XQuartz-Logo-641.jpg">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="315">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+
+
+    <meta property="article:tag" content="brew">
+
+
+    <meta property="article:tag" content="how-to">
+
+
+    <meta property="article:tag" content="howto">
+
+
+    <meta property="article:tag" content="launchd">
+
+
+    <meta property="article:tag" content="XQuartz">
+
+
+<meta property="article:author" content="tjluoma">
+                <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@engadget">
+    <meta name="twitter:url" content="www.tuaw.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/">
+    <meta name="twitter:title" content="How to keep Homebrew and XQuartz updated automatically">
+    <meta name="twitter:description" content="If you use Homebrew (and you should), eventually you may need to install XQuartz, &quot;open-source effort to develop a version of the X.Org X Window System that run...">
+    <meta name="twitter:image" content="http://o.aolcdn.com/hss/storage/midas/9dc38d2045b02867fbde1ec0ea6241e5/200258666/XQuartz-Logo-641.jpg">
+            <meta name="twitter:creator" content="@tjluoma">
+        <meta name="twitter:app:name:iphone" content="Engadget for iPhone">
+    <meta name="twitter:app:url:iphone" content="com.aol.engadget://www.tuaw.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/">
+    <meta name="twitter:app:name:ipad" content="Engadget for iPad">
+    <meta name="twitter:app:url:ipad" content="com.aol.appspinner.engadget://www.tuaw.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/">
+    <meta name="twitter:app:id:googleplay" content="com.aol.mobile.engadget">
+    <meta name="twitter:app:name:googleplay" content="Engadget">
+    <meta name="twitter:app:url:googleplay" content="engadget://how-to-keep-homebrew-and-xquartz-updated-automatically">    
+
+                <meta class="swiftype" name="type" data-type="enum" content="articles">
+    <meta class="swiftype" name="title" data-type="string" content="How to keep Homebrew and XQuartz updated automatically">
+    <meta class="swiftype" name="url" data-type="enum" content="www.tuaw.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/">
+    <meta class="swiftype" name="image" data-type="enum" content="http://o.aolcdn.com/hss/storage/midas/9dc38d2045b02867fbde1ec0ea6241e5/200258666/XQuartz-Logo-641.jpg">
+    <meta class="swiftype" name="post_id" data-type="enum" content="20910244">
+    <meta class="swiftype" name="blogger_name" data-type="string" content="TJ Luoma">
+    <meta class="swiftype" name="blogger_image" data-type="enum" content="http://www.blogcdn.com/www.tuaw.com/media/2010/10/517x517-headshot-closeup.jpg">
+    <meta class="swiftype" name="blogger_slug" data-type="enum" content="tj-luoma">
+    <meta class="swiftype" name="blogger_twitter" data-type="enum" content="tjluoma">
+    <meta class="swiftype" name="sections" data-type="string" content="">
+            <meta class="swiftype" name="tags" data-type="string" content="@tuaw">
+        <meta class="swiftype" name="order" data-type="integer" content="2">
+    
+    
+        <!-- RSS -->
+        <link rel="alternate" type="application/rss+xml" title="Engadget" href="http://www.engadget.com/rss.xml">
+
+        <!-- icons -->
+        <link rel="apple-touch-icon" sizes="57x57" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="http://www.blogsmithmedia.com/www.engadget.com/media/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="http://www.blogsmithmedia.com/www.engadget.com/media/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="http://www.blogsmithmedia.com/www.engadget.com/media/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="http://www.blogsmithmedia.com/www.engadget.com/media/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="http://www.blogsmithmedia.com/www.engadget.com/media/favicon-160x160.png" sizes="160x160">
+        <meta name="msapplication-TileColor" content="#3498db">
+        <meta name="msapplication-TileImage" content="//www.blogsmithmedia.com/www.engadget.com/media/mstile-144x144.png">
+        <meta name="msapplication-square70x70logo" content="//www.blogsmithmedia.com/www.engadget.com/media/mstile-70x70.png">
+        <meta name="msapplication-square150x150logo" content="//www.blogsmithmedia.com/www.engadget.com/media/mstile-150x150.png">
+        <meta name="msapplication-wide310x150logo" content="//www.blogsmithmedia.com/www.engadget.com/media/mstile-310x150.png">
+        <meta name="msapplication-square310x310logo" content="//www.blogsmithmedia.com/www.engadget.com/media/mstile-310x310.png">
+        <meta name="apple-touch-fullscreen" content="yes">
+
+        <link rel="dns-prefetch" href="http://media.gdgt.com/">
+        <link rel="dns-prefetch" href="http://ajax.googleapis.com/">
+
+
+            <link rel="stylesheet" href="http://o.aolcdn.com/os/engadget/fontawesome/css/font-awesome.min.css">
+    
+            <!-- CSS -->
+            <!--[if lte IE 8]>
+            <link rel="stylesheet" href="http://www.blogsmithmedia.com/www.engadget.com/assets-ef05375fed0682a273af371fd42bc9cd/css/style-ie.min.css?v152"><![endif]-->
+            <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="http://www.blogsmithmedia.com/www.engadget.com/assets-9277962ddf4f0a6d617212c6e0be095c/css/style1.min.css?v152">
+            <link rel="stylesheet" href="http://www.blogsmithmedia.com/www.engadget.com/assets-3566a73354a9d1904462f762663d12c0/css/style2.min.css?v152"><!--<![endif]-->
+
+        
+
+        
+        
+        
+
+        
+        
+    
+    
+<img width="0" height="0" src="./How to keep Homebrew and XQuartz updated automatically_files/b"><style type="text/css">.aol-share a{  }</style><link rel="stylesheet" type="text/css" media="screen" href="./How to keep Homebrew and XQuartz updated automatically_files/mc.s2c.css"><link rel="stylesheet" type="text/css" href="./How to keep Homebrew and XQuartz updated automatically_files/sp.css" media="all"><link rel="stylesheet" type="text/css" href="./How to keep Homebrew and XQuartz updated automatically_files/livefyre_main.css" media="all"></head>
+<body class="with-rail perm">
+
+<!-- Page header -->
+<div id="header">
+
+    
+    <!-- M:header-ad-banner -->
+    <div id="mobile-lightbox"></div>
+    <div class="ad header-ad header-ad-banner">
+        <div id="mobileaddiv"><iframe width="728" height="90" title="Ad" marginwidth="0" marginheight="0" allowtransparency="true" frameborder="0" scrolling="no" id="atwAdFrame0" src="./How to keep Homebrew and XQuartz updated automatically_files/adpage.html" banid="10740654|1" class="uac_728x90"></iframe>
+        </div>
+    </div>
+    <!-- /M -->
+
+    
+
+    
+        <header role="banner">
+            <div id="nav">
+                <!-- UK Edition Message Bar -->
+                
+                <!-- //UK Edition Message Bar -->
+                <div id="nav-flow">
+                    <nav class="nav container" id="nav-mini">
+                        <header role="banner">
+                            <span class="eng-logo">
+                                                                    <a href="http://www.engadget.com/" class="s-engadget-logo-web-over" sl-processed="1">Engadget</a>
+                                                            </span>
+
+                            <div class="menu-link">
+                                <a class="s-icn-menu-gry" href="http://www.engadget.com/" sl-processed="1">
+                                    Menu
+                                </a>
+                            </div>
+                            <span class="nav-search-icn"><i class="s-icn-nav-search-white"></i></span>
+                        </header>
+                    </nav>
+
+                    <div class="nav-container-container">
+                        <nav class="nav container" id="nav-main">
+                            <span class="eng-logo">
+                                                                    <a href="http://www.engadget.com/" class="s-engadget-logo-web-over" sl-processed="1">Engadget</a>
+                                                            </span>
+                            <ul>
+                                <li class="reviews">
+                                    <a class="item " href="http://www.engadget.com/reviews/" id="reviews-link" sl-processed="1">
+                                        Reviews <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+                                <li class="features">
+                                    <a class="item " href="http://www.engadget.com/features/" sl-processed="1">Features <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+                                <li class="guides">
+                                    <a href="http://www.engadget.com/buyers-guides/" class="item" sl-processed="1">Guides <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+                                <li class="shows">
+                                    <a class="item " href="http://www.engadget.com/videos/" sl-processed="1">Videos <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+                                <li class="galleries">
+                                    <a href="http://www.engadget.com/galleries/" class="item" sl-processed="1">Galleries <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+                                <li class="public-access">
+                                    <a class="item" href="http://www.engadget.com/public-access/" sl-processed="1">Public Access </a>
+                                </li>
+                                <li class="gaming">
+                                    <a href="http://www.engadget.com/gaming/" class="item" sl-processed="1">Gaming <i class="s-icn-arw-gry-down"></i></a>
+                                </li>
+
+                                
+                                <li class="live">
+                                    <a href="http://www.engadget.com/event/engadgetlive/articles/" class="item" sl-processed="1">Engadget Live</a>
+                                </li>
+
+                                
+                            </ul>
+                            <ul class="nav-user-actions" id="nav-user-actions">
+                                                                <li class="guest-actions " id="guest-actions">
+                                    <a class="item" href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" sl-processed="1">
+                                                                                <img src="./How to keep Homebrew and XQuartz updated automatically_files/default-avatar-us.png" class="header-user-image" alt="default-avatar" style="padding-top:1px;">
+                                        <i class="s-icn-arw-gry-down"></i>
+                                                                            </a>
+                                </li>
+                            </ul>
+                            <div id="actions">
+                                <div id="login-dialog">
+                                    <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" class="close-dialog" title="Close" rel="nofollow" sl-processed="1">
+                                        <span>Close</span>
+                                    </a>
+
+                                    <form name="login_form" method="post" action="https://www.engadget.com/login/" data-framework="true" data-uniqid="52794d297fb55" id="login-form">
+                                        <input type="hidden" name="_login_form" value="1">
+                                        <input type="hidden" name="_login_form_rules" value="{&quot;username&quot;:&quot;required&quot;,&quot;password&quot;:&quot;required&quot;}">
+
+                                        <p id="login-reason" class="dialog-message" data-text-auth-prompt="You need to log in or register before you can do that."></p>
+
+                                        <div id="login-left">
+                                            <label for="username">username or email address</label>
+                                            <input type="text" name="username" id="username" tabindex="1" required="required">
+
+                                            <p class="message error error-username">
+                                            </p>
+
+                                            <label for="password">password</label>
+                                            <input type="password" name="password" id="password" tabindex="2" required="required">
+
+                                            <p class="message error error-password">
+                                            </p>
+
+                                            <p class="login-tools">
+                                                <a href="http://www.engadget.com/login-help/" sl-processed="1">forgot
+                                                    username/password?</a>
+                                                <input type="checkbox" name="remember_me" id="remember_me" tabindex="3">
+                                                <label for="remember_me">remember me</label>
+                                            </p>
+
+                                            <div class="clear"></div>
+
+                                            <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" class="button blue large submit-login" sl-processed="1">
+                                                <span>login</span>
+                                            </a>
+
+                                            <div class="login-alternate">
+                                                or
+                                                <br>
+
+                                                <div class="login-facebook-block">
+                                                    <div id="fb-root" class="robots-nocontent">
+                                                        <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" rel="nofollow" class="facebook-connect disabled" sl-processed="1">
+                                                            <span>Connect with Facebook</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="login-right">
+                                            not yet a member of the Engadget community?
+                                            <a href="http://www.engadget.com/register/" class="button green large register from-login" sl-processed="1">
+                                                <span>sign up</span>
+                                            </a>
+                                        </div>
+
+                                        <div class="clear"></div>
+                                    </form>
+                                </div>
+                                <div id="user-actions" style="display:none">
+                                    <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" class="action user" title="" sl-processed="1">
+                                        <img src="./How to keep Homebrew and XQuartz updated automatically_files/blank-user-25.gif" class="header-user-image" width="25" height="25" alt="">
+                                        <span class="arrow"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <span class="nav-search-icn"><i class="s-icn-nav-search-white"></i></span>
+                        </nav>
+                    </div>
+                </div>
+                <div class="container" style="position:relative;">
+                                        <ul id="user-actions-dropdown" style="display: none;">
+                        <li>
+                            <a href="http://www.engadget.com/register/" rel="nofollow" class="register" sl-processed="1">Sign Up</a>
+                        </li>
+                        <li>
+                            <a href="http://www.engadget.com/login/" rel="nofollow" class="login" sl-processed="1">Log In</a>
+                        </li>
+                    </ul>
+                                    </div>
+            </div>
+            <!-- search container -->
+            <div id="new-search-container" style="z-index:99">
+                <form class="nav" id="nav-search">
+                    <div class="query">
+                        <input class="query-input st-search-input" id="nav-search-input" placeholder="What are you looking for?" autocomplete="off">
+                    </div>
+                </form>
+            </div>
+            <!-- / search container -->
+            
+            
+            
+            
+            
+        </header>
+
+        <!-- Reviews Dropdown -->
+        <div id="reviews-dd-container" class="dropdown-container" style="display:none">
+            <div id="categories-modal" class="no-sponsors">
+                <ul id="dropdown-reviews"><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/c475fd04ea0628edf30fcfc8eb84105b/202220398/xperia-z4-tablet-black-1240x840-a07acf270af4d6789d0e83aea747b064_200x133.jpg);"><span class="engadget-score" style="background-color: #ffcc00;color:#333">79</span><a href="https://www.engadget.com/2015/07/01/sony-xperia-z4-tablet-review/" sl-processed="1"><span>Sony<br>Xperia Z4 Tablet</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/230aa84403750b8642730eafc652b432/202227849/kind-fb_200x133.jpg);"><span class="engadget-score" style="background-color: #339900;color:#fff">94</span><a href="https://www.engadget.com/2015/07/03/kindle-paperwhite-review-2015/" sl-processed="1"><span>Amazon<br>Kindle Paperwhite (2015)</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/ad6b6a8b4bd56bee2c8b21f6492d954b/202193920/phantom3reviewhero_200x133.jpg);"><span class="engadget-score" style="background-color: #7acf00;color:#fff">84</span><a href="https://www.engadget.com/2015/06/26/dji-phantom-3-review/" sl-processed="1"><span>DJI<br>DJI Phantom 3 Professional</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/f2118911b3b8a97b4e3b40cd6d5db664/202175980/Fullbleed_head+on_200x133.jpg);"><span class="engadget-score" style="background-color: #ffcc00;color:#333">72</span><a href="https://www.engadget.com/2015/07/06/lenovo-lavie-z-series-review/" sl-processed="1"><span>Lenovo<br>LaVie Z 360</span></a></li></ul>
+                <div class="categories-modal-left category-icon-25 hover-white">
+                    <ul>
+                        <li class="cellphones">
+                            <a href="http://www.engadget.com/reviews/cellphones/" sl-processed="1">cellphones</a>
+                        </li>
+                        <li class="laptops">
+                            <a href="http://www.engadget.com/reviews/laptops/" sl-processed="1">laptops</a>
+                        </li>
+                        <li class="tablets">
+                            <a href="http://www.engadget.com/reviews/tablets/" sl-processed="1">tablets</a>
+                        </li>
+                        <li class="headphones">
+                            <a href="http://www.engadget.com/reviews/headphones/" sl-processed="1">Headphones</a>
+                        </li>
+                        <li class="cameras">
+                            <a href="http://www.engadget.com/reviews/fitness/" sl-processed="1">Fitness</a>
+                        </li>
+                        <li class="routers">
+                            <a href="http://www.engadget.com/reviews/cameras/" sl-processed="1">Cameras</a>
+                        </li>
+                        <li class="routers">
+                            <a href="http://www.engadget.com/reviews/gaming-consoles-home/" sl-processed="1">Consoles</a>
+                        </li>
+                        <li class="hdtvs-televisions">
+                            <a href="http://www.engadget.com/reviews/hdtvs-televisions/" sl-processed="1">
+                                HDTVs
+                            </a>
+                        </li>
+                        <li class="routers">
+                            <a href="http://www.engadget.com/reviews/routers/" sl-processed="1">routers</a>
+                        </li>
+                        <li class="portable-media-players no-border">
+                            <a href="http://www.engadget.com/reviews/portable-media-players/" sl-processed="1">
+                                Digital media players
+                            </a>
+                        </li>
+                        <li class="read-more">
+                            <a href="http://www.engadget.com/reviews/" sl-processed="1">See more →</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="features-dd-container" class="dropdown-container" style="display:none">
+            <ul id="dropdown-features">
+                <li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/d3389f8ad4c30ea1f8b37121a00a0062/202306298/virtualborderslead.jpg);"><a href="http://www.engadget.com/2015/07/15/virtual-borders-arizona-vr-exhibit/" sl-processed="1"><span>VR exhibit sheds light on immigrants chasing the American Dream</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/5a44bc5d1f0175734b6c2a368e8db4f4/202306806/henna.jpg);"><a href="http://www.engadget.com/2015/07/15/japans-first-robot-staffed-hotel/" sl-processed="1"><span>Meet the faces of Japan's first robot-staffed hotel</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/7969149747f29087ce9145ad26c35504/202297789/lead.jpg);"><a href="http://www.engadget.com/2015/07/14/adonit-jot-touch-and-jot-script-2-irl/" sl-processed="1"><span>Adonit's Jot Touch and Jot Script 2 make a strong case for the stylus</span></a></li><li class="last" style="background-image:url(http://o.aolcdn.com/hss/storage/midas/96d36cfee2ebe50f980fb3daa949aa19/202251380/sonyseed.jpg);"><a href="http://www.engadget.com/2015/07/13/sony-first-crowdfunded-products/" sl-processed="1"><span>A closer look at Sony's first crowdfunded products</span></a></li><li class="read-more"><a href="http://www.engadget.com/features/" sl-processed="1">More Features →</a>
+                </li>
+            </ul>
+        </div>
+        <!-- dropdown-features -->
+
+        <div id="videos-dd-container" class="dropdown-container" style="display:none">
+            <ul id="dropdown-videos">
+                <li style="background-image:url(http://pthumbnails.5min.com/10378921/518946009_cv1_large.jpg);"><a href="http://www.engadget.com/video/5min/518946009" sl-processed="1"><span>Dear Veronica: Your passport to love</span></a></li><li style="background-image:url(http://pthumbnails.5min.com/10378898/518944854_cv1_large.jpg);"><a href="http://www.engadget.com/video/5min/518944854" sl-processed="1"><span>Logi Blok Shell Drop Test</span></a></li><li style="background-image:url(http://pthumbnails.5min.com/10378896/518944795_c_large.jpg);"><a href="http://www.engadget.com/video/5min/518944795" sl-processed="1"><span>ICYMI: Pot Breathalyzer, VR for Pharaoh's Tomb and More</span></a></li><li class="last" style="background-image:url(http://pthumbnails.5min.com/10378865/518943209_c_large.jpg);"><a href="http://www.engadget.com/video/5min/518943209" sl-processed="1"><span>Lumos Helmet Keeps Cyclists Safe with Automatic Brake Lights</span></a></li><li class="read-more"><a href="http://www.engadget.com/videos/" sl-processed="1">More Videos →</a>
+                </li>
+            </ul>
+        </div>
+        <div id="gaming-dd-container" class="dropdown-container" style="display: none;">
+            <ul id="dropdown-gaming">
+                <li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/74207b3e15edd8f62af9244508ad9eb4/202317418/philips-hue-chariot-xbox-one.jpg);"><a href="http://www.engadget.com/2015/07/15/hue-lights-sync-with-xbox-one-game/" sl-processed="1"><span>Philips' Hue lights sync up with an Xbox One game</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/ad2b98451036897d3db55ab71fa9c5e1/202315724/goat-simulator-ps4.jpg);"><a href="http://www.engadget.com/2015/07/15/goat-simulator-ps4/" sl-processed="1"><span>'Goat Simulator' headbutting its way to PS4 and PS3 August 11th</span></a></li><li style="background-image:url(http://o.aolcdn.com/hss/storage/midas/ae33267a348846de3eb641ab627bd2df/202314102/iwata.jpg);"><a href="http://www.engadget.com/2015/07/15/jxe-streams-tribute-to-satoru-iwata/" sl-processed="1"><span>JXE Streams: A special tribute to Nintendo's Satoru Iwata</span></a></li><li class="last" style="background-image:url(http://o.aolcdn.com/hss/storage/midas/ec648b18751ffe8977b9ac26cddc6040/202311865/ps-nw-netflix-960.jpg);"><a href="http://www.engadget.com/2015/07/15/ps-now-uk-open-beta/" sl-processed="1"><span>Sony's PlayStation Now UK beta is now open to everyone</span></a></li><li class="read-more"><a href="http://www.engadget.com/gaming/" sl-processed="1">More on Gaming →</a>
+                </li>
+            </ul>
+        </div>
+        <div id="events-dd-container" class="dropdown-container" style="display:none">
+            <ul id="dropdown-events">
+                <li class="read-more"><a href="http://www.engadget.com/events/" sl-processed="1">More Events →</a>
+                </li>
+            </ul>
+        </div>
+        <div id="guides-dd-container" class="dropdown-container" style="display:none">
+            <ul id="dropdown-guides">
+                <li style="background-image:url(http://www.engadget.com/media/eng-hgg-thumb.png);"><a href="http://www.engadget.com/buyers-guide/holiday-gift-guide-2014/" sl-processed="1"><span>Engadget's Holiday Gift Guide 2014</span></a></li><li style="background-image:url(http://www.blogcdn.com/www.aoltech.com/media/2014/08/eng-bts-thumb.png);"><a href="http://www.engadget.com/buyers-guide/engadget-back-to-school-guide-2014/#!view=collage" sl-processed="1"><span>Engadget's back to school guide 2014</span></a></li><li style="background-image:url(http://www.blogsmithmedia.com/www.engadget.com/media/eng-guide-220x148-2.png);"><a href="http://www.engadget.com/buyers-guide/engadget-buyers-guide/" sl-processed="1"><span>Engadget's Buyers Guide</span></a></li><li class="last" style="background-image:url(http://o.aolcdn.com/hss/storage/adam/5c3c6536b2e29807a7232c5861949af8/FA13_BuyersGuidePhones_Lead.png);"><a href="http://www.engadget.com/2013/11/25/engadget-smartphone-buyers-guide-fall-2013/" sl-processed="1"><span>Engadget's smartphone buyers guide: fall 2013</span></a></li><li class="read-more"><a href="http://www.engadget.com/buyers-guides/" sl-processed="1">More Guides →</a>
+                </li>
+            </ul>
+        </div>
+        <div id="galleries-dd-container" class="dropdown-container" style="display:none">
+            <ul id="dropdown-galleries">
+                <li style="background-image:url(http://www.blogcdn.com/slideshows/images/slides/355/106/0/S3551060/slug/l/fz300-back-lcd-open-1-1.jpg);"><a href="http://www.engadget.com/gallery/panasonic-lumix-fz300/" sl-processed="1"><span>Panasonic Lumix FZ300 press images</span></a></li><li style="background-image:url(http://www.blogcdn.com/slideshows/images/slides/355/105/0/S3551050/slug/l/gx8-k-back-slant-h-fs14140-ka-lcd-open-1.jpg);"><a href="http://www.engadget.com/gallery/panasonic-lumix-gx8/" sl-processed="1"><span>Panasonic Lumix GX8 press images</span></a></li><li style="background-image:url(http://www.blogcdn.com/slideshows/images/slides/355/033/5/S3550335/slug/l/tone-sonos-photo-heroproducts-46-lrg-cmyk-1.jpg);"><a href="http://www.engadget.com/gallery/sonos-play-1-tone/" sl-processed="1"><span>Sonos Play:1 Tone</span></a></li><li class="last" style="background-image:url(http://www.blogcdn.com/slideshows/images/slides/355/015/7/S3550157/slug/l/1-toto-toilet-bike-neo-1.jpg);"><a href="http://www.engadget.com/gallery/seven-of-the-worlds-weirdest-green-vehicles/" sl-processed="1"><span>Seven of the world's weirdest green vehicles</span></a></li><li class="read-more"><a href="http://www.engadget.com/galleries/" sl-processed="1">More Galleries →</a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="mobile-dropdown-container" class="nav-dropdown-items" style="display: none;">
+            <ul>
+                <li>
+                    <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" class="mobile-reviews" sl-processed="1">Reviews <i class="s-icn-arw-gry-down"></i></a>
+                    <ul class="inner-dropdown" id="mobile-dropdown-reviews">
+
+                        <li><a href="https://www.engadget.com/2015/07/01/sony-xperia-z4-tablet-review/" sl-processed="1">Sony Xperia Z4 tablet review: a great device saddled with a terrible dock</a></li><li><a href="https://www.engadget.com/2015/07/03/kindle-paperwhite-review-2015/" sl-processed="1">Kindle Paperwhite review (2015): our favorite e-reader gets even better</a></li><li><a href="https://www.engadget.com/2015/06/26/dji-phantom-3-review/" sl-processed="1">DJI Phantom 3 review: an aerial photography drone for the masses</a></li><li><a href="https://www.engadget.com/2015/07/06/lenovo-lavie-z-series-review/" sl-processed="1">Lenovo LaVie Z series review: super light, super compromised</a></li><li class="read-more">
+                            <a href="http://www.engadget.com/latest-reviews/" sl-processed="1">See more →</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/features/" class="features" sl-processed="1">Features <i class="s-icn-arw-gry-down"></i></a>
+                    <ul class="inner-dropdown" id="mobile-dropdown-features">
+                        <li><a href="http://www.engadget.com/2015/07/15/virtual-borders-arizona-vr-exhibit/" sl-processed="1">VR exhibit sheds light on immigrants chasing the American Dream</a></li><li><a href="http://www.engadget.com/2015/07/15/japans-first-robot-staffed-hotel/" sl-processed="1">Meet the faces of Japan's first robot-staffed hotel</a></li><li><a href="http://www.engadget.com/2015/07/14/adonit-jot-touch-and-jot-script-2-irl/" sl-processed="1">Adonit's Jot Touch and Jot Script 2 make a strong case for the stylus</a></li><li><a href="http://www.engadget.com/2015/07/13/sony-first-crowdfunded-products/" sl-processed="1">A closer look at Sony's first crowdfunded products</a></li><li class="read-more">
+                            <a href="http://www.engadget.com/features/" sl-processed="1">More Features →</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/videos/" class="shows" sl-processed="1">Videos <i class="s-icn-arw-gry-down"></i></a>
+                    <ul class="inner-dropdown" id="mobile-dropdown-videos">
+                        <li><a href="http://www.engadget.com/video/5min/518946009" sl-processed="1">Dear Veronica: Your passport to love</a></li><li><a href="http://www.engadget.com/video/5min/518944854" sl-processed="1">Logi Blok Shell Drop Test</a></li><li><a href="http://www.engadget.com/video/5min/518944795" sl-processed="1">ICYMI: Pot Breathalyzer, VR for Pharaoh's Tomb and More</a></li><li><a href="http://www.engadget.com/video/5min/518943209" sl-processed="1">Lumos Helmet Keeps Cyclists Safe with Automatic Brake Lights</a></li><li class="read-more">
+                            <a href="http://www.engadget.com/videos/" sl-processed="1">More Videos →</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/public-access/" sl-processed="1">Public Access</a>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/gaming/" class="gaming" sl-processed="1">Gaming <i class="s-icn-arw-gry-down"></i></a>
+                    <ul class="inner-dropdown" id="mobile-dropdown-gaming">
+                        <li><a href="http://www.engadget.com/2015/07/15/hue-lights-sync-with-xbox-one-game/" sl-processed="1">Philips' Hue lights sync up with an Xbox One game</a></li><li><a href="http://www.engadget.com/2015/07/15/goat-simulator-ps4/" sl-processed="1">'Goat Simulator' headbutting its way to PS4 and PS3 August 11th</a></li><li><a href="http://www.engadget.com/2015/07/15/jxe-streams-tribute-to-satoru-iwata/" sl-processed="1">JXE Streams: A special tribute to Nintendo's Satoru Iwata</a></li><li><a href="http://www.engadget.com/2015/07/15/ps-now-uk-open-beta/" sl-processed="1">Sony's PlayStation Now UK beta is now open to everyone</a></li><li class="read-more">
+                            <a href="http://www.engadget.com/gaming/" sl-processed="1">More on Gaming →</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/buyers-guides/" class="guides" sl-processed="1">Guides</a>
+                </li>
+                <li>
+                    <a href="http://www.engadget.com/galleries/" class="galleries" sl-processed="1">Galleries</a>
+                </li>
+                            </ul>
+        </div>
+
+    
+        
+    
+</div>
+
+    
+
+			
+
+<div class="aside container lbcontainer read" id="redbar">
+	<p><a href="http://www.engadget.com/2015/07/15/nasa-pluto-icy-mountains/" sl-processed="1">
+	
+		<i class="s-must-read"></i>
+		<strong>MUST READ: </strong>
+	
+	Check out NASA's new pictures of Pluto</a></p>
+</div>
+
+
+	
+
+<!-- Page wrapper -->
+<div style="position: absolute; left: -9999px; top: -9999px;"><object type="application/x-shockwave-flash" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="1" height="1" id="moatMessageSender"><param name="allowScriptAccess" value="always"><param name="allowFullScreen" value="false"><param name="movie" value="http://o.aolcdn.com/os/moat/prod/MessageSenderV2.swf"><param name="FlashVars" value="r=MoatSuperV5.yh.zb&amp;s=MoatSuperV5.yh.zc&amp;e=MoatSuperV5.yh.zd&amp;td=afs.moatads.com"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><embed type="application/x-shockwave-flash" src="http://o.aolcdn.com/os/moat/prod/MessageSenderV2.swf" quality="high" flashvars="r=MoatSuperV5.yh.zb&amp;s=MoatSuperV5.yh.zc&amp;e=MoatSuperV5.yh.zd&amp;td=afs.moatads.com" bgcolor="#ffffff" width="1" height="1" id="moatMessageSenderEmbed" align="middle" allowscriptaccess="always" allowfullscreen="false"></object></div><div id="page" class="container container">
+
+    <!-- Page body -->
+    <div id="body">        
+            
+                    <header class="header container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        
+            <img src="./How to keep Homebrew and XQuartz updated automatically_files/XQuartz-Logo-641.jpg" style="display: none;">
+    
+    
+    
+    
+    <h1 class="h1" itemprop="headline">How to keep Homebrew and XQuartz updated automatically</h1>
+
+    
+        <p class="byline">
+            <span class="byline-container">
+                <img class="avatar" src="./How to keep Homebrew and XQuartz updated automatically_files/517x517-headshot-closeup.jpg" width="24" height="24" alt="blogger-avatar">
+                <span class="by">by</span>
+
+                
+                                            <a href="http://www.engadget.com/about/editors/tj-luoma/" data-image="http://o.aolcdn.com/dims-global/dims/GLOB/5/24/24/http://www.blogcdn.com/www.tuaw.com/media/2010/10/517x517-headshot-closeup.jpg" sl-processed="1"><strong itemprop="author">TJ Luoma</strong></a>
+                    
+                
+                <span class="bar">|</span>
+                <span class="tweet"><a href="http://twitter.com/tjluoma" target="_blank" sl-processed="1">@tjluoma</a></span>                <span class="bar">|</span>
+                <span datetime="June 11th 2014 at 11:00 am">
+                            June 11th 2014 at 11:00am
+
+    
+</span>
+                <span class="time" data-swiftype-name="published_at" data-swiftype-type="date" style="display:none">June 11th 2014 11:00 am</span>
+            </span>
+        </p>
+
+        
+        <p class="permalink-social-tools">
+            <div class="aol-share"><a class="s-sq-24-twitter" href="http://twitter.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_twitter&text=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically&via=engadget" title="Share on Twitter" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-twitter-20910244">-</b></a><a class="s-sq-24-fb" href="http://www.facebook.com/sharer.php?u=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_facebook&t=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Share on Facebook" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-facebook-20910244">-</b></a><a class="s-sq-24-gplus" href="https://plus.google.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_googleplus" title="Google Plus" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-googleplus-20910244">-</b></a><a class="s-sq-24-reddit last" href="http://www.reddit.com/submit?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_reddit&title=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Submit to Reddit" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-reddit-20910244">-</b></a></div>
+
+            <a class="comment-count" href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#comments" sl-processed="1">
+                <i class="s-comment-bubble-black-12"></i>
+                <span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="20910244" itemprop="interactionCount" data-swiftype-name="lf-count" data-swiftype-type="integer">0</span>
+            </a>
+        </p>
+
+        
+    
+
+</header>
+
+<div class="copy post-body" itemprop="text" data-postid="20910244" data-url="www.tuaw.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/" data-title="How to keep Homebrew and XQuartz updated automatically" data-mn-rail-topper="93310581" data-mn-onvis="93431222" data-mn-header="93319229" data-mn-sponsor-logo="" data-mobile-placement="93424580" data-author="tj-luoma" data-videopresence="video_novideo" data-sourceid="original_content" data-mobile-onvis="93431222" data-original-publication-date="06-11-2014" data-prop19="brew|how-to|howto|launchd|XQuartz">
+    <div class="article-content" data-swiftype-type="text" data-swiftype-name="body">
+
+                        
+        <p><img alt="XQuartz App Icon" data-credit="TJ Luoma" data-mep="296398" src="./How to keep Homebrew and XQuartz updated automatically_files/XQuartz-Logo-641.jpg"></p>
+
+<p>If you use <a href="http://brew.sh/" target="_blank" sl-processed="1">Homebrew</a> (and you should), eventually you may need to install <a href="http://xquartz.macosforge.org/" target="_blank" sl-processed="1">XQuartz</a>, "open-source effort to develop a version of the X.Org X Window System that runs on OS X. Together with supporting libraries and applications, it forms the X11.app that Apple has shipped with OS X since version 10.5."</p>
+
+<p>The trouble is that <code>brew</code> won't install XQuartz, and it won't update it once it is installed, but it <em>will</em> complain if it isn't installed or is out of date. What I needed was a way to install it, if it isn't installed, or update it if it is out of date.</p>
+
+<p>Also, <code>brew</code> is constantly being updated, which means that you should update it every day. Something you need to do every day? Do I even need to say "automation"? Wait. I said it... but you would have guessed it. I have faith in you.</p>
+
+<p>There are three parts of this: 1) a shell script to update XQuartz, 2) a shell script to update brew, and 3) a <code>launchd</code> plist the run the script. You could combine #1 and #2 into one if you want, but I like keeping them separate.</p>
+
+<h3 id="launchd">launchd</h3>
+
+<p>Let's start with the easiest part: I want this to run automatically when my satellite quota is loosened, so I have a <code>launchd</code> plist to run my shell script at 3:03 a.m. every day:</p>
+<link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-b8c853f42bc1486a246eca98739ff795.css"><div id="gist12345025" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L1" rel="file-com-tjluoma-updatebrew-plist-L1">1</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L2" rel="file-com-tjluoma-updatebrew-plist-L2">2</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L3" rel="file-com-tjluoma-updatebrew-plist-L3">3</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L4" rel="file-com-tjluoma-updatebrew-plist-L4">4</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L5" rel="file-com-tjluoma-updatebrew-plist-L5">5</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L6" rel="file-com-tjluoma-updatebrew-plist-L6">6</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L7" rel="file-com-tjluoma-updatebrew-plist-L7">7</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L8" rel="file-com-tjluoma-updatebrew-plist-L8">8</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L9" rel="file-com-tjluoma-updatebrew-plist-L9">9</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L10" rel="file-com-tjluoma-updatebrew-plist-L10">10</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L11" rel="file-com-tjluoma-updatebrew-plist-L11">11</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L12" rel="file-com-tjluoma-updatebrew-plist-L12">12</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L13" rel="file-com-tjluoma-updatebrew-plist-L13">13</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L14" rel="file-com-tjluoma-updatebrew-plist-L14">14</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L15" rel="file-com-tjluoma-updatebrew-plist-L15">15</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L16" rel="file-com-tjluoma-updatebrew-plist-L16">16</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L17" rel="file-com-tjluoma-updatebrew-plist-L17">17</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L18" rel="file-com-tjluoma-updatebrew-plist-L18">18</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L19" rel="file-com-tjluoma-updatebrew-plist-L19">19</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L20" rel="file-com-tjluoma-updatebrew-plist-L20">20</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L21" rel="file-com-tjluoma-updatebrew-plist-L21">21</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L22" rel="file-com-tjluoma-updatebrew-plist-L22">22</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L23" rel="file-com-tjluoma-updatebrew-plist-L23">23</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L24" rel="file-com-tjluoma-updatebrew-plist-L24">24</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L25" rel="file-com-tjluoma-updatebrew-plist-L25">25</span>
+            <span class="line-number" id="file-com-tjluoma-updatebrew-plist-L26" rel="file-com-tjluoma-updatebrew-plist-L26">26</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-com-tjluoma-updatebrew-plist-LC1">&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s1"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s1"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC2">&lt;!<span class="pl-k">DOCTYPE</span> <span class="pl-v">plist</span> PUBLIC "-//Apple//DTD PLIST 1.0//EN" "<a href="http://www.apple.com/DTDs/PropertyList-1.0.dtd" class="skimlinks-unlinked" data-skimwords-word="http%3A%2F%2Fwww.apple.com%2FDTDs%2FPropertyList-1.0.dtd" data-skim-creative="500005" title="" sl-processed="1">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>"&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC3">&lt;<span class="pl-ent">plist</span> <span class="pl-e">version</span>=<span class="pl-s1"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC4">&lt;<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC5">	&lt;<span class="pl-ent">key</span>&gt;EnvironmentVariables&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC6">	&lt;<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC7">		&lt;<span class="pl-ent">key</span>&gt;PATH&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC8">		&lt;<span class="pl-ent">string</span>&gt;/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin&lt;/<span class="pl-ent">string</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC9">	&lt;/<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC10">	&lt;<span class="pl-ent">key</span>&gt;Label&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC11">	&lt;<span class="pl-ent">string</span>&gt;com.tjluoma.updatebrew&lt;/<span class="pl-ent">string</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC12">	&lt;<span class="pl-ent">key</span>&gt;Program&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC13">	&lt;<span class="pl-ent">string</span>&gt;/usr/local/bin/<span class="skimlinks-unlinked">updatebrew.sh</span>&lt;/<span class="pl-ent">string</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC14">	&lt;<span class="pl-ent">key</span>&gt;RunAtLoad&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC15">	&lt;<span class="pl-ent">false</span>/&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC16">	&lt;<span class="pl-ent">key</span>&gt;StartCalendarInterval&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC17">	&lt;<span class="pl-ent">array</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC18">		&lt;<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC19">			&lt;<span class="pl-ent">key</span>&gt;Hour&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC20">			&lt;<span class="pl-ent">integer</span>&gt;3&lt;/<span class="pl-ent">integer</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC21">			&lt;<span class="pl-ent">key</span>&gt;Minute&lt;/<span class="pl-ent">key</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC22">			&lt;<span class="pl-ent">integer</span>&gt;3&lt;/<span class="pl-ent">integer</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC23">		&lt;/<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC24">	&lt;/<span class="pl-ent">array</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC25">&lt;/<span class="pl-ent">dict</span>&gt;
+</div><div class="line" id="file-com-tjluoma-updatebrew-plist-LC26">&lt;/<span class="pl-ent">plist</span>&gt;
+</div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/tjluoma/3eb159418636c8f02fa0/raw/com.tjluoma.updatebrew.plist" style="float:right" target="_blank" sl-processed="1">view raw</a>
+            <a href="https://gist.github.com/tjluoma/3eb159418636c8f02fa0#file-com-tjluoma-updatebrew-plist" target="_blank" sl-processed="1">com.tjluoma.updatebrew.plist</a>
+            hosted with ❤ by <a href="https://github.com/" target="_blank" sl-processed="1">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>Why 3:03 a.m.? Because my quota is loosened between 2:00 a.m. and 8:00 a.m., but I don't want to have to worry about Daylight Saving Time, so after 3:00 a.m. seemed like the best way to do that.</p>
+
+<h3 id="theshellscripts">The Shell Script(s)</h3>
+
+<p>The <code>updatebrew.sh</code> script has two pieces. The first is <code>di-xquartz.sh</code> which will (d)ownload and (i)nstall XQuartz:</p>
+<link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-b8c853f42bc1486a246eca98739ff795.css"><div id="gist12344186" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-di-xquartz-sh-L1" rel="file-di-xquartz-sh-L1">1</span>
+            <span class="line-number" id="file-di-xquartz-sh-L2" rel="file-di-xquartz-sh-L2">2</span>
+            <span class="line-number" id="file-di-xquartz-sh-L3" rel="file-di-xquartz-sh-L3">3</span>
+            <span class="line-number" id="file-di-xquartz-sh-L4" rel="file-di-xquartz-sh-L4">4</span>
+            <span class="line-number" id="file-di-xquartz-sh-L5" rel="file-di-xquartz-sh-L5">5</span>
+            <span class="line-number" id="file-di-xquartz-sh-L6" rel="file-di-xquartz-sh-L6">6</span>
+            <span class="line-number" id="file-di-xquartz-sh-L7" rel="file-di-xquartz-sh-L7">7</span>
+            <span class="line-number" id="file-di-xquartz-sh-L8" rel="file-di-xquartz-sh-L8">8</span>
+            <span class="line-number" id="file-di-xquartz-sh-L9" rel="file-di-xquartz-sh-L9">9</span>
+            <span class="line-number" id="file-di-xquartz-sh-L10" rel="file-di-xquartz-sh-L10">10</span>
+            <span class="line-number" id="file-di-xquartz-sh-L11" rel="file-di-xquartz-sh-L11">11</span>
+            <span class="line-number" id="file-di-xquartz-sh-L12" rel="file-di-xquartz-sh-L12">12</span>
+            <span class="line-number" id="file-di-xquartz-sh-L13" rel="file-di-xquartz-sh-L13">13</span>
+            <span class="line-number" id="file-di-xquartz-sh-L14" rel="file-di-xquartz-sh-L14">14</span>
+            <span class="line-number" id="file-di-xquartz-sh-L15" rel="file-di-xquartz-sh-L15">15</span>
+            <span class="line-number" id="file-di-xquartz-sh-L16" rel="file-di-xquartz-sh-L16">16</span>
+            <span class="line-number" id="file-di-xquartz-sh-L17" rel="file-di-xquartz-sh-L17">17</span>
+            <span class="line-number" id="file-di-xquartz-sh-L18" rel="file-di-xquartz-sh-L18">18</span>
+            <span class="line-number" id="file-di-xquartz-sh-L19" rel="file-di-xquartz-sh-L19">19</span>
+            <span class="line-number" id="file-di-xquartz-sh-L20" rel="file-di-xquartz-sh-L20">20</span>
+            <span class="line-number" id="file-di-xquartz-sh-L21" rel="file-di-xquartz-sh-L21">21</span>
+            <span class="line-number" id="file-di-xquartz-sh-L22" rel="file-di-xquartz-sh-L22">22</span>
+            <span class="line-number" id="file-di-xquartz-sh-L23" rel="file-di-xquartz-sh-L23">23</span>
+            <span class="line-number" id="file-di-xquartz-sh-L24" rel="file-di-xquartz-sh-L24">24</span>
+            <span class="line-number" id="file-di-xquartz-sh-L25" rel="file-di-xquartz-sh-L25">25</span>
+            <span class="line-number" id="file-di-xquartz-sh-L26" rel="file-di-xquartz-sh-L26">26</span>
+            <span class="line-number" id="file-di-xquartz-sh-L27" rel="file-di-xquartz-sh-L27">27</span>
+            <span class="line-number" id="file-di-xquartz-sh-L28" rel="file-di-xquartz-sh-L28">28</span>
+            <span class="line-number" id="file-di-xquartz-sh-L29" rel="file-di-xquartz-sh-L29">29</span>
+            <span class="line-number" id="file-di-xquartz-sh-L30" rel="file-di-xquartz-sh-L30">30</span>
+            <span class="line-number" id="file-di-xquartz-sh-L31" rel="file-di-xquartz-sh-L31">31</span>
+            <span class="line-number" id="file-di-xquartz-sh-L32" rel="file-di-xquartz-sh-L32">32</span>
+            <span class="line-number" id="file-di-xquartz-sh-L33" rel="file-di-xquartz-sh-L33">33</span>
+            <span class="line-number" id="file-di-xquartz-sh-L34" rel="file-di-xquartz-sh-L34">34</span>
+            <span class="line-number" id="file-di-xquartz-sh-L35" rel="file-di-xquartz-sh-L35">35</span>
+            <span class="line-number" id="file-di-xquartz-sh-L36" rel="file-di-xquartz-sh-L36">36</span>
+            <span class="line-number" id="file-di-xquartz-sh-L37" rel="file-di-xquartz-sh-L37">37</span>
+            <span class="line-number" id="file-di-xquartz-sh-L38" rel="file-di-xquartz-sh-L38">38</span>
+            <span class="line-number" id="file-di-xquartz-sh-L39" rel="file-di-xquartz-sh-L39">39</span>
+            <span class="line-number" id="file-di-xquartz-sh-L40" rel="file-di-xquartz-sh-L40">40</span>
+            <span class="line-number" id="file-di-xquartz-sh-L41" rel="file-di-xquartz-sh-L41">41</span>
+            <span class="line-number" id="file-di-xquartz-sh-L42" rel="file-di-xquartz-sh-L42">42</span>
+            <span class="line-number" id="file-di-xquartz-sh-L43" rel="file-di-xquartz-sh-L43">43</span>
+            <span class="line-number" id="file-di-xquartz-sh-L44" rel="file-di-xquartz-sh-L44">44</span>
+            <span class="line-number" id="file-di-xquartz-sh-L45" rel="file-di-xquartz-sh-L45">45</span>
+            <span class="line-number" id="file-di-xquartz-sh-L46" rel="file-di-xquartz-sh-L46">46</span>
+            <span class="line-number" id="file-di-xquartz-sh-L47" rel="file-di-xquartz-sh-L47">47</span>
+            <span class="line-number" id="file-di-xquartz-sh-L48" rel="file-di-xquartz-sh-L48">48</span>
+            <span class="line-number" id="file-di-xquartz-sh-L49" rel="file-di-xquartz-sh-L49">49</span>
+            <span class="line-number" id="file-di-xquartz-sh-L50" rel="file-di-xquartz-sh-L50">50</span>
+            <span class="line-number" id="file-di-xquartz-sh-L51" rel="file-di-xquartz-sh-L51">51</span>
+            <span class="line-number" id="file-di-xquartz-sh-L52" rel="file-di-xquartz-sh-L52">52</span>
+            <span class="line-number" id="file-di-xquartz-sh-L53" rel="file-di-xquartz-sh-L53">53</span>
+            <span class="line-number" id="file-di-xquartz-sh-L54" rel="file-di-xquartz-sh-L54">54</span>
+            <span class="line-number" id="file-di-xquartz-sh-L55" rel="file-di-xquartz-sh-L55">55</span>
+            <span class="line-number" id="file-di-xquartz-sh-L56" rel="file-di-xquartz-sh-L56">56</span>
+            <span class="line-number" id="file-di-xquartz-sh-L57" rel="file-di-xquartz-sh-L57">57</span>
+            <span class="line-number" id="file-di-xquartz-sh-L58" rel="file-di-xquartz-sh-L58">58</span>
+            <span class="line-number" id="file-di-xquartz-sh-L59" rel="file-di-xquartz-sh-L59">59</span>
+            <span class="line-number" id="file-di-xquartz-sh-L60" rel="file-di-xquartz-sh-L60">60</span>
+            <span class="line-number" id="file-di-xquartz-sh-L61" rel="file-di-xquartz-sh-L61">61</span>
+            <span class="line-number" id="file-di-xquartz-sh-L62" rel="file-di-xquartz-sh-L62">62</span>
+            <span class="line-number" id="file-di-xquartz-sh-L63" rel="file-di-xquartz-sh-L63">63</span>
+            <span class="line-number" id="file-di-xquartz-sh-L64" rel="file-di-xquartz-sh-L64">64</span>
+            <span class="line-number" id="file-di-xquartz-sh-L65" rel="file-di-xquartz-sh-L65">65</span>
+            <span class="line-number" id="file-di-xquartz-sh-L66" rel="file-di-xquartz-sh-L66">66</span>
+            <span class="line-number" id="file-di-xquartz-sh-L67" rel="file-di-xquartz-sh-L67">67</span>
+            <span class="line-number" id="file-di-xquartz-sh-L68" rel="file-di-xquartz-sh-L68">68</span>
+            <span class="line-number" id="file-di-xquartz-sh-L69" rel="file-di-xquartz-sh-L69">69</span>
+            <span class="line-number" id="file-di-xquartz-sh-L70" rel="file-di-xquartz-sh-L70">70</span>
+            <span class="line-number" id="file-di-xquartz-sh-L71" rel="file-di-xquartz-sh-L71">71</span>
+            <span class="line-number" id="file-di-xquartz-sh-L72" rel="file-di-xquartz-sh-L72">72</span>
+            <span class="line-number" id="file-di-xquartz-sh-L73" rel="file-di-xquartz-sh-L73">73</span>
+            <span class="line-number" id="file-di-xquartz-sh-L74" rel="file-di-xquartz-sh-L74">74</span>
+            <span class="line-number" id="file-di-xquartz-sh-L75" rel="file-di-xquartz-sh-L75">75</span>
+            <span class="line-number" id="file-di-xquartz-sh-L76" rel="file-di-xquartz-sh-L76">76</span>
+            <span class="line-number" id="file-di-xquartz-sh-L77" rel="file-di-xquartz-sh-L77">77</span>
+            <span class="line-number" id="file-di-xquartz-sh-L78" rel="file-di-xquartz-sh-L78">78</span>
+            <span class="line-number" id="file-di-xquartz-sh-L79" rel="file-di-xquartz-sh-L79">79</span>
+            <span class="line-number" id="file-di-xquartz-sh-L80" rel="file-di-xquartz-sh-L80">80</span>
+            <span class="line-number" id="file-di-xquartz-sh-L81" rel="file-di-xquartz-sh-L81">81</span>
+            <span class="line-number" id="file-di-xquartz-sh-L82" rel="file-di-xquartz-sh-L82">82</span>
+            <span class="line-number" id="file-di-xquartz-sh-L83" rel="file-di-xquartz-sh-L83">83</span>
+            <span class="line-number" id="file-di-xquartz-sh-L84" rel="file-di-xquartz-sh-L84">84</span>
+            <span class="line-number" id="file-di-xquartz-sh-L85" rel="file-di-xquartz-sh-L85">85</span>
+            <span class="line-number" id="file-di-xquartz-sh-L86" rel="file-di-xquartz-sh-L86">86</span>
+            <span class="line-number" id="file-di-xquartz-sh-L87" rel="file-di-xquartz-sh-L87">87</span>
+            <span class="line-number" id="file-di-xquartz-sh-L88" rel="file-di-xquartz-sh-L88">88</span>
+            <span class="line-number" id="file-di-xquartz-sh-L89" rel="file-di-xquartz-sh-L89">89</span>
+            <span class="line-number" id="file-di-xquartz-sh-L90" rel="file-di-xquartz-sh-L90">90</span>
+            <span class="line-number" id="file-di-xquartz-sh-L91" rel="file-di-xquartz-sh-L91">91</span>
+            <span class="line-number" id="file-di-xquartz-sh-L92" rel="file-di-xquartz-sh-L92">92</span>
+            <span class="line-number" id="file-di-xquartz-sh-L93" rel="file-di-xquartz-sh-L93">93</span>
+            <span class="line-number" id="file-di-xquartz-sh-L94" rel="file-di-xquartz-sh-L94">94</span>
+            <span class="line-number" id="file-di-xquartz-sh-L95" rel="file-di-xquartz-sh-L95">95</span>
+            <span class="line-number" id="file-di-xquartz-sh-L96" rel="file-di-xquartz-sh-L96">96</span>
+            <span class="line-number" id="file-di-xquartz-sh-L97" rel="file-di-xquartz-sh-L97">97</span>
+            <span class="line-number" id="file-di-xquartz-sh-L98" rel="file-di-xquartz-sh-L98">98</span>
+            <span class="line-number" id="file-di-xquartz-sh-L99" rel="file-di-xquartz-sh-L99">99</span>
+            <span class="line-number" id="file-di-xquartz-sh-L100" rel="file-di-xquartz-sh-L100">100</span>
+            <span class="line-number" id="file-di-xquartz-sh-L101" rel="file-di-xquartz-sh-L101">101</span>
+            <span class="line-number" id="file-di-xquartz-sh-L102" rel="file-di-xquartz-sh-L102">102</span>
+            <span class="line-number" id="file-di-xquartz-sh-L103" rel="file-di-xquartz-sh-L103">103</span>
+            <span class="line-number" id="file-di-xquartz-sh-L104" rel="file-di-xquartz-sh-L104">104</span>
+            <span class="line-number" id="file-di-xquartz-sh-L105" rel="file-di-xquartz-sh-L105">105</span>
+            <span class="line-number" id="file-di-xquartz-sh-L106" rel="file-di-xquartz-sh-L106">106</span>
+            <span class="line-number" id="file-di-xquartz-sh-L107" rel="file-di-xquartz-sh-L107">107</span>
+            <span class="line-number" id="file-di-xquartz-sh-L108" rel="file-di-xquartz-sh-L108">108</span>
+            <span class="line-number" id="file-di-xquartz-sh-L109" rel="file-di-xquartz-sh-L109">109</span>
+            <span class="line-number" id="file-di-xquartz-sh-L110" rel="file-di-xquartz-sh-L110">110</span>
+            <span class="line-number" id="file-di-xquartz-sh-L111" rel="file-di-xquartz-sh-L111">111</span>
+            <span class="line-number" id="file-di-xquartz-sh-L112" rel="file-di-xquartz-sh-L112">112</span>
+            <span class="line-number" id="file-di-xquartz-sh-L113" rel="file-di-xquartz-sh-L113">113</span>
+            <span class="line-number" id="file-di-xquartz-sh-L114" rel="file-di-xquartz-sh-L114">114</span>
+            <span class="line-number" id="file-di-xquartz-sh-L115" rel="file-di-xquartz-sh-L115">115</span>
+            <span class="line-number" id="file-di-xquartz-sh-L116" rel="file-di-xquartz-sh-L116">116</span>
+            <span class="line-number" id="file-di-xquartz-sh-L117" rel="file-di-xquartz-sh-L117">117</span>
+            <span class="line-number" id="file-di-xquartz-sh-L118" rel="file-di-xquartz-sh-L118">118</span>
+            <span class="line-number" id="file-di-xquartz-sh-L119" rel="file-di-xquartz-sh-L119">119</span>
+            <span class="line-number" id="file-di-xquartz-sh-L120" rel="file-di-xquartz-sh-L120">120</span>
+            <span class="line-number" id="file-di-xquartz-sh-L121" rel="file-di-xquartz-sh-L121">121</span>
+            <span class="line-number" id="file-di-xquartz-sh-L122" rel="file-di-xquartz-sh-L122">122</span>
+            <span class="line-number" id="file-di-xquartz-sh-L123" rel="file-di-xquartz-sh-L123">123</span>
+            <span class="line-number" id="file-di-xquartz-sh-L124" rel="file-di-xquartz-sh-L124">124</span>
+            <span class="line-number" id="file-di-xquartz-sh-L125" rel="file-di-xquartz-sh-L125">125</span>
+            <span class="line-number" id="file-di-xquartz-sh-L126" rel="file-di-xquartz-sh-L126">126</span>
+            <span class="line-number" id="file-di-xquartz-sh-L127" rel="file-di-xquartz-sh-L127">127</span>
+            <span class="line-number" id="file-di-xquartz-sh-L128" rel="file-di-xquartz-sh-L128">128</span>
+            <span class="line-number" id="file-di-xquartz-sh-L129" rel="file-di-xquartz-sh-L129">129</span>
+            <span class="line-number" id="file-di-xquartz-sh-L130" rel="file-di-xquartz-sh-L130">130</span>
+            <span class="line-number" id="file-di-xquartz-sh-L131" rel="file-di-xquartz-sh-L131">131</span>
+            <span class="line-number" id="file-di-xquartz-sh-L132" rel="file-di-xquartz-sh-L132">132</span>
+            <span class="line-number" id="file-di-xquartz-sh-L133" rel="file-di-xquartz-sh-L133">133</span>
+            <span class="line-number" id="file-di-xquartz-sh-L134" rel="file-di-xquartz-sh-L134">134</span>
+            <span class="line-number" id="file-di-xquartz-sh-L135" rel="file-di-xquartz-sh-L135">135</span>
+            <span class="line-number" id="file-di-xquartz-sh-L136" rel="file-di-xquartz-sh-L136">136</span>
+            <span class="line-number" id="file-di-xquartz-sh-L137" rel="file-di-xquartz-sh-L137">137</span>
+            <span class="line-number" id="file-di-xquartz-sh-L138" rel="file-di-xquartz-sh-L138">138</span>
+            <span class="line-number" id="file-di-xquartz-sh-L139" rel="file-di-xquartz-sh-L139">139</span>
+            <span class="line-number" id="file-di-xquartz-sh-L140" rel="file-di-xquartz-sh-L140">140</span>
+            <span class="line-number" id="file-di-xquartz-sh-L141" rel="file-di-xquartz-sh-L141">141</span>
+            <span class="line-number" id="file-di-xquartz-sh-L142" rel="file-di-xquartz-sh-L142">142</span>
+            <span class="line-number" id="file-di-xquartz-sh-L143" rel="file-di-xquartz-sh-L143">143</span>
+            <span class="line-number" id="file-di-xquartz-sh-L144" rel="file-di-xquartz-sh-L144">144</span>
+            <span class="line-number" id="file-di-xquartz-sh-L145" rel="file-di-xquartz-sh-L145">145</span>
+            <span class="line-number" id="file-di-xquartz-sh-L146" rel="file-di-xquartz-sh-L146">146</span>
+            <span class="line-number" id="file-di-xquartz-sh-L147" rel="file-di-xquartz-sh-L147">147</span>
+            <span class="line-number" id="file-di-xquartz-sh-L148" rel="file-di-xquartz-sh-L148">148</span>
+            <span class="line-number" id="file-di-xquartz-sh-L149" rel="file-di-xquartz-sh-L149">149</span>
+            <span class="line-number" id="file-di-xquartz-sh-L150" rel="file-di-xquartz-sh-L150">150</span>
+            <span class="line-number" id="file-di-xquartz-sh-L151" rel="file-di-xquartz-sh-L151">151</span>
+            <span class="line-number" id="file-di-xquartz-sh-L152" rel="file-di-xquartz-sh-L152">152</span>
+            <span class="line-number" id="file-di-xquartz-sh-L153" rel="file-di-xquartz-sh-L153">153</span>
+            <span class="line-number" id="file-di-xquartz-sh-L154" rel="file-di-xquartz-sh-L154">154</span>
+            <span class="line-number" id="file-di-xquartz-sh-L155" rel="file-di-xquartz-sh-L155">155</span>
+            <span class="line-number" id="file-di-xquartz-sh-L156" rel="file-di-xquartz-sh-L156">156</span>
+            <span class="line-number" id="file-di-xquartz-sh-L157" rel="file-di-xquartz-sh-L157">157</span>
+            <span class="line-number" id="file-di-xquartz-sh-L158" rel="file-di-xquartz-sh-L158">158</span>
+            <span class="line-number" id="file-di-xquartz-sh-L159" rel="file-di-xquartz-sh-L159">159</span>
+            <span class="line-number" id="file-di-xquartz-sh-L160" rel="file-di-xquartz-sh-L160">160</span>
+            <span class="line-number" id="file-di-xquartz-sh-L161" rel="file-di-xquartz-sh-L161">161</span>
+            <span class="line-number" id="file-di-xquartz-sh-L162" rel="file-di-xquartz-sh-L162">162</span>
+            <span class="line-number" id="file-di-xquartz-sh-L163" rel="file-di-xquartz-sh-L163">163</span>
+            <span class="line-number" id="file-di-xquartz-sh-L164" rel="file-di-xquartz-sh-L164">164</span>
+            <span class="line-number" id="file-di-xquartz-sh-L165" rel="file-di-xquartz-sh-L165">165</span>
+            <span class="line-number" id="file-di-xquartz-sh-L166" rel="file-di-xquartz-sh-L166">166</span>
+            <span class="line-number" id="file-di-xquartz-sh-L167" rel="file-di-xquartz-sh-L167">167</span>
+            <span class="line-number" id="file-di-xquartz-sh-L168" rel="file-di-xquartz-sh-L168">168</span>
+            <span class="line-number" id="file-di-xquartz-sh-L169" rel="file-di-xquartz-sh-L169">169</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-di-xquartz-sh-LC1"><span class="pl-c">#!/bin/zsh -f</span>
+</div><div class="line" id="file-di-xquartz-sh-LC2"><span class="pl-c"># Download and install (or update) Xquartz</span>
+</div><div class="line" id="file-di-xquartz-sh-LC3"><span class="pl-c">#</span>
+</div><div class="line" id="file-di-xquartz-sh-LC4"><span class="pl-c"># From:	Timothy J. Luoma</span>
+</div><div class="line" id="file-di-xquartz-sh-LC5"><span class="pl-c"># Mail:	luomat at gmail dot com</span>
+</div><div class="line" id="file-di-xquartz-sh-LC6"><span class="pl-c"># Date:	2014-06-10</span>
+</div><div class="line" id="file-di-xquartz-sh-LC7">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC8">NAME=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$0</span>:t:r<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC9">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC10">APP_PATH=<span class="pl-s1"><span class="pl-pds">'</span>/Applications/Utilities/<span class="skimlinks-unlinked">XQuartz.app</span><span class="pl-pds">'</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC11">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC12">	LOCAL_VERSION=<span class="pl-s1"><span class="pl-pds">`</span>defaults <span class="pl-s3">read</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">${APP_PATH}</span>/Contents/<span class="skimlinks-unlinked">Info.plist</span><span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>CFBundleVersion<span class="pl-pds">"</span></span> <span class="pl-k">2&gt;</span>/dev/null<span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC13">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC14"><span class="pl-c">## In case you need them:</span>
+</div><div class="line" id="file-di-xquartz-sh-LC15"><span class="pl-c"># GENERAL_URL='<span class="skimlinks-unlinked">https://xquartz.macosforge.org/landing</span>/'</span>
+</div><div class="line" id="file-di-xquartz-sh-LC16"><span class="pl-c"># DOWNLOAD_URL='<span class="skimlinks-unlinked">http://xquartz.macosforge.org/trac/wiki/Releases</span>'</span>
+</div><div class="line" id="file-di-xquartz-sh-LC17">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC18">UPDATES_URL=<span class="pl-s1"><span class="pl-pds">'</span><span class="skimlinks-unlinked">http://xquartz.macosforge.org/downloads/sparkle/release.xml</span><span class="pl-pds">'</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC19">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC20">	REMOTE_VERSION=<span class="pl-s1"><span class="pl-pds">`</span>curl -sL <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$UPDATES_URL</span><span class="pl-pds">"</span></span> <span class="pl-k">|</span> awk -F<span class="pl-s1"><span class="pl-pds">'</span>"<span class="pl-pds">'</span></span> <span class="pl-s1"><span class="pl-pds">'</span>/sparkle:version=/{print $4}<span class="pl-pds">'</span></span> <span class="pl-k">|</span> head -1<span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC21">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC22">	DOWNLOAD_ACTUAL=<span class="pl-s1"><span class="pl-pds">`</span>curl -sL <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$UPDATES_URL</span><span class="pl-pds">"</span></span> <span class="pl-k">|</span> tr <span class="pl-s1"><span class="pl-pds">'</span>"<span class="pl-pds">'</span></span> <span class="pl-s1"><span class="pl-pds">'</span>\012<span class="pl-pds">'</span></span> <span class="pl-k">|</span> egrep <span class="pl-s1"><span class="pl-pds">'</span>^http.*\.dmg<span class="pl-pds">'</span></span> <span class="pl-k">|</span> head -1<span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC23">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC24">		FILENAME=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$DOWNLOAD_ACTUAL</span>:t<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC25">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC26">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC27">zmodload zsh/datetime
+</div><div class="line" id="file-di-xquartz-sh-LC28">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC29">TIME=<span class="pl-s1"><span class="pl-pds">$(</span>strftime <span class="pl-s1"><span class="pl-pds">"</span>%Y-%m-%d-at-%H.%M.%S<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$EPOCHSECONDS</span><span class="pl-pds">"</span></span><span class="pl-pds">)</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC30">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC31">HOST=<span class="pl-s1"><span class="pl-pds">`</span>hostname -s<span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC32">HOST=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOST</span>:l<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC33">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC34">LOG=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOME</span>/Dropbox/logs/<span class="pl-vo">$HOST</span>/<span class="pl-vo">$NAME</span>/<span class="pl-vo">$TIME</span>.txt<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC35">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC36">[[ <span class="pl-k">-d</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span>:h<span class="pl-pds">"</span></span> ]] <span class="pl-k">||</span> mkdir -p <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span>:h<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC37">[[ <span class="pl-k">-e</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span><span class="pl-pds">"</span></span> ]]   <span class="pl-k">||</span> touch <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC38">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC39"><span class="pl-st">function</span> <span class="pl-en">timestamp</span> { strftime <span class="pl-s1"><span class="pl-pds">"</span>%Y-%m-%d at %H:%M:%S<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$EPOCHSECONDS</span><span class="pl-pds">"</span></span> }
+</div><div class="line" id="file-di-xquartz-sh-LC40"><span class="pl-st">function</span> <span class="pl-en">log</span> { 	<span class="pl-s3">echo</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$NAME</span> [<span class="pl-s1"><span class="pl-pds">`</span>timestamp<span class="pl-pds">`</span></span>]: <span class="pl-vo">$@</span><span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee -a <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span><span class="pl-pds">"</span></span> }
+</div><div class="line" id="file-di-xquartz-sh-LC41">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC42"><span class="pl-st">function</span> <span class="pl-en">msg</span> {
+</div><div class="line" id="file-di-xquartz-sh-LC43">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC44">	MSG=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$@</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC45">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC46">	log <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MSG</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC47">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC48">	<span class="pl-k">if</span> <span class="pl-s1"><span class="pl-pds">((</span> $<span class="pl-k">+</span>commands[growlnotify] <span class="pl-pds">))</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC49">	<span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC50">		growlnotify --appIcon <span class="pl-s1"><span class="pl-pds">"</span>XQuartz<span class="pl-pds">"</span></span> --identifier <span class="pl-s1"><span class="pl-pds">"</span>install-update-xquartz<span class="pl-pds">"</span></span> --message <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$@</span><span class="pl-pds">"</span></span> --title <span class="pl-s1"><span class="pl-pds">"</span>Install/Update XQuartz<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC51">	<span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC52">}
+</div><div class="line" id="file-di-xquartz-sh-LC53">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC54"><span class="pl-st">function</span> <span class="pl-en">msgs</span> {
+</div><div class="line" id="file-di-xquartz-sh-LC55">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC56">	MSG=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$@</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC57">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC58">	log <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MSG</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC59">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC60">	<span class="pl-k">if</span> <span class="pl-s1"><span class="pl-pds">((</span> $<span class="pl-k">+</span>commands[growlnotify] <span class="pl-pds">))</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC61">	<span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC62">		growlnotify --sticky --appIcon <span class="pl-s1"><span class="pl-pds">"</span>XQuartz<span class="pl-pds">"</span></span> --identifier <span class="pl-s1"><span class="pl-pds">"</span>install-update-xquartz<span class="pl-pds">"</span></span> --message <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$@</span><span class="pl-pds">"</span></span> --title <span class="pl-s1"><span class="pl-pds">"</span>Install/Update XQuartz<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC63">	<span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC64">}
+</div><div class="line" id="file-di-xquartz-sh-LC65">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC66">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC67"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$REMOTE_VERSION</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC68"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC69">	log <span class="pl-s1"><span class="pl-pds">"</span>REMOTE_VERSION is empty, cannot continue<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC70">	<span class="pl-s3">exit</span> 0
+</div><div class="line" id="file-di-xquartz-sh-LC71"><span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC72">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC73"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$DOWNLOAD_ACTUAL</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC74"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC75">	log <span class="pl-s1"><span class="pl-pds">"</span>DOWNLOAD_ACTUAL is empty, cannot continue<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC76">	<span class="pl-s3">exit</span> 0
+</div><div class="line" id="file-di-xquartz-sh-LC77"><span class="pl-k">fi</span>	
+</div><div class="line" id="file-di-xquartz-sh-LC78">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC79">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC80">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC81"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOCAL_VERSION</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$REMOTE_VERSION</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC82"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC83">		log <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$APP_PATH</span>:t is up-to-date (<span class="pl-vo">$LOCAL_VERSION</span> ~ <span class="pl-vo">$REMOTE_VERSION</span>)<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC84">		<span class="pl-s3">exit</span> 0
+</div><div class="line" id="file-di-xquartz-sh-LC85"><span class="pl-k">else</span>
+</div><div class="line" id="file-di-xquartz-sh-LC86">			<span class="pl-c"># Update Needed</span>
+</div><div class="line" id="file-di-xquartz-sh-LC87">		msgs <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$APP_PATH</span>:t is outdated (<span class="pl-vo">$LOCAL_VERSION</span> vs <span class="pl-vo">$REMOTE_VERSION</span>)<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC88"><span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC89">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC90"><span class="pl-s3">cd</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOME</span>/Downloads<span class="pl-pds">"</span></span> <span class="pl-k">||</span> <span class="pl-s3">cd</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOME</span>/Desktop<span class="pl-pds">"</span></span> <span class="pl-k">||</span> <span class="pl-s3">cd</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOME</span><span class="pl-pds">"</span></span> <span class="pl-k">||</span> <span class="pl-s3">cd</span> /tmp
+</div><div class="line" id="file-di-xquartz-sh-LC91">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC92">REMOTE_SIZE=<span class="pl-s1"><span class="pl-pds">`</span>curl -sL --head <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">${DOWNLOAD_ACTUAL}</span><span class="pl-pds">"</span></span> <span class="pl-k">|</span> awk -F<span class="pl-s1"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span> <span class="pl-s1"><span class="pl-pds">'</span>/Content-Length/{print $NF}<span class="pl-pds">'</span></span><span class="pl-k">|</span> tr -dc <span class="pl-s1"><span class="pl-pds">'</span>[0-9]<span class="pl-pds">'</span></span><span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC93">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC94">zmodload zsh/stat
+</div><div class="line" id="file-di-xquartz-sh-LC95">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC96"><span class="pl-st">function</span> <span class="pl-en">get_local_size</span>
+</div><div class="line" id="file-di-xquartz-sh-LC97">{
+</div><div class="line" id="file-di-xquartz-sh-LC98">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC99">	LOCAL_SIZE=<span class="pl-s1"><span class="pl-pds">$(</span>zstat -L +size <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$FILENAME</span><span class="pl-pds">"</span></span> <span class="pl-k">2&gt;</span>/dev/null<span class="pl-pds">)</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC100">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC101">}
+</div><div class="line" id="file-di-xquartz-sh-LC102">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC103">get_local_size
+</div><div class="line" id="file-di-xquartz-sh-LC104">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC105"><span class="pl-k">while</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOCAL_SIZE</span><span class="pl-pds">"</span></span> -lt <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$REMOTE_SIZE</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC106"><span class="pl-k">do</span>
+</div><div class="line" id="file-di-xquartz-sh-LC107">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC108">	curl -C - --max-<span class="pl-k">time</span> 3600 --fail --location --referer <span class="pl-s1"><span class="pl-pds">"</span>;auto<span class="pl-pds">"</span></span> --progress-bar --remote-name <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">${DOWNLOAD_ACTUAL}</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC109">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC110">	get_local_size
+</div><div class="line" id="file-di-xquartz-sh-LC111">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC112"><span class="pl-k">done</span>
+</div><div class="line" id="file-di-xquartz-sh-LC113">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC114">MNTPNT=<span class="pl-s1"><span class="pl-pds">$(</span><span class="pl-s3">echo</span> -n <span class="pl-s1"><span class="pl-pds">"</span>Y<span class="pl-pds">"</span></span> <span class="pl-k">|</span> hdid -plist <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$FILENAME</span><span class="pl-pds">"</span></span> <span class="pl-k">2&gt;</span>/dev/null <span class="pl-k">|</span> fgrep -A 1 <span class="pl-s1"><span class="pl-pds">'</span>&lt;key&gt;mount-point&lt;/key&gt;<span class="pl-pds">'</span></span> <span class="pl-k">|</span> tail -1 <span class="pl-k">|</span> sed <span class="pl-s1"><span class="pl-pds">'</span>s#&lt;/string&gt;.*##g ; s#.*&lt;string&gt;##g<span class="pl-pds">'</span></span><span class="pl-pds">)</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC115">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC116"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC117"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC118">	msgs <span class="pl-s1"><span class="pl-pds">"</span>MNTPNT is empty<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC119">	<span class="pl-s3">exit</span> 1
+</div><div class="line" id="file-di-xquartz-sh-LC120"><span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC121">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC122">PKG=<span class="pl-s1"><span class="pl-pds">`</span>find <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span> -maxdepth 1 -iname <span class="pl-cce">\*</span>.pkg<span class="pl-pds">`</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC123">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC124"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$PKG</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC125"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC126">	msgs <span class="pl-s1"><span class="pl-pds">"</span>PKG is empty<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC127">	<span class="pl-s3">exit</span> 1
+</div><div class="line" id="file-di-xquartz-sh-LC128"><span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC129">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC130">msgs <span class="pl-s1"><span class="pl-pds">"</span>Installing <span class="pl-vo">$PKG</span> (this may take awhile...)<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC131">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC132">sudo installer -verboseR -pkg <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$PKG</span><span class="pl-pds">"</span></span> -target / -lang en <span class="pl-k">2&gt;&amp;1</span> <span class="pl-k">|</span> tee -a <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$LOG</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC133">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC134">EXIT=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$?</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC135">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC136"><span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$EXIT</span><span class="pl-pds">"</span></span> = <span class="pl-s1"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC137"><span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC138">	msg <span class="pl-s1"><span class="pl-pds">"</span>Successfully installed <span class="skimlinks-unlinked">XQuartz.app</span> version <span class="pl-vo">$REMOTE_VERSION</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC139">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC140">	COUNT=<span class="pl-s1"><span class="pl-pds">'</span>0<span class="pl-pds">'</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC141">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC142">	<span class="pl-k">while</span> [ -e <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC143">	<span class="pl-k">do</span>
+</div><div class="line" id="file-di-xquartz-sh-LC144">		<span class="pl-s1"><span class="pl-pds">((</span>COUNT<span class="pl-k">++</span><span class="pl-pds">))</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC145">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC146">		<span class="pl-k">if</span> [ <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$COUNT</span><span class="pl-pds">"</span></span> -gt <span class="pl-s1"><span class="pl-pds">"</span>10<span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC147">		<span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC148">			<span class="pl-s3">exit</span> 0
+</div><div class="line" id="file-di-xquartz-sh-LC149">		<span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC150">			<span class="pl-c"># unmount the DMG</span>
+</div><div class="line" id="file-di-xquartz-sh-LC151">		diskutil unmount <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span> <span class="pl-k">||</span> sleep 5
+</div><div class="line" id="file-di-xquartz-sh-LC152">	<span class="pl-k">done</span>
+</div><div class="line" id="file-di-xquartz-sh-LC153">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC154">	<span class="pl-k">if</span> [ <span class="pl-k">!</span> -e <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span> ]
+</div><div class="line" id="file-di-xquartz-sh-LC155">	<span class="pl-k">then</span>
+</div><div class="line" id="file-di-xquartz-sh-LC156">		msg <span class="pl-s1"><span class="pl-pds">"</span>Unmounted <span class="pl-vo">$MNTPNT</span><span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC157">	<span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC158">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC159">	<span class="pl-s3">exit</span> 0
+</div><div class="line" id="file-di-xquartz-sh-LC160">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC161"><span class="pl-k">else</span>
+</div><div class="line" id="file-di-xquartz-sh-LC162">	msg <span class="pl-s1"><span class="pl-pds">"</span>FAILED to install <span class="skimlinks-unlinked">XQuartz.app</span> version <span class="pl-vo">$REMOTE_VERSION</span> (exit = <span class="pl-vo">$EXIT</span>)<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-di-xquartz-sh-LC163">	<span class="pl-s3">exit</span> 1
+</div><div class="line" id="file-di-xquartz-sh-LC164"><span class="pl-k">fi</span>
+</div><div class="line" id="file-di-xquartz-sh-LC165">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC166">&nbsp;
+</div><div class="line" id="file-di-xquartz-sh-LC167"><span class="pl-s3">exit</span>
+</div><div class="line" id="file-di-xquartz-sh-LC168"><span class="pl-c">#</span>
+</div><div class="line" id="file-di-xquartz-sh-LC169"><span class="pl-c">#EOF</span>
+</div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/tjluoma/df58b0362b28162da813/raw/di-xquartz.sh" style="float:right" sl-processed="1">view raw</a>
+            <a href="https://gist.github.com/tjluoma/df58b0362b28162da813#file-di-xquartz-sh" sl-processed="1">di-xquartz.sh</a>
+            hosted with ❤ by <a href="https://github.com/" sl-processed="1">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>Another detail: if you want to be able to run that script without needing to enter your administrator password, you'll need to add this line to <code>/etc/sudoers</code> using <code>sudo visudo</code>:</p>
+
+<pre>   <code>%admin ALL=NOPASSWD: /usr/sbin/installer </code></pre>
+
+<p>The only time you should do this is if you are the only administrator user on your Mac, or if you understand the risks.</p>
+
+<p>Next you need to run the two commands to update brew and any outdated brew utilities: <code>brew update</code> and <code>brew upgrade</code>, followed by <code>brew doctor</code> to make sure everything is OK. You want it simple? All you <em>really</em> need is this:</p>
+<link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-b8c853f42bc1486a246eca98739ff795.css"><div id="gist12345635" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-updatebrew-sh-L1" rel="file-updatebrew-sh-L1">1</span>
+            <span class="line-number" id="file-updatebrew-sh-L2" rel="file-updatebrew-sh-L2">2</span>
+            <span class="line-number" id="file-updatebrew-sh-L3" rel="file-updatebrew-sh-L3">3</span>
+            <span class="line-number" id="file-updatebrew-sh-L4" rel="file-updatebrew-sh-L4">4</span>
+            <span class="line-number" id="file-updatebrew-sh-L5" rel="file-updatebrew-sh-L5">5</span>
+            <span class="line-number" id="file-updatebrew-sh-L6" rel="file-updatebrew-sh-L6">6</span>
+            <span class="line-number" id="file-updatebrew-sh-L7" rel="file-updatebrew-sh-L7">7</span>
+            <span class="line-number" id="file-updatebrew-sh-L8" rel="file-updatebrew-sh-L8">8</span>
+            <span class="line-number" id="file-updatebrew-sh-L9" rel="file-updatebrew-sh-L9">9</span>
+            <span class="line-number" id="file-updatebrew-sh-L10" rel="file-updatebrew-sh-L10">10</span>
+            <span class="line-number" id="file-updatebrew-sh-L11" rel="file-updatebrew-sh-L11">11</span>
+            <span class="line-number" id="file-updatebrew-sh-L12" rel="file-updatebrew-sh-L12">12</span>
+            <span class="line-number" id="file-updatebrew-sh-L13" rel="file-updatebrew-sh-L13">13</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-updatebrew-sh-LC1"><span class="pl-c">#!/bin/zsh -f</span>
+</div><div class="line" id="file-updatebrew-sh-LC2">&nbsp;
+</div><div class="line" id="file-updatebrew-sh-LC3">NAME=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$0</span>:t:r<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-updatebrew-sh-LC4">&nbsp;
+</div><div class="line" id="file-updatebrew-sh-LC5"><span class="pl-s">export</span> PATH=/usr/local/bin:/usr/bin:/usr/sbin:/sbin:/bin
+</div><div class="line" id="file-updatebrew-sh-LC6">&nbsp;
+</div><div class="line" id="file-updatebrew-sh-LC7">(<span class="skimlinks-unlinked">di-xquartz.sh</span> <span class="pl-k">&amp;&amp;</span> \
+</div><div class="line" id="file-updatebrew-sh-LC8"> brew update  <span class="pl-k">&amp;&amp;</span> \
+</div><div class="line" id="file-updatebrew-sh-LC9"> brew upgrade <span class="pl-k">&amp;&amp;</span> \
+</div><div class="line" id="file-updatebrew-sh-LC10"> brew doctor) <span class="pl-k">2&gt;&amp;1</span> <span class="pl-k">|</span>\
+</div><div class="line" id="file-updatebrew-sh-LC11"> 	tee -a <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-vo">$HOME</span>/Library/Logs/<span class="pl-vo">$NAME</span>.log<span class="pl-pds">"</span></span>
+</div><div class="line" id="file-updatebrew-sh-LC12">&nbsp;
+</div><div class="line" id="file-updatebrew-sh-LC13"><span class="pl-s3">exit</span> 0
+</div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/tjluoma/35ae63022bb5efeb5323/raw/updatebrew.sh" style="float:right" sl-processed="1">view raw</a>
+            <a href="https://gist.github.com/tjluoma/35ae63022bb5efeb5323#file-updatebrew-sh" sl-processed="1">updatebrew.sh</a>
+            hosted with ❤ by <a href="https://github.com/" sl-processed="1">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>Note that this script includes the <code>di-xquartz.sh</code> as well as the <code>brew</code> commands.</p>
+
+<p>That's pretty bare-bones, but it'll get the job done. Just be sure to check the log file. If you want something a little more (robust? complicated?), you could send the log to your iPhone using <a href="http://github.com/tjluoma/po.sh" sl-processed="1">Pushover</a>. As <a href="http://www.marco.org/2013/01/05/dr-bob-cupper" sl-processed="1">my Computer Science professor</a> used to say, "the rest is left as an exercise for the reader."</p>
+
+        
+        
+
+                        
+        
+                        
+        <div id="instream-container" class="advis-ad" data-mn="348-14-15-35bc">
+            <div id="instream" class="advis">
+                
+            </div>
+        </div>
+
+        <div class="post-meta">
+            <aside class="meta-sources">
+                                                                                                        </aside>
+                        <aside class="meta-tags">
+                <strong>Tags:</strong><span>
+                                                    <a href="http://www.engadget.com/tag/brew" sl-processed="1">brew</a>
+                                                    <a href="http://www.engadget.com/tag/how-to" sl-processed="1">how-to</a>
+                                                    <a href="http://www.engadget.com/tag/howto" sl-processed="1">howto</a>
+                                                    <a href="http://www.engadget.com/tag/launchd" sl-processed="1">launchd</a>
+                                                    <a href="http://www.engadget.com/tag/xquartz" sl-processed="1">xquartz</a>
+                                            </span>
+            </aside>
+        </div><!-- /.post-meta -->
+
+        <p class="read-more">
+                            <a class="show-comments hidden enable clink_20910244" data-pid="20910244">
+                    <span class="text"><span class="toggle">Hide</span> Comments</span>
+                                    </a>
+            
+                            <span class="social-tools">
+                        <div class="aol-share"><a class="s-btn-fb" href="http://www.facebook.com/sharer.php?u=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_facebook&t=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Share on Facebook" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-facebook-20910244">-</b></a><a class="s-btn-tw" href="http://twitter.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_twitter&text=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically&via=engadget" title="Share on Twitter" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-twitter-20910244">-</b></a><a class="s-btn-gplus" href="https://plus.google.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_googleplus" title="Google Plus" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-googleplus-20910244">-</b></a><a class="s-btn-linkedin-tiny" href="http://www.linkedin.com/cws/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_linkedin" title="Share this on LinkedIn" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-linkedin-20910244">-</b></a><a class="s-btn-pint" href="http://pinterest.com/pin/create/button/?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_pinterest&media=http%3A%2F%2Fo.aolcdn.com%2Fdims-global%2Fdims%2FGLOB%2F5%2F600%2F315%2Fhttp%3A%2F%2Fo.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2F9dc38d2045b02867fbde1ec0ea6241e5%2F200258666%2FXQuartz-Logo-641.jpg&description=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Pin it on Pinterest" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-pinterest-20910244">-</b></a><a class="s-btn-reddit" href="http://www.reddit.com/submit?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_reddit&title=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Submit to Reddit" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-reddit-20910244">-</b></a></div>
+                    </span>
+                <span class="share-more">
+                        <div class="aol-share"><a class="s-btn-fb" href="http://www.facebook.com/sharer.php?u=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_facebook&t=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Share on Facebook" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-facebook-20910244">-</b></a><a class="s-btn-tw" href="http://twitter.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_twitter&text=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically&via=engadget" title="Share on Twitter" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-twitter-20910244">-</b></a><a class="s-btn-gplus" href="https://plus.google.com/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_googleplus" title="Google Plus" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-googleplus-20910244">-</b></a><a class="s-btn-linkedin-tiny" href="http://www.linkedin.com/cws/share?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_linkedin" title="Share this on LinkedIn" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-linkedin-20910244">-</b></a><a class="s-btn-pint" href="http://pinterest.com/pin/create/button/?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_pinterest&media=http%3A%2F%2Fo.aolcdn.com%2Fdims-global%2Fdims%2FGLOB%2F5%2F600%2F315%2Fhttp%3A%2F%2Fo.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2F9dc38d2045b02867fbde1ec0ea6241e5%2F200258666%2FXQuartz-Logo-641.jpg&description=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Pin it on Pinterest" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-pinterest-20910244">-</b></a><a class="s-btn-reddit" href="http://www.reddit.com/submit?url=www.tuaw.com%2F2014%2F06%2F11%2Fhow-to-keep-homebrew-and-xquartz-updated-automatically%2F%3Fa_dgi%3Daolshare_reddit&title=How%20to%20keep%20Homebrew%20and%20XQuartz%20updated%20automatically" title="Submit to Reddit" target="_blank" sl-processed="1"><b class="aol-share-count aol-share-count-reddit-20910244">-</b></a></div>
+                    </span>
+                    </p>
+
+                    <div id="comments" class="comments_20910244">
+                <div id="livefyre_20910244"><div class="fyre-widget-loading-spinner"></div></div>
+                
+            </div>
+        
+        
+        
+        
+                
+        <!-- gdgt_v=1 -->
+
+                
+                                        <div id="grv-personalization-14" class="grvRestore100PercentWidth" style="width: 630px; height: 484px; overflow: hidden; position: absolute; top: -10000px; left: -10000px;"><iframe frameborder="0" scrolling="no" src="./How to keep Homebrew and XQuartz updated automatically_files/w2.html" style="overflow: hidden; width: 100%; height: 484px;"></iframe></div>
+            
+        
+                        
+                                                                        
+    </div><!-- /.article-content -->
+
+    
+    <div class="rail-ad rail-ad-topper ">
+        <div class="rail-infinite">
+
+                            <div id="migration-rail">
+                    <div class="migration-rail-logo"><i class="s-tuaw-rail-logo"></i></div>
+                    <div class="migration-rail-title">This article was originally published on Tuaw.</div>
+                </div>
+            
+            
+            
+            
+            <div id="ad_20910244"><iframe width="300" height="250" title="Ad" marginwidth="0" marginheight="0" allowtransparency="true" frameborder="0" scrolling="no" id="atwAdFrame1" src="./How to keep Homebrew and XQuartz updated automatically_files/adpage.html" banid="10740656|1" class="uac_300x250"></iframe></div>
+            
+
+            
+            <div class="rail-collection-main">
+                <div class="engadget-callout-module">
+                    <a href="http://www.engadget.com/public-access/" title="Public Access" target="_blank" sl-processed="1">
+                        <img src="./How to keep Homebrew and XQuartz updated automatically_files/public_access_rail.jpg" alt="Public Access" width="300" height="266"></a>
+                </div>
+
+                                    
+<!-- M:rail-latest-stories -->
+<aside class="module rail-latest beacon-ping-cids" data-beacon="{&quot;p&quot;:{&quot;mlid&quot;:&quot;featured-stories&quot;,&quot;cid&quot;:&quot;default.features&quot;}}">
+    <h3 class="hed green">Featured Stories</h3>
+
+    
+    
+        <div id="p21210002">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features1&quot;, &quot;plid&quot;:&quot;21210002&quot;}">
+
+                
+                    <a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/16/ofcom-bt-openreach-review/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 1&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk1&quot;}}" sl-processed="1"><img src="./How to keep Homebrew and XQuartz updated automatically_files/460532454.jpg" class="feature-image" alt="Post Image"></a>
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/16/ofcom-bt-openreach-review/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 1&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk2&quot;}}" sl-processed="1">Ofcom invites suggestions on how to handle BT and Openreach</a></h3>
+                <div class="meta"><time datetime="Thu, 16 Jul 2015 04:50:00 -0400" class="time-stamp">
+            
+                                             2 hours ago         
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/16/ofcom-bt-openreach-review/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21210002">0</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21210002 -->
+
+    
+        <div id="p21209448">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features2&quot;, &quot;plid&quot;:&quot;21209448&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/15/virtual-borders-arizona-vr-exhibit/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 2&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk3&quot;}}" sl-processed="1">VR exhibit sheds light on immigrants chasing the American Dream</a></h3>
+                <div class="meta"><time datetime="Wed, 15 Jul 2015 16:00:00 -0400" class="time-stamp">
+            
+                                             15 hours ago         
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/15/virtual-borders-arizona-vr-exhibit/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21209448">15</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21209448 -->
+
+    
+        <div id="p21208868">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features3&quot;, &quot;plid&quot;:&quot;21208868&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/14/captainsparklez-howard-marks-youtube-game-developer/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 3&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk4&quot;}}" sl-processed="1">YouTube fame to game developer: A chat with CaptainSparklez</a></h3>
+                <div class="meta"><time datetime="Tue, 14 Jul 2015 10:00:00 -0400" class="time-stamp">
+                            July 14th 2015 at 10:00am
+
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/14/captainsparklez-howard-marks-youtube-game-developer/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21208868">7</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21208868 -->
+
+    
+        <div id="p21207567">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features4&quot;, &quot;plid&quot;:&quot;21207567&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/10/shuhei-yoshida-on-china-and-project-morpheus/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 4&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk5&quot;}}" sl-processed="1">Shuhei Yoshida on China and why PlayStation can never go Home again</a></h3>
+                <div class="meta"><time datetime="Fri, 10 Jul 2015 14:30:00 -0400" class="time-stamp">
+                            July 10th 2015 at 2:30pm
+
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/10/shuhei-yoshida-on-china-and-project-morpheus/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21207567">12</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21207567 -->
+
+    
+        <div id="p21207352">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features5&quot;, &quot;plid&quot;:&quot;21207352&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/10/cristiano-ronaldo-gorgeous-tech-shill/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 5&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk6&quot;}}" sl-processed="1">There's no shame in Cristiano Ronaldo's tech-shill game</a></h3>
+                <div class="meta"><time datetime="Fri, 10 Jul 2015 13:00:00 -0400" class="time-stamp">
+                            July 10th 2015 at 1:00pm
+
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/10/cristiano-ronaldo-gorgeous-tech-shill/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21207352">20</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21207352 -->
+
+    
+        <div id="p21206912">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features6&quot;, &quot;plid&quot;:&quot;21206912&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/09/vortex-robot-toy-hands-on/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 6&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk7&quot;}}" sl-processed="1">Vortex lets kids program their own robot buddy</a></h3>
+                <div class="meta"><time datetime="Thu, 09 Jul 2015 09:00:00 -0400" class="time-stamp">
+                            July 9th 2015 at 9:00am
+
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/09/vortex-robot-toy-hands-on/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21206912">4</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21206912 -->
+
+    
+        <div id="p21205987">
+            <article class="feature beacon-ping-plids" data-beacon="{&quot;p&quot;: {&quot;mnid&quot;: &quot;features7&quot;, &quot;plid&quot;:&quot;21205987&quot;}">
+
+                
+                <header class="feature-overlay">
+                <h3 class="feature-title"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/07/sony-shuhei-yoshida-nintendo-playstation/" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Right rail featured stories&#39;, &#39;Click&#39;, &#39;Article 7&#39;]);" data-beacon="{&quot;p&quot;:{&quot;lnid&quot;:&quot;lnk8&quot;}}" sl-processed="1">Sony's Shuhei Yoshida reacts to the 'Nintendo PlayStation'</a></h3>
+                <div class="meta"><time datetime="Tue, 07 Jul 2015 10:46:00 -0400" class="time-stamp">
+                            July 7th 2015 at 10:46am
+
+    
+</time> <span class="comment-count"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/www.engadget.com/2015/07/07/sony-shuhei-yoshida-nintendo-playstation/#comments" sl-processed="1"><i class="s-comment-bubble-black-12"></i>&nbsp;<span class="livefyre-commentcount" data-lf-site-id="296092" data-lf-article-id="21205987">70</span></a></span></div>
+                </header>
+            </article>
+        </div><!-- p21205987 -->
+
+    
+</aside>                
+                <aside class="module rail-latest">
+                    <h3 class="hed green">Sponsored Content</h3>
+                    <div id="railSetInView" class="rail-set-in-view-ad" data-mn="93459559"><iframe width="0" height="0" title="Ad" marginwidth="0" marginheight="0" allowtransparency="true" frameborder="0" scrolling="no" id="atwAdFrame2" banid="" style="width: 0px; height: 0px; display: none;"></iframe></div>
+                    
+                </aside>
+
+
+                                    <aside class="module" id="rail-asl"><div class="ASLcontainer"><span>Sponsored Links</span><div class="adsonarAd" title="Because storage should be easy. Get IDC" s="" white="" paper="" to="" learn="" more.'="" onclick="window.open(&#39;http://redir.adsonar.com/process/redir.jsp?p=rwBUfP7tgbWpw6sJ58ToaYtRJlBgeUiWNIze7UZlXojTCyqRwXk0e895fLozLhxeT8H1cN2AvuYEdt8xtiRcazoxHvx8aJ8m7B3tKqGK0Nh-iHdRBJvdKytneOGDZFzyzqtyEVzURBuUiwxFbVUSVQLnmtqrqoo0zu3QjGooqvtvFNfACz/cOy1lTq2lGWNqk3Lu8vKqUMZFjVWnIiX6nkw/V10rbCpHh-z/Qm5p6dK0VMLxCCrddWHW8nfSHbBj8SQro928/13DgVJl8mefWIghIjwsmMqThcd7CmeOoWg1No7BUbmW0EEl1TWAw3q9/DGLWFL4-vMhVAuR5XI7RGmEEfL-J5pUctzL9JVJEv/v5/BGvuWzHDZXLrdug3HckpsuAUBSVIpdJXRzspY/I3PYdi3KschPcbpo1PYHxlVgPB3gshLIpj/E65KqO97WgqKxeKBrqpKCWmBy5-CNe9GOtWcabgr2u2LMIT9DPVQulb//cfSH/IGXLByrklGEnwoX/Dn5bREW5fNhOwhUJcAx2UCppGGEw8qRq1TRbj6Z/H29b5JXlFOoMCr--HGF0SinxTKTuEEVRzD6HwBgdtgwyK6hxMJjGqJ9vQlIb62pPZhiaYJzFw421drSLmIz5genvl7TB/TufeyqiYCK3dnUmUH1pYAnWk5kq6X9FXGwD/6sMb2trgNjotWfnRgj8d3ieyR4LkQ-mAaemFV2d9ztvueYZ8X-1HCWhV0-B0Dbq7rWdcKCzpHqb7Vp-Ylbo5OEzfzK9lnKMuC2-laGWCh0scYRRonZ5M9hSqAYkQFOBAYFJPX/oWjpSHOmK7qK/gqlJOnJW6VSMLuiplFub1cTFEY6eCxX3dVfepFGqu-Qut-v7N0EHNROepEHPSZkCs8j4zU6WqqrmujSaYLqj1rG45OIqh8IslV2pPJ07eTK4BEuy0DL/-YrCO9hBfP0-9&#39; ,&#39;_blank&#39;);"><img src="./How to keep Homebrew and XQuartz updated automatically_files/4997175.jpg" alt="" class="adImage" style="width:65px;height:65px;"><a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" title="Forklift upgrades? Say No" onclick="return false;" class="title" sl-processed="1">Forklift upgrades? Say No</a>Because storage should be easy. Get IDC's white paper to learn more.<a href="http://www.engadget.com/2014/06/11/how-to-keep-homebrew-and-xquartz-updated-automatically/#" title="purestorage.com" onclick="return false;" class="displayUrl" sl-processed="1">purestorage.com</a></div><img src="./How to keep Homebrew and XQuartz updated automatically_files/adServer.bs" style="position:absolute;display:none;width:1px;height:1px;" alt=""><a class="buylink" href="https://aoltech.sl.advertising.com/admin/advertisers/indexPl.jsp" target="_blank" sl-processed="1">Buy a link here</a></div></aside>
+                
+                                
+                <!-- compare module inbetween ads -->
+
+                <div class="promoted module" style="display:none">
+                    <div class="compare-gadgets-feature">
+                        <h3>Compare Your Gadgets</h3>
+                        <a href="http://www.engadget.com/compare" sl-processed="1"><img src="./How to keep Homebrew and XQuartz updated automatically_files/compare-module.jpg" alt="Compare Your Gadgets"></a>
+                        <p>Instantly <strong>compare products</strong> side by side and see which one is best for you!</p>
+                        <p><a href="http://www.engadget.com/compare" class="try-it" sl-processed="1">Try it now →</a></p>
+                    </div><!-- compare-gadgets-feature -->
+                </div>
+                <!-- compare module ends -->
+            </div>
+            <div class="onvis" id="adSkyScraper"><iframe width="300" height="250" title="Ad" marginwidth="0" marginheight="0" allowtransparency="true" frameborder="0" scrolling="no" id="atwAdFrame3" banid="10740656|1" class="uac_300x250"></iframe></div>
+        </div>
+        
+        
+    </div>
+
+    
+</div><!-- /.post-body 20910244 -->
+
+    
+    
+    </div>
+    
+        </div><div class="swiftype-widget"><div class="autocomplete" style="position: absolute; z-index: 9999; top: 245px; left: 0px; width: 920px; display: none;"><div></div></div></div>
+
+<!-- Page footer -->
+<div id="footer">
+
+    
+    <footer>
+        <div id="footer-like" class="nocontent">
+            <div class="body">
+                <div class="linkage">
+                    <h5>About</h5>
+                    <ul>
+                        <li><a href="http://www.engadget.com/about/" sl-processed="1">About Engadget</a></li>
+                        <li><a href="http://www.engadget.com/about/contact/" sl-processed="1">Contact us</a></li>
+                        <li><a href="http://www.engadget.com/about/advertise/" sl-processed="1">Advertise</a></li>
+                        <li><a href="http://www.engadget.com/about-our-advertising/" sl-processed="1">About Our Ads</a></li>
+                    </ul>
+                </div>
+                <div class="linkage">
+                    <h5>Community</h5>
+
+                    <ul>
+                        <li><a href="http://www.engadget.com/discuss/" sl-processed="1">Forums</a></li>
+                        <li><a href="http://www.engadget.com/discuss/topic/engadget/" sl-processed="1">Engadget Meta</a></li>
+                        <li><a href="http://www.engadget.com/guidelines/" sl-processed="1">Community guidelines</a></li>
+                    </ul>
+                </div>
+                <div class="linkage">
+                    <h5>Reviews</h5>
+                    <ul>
+                        <li><a href="http://www.engadget.com/reviews/" sl-processed="1">Product reviews</a></li>
+                        <li><a href="http://www.engadget.com/post/#review" sl-processed="1">Write a review</a></li>
+                    </ul>
+                </div>
+                <div class="linkage">
+                    <h5>Contribute</h5>
+                    <ul>
+                        <li><a class="tips-link" href="http://www.engadget.com/about/tips/" sl-processed="1">Send us a tip!</a></li>
+                        <li><a href="http://www.engadget.com/add/" sl-processed="1">Add to our database</a></li>
+                        <li><a href="http://www.engadget.com/post/#review" sl-processed="1">Write a review</a></li>
+                    </ul>
+                </div>
+                <div class="linkage">
+                    <h5>Live events</h5>
+                    <ul>
+                        <li><a href="http://www.engadget.com/expand/" sl-processed="1">Engadget Expand</a></li>
+                        <li><a href="http://www.engadget.com/engadget-live/" sl-processed="1">Engadget Live</a></li>
+
+                    </ul>
+                </div>
+                <div class="linkage">
+                    <h5>Popular topics</h5>
+                    <ul>
+                        <li><a href="http://www.engadget.com/topics/mobile/" sl-processed="1">Mobile</a></li>
+                        <li><a href="http://www.engadget.com/topics/hd/" sl-processed="1">HD</a></li>
+                        <li><a href="http://www.engadget.com/topics/alt/" sl-processed="1">Alt</a></li>
+                        <li><a href="http://www.engadget.com/topics/software/" sl-processed="1">Software</a></li>
+                        <li><a href="http://www.engadget.com/topics/apple/" sl-processed="1">Apple</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-feed" class="nocontent">
+            <div class="body">
+                <div class="thirds social-column">
+                    <h5>Follow Engadget</h5>
+                    <ul class="social-tools">
+                        <li>
+                            <a href="https://www.facebook.com/Engadget" sl-processed="1"><i class="s-btn-footer-fb"></i></a></li>
+                        <li><a href="https://twitter.com/engadget" sl-processed="1"><i class="s-btn-footer-tw"></i></a></li>
+                        <li><a href="https://plus.google.com/+Engadget" sl-processed="1"><i class="s-btn-footer-gplus"></i></a></li>
+                        <li><a href="http://www.youtube.com/engadget" sl-processed="1"><i class="s-btn-footer-yt"></i></a></li>
+                        <li><a href="http://instagram.com/engadget" sl-processed="1"><i class="s-btn-footer-instg"></i></a></li>
+                        <li><a href="http://engadget.tumblr.com/" sl-processed="1"><i class="s-btn-footer-tmb"></i></a></li>
+                        <li><a href="http://www.pinterest.com/engadget" sl-processed="1"><i class="s-btn-footer-pint"></i></a></li>
+                        <li><a href="http://www.linkedin.com/company/101421" sl-processed="1"><i class="s-btn-footer-linkin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="thirds apps">
+                    <h5>Engadget Apps</h5>
+                    <ul class="engadget-apps">
+                        <li>
+                            <a href="https://play.google.com/store/apps/details?id=com.aol.mobile.engadget&feature=nav_result#?t=W251bGwsMSwyLDNd" target="_blank" sl-processed="1"><i class="s-btn-footer-droid"></i></a></li>
+                        <li><a href="http://itunes.apple.com/us/app/engadget/id347839246?mt=8&uo=4" target="_blank" sl-processed="1"><i class="s-btn-footer-iphone"></i></a></li>
+                        <li><a href="http://itunes.apple.com/us/app/engadget-for-ipad/id409892845?mt=8&uo=4" target="_blank" sl-processed="1"><i class="s-btn-footer-ipad"></i></a></li>
+                    </ul>
+                    <p class="more-apps"><a href="http://www.engadget.com/apps/" sl-processed="1">More Apps from Engadget <i class="s-icn-read-arw"></i></a></p>
+                </div>
+
+                                
+                <div class="thirds">
+                    <h5>Subscribe to Engadget Newsletter</h5>
+
+                    <div class="newsletter" id="aol-newsletter2">
+                        <i class="s-icn-mail-msg"></i>
+                        <h5 class="mobile-text">Subscribe to Engadget in your inbox. <strong>Delivered daily.</strong>
+                        </h5>
+
+                        <div class="content">
+                            <form action="http://www.engadget.com/b-c/sailthru/signup.php" method="post">
+                                <p class="message"></p>
+                                <input type="text" placeholder="email address" class="signup-email">
+                                <input type="button" value="Subscribe" class="button">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                            </div>
+            <!-- body -->
+        </div>
+        <!-- footer-feed -->
+
+    </footer>
+
+    <div id="categories-modal" class="no-sponsors" style="display:none">
+        <div class="categories-modal-left category-icon-25 hover-white">
+            <h4>Top categories</h4>
+            <ul>
+                <li class="cellphones">
+                    <a href="http://www.engadget.com/reviews/cellphones/" sl-processed="1">
+                        <span></span>
+
+                        cellphones                    </a>
+                </li>
+                <li class="laptops">
+                    <a href="http://www.engadget.com/reviews/laptops/" sl-processed="1">
+                        <span></span>
+
+                        laptops / portables
+                    </a>
+                </li>
+                <li class="tablets">
+                    <a href="http://www.engadget.com/reviews/tablets/" sl-processed="1">
+                        <span></span>
+
+                        tablets
+                    </a>
+                </li>
+                <li class="headphones">
+                    <a href="http://www.engadget.com/reviews/headphones/" sl-processed="1">
+                        <span></span>
+
+                        headphones
+                    </a>
+                </li>
+                <li class="cameras">
+                    <a href="http://www.engadget.com/reviews/cameras/" sl-processed="1">
+                        <span></span>
+
+                        cameras
+                    </a>
+                </li>
+                <li class="routers">
+                    <a href="http://www.engadget.com/reviews/routers/" sl-processed="1">
+                        <span></span>
+
+                        routers
+                    </a>
+                </li>
+                <li class="hdtvs-televisions">
+                    <a href="http://www.engadget.com/reviews/hdtvs-televisions/" sl-processed="1">
+                        <span></span>
+
+                        hdtvs / televisions
+                    </a>
+                </li>
+                <li class="portable-media-players">
+                    <a href="http://www.engadget.com/reviews/portable-media-players/" sl-processed="1">
+                        <span></span>
+
+                        portable media players
+                    </a>
+                </li>
+                <li class="fitness">
+                    <a href="http://www.engadget.com/reviews/fitness/" sl-processed="1">
+                        <span></span>
+
+                        fitness devices
+                    </a>
+                </li>
+                <li class="e-book-readers">
+                    <a href="http://www.engadget.com/reviews/e-book-readers/" sl-processed="1">
+                        <span></span>
+
+                        e-book readers
+                    </a>
+                </li>
+                <li class="digital-media-players">
+                    <a href="http://www.engadget.com/reviews/digital-media-players/" sl-processed="1">
+                        <span></span>
+
+                        digital media players
+                    </a>
+                </li>
+                            </ul>
+        </div>
+
+        <div class="categories-modal-right category-icon-25">
+            <div class="category-columns">
+                <ul class="category-list">
+                    <li class="cellphones">
+                        <h3>
+                            <span></span>Mobile
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/cellphones/" sl-processed="1">Cellphones</a></li>
+                    <li><a href="http://www.engadget.com/reviews/tablets/" sl-processed="1">Tablets</a></li>
+                    <li><a href="http://www.engadget.com/reviews/bluetooth-headsets/" sl-processed="1">Bluetooth Headsets</a></li>
+                    <li><a href="http://www.engadget.com/reviews/gps/" sl-processed="1">GPS</a></li>
+                </ul>
+                <ul class="category-list">
+                    <li class="cameras">
+                        <h3>
+                            <span></span>Photography
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/cameras/" sl-processed="1">Cameras</a></li>
+                    <li><a href="http://www.engadget.com/reviews/camera-lenses/" sl-processed="1">Camera Lenses</a></li>
+                    <li><a href="http://www.engadget.com/reviews/camcorders/" sl-processed="1">Camcorders</a></li>
+                    <li><a href="http://www.engadget.com/reviews/digital-photo-frames/" sl-processed="1">Digital Photo Frames</a></li>
+                </ul>
+                <ul class="category-list">
+                    <li class="controllers">
+                        <h3>
+                            <span></span>Gaming
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/gaming-consoles-home/" sl-processed="1">Consoles (home)</a></li>
+                    <li><a href="http://www.engadget.com/reviews/gaming-consoles-portable/" sl-processed="1">Consoles (portable)</a></li>
+                    <li><a href="http://www.engadget.com/reviews/controllers/" sl-processed="1">Controllers / Gamepads</a></li>
+                    <li><a href="http://www.engadget.com/reviews/joysticks-flight-racing/" sl-processed="1">Joysticks / Flight / Racing</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="category-columns">
+                <ul class="category-list">
+                    <li class="laptops">
+                        <h3>
+                            <span></span>Computers
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/laptops/" sl-processed="1">Laptops/Portables</a></li>
+                    <li><a href="http://www.engadget.com/reviews/desktops/" sl-processed="1">Desktops</a></li>
+                    <li><a href="http://www.engadget.com/reviews/os-platforms/" sl-processed="1">Operating Systems</a></li>
+                </ul>
+                <ul class="category-list">
+                    <li class="keyboards">
+                        <h3>
+                            <span></span>Peripherals
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/keyboards/" sl-processed="1">Keyboards</a></li>
+                    <li><a href="http://www.engadget.com/reviews/mice/" sl-processed="1">Mice</a></li>
+                    <li><a href="http://www.engadget.com/reviews/monitors/" sl-processed="1">Monitors</a></li>
+                    <li><a href="http://www.engadget.com/reviews/computer-speakers/" sl-processed="1">Computer Speakers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/headsets/" sl-processed="1">Headsets</a></li>
+                    <li><a href="http://www.engadget.com/reviews/printers/" sl-processed="1">Printers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/scanners/" sl-processed="1">Scanners</a></li>
+                    <li><a href="http://www.engadget.com/reviews/pen-tablets/" sl-processed="1">Pen Tablets</a></li>
+                    <li><a href="http://www.engadget.com/reviews/usb-firewire-hubs/" sl-processed="1">USB / Firewire Hubs</a></li>
+                    <li><a href="http://www.engadget.com/reviews/webcams/" sl-processed="1">Webcams</a></li>
+                </ul>
+            </div>
+            <div class="category-columns">
+                <ul class="category-list">
+                    <li class="e-book-readers">
+                        <h3>
+                            <span></span>Personal Tech
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/headphones/" sl-processed="1">Headphones</a></li>
+                    <li><a href="http://www.engadget.com/reviews/portable-media-players/" sl-processed="1">Portable Media Players</a></li>
+                    <li><a href="http://www.engadget.com/reviews/e-book-readers/" sl-processed="1">E-book Readers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/fitness/" sl-processed="1">Fitness</a></li>
+                    <li><a href="http://www.engadget.com/reviews/misc/" sl-processed="1">Miscellaneous Devices</a></li>
+                </ul>
+                <ul class="category-list">
+                    <li class="routers">
+                        <h3>
+                            <span></span>Networking
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/routers/" sl-processed="1">Routers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/switches-hubs/" sl-processed="1">Switches / Hubs</a></li>
+                </ul>
+                <ul class="category-list">
+                    <li class="external-drives">
+                        <h3>
+                            <span></span>Storage
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/external-drives/" sl-processed="1">External Hard Drives</a></li>
+                    <li><a href="http://www.engadget.com/reviews/flash-drives/" sl-processed="1">Flash Drives</a></li>
+                    <li><a href="http://www.engadget.com/reviews/memory-cards/" sl-processed="1">Memory Cards</a></li>
+                    <li><a href="http://www.engadget.com/reviews/network-storage/" sl-processed="1">Network Storage</a></li>
+                    <li><a href="http://www.engadget.com/reviews/raid-arrays/" sl-processed="1">RAID / Drive Arrays</a></li>
+                </ul>
+            </div>
+            <div class="category-columns">
+                <ul class="category-list">
+                    <li class="hdtvs-televisions">
+                        <h3>
+                            <span></span>Home Theater
+                        </h3>
+                    </li>
+                    <li><a href="http://www.engadget.com/reviews/hdtvs-televisions/" sl-processed="1">HDTVs / Televisions</a></li>
+                    <li><a href="http://www.engadget.com/reviews/speaker-docks/" sl-processed="1">Speaker Docks</a></li>
+                    <li><a href="http://www.engadget.com/reviews/digital-media-players/" sl-processed="1">Digital Media Players</a></li>
+                    <li><a href="http://www.engadget.com/reviews/remotes/" sl-processed="1">Remotes / Controllers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/av-receivers/" sl-processed="1">A/V Receivers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/dvrs/" sl-processed="1">DVRs</a></li>
+                    <li><a href="http://www.engadget.com/reviews/speakers/" sl-processed="1">Speakers</a></li>
+                    <li><a href="http://www.engadget.com/reviews/video-disc-players/" sl-processed="1">Video Disc Players</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+
+        
+    </div>
+
+    
+            <!-- Legal, etc. -->
+    <div id="after-footer">
+
+
+            <div class="inner-footer">
+                <div id="footer-language">
+                    <h5>Engadget International Editions</h5>
+                    <ul class="language">
+                        <li lang="es">
+                            <a href="http://es.engadget.com/" title="Spanish" sl-processed="1">
+                                Español
+                            </a>
+                        </li>
+                        <li lang="zh">
+                            <a href="http://chinese.engadget.com/" title="Traditional Chinese" sl-processed="1">
+                                繁體中文
+                            </a>
+                        </li>
+                        <li lang="zh">
+                            <a href="http://cn.engadget.com/" title="Simplified Chinese" sl-processed="1">
+                                简体中文
+                            </a>
+                        </li>
+                        <li lang="ja">
+                            <a href="http://japanese.engadget.com/" title="Japanese" sl-processed="1">
+                                日本版
+                            </a>
+                        </li>
+                        <li lang="de">
+                            <a href="http://de.engadget.com/" title="German" sl-processed="1">
+                                Deutschland
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="footer-legal">
+                    <a href="http://www.aoltech.com/" class="s-aol-tech-logo" sl-processed="1">AOL Tech.</a>
+
+                    <p>
+				<span>
+					© 2015 AOL Inc.<br>
+					All rights reserved.
+				</span>
+
+                        <a href="http://www.engadgetreprints.com/" sl-processed="1">Reprints and Permissions</a>
+                        <a href="http://privacy.aol.com/" sl-processed="1">Privacy Policy </a>
+                        <a href="http://legal.aol.com/TOS/" sl-processed="1">Updated Terms of Use </a>
+                        <a href="http://legal.aol.com/trademarks/" sl-processed="1">Trademarks </a>
+                        <a href="http://help.aol.com/" sl-processed="1">AOL A-Z Help </a>
+                        <a href="http://www.engadget.com/advertise" sl-processed="1"> Advertise with Us</a>
+                    </p>
+                </div>
+            </div>
+    </div>
+    
+    
+    
+        <!-- Livefyre Commentcount JS -->
+        
+
+        
+
+        <!-- Google Analytics -->
+        
+
+        <!--GRAVITY and some ads-->
+        
+        
+
+        <!--Korrelate Pixel-->
+        
+        <!-- Chartbeat Tracking UK -->
+        
+
+    
+</div>
+
+<div id="s2c-widget"></div><div id="s2c-widget-mask"></div><iframe id="localStorage" src="./How to keep Homebrew and XQuartz updated automatically_files/guid.html" style="display: none; width: 0px; height: 0px;"></iframe><iframe id="adTacFr1" src="./How to keep Homebrew and XQuartz updated automatically_files/tcode3.html" style="display: none; width: 0px; height: 0px;"></iframe></body></html>

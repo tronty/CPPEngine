@@ -1,0 +1,265 @@
+float4x4 NoiseMatrix;
+#define B  32      // table size
+#define B2 66      // B*2 + 2
+#define BR 0.03125 // 1 / B
+
+float4 pg[B2];                  // permutation/gradient table
+
+// this is the smoothstep function f(t) = 3t^2 - 2t^3, without the normalization
+float3 s_curve(float3 t)
+{
+  return t*t*( float3(3.0f, 3.0f, 3.0f) - float3(2.0f, 2.0f, 2.0f)*t);
+}
+//
+// 3D version returning a vector
+//
+float3 noiseVec(float3 v)
+{
+  v = v + float3(10000.0f, 10000.0f, 10000.0f);   // hack to avoid negative numbers
+
+  float3 i = frac(v * BR) * B;   // index between 0 and B-1
+  float3 f = frac(v);            // fractional position
+
+  // lookup in permutation table
+  // for the 8 points surrounding the position we're working on
+  float2 p;
+  p.x = pg[ i[0]     ].w; // w is the permutation value
+  p.y = pg[ i[0] + 1 ].w;
+  p = p + i[1];
+
+  float4 b;
+  b.x = pg[ p[0] ].w;		// (0,0,0)
+  b.y = pg[ p[1] ].w;		// (1,0,0)
+  b.z = pg[ p[0] + 1 ].w;	// (0,1,0)
+  b.w = pg[ p[1] + 1 ].w;	// (1,1,0)
+  b = b + i[2];
+
+  float3 grad[8];			// longer...
+  grad[0] = pg[ b[0] ].xyz;		//(0,0,0)
+  grad[1] = pg[ b[1] ].xyz;		//(1,0,0)
+  grad[2] = pg[ b[2] ].xyz;		//(0,1,0)
+  grad[3] = pg[ b[3] ].xyz;		//(1,1,0)
+  grad[4] = pg[ b[0]+1 ].xyz;	//(0,0,1)
+  grad[5] = pg[ b[1]+1 ].xyz;	//(1,0,1)
+  grad[6] = pg[ b[2]+1 ].xyz;	//(0,1,1)
+  grad[7] = pg[ b[3]+1 ].xyz;	//(1,1,1)
+
+  // interpolate
+  f = s_curve(f);
+  float3 v1;
+  float3 v2;
+  float3 v3;
+  v1 = lerp( grad[0], grad[1], f[0] ); // (0,0,0) <> (1,0,0) : X axis
+  v2 = lerp( grad[2], grad[3], f[0] ); // (0,1,0) <> (1,1,0) : X axis
+  v3 = lerp( v1, v2, f[1] ); // Y axis
+  v1 = lerp( grad[4], grad[5], f[0] ); // (0,0,1) <> (1,0,1) : X axis
+  v2 = lerp( grad[6], grad[7], f[0] ); // (0,1,1) <> (1,1,1) : X axis
+  float3 v4;
+  v4 = lerp( v1, v2, f[1] ); // Y axis
+  v1 = lerp( v3, v4, f[2] ); // Z axis
+  return v1;
+}
+//
+// 3D version returning a scalar
+//
+float noise(float3 v)
+{
+  v = v + float3(10000.0f, 10000.0f, 10000.0f);   // hack to avoid negative numbers
+
+  float3 i = frac(v * BR) * B;   // index between 0 and B-1
+  float3 f = frac(v);            // fractional position
+
+  // lookup in permutation table
+  float2 p;
+  p[0] = pg[ i[0]     ].w;
+  p[1] = pg[ i[0] + 1 ].w;
+  p = p + i[1];
+
+  float4 b;
+  b[0] = pg[ p[0] ].w;
+  b[1] = pg[ p[1] ].w;
+  b[2] = pg[ p[0] + 1 ].w;
+  b[3] = pg[ p[1] + 1 ].w;
+  b = b + i[2];
+
+  // compute dot products between gradients and vectors
+  float4 r;
+  r[0] = dot( pg[ b[0] ].xyz, f );
+  r[1] = dot( pg[ b[1] ].xyz, f - float3(1, 0, 0) );
+  r[2] = dot( pg[ b[2] ].xyz, f - float3(0, 1, 0) );
+  r[3] = dot( pg[ b[3] ].xyz, f - float3(1, 1, 0) );
+
+  float4 r1;
+  r1[0] = dot( pg[ b[0] + 1 ].xyz, f - float3(0, 0, 1) );
+  r1[1] = dot( pg[ b[1] + 1 ].xyz, f - float3(1, 0, 1) );
+  r1[2] = dot( pg[ b[2] + 1 ].xyz, f - float3(0, 1, 1) );
+  r1[3] = dot( pg[ b[3] + 1 ].xyz, f - float3(1, 1, 1) );
+
+  // interpolate
+  f = s_curve(f);
+  r = lerp( r, r1, f[2] );
+  r = lerp( r.xyyy, r.zwww, f[1] );
+  return lerp( r.x, r.y, f[0] );
+}
+
+////////////////////////////////////////////
+struct a2v 
+{
+    float4 Position     : POSITION;
+    float4 Normal       : NORMAL;
+    float4 TexCoord0    : TEXCOORD0;
+    float4 Color	    : COLOR0;
+};
+
+// define outputs from vertex shader
+struct v2f
+{
+    float4 hPosition            : POSITION;
+    float3 texCoord0            : TEXCOORD0;
+    float4 diffuseColor         : COLOR0;
+    float4 noisescalars         : TEXCOORD1;
+    float4 worldpos		        : TEXCOORD2;
+};
+////////////////////////////////////////////
+float4 getNoisePos(float Scale, float4 offset, float4 pos)
+{
+  float4 noisePos;
+  noisePos.xyz = pos.xyz - offset.xyz;
+  noisePos = mul(NoiseMatrix, noisePos);
+  noisePos.xyz += offset.xyz;
+  noisePos.xyz *= Scale;
+  return noisePos;
+}
+float4x4 modelViewProj;
+float4x4 modelView;
+float Displacement = 1.27;
+float Scale;
+[Vertex shader]
+v2f main(a2v IN
+         )
+{
+  v2f OUT;
+
+  float4 noisePos;
+  float4 N = normalize(IN.Normal.xyz).xyzz * Displacement;
+  float4 pos = IN.Position;
+  float col;// = 0;
+  float i;
+
+  //----------------------------------------------------------------  
+  noisePos = IN.Position * Scale;
+  i = abs(noise(noisePos.xyz));
+  pos += (N * i);
+  col = i;
+  OUT.noisescalars.x = i;
+  //----------------------------------------------------------------  
+  noisePos = getNoisePos(Scale*2, IN.Position, pos);
+  i = abs(noise(noisePos.xyz)); 
+  pos += (N * i * 0.5);
+  col += 0.5*i;
+  OUT.noisescalars.y = i;
+  //----------------------------------------------------------------  
+  noisePos = getNoisePos(Scale*4, IN.Position, pos);
+  i = abs(noise(noisePos.xyz));
+  pos += (N * i * 0.25);
+  col += 0.25*i;
+  OUT.noisescalars.z = i;
+  //----------------------------------------------------------------  
+  noisePos = getNoisePos(Scale*8, IN.Position, pos);
+  i = abs(noise(noisePos.xyz));
+  pos += (N * i * 0.125);
+  col += 0.125*i;
+  OUT.noisescalars.w = i;
+  //----------------------------------------------------------------  
+  noisePos = getNoisePos(Scale*16, IN.Position, pos);
+  OUT.worldpos = pos;//mul(modelView, IN.Position * 0.5);
+  OUT.worldpos.w = Scale*16;
+  pos.w = 1;
+  OUT.hPosition = mul(modelViewProj, pos);
+
+  OUT.diffuseColor.w = IN.Color.w;
+  OUT.diffuseColor.x = col / (1.0 + 0.5 + 0.25 + 0.125);
+  return OUT;
+}
+/*********************************************************************NVMH3****
+Copyright NVIDIA Corporation 2002
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+Comments:
+
+******************************************************************************/
+/**
+
+Here we get 1 level of perlin noise for each fragment.
+perlin table is in a 1D texture
+
+ **/
+
+[Fragment shader]
+float2 scalebias;
+sampler3D NoiseTexture;
+sampler1D RampTexture;
+struct vert2frag
+{
+    float4 hPosition            : POSITION;
+    float3 texCoord0            : TEXCOORD0;
+    float4 diffuseColor         : COLOR0;
+    float4 noisescalars         : TEXCOORD1;
+    float4 worldpos		        : TEXCOORD2;
+};
+half4 main(
+            vert2frag       IN
+            ) : COLOR
+{ 
+/*	float3 dx = (ddx(IN.worldpos.xyz)); // this is to test Normal calculation
+	float3 dy = (ddy(IN.worldpos.xyz)); // but this shows too much triangles.
+	float3 N = normalize(cross(dx,dy));
+	float3 eye = float3(20,10,0);
+	float3 V = normalize(IN.worldpos - eye);
+	float d = abs(dot(V,N));
+	return float4(d,d,d,1);*/
+	float t;
+	half4 c;
+	half4 l;
+	//t = clamp(2.7-length(IN.worldpos.xz),0,1);
+	t = scalebias.x*IN.diffuseColor.x + scalebias.y;
+	c = tex1D(RampTexture, 1-t);
+	//c = float4(0.4,0,0,1);
+	l = tex3D(NoiseTexture, IN.worldpos.xyz) * IN.noisescalars.x;
+
+	float3 scaledpos = IN.worldpos.xyz * 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * IN.noisescalars.y;
+
+	scaledpos *= 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * IN.noisescalars.z;
+
+	scaledpos *= 2.0;
+	l += tex3D(NoiseTexture, scaledpos) * IN.noisescalars.w;
+
+	//l += 0.1;
+	//l = tex1D(RampTexture, l);
+	l *= float4(2,2,0,1);
+	l += float4(0.5,0.3,0.3,1);
+
+	//l.w = 1; // just a matter of arbitrary choice
+
+	float s = 1-IN.noisescalars.y;
+	//s = lit(1,s,3).z; // for 3 more expensive than s = s*s*s;
+	s = s*s*s;
+	half4 c2;
+	c2 = lerp(l, c, s);
+
+	c2 *= IN.diffuseColor.w;
+
+    return c2;
+}
+

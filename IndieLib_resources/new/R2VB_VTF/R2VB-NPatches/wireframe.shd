@@ -1,0 +1,19 @@
+//-----------------------------------------------------------------------------
+// File: wireframe.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+[Vertex shader]
+
+float4x4 mvp;
+
+float4 main(float4 pos: POSITION) : POSITION {
+	pos.w = 1;
+	return mul(mvp, pos);
+}
+
+[Fragment shader]
+
+float4 main() : COLOR {
+	return 1;
+}

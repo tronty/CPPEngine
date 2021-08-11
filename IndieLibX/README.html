@@ -1,0 +1,91 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+</head>
+<body>
+<title>README</title>
+<h1>README</h1>
+<pre>#
+# Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+# Licensed under The GNU Lesser General Public License, version 2.1:
+#     http://opensource.org/licenses/LGPL-2.1
+#
+# Commands below in this file and on the file ./install_.sh were tested on following operating systems:
+# 	macOS High Sierra (64-bit) (any other version of 64-bit macOS may also do as well)
+# 	Ubuntu 18.04.2 LTS Bionic Beaver (32-bit and 64-bit)
+#	Ubuntu 20.04.2 LTS Focal Fossa (64-bit)
+#	XUbuntu 20.04.2 LTS Focal Fossa (64-bit)
+# 	Linux Mint 19.1 &quot;Tessa&quot;  - Cinnamon (32-bit and 64-bit)
+# 	Linux Mint 19.2 &quot;Tina&quot;   - Cinnamon (32-bit and 64-bit) also now available should do equally well
+# 	Linux Mint 19.3 &quot;Tricia&quot; - Cinnamon (32-bit and 64-bit) also now available should do equally well
+# 	Linux Mint 20 	&quot;Ulyana&quot; - Cinnamon (64-bit) also now available should do equally well
+# 	Linux Mint 20.1 &quot;Ulyssa&quot; - Cinnamon (64-bit) also now available should do equally well
+# 	I use currently mainly Linux Mint 19.1 &quot;Tessa&quot; - Cinnamon where there is the LightDM as a display manager
+# 	and system snapshots are available on update manager
+# 	(may save time if the system breaks and must be restored to a some previous state)
+
+git:
+    git clone https://github.com/tronty/CPPEngine.git
+
+LINUX (Ubuntu/Mint/Debian):
+	cd $HOME
+	curl -O http://tommironty.fi/IndieLibX.zip
+	unzip -x ./IndieLibX.zip -d ./IndieLibX
+	curl -O http://tommironty.fi/IndieLib_resources.zip
+	unzip -x ./IndieLib_resources.zip -d ./IndieLib_resources
+	cd ./IndieLibX
+	# chmod a+x ./install_.sh
+	sudo ./install_.sh
+	./make.sh AllLibs LNX GNUMAKE GLSL1_1	    -&gt; Builds All C++ static libraries.
+	./make.sh Test LNX GNUMAKE GLSL1_1          -&gt; Builds C++ Test applications.
+	./make.sh SampleApps LNX GNUMAKE GLSL1_1    -&gt; Builds C++ Sample applications.
+	./make.sh TerrainApps LNX GNUMAKE GLSL1_1   -&gt; Builds C++ Terrain applications.
+	./make.sh IndielibApps LNX GNUMAKE GLSL1_1  -&gt; Builds C++ Indielib applications.
+	./make.sh TestApps LNX GNUMAKE GLSL1_1      -&gt; Builds All C++ working applications.
+	./run.sh				    -&gt; Runs built applications.
+	./make.sh				    -&gt; Removes temporary files.
+	make RadeonTerrainDemo 	   		    -&gt; Runs original RadeonTerrainDemo.exe with wine
+	make NatureScene       	   		    -&gt; Runs original NatureScene.exe with wine
+	make Particles         	   		    -&gt; Runs original Particles.exe with wine
+	make ParticleVS        	   		    -&gt; Runs original ParticleVS.exe with wine
+
+OSX:
+	cd $HOME
+	curl -O http://tommironty.fi/IndieLibX.zip
+	unzip -x ./IndieLibX.zip -d ./IndieLibX
+	curl -O http://tommironty.fi/IndieLib_resources.zip
+	unzip -x ./IndieLib_resources.zip -d ./IndieLib_resources
+	cd ./IndieLibX
+	# chmod a+x ./install_.sh
+	sudo ./install_.sh
+	./make.sh AllLibs OSX GNUMAKE GLSL1_1	    -&gt; Builds All C++ static libraries.
+	./make.sh Test OSX GNUMAKE GLSL1_1          -&gt; Builds C++ Test applications.
+	./make.sh SampleApps OSX GNUMAKE GLSL1_1    -&gt; Builds C++ Sample applications.
+	./make.sh TerrainApps OSX GNUMAKE GLSL1_1   -&gt; Builds C++ Terrain applications.
+	./make.sh IndielibApps OSX GNUMAKE GLSL1_1  -&gt; Builds C++ Indielib applications.
+	./make.sh TestApps OSX GNUMAKE GLSL1_1      -&gt; Builds All C++ working applications.
+	./run.sh			  	    -&gt; Runs built applications.
+	./make.sh				    -&gt; Removes temporary files.
+
+Windows10 (32-bit and 64-bit):
+	Make.bat AllLibs WIN VC GLSL1_1      -&gt; Generates C++ static library .sln and .prj files for VC with OpenGL rendering.
+	Make.bat Test WIN VC GLSL1_1         -&gt; Generates C++ Test applications .sln and .prj files for VC with OpenGL rendering.
+	Make.bat SampleApps WIN VC GLSL1_1   -&gt; Generates C++ Sample applications .sln and .prj files for VC with OpenGL rendering.
+	Make.bat TerrainApps WIN VC GLSL1_1  -&gt; Generates C++ Terrain applications .sln and .prj files for VC with OpenGL rendering.
+	Make.bat IndielibApps WIN VC GLSL1_1 -&gt; Generates C++ Indielib applications .sln and .prj files for VC with OpenGL rendering.
+	Make.bat TestApps WIN VC GLSL1_1     -&gt; Generates All C++ working applications .sln and .prj files for VC with OpenGL rendering.
+	
+	Make.bat AllLibs WIN VC D3D11 	     -&gt; Generates C++ static library .sln and .prj files for VC with DirecX11 rendering.
+	Make.bat Test WIN VC D3D11           -&gt; Generates C++ Test applications .sln and .prj files for VC with DirecX11 rendering.
+	Make.bat SampleApps WIN VC D3D11     -&gt; Generates C++ Sample applications .sln and .prj files for VC with DirecX11 rendering.
+	Make.bat TerrainApps WIN VC D3D11    -&gt; Generates C++ Terrain applications .sln and .prj files for VC with DirecX11 rendering.
+	Make.bat IndielibApps WIN VC D3D11   -&gt; Generates C++ Indielib applications .sln and .prj files for VC with DirecX11 rendering.
+	Make.bat TestApps WIN VC D3D11	     -&gt; Generates All C++ working applications .sln and .prj files for VC with DirecX11 rendering.
+
+	run.bat				       -&gt; Runs built applications.
+	Make.bat RadeonTerrainDemo 	       -&gt; Runs original RadeonTerrainDemo.exe
+	Make.bat NatureScene       	       -&gt; Runs original NatureScene.exe
+	Make.bat Particles         	       -&gt; Runs original Particles.exe
+	Make.bat ParticleVS        	       -&gt; Runs original ParticleVS.exe
+</pre>
+</body></html>
+

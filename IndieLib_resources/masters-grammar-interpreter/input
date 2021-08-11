@@ -1,0 +1,745 @@
+#conventions:
+#returns a list of node objects
+#takes a single argument, which is the parent node
+#defines a Node object with name axiom. This is the axiom of the grammar
+
+#axiom = Node("squid_ship") #10 iterations works nicely
+#axiom = Node("borg_cube")
+#axiom = Node("testing")
+#axiom = Node("enterprise")
+
+#=============================reflection stuff
+
+def borg_cube(parent):
+    ret = Node("main_cube")
+    ret.extents = vec3(1000,1000,1000)
+    
+    parent.active = False
+    return [ret]
+
+def main_cube(parent):
+    ret = parent.copy()
+    parent.active = False;
+    ret.name = "rectangle"
+    ret.tags = ["main_body", "armoured"]
+    #if
+    #parent.splitNode("x", 2)
+    return [ret]
+
+
+#===============================rotation example
+#uses absolute coordinates (-a)
+
+def squid_ship(parent):    
+    parent.active = False
+    ret = Node("cylinder", in_position= vec3(50.0, 50, 50.0), in_extents= vec3(10.0, 10.0, 10.0), in_orientation = mat3.rotation(math.pi / 2, vec3(0,0,1)))
+    ret.setSymmetry("rotational", vec3(50,60,50), vec3(1, 0, 0), 5)
+    parent.active = False
+
+    ret2 = Node("ellipsoid", vec3(40, 60, 50), vec3(20, 10, 10), mat3.rotation(math.pi / 2, vec3(0,0,1)))
+
+    ret3 = Node("cylinder", vec3(60, 60, 50), vec3(10, 30, 10), mat3.rotation(math.pi / 2, vec3(0,0,1)), in_additive=False)    
+    return [ret, ret2, ret3]
+
+
+# def cylinder(parent):
+#     ret = Node("cylinder", in_position = parent.position, in_extents = parent.extents, in_orientation = parent.orientation)
+#     ret.position = ret.position + vec3(ret.extents[0], ret.extents[1], 0)
+#     ret.extents = ret.extents * 0.9
+#     ret.orientation = ret.orientation * mat3.rotation(-math.pi / 10, vec3(0,0,1))
+    
+#     return [ret]
+
+#==================================
+
+def testing(parent):
+    parent.active = False
+    #ret = Node("testing_block")
+    ret = Node("ellipsoid")
+    ret.position = vec3(0,0,0)
+    ret.orientation = mat3(1.0)
+    ret.extents = vec3(10,15,10)
+    ret.num = 3
+
+    #ret.splitNode("y", 3)
+
+    tower = Node("cylinder")
+    tower.extents = vec3(5,15,5)
+    tower.position = ret.corner(1,1,1)
+    tower.orientation = mat3(1.0)
+    tower.priority = 1
+
+    #tower.moveNode( vec3(0,50,0) )
+    #tower.rotateNode(math.pi / 3, 0,0,1 )
+
+    tc1 = Node("ellipsoid")
+    tc1.extents = vec3(5,5,5)
+    tc1.position = tower.extents
+    tc1.priority = 4
+    
+    tc2 = tc1.copy()
+    tc2.position.x *= -0.5
+    tc2.priority = 3
+    tc2.additive = False
+
+    tower.children.extend([tc1, tc2])
+
+    tower.scaleNode(2)
+    #tower.makeHollow()
+
+    return [ret]#, tower]
+
+def testing_block(parent):
+    ret = parent.copy()
+    ret.position = vec3(0,30,0)
+    ret.num = parent.num
+    ret.orientation = mat3.rotation(math.pi / ret.num, vec3(0,0,1))
+    ret.num += 0.33
+    
+    parent.name = "rectangle"
+
+    return [ret]
+
+#=====================================
+
+e_disk_radius = 75
+e_disk_height = 3
+e_disk_position = vec3(0,0,0)
+e_neck_height = 35
+e_thruster_number = 2 #random.randint(1,5)
+
+def enterprise(parent):
+    parent.active = False
+
+    e_disk = Node("enterprise_disk")
+    e_disk.position = e_disk_position
+    e_disk.extents = vec3(e_disk_radius, e_disk_height, e_disk_radius)
+    e_disk.tags.append("disk")
+
+    e_neck = Node("enterprise_neck")
+    e_neck.position = vec3(0, -e_neck_height * 0.6, e_disk_radius)
+    e_neck.extents = vec3(5, e_neck_height, 15)
+    e_neck.orientation = mat3.rotation(math.pi / 4, vec3(1,0,0))
+    e_neck.tags.append("neck")
+
+    return [e_disk, e_neck]
+
+def enterprise_disk(parent):
+    #parent.active = False
+    parent.name = "cylinder"
+    
+    e_disk_bulge = parent.copy()
+    e_disk_bulge.name = "ellipsoid"
+    e_disk_bulge.extents = vec3(e_disk_radius * 0.85, e_disk_height * 3, e_disk_radius * 0.85)
+    e_disk_bulge.tags.append("disk")
+
+    e_disk_bridge = e_disk_bulge.copy()
+    e_disk_bridge.name = "ellipsoid"
+    e_disk_bridge.extents = vec3(e_disk_radius * 0.25, e_disk_height * 5, e_disk_radius * 0.25)
+    e_disk_bridge.tags.append("disk")
+    
+    return [e_disk_bulge, e_disk_bridge]
+
+def enterprise_neck(parent):
+    #parent.active = False
+    parent.name = "rectangle"
+    
+    e_neck_corner_remover = Node("rectangle")
+    e_neck_corner_remover.position = vec3(0, parent.extents[1], parent.extents[2])
+    e_neck_corner_remover.extents = vec3(parent.extents[0] * 1.2, parent.extents[2] / 2, parent.extents[2] / 2)
+    e_neck_corner_remover.additive = False
+    e_neck_corner_remover.orientation = mat3.rotation(math.pi / 4, vec3(1,0,0))
+    e_neck_corner_remover.priority = -1
+
+    e_body = Node("enterprise_body")
+    e_body.extents = vec3(e_disk_radius / 4, e_disk_radius / 1.5, e_disk_radius / 4)
+    e_body.position = parent.corner_relative(0,-1,0) + vec3(0,0,e_body.extents[2] / 5)
+    e_body.orientation = mat3.rotation(math.pi / 4, vec3(1,0,0))
+    e_body.tags.append("body")
+    
+    return [e_neck_corner_remover, e_body]
+
+def enterprise_body(parent):
+    #parent.active = False
+    parent.name = "cylinder"
+    
+    e_wing = Node("enterprise_wing")
+    e_wing.extents = vec3(e_disk_radius / 16, e_disk_radius / 8, e_disk_radius / 2)
+    e_wing.position = parent.corner_relative(2, -0.5, 1.5)
+    e_wing.orientation = mat3.rotation(math.pi / 3, vec3(0,0,1))
+    e_wing.orientation = e_wing.orientation * mat3.rotation(math.pi / 6, vec3(0,1,0))
+    e_wing.setSymmetry("reflective", vec3(0,0,0), vec3(1,0,0))
+    #e_wing.orientation = e_wing.orientation * mat3.rotation(math.pi / 6, vec3(0,1,0))
+    #e_wing.orientation = e_wing.orientation * mat3.rotation(math.pi / 4, vec3(-1,1,0))
+    e_wing.tags.append("wing")
+    # if e_thruster_number == 2:
+    #     e_wing.setSymmetry("reflective", vec3(0,0,0), vec3(1,0,0))
+    #     e_wing.position = vec3(30, e_disk_radius / 3, e_disk_radius / 3)
+    # else:
+    #     e_wing.setSymmetry("rotational", vec3(0,0,0), vec3(0,0,1), e_thruster_number)
+    #     e_wing.position = vec3(0, e_disk_radius / 3, e_disk_radius / 3)
+
+    e_body_front_extension = Node("cylinder")
+    e_body_front_extension.position = parent.corner_relative(0,1,0)
+    e_body_front_extension.extents = vec3(parent.extents[0] * 0.75, parent.extents[1] * 0.1, parent.extents[2] * 0.75)
+    e_body_front_extension.tags.append("body_extension")
+
+    e_body_back_subtraction = Node("cylinder")
+    e_body_back_subtraction.position = parent.corner_relative(0,-1,-1)
+    e_body_back_subtraction.extents = vec3(parent.extents[0] * 2, parent.extents[0] * 1.5, parent.extents[0] * 0.8)
+    e_body_back_subtraction.orientation = mat3.rotation(math.pi / 2, vec3(0,1,0))
+    e_body_back_subtraction.additive = False
+    
+    return [e_body_front_extension, e_body_back_subtraction, e_wing]
+
+def enterprise_wing(parent):
+    #parent.active = False
+    parent.name = "rectangle"
+        
+    e_wing_thruster = Node("enterprise_thruster")
+    e_wing_thruster.position = parent.corner_relative(0,0,1)
+    e_wing_thruster.extents = vec3(e_disk_radius / 16, e_disk_radius / 8, e_disk_radius * 0.75)
+
+    e_wing_thruster.reset_orientation = True
+
+    #e_wing_thruster.orientation = mat3.rotation(-math.pi / 3, vec3(0,0,1))
+    #e_wing_thruster.orientation = e_wing_thruster.orientation * mat3.rotation(-math.pi / 6, vec3(0,1,0))
+    
+    e_wing_thruster.tags.append("thruster")
+    e_wing_thruster.tags.append("wing")
+
+    return [e_wing_thruster]
+
+def enterprise_thruster(parent):
+    #parent.active = False
+    parent.name = "rectangle"
+        
+    e_thruster_bumps = parent.copy()
+    e_thruster_bumps.position = vec3(0,0,-parent.extents[2] * 0.333)
+    e_thruster_bumps.extents = vec3(parent.extents[0] * 1.5, parent.extents[1] * 0.6, parent.extents[2] * 0.6)
+    e_thruster_bumps.tags.append("thruster_bumps")
+    
+    return [e_thruster_bumps]
+
+#==============================
+#the spiral
+# -m 50 makes a nice spiral
+
+initial_rectangle_dimensions = vec3(5,10,5)
+
+def spiral(parent):
+    parent.active = False
+
+    ret = Node("spiral_segment")
+    ret.extents = initial_rectangle_dimensions
+    ret.position = vec3(0,0,0)
+    ret.orientation = mat3.rotation(math.pi, vec3(0,0,1))
+    ret.counter = 1
+    
+    return [ret]
+
+def spiral_segment(parent):
+    parent.name = "rectangle"
+
+    ret = parent.copy()
+    ret.name = "spiral_segment"
+    ret.position = parent.corner_relative(1.35,1.75,1)
+    ret.counter = parent.counter * 0.95
+    ret.orientation = mat3.rotation(ret.counter * math.pi / 4, vec3(0,0,1))
+    
+    return [ret]
+
+#================================
+#the fractal tree
+
+tree_initial_rectangle_size = vec3(5,15,5)
+
+def fractal_tree(parent):
+    parent.active = False
+
+    ret = Node("fractal_tree_segment")
+    ret.extents = tree_initial_rectangle_size
+    ret.position = vec3(0,0,0)
+    ret.counter = 1
+    
+    return [ret]
+
+def fractal_tree_segment(parent):
+    parent.name = "rectangle"
+
+    ret = parent.copy()
+    ret.name = "fractal_tree_segment"
+    ret.extents = 0.6666 * ret.extents
+
+    ret_left = ret.copy()
+    ret_right = ret.copy()
+    
+    ret_left.position = parent.corner_relative(-1,1,0) + vec3(-ret_left.extents[1],0,0)
+    ret_right.position = parent.corner_relative(1,1,0) + vec3(ret_right.extents[1],0,0)
+    
+    ret_left.orientation = mat3.rotation(-math.pi / 2, vec3(0,0,1))
+    ret_right.orientation = mat3.rotation(math.pi / 2, vec3(0,0,1))
+    
+    return [ret_left, ret_right]
+
+#====================================
+# flat block (for hopefully doing CA patterns on)
+
+def flat_rectangle(parent):
+    parent.active = False
+    ret = Node("rectangle")
+    ret.extents = vec3(100, 100, 5)
+
+    return [ret]
+
+#=========================================
+#some basic cloud shapes I whipped up for Wei-Chen, to see if he was
+#interested in using my program to generate data sets for his stuff
+
+def clouds(parent):
+    parent.active = False
+    num_objects = 10
+    ret = []
+
+    for i in range(30):
+        shape = Node("ellipsoid")
+        shape.extents = vec3(random.randint(10,50), random.randint(10,50), random.randint(10,50))
+        shape.position = vec3(random.randint(-100,100), random.randint(-100,100), random.randint(-100,100))
+        if random.randint(1,2) == 1:
+            shape.additive = False
+        ret.append(shape)
+
+    return ret
+
+#===========================================
+# a building, done in the split grammar style.
+
+def skyscraper(parent):
+    parent.active = False
+    
+    ret = Node("skyscraper_wall")
+    ret.position = vec3(0,0,50)
+    ret.extents = vec3(150, 200, 5)
+    ret.setSymmetry("rotational", vec3(0,0,0), vec3(0, 1, 0), 4)
+
+    floor = Node("rectangle")
+    floor.tags = ["wall"]
+    floor.position = vec3(0,-400,0)
+    floor.extents = vec3(150,5,150)
+
+    roof = floor.copy()
+    roof.position[1] = 400
+
+    return [ret, floor, roof]
+
+def skyscraper_wall(parent):
+    parent.name = "skyscraper_floor_base"
+    parent.tags.append("wall")
+    return parent.splitNode("y", int(parent.extents[1] / 20.0), False)
+    
+def skyscraper_floor_base(parent):
+    parent.extents[1] = parent.extents[1] * 2
+    parent.name = "skyscraper_wall_section"
+    parent.tags.append("floor")
+    
+    return parent.splitNode("x", int(parent.extents[0] / 20.0), False)
+    
+def skyscraper_wall_section(parent):
+
+    parent.tags.append("wall_section")
+    parent.name = "skyscraper_geometry"
+
+    ret = parent.copy()
+    ret.extents = ret.extents * 0.5
+    ret.priorty = 5
+    #ret.position = vec3(0,0,0)
+    ret.position = vec3(0,0,parent.extents[2] * 2)
+    ret.name = "skyscraper_geometry"
+    ret.tags = ["window_pane"]
+    
+    if random.randint(1,5) <= 6:
+        return [ret]
+    else:
+        return []
+
+def skyscraper_window(parent):
+    ret = parent.copy()
+    parent.name = "skyscraper_geometry"
+
+    ret.extents = ret.extents * 0.5
+    ret.position = vec3(0,0,5)
+    ret.name = "skyscraper_geometry"
+
+    return [ret]
+
+def skyscraper_geometry(parent):
+    parent.name = "rectangle"
+        
+    return []
+
+
+#===========================================
+# a simple tank, for use with the camoflauge pattern.
+# the commented out lines are for trying to do fancy rotations, which I'm not working on any more.
+
+#the lower parameters for these three dimensions are the original ones I used when making the model.
+tank_body_length = random.randint(100, 180)
+tank_body_width = random.randint(60, 100)
+tank_body_height = random.randint(15, 35)
+tank_position = vec3(0,0,0)
+
+tank_body_bump_size_factor = vec3(random.uniform(0.5, 0.9), random.uniform(0.1, 0.3), random.uniform(0.5,0.9))
+
+tank_side_indentation_offset = random.uniform(-1,1)
+tank_side_indentation_length = random.uniform(0.5, 1.5)
+tank_side_indentation_rotation = math.pi / 4 * random.uniform(0.5, 1.5)
+
+#relative to body
+tank_turret_offset = vec3(random.uniform(-0.5,0.5), 1.5, random.uniform(-0.75, 0.75))
+tank_turret_size_factor = vec3(random.uniform(0.5,0.75), random.uniform(0.5,0.8), random.uniform(0.5,0.75))
+tank_turret_double = False
+if random.randint(1,2) <= 1:
+    tank_turret_size_factor = vec3(random.uniform(0.3,0.5), random.uniform(0.3,0.5), random.uniform(0.3,0.8))
+    tank_turret_offset = vec3(random.uniform(0.5,0.8), 1.5, random.uniform(-0.75, 0.8))
+    tank_turret_double = True
+
+#relative to the body
+tank_tread_offset = vec3(random.uniform(0.4,0.8), -1, random.uniform(-0.5, 0.5))
+tank_tread_size_factor = vec3(0.25, 1, random.uniform(0.75, 1.1))
+
+#relative to the body length
+tank_gun_barrel_width = random.uniform(0.05, 0.1)
+tank_gun_size_factor = vec3(tank_gun_barrel_width, random.uniform(0.4,0.6), tank_gun_barrel_width)
+tank_gun_offset = vec3(random.uniform(-0.5,0), random.uniform(0,0.5), 0)
+
+tank_double_guns = False
+if random.randint(1,2) <= 1:
+    tank_gun_size_factor = vec3(tank_gun_barrel_width * 0.6, random.uniform(0.3,0.5), tank_gun_barrel_width * 0.6)
+    tank_gun_offset = vec3(random.uniform(-0.75,0), random.uniform(0,0.5), 0)
+    tank_double_guns = True
+
+#relative to the gun
+tank_gun_tip_size_factor = vec3(random.uniform(0.5,1.2), random.uniform(0.2,0.5), random.uniform(0.5,1.2))
+tank_gun_tip_offset = vec3(0, random.uniform(0.5,1), 0)
+tank_gun_shape = "cylinder"
+tank_gun_tip_type = random.randint(1,3)
+if tank_gun_tip_type == 1:
+    tank_gun_shape = "rectangle"
+elif tank_gun_tip_type == 2:
+    tank_gun_shape = "ellipsoid"
+
+tank_back_area_size = vec3(random.uniform(0.3,1.1), random.uniform(0.3,0.75), random.uniform(0.1,0.3))
+tank_back_area_offset = vec3(random.uniform(-0.2,0.2), random.uniform(0.5, 0.75), random.uniform(-1,-0.8))
+
+def tank(parent):
+    parent.active = False
+
+    ret = Node("tank_main_body")
+    ret.extents = vec3(tank_body_width, tank_body_height, tank_body_length)
+    ret.position = tank_position
+    ret.tags.append("main_body")
+    ret.priority = 0
+
+    return [ret]
+
+def tank_main_body(parent):
+    parent.name = "rectangle"
+
+    top_raised_area = Node("rectangle")
+    top_raised_area.extents = vec3(parent.extents.x * tank_body_bump_size_factor.x, parent.extents.y * tank_body_bump_size_factor.y, parent.extents.z * tank_body_bump_size_factor.z)
+    top_raised_area.position = parent.corner_relative(0,1,0)
+
+    back_raised_area = Node("rectangle")
+    back_raised_area.extents = vec3(parent.extents.x * tank_back_area_size.x, parent.extents.y * tank_back_area_size.y, parent.extents.z * tank_back_area_size.z)
+    back_raised_area.position = parent.corner_relative(tank_back_area_offset.x,tank_back_area_offset.y,tank_back_area_offset.z)
+    back_raised_area.priority = -10
+    
+    front_indentation = Node("tank_indentation")
+    front_indentation.extents = vec3(tank_body_width, tank_body_height, tank_body_height)
+    front_indentation.position = parent.corner_relative(0,-1,1)
+    front_indentation.orientation = mat3.rotation(math.pi / 4, vec3(1,0,0))
+    front_indentation.setSymmetry("reflective", tank_position, vec3(0,0,1))
+    front_indentation.additive = False
+    front_indentation.priority = -5
+    
+    side_indentation = Node("tank_indentation")
+    side_indentation.extents = vec3(tank_body_height, tank_body_length * tank_side_indentation_length, tank_body_height)
+    side_indentation.position = parent.corner_relative(1.3,1.3,tank_side_indentation_offset)
+    side_indentation.orientation = mat3.rotation(math.pi / 2, vec3(1,0,0)) * mat3.rotation(math.pi / 4, vec3(0,0,1))
+    side_indentation.setSymmetry("reflective", tank_position, vec3(1,0,0))
+    side_indentation.additive = False
+    side_indentation.priority = -15
+    
+    turret = Node("tank_turret")
+    turret.extents = vec3(tank_body_width * tank_turret_size_factor[0], tank_body_height * tank_turret_size_factor[1], tank_body_width * tank_turret_size_factor[2])
+    turret.position = parent.corner_relative(tank_turret_offset[0], tank_turret_offset[1], tank_turret_offset[2])
+    #turret.orientation = mat3.rotation(tank_turret_rotation, vec3(0,1,0))
+    turret.tags.append("turret")
+    if tank_turret_double:
+        turret.setSymmetry("reflective", tank_position, vec3(1,0,0))
+    turret.priority = -20
+
+    tread = Node("tank_tread")
+    tread.extents = vec3(tank_body_height * tank_tread_size_factor[1], tank_body_width * tank_tread_size_factor[0], tank_body_length * tank_tread_size_factor[2])
+    tread.position = parent.corner_relative(tank_tread_offset[0], tank_tread_offset[1], tank_tread_offset[2])
+    tread.setSymmetry("reflective", parent.position, vec3(1,0,0))
+    tread.orientation = mat3.rotation(math.pi / 2, vec3(0,0,1))
+    tread.priority = -20
+    tread.tags.append("tread")
+    
+    return [front_indentation, side_indentation, turret, tread, top_raised_area, back_raised_area]
+
+def tank_indentation(parent):
+    parent.name = "rectangle"
+
+    return []
+
+def tank_turret(parent):
+    parent.name = "ellipsoid"
+
+    gun = Node("tank_gun")
+    gun.extents = vec3(tank_body_length * tank_gun_size_factor[0], tank_body_length * tank_gun_size_factor[1], tank_body_length * tank_gun_size_factor[2])
+    gun.position = vec3(0,0,gun.extents[1]) + parent.corner_relative(tank_gun_offset[0], tank_gun_offset[1], tank_gun_offset[2])
+    #gun.position[1] = gun.position[1] + math.sin(tank_gun_angle)
+    #gun.position[2] = gun.position[2] + math.cos(tank_gun_angle)
+    gun.orientation = mat3.rotation(-math.pi / 2, vec3(1,0,0))# * mat3.rotation(tank_gun_angle, vec3(1,0,0))
+    gun.tags.append("gun")
+    if tank_double_guns:
+        gun.setSymmetry("reflective", parent.position, vec3(1,0,0))
+    gun.priority = -20
+
+    return [gun]
+
+def tank_tread(parent):
+    parent.name = "cylinder"
+
+    return []
+
+def tank_gun(parent):
+    parent.name = "cylinder"
+
+    gun_tip = Node("tank_gun_tip")
+    gun_tip.extents = vec3(parent.extents[0] * tank_gun_tip_size_factor[0], parent.extents[1] * tank_gun_tip_size_factor[1], parent.extents[2] * tank_gun_tip_size_factor[2])
+    gun_tip.position = parent.corner_relative(tank_gun_tip_offset[0], tank_gun_tip_offset[1], tank_gun_tip_offset[2])
+    gun_tip.tags.append("gun_tip")
+    gun_tip.priority = -20
+
+    return [gun_tip]
+
+def tank_gun_tip(parent):
+    parent.name = tank_gun_shape
+
+    return []
+
+#===========================================
+# a castle wall
+
+castle_keep_extents = vec3(random.randint(300,500), random.randint(50,500), random.randint(300,500))
+
+castle_keep_centralized = True
+if random.randint(1,2) <= 1:
+    castle_keep_centralized = False
+    
+castle_keep_offset = vec3(random.uniform(0,0.25), random.uniform(0,0.25), random.uniform(0,0.25))
+castle_keep_wall_bordering = vec3(random.randint(-1,1), 0, random.randint(-1,1))
+
+castle_keep_central_tower = True
+if random.randint(1,2) > 1:
+    castle_keep_central_tower = True
+else:
+    castle_keep_central_tower = False
+    
+castle_keep_corner_towers = [True, True, True, True]
+for i in range(4):
+    if random.randint(1,2) <= 1:
+        castle_keep_corner_towers[i] = True
+    else:
+        castle_keep_corner_towers[i] = False
+
+castle_top_wall_extents = vec3(random.randint(750,1500), 100, 50)
+castle_side_wall_extents = vec3(random.randint(750,1500), 100, 50)
+castle_wall_height = random.randint(100,250)
+
+castle_tower_width = random.randint(100,200)
+castle_tower_extents = vec3(castle_tower_width, random.randint(300,500), castle_tower_width)
+castle_tower_position_relative = vec3(-1,0,0)
+if random.randint(1,2) > 1:
+    castle_tower_position_relative = vec3(random.uniform(-1,0),0,random.uniform(-1,1))
+
+castle_tower_mirror = True
+if random.randint(1,3) <= 1:
+    castle_tower_mirror = False
+
+castle_gate_extents = vec3(50, 50, castle_tower_extents[2])
+
+castle_gate_position_relative = vec3(0,0,0)
+if random.randint(1,2) > 1:
+    castle_gate_position_relative = vec3(random.uniform(-1,-0.33333),0,0)
+
+castle_gate_mirror = False
+if random.randint(1,3) <= 1:
+    castle_gate_mirror = True
+
+#relative to wall
+castle_battlements_scale_factor = vec3(1, 0.3, 0.3)
+castle_battlements_present = True
+if random.randint(1,3) <= 1:
+    castle_battlements_present = False
+
+#relative to tower
+castle_tower_battlements_scale_factor = vec3(1.33333, 0.2, 1.33333)
+
+def castle(parent):
+    parent.active = False
+
+    keep = Node("castle_keep")
+    keep.extents = castle_keep_extents
+    if castle_keep_centralized:
+        keep.position = castle_keep_offset
+        keep.position = vec3(castle_top_wall_extents.x * castle_keep_offset[0] + castle_keep_extents[0] * -castle_keep_offset[0], 0, castle_side_wall_extents.x * castle_keep_offset[2] + castle_keep_extents[2] * -castle_keep_offset[2])
+    else:
+        keep.position = vec3(castle_top_wall_extents.x * castle_keep_wall_bordering[0] + castle_keep_extents[0] * -castle_keep_wall_bordering[0], 0, castle_side_wall_extents.x * castle_keep_wall_bordering[2] + castle_keep_extents[2] * -castle_keep_wall_bordering[2])
+    keep.position[1] = keep.extents[1]
+    keep.tags.append("castle_keep")
+    keep.priority = 0
+
+    top_wall = Node("castle_wall")
+    top_wall.extents = castle_top_wall_extents
+    top_wall.extents.y = castle_wall_height
+    top_wall.position = vec3(0, castle_wall_height, castle_side_wall_extents.x)
+    top_wall.tags.append("castle_wall")
+    top_wall.priority = 0
+    top_wall.setSymmetry("reflective", vec3(0,0,0), vec3(0, 0, 1))
+
+    side_wall = Node("castle_wall")
+    side_wall.extents = castle_side_wall_extents
+    side_wall.extents.y = castle_wall_height
+    side_wall.position = vec3(castle_top_wall_extents.x, castle_wall_height, 0)
+    side_wall.orientation = mat3.rotation(math.pi / 2, vec3(0,1,0))
+    side_wall.tags.append("castle_wall")
+    side_wall.priority = 0
+    side_wall.setSymmetry("reflective", vec3(0,0,0), vec3(1, 0, 0))
+        
+    return [top_wall, side_wall, keep]
+
+def castle_wall(parent):    
+    parent.name = "rectangle"
+
+    tower = Node("castle_tower")
+    tower.extents = castle_tower_extents
+    tower.position = parent.corner_relative(castle_tower_position_relative[0], castle_tower_position_relative[1], castle_tower_position_relative[2])
+    tower.position[1] = tower.position[1] + tower.extents[1] - parent.extents[1]
+    tower.tags.append("castle_tower")
+    if castle_tower_mirror:
+        tower.setSymmetry("reflective", parent.position, vec3(1,0,0))
+
+    battlements = Node("castle_battlements")
+    battlements.extents = vec3(parent.extents[0] * castle_battlements_scale_factor[0], parent.extents[1] * castle_battlements_scale_factor[1], parent.extents[2] * castle_battlements_scale_factor[2])
+    battlements.position = parent.corner_relative(0,1,1)
+    battlements.tags.append("castle_battlements")
+    battlements.setSymmetry("reflective", parent.position, vec3(0,0,1))
+        
+    gate = Node("castle_gate")
+    gate.extents = castle_gate_extents
+    gate.extents[1] = gate.extents[1] * 0.66666
+    gate.position = parent.corner_relative(castle_gate_position_relative[0], castle_gate_position_relative[1], castle_gate_position_relative[2])
+    gate.position[1] = gate.position[1] + gate.extents[1] - parent.extents[1]
+    gate.tags.append("castle_gate")
+    if castle_gate_mirror:
+        gate.setSymmetry("reflective", parent.position, vec3(1,0,0))
+    gate.additive = False
+
+    ret = [tower, gate]
+    if castle_battlements_present:
+        ret.append(battlements)
+    return ret
+
+def castle_tower(parent):
+    parent.name = "cylinder"
+
+    tower_battlements = Node("castle_tower_battlements")
+    tower_battlements.position = parent.corner_relative(0,1,0)
+    tower_battlements.extents = vec3(parent.extents[0] * castle_tower_battlements_scale_factor[0], parent.extents[1] * castle_tower_battlements_scale_factor[1], parent.extents[2] * castle_tower_battlements_scale_factor[2])
+    tower_battlements.tags.append("tower_battlements")
+    
+    return [tower_battlements]
+
+def castle_battlements(parent):
+    parent.name = "rectangle"
+
+    return []
+
+def castle_tower_battlements(parent):
+    parent.name = "cylinder"
+    
+    subtractive_area = Node("cylinder")
+    subtractive_area.additive = False
+    subtractive_area.extents = vec3(parent.extents[0] * 0.8, parent.extents[1] * 2, parent.extents[2] * 0.8)
+    subtractive_area.position = parent.corner_relative(0,2,0)
+    subtractive_area.priority = parent.priority - 1
+    subtractive_area.tags.append("tower_battlements_subtractive_area")
+
+    return [subtractive_area]
+
+def castle_gate(parent):
+    parent.name = "rectangle"
+
+    arch = Node("cylinder")
+    arch.orientation = mat3.rotation(math.pi / 2, vec3(1,0,0))
+    arch.extents = vec3(parent.extents[0], parent.extents[2], parent.extents[0])
+    arch.position = parent.corner_relative(0,1,0)
+    arch.additive = False
+    arch.tags.append("gate_subtractive_area")
+    
+    return [arch]
+
+def castle_keep(parent):
+    parent.name = "rectangle"
+
+    ret = []
+
+    roof = Node("rectangle")
+    roof.orientation = mat3.rotation(math.pi / 4, vec3(0,0,1))
+    roof.extents = vec3(parent.extents[0] / 2.0, parent.extents[0] / 2.0, parent.extents[2])
+    roof.position = parent.corner_relative(0,1,0)    
+    roof.tags.append("keep_roof")
+
+    ret.append(roof)
+
+    central_tower = Node("castle_tower")
+    central_tower.extents = castle_tower_extents
+    central_tower.position = parent.corner_relative(0,1,0) + vec3(0,castle_tower_extents[1],0)
+    central_tower.tags.append("keep_tower")
+    if castle_keep_central_tower:
+        ret.append(central_tower)
+
+    count = 0
+    for i in castle_keep_corner_towers:
+        count = count + 1
+        if i:
+            corner_tower = Node("castle_tower")
+            corner_tower.extents = castle_tower_extents
+            corner_tower.tags.append("keep_tower")
+            
+            t_pos = vec3(0,0,0)
+            if count == 1:
+                t_pos = vec3(-1,0,-1)
+            elif count == 2:
+                t_pos = vec3(-1,0,1)
+            elif count == 3:
+                t_pos = vec3(1,0,-1)
+            elif count == 4:
+                t_pos = vec3(1,0,1)
+                
+            corner_tower.position = parent.corner_relative(t_pos[0], 0, t_pos[2])
+            corner_tower.position[1] = -parent.extents[1] + corner_tower.extents[1]
+            ret.append(corner_tower)
+            
+    ground_subtractive_thing = Node("rectangle")
+    ground_subtractive_thing.extents = parent.extents
+    ground_subtractive_thing.position = vec3(0, -ground_subtractive_thing.extents[1] * 2, 0)
+    ground_subtractive_thing.additive = False
+    ground_subtractive_thing.priority = parent.priority - 5
+    ret.append(ground_subtractive_thing)
+            
+    return ret

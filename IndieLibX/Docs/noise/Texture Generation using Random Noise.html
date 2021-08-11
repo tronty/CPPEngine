@@ -1,0 +1,700 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>Texture Generation using Random Noise</title>
+<meta content="text/html; charset=windows-1252" http-equiv="content-type">
+<link rel="stylesheet" type="text/css" href="Texture%20Generation%20using%20Random%20Noise_files/stylesheet.css">
+</head>
+<body>
+<h1>Lode's Computer Graphics Tutorial</h1>
+<h1>Texture Generation using Random Noise<br></h1>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#Introduction_">Introduction</a></li>
+<li><a href="#Smooth_Noise_">Smooth Noise</a></li>
+<li><a href="#Turbulence">Turbulence</a></li>
+<li><a href="#Clouds">Clouds</a></li>
+<li><a href="#Marble">Marble</a></li>
+<li><a href="#Wood">Wood</a></li>
+<li><a href="#3D_Random_Noise">3D Random Noise</a><br></li>
+</ul>
+<a href="https://lodev.org/cgtutor/index.html">Back to index</a><br>
+<h2><a name="Introduction_" id="Introduction_"></a>Introduction<br></h2>
+In nature, everything has a random look, while mathematical
+formulas typically don't generate random looking results, unless
+you use them well. Random noise, such as Perlin noise invented by Ken Perlin, uses
+random numbers to generate natural looking textures.<br>
+<h2><a name="Smooth_Noise_" id="Smooth_Noise_"></a>Smooth
+Noise<br></h2>
+As source for the random noise we need an array of random values,
+called noise[x][y]. Since our interest is generating 2D textures, a
+2D array is used. The function generateNoise will fill the array
+with noise, and the main function is programmed to show this noise
+array on the screen. The noise itself is generated with the rand()
+function from the &lt;cstdlib&gt; header file, this function
+returns a random integer value between 0 and 32768 (as defined in
+the header file). It's normalized to a random real number between 0
+and 1 by dividing it through 32768.0 (make sure to use floating
+point division).<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">#define noiseWidth 128
+#define noiseHeight 128
+
+double noise[noiseHeight][noiseWidth]; <span style="color:#009">//the noise array
+</span>
+void generateNoise();
+
+int main(int argc, char *argv[])
+{
+  screen(noiseWidth, noiseHeight, 0, <span style="color:red">"Random Noise"</span>);
+  generateNoise();
+
+  ColorRGB color;
+
+  for(int y = 0; y &lt; h; y++)
+  for(int x = 0; x &lt; w; x++)
+  {
+    color.r = color.g = color.b = Uint8(256 * noise[x][y]);
+    pset(x, y, color);
+  }
+
+  redraw();
+  sleep();
+  return 0;
+}
+
+void generateNoise()
+{
+  for (int y = 0; y &lt; noiseHeight; y++)
+  for (int x = 0; x &lt; noiseWidth; x++)
+  {
+    noise[y][x] = (rand() % 32768) / 32768.0;
+  }
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+Here's the noise it generates:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noise.gif" style="width: 191px; height: 191px;"><br>
+<br>
+This noise doesn't look very natural however, especially if you
+zoom in. Zoom in by dividing the x and y used to call the noise
+array through 8, in the pixel loop of the main function. You get
+something blocky:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    color.r = color.g = color.b = Uint8(256 * noise[y / 8][x / 8]);
+    pset(x, y, color);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+When zooming in, we want something smoother. For that, linear
+interpolation can be used. Currently the noise is an array and it's
+got only a discrete set of integer indices pointing to its
+contents. By using bilinear interpolation on the fractional part,
+you can make it smoother. For that, a new function, smoothNoise, is
+introduced:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">double smoothNoise(double x, double y)
+{
+   <span style="color:#009">//get fractional part of x and y
+</span>   double fractX = x - int(x);
+   double fractY = y - int(y);
+
+   <span style="color:#009">//wrap around
+</span>   int x1 = (int(x) + noiseWidth) % noiseWidth;
+   int y1 = (int(y) + noiseHeight) % noiseHeight;
+
+   <span style="color:#009">//neighbor values
+</span>   int x2 = (x1 + noiseWidth - 1) % noiseWidth;
+   int y2 = (y1 + noiseHeight - 1) % noiseHeight;
+
+   <span style="color:#009">//smooth the noise with bilinear interpolation
+</span>   double value = 0.0;
+   value += fractX     * fractY     * noise[y1][x1];
+   value += (1 - fractX) * fractY     * noise[y1][x2];
+   value += fractX     * (1 - fractY) * noise[y2][x1];
+   value += (1 - fractX) * (1 - fractY) * noise[y2][x2];
+
+   return value;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The returned value is the weighed average of 4 neighboring pixels
+of the array. In the main function, now use this instead of
+directly calling the noise array, and use real numbers for the
+division:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    color.r = color.g = color.b = Uint8(256 * smoothNoise(x / 8.0, y / 8.0));
+    pset(x, y, color);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+This is again the result zoomed in 8 times, but now with the
+bilinear interpolation. If you don't zoom in you won't be able to
+see the interpolation:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisezoomsmooth.jpg" style="width: 190px; height: 190px;"><br>
+<br>
+This is quite useful for random noise, the smoothing method could
+be better maybe, bilinear interpolation is often used by 3D cards
+for smoothing textures in games as a cheap and fast
+technique.<br>
+<br>
+Let's call this image a "noise texture".<br>
+<h2><a name="Turbulence" id="Turbulence"></a>Turbulence</h2>
+Turbulence is what creates natural looking features out of smoothed
+noise. The trick is to add multiple noise textures of different
+zooming scales together. An example of how this represents nature
+can be found in a mountain range: there are very large features
+(the main mountains), they are very deeply zoomed in noise.<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemountains1.jpg" style="width: 378px; height: 156px;"><br>
+<br>
+Then added to the mountains are smaller features: multiple tops,
+variations in the slope, ...<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemountains2.jpg" style="width: 396px; height: 164px;"><br>
+<br>
+Then, at an even smaller scale, there are rocks on the
+mountains.<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemountains3.jpg" style="width: 370px; height: 164px;"><br>
+<br>
+An even smaller layer is the grains of sand. Together, the sum of
+all these layers forms natural looking mountains.<br>
+<br>
+In 2D, this is done by adding different sizes of the smoothed noise
+together.<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulence1.jpg" style="width: 713px; height: 142px;"><br>
+<br>
+The zooming factor started at 16 here, and is divided through two
+each time. Keep doing this until the zooming factor is 1. The small
+features in the mountain example weren't only smaller in the width,
+but also in the height. To achieve this in 2D textures, make the
+images with a smaller zoom darker, so adding them will have less
+effect:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulence2.jpg" style="width: 713px; height: 142px;"><br>
+<br>
+By adding these 5 images together, and dividing the result through
+5 to get the average, you get a turbulence texture:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulencesum.jpg" style="width: 142px; height: 142px;"><br>
+<br>
+Here's a function that'll automaticly do all this for a single
+pixel. The parameter "size" is the initial zoom factor, which was
+16 in the example above. The return value is normalized so that
+it'll be a number between 0 and 255.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">double turbulence(double x, double y, double size)
+{
+  double value = 0.0, initialSize = size;
+
+  while(size &gt;= 1)
+  {
+    value += smoothNoise(x / size, y / size) * size;
+    size /= 2.0;
+  }
+
+  return(128.0 * value / initialSize);
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+To use the turbulence function, change the small part of the code
+in the loop that goes through every pixel by the following:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    color.r = color.g = color.b = Uint8(turbulence(x, y, 64));
+    pset(x, y, color);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The size is set to 64 there, and the result looks like this:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulence64.jpg" style="width: 256px; height: 256px;"><br>
+<br>
+If you set the initial size to 256 instead, the result is much
+bigger and smoother:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulence256.jpg" style="width: 252px; height: 254px;"><br>
+<br>
+And here's a very small initial size of only 8:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulence8.jpg" style="width: 252px; height: 252px;"><br>
+<br>
+The textures here have some obvious horizontal and vertical lines
+because of the bilinear filter smooth function. The Clouds filter
+in Photoshop generates a texture similar to the ones above, but
+with a nicer smooth function. Nicer smooth functions are beyond the
+scope of this article though.<br>
+<br>
+If you use no smooth function at all, it looks like this:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseturbulenceunsmooth.jpg" style="width: 253px; height: 256px;"><br>
+<h2><a name="Clouds" id="Clouds"></a>Clouds</h2>
+To generate a sky with clouds, you can use the turbulence texture
+above, but with a blue-white color palette instead of black and
+white. For that the HSLtoRGB function can be used, with the hue set
+to blue (169 or 240°) and lightness ranging from 192 to 255 to
+make it white enough. Here's a new main function that'll do
+this:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">#define noiseWidth 320
+#define noiseHeight 240
+
+double noise[noiseHeight][noiseWidth]; <span style="color:#009">//the noise array
+</span>
+void generateNoise();
+double smoothNoise(double x, double y);
+double turbulence(double x, double y, double size);
+
+int main(int argc, char *argv[])
+{
+  screen(noiseWidth, noiseHeight, 0, <span style="color:red">"Random Noise"</span>);
+  generateNoise();
+
+  Uint8 L;
+  ColorRGB color;
+
+  for(int y = 0; y &lt; h; y++)
+  for(int x = 0; x &lt; w; x++)
+  {
+    L = 192 + Uint8(turbulence(x, y, 64)) / 4;
+    color = HSLtoRGB(ColorHSL(169, 255, L));
+
+    pset(x, y, color);
+  }
+
+  redraw();
+  sleep();
+  return 0;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseclouds.jpg" style="width: 318px; height: 238px;"><br>
+<br>
+<h2><a name="Marble" id="Marble"></a>Marble</h2>
+It's possible to use random Noise to create a texture that looks
+like marble. To do this, a sine pattern is taken as base, a sine
+pattern looks like this:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/plasmasine2.gif" style="width: 256px; height: 256px;"><br>
+<br>
+The sine texture is generated by giving the pixel at position (x,
+y) the color value 255 * sin(x + y). You can change the angle and
+period (= amount of lines) by multiplying x and y with factors. The
+sine pattern has dark and bright lines,&nbsp; and by applying
+turbulence to these lines by adding a turbulence term in the sine,
+you get something that looks like the veins of marble:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">int main(int argc, char *argv[])
+{
+  screen(noiseWidth, noiseHeight, 0, <span style="color:red">"Marble"</span>);
+  generateNoise();
+
+  ColorRGB color;
+
+  <span style="color:#009">//xPeriod and yPeriod together define the angle of the lines
+</span>  <span style="color:#009">//xPeriod and yPeriod both 0 ==&gt; it becomes a normal clouds or turbulence pattern
+</span>  double xPeriod = 5.0; <span style="color:#009">//defines repetition of marble lines in x direction
+</span>  double yPeriod = 10.0; <span style="color:#009">//defines repetition of marble lines in y direction
+</span>  <span style="color:#009">//turbPower = 0 ==&gt; it becomes a normal sine pattern
+</span>  double turbPower = 5.0; <span style="color:#009">//makes twists
+</span>  double turbSize = 32.0; <span style="color:#009">//initial size of the turbulence
+</span>
+  for(int y = 0; y &lt; h; y++)
+  for(int x = 0; x &lt; w; x++)
+  {
+    double xyValue = x * xPeriod / noiseWidth + y * yPeriod / noiseHeight + turbPower * turbulence(x, y, turbSize) / 256.0;
+    double sineValue = 256 * fabs(sin(xyValue * 3.14159));
+    color.r = color.g = color.b = Uint8(sineValue);
+    pset(x, y, color);
+  }
+
+  redraw();
+  sleep();
+  return 0;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The value "xyValue" is the sum of x multiplied with a factor, y
+multiplied with a factor, and the turbulence multiplied with a
+factor. xPeriod, yPeriod and turbPower are parameters that you can
+change to get different textures. The division through 256 of the
+turbulence is done to bring it to a value between 0 and 1, because
+the turbulence function was made to return values from 0 to 255.
+The values above give the following result:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble1.jpg" style="width: 192px; height: 192px;"><br>
+<br>
+Decreasing turbPower will give less twists, for example if you set
+it to 1.0, you get:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble2.jpg" style="width: 190px; height: 190px;"><br>
+<br>
+You can see much better how a sine pattern is used now, the dark
+and bright lines only twist a small bit, which still gives a sort
+of natural look.<br>
+<br>
+Changing the initial size of the turbulence function makes the
+twists bigger (and thus much more subtle, similar to making
+turbPower smaller), while a small initial size gives much smaller
+but mor eaggressive twists. Here turbPower is set to 5.0 again, and
+turbSize to128.0 and 16.0 respectively:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble3.jpg" style="width: 190px; height: 191px;"> <img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble4.jpg" style="width: 189px; height: 190px;"><br>
+<br>
+Changing the period of x and y makes more or less black lines, for
+example here the lines are made wider and with an angle of 0°
+by setting xPeriod to 0 and yPeriod to 1 so that there'll be only
+one horizontal black line. turbSize is set to 32, and turbPower to
+only 1 so that you can see the direction of the line better:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble5.jpg" style="width: 191px; height: 189px;"><br>
+<br>
+Here are the same parameters, but turbPower back to 5, so you can
+see how a big enough turbulence really totally hides the fact that
+there's only one black line:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble6.jpg" style="width: 190px; height: 188px;"><br>
+<br>
+You can also change the colors of the marble by using a different
+value for R, G and B, for example to make it a bit red or
+yellowish:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    double xyValue = x * xPeriod / noiseWidth + y * yPeriod / noiseHeight + turbPower * turbulence(x, y, turbSize) / 256.0;
+    double sineValue = <b>226</b> * fabs(sin(xyValue * 3.14159));
+    color.r = Uint8(<b>30</b> + sineValue);
+    color.g = Uint8(<b>10</b> + sineValue);
+    color.b = Uint8(sineValue);
+    pset(x, y, color);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisemarble7.jpg" style="width: 190px; height: 191px;"><br>
+<br>
+By playing around with the parameters you can get totally different
+marble or stone patterns.<br>
+<h2><a name="Wood" id="Wood"></a>Wood</h2>
+Natural looking rings of wood can be created by adding turbulence
+to the following mathematical function:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/plasmasinedist.gif" style="width: 256px; height: 256px;"><br>
+<br>
+To get the pattern above, take the sine of the distance of x and y
+to the center, so the color of the pixel at position x, y is 256 *
+sin(sqrt(x*x + y*y)). Add a turbulence term into the sine, and you
+get natural looking wood.<br>
+<br>
+The values R, G and B are calculated out of the result in such a
+way that the wood will look brown:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">int main(int argc, char *argv[])
+{
+  screen(noiseWidth, noiseHeight, 0, <span style="color:red">"Wood"</span>);
+  generateNoise();
+
+  ColorRGB color;
+
+  double xyPeriod = 12.0; <span style="color:#009">//number of rings
+</span>  double turbPower = 0.1; <span style="color:#009">//makes twists
+</span>  double turbSize = 32.0; <span style="color:#009">//initial size of the turbulence
+</span>
+  for(int y = 0; y &lt; h; y++)
+  for(int x = 0; x &lt; w; x++)
+  {
+    double xValue = (x - noiseWidth / 2) / double(noiseWidth);
+    double yValue = (y - noiseHeight / 2) / double(noiseHeight);
+    double distValue = sqrt(xValue * xValue + yValue * yValue) + turbPower * turbulence(x, y, turbSize) / 256.0;
+    double sineValue = 128.0 * fabs(sin(2 * xyPeriod * distValue * 3.14159));
+    color.r = Uint8(80 + sineValue);
+    color.g = Uint8(30 + sineValue);
+    color.b = 30;
+    pset(x, y, color);
+  }
+
+  redraw();
+  sleep();
+  return 0;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The rings are supposed to be visible here so, unlike for the
+marble, turbPower should be small.<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisewood.jpg" style="width: 191px; height: 191px;"><br>
+<br>
+Here's the result with more rings: xyPeriod is set to 25.<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisewood2.jpg" style="width: 191px; height: 190px;"><br>
+<br>
+Here the wood has 12 rings again, but more turbulence: turbPower is
+set to 0.2:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisewood3.jpg" style="width: 188px; height: 188px;"><br>
+<br>
+If you make turbPower too high, the rings won't be visible anymore,
+and you'll get something that looks more like the marble patterns.
+Here it's set to 0.5:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisewood4.jpg" style="width: 190px; height: 191px;"><br>
+<br>
+So you see how you can turn a mathematical 2D function into a
+natural looking texture by adding noise to it. You can try this on
+much more functions, for example here's the mathematical pattern
+sin(x) + sin(y):<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseplasma.jpg" style="width: 190px; height: 189px;"><br>
+<br>
+Add some noise to it with the following code:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">    double xValue = (x - noiseWidth / 2) / double(noiseWidth) + turbPower * turbulence(x, y, turbSize) / 256.0;
+    double yValue = (y - noiseHeight / 2) / double(noiseHeight) + turbPower * turbulence(h - y, w - x, turbSize) / 256.0;
+    double sineValue = 22.0 * fabs(sin(xyPeriod * xValue * 3.1415) + sin(xyPeriod * yValue * 3.1415));
+    color = HSVtoRGB(ColorHSV(Uint8(sineValue), 255, 255));
+    pset(x, y, color);</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+And you get:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noiseplasma2.jpg" style="width: 190px; height: 191px;"><br>
+<br>
+2D random noise can also be used for terrain heightmaps, physical
+simulations, etc...<br>
+<h2><a name="3D_Random_Noise"></a>3D Random Noise</h2>
+<br>
+Random Noise can be extended to any number of dimensions. The
+extension to 3D requires adding a z component, apart from a width
+and height the noise array now also needs a depth.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">#define noiseWidth 192
+#define noiseHeight 192
+#define noiseDepth 64
+
+double noise[noiseDepth][noiseHeight][noiseWidth]; <span style="color:#009">//the noise array</span></span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The generateNoise function now needs to fill up the 3-dimensional
+array so it gets an extra loop:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">void generateNoise()
+{
+  for(int z = 0; z &lt; noiseDepth; z++)
+  for(int y = 0; y &lt; noiseHeight; y++)
+  for(int x = 0; x &lt; noiseWidth; x++)
+  {
+    noise[z][y][x] = (rand() % 32768) / 32768.0;
+  }
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The smoothing function now has to interpolate in the x, y and z
+direction so there are 8 terms instead of only 4:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">double smoothNoise(double x, double y, double z)
+{
+  <span style="color:#009">//get fractional part of x and y
+</span>  double fractX = x - int(x);
+  double fractY = y - int(y);
+  double fractZ = z - int(z);
+
+  <span style="color:#009">//wrap around
+</span>  int x1 = (int(x) + noiseWidth) % noiseWidth;
+  int y1 = (int(y) + noiseHeight) % noiseHeight;
+  int z1 = (int(z) + noiseDepth) % noiseDepth;
+
+  <span style="color:#009">//neighbor values
+</span>  int x2 = (x1 + noiseWidth - 1) % noiseWidth;
+  int y2 = (y1 + noiseHeight - 1) % noiseHeight;
+  int z2 = (z1 + noiseDepth - 1) % noiseDepth;
+
+  <span style="color:#009">//smooth the noise with bilinear interpolation
+</span>  double value = 0.0;
+  value += fractX     * fractY     * fractZ     * noise[z1][y1][x1];
+  value += fractX     * (1 - fractY) * fractZ     * noise[z1][y2][x1];
+  value += (1 - fractX) * fractY     * fractZ     * noise[z1][y1][x2];
+  value += (1 - fractX) * (1 - fractY) * fractZ     * noise[z1][y2][x2];
+
+  value += fractX     * fractY     * (1 - fractZ) * noise[z2][y1][x1];
+  value += fractX     * (1 - fractY) * (1 - fractZ) * noise[z2][y2][x1];
+  value += (1 - fractX) * fractY     * (1 - fractZ) * noise[z2][y1][x2];
+  value += (1 - fractX) * (1 - fractY) * (1 - fractZ) * noise[z2][y2][x2];
+
+  return value;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The turbulence function is easy to extend, just add z / size to the
+call to the smoothNoise function:<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">double turbulence(double x, double y, double z, double size)
+{
+  double value = 0.0, initialSize = size;
+
+  while(size &gt;= 1)
+  {
+    value += smoothNoise(x / size, y / size, z / size) * size;
+    size /= 2.0;
+  }
+
+  return(128.0 * value / initialSize);
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The main function presented here will use the 3D random noise to
+generate clouds animated in the time. It's as if the clouds are
+forming and changing smoothly.<br>
+<br>
+<center>
+<table class="codetable">
+<tbody><tr>
+<td style="vertical-align: top;">
+<pre><span class="code">int main(int argc, char *argv[])
+{
+  screen(noiseWidth, noiseHeight, 0, <span style="color:red">"3D Random Noise"</span>);
+  generateNoise();
+
+  Uint8 L;
+  ColorRGB color;
+  double t;
+
+  while(!done())
+  {
+    for(int y = 0; y &lt; h; y++)
+    for(int x = 0; x &lt; w; x++)
+    {
+      L = 192 + Uint8(turbulence(x, y, t, 32)) / 4;
+      color = HSLtoRGB(ColorHSL(169, 255, L));
+
+      pset(x, y, color);
+
+    }
+    t = getTicks() / 40.0;
+    redraw();
+  }
+  return 0;
+}</span></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+<br>
+The screenshot can't show how it animates of course:<br>
+<br>
+<img alt="" src="Texture%20Generation%20using%20Random%20Noise_files/noisecloudsanim.jpg" style="width: 191px; height: 191px;"><br>
+<br>
+3D andom noise can be used for animating 2D textures, for 3D
+textures (3D textures can for example be used on a rock of which
+you can remove parts or shoot pieces off it to see the inside of
+it, if you'd lay a 2D on it, and you remove a part of it, that same
+2D texture would be drawn again), 3D planet textures, 3D volumetric
+fog, etc...<br>
+<br>
+<hr>
+Last edited: 2004
+<br><br>
+Copyright (c) 2004-2007 by Lode Vandevenne. All rights reserved.
+<script language="javascript" src="Texture%20Generation%20using%20Random%20Noise_files/colorcode.js"></script>
+
+
+</body></html>

@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html class="js fontface no-webkit no-chrome no-windows no-ie8 wf-adelle-n4-active wf-adelle-n7-active wf-active" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+  <meta charset="utf-8">
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+
+
+
+  <title>Git - Basic Branching and Merging</title>
+
+  <link href="https://git-scm.com/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link rel="alternate" href="https://git-scm.com/blog.rss" type="application/rss+xml" title="Git - Blog">
+
+  <link rel="stylesheet" media="screen" href="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/git-scm-65ca8280a031499ee9e8e2b10c8a596c.css">
+  
+
+  <!--[if (gte IE 6)&(lte IE 8)]>
+  
+  <![endif]-->
+
+  
+  <style type="text/css">.tk-adelle{font-family:"adelle",serif;}</style><link media="all" href="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/l.css" rel="stylesheet">
+
+</head>
+
+<body id="documentation">
+
+  <div class="inner">
+    <header>
+
+  <a href="https://git-scm.com/"><img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/logo2x.png" alt="Git" height="46" width="110"></a>
+  <span id="tagline">
+    <em>--</em>distributed-even-if-your-workflow-isnt
+  </span>
+
+  <form id="search" action="/search/results">
+    <input id="search-text" name="search" placeholder="Search entire site..." autocomplete="off" type="text">
+  </form>
+  <div id="search-results"></div>
+
+</header>
+
+  </div> <!-- .inner -->
+
+    <div class="inner">
+      <div id="content-wrapper">
+        <aside class="sidebar">
+  <nav>
+    <ul>
+      <li>
+        <a href="https://git-scm.com/about">About</a>
+      </li>
+      <li>
+        <a class="active" href="https://git-scm.com/doc">Documentation</a>
+        <ul class="expanded">
+          <li>
+            <a href="https://git-scm.com/docs">Reference</a>
+          </li>
+          <li>
+            <a href="https://git-scm.com/book">Book</a>
+          </li>
+          <li>
+            <a href="https://git-scm.com/videos">Videos</a>
+          </li>
+          <li>
+            <a href="https://git-scm.com/doc/ext">External Links</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="https://git-scm.com/blog">Blog</a>
+      </li>
+      <li>
+        <a href="https://git-scm.com/downloads">Downloads</a>
+        <ul class="">
+          <li>
+            <a href="https://git-scm.com/downloads/guis">GUI Clients</a>
+          </li>
+          <li>
+            <a href="https://git-scm.com/downloads/logos">Logos</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="https://git-scm.com/community">Community</a>
+      </li>
+    </ul>
+      <hr class="sidebar">
+        <p>Download this book in <a href="https://progit2.s3.amazonaws.com/en/2016-03-22-f3531/progit-en.1084.pdf">PDF</a>,
+   <a href="https://progit2.s3.amazonaws.com/en/2016-03-22-f3531/progit-en.1084.mobi" type="application/x-mobipocket-ebook">mobi</a>,
+or <a href="https://progit2.s3.amazonaws.com/en/2016-03-22-f3531/progit-en.1084.epub" type="application/epub+zip">ePub</a> form for free.</p>
+
+  <p>
+This book is translated into
+  <a href="https://git-scm.com/book/de">Deutsch</a>,
+  <a href="https://git-scm.com/book/zh">简体中文</a>,
+  <a href="https://git-scm.com/book/zh-tw">正體中文</a>,
+  <a href="https://git-scm.com/book/fr/v2">Français</a>,
+  <a href="https://git-scm.com/book/ja">日本語</a>,
+  <a href="https://git-scm.com/book/nl">Nederlands</a>,
+  <a href="https://git-scm.com/book/ru">Русский</a>,
+  <a href="https://git-scm.com/book/ko">한국어</a>,
+  <a href="https://git-scm.com/book/pt-br">Português (Brasil)</a> and
+  <a href="https://git-scm.com/book/cs">Čeština</a>.
+</p>
+<p>
+Partial translations available in
+  <a href="https://git-scm.com/book/ar">Arabic</a>,
+  <a href="https://git-scm.com/book/es">Español</a>,
+  <a href="https://git-scm.com/book/id">Indonesian</a>,
+  <a href="https://git-scm.com/book/it">Italiano</a>,
+  <a href="https://git-scm.com/book/fi">Suomi</a>,
+  <a href="https://git-scm.com/book/mk">Македонски</a>,
+  <a href="https://git-scm.com/book/pl">Polski</a> and
+  <a href="https://git-scm.com/book/tr">Türkçe</a>.
+</p>
+<p>
+Translations started for
+  <a href="https://git-scm.com/book/az">Azərbaycan dili</a>,
+  <a href="https://git-scm.com/book/be">Беларуская</a>,
+  <a href="https://git-scm.com/book/ca">Català</a>,
+  <a href="https://git-scm.com/book/eo">Esperanto</a>,
+  <a href="https://git-scm.com/book/es-ni">Español (Nicaragua)</a>,
+  <a href="https://git-scm.com/book/fa" dir="rtl">فارسی</a>,
+  <a href="https://git-scm.com/book/hi">हिन्दी</a>,
+  <a href="https://git-scm.com/book/hu">Magyar</a>,
+  <a href="https://git-scm.com/book/no-nb">Norwegian Bokmål</a>,
+  <a href="https://git-scm.com/book/ro">Română</a>,
+  <a href="https://git-scm.com/book/sr">Српски</a>,
+  <a href="https://git-scm.com/book/th">ภาษาไทย</a>,
+  <a href="https://git-scm.com/book/vi">Tiếng Việt</a>,
+  <a href="https://git-scm.com/book/uk">Українська</a> and
+  <a href="https://git-scm.com/book/uz/v2">Ўзбекча</a>.
+</p>
+<hr class="sidebar">
+<p>
+The source of this book is <a href="https://github.com/progit/progit2">hosted on GitHub.</a><br>
+Patches, suggestions and comments are welcome.
+</p>
+
+    <h4>Related Material</h4>
+  <ul class="related-material">
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-checkout">git-checkout</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-merge">git-merge</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-commit">git-commit</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-branch">git-branch</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-status">git-status</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-add">git-add</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-mergetool">git-mergetool</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+      <li class="reference">
+      <strong><a href="https://git-scm.com/ref/git-reset">git-reset</a></strong>
+        in <a href="https://git-scm.com/docs">Reference</a>
+      </li>
+  </ul>
+
+
+  </nav>
+</aside>
+        <div id="content">
+          
+
+<div id="book-chapters">
+  <a class="dropdown-trigger" id="book-chapters-trigger" data-panel-id="chapters-dropdown" href="#">Chapters ▾</a>
+<div class="dropdown-panel" id="chapters-dropdown">
+  <div class="three-column">
+    <div class="column-left">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>1. <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">Getting Started</a></h2>
+    <ol>
+          <li>
+            1.1
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">About Version Control</a>
+          </li>
+          <li>
+            1.2
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git">A Short History of Git</a>
+          </li>
+          <li>
+            1.3
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-Git-Basics">Git Basics</a>
+          </li>
+          <li>
+            1.4
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line">The Command Line</a>
+          </li>
+          <li>
+            1.5
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Installing Git</a>
+          </li>
+          <li>
+            1.6
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">First-Time Git Setup</a>
+          </li>
+          <li>
+            1.7
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-Getting-Help">Getting Help</a>
+          </li>
+          <li>
+            1.8
+            <a href="https://git-scm.com/book/en/v2/Getting-Started-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>2. <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Git Basics</a></h2>
+    <ol>
+          <li>
+            2.1
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository">Getting a Git Repository</a>
+          </li>
+          <li>
+            2.2
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository">Recording Changes to the Repository</a>
+          </li>
+          <li>
+            2.3
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History">Viewing the Commit History</a>
+          </li>
+          <li>
+            2.4
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things">Undoing Things</a>
+          </li>
+          <li>
+            2.5
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">Working with Remotes</a>
+          </li>
+          <li>
+            2.6
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">Tagging</a>
+          </li>
+          <li>
+            2.7
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases">Git Aliases</a>
+          </li>
+          <li>
+            2.8
+            <a href="https://git-scm.com/book/en/v2/Git-Basics-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>3. <a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Git Branching</a></h2>
+    <ol>
+          <li>
+            3.1
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">Branches in a Nutshell</a>
+          </li>
+          <li>
+            3.2
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging">Basic Branching and Merging</a>
+          </li>
+          <li>
+            3.3
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Branch-Management">Branch Management</a>
+          </li>
+          <li>
+            3.4
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows">Branching Workflows</a>
+          </li>
+          <li>
+            3.5
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches">Remote Branches</a>
+          </li>
+          <li>
+            3.6
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">Rebasing</a>
+          </li>
+          <li>
+            3.7
+            <a href="https://git-scm.com/book/en/v2/Git-Branching-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>4. <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols">Git on the Server</a></h2>
+    <ol>
+          <li>
+            4.1
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols">The Protocols</a>
+          </li>
+          <li>
+            4.2
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Getting-Git-on-a-Server">Getting Git on a Server</a>
+          </li>
+          <li>
+            4.3
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key">Generating Your SSH Public Key</a>
+          </li>
+          <li>
+            4.4
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server">Setting Up the Server</a>
+          </li>
+          <li>
+            4.5
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon">Git Daemon</a>
+          </li>
+          <li>
+            4.6
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Smart-HTTP">Smart HTTP</a>
+          </li>
+          <li>
+            4.7
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-GitWeb">GitWeb</a>
+          </li>
+          <li>
+            4.8
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-GitLab">GitLab</a>
+          </li>
+          <li>
+            4.9
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Third-Party-Hosted-Options">Third Party Hosted Options</a>
+          </li>
+          <li>
+            4.10
+            <a href="https://git-scm.com/book/en/v2/Git-on-the-Server-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>5. <a href="https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows">Distributed Git</a></h2>
+    <ol>
+          <li>
+            5.1
+            <a href="https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows">Distributed Workflows</a>
+          </li>
+          <li>
+            5.2
+            <a href="https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project">Contributing to a Project</a>
+          </li>
+          <li>
+            5.3
+            <a href="https://git-scm.com/book/en/v2/Distributed-Git-Maintaining-a-Project">Maintaining a Project</a>
+          </li>
+          <li>
+            5.4
+            <a href="https://git-scm.com/book/en/v2/Distributed-Git-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class="column-middle">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>6. <a href="https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration">GitHub</a></h2>
+    <ol>
+          <li>
+            6.1
+            <a href="https://git-scm.com/book/en/v2/GitHub-Account-Setup-and-Configuration">Account Setup and Configuration</a>
+          </li>
+          <li>
+            6.2
+            <a href="https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project">Contributing to a Project</a>
+          </li>
+          <li>
+            6.3
+            <a href="https://git-scm.com/book/en/v2/GitHub-Maintaining-a-Project">Maintaining a Project</a>
+          </li>
+          <li>
+            6.4
+            <a href="https://git-scm.com/book/en/v2/GitHub-Managing-an-organization">Managing an organization</a>
+          </li>
+          <li>
+            6.5
+            <a href="https://git-scm.com/book/en/v2/GitHub-Scripting-GitHub">Scripting GitHub</a>
+          </li>
+          <li>
+            6.6
+            <a href="https://git-scm.com/book/en/v2/GitHub-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>7. <a href="https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection">Git Tools</a></h2>
+    <ol>
+          <li>
+            7.1
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection">Revision Selection</a>
+          </li>
+          <li>
+            7.2
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Interactive-Staging">Interactive Staging</a>
+          </li>
+          <li>
+            7.3
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning">Stashing and Cleaning</a>
+          </li>
+          <li>
+            7.4
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">Signing Your Work</a>
+          </li>
+          <li>
+            7.5
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Searching">Searching</a>
+          </li>
+          <li>
+            7.6
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History">Rewriting History</a>
+          </li>
+          <li>
+            7.7
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified">Reset Demystified</a>
+          </li>
+          <li>
+            7.8
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Advanced-Merging">Advanced Merging</a>
+          </li>
+          <li>
+            7.9
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Rerere">Rerere</a>
+          </li>
+          <li>
+            7.10
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git">Debugging with Git</a>
+          </li>
+          <li>
+            7.11
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Submodules</a>
+          </li>
+          <li>
+            7.12
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Bundling">Bundling</a>
+          </li>
+          <li>
+            7.13
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Replace">Replace</a>
+          </li>
+          <li>
+            7.14
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage">Credential Storage</a>
+          </li>
+          <li>
+            7.15
+            <a href="https://git-scm.com/book/en/v2/Git-Tools-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>8. <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration">Customizing Git</a></h2>
+    <ol>
+          <li>
+            8.1
+            <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration">Git Configuration</a>
+          </li>
+          <li>
+            8.2
+            <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes">Git Attributes</a>
+          </li>
+          <li>
+            8.3
+            <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">Git Hooks</a>
+          </li>
+          <li>
+            8.4
+            <a href="https://git-scm.com/book/en/v2/Customizing-Git-An-Example-Git-Enforced-Policy">An Example Git-Enforced Policy</a>
+          </li>
+          <li>
+            8.5
+            <a href="https://git-scm.com/book/en/v2/Customizing-Git-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>9. <a href="https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client">Git and Other Systems</a></h2>
+    <ol>
+          <li>
+            9.1
+            <a href="https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client">Git as a Client</a>
+          </li>
+          <li>
+            9.2
+            <a href="https://git-scm.com/book/en/v2/Git-and-Other-Systems-Migrating-to-Git">Migrating to Git</a>
+          </li>
+          <li>
+            9.3
+            <a href="https://git-scm.com/book/en/v2/Git-and-Other-Systems-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>10. <a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">Git Internals</a></h2>
+    <ol>
+          <li>
+            10.1
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">Plumbing and Porcelain</a>
+          </li>
+          <li>
+            10.2
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects">Git Objects</a>
+          </li>
+          <li>
+            10.3
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Git-References">Git References</a>
+          </li>
+          <li>
+            10.4
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Packfiles">Packfiles</a>
+          </li>
+          <li>
+            10.5
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-The-Refspec">The Refspec</a>
+          </li>
+          <li>
+            10.6
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols">Transfer Protocols</a>
+          </li>
+          <li>
+            10.7
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Maintenance-and-Data-Recovery">Maintenance and Data Recovery</a>
+          </li>
+          <li>
+            10.8
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables">Environment Variables</a>
+          </li>
+          <li>
+            10.9
+            <a href="https://git-scm.com/book/en/v2/Git-Internals-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class="column-right">
+      <ol class="book-toc">
+  <li class="chapter">
+  <h2>A1. <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces">Git in Other Environments</a></h2>
+    <ol>
+          <li>
+            A1.1
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces">Graphical Interfaces</a>
+          </li>
+          <li>
+            A1.2
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Visual-Studio">Git in Visual Studio</a>
+          </li>
+          <li>
+            A1.3
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Eclipse">Git in Eclipse</a>
+          </li>
+          <li>
+            A1.4
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Bash">Git in Bash</a>
+          </li>
+          <li>
+            A1.5
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Zsh">Git in Zsh</a>
+          </li>
+          <li>
+            A1.6
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Git-in-Powershell">Git in Powershell</a>
+          </li>
+          <li>
+            A1.7
+            <a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Summary">Summary</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>A2. <a href="https://git-scm.com/book/en/v2/Embedding-Git-in-your-Applications-Command-line-Git">Embedding Git in your Applications</a></h2>
+    <ol>
+          <li>
+            A2.1
+            <a href="https://git-scm.com/book/en/v2/Embedding-Git-in-your-Applications-Command-line-Git">Command-line Git</a>
+          </li>
+          <li>
+            A2.2
+            <a href="https://git-scm.com/book/en/v2/Embedding-Git-in-your-Applications-Libgit2">Libgit2</a>
+          </li>
+          <li>
+            A2.3
+            <a href="https://git-scm.com/book/en/v2/Embedding-Git-in-your-Applications-JGit">JGit</a>
+          </li>
+    </ol>
+  </li>
+  <li class="chapter">
+  <h2>A3. <a href="https://git-scm.com/book/en/v2/Git-Commands-Setup-and-Config">Git Commands</a></h2>
+    <ol>
+          <li>
+            A3.1
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Setup-and-Config">Setup and Config</a>
+          </li>
+          <li>
+            A3.2
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Getting-and-Creating-Projects">Getting and Creating Projects</a>
+          </li>
+          <li>
+            A3.3
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Basic-Snapshotting">Basic Snapshotting</a>
+          </li>
+          <li>
+            A3.4
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Branching-and-Merging">Branching and Merging</a>
+          </li>
+          <li>
+            A3.5
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Sharing-and-Updating-Projects">Sharing and Updating Projects</a>
+          </li>
+          <li>
+            A3.6
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Inspection-and-Comparison">Inspection and Comparison</a>
+          </li>
+          <li>
+            A3.7
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Debugging">Debugging</a>
+          </li>
+          <li>
+            A3.8
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Patching">Patching</a>
+          </li>
+          <li>
+            A3.9
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Email">Email</a>
+          </li>
+          <li>
+            A3.10
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-External-Systems">External Systems</a>
+          </li>
+          <li>
+            A3.11
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Administration">Administration</a>
+          </li>
+          <li>
+            A3.12
+            <a href="https://git-scm.com/book/en/v2/Git-Commands-Plumbing-Commands">Plumbing Commands</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+  </div>
+ </div>
+
+    <span class="light" id="edition">
+      2nd Edition
+    </span>
+</div>
+
+<div id="main" class="book edition2">
+    <h1>3.2 Git Branching - Basic Branching and Merging</h1>
+  <div><a id="basic-branching-and-merging-QjtQTA"></a>
+<h2>Basic Branching and Merging</h2>
+
+<p>Let’s go through a simple example of branching and merging with a workflow that you might use in the real world.
+You’ll follow these steps:</p>
+<ol>
+<li>
+<p>Do work on a web site.</p>
+</li>
+<li>
+<p>Create a branch for a new story you’re working on.</p>
+</li>
+<li>
+<p>Do some work in that branch.</p>
+</li>
+
+</ol>
+
+<p>At this stage, you’ll receive a call that another issue is critical and you need a hotfix.
+You’ll do the following:</p>
+<ol>
+<li>
+<p>Switch to your production branch.</p>
+</li>
+<li>
+<p>Create a branch to add the hotfix.</p>
+</li>
+<li>
+<p>After it’s tested, merge the hotfix branch, and push to production.</p>
+</li>
+<li>
+<p>Switch back to your original story and continue working.</p>
+</li>
+
+</ol>
+
+
+
+
+
+
+
+
+<section data-type="sect2" id="_basic_branching">
+<h3 id="Basic-Branching"><a href="#Basic-Branching">Basic Branching</a></h3>
+
+<p><a data-type="indexterm" data-primary="branches" data-secondary="basic workflow" id="id-WdcWi7Sjh0T1"></a>
+First, let’s say you’re working on your project and have a couple of commits already.</p>
+
+<figure id="id-p5IBHQhBTd">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-1.png" alt="A simple commit history.">
+<figcaption><span class="label">Figure 3-10. </span>A simple commit history</figcaption>
+</figure>
+
+<p>You’ve decided that you’re going to work on issue #53 in whatever issue-tracking system your company uses.
+To create a branch and switch to it at the same time, you can run the <code>git checkout</code> command with the <code>-b</code> switch:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout -b iss53
+<code class="go">Switched to a new branch "iss53"</code></pre>
+
+<p>This is shorthand for:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git branch iss53
+<code class="gp">$</code> git checkout iss53</pre>
+
+<figure id="id-w2IdI6h6T5">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-2.png" alt="Creating a new branch pointer.">
+<figcaption><span class="label">Figure 3-11. </span>Creating a new branch pointer</figcaption>
+</figure>
+
+<p>You work on your web site and do some commits.
+Doing so moves the <code>iss53</code> branch forward, because you have it checked out (that is, your <code>HEAD</code> is pointing to it):</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> vim index.html
+<code class="gp">$</code> git commit -a -m <code class="s1">'added a new footer [issue 53]'</code></pre>
+
+<figure id="id-N5IecbhNTv">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-3.png" alt="The iss53 branch has moved forward with your work.">
+<figcaption><span class="label">Figure 3-12. </span>The iss53 branch has moved forward with your work</figcaption>
+</figure>
+
+<p>Now you get the call that there is an issue with the web site, and you need to fix it immediately.
+With Git, you don’t have to deploy your fix along with the <code>iss53</code>
+ changes you’ve made, and you don’t have to put a lot of effort into 
+reverting those changes before you can work on applying your fix to what
+ is in production.
+All you have to do is switch back to your <code>master</code> branch.</p>
+
+<p>However, before you do that, note that if your working directory or 
+staging area has uncommitted changes that conflict with the branch 
+you’re checking out, Git won’t let you switch branches.
+It’s best to have a clean working state when you switch branches.
+There are ways to get around this (namely, stashing and commit amending)
+ that we’ll cover later on, in <a data-type="xref" href="https://git-scm.com/book/en/v2/ch00/_git_stashing">Stashing and Cleaning</a>.
+For now, let’s assume you’ve committed all your changes, so you can switch back to your <code>master</code> branch:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout master
+<code class="go">Switched to branch 'master'</code></pre>
+
+<p>At this point, your project working directory is exactly the way it 
+was before you started working on issue #53, and you can concentrate on 
+your hotfix.
+This is an important point to remember: when you switch branches, Git 
+resets your working directory to look like it did the last time you 
+committed on that branch.
+It adds, removes, and modifies files automatically to make sure your 
+working copy is what the branch looked like on your last commit to it.</p>
+
+<p>Next, you have a hotfix to make.
+Let’s create a hotfix branch on which to work until it’s completed:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout -b hotfix
+<code class="go">Switched to a new branch 'hotfix'</code>
+<code class="gp">$</code> vim index.html
+<code class="gp">$</code> git commit -a -m <code class="s1">'fixed the broken email address'</code>
+<code class="go">[hotfix 1fb7853] fixed the broken email address</code>
+<code class="go"> 1 file changed, 2 insertions(+)</code></pre>
+
+<figure id="id-b5Iou5hXTp">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-4.png" alt="Hotfix branch based on `master`.">
+<figcaption><span class="label">Figure 3-13. </span>Hotfix branch based on <code>master</code></figcaption>
+</figure>
+
+<p>You can run your tests, make sure the hotfix is what you want, and merge it back into your <code>master</code> branch to deploy to production.
+You do this with the <code>git merge</code> command:<a data-type="indexterm" data-primary="git commands" data-secondary="merge" id="id-KdcGHxTXhqTP"></a></p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout master
+<code class="gp">$</code> git merge hotfix
+<code class="go">Updating f42c576..3a0874c</code>
+<code class="go">Fast-forward</code>
+<code class="go"> index.html | 2 ++</code>
+<code class="go"> 1 file changed, 2 insertions(+)</code></pre>
+
+<p>You’ll notice the phrase “fast-forward” in that merge.
+Because the commit <code>C4</code> pointed to by the branch <code>hotfix</code> you merged in was directly ahead of the commit <code>C2</code>
+ you’re on, Git simply moves the pointer forward.
+To phrase that another way, when you try to merge one commit with a 
+commit that can be reached by following the first commit’s history, Git 
+simplifies things by moving the pointer forward because there is no 
+divergent work to merge together – this is called a “fast-forward.”</p>
+
+<p>Your change is now in the snapshot of the commit pointed to by the <code>master</code> branch, and you can deploy the fix.</p>
+
+<figure id="id-12Iqf1h2Tm">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-5.png" alt="`master` is fast-forwarded to `hotfix`.">
+<figcaption><span class="label">Figure 3-14. </span><code>master</code> is fast-forwarded to <code>hotfix</code></figcaption>
+</figure>
+
+<p>After your super-important fix is deployed, you’re ready to switch back to the work you were doing before you were interrupted.
+However, first you’ll delete the <code>hotfix</code> branch, because you no longer need it – the <code>master</code> branch points at the same place.
+You can delete it with the <code>-d</code> option to <code>git branch</code>:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git branch -d hotfix
+<code class="go">Deleted branch hotfix (3a0874c).</code></pre>
+
+<p>Now you can switch back to your work-in-progress branch on issue #53 and continue working on it.</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout iss53
+<code class="go">Switched to branch "iss53"</code>
+<code class="gp">$</code> vim index.html
+<code class="gp">$</code> git commit -a -m <code class="s1">'finished the new footer [issue 53]'</code>
+<code class="go">[iss53 ad82d7a] finished the new footer [issue 53]</code>
+<code class="go">1 file changed, 1 insertion(+)</code></pre>
+
+<figure id="id-k5IvCVhbTO">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-branching-6.png" alt="Work continues on `iss53`.">
+<figcaption><span class="label">Figure 3-15. </span>Work continues on <code>iss53</code></figcaption>
+</figure>
+
+<p>It’s worth noting here that the work you did in your <code>hotfix</code> branch is not contained in the files in your <code>iss53</code> branch.
+If you need to pull it in, you can merge your <code>master</code> branch into your <code>iss53</code> branch by running <code>git merge master</code>, or you can wait to integrate those changes until you decide to pull the <code>iss53</code> branch back into <code>master</code> later.</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section data-type="sect2" id="_basic_merging">
+<h3 id="Basic-Merging"><a href="#Basic-Merging">Basic Merging</a></h3>
+
+<p><a data-type="indexterm" data-primary="branches" data-secondary="merging" id="id-24cOigSvsnTW"></a><a data-type="indexterm" data-primary="merging" id="id-8Bc6SjS2skT2"></a>
+Suppose you’ve decided that your issue #53 work is complete and ready to be merged into your <code>master</code> branch.
+In order to do that, you’ll merge your <code>iss53</code> branch into <code>master</code>, much like you merged your <code>hotfix</code> branch earlier.
+All you have to do is check out the branch you wish to merge into and then run the <code>git merge</code> command:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git checkout master
+<code class="go">Switched to branch 'master'</code>
+<code class="gp">$</code> git merge iss53
+<code class="go">Merge made by the 'recursive' strategy.</code>
+<code class="go">index.html |    1 +</code>
+<code class="go">1 file changed, 1 insertion(+)</code></pre>
+
+<p>This looks a bit different than the <code>hotfix</code> merge you did
+ earlier.
+In this case, your development history has diverged from some older 
+point.
+Because the commit on the branch you’re on isn’t a direct ancestor of 
+the branch you’re merging in, Git has to do some work.
+In this case, Git does a simple three-way merge, using the two snapshots
+ pointed to by the branch tips and the common ancestor of the two.</p>
+
+<figure id="id-28IkTbsgTv">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-merging-1.png" alt="Three snapshots used in a typical merge.">
+<figcaption><span class="label">Figure 3-16. </span>Three snapshots used in a typical merge</figcaption>
+</figure>
+
+<p>Instead of just moving the branch pointer forward, Git creates a new 
+snapshot that results from this three-way merge and automatically 
+creates a new commit that points to it.
+This is referred to as a merge commit, and is special in that it has 
+more than one parent.</p>
+
+<figure id="id-w2IKsPs6T5">
+<img src="Git%20-%20Basic%20Branching%20and%20Merging_tiedostot/basic-merging-2.png" alt="A merge commit.">
+<figcaption><span class="label">Figure 3-17. </span>A merge commit</figcaption>
+</figure>
+
+<p>It’s worth pointing out that Git determines the best common ancestor 
+to use for its merge base; this is different than older tools like CVS 
+or Subversion (before version 1.5), where the developer doing the merge 
+had to figure out the best merge base for themselves.
+This makes merging a heck of a lot easier in Git than in these other 
+systems.</p>
+
+<p>Now that your work is merged in, you have no further need for the <code>iss53</code> branch.
+You can close the ticket in your ticket-tracking system, and delete the branch:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git branch -d iss53</pre>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section data-type="sect2" id="_basic_merge_conflicts">
+<h3 id="Basic-Merge-Conflicts"><a href="#Basic-Merge-Conflicts">Basic Merge Conflicts</a></h3>
+
+<p><a data-type="indexterm" data-primary="merging" data-secondary="conflicts" id="id-8BcyijSdIkT2"></a>
+Occasionally, this process doesn’t go smoothly.
+If you changed the same part of the same file differently in the two 
+branches you’re merging together, Git won’t be able to merge them 
+cleanly.
+If your fix for issue #53 modified the same part of a file as the <code>hotfix</code>, you’ll get a merge conflict that looks something like this:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git merge iss53
+<code class="go">Auto-merging index.html</code>
+<code class="go">CONFLICT (content): Merge conflict in index.html</code>
+<code class="go">Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+
+<p>Git hasn’t automatically created a new merge commit.
+It has paused the process while you resolve the conflict.
+If you want to see which files are unmerged at any point after a merge conflict, you can run <code>git status</code>:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git status
+<code class="go">On branch master</code>
+<code class="go">You have unmerged paths.</code>
+<code class="go">  (fix conflicts and run "git commit")</code>
+
+<code class="go">Unmerged paths:</code>
+<code class="go">  (use "git add &lt;file&gt;..." to mark resolution)</code>
+
+<code class="go">    both modified:      index.html</code>
+
+<code class="go">no changes added to commit (use "git add" and/or "git commit -a")</code></pre>
+
+<p>Anything that has merge conflicts and hasn’t been resolved is listed 
+as unmerged.
+Git adds standard conflict-resolution markers to the files that have 
+conflicts, so you can open them manually and resolve those conflicts.
+Your file contains a section that looks something like this:</p>
+
+<pre data-type="programlisting" data-code-language="html"><code class="ni">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> HEAD:index.html
+<code class="ni">&lt;</code>div id="footer"<code class="ni">&gt;</code>contact : email.support@github.com<code class="ni">&lt;</code>/div<code class="ni">&gt;</code>
+=======
+<code class="ni">&lt;</code>div id="footer"<code class="ni">&gt;</code>
+ please contact us at support@github.com
+<code class="ni">&lt;</code>/div<code class="ni">&gt;</code>
+<code class="ni">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> iss53:index.html</pre>
+
+<p>This means the version in <code>HEAD</code> (your <code>master</code>
+ branch, because that was what you had checked out when you ran your 
+merge command) is the top part of that block (everything above the <code>=======</code>), while the version in your <code>iss53</code> branch looks like everything in the bottom part.
+In order to resolve the conflict, you have to either choose one side or the other or merge the contents yourself.
+For instance, you might resolve this conflict by replacing the entire block with this:</p>
+
+<pre data-type="programlisting" data-code-language="html"><code class="ni">&lt;</code>div id="footer"<code class="ni">&gt;</code>
+please contact us at email.support@github.com
+<code class="ni">&lt;</code>/div<code class="ni">&gt;</code></pre>
+
+<p>This resolution has a little of each section, and the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> lines have been completely removed.
+After you’ve resolved each of these sections in each conflicted file, run <code>git add</code> on each file to mark it as resolved.
+Staging the file marks it as resolved in Git.</p>
+
+<p>If you want to use a graphical tool to resolve these issues, you can run <code>git mergetool</code>, which fires up an appropriate visual merge tool and walks you through the conflicts:<a data-type="indexterm" data-primary="git commands" data-secondary="mergetool" id="id-oecmS7cEI6T8"></a></p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git mergetool
+
+<code class="go">This message is displayed because 'merge.tool' is not configured.</code>
+<code class="go">See 'git mergetool --tool-help' or 'git help config' for more details.</code>
+<code class="go">'git mergetool' will now attempt to use one of the following tools:</code>
+<code class="go">opendiff kdiff3 tkdiff xxdiff meld tortoisemerge gvimdiff diffuse diffmerge ecmerge p4merge araxis bc3 codecompare vimdiff emerge</code>
+<code class="go">Merging:</code>
+<code class="go">index.html</code>
+
+<code class="go">Normal merge conflict for 'index.html':</code>
+<code class="go">  {local}: modified file</code>
+<code class="go">  {remote}: modified file</code>
+<code class="go">Hit return to start merge resolution tool (opendiff):</code></pre>
+
+<p>If you want to use a merge tool other than the default (Git chose <code>opendiff</code>
+ in this case because the command was run on a Mac), you can see all the
+ supported tools listed at the top after “one of the following tools.”
+Just type the name of the tool you’d rather use.</p>
+<div data-type="note" id="id-bxUMCmIXTp">
+<h6>Note</h6>
+<p>If you need more advanced tools for resolving tricky merge conflicts, we cover more on merging in <a data-type="xref" href="https://git-scm.com/book/en/v2/ch00/_advanced_merging">Advanced Merging</a>.</p>
+</div>
+
+<p>After you exit the merge tool, Git asks you if the merge was successful.
+If you tell the script that it was, it stages the file to mark it as resolved for you.
+You can run <code>git status</code> again to verify that all conflicts have been resolved:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="gp">$</code> git status
+<code class="go">On branch master</code>
+<code class="go">All conflicts fixed but you are still merging.</code>
+<code class="go">  (use "git commit" to conclude merge)</code>
+
+<code class="go">Changes to be committed:</code>
+
+<code class="go">    modified:   index.html</code></pre>
+
+<p>If you’re happy with that, and you verify that everything that had conflicts has been staged, you can type <code>git commit</code> to finalize the merge commit.
+The commit message by default looks something like this:</p>
+
+<pre data-type="programlisting" data-code-language="console"><code class="go">Merge branch 'iss53'</code>
+
+<code class="go">Conflicts:</code>
+<code class="go">    index.html</code>
+<code class="gp">#</code>
+<code class="gp">#</code> It looks like you may be committing a merge.
+<code class="gp">#</code> If this is not correct, please remove the file
+<code class="gp">#</code>	.git/MERGE_HEAD
+<code class="gp">#</code> and try again.
+
+
+<code class="gp">#</code> Please enter the commit message <code class="k">for</code> your changes. Lines starting
+<code class="gp">#</code> with <code class="s1">'#'</code> will be ignored, and an empty message aborts the commit.
+<code class="gp">#</code> On branch master
+<code class="gp">#</code> All conflicts fixed but you are still merging.
+<code class="gp">#</code>
+<code class="gp">#</code> Changes to be committed:
+<code class="gp">#</code>	modified:   index.html
+<code class="gp">#</code></pre>
+
+<p>You can modify that message with details about how you resolved the 
+merge if you think it would be helpful to others looking at this merge 
+in the future – why you did what you did, if it’s not obvious.</p>
+</section>
+
+
+
+
+
+<div id="nav"><a href="https://git-scm.com/book/en/Git-Branching-Branches-in-a-Nutshell">prev</a> | <a href="https://git-scm.com/book/en/v2/Git-Branching-Branch-Management">next</a></div></div>
+</div>
+
+        </div>
+      </div>
+      <footer>
+  <div class="site-source">
+    This <a href="https://github.com/git/git-scm.com/blob/master/README.md#license">open sourced</a> site is <a href="https://github.com/git/git-scm.com">hosted on GitHub.</a><br>
+    Patches, suggestions and comments are welcome.
+  </div>
+  <div class="sfc-member">
+    Git is a member of <a href="https://git-scm.com/sfc">Software Freedom Conservancy</a>
+  </div>
+</footer>
+
+
+
+
+
+
+
+    </div>
+
+
+
+</body></html>

@@ -1,0 +1,960 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>flipcode - 3D Platonic Primitive Generators</title>
+<style type="text/css">
+
+
+a.menulink:link    {color: #b9ffd0; }
+a.menulink:visited {color: #b9ffd0; }
+a.menulink:active  {color: #b9ffd0; }
+
+a.menulinkempty:link    {color: #b9ffd0; }
+a.menulinkempty:visited {color: #b9ffd0; }
+a.menulinkempty:active  {color: #b9ffd0; }
+a.menulinkempty:link, a.menulinkempty:visited, a.menulinkempty:active {text-decoration: none}
+
+a.orangelink:link    { color:#FFAB04; }
+a.orangelink:visited { color:#FFAB04; }
+a.orangelink:active  { color:#FFAB04; }
+
+a.palegreen:link    {color: #b9ffd0; }
+a.palegreen:visited {color: #b9ffd0; }
+a.palegreen:active  {color: #b9ffd0; }
+
+a.bluelink:link    { color:#03F0FF; }
+a.bluelink:visited { color:#03F0FF; }
+a.bluelink:active  { color:#03F0FF; }
+
+a.softyellow:link     { color:#FFFCA9; }
+a.softyellow:visited  { color:#FFFCA9; }
+a.softyellow:active   { color:#FFFCA9; }
+
+a.nounderline:link        {color: #FFFCA9; }
+a.nounderline:visited     {color: #FFFCA9; }
+a.nounderline:active      {color: #FFFCA9; }
+a.nounderline:link, a.nounderline:visited, a.nounderline:active {text-decoration: none}
+
+<!--
+#code_comment { font-family:Courier,Courier New; font-size:12px; color:#007f00; }
+#code_text    { font-family:Courier,Courier New; font-size:12px; color:#000000; }
+#code_keyword { font-family:Courier,Courier New; font-size:12px; color:#0000FF; }
+-->
+
+</style>
+<link rel="preload" href="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/integrator_002.js" as="script"><script src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/osd.js"></script><script type="text/javascript" async="" src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/ga.js"></script><script src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/show_ads_impl.js" id="google_shimpl"></script><script src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/ca-pub-3512250068614659.js"></script><script type="text/javascript" src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/integrator_002.js"></script><link rel="preload" href="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/integrator.js" as="script"><script type="text/javascript" src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/integrator.js"></script><link rel="preload" href="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/show_ads_impl.js" as="script"></head>
+<body vlink="#FFFCA9" text="#ffffff" link="#FFFCA9" bgcolor="#000000" alink="#FFFCA9">
+<center>
+
+<br>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3512250068614659";
+//728x90, created 1/8/08
+google_ad_slot = "8394943283";
+google_ad_width = 728;
+google_ad_height = 90;
+//--></script>
+<script type="text/javascript" src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/show_ads.js">
+</script><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;" data-ad-slot="8394943283"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0px;width:728px;height:90px;" width="728" height="90" frameborder="0"></iframe></ins></ins>
+<br>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34093616-1']);
+  _gaq.push(['_setDomainName', 'flipcode.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<br><center><img src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/logo_toolbox.png"></center>
+
+<font size="2" face="Verdana">This section of the <a href="http://www.flipcode.com/archives/index.shtml">archives</a> stores flipcode's complete Developer Toolbox collection,
+featuring a variety of mini-articles and source code contributions from our readers.</font>
+<br><br>
+
+<center>
+<table width="80%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1D2530">
+<tbody><tr><td>
+<center><table width="100%" cellspacing="0" cellpadding="2" border="0"><tbody><tr><td width="100" valign="center" bgcolor="#333333" background="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/comments_bar2.jpg"><font size="1">&nbsp;</font></td></tr></tbody></table></center>
+<center>
+<font size="1"><br></font>
+
+<center>
+
+<table width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+
+<table style="table-layout:fixed;" width="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td width="50"><img src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/icon_articles.png"></td>
+<td width="100%"><font size="2" face="Verdana, Tahoma, Helvetica"><font color="#ffffcc">
+<font size="2" color="#ffffff"><b> &nbsp; 3D Platonic Primitive Generators</b></font><br>
+ &nbsp; Submitted by <!--GO AWAY SPAM!!!--><script language="javascript">document.write('<a href=\"mailto:' + ''    
++''    
++''    
++''    
++''    
++ '' + '' + ''    
++''    
++''    
++ 'onlyuser' + ''    
++''    
++''    
++''    
++ '@' + 'hotmail' + ''    
++ '.' + ''    
++''    
++''    
++''    
++''    
++''    
++''    
++''    
++ 'com\">' + 'Jerry Chen' + '</a>')</script><a href="mailto:onlyuser@hotmail.com">Jerry Chen</a></font></font></td></tr></tbody></table>
+<font size="1"><br><img src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/line_grey.png"><br><br></font>
+This is a minimal C++ primitive polygon loader. I use it (and maintain 
+it) for my 3d engine "DexVT", which can be found on my site.
+<br><br>
+If you like clean, minimal OOP code like I do, then this loader is for 
+you. it manages to stay out of your code as much as possible.
+<br><br>
+PS. The Vector, Matrix, Transform utility classes are included as a bonus :)
+<br><br>
+Jerry Chen (Dextre)<br>
+<a href="http://onlyuser.cjb.net/">http://onlyuser.cjb.net</a></font>
+
+</td>
+</tr>
+</tbody></table>
+
+<font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Vector.cpp] - (4,856 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#include</font> "Vector.h"<br><br>Vector::Vector()  {}
+Vector::~Vector() {}<br><br><font color="#007f00">//=============================================================================
+</font>
+Vector::Vector(<font color="#0000ff">float</font> x, <font color="#0000ff">float</font> y, <font color="#0000ff">float</font> z) {<font color="#0000ff">this</font>-&gt;x = x; <font color="#0000ff">this</font>-&gt;y = y; <font color="#0000ff">this</font>-&gt;z = z;}
+Vector::Vector(Vector &amp;v)                 {*<font color="#0000ff">this</font> = v;}
+Vector::Vector(<font color="#0000ff">float</font> s)                   {x = s; y = s; z = s;}
+Vector::Vector(<font color="#0000ff">float</font> *v)                  {memcpy(<font color="#0000ff">this</font>-&gt;v, v, <font color="#0000ff">sizeof</font>(<font color="#0000ff">float</font>) * 3);}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">void</font> Vector::toArray(<font color="#0000ff">float</font> *v)
+{
+	memcpy(v, <font color="#0000ff">this</font>-&gt;v, <font color="#0000ff">sizeof</font>(<font color="#0000ff">float</font>) * 3);
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+Vector &amp;Vector::<font color="#0000ff">operator</font>=(Vector &amp;v)  {x  = v.x; y  = v.y; z  = v.z; <font color="#0000ff">return</font> *<font color="#0000ff">this</font>;}<br><br>Vector &amp;Vector::<font color="#0000ff">operator</font>+=(Vector &amp;v) {x += v.x; y += v.y; z += v.z; <font color="#0000ff">return</font> *<font color="#0000ff">this</font>;}
+Vector &amp;Vector::<font color="#0000ff">operator</font>-=(Vector &amp;v) {x -= v.x; y -= v.y; z -= v.z; <font color="#0000ff">return</font> *<font color="#0000ff">this</font>;}
+Vector &amp;Vector::<font color="#0000ff">operator</font>&amp;=(Vector &amp;v) {x *= v.x; y *= v.y; z *= v.z; <font color="#0000ff">return</font> *<font color="#0000ff">this</font>;}
+Vector &amp;Vector::<font color="#0000ff">operator</font>*=(<font color="#0000ff">float</font> s)   {x *=   s; y *=   s; z *=   s; <font color="#0000ff">return</font> *<font color="#0000ff">this</font>;}
+Vector &amp;Vector::<font color="#0000ff">operator</font>/=(<font color="#0000ff">float</font> s)
+{
+	<font color="#0000ff">float</font> r = 1 / s;
+	x *= r; y *= r; z *= r;
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}
+Vector &amp;Vector::<font color="#0000ff">operator</font>*=(Vector &amp;v)
+{
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> = Vector(
+		y * v.z - z * v.y,
+		z * v.x - x * v.z,
+		x * v.y - y * v.x
+		);
+}
+Vector &amp;Vector::<font color="#0000ff">operator</font>*=(Matrix &amp;m)
+{
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> = Vector(
+		x * m[0][0] + y * m[1][0] + z * m[2][0] + m[3][0],
+		x * m[0][1] + y * m[1][1] + z * m[2][1] + m[3][1],
+		x * m[0][2] + y * m[1][2] + z * m[2][2] + m[3][2]
+		);
+}<br><br>Vector Vector::<font color="#0000ff">operator</font>+(Vector &amp;v) {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) += v;}
+Vector Vector::<font color="#0000ff">operator</font>-(Vector &amp;v) {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) -= v;}
+Vector Vector::<font color="#0000ff">operator</font>&amp;(Vector &amp;v) {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) &amp;= v;}
+Vector Vector::<font color="#0000ff">operator</font>*(<font color="#0000ff">float</font> s)   {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) *= s;}
+Vector Vector::<font color="#0000ff">operator</font>/(<font color="#0000ff">float</font> s)   {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) /= s;}
+Vector Vector::<font color="#0000ff">operator</font>*(Vector &amp;v) {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) *= v;}
+Vector Vector::<font color="#0000ff">operator</font>*(Matrix &amp;m) {<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>) *= m;}<br><br><font color="#0000ff">float</font>  &amp;Vector::<font color="#0000ff">operator</font>[](AXIS::AXIS axis) {<font color="#0000ff">return</font> v[axis];}
+<font color="#0000ff">float</font>  Vector::operator|(Vector &amp;v)         {<font color="#0000ff">return</font> x * v.x + y * v.y + z * v.z;}
+Vector Vector::<font color="#0000ff">operator</font>-()                  {<font color="#0000ff">return</font> *<font color="#0000ff">this</font> * -1;};
+<font color="#0000ff">bool</font>   Vector::<font color="#0000ff">operator</font>==(Vector &amp;v)        {<font color="#0000ff">return</font> x == v.x &amp;&amp; y == v.y &amp;&amp; z == v.z;}
+<font color="#0000ff">bool</font>   Vector::operator!=(Vector &amp;v)        {<font color="#0000ff">return</font> x != v.x || y != v.y || z != v.z;}<br><br><font color="#007f00">//=============================================================================
+</font>
+Vector &amp;Vector::mask(Vector &amp;m, Vector &amp;v)
+{
+	x = m.x ? v.x : x;
+	y = m.y ? v.y : y;
+	z = m.z ? v.z : z;
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br>Vector Vector::vec_interp(Vector &amp;v, <font color="#0000ff">float</font> s)
+{
+	<font color="#0000ff">return</font> interp(*<font color="#0000ff">this</font>, v, s);
+}<br><br><font color="#0000ff">float</font> Vector::mod()
+{
+	<font color="#0000ff">return</font> (<font color="#0000ff">float</font>) pow(*<font color="#0000ff">this</font> | *<font color="#0000ff">this</font>, 0.5f);
+}<br><br><font color="#0000ff">float</font> Vector::dist(Vector &amp;v)
+{
+	<font color="#0000ff">return</font> (*<font color="#0000ff">this</font> - v).mod();
+}<br><br>Vector &amp;Vector::normalize()
+{
+	<font color="#0000ff">float</font> t = <font color="#0000ff">this</font>-&gt;mod();
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> = (t != 0) ? *<font color="#0000ff">this</font> / t : NULL_VECTOR;
+}<br><br>Vector Vector::normal()
+{
+	<font color="#0000ff">return</font> Vector(*<font color="#0000ff">this</font>).normalize();
+}<br><br>Vector Vector::normTri(Vector &amp;v1, Vector &amp;v2)
+{
+	<font color="#0000ff">return</font> ((v1 - *<font color="#0000ff">this</font>) * (v2 - *<font color="#0000ff">this</font>)).normalize();
+}<br><br><font color="#0000ff">float</font> Vector::angle(Vector &amp;v)
+{
+	<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;normal() | v.normal();
+}<br><br><font color="#0000ff">int</font> Vector::compare(Vector &amp;v1, Vector &amp;v2)
+{
+	<font color="#0000ff">return</font> sgn((*<font color="#0000ff">this</font> | v1) - (*<font color="#0000ff">this</font> | v2));
+}<br><br><font color="#0000ff">float</font> Vector::sectPlane(Vector &amp;p, Vector &amp;v, Vector &amp;n)
+{
+	<font color="#0000ff">float</font> t = n | *<font color="#0000ff">this</font>;
+	<font color="#0000ff">return</font> (t != 0) ? (n | (v - p)) / t : BIG_NUMBER;
+}<br><br>Vector Vector::project(Vector &amp;v)
+{
+	Vector t = v.normal();
+	<font color="#0000ff">return</font> t * (*<font color="#0000ff">this</font> | t);
+}<br><br>Vector Vector::ortho(Vector &amp;v)
+{
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> - <font color="#0000ff">this</font>-&gt;project(v);
+}<br><br>Vector Vector::reflect(Vector &amp;n)
+{
+	<font color="#0000ff">if</font> (<font color="#0000ff">this</font>-&gt;angle(n) &lt; 0)
+		<font color="#0000ff">return</font> *<font color="#0000ff">this</font> + <font color="#0000ff">this</font>-&gt;project(n) * -2;
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br>Vector &amp;Vector::fromAngle(Vector &amp;v)
+{
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> =
+		FWD_VECTOR * RotateTrans(AXIS::X, v.pitch) * RotateTrans(AXIS::Y, v.yaw);
+}<br><br>Vector Vector::toAngle()
+{
+	Vector t(x, 0, z);
+	Vector r(
+		0,
+		acosEx(t.angle(*<font color="#0000ff">this</font>)),
+		acosEx(t.angle(FWD_VECTOR))
+		);
+	<font color="#0000ff">if</font> (x &lt; 0) r.yaw *= -1;
+	<font color="#0000ff">if</font> (y &gt; 0) r.pitch *= -1;
+	<font color="#0000ff">return</font> r;
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+Vector &amp;Vector::vec_wrap(Vector &amp;pMin, Vector &amp;pMax)
+{
+	x = wrap(x, pMin.x, pMax.x);
+	y = wrap(y, pMin.y, pMax.y);
+	z = wrap(z, pMin.z, pMax.z);
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br>Vector &amp;Vector::vec_limit(Vector &amp;pMin, Vector &amp;pMax)
+{
+	x = limit(x, pMin.x, pMax.x);
+	y = limit(y, pMin.y, pMax.y);
+	z = limit(z, pMin.z, pMax.z);
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br><font color="#0000ff">void</font> Vector::multEx(<font color="#0000ff">float</font> *r, Matrix &amp;m)
+{
+	r[0] = x * m[0][0] + y * m[1][0] + z * m[2][0] + m[3][0];
+	r[1] = x * m[0][1] + y * m[1][1] + z * m[2][1] + m[3][1];
+	r[2] = x * m[0][2] + y * m[1][2] + z * m[2][2] + m[3][2];
+	r[3] = x * m[0][3] + y * m[1][3] + z * m[2][3] + m[3][3];
+} </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Transform.cpp] - (2,224 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#include</font> "Transform.h"<br><br>ScaleTrans::ScaleTrans(Vector &amp;v)
+{
+	*((Matrix *) <font color="#0000ff">this</font>) = IDENT_MATRIX;
+	(*<font color="#0000ff">this</font>)[0][0] = v.x;
+	(*<font color="#0000ff">this</font>)[1][1] = v.y;
+	(*<font color="#0000ff">this</font>)[2][2] = v.z;
+}<br><br>TranslateTrans::TranslateTrans(Vector &amp;v)
+{
+	*((Matrix *) <font color="#0000ff">this</font>) = IDENT_MATRIX;
+	(*<font color="#0000ff">this</font>)[3][0] = v.x;
+	(*<font color="#0000ff">this</font>)[3][1] = v.y;
+	(*<font color="#0000ff">this</font>)[3][2] = v.z;
+}<br><br>RotateTrans::RotateTrans(AXIS::AXIS axis, <font color="#0000ff">float</font> angle)
+{
+	*((Matrix *) <font color="#0000ff">this</font>) = IDENT_MATRIX;
+	<font color="#0000ff">float</font> pSin = (<font color="#0000ff">float</font>) sin(angle);
+	<font color="#0000ff">float</font> pCos = (<font color="#0000ff">float</font>) cos(angle);
+	<font color="#0000ff">switch</font> (axis)
+	{
+		<font color="#0000ff">case</font> AXIS::X:
+			(*<font color="#0000ff">this</font>)[1][1] = pCos;  (*<font color="#0000ff">this</font>)[1][2] = pSin;
+			(*<font color="#0000ff">this</font>)[2][1] = -pSin; (*<font color="#0000ff">this</font>)[2][2] = pCos;
+			<font color="#0000ff">break</font>;
+		<font color="#0000ff">case</font> AXIS::Y:
+			(*<font color="#0000ff">this</font>)[0][0] = pCos; (*<font color="#0000ff">this</font>)[0][2] = -pSin;
+			(*<font color="#0000ff">this</font>)[2][0] = pSin; (*<font color="#0000ff">this</font>)[2][2] = pCos;
+			<font color="#0000ff">break</font>;
+		<font color="#0000ff">case</font> AXIS::Z:
+			(*<font color="#0000ff">this</font>)[0][0] = pCos;  (*<font color="#0000ff">this</font>)[0][1] = pSin;
+			(*<font color="#0000ff">this</font>)[1][0] = -pSin; (*<font color="#0000ff">this</font>)[1][1] = pCos;
+	}
+}<br><br>ComboTrans::ComboTrans(Vector &amp;origin, Vector &amp;angle, Vector &amp;scale)
+{
+	*((Matrix *) <font color="#0000ff">this</font>) = IDENT_MATRIX;
+	(*<font color="#0000ff">this</font>) *= ScaleTrans((Vector &amp;) scale);
+	(*<font color="#0000ff">this</font>) *= RotateTrans(AXIS::Y, angle.roll);
+	(*<font color="#0000ff">this</font>) *= RotateTrans(AXIS::X, angle.pitch);
+	(*<font color="#0000ff">this</font>) *= RotateTrans(AXIS::Y, angle.yaw);
+	(*<font color="#0000ff">this</font>) *= TranslateTrans((Vector &amp;) origin);
+}<br><br>ProjectTrans::ProjectTrans(<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f)
+{
+	<font color="#0000ff">if</font> (n &lt;= 0 || n &gt; f)
+		<font color="#0000ff">throw</font> Exception("invalid clipping planes");
+	*((Matrix *) <font color="#0000ff">this</font>) = ZERO_MATRIX;
+	cx = sw / 2;
+	cy = sh / 2;
+}<br><br>ProjectPerspectTrans::ProjectPerspectTrans(<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> aspect, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f, <font color="#0000ff">float</font> halfTan)
+	: ProjectTrans(sw, sh, n, f)
+{
+	<font color="#0000ff">float</font> h = halfTan * n;
+	<font color="#0000ff">float</font> tempA = -h / n;
+	<font color="#0000ff">float</font> tempB = -f / (n - f);
+	(*<font color="#0000ff">this</font>)[0][0] = cx / aspect;
+	(*<font color="#0000ff">this</font>)[1][1] = -cy;
+	(*<font color="#0000ff">this</font>)[2][0] = cx * tempA;
+	(*<font color="#0000ff">this</font>)[2][1] = cy * tempA;
+	(*<font color="#0000ff">this</font>)[2][2] = tempA * tempB;
+	(*<font color="#0000ff">this</font>)[2][3] = tempA;
+	(*<font color="#0000ff">this</font>)[3][2] = h * tempB;
+}<br><br>ProjectOrthoTrans::ProjectOrthoTrans(<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> aspect, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f, <font color="#0000ff">float</font> zoom)
+	: ProjectTrans(sw, sh, n, f)
+{
+	<font color="#0000ff">float</font> tempA = 1 / (n - f);
+	(*<font color="#0000ff">this</font>)[0][0] = zoom / aspect;
+	(*<font color="#0000ff">this</font>)[1][1] = -zoom;
+	(*<font color="#0000ff">this</font>)[2][2] = -tempA;
+	(*<font color="#0000ff">this</font>)[3][0] = cx;
+	(*<font color="#0000ff">this</font>)[3][1] = cy;
+	(*<font color="#0000ff">this</font>)[3][2] = n * tempA;
+	(*<font color="#0000ff">this</font>)[3][3] = 1;
+} </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[IMesh.h] - (555 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#ifndef</font> H_IMESH
+<font color="#0000ff">#define</font> H_IMESH<br><br><font color="#0000ff">#include</font> "Vector.h"<br><br><font color="#0000ff">class</font> IMesh
+{
+<font color="#0000ff">protected</font>:
+	<font color="#0000ff">int</font> mVertCnt;
+	<font color="#0000ff">int</font> mFaceCnt;
+<font color="#0000ff">public</font>:
+	IMesh(<font color="#0000ff">int</font> vertCnt, <font color="#0000ff">int</font> faceCnt);
+	~IMesh();
+	<font color="#0000ff">int</font> getVertCnt();
+	<font color="#0000ff">int</font> getFaceCnt();
+	<font color="#0000ff">virtual</font> <font color="#0000ff">void</font> resize(<font color="#0000ff">int</font> vertCnt, <font color="#0000ff">int</font> faceCnt);
+	<font color="#0000ff">virtual</font> Vector *getVertices() = 0;
+	<font color="#0000ff">virtual</font> <font color="#0000ff">void</font> setVertex(<font color="#0000ff">int</font> index, <font color="#0000ff">float</font> x, <font color="#0000ff">float</font> y, <font color="#0000ff">float</font> z) = 0;
+	<font color="#0000ff">virtual</font> <font color="#0000ff">void</font> setFace(<font color="#0000ff">int</font> index, <font color="#0000ff">int</font> a, <font color="#0000ff">int</font> b, <font color="#0000ff">int</font> c) = 0;
+	<font color="#0000ff">virtual</font> <font color="#0000ff">void</font> setAnchor(<font color="#0000ff">int</font> index, <font color="#0000ff">float</font> x, <font color="#0000ff">float</font> y) = 0;
+	<font color="#0000ff">virtual</font> <font color="#0000ff">void</font> getDim(Vector &amp;pMin, Vector &amp;pMax) = 0;
+};<br><br><font color="#0000ff">#endif</font> </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Matrix.cpp] - (4,216 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#include</font> "Matrix.h"<br><br>Matrix::Matrix()  {}
+Matrix::~Matrix() {}<br><br><font color="#007f00">//=============================================================================
+</font>
+Matrix::Matrix(Matrix &amp;m) {*<font color="#0000ff">this</font> = m;}
+Matrix::Matrix(<font color="#0000ff">float</font> s)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			mItem[i][j] = (i == j) ? s : 0;
+}
+Matrix::Matrix(<font color="#0000ff">float</font> **m) {<font color="#0000ff">this</font>-&gt;set(m);}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">inline</font> <font color="#0000ff">void</font> Matrix::get(<font color="#0000ff">float</font> **m)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			m[i][j] = mItem[i][j];
+}<br><br><font color="#0000ff">inline</font> Matrix &amp;Matrix::set(<font color="#0000ff">float</font> **m)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			mItem[i][j] = m[i][j];
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">void</font> Matrix::toArray(<font color="#0000ff">float</font> *m)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		memcpy(&amp;m[i * 4], mItem[i], <font color="#0000ff">sizeof</font>(<font color="#0000ff">float</font>) * 4);
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">inline</font> Matrix &amp;Matrix::mult(Matrix &amp;m)
+{
+	Matrix t;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			t[i][j] =
+				mItem[i][0] * m[0][j] +
+				mItem[i][1] * m[1][j] +
+				mItem[i][2] * m[2][j] +
+				mItem[i][3] * m[3][j];
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> = t;
+}<br><br><font color="#0000ff">inline</font> Matrix &amp;Matrix::scale(<font color="#0000ff">float</font> s)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			mItem[i][j] *= s;
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">inline</font> Matrix Matrix::mult(Matrix &amp;m1, Matrix &amp;m2)
+{
+	Matrix r;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			r[i][j] =
+				m1[i][0] * m2[0][j] +
+				m1[i][1] * m2[1][j] +
+				m1[i][2] * m2[2][j] +
+				m1[i][3] * m2[3][j];
+	<font color="#0000ff">return</font> r;
+}<br><br><font color="#0000ff">inline</font> Matrix Matrix::scale(Matrix &amp;m, <font color="#0000ff">float</font> s)
+{
+	Matrix r;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			r[i][j] = m[i][j] * s;
+	<font color="#0000ff">return</font> r;
+}<br><br><font color="#007f00">//=============================================================================
+</font>
+Matrix &amp;Matrix::<font color="#0000ff">operator</font>=(Matrix &amp;m)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			mItem[i][j] = m[i][j];
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font>;
+}
+Matrix Matrix::operator~()
+{
+	Matrix r;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			r[i][j] = mItem[j][i];
+	<font color="#0000ff">return</font> r;
+}<br><br>Matrix &amp;Matrix::<font color="#0000ff">operator</font>*=(Matrix &amp;m) {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;mult(m);}
+Matrix &amp;Matrix::<font color="#0000ff">operator</font>*=(<font color="#0000ff">float</font> s)   {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;scale(s);}
+Matrix &amp;Matrix::<font color="#0000ff">operator</font>/=(<font color="#0000ff">float</font> s)   {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;scale(1 / s);}<br><br>Matrix Matrix::<font color="#0000ff">operator</font>*(Matrix &amp;m)   {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;mult(*<font color="#0000ff">this</font>, m);}
+Matrix Matrix::<font color="#0000ff">operator</font>*(<font color="#0000ff">float</font> s)     {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;scale(*<font color="#0000ff">this</font>, s);}
+Matrix Matrix::<font color="#0000ff">operator</font>/(<font color="#0000ff">float</font> s)     {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;scale(*<font color="#0000ff">this</font>, 1 / s);}<br><br><font color="#0000ff">float</font>  *Matrix::<font color="#0000ff">operator</font>[](<font color="#0000ff">int</font> row) {<font color="#0000ff">return</font> mItem[row];}
+Matrix Matrix::operator!()          {<font color="#0000ff">return</font> <font color="#0000ff">this</font>-&gt;inverse();}<br><br><font color="#007f00">//=============================================================================
+</font>
+<font color="#0000ff">inline</font> <font color="#0000ff">void</font> Matrix::minor(<font color="#0000ff">float</font> **r, <font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> rowCnt, <font color="#0000ff">int</font> colCnt, <font color="#0000ff">int</font> row, <font color="#0000ff">int</font> col)
+{
+	<font color="#0000ff">int</font> row2 = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; rowCnt; i++)
+		<font color="#0000ff">if</font> (i != row)
+		{
+			<font color="#0000ff">int</font> col2 = 0;
+			<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; colCnt; j++)
+				<font color="#0000ff">if</font> (j != col)
+				{
+					r[row2][col2] = m[i][j];
+					col2++;
+				}
+			row2++;
+		}
+}<br><br><font color="#0000ff">inline</font> <font color="#0000ff">float</font> Matrix::cofact(<font color="#0000ff">float</font> **t, <font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> size, <font color="#0000ff">int</font> row, <font color="#0000ff">int</font> col)
+{
+	minor(t, m, size, size, row, col);
+	<font color="#0000ff">return</font> (<font color="#0000ff">float</font>) pow(-1, row + col) * det(t, size - 1);
+}<br><br><font color="#0000ff">inline</font> <font color="#0000ff">float</font> Matrix::det(<font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> size)
+{
+	<font color="#0000ff">float</font> result = 0;
+	<font color="#0000ff">if</font> (size == 1)
+		result = m[0][0];
+	<font color="#0000ff">else</font>
+	{
+		<font color="#0000ff">float</font> **t = buildArray(size - 1, size - 1);
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; size; i++)
+			result += m[0][i] * cofact(t, m, size, 0, i);
+		killArray(t, size - 1);
+	}
+	<font color="#0000ff">return</font> result;
+}<br><br>Matrix &amp;Matrix::invert()
+{
+	<font color="#0000ff">float</font> **m = buildArray(4, 4);
+	<font color="#0000ff">float</font> **t = buildArray(3, 3);
+	<font color="#0000ff">float</font> **r = buildArray(4, 4);
+	<font color="#0000ff">this</font>-&gt;get(m);
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; 4; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; 4; j++)
+			r[i][j] = cofact(t, m, 4, i, j);
+	<font color="#0000ff">float</font> d = det(r, 4);
+	<font color="#0000ff">this</font>-&gt;set(r);
+	killArray(m, 4);
+	killArray(t, 3);
+	killArray(r, 4);
+	<font color="#0000ff">return</font> *<font color="#0000ff">this</font> = (d != 0) ? ~(*<font color="#0000ff">this</font>) / d : ZERO_MATRIX;
+}<br><br>Matrix Matrix::inverse()
+{
+	<font color="#0000ff">return</font> Matrix(*<font color="#0000ff">this</font>).invert();
+} </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[IMesh.cpp] - (327 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#include</font> "IMesh.h"<br><br>IMesh::IMesh(<font color="#0000ff">int</font> vertCnt, <font color="#0000ff">int</font> faceCnt)
+{
+	<font color="#0000ff">this</font>-&gt;resize(vertCnt, faceCnt);
+}<br><br>IMesh::~IMesh()
+{
+}<br><br><font color="#0000ff">void</font> IMesh::resize(<font color="#0000ff">int</font> vertCnt, <font color="#0000ff">int</font> faceCnt)
+{
+	mVertCnt = vertCnt;
+	mFaceCnt = faceCnt;
+}<br><br><font color="#0000ff">int</font> IMesh::getVertCnt()
+{
+	<font color="#0000ff">return</font> mVertCnt;
+}<br><br><font color="#0000ff">int</font> IMesh::getFaceCnt()
+{
+	<font color="#0000ff">return</font> mFaceCnt;
+} </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Vector.h] - (2,905 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#ifndef</font> H_VECTOR
+<font color="#0000ff">#define</font> H_VECTOR<br><br><font color="#0000ff">#include</font> &lt;windows.h&gt; <font color="#007f00">// memcpy()
+</font><font color="#0000ff">#include</font> &lt;math.h&gt; <font color="#007f00">// pow()
+</font><font color="#0000ff">#include</font> "Matrix.h"
+<font color="#0000ff">#include</font> "Util.h" <font color="#007f00">// BIG_NUMBER
+</font>
+<font color="#0000ff">#define</font> UNIT_VECTOR UnitVector
+<font color="#0000ff">#define</font> NULL_VECTOR NullVector
+<font color="#0000ff">#define</font> FWD_VECTOR FwdVector
+<font color="#0000ff">#define</font> LEFT_VECTOR LeftVector
+<font color="#0000ff">#define</font> UP_VECTOR UpVector
+<font color="#0000ff">#define</font> RAND_VECTOR Vector(rand(), rand(), rand())<br><br><font color="#0000ff">namespace</font> AXIS
+{
+	<font color="#0000ff">enum</font> AXIS {X, Y, Z, S};
+};<br><br><font color="#0000ff">class</font> Vector
+{
+<font color="#0000ff">public</font>:
+	<font color="#0000ff">union</font>
+	{
+		<font color="#0000ff">float</font> v[3];
+		<font color="#0000ff">struct</font>
+		{
+			<font color="#0000ff">union</font> {<font color="#0000ff">float</font> x; <font color="#0000ff">float</font> roll;};
+			<font color="#0000ff">union</font> {<font color="#0000ff">float</font> y; <font color="#0000ff">float</font> pitch;};
+			<font color="#0000ff">union</font> {<font color="#0000ff">float</font> z; <font color="#0000ff">float</font> yaw;};
+		};
+	};<br><br>	Vector();
+	~Vector();
+	<font color="#007f00">//=============================================================================
+</font>	Vector(<font color="#0000ff">float</font> x, <font color="#0000ff">float</font> y, <font color="#0000ff">float</font> z);
+	Vector(Vector &amp;v);
+	Vector(<font color="#0000ff">float</font> s);
+	Vector(<font color="#0000ff">float</font> *v);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">void</font> toArray(<font color="#0000ff">float</font> *v);
+	<font color="#007f00">//=============================================================================
+</font>	Vector &amp;<font color="#0000ff">operator</font>=(Vector &amp;v);
+	<font color="#007f00">//=============================================================================
+</font>	Vector &amp;<font color="#0000ff">operator</font>+=(Vector &amp;v);
+	Vector &amp;<font color="#0000ff">operator</font>-=(Vector &amp;v);
+	Vector &amp;<font color="#0000ff">operator</font>&amp;=(Vector &amp;v);
+	Vector &amp;<font color="#0000ff">operator</font>*=(<font color="#0000ff">float</font> s);
+	Vector &amp;<font color="#0000ff">operator</font>/=(<font color="#0000ff">float</font> s);
+	Vector &amp;<font color="#0000ff">operator</font>*=(Vector &amp;v);
+	Vector &amp;<font color="#0000ff">operator</font>*=(Matrix &amp;m);
+	<font color="#007f00">//=============================================================================
+</font>	Vector <font color="#0000ff">operator</font>+(Vector &amp;v);
+	Vector <font color="#0000ff">operator</font>-(Vector &amp;v);
+	Vector <font color="#0000ff">operator</font>&amp;(Vector &amp;v);
+	Vector <font color="#0000ff">operator</font>*(<font color="#0000ff">float</font> s);
+	Vector <font color="#0000ff">operator</font>/(<font color="#0000ff">float</font> s);
+	Vector <font color="#0000ff">operator</font>*(Vector &amp;v);
+	Vector <font color="#0000ff">operator</font>*(Matrix &amp;m);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">float</font> &amp;<font color="#0000ff">operator</font>[](AXIS::AXIS axis);
+	<font color="#0000ff">float</font> operator|(Vector &amp;v);
+	Vector <font color="#0000ff">operator</font>-();
+	<font color="#0000ff">bool</font> <font color="#0000ff">operator</font>==(Vector &amp;v);
+	<font color="#0000ff">bool</font> operator!=(Vector &amp;v);
+	<font color="#007f00">//=============================================================================
+</font>	Vector &amp;mask(Vector &amp;m, Vector &amp;v);
+	Vector vec_interp(Vector &amp;v, <font color="#0000ff">float</font> s);
+	<font color="#0000ff">float</font> mod();
+	<font color="#0000ff">float</font> dist(Vector &amp;v);
+	Vector &amp;normalize();
+	Vector normal();
+	Vector normTri(Vector &amp;v1, Vector &amp;v2);
+	<font color="#0000ff">float</font> angle(Vector &amp;v);
+	<font color="#0000ff">int</font> compare(Vector &amp;v1, Vector &amp;v2);
+	<font color="#0000ff">float</font> sectPlane(Vector &amp;p, Vector &amp;v, Vector &amp;n);
+	Vector project(Vector &amp;v);
+	Vector ortho(Vector &amp;v);
+	Vector reflect(Vector &amp;n);
+	Vector &amp;fromAngle(Vector &amp;v);
+	Vector toAngle();
+	<font color="#007f00">//=============================================================================
+</font>	Vector &amp;vec_wrap(Vector &amp;pMin, Vector &amp;pMax);
+	Vector &amp;vec_limit(Vector &amp;pMin, Vector &amp;pMax);
+	<font color="#0000ff">void</font> multEx(<font color="#0000ff">float</font> *r, Matrix &amp;m);
+	<font color="#007f00">//=============================================================================
+</font>};<br><br><font color="#0000ff">static</font> Vector UnitVector(1.0);
+<font color="#0000ff">static</font> Vector NullVector(0.0);
+<font color="#0000ff">static</font> Vector FwdVector(0, 0, 1);
+<font color="#0000ff">static</font> Vector LeftVector(1, 0, 0);
+<font color="#0000ff">static</font> Vector UpVector(0, 1, 0);<br><br><font color="#0000ff">#include</font> "Transform.h"<br><br><font color="#0000ff">#endif</font> </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Transform.h] - (1,004 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#ifndef</font> H_TRANSFORM
+<font color="#0000ff">#define</font> H_TRANSFORM<br><br><font color="#0000ff">#include</font> &lt;math.h&gt; <font color="#007f00">// sin(), cos()
+</font><font color="#0000ff">#include</font> "Vector.h"
+<font color="#0000ff">#include</font> "Matrix.h"
+<font color="#0000ff">#include</font> "Exception.h"<br><br><font color="#0000ff">class</font> ScaleTrans     : <font color="#0000ff">public</font> Matrix {<font color="#0000ff">public</font>: ScaleTrans(Vector &amp;v);};
+<font color="#0000ff">class</font> TranslateTrans : <font color="#0000ff">public</font> Matrix {<font color="#0000ff">public</font>: TranslateTrans(Vector &amp;v);};
+<font color="#0000ff">class</font> RotateTrans    : <font color="#0000ff">public</font> Matrix {<font color="#0000ff">public</font>: RotateTrans(AXIS::AXIS axis, <font color="#0000ff">float</font> angle);};<br><br><font color="#0000ff">class</font> ComboTrans : <font color="#0000ff">public</font> Matrix
+{
+<font color="#0000ff">public</font>:
+	ComboTrans(
+		Vector &amp;origin,
+		Vector &amp;angle,
+		Vector &amp;scale
+		);
+};<br><br><font color="#0000ff">class</font> ProjectTrans : <font color="#0000ff">public</font> Matrix
+{
+<font color="#0000ff">protected</font>:
+	<font color="#0000ff">float</font> cx;
+	<font color="#0000ff">float</font> cy;
+<font color="#0000ff">public</font>:
+	ProjectTrans(
+		<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f
+		);
+};<br><br><font color="#0000ff">class</font> ProjectPerspectTrans : <font color="#0000ff">public</font> ProjectTrans
+{
+<font color="#0000ff">public</font>:
+	ProjectPerspectTrans(
+		<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> aspect, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f,
+		<font color="#0000ff">float</font> halfTan
+		);
+};<br><br><font color="#0000ff">class</font> ProjectOrthoTrans : <font color="#0000ff">public</font> ProjectTrans
+{
+<font color="#0000ff">public</font>:
+	ProjectOrthoTrans(
+		<font color="#0000ff">float</font> sw, <font color="#0000ff">float</font> sh, <font color="#0000ff">float</font> aspect, <font color="#0000ff">float</font> n, <font color="#0000ff">float</font> f,
+		<font color="#0000ff">float</font> zoom
+		);
+};<br><br><font color="#0000ff">#endif</font> </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Polygon.h] - (598 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#ifndef</font> H_POLYGON
+<font color="#0000ff">#define</font> H_POLYGON<br><br><font color="#0000ff">#include</font> "IMesh.h"<br><br><font color="#0000ff">class</font> Polygon
+{
+<font color="#0000ff">public</font>:
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeBox(IMesh *mesh);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeGrid(IMesh *mesh, <font color="#0000ff">int</font> gridX, <font color="#0000ff">int</font> gridZ);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeCylinder(IMesh *mesh, <font color="#0000ff">int</font> step);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeCone(IMesh *mesh, <font color="#0000ff">int</font> step);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeSphere(IMesh *mesh, <font color="#0000ff">int</font> stepLng, <font color="#0000ff">int</font> stepLat);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeHemis(IMesh *mesh, <font color="#0000ff">int</font> stepLng, <font color="#0000ff">int</font> stepLat);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeTorus(IMesh *mesh, <font color="#0000ff">float</font> radMajor, <font color="#0000ff">float</font> radMinor, <font color="#0000ff">int</font> stepMajor, <font color="#0000ff">int</font> stepMinor);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeOcta(IMesh *mesh);
+	<font color="#0000ff">static</font> <font color="#0000ff">void</font> makeTetra(IMesh *mesh);
+};<br><br><font color="#0000ff">#endif</font> </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Matrix.h] - (2,546 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#ifndef</font> H_MATRIX
+<font color="#0000ff">#define</font> H_MATRIX<br><br><font color="#0000ff">#include</font> &lt;windows.h&gt; <font color="#007f00">// memcpy()
+</font><font color="#0000ff">#include</font> &lt;math.h&gt; <font color="#007f00">// pow()
+</font>
+<font color="#0000ff">#define</font> IDENT_MATRIX IdentMatrix
+<font color="#0000ff">#define</font> ZERO_MATRIX ZeroMatrix<br><br><font color="#0000ff">inline</font> <font color="#0000ff">float</font> **buildArray(<font color="#0000ff">int</font> rowCnt, <font color="#0000ff">int</font> colCnt)
+{
+	<font color="#0000ff">float</font> **r = <font color="#0000ff">new</font> <font color="#0000ff">float</font> *[rowCnt];
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; rowCnt; i++)
+		r[i] = <font color="#0000ff">new</font> <font color="#0000ff">float</font>[colCnt];
+	<font color="#0000ff">return</font> r;
+}<br><br><font color="#0000ff">inline</font> <font color="#0000ff">void</font> killArray(<font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> rowCnt)
+{
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; rowCnt; i++)
+		<font color="#0000ff">delete</font> []m[i];
+	<font color="#0000ff">delete</font> []m;
+}<br><br><font color="#0000ff">class</font> Matrix
+{
+<font color="#0000ff">private</font>:
+	<font color="#0000ff">float</font> mItem[4][4];<br><br>	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">inline</font> <font color="#0000ff">void</font> get(<font color="#0000ff">float</font> **m);
+	<font color="#0000ff">inline</font> Matrix &amp;set(<font color="#0000ff">float</font> **m);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">inline</font> Matrix &amp;mult(Matrix &amp;m);
+	<font color="#0000ff">inline</font> Matrix &amp;scale(<font color="#0000ff">float</font> s);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">inline</font> Matrix mult(Matrix &amp;m1, Matrix &amp;m2);
+	<font color="#0000ff">inline</font> Matrix scale(Matrix &amp;m, <font color="#0000ff">float</font> s);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">static</font> <font color="#0000ff">inline</font> <font color="#0000ff">void</font> minor(<font color="#0000ff">float</font> **r, <font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> rowCnt, <font color="#0000ff">int</font> colCnt, <font color="#0000ff">int</font> row, <font color="#0000ff">int</font> col);
+	<font color="#0000ff">static</font> <font color="#0000ff">inline</font> <font color="#0000ff">float</font> cofact(<font color="#0000ff">float</font> **t, <font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> size, <font color="#0000ff">int</font> row, <font color="#0000ff">int</font> col);
+	<font color="#0000ff">static</font> <font color="#0000ff">inline</font> <font color="#0000ff">float</font> det(<font color="#0000ff">float</font> **m, <font color="#0000ff">int</font> size);
+	<font color="#007f00">//=============================================================================
+</font><font color="#0000ff">public</font>:
+	Matrix();
+	~Matrix();
+	<font color="#007f00">//=============================================================================
+</font>	Matrix(Matrix &amp;m);
+	Matrix(<font color="#0000ff">float</font> **m);
+	Matrix(<font color="#0000ff">float</font> s);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">void</font> toArray(<font color="#0000ff">float</font> *m);
+	<font color="#007f00">//=============================================================================
+</font>	Matrix &amp;<font color="#0000ff">operator</font>=(Matrix &amp;m);
+	Matrix operator~();
+	<font color="#007f00">//=============================================================================
+</font>	Matrix &amp;<font color="#0000ff">operator</font>*=(Matrix &amp;m);
+	Matrix &amp;<font color="#0000ff">operator</font>*=(<font color="#0000ff">float</font> s);
+	Matrix &amp;<font color="#0000ff">operator</font>/=(<font color="#0000ff">float</font> s);
+	<font color="#007f00">//=============================================================================
+</font>	Matrix <font color="#0000ff">operator</font>*(Matrix &amp;m);
+	Matrix <font color="#0000ff">operator</font>*(<font color="#0000ff">float</font> s);
+	Matrix <font color="#0000ff">operator</font>/(<font color="#0000ff">float</font> s);
+	<font color="#007f00">//=============================================================================
+</font>	<font color="#0000ff">float</font> *<font color="#0000ff">operator</font>[](<font color="#0000ff">int</font> row);
+	Matrix operator!();
+	<font color="#007f00">//=============================================================================
+</font>	Matrix &amp;invert();
+	Matrix inverse();
+	<font color="#007f00">//=============================================================================
+</font>};<br><br><font color="#0000ff">static</font> Matrix IdentMatrix(1.0);
+<font color="#0000ff">static</font> Matrix ZeroMatrix(0.0);<br><br><font color="#0000ff">#endif</font> </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table><font size="1"><br></font>
+<table style="table-layout:fixed;" width="95%" cellspacing="0" cellpadding="20" border="0" bgcolor="#000000">
+<tbody><tr><td>
+<font size="2" face="Verdana, Tahoma, Helvetica">
+<b>Currently browsing [<a href="http://www.flipcode.com/archives/3DPlatonicPrimitives.zip">3DPlatonicPrimitives.zip</a>]</b> (7,232 bytes) - <i>[Polygon.cpp] - (4,489 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" cellspacing="0" cellpadding="12" border="0" bgcolor="#ffffff"><tbody><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000"><font color="#0000ff">#include</font> "Polygon.h"<br><br><font color="#0000ff">void</font> Polygon::makeBox(IMesh *mesh)
+{
+	mesh-&gt;resize(8, 12);
+	mesh-&gt;setVertex(0, 0, 0, 0);
+	mesh-&gt;setVertex(1, 1, 0, 0);
+	mesh-&gt;setVertex(2, 1, 0, 1);
+	mesh-&gt;setVertex(3, 0, 0, 1);
+	mesh-&gt;setVertex(4, 0, 1, 0);
+	mesh-&gt;setVertex(5, 1, 1, 0);
+	mesh-&gt;setVertex(6, 1, 1, 1);
+	mesh-&gt;setVertex(7, 0, 1, 1);
+	mesh-&gt;setFace(0, 0, 4, 5);
+	mesh-&gt;setFace(1, 5, 1, 0);
+	mesh-&gt;setFace(2, 1, 5, 6);
+	mesh-&gt;setFace(3, 6, 2, 1);
+	mesh-&gt;setFace(4, 2, 6, 7);
+	mesh-&gt;setFace(5, 7, 3, 2);
+	mesh-&gt;setFace(6, 3, 7, 4);
+	mesh-&gt;setFace(7, 4, 0, 3);
+	mesh-&gt;setFace(8, 0, 1, 2);
+	mesh-&gt;setFace(9, 2, 3, 0);
+	mesh-&gt;setFace(10, 5, 4, 7);
+	mesh-&gt;setFace(11, 7, 6, 5);
+}<br><br><font color="#0000ff">void</font> Polygon::makeGrid(IMesh *mesh, <font color="#0000ff">int</font> gridX, <font color="#0000ff">int</font> gridZ)
+{
+	mesh-&gt;resize(gridX * gridZ, (gridX - 1) * (gridZ - 1) * 2);
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">int</font> faceCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> x = 0; x &lt; gridX; x++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> z = 0; z &lt; gridZ; z++)
+		{
+			mesh-&gt;setVertex(
+				vertCnt, 1 - (<font color="#0000ff">float</font>) x / (gridX - 1), 0, 1 - (<font color="#0000ff">float</font>) z / (gridZ - 1)
+				);
+			<font color="#0000ff">if</font> (x &lt; gridX - 1 &amp;&amp; z &lt; gridZ - 1)
+			{
+				mesh-&gt;setFace(
+					faceCnt++, vertCnt + 0, vertCnt + 1, vertCnt + 1 + gridZ
+					);
+				mesh-&gt;setFace(
+					faceCnt++, vertCnt + 1 + gridZ, vertCnt + gridZ, vertCnt + 0
+					);
+			}
+			vertCnt++;
+		}
+}<br><br><font color="#0000ff">void</font> Polygon::makeCylinder(IMesh *mesh, <font color="#0000ff">int</font> step)
+{
+	makeGrid(mesh, step + 1, 4);
+	<font color="#0000ff">float</font> unit = 2 * PI / step;
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; step + 1; i++)
+	{
+		mesh-&gt;setVertex(vertCnt++, 0, 1, 0);
+		Vector v =
+			Vector(0, 0, 1) *
+			RotateTrans(AXIS::Y, i * unit);
+		mesh-&gt;setVertex(vertCnt++, v.x, v.y + 1, v.z);
+		mesh-&gt;setVertex(vertCnt++, v.x, v.y, v.z);
+		mesh-&gt;setVertex(vertCnt++, 0, 0, 0);
+	}
+}<br><br><font color="#0000ff">void</font> Polygon::makeCone(IMesh *mesh, <font color="#0000ff">int</font> step)
+{
+	makeGrid(mesh, step + 1, 3);
+	<font color="#0000ff">float</font> unit = 2 * PI / step;
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; step + 1; i++)
+	{
+		mesh-&gt;setVertex(vertCnt++, 0, 1, 0);
+		Vector v =
+			Vector(0, 0, 1) *
+			RotateTrans(AXIS::Y, i * unit);
+		mesh-&gt;setVertex(vertCnt++, v.x, v.y, v.z);
+		mesh-&gt;setVertex(vertCnt++, 0, 0, 0);
+	}
+}<br><br><font color="#0000ff">void</font> Polygon::makeSphere(IMesh *mesh, <font color="#0000ff">int</font> stepLng, <font color="#0000ff">int</font> stepLat)
+{
+	makeGrid(mesh, stepLng + 1, (stepLat / 2) + 1);
+	<font color="#0000ff">float</font> unitLng = 2 * PI / stepLng;
+	<font color="#0000ff">float</font> unitLat = PI / (stepLat / 2);
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; stepLng + 1; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; (stepLat / 2) + 1; j++)
+		{
+			Vector v =
+				Vector(0, 1, 0) *
+				RotateTrans(AXIS::X, j * unitLat) *
+				RotateTrans(AXIS::Y, i * unitLng);
+			mesh-&gt;setVertex(vertCnt++, v.x, v.y, v.z);
+		}
+}<br><br><font color="#0000ff">void</font> Polygon::makeHemis(IMesh *mesh, <font color="#0000ff">int</font> stepLng, <font color="#0000ff">int</font> stepLat)
+{
+	makeGrid(mesh, stepLng + 1, (stepLat / 4) + 2);
+	<font color="#0000ff">float</font> unitLng = 2 * PI / stepLng;
+	<font color="#0000ff">float</font> unitLat = PI / (stepLat / 2);
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; stepLng + 1; i++)
+	{
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; (stepLat / 4) + 1; j++)
+		{
+			Vector v =
+				Vector(0, 1, 0) *
+				RotateTrans(AXIS::X, j * unitLat) *
+				RotateTrans(AXIS::Y, i * unitLng);
+			mesh-&gt;setVertex(vertCnt++, v.x, v.y, v.z);
+		}
+		mesh-&gt;setVertex(vertCnt++, 0, 0, 0);
+	}
+}<br><br><font color="#0000ff">void</font> Polygon::makeTorus(
+	IMesh *mesh, <font color="#0000ff">float</font> radMajor, <font color="#0000ff">float</font> radMinor, <font color="#0000ff">int</font> stepMajor, <font color="#0000ff">int</font> stepMinor
+	)
+{
+	makeGrid(mesh, stepMajor + 1, stepMinor + 1);
+	<font color="#0000ff">float</font> unitMajor = 2 * PI / stepMajor;
+	<font color="#0000ff">float</font> unitMinor = 2 * PI / stepMinor;
+	<font color="#0000ff">int</font> vertCnt = 0;
+	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; stepMajor + 1; i++)
+		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> j = 0; j &lt; stepMinor + 1; j++)
+		{
+			Vector v =
+				Vector(0, radMinor, 0) *
+				RotateTrans(AXIS::X, j * unitMinor) *
+				TranslateTrans(Vector(0, 0, radMajor)) *
+				RotateTrans(AXIS::Y, i * unitMajor);
+			mesh-&gt;setVertex(vertCnt++, v.x, v.y, v.z);
+		}
+}<br><br><font color="#0000ff">void</font> Polygon::makeOcta(IMesh *mesh)
+{
+	mesh-&gt;resize(6, 8);
+	mesh-&gt;setVertex(0, 0, 0, 0);
+	mesh-&gt;setVertex(1, 1, 0, 0);
+	mesh-&gt;setVertex(2, 1, 0, 1);
+	mesh-&gt;setVertex(3, 0, 0, 1);
+	mesh-&gt;setVertex(4, 0.5f, -1, 0.5f);
+	mesh-&gt;setVertex(5, 0.5f, 1, 0.5f);
+	mesh-&gt;setFace(0, 0, 1, 4);
+	mesh-&gt;setFace(1, 1, 2, 4);
+	mesh-&gt;setFace(2, 2, 3, 4);
+	mesh-&gt;setFace(3, 3, 0, 4);
+	mesh-&gt;setFace(4, 0, 5, 1);
+	mesh-&gt;setFace(5, 1, 5, 2);
+	mesh-&gt;setFace(6, 2, 5, 3);
+	mesh-&gt;setFace(7, 3, 5, 0);
+}<br><br><font color="#0000ff">void</font> Polygon::makeTetra(IMesh *mesh)
+{
+	mesh-&gt;resize(4, 4);
+	mesh-&gt;setVertex(0, 0, 0, 0);
+	mesh-&gt;setVertex(1, 1, 1, 0);
+	mesh-&gt;setVertex(2, 0, 1, 1);
+	mesh-&gt;setVertex(3, 1, 0, 1);
+	mesh-&gt;setFace(0, 0, 1, 3);
+	mesh-&gt;setFace(1, 0, 2, 1);
+	mesh-&gt;setFace(2, 0, 3, 2);
+	mesh-&gt;setFace(3, 1, 2, 3);
+} </font></pre></td></tr></tbody></table></div></center>
+</font>
+</td>
+</tr>
+</tbody></table>
+
+<br>
+
+<center><font size="1" face="Verdana, Tahoma" color="#ffffff">The zip file viewer built into the Developer Toolbox made use
+of the <a href="http://www.gzip.org/zlib/">zlib</a> library, as well as the <a href="http://www.winimage.com/zLibDll/">zlibdll</a> source additions.</font></center>
+<br>
+</center> 
+<center><table width="100%" cellspacing="0" cellpadding="2" border="0"><tbody><tr><td width="100" valign="center" bgcolor="#333333" background="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/comments_bar2.jpg"><font size="1">&nbsp;</font></td></tr></tbody></table></center>
+</center></td></tr></tbody></table>
+<br>
+
+
+<a name="comments">
+
+</a></center><a name="comments">
+
+</a><center><a name="comments"><font size="1" face="Arial, Helvetica"><font size="1" face="Helvetica,Tahoma,Verdana">Copyright 1999-2008 (C) FLIPCODE.COM and/or the original content author(s).  All rights reserved.</font> </font></a><font size="1" face="Arial, Helvetica"><center><a name="comments"><font size="1" face="Helvetica,Tahoma,Verdana">Please read our </font></a><font size="1" face="Helvetica,Tahoma,Verdana"><a href="http://www.flipcode.com/archives/terms.shtml">Terms</a>, <a href="http://www.flipcode.com/archives/terms.shtml">Conditions</a>, and <a href="http://www.flipcode.com/archives/terms.shtml">Privacy information</a>.</font></center></font></center>
+<br>
+
+
+
+</center><iframe id="google_osd_static_frame_7386290840154" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body><iframe id="google_esf" name="google_esf" src="flipcode%20-%203D%20Platonic%20Primitive%20Generators_tiedostot/zrt_lookup.html" style="display: none;" data-ad-client="ca-pub-3512250068614659"></iframe></html>

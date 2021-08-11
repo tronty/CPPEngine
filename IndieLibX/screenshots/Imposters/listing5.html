@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 5</title>
+</head>
+<body>
+<pre>
+/// Construct a world-space billboard that (in screen-space)
+/// fully covers the input bounding box.
+void ImposterSystem::CreateImposterBillboard(
+			const D3DXVECTOR3& curCameraPos,
+			const D3DXMATRIX& viewMatrix, const D3DXMATRIX& projMatrix,
+			const D3DXMATRIX& worldTransform,
+			D3DXVECTOR3 boundingBoxVerts[NUM_BOX_VERTS],
+			float boundingRadius,
+			Imposter* pImposter, float& imposterNearPlane, float& imposterFarPlane)
+{
+	int stride = sizeof(D3DXVECTOR3);
+	D3DXVECTOR3 screenVerts[NUM_BOX_VERTS];
+	RECT rect = DXUTGetWindowClientRect();
+	int screenWidth = rect.right - rect.left;
+	int screenHeight = rect.bottom - rect.top;
+	D3DVIEWPORT9 viewport = { 0, 0, screenWidth, screenHeight, 0, 1 };
+
+	// Project bounding box into screen space.
+	D3DXVec3ProjectArray(screenVerts, stride, boundingBoxVerts, stride,
+                            &viewport, &projMatrix, &viewMatrix, &worldTransform,
+                            NUM_BOX_VERTS);
+
+	// Determine the smallest screen-space quad that encompasses the bounding box.
+
+	float minX = screenVerts[0].x;
+	float maxX = screenVerts[0].x;
+	float minY = screenVerts[0].y;
+	float maxY = screenVerts[0].y;
+	float minZ = screenVerts[0].z;
+	for (int i = 1; i < NUM_BOX_VERTS; ++i)
+	{
+		minX = min(screenVerts[i].x, minX);
+		maxX = max(screenVerts[i].x, maxX);
+		minY = min(screenVerts[i].y, minY);
+		maxY = max(screenVerts[i].y, maxY);
+		minZ = min(screenVerts[i].z, minZ);
+	}
+
+	// Add extra vertices here to compute the near plane and far plane positions.
+
+	const int NUM_VERTS = 4;
+	D3DXVECTOR3 screenSpaceVerts[NUM_VERTS] =
+	{
+		D3DXVECTOR3(minX, minY, minZ),
+		D3DXVECTOR3(maxX, minY, minZ),
+		D3DXVECTOR3(maxX, maxY, minZ),
+		D3DXVECTOR3(minX, maxY, minZ)
+	};
+
+	// Unproject the screen-space quad into world-space.
+
+D3DXMATRIX identity;
+	D3DXMatrixIdentity(&identity);
+
+	D3DXVECTOR3 worldSpaceVerts[NUM_VERTS];
+
+	D3DXVec3UnprojectArray(worldSpaceVerts, stride, screenSpaceVerts, stride,
+                              &viewport, &projMatrix, &viewMatrix, &identity,
+                              NUM_VERTS);
+
+	// Save the imposter vertices for later.
+
+	pImposter->verts[0].pos = worldSpaceVerts[0];
+	pImposter->verts[1].pos = worldSpaceVerts[1];
+	pImposter->verts[2].pos = worldSpaceVerts[3];
+	pImposter->verts[3].pos = worldSpaceVerts[1];
+	pImposter->verts[4].pos = worldSpaceVerts[2];
+	pImposter->verts[5].pos = worldSpaceVerts[3];
+	pImposter->centre = (worldSpaceVerts[0] + worldSpaceVerts[1] +
+worldSpaceVerts[2] + worldSpaceVerts[3]) * 0.25f;
+	pImposter->cameraDir = curCameraPos - pImposter->centre;
+	D3DXVec3Normalize(&pImposter->cameraDir, &pImposter->cameraDir);
+
+	// Calculate near and far planes.
+
+	D3DXVECTOR3 nearPlaneVec = pImposter->centre - curCameraPos;
+	imposterNearPlane = D3DXVec3Length(&nearPlaneVec);
+	imposterFarPlane = imposterNearPlane + (boundingRadius * 2.0f);
+}
+</pre>
+</body>
+</html>

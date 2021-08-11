@@ -1,0 +1,33 @@
+#version 140
+
+#line 18
+struct VsOut {
+    vec4 position;
+    vec2 texCoord;
+};
+#line 25
+uniform sampler1D Base1;
+uniform sampler2D Base;
+uniform sampler3D Base3;
+uniform int dim;
+#line 29
+uniform float z;
+#line 43
+#line 37
+vec4 xlat_main( in VsOut IN ) {
+    #line 39
+    return texture2D( Base, IN.texCoord);
+}
+varying vec4 xlv_COLOR;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(gl_Vertex);
+    xlt_IN.texCoord = vec2(gl_MultiTexCoord0);
+    xl_retval = xlat_main( xlt_IN);
+    xlv_COLOR = vec4(xl_retval);
+}
+
+// uniforms:
+// Base:<none> type 25 arrsize 0
+

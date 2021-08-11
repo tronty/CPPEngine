@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)]><!-->
+<html lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>GameWorks vs GPUOpen: closed vs open does not work the way you think it does | Scali's OpenBlog™</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/style_002.css">
+<link rel="pingback" href="https://scalibq.wordpress.com/xmlrpc.php">
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="alternate" type="application/rss+xml" title="Scali's OpenBlog™ » Feed" href="https://scalibq.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Scali's OpenBlog™ » Comments Feed" href="https://scalibq.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Scali's OpenBlog™ » GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does Comments Feed" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/feed/">
+	
+			
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="all-css-0-1" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/a.css" type="text/css" media="all">
+
+
+<link rel="stylesheet" id="all-css-0-2" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s1.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://scalibq.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="The damage that AMD marketing&nbsp;does" href="https://scalibq.wordpress.com/2016/06/04/the-damage-that-amd-marketing-does/">
+<link rel="next" title="AMD’s Polaris debuts in Radeon RX480: I told you&nbsp;so" href="https://scalibq.wordpress.com/2016/06/29/amds-polaris-debuts-in-radeon-rx480-i-told-you-so/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/a_003.html">
+<link rel="shortlink" href="http://wp.me/p15QUe-Ce">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=https%3A%2F%2Fscalibq.wordpress.com%2F2016%2F06%2F16%2Fgameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=https%3A%2F%2Fscalibq.wordpress.com%2F2016%2F06%2F16%2Fgameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="GameWorks vs GPUOpen: closed vs open does not work the way you think it does">
+<meta property="og:url" content="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/">
+<meta property="og:description" content="I often read people claiming that GameWorks is unfair to AMD, because they don’t get access to the sourcecode, and therefore they cannot optimize for it. I cringe everytime I read this, becau…">
+<meta property="article:published_time" content="2016-06-16T19:57:03+00:00">
+<meta property="article:modified_time" content="2016-07-12T23:10:12+00:00">
+<meta property="og:site_name" content="Scali's OpenBlog™">
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@wordpressdotcom">
+<meta name="twitter:text:title" content="GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
+<link rel="openid.server" href="https://scalibq.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://scalibq.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://scalibq.wordpress.com/osd.xml" title="Scali's OpenBlog™">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="application-name" content="Scali's OpenBlog™"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Programming, graphics, hardware, maths, and that sort of thing"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://scalibq.wordpress.com/feed/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does | Scali's OpenBlog™ on WordPress.com">
+<meta name="description" content="I often read people claiming that GameWorks is unfair to AMD, because they don't get access to the sourcecode, and therefore they cannot optimize for it. I cringe everytime I read this, because it is wrong on so many levels. So I decided to write a blog about it, to explain how it REALLY works.…">
+ 		
+ 		
+		<link rel="amphtml" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/amp/"><style type="text/css" id="syntaxhighlighteranchor"></style>
+
+
+
+<link rel="stylesheet" type="text/css" id="gravatar-card-css" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/services.css"><iframe src="https://ads.pubmatic.com/AdServer/js/showad.js#PIX&amp;kdntuid=1&amp;p=156204" style="height: 0px; width: 0px; border: 0px none;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" width="0" height="0"></iframe></head>
+
+<body class="post-template-default single single-post postid-2370 single-format-standard mp6 customizer-styles-applied single-author highlander-enabled highlander-light">
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="branding" role="banner">
+								<div id="site-title">
+					<span>
+						<a href="https://scalibq.wordpress.com/" title="Scali's OpenBlog™" rel="home">Scali's OpenBlog™</a>
+					</span>
+				</div>
+				<div id="site-description">Programming, graphics, hardware, maths, and that sort of thing</div>
+
+										<a class="home-link" href="https://scalibq.wordpress.com/" title="Scali's OpenBlog™" rel="home">
+							<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/path.jpg" alt="" width="940" height="198">
+						</a>
+								</div><!-- #branding -->
+
+			<div id="access" role="navigation">
+			  				<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+								<div class="menu"><ul>
+<li><a href="https://scalibq.wordpress.com/">Home</a></li><li class="page_item page-item-2"><a href="https://scalibq.wordpress.com/about/">About</a></li>
+<li class="page_item page-item-1045"><a href="https://scalibq.wordpress.com/just-keeping-it-real-a-series-of-articles-on-oldskoolretro-programming/">Just keeping it real, a series of articles on oldskool/retro&nbsp;programming</a></li>
+</ul></div>
+			</div><!-- #access -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+
+	<div id="main">
+
+		<div id="container">
+			<div id="content" role="main">
+
+			
+
+				<div id="nav-above" class="navigation">
+					<div class="nav-previous"><a href="https://scalibq.wordpress.com/2016/06/04/the-damage-that-amd-marketing-does/" rel="prev"><span class="meta-nav">←</span> The damage that AMD marketing&nbsp;does</a></div>
+					<div class="nav-next"><a href="https://scalibq.wordpress.com/2016/06/29/amds-polaris-debuts-in-radeon-rx480-i-told-you-so/" rel="next">AMD’s Polaris debuts in Radeon RX480: I told you&nbsp;so <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-above -->
+
+				<div id="post-2370" class="post-2370 post type-post status-publish format-standard hentry category-direct3d category-opengl category-software-development category-software-news tag-amd tag-d3d tag-direct3d tag-directx tag-driver-cheats tag-gameworks tag-gaming tag-gaming-evolved tag-gpuopen tag-nvidia tag-opengl tag-optimization tag-the-way-its-meant-to-be-played">
+											<h2 class="entry-title"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/" rel="bookmark">GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does</a></h2>					
+					<div class="entry-meta">
+						<span class="meta-prep meta-prep-author">Posted on</span> <a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/" title="7:57 pm" rel="bookmark"><span class="entry-date">June 16, 2016</span></a>						<span class="by-author"><span class="sep">by</span> <span class="author vcard"><a class="url fn n" href="https://scalibq.wordpress.com/author/scalibq/" title="View all posts by Scali" rel="author">Scali</a></span> </span>					</div><!-- .entry-meta -->
+
+					<div class="entry-content">
+						<p>I often read people claiming that GameWorks is unfair to AMD, 
+because they don’t get access to the sourcecode, and therefore they 
+cannot optimize for it. I cringe everytime I read this, because it is 
+wrong on so many levels. So I decided to write a blog about it, to 
+explain how it REALLY works.</p>
+<p>The first obvious mistake is that although GPUOpen itself may be open
+ source, the games that use it are not. What this means is that when a 
+game decides to use an open source library, the code is basically 
+‘frozen in time’ as soon as they build the binaries, which you 
+eventually install when you want to play the game. So even though you 
+may have the source code for the effect framework, what are you going to
+ do with it? You do not have the ability to modify the game code (eg DRM
+ and/or anti-cheat will prevent you from doing this). So if the game 
+happens to be unoptimized for a given GPU, there is nothing you can do 
+about it, even if you do have the source.</p>
+<p>The second obvious mistake is the assumption that you need the source
+ code to see what an effect does. This is not the case, and in fact, in 
+the old days, GPU vendors generally did not have access to the source 
+code anyway (it might sound crazy, but in the old days, game developers 
+actually developed games, as in, they developed the whole renderer and 
+engine. Hardware suppliers supplied the hardware). These days, they have
+ developer relations programs, and tend to work with developers more 
+closely, which also involves getting access to source code in some cases
+ (sometimes to the point where the GPU vendor actually does some/a lot 
+of the hard work for them). But certainly not always (especially when 
+the game is under the banner of the competing GPU vendor, such as Gaming
+ Evolved or The Way It’s Meant To Be Played).</p>
+<p>So, assuming you don’t get access to the source code, is there 
+nothing you can do? Well no, on the contrary. In most cases, games and 
+effect frameworks (even GameWorks) generally just perform standard 
+Direct3D or OpenGL API calls. There are various game development tools 
+available to analyze D3D or OpenGL code. For example, there is Visual 
+Studio Graphics Diagnostics: <a href="https://msdn.microsoft.com/en-us/library/hh873207.aspx" rel="nofollow">https://msdn.microsoft.com/en-us/library/hh873207.aspx</a></p>
+<p>Basically, every game developer already has the tools to study which 
+API calls are made, which shaders are run, which textures and geometry 
+are used, how long every call takes etc. Since AMD and nVidia develop 
+these Direct3D and OpenGL drivers themselves, they can include even more
+ debugging and analysis options into their driver, if they so choose.</p>
+<p>So in short, it is basically quite trivial for a GPU vendor to 
+analyze a game, find the bottlenecks, and then optimize the driver for a
+ specific game or effect (you cannot modify the game, as stated, so you 
+have to modify the driver, even if you would have the source code). The 
+source code isn’t even very helpful with this, because you want to find 
+the bottlenecks, and it’s much easier to just run the code through an 
+analysis-tool than it is to study the code and try to deduce which parts
+ of the code will be the biggest bottlenecks on your hardware.</p>
+<p>The only time GPU vendors actually want/need access to the source 
+code is when they want to make fundamental changes to how&nbsp;a game 
+works, either to improve performance, or to fix some bug. But even then,
+ they don’t literally need access to the source code, they need the 
+developer to change the code for them and release a patch to their 
+users. Sometimes this requires taking the developer by the hand through 
+the source code, and making sure they change what needs to be changed.</p>
+<p>So the next time you hear someone claiming that GameWorks is unfair 
+because AMD can’t optimize for it, please tell them they’re wrong, and 
+explain why.</p>
+<p>&nbsp;</p>
+			<style type="text/css">
+			div.wpmrec2x{max-width:610px;}
+			div.wpmrec2x div.u > div{float:left;margin-right:10px;}
+			div.wpmrec2x div.u > div:nth-child(3n){margin-right:0px;}
+			</style>		<div class="wpcnt">
+			<div class="wpa wpmrec wpmrec2x">
+				<span class="wpa-about">Advertisements</span>
+				<div class="u">
+								<div id="adtags-1" style="width:300px;height:250px;"><iframe scrolling="no" style="border:none;overflow:hidden;width:300px;height:250px;" frameborder="0" width="300" height="250"></iframe></div><div id="adtags-2" style="width:300px;height:250px;"><iframe scrolling="no" style="border:none;overflow:hidden;width:300px;height:250px;" frameborder="0" width="300" height="250"></iframe></div>
+				</div>
+				        <div id="crt-73959614" style="width: 300px; height: 250px; display: none !important; visibility: hidden !important;"></div>
+        
+			</div>
+		</div><div id="jp-post-flair" class="sharedaddy sd-like-enabled"><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-16171350-2370-59303cb1b064c" data-src="//widgets.wp.com/likes/#blog_id=16171350&amp;post_id=2370&amp;origin=scalibq.wordpress.com&amp;obj_id=16171350-2370-59303cb1b064c" data-name="like-post-frame-16171350-2370-59303cb1b064c"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-16171350-2370-59303cb1b064c" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/a_004.html" frameborder="0" width="100%" height="55px"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="855" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://scalibq.wordpress.com/2012/07/25/valve-to-bring-steam-and-left-4-dead-2-to-linux/" title="Valve to bring Steam and Left 4 Dead 2 to linux
+
+There have been rumours about a linux version of Steam for a long time, but a few days ago, Valve finally made an official announcement of Steam for linux. At the same time, they are also making Left 4 Dead 2 available on linux. I would like take this opportunity…" rel="nofollow" data-origin="2370" data-position="0">Valve to bring Steam and Left 4 Dead 2 to linux</a></span><span class="jp-relatedposts-post-context">In "Direct3D"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="18" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://scalibq.wordpress.com/2010/03/13/well-speak-of-the-devil%e2%80%a6/" title="Well, speak of the devil…
+
+Just after I posted my previous blog, regarding OpenGL and Direct3D, Khronos announced OpenGL 3.3 and 4.0. This ofcourse rekindled the old OpenGL vs Direct3D war around the web, which as I said only days earlier, didn’t seem to have died down completely yet. Sadly, people are as clueless as…" rel="nofollow" data-origin="2370" data-position="1">Well, speak of the devil…</a></span><span class="jp-relatedposts-post-context">With 3 comments</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="1272" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://scalibq.wordpress.com/2013/10/14/steamos-and-mantle/" title="SteamOS and Mantle
+
+I wasn't originally going to even waste time on these developments... but over the past weeks I've been noticing a lot of confusion on the net, so I will just give my two cents here. SteamOS Well, yet another linux distribution... As John Carmack already said, linux is not the…" rel="nofollow" data-origin="2370" data-position="2">SteamOS and Mantle</a></span><span class="jp-relatedposts-post-context">In "Direct3D"</span></p></div></div></div>											</div><!-- .entry-content -->
+
+
+					<div class="entry-utility">
+												This entry was posted in <a href="https://scalibq.wordpress.com/category/software-development/direct3d/" rel="category tag">Direct3D</a>, <a href="https://scalibq.wordpress.com/category/software-development/opengl/" rel="category tag">OpenGL</a>, <a href="https://scalibq.wordpress.com/category/software-development/" rel="category tag">Software development</a>, <a href="https://scalibq.wordpress.com/category/software-news/" rel="category tag">Software news</a> and tagged <a href="https://scalibq.wordpress.com/tag/amd/" rel="tag">AMD</a>, <a href="https://scalibq.wordpress.com/tag/d3d/" rel="tag">D3D</a>, <a href="https://scalibq.wordpress.com/tag/direct3d/" rel="tag">Direct3D</a>, <a href="https://scalibq.wordpress.com/tag/directx/" rel="tag">DirectX</a>, <a href="https://scalibq.wordpress.com/tag/driver-cheats/" rel="tag">driver cheats</a>, <a href="https://scalibq.wordpress.com/tag/gameworks/" rel="tag">GameWorks</a>, <a href="https://scalibq.wordpress.com/tag/gaming/" rel="tag">gaming</a>, <a href="https://scalibq.wordpress.com/tag/gaming-evolved/" rel="tag">Gaming Evolved</a>, <a href="https://scalibq.wordpress.com/tag/gpuopen/" rel="tag">GPUOPen</a>, <a href="https://scalibq.wordpress.com/tag/nvidia/" rel="tag">nvidia</a>, <a href="https://scalibq.wordpress.com/tag/opengl/" rel="tag">OpenGL</a>, <a href="https://scalibq.wordpress.com/tag/optimization/" rel="tag">optimization</a>, <a href="https://scalibq.wordpress.com/tag/the-way-its-meant-to-be-played/" rel="tag">The Way It's Meant To Be Played</a>. Bookmark the <a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/" title="Permalink to GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does" rel="bookmark">permalink</a>.											</div><!-- .entry-utility -->
+				</div><!-- #post-## -->
+
+				<div id="nav-below" class="navigation">
+					<div class="nav-previous"><a href="https://scalibq.wordpress.com/2016/06/04/the-damage-that-amd-marketing-does/" rel="prev"><span class="meta-nav">←</span> The damage that AMD marketing&nbsp;does</a></div>
+					<div class="nav-next"><a href="https://scalibq.wordpress.com/2016/06/29/amds-polaris-debuts-in-radeon-rx480-i-told-you-so/" rel="next">AMD’s Polaris debuts in Radeon RX480: I told you&nbsp;so <span class="meta-nav">→</span></a></div>
+				</div><!-- #nav-below -->
+
+				
+			<div id="comments">
+
+
+			<h3 id="comments-title">21 Responses to <em>GameWorks vs GPUOpen: closed vs open does not work the way you think it&nbsp;does</em></h3>
+
+
+			<ol class="commentlist">
+					<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-8465">
+		<div id="comment-8465">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8d4595bec98a6e7d621e85e7d41aac69.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8d4595bec98a6e7d621e85e7d41aac69-0" width="40" height="40">				<cite class="fn">dealwithit</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8465">
+				June 18, 2016 at 2:21 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>AMD don’t do well on tesselation. Let the whining commense:</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8465#respond" onclick='return addComment.moveForm( "comment-8465", "8465", "respond", "2370" )' aria-label="Reply to dealwithit">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor odd alt depth-2 highlander-comment" id="li-comment-8467">
+		<div id="comment-8467">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-0" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8467">
+				June 18, 2016 at 11:34 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I’d rather like to talk about these ‘open’ effects such TressFX not performing nearly as well on nVidia as they do on AMD <img draggable="false" class="emoji" alt="🙂" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/1f642.svg"></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8467#respond" onclick='return addComment.moveForm( "comment-8467", "8467", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment even depth-3 highlander-comment" id="li-comment-8470">
+		<div id="comment-8470">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8d4595bec98a6e7d621e85e7d41aac69.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8d4595bec98a6e7d621e85e7d41aac69-1" width="40" height="40">				<cite class="fn">dealwithit</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8470">
+				June 18, 2016 at 11:57 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Good point <img draggable="false" class="emoji" alt="🙂" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/1f642.svg"></p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-8474">
+		<div id="comment-8474">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/b9dfa98b68c6565919fa2bf944fe4a50.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-b9dfa98b68c6565919fa2bf944fe4a50-0" width="40" height="40">				<cite class="fn">qwerty</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8474">
+				June 20, 2016 at 2:20 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Good going man, insightful as always.</p>
+<p>“So the next time you hear someone claiming that GameWorks is unfair 
+because AMD can’t optimize for it, please tell them they’re wrong, and 
+explain why.”</p>
+<p>Y’know, explaining technical nuances to the average fanboy, 
+specifically an AMD fanboy, is like trying to play checkers with a 
+monkey – it is only a matter of time until he flips the board over, and 
+starts flinging poop at you. :p</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8474#respond" onclick='return addComment.moveForm( "comment-8474", "8474", "respond", "2370" )' aria-label="Reply to qwerty">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-2 highlander-comment" id="li-comment-8475">
+		<div id="comment-8475">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-1" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8475">
+				June 20, 2016 at 7:09 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Yea… AMD and nVidia are doing the same 
+thing… AMD just packages it in a way that the average fanboy doesn’t 
+catch on to it, apparently.</p>
+<p>Or actually, they’re not *quite* doing the same thing… nVidia 
+actually gets stuff done, where AMD mostly talks about it. I wonder how 
+things will go this time, with VR being the ‘hot new thing’. AMD has 
+talked about how Polaris is ‘great for VR’… But they haven’t explained 
+why. At the same time, nVidia didn’t just give us Pascal and a bunch of 
+hollow marketing talk about VR. No, Pascal can actually do stereoscopic 
+rendering in a single pass, to up to 16 different viewports with 
+different projections, and they actually gave us some OpenGL extensions,
+ some NVAPI calls for D3D, and some example code in VRWorks (wait, 
+giving code, wasn’t that something to do with ‘Open’?).<br>
+I really hope AMD has something technical for VR in store as well, and 
+it’s not just “Oh, our GPU can’t do anything the previous generation 
+couldn’t, but look, it’s cheaper!”</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8475#respond" onclick='return addComment.moveForm( "comment-8475", "8475", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-8477">
+		<div id="comment-8477">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8debcca9e39d14ad8dd705ba5388e9f1.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8debcca9e39d14ad8dd705ba5388e9f1-0" width="40" height="40">				<cite class="fn">Thomas</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8477">
+				June 21, 2016 at 5:46 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Cheaper is a good quality. Unfortunately
+ I don’t see Polaris having an effect on VR space. They’re aiming 
+Polaris for the minimum VR requirements of the *last* generation.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-3 highlander-comment" id="li-comment-8478">
+		<div id="comment-8478">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-2" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8478">
+				June 21, 2016 at 5:59 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><blockquote><p>Cheaper is a good quality.</p></blockquote>
+<p>Yes, if you want to run your company into the ground. Look how well it’s working for them on the CPU side.<br>
+If you don’t keep up with new features, and if you can’t match or exceed
+ the efficiency of your competitor, in the end you’re always going to 
+lose. Because it’s costing you more than your competitor to keep those 
+prices low. You’re bleeding your company dry.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-8479">
+		<div id="comment-8479">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8debcca9e39d14ad8dd705ba5388e9f1.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8debcca9e39d14ad8dd705ba5388e9f1-1" width="40" height="40">				<cite class="fn">Thomas</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8479">
+				June 21, 2016 at 6:33 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Sure, no argument here. There are many ways to “run your company into the ground”, including the opposite; being too expensive.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even depth-3 highlander-comment" id="li-comment-8753">
+		<div id="comment-8753">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/f6adea809afaf9ee6cfccdd6a45a9c14.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-f6adea809afaf9ee6cfccdd6a45a9c14-0" width="40" height="40">				<cite class="fn">SilverInfinity</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8753">
+				August 22, 2016 at 11:20 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>It makes people feel good to stand on 
+supposed ‘moral high ground’, even if it’s just an illusion. Open vs 
+Closed, Big Guy vs Little Guy, David vs Goliath, etc.</p>
+<p>Hell, they’ll even go as far as to claim “I only buy AMD even if it 
+doesn’t perform well, since I’m not sheep or had my soul devoured by the
+ blue/green devil”. Then they complain that Intel isn’t moving fast 
+enough for their liking.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-8480">
+		<div id="comment-8480">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/b9dfa98b68c6565919fa2bf944fe4a50.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-b9dfa98b68c6565919fa2bf944fe4a50-1" width="40" height="40">				<cite class="fn">qwerty</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8480">
+				June 21, 2016 at 12:45 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>• Performance/$ is an important metric, 
+especially for the average user. The problem for AMD has always been, 
+that the average user also demands a product that does everything 
+out-of-the-box with minimal hassle or any need for tweaking the driver 
+settings. That is where Nvidia has always beaten them, perf/$ or not.</p>
+<p>• The 480s will be “made for VR”, just like the 390s were “made for 
+4K” – just a bunch of marketing porn that gets passed around at the 
+“team red” circle-jerk.</p>
+<p>• Also, I think it is a bit ironic, how the AMD of the past used to 
+mock Intel for “boasting about the GHz”, as the AMD of the present seems
+ to be all about the GFLOP. <img draggable="false" class="emoji" alt="😀" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/1f600.svg"></p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8480#respond" onclick='return addComment.moveForm( "comment-8480", "8480", "respond", "2370" )' aria-label="Reply to qwerty">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-2 highlander-comment" id="li-comment-8481">
+		<div id="comment-8481">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-3" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8481">
+				June 21, 2016 at 1:03 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><blockquote><p>Performance/$ is an important metric, especially for the average user.</p></blockquote>
+<p>Yes, but the advantage always goes to the vendor with the most 
+efficient architecture. By the looks of it, Pascal is going to deliver 
+better performance-per-watt/performance-per-transistor than Polaris. The
+ result is that nVidia can get the same level of performance from a 
+smaller/cheaper piece of silicon (and/or cheaper PCB, cooler etc, 
+because there’s lower power draw, less heat to dissipate etc).<br>
+So when it comes to putting a price on these parts (price is a 
+completely arbitrary metric of course), nVidia can choose to price their
+ products very aggressively, so that they get minimal profit on these 
+parts (they can make up for it in the segments where AMD is not 
+competing at all, such as the 1070/1080 and beyond). AMD then has no 
+choice but to match or undercut nVidia’s price, but since their parts 
+are more expensive to manufacture, that means they will have no profit 
+at all.<br>
+Which is pretty much what AMD has been doing on the CPU market for years
+ now, and by the looks of it, since the launch of Maxwell, they are in 
+that same position on the GPU-market as well.</p>
+<p>Given the pricedrops we’re currently seeing on the 970, it looks like
+ NVidia had a healthy profit margin on these parts, simply because they 
+could. There was no competition. They can now drop it to more aggressive
+ pricing, and compete with Polaris until the 1050/1060 come around, 
+which will probably deliver about the same performance at about the same
+ price, but are cheaper to manufacture, so nVidia’s profits go back up 
+in that segment. Making it ever more difficult for AMD to invest into 
+their next generation (as we’ve already seen with their past few 
+releases. A lot of rebadging, lack of innovation, lack of progress in 
+terms of efficiency).</p>
+<p>Of course, MS and Sony are bleeding AMD dry on the console market as 
+well. It looks like AMD wanted the console deals at all costs, 
+literally. There just isn’t any money coming in.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8481#respond" onclick='return addComment.moveForm( "comment-8481", "8481", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt depth-2 highlander-comment" id="li-comment-8487">
+		<div id="comment-8487">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8debcca9e39d14ad8dd705ba5388e9f1.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8debcca9e39d14ad8dd705ba5388e9f1-2" width="40" height="40">				<cite class="fn">Thomas</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8487">
+				June 23, 2016 at 3:34 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>“Of course, MS and Sony are bleeding AMD
+ dry on the console market as well. It looks like AMD wanted the console
+ deals at all costs, literally. There just isn’t any money coming in.”</p>
+<p>Can you elaborate on this? I’ve looked at AMD’s last few quarterly 
+reports and their semi-custom segment haven’t had an operating loss. The
+ semi-custom does include other items such as server/embedded 
+processors, but I would guess game consoles still make up a large 
+portion of it. To me it looks like semi-custom is doing a good job.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8487#respond" onclick='return addComment.moveForm( "comment-8487", "8487", "respond", "2370" )' aria-label="Reply to Thomas">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-3 highlander-comment" id="li-comment-8488">
+		<div id="comment-8488">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-4" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8488">
+				June 23, 2016 at 6:59 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Well, there’s a difference between “no operating loss” and making a good profit.<br>
+MS and Sony sell millions of consoles. You’d think such a large deal 
+would be able to keep the company afloat, but no, it does not.<br>
+In fact, if we look here:<br>
+<a href="http://www.amd.com/en-us/press-releases/Pages/press-release-2016apr21.aspx" rel="nofollow">http://www.amd.com/en-us/press-releases/Pages/press-release-2016apr21.aspx</a><br>
+“The decreases were primarily driven by lower sales of semi-custom SoCs.”<br>
+Looks like that segment is going down the drain as well.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-8495">
+		<div id="comment-8495">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8d4595bec98a6e7d621e85e7d41aac69.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-8d4595bec98a6e7d621e85e7d41aac69-2" width="40" height="40">				<cite class="fn">dealwithit</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8495">
+				June 25, 2016 at 12:36 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>SoC is doing a decent job. It’s pretty far from winning anything.</p>
+</div>
+
+			<div class="reply">
+							</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-8520">
+		<div id="comment-8520">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/cb9987e540b55e4bbeee71d4d891b6b7.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-cb9987e540b55e4bbeee71d4d891b6b7-0" width="40" height="40">				<cite class="fn">Rebrandeon</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8520">
+				June 29, 2016 at 2:28 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Polaris is FL12_0, what a joke AMD is, not even FL12_1.</p>
+<p>It’s not future proof at all and won’t run games that uses 
+Conservative Rasterization, Rasterizer Ordered Views or Tiled Resources 
+Tier 3.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8520#respond" onclick='return addComment.moveForm( "comment-8520", "8520", "respond", "2370" )' aria-label="Reply to Rebrandeon">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-8585">
+		<div id="comment-8585">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/33e7061280ca16ab0fc030b060b9cf83.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-33e7061280ca16ab0fc030b060b9cf83-0" width="40" height="40">				<cite class="fn">john</cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8585">
+				July 7, 2016 at 4:20 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>The first obvious mistake is that although GPUOpen itself may be open source, the games that use it are not.</p>
+<p>WAT? is that even a way to start a rebutal?</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8585#respond" onclick='return addComment.moveForm( "comment-8585", "8585", "respond", "2370" )' aria-label="Reply to john">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-2 highlander-comment" id="li-comment-8586">
+		<div id="comment-8586">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-5" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-8586">
+				July 7, 2016 at 4:54 pm</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Yes, it’s explained in the next sentence.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=8586#respond" onclick='return addComment.moveForm( "comment-8586", "8586", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-9358">
+		<div id="comment-9358">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/photo.jpg" class="avatar avatar-40" width="40" height="40">				<cite class="fn"><a href="https://plus.google.com/114675567248652159990" rel="external nofollow" class="url">ATI nsider</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-9358">
+				January 26, 2017 at 4:03 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>Nvidia’s GameWorks is a deliberate 
+technique to try and gain a Monopoly in the Gaming Industry. GameWorks a
+ Ripoff, Plain and Simple.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=9358#respond" onclick='return addComment.moveForm( "comment-9358", "9358", "respond", "2370" )' aria-label="Reply to ATI nsider">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-2 highlander-comment" id="li-comment-9360">
+		<div id="comment-9360">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-6" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-9360">
+				January 26, 2017 at 8:58 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>I think you are giving nVidia too much 
+credit here. Certainly, nVidia wants to give games added value on their 
+hardware through GameWorks. But I doubt that nVidia actually believes 
+that they would have the leverage to get a monopoly.<br>
+Besides, most companies have similar initiatives, including Intel and AMD (Mantle being a prime example here).</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=9360#respond" onclick='return addComment.moveForm( "comment-9360", "9360", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-9660">
+		<div id="comment-9660">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/photo.png" class="avatar avatar-40" width="40" height="40">				<cite class="fn"><a href="https://plus.google.com/115876276297622708937" rel="external nofollow" class="url">Yagamy Light</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-9660">
+				March 28, 2017 at 11:33 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><p>&gt; the code is basically ‘frozen in time’ as soon as they build the binaries</p>
+<p>This is untrue in general, unless I miss something. If I understand 
+correctly, GPUOpen is just a lib shipped with games. So, if you’d really
+ wanted, you could rebuild it, and replace the one shipped with game.</p>
+<p>More over, Steam actually does that: upon installing a game, if 
+Steams finds in the system particular library (e.g. from repository), it
+ won’t download it with the game.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=9660#respond" onclick='return addComment.moveForm( "comment-9660", "9660", "respond", "2370" )' aria-label="Reply to Yagamy Light">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-scalibq bypostauthor even depth-2 highlander-comment" id="li-comment-9661">
+		<div id="comment-9661">
+			<div class="comment-author vcard">
+				<img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93.png" class="avatar avatar-40 grav-hashed grav-hijack" id="grav-2547913ebf910c8aa2c632619be46e93-7" width="40" height="40">				<cite class="fn"><a href="https://scalibq.wordpress.com/" rel="external nofollow" class="url">Scali</a></cite> <span class="says">says:</span>			</div><!-- .comment-author .vcard -->
+			
+			<div class="comment-meta commentmetadata"><a href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#comment-9661">
+				March 28, 2017 at 11:41 am</a>			</div><!-- .comment-meta .commentmetadata -->
+
+			<div class="comment-body"><blockquote><p>If I understand correctly, 
+GPUOpen is just a lib shipped with games. So, if you’d really wanted, 
+you could rebuild it, and replace the one shipped with game.</p></blockquote>
+<p>I don’t know if that’s true (as far as I know, the code needs to 
+integrate deep into your own engine. You can’t just ‘tack on’ effects 
+with a library, they need to integrate deep into your pipeline, with 
+your rendering algorithms, geometry and pixel formats etc. But perhaps 
+there are special cases for well-known engines). But that’s not the 
+point.<br>
+Most games these days have protection against tampering with their files (both to protect from piracy and cheating).<br>
+So even if you could build your own lib, the game wouldn’t accept 
+anything other than the original file. The only way to replace the lib 
+is if the developer issues it as an official update. Which they won’t 
+do, because they used GPUOpen because AMD paid them to do so in the 
+first place. That’s “Gaming Evolved”, exactly like “GameWorks”.</p>
+<blockquote><p>More over, Steam actually does that: upon installing a 
+game, if Steams finds in the system particular library (e.g. from 
+repository), it won’t download it with the game.</p></blockquote>
+<p>Only for generic libraries like DirectX or OpenAL. And even then 
+usually the games still downloads and run the installers, the installers
+ just don’t install older files. Libraries that are considered part of 
+the game (as GPUOpen would be, as it’s tweaked specifically for each 
+game), will be installed in the game directory.</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/?replytocom=9661#respond" onclick='return addComment.moveForm( "comment-9661", "9661", "respond", "2370" )' aria-label="Reply to Scali">Reply</a>			</div><!-- .reply -->
+		</div><!-- #comment-##  -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+			</ol>
+
+
+	
+
+	<div id="respond" class="comment-respond js">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://scalibq.wordpress.com/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://scalibq.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<input id="highlander_comment_nonce" name="highlander_comment_nonce" value="6725e0f14a" type="hidden"><input name="_wp_http_referer" value="/2016/06/16/gameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does/" type="hidden">
+<input name="hc_post_as" id="hc_post_as" value="guest" type="hidden">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px none; padding: 0px; box-sizing: content-box; overflow-wrap: break-word; height: 0px !important; min-height: 0px !important; overflow: hidden; transition: none 0s ease 0s ; font-family: Arial,Helvetica,Tahoma,Verdana,sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 24px; width: 618px;" class="autosizejs ">Enter your comment here...</textarea><textarea id="comment" name="comment" title="Enter your comment here..." placeholder="Enter your comment here..." style="height: 44px; overflow: hidden; overflow-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/a_005.html" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0" width="24" height="24"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Gravatar" class="no-grav" width="25">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email"></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text"></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url"></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="WordPress.com Logo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" type="hidden">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'wordpress'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Twitter picture" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" type="hidden">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'twitter'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Facebook photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" type="hidden">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'facebook'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Google+ photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" type="hidden">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'googleplus'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input name="subscribe" id="subscribe" value="subscribe" style="width: auto;" type="checkbox"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p></div>
+
+
+
+
+<p class="form-submit" style="display: none;"><input name="submit" id="comment-submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="2370" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="e840da6a2a" type="hidden"></p>
+<input name="genseq" value="1496333489" type="hidden">
+<p style="display: none;"></p>			<input id="ak_js" name="ak_js" value="1496333494083" type="hidden"></form>
+			</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments -->
+
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+
+		<div id="primary" class="widget-area" role="complementary">
+						<ul class="xoxo">
+
+<li id="search-2" class="widget-container widget_search"><form role="search" method="get" id="searchform" class="searchform" action="https://scalibq.wordpress.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input name="s" id="s" type="text">
+					<input id="searchsubmit" value="Search" type="submit">
+				</div>
+			</form></li>		<li id="recent-posts-2" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+					<li>
+				<a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/">Trackers vs MIDI, part&nbsp;deux</a>
+						</li>
+					<li>
+				<a href="https://scalibq.wordpress.com/2017/03/29/trackers-vs-midi/">Trackers vs MIDI</a>
+						</li>
+					<li>
+				<a href="https://scalibq.wordpress.com/2017/03/12/dma-activation/">DMA activation</a>
+						</li>
+					<li>
+				<a href="https://scalibq.wordpress.com/2017/03/05/a-picture-says-more-than-a-thousand-words/">A picture says more than a thousand&nbsp;words</a>
+						</li>
+					<li>
+				<a href="https://scalibq.wordpress.com/2017/02/24/putting-the-things-together/">Putting the things&nbsp;together</a>
+						</li>
+				</ul>
+		</li>		<li id="recent-comments-2" class="widget-container widget_recent_comments"><h3 class="widget-title">Recent Comments</h3>				<table class="recentcommentsavatar" cellspacing="0" cellpadding="0" border="0">
+					<tbody><tr><td title="Michal Necasek" class="recentcommentsavatartop" style="height:48px; width:48px;"><a href="http://www.os2museum.com/" rel="nofollow"><img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8f7d4381d610b0f685e4e58be06e7010.png" class="avatar avatar-48 grav-hashed" id="grav-8f7d4381d610b0f685e4e58be06e7010-0" width="48" height="48"></a></td><td class="recentcommentstexttop" style=""><a href="http://www.os2museum.com/" rel="nofollow">Michal Necasek</a> on <a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/#comment-10288">Trackers vs MIDI, part&nbsp;de…</a></td></tr><tr><td title="Trackers vs MIDI, part deux | Scali's OpenBlog™" class="recentcommentsavatarend" style="height:48px; width:48px;"><a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/" rel="nofollow"></a></td><td class="recentcommentstextend" style=""><a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/" rel="nofollow">Trackers vs MIDI, pa…</a> on <a href="https://scalibq.wordpress.com/2017/02/24/putting-the-things-together/#comment-10250">Putting the things&nbsp;togeth…</a></td></tr><tr><td title="Trackers vs MIDI, part deux | Scali's OpenBlog™" class="recentcommentsavatarend" style="height:48px; width:48px;"><a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/" rel="nofollow"></a></td><td class="recentcommentstextend" style=""><a href="https://scalibq.wordpress.com/2017/05/29/trackers-vs-midi-part-deux/" rel="nofollow">Trackers vs MIDI, pa…</a> on <a href="https://scalibq.wordpress.com/2014/08/21/1991-donut-final-release/#comment-10249">1991 donut – final&nbsp;…</a></td></tr><tr><td title="Michal Necasek" class="recentcommentsavatarend" style="height:48px; width:48px;"><a href="http://www.os2museum.com/" rel="nofollow"><img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/8f7d4381d610b0f685e4e58be06e7010.png" class="avatar avatar-48 grav-hashed" id="grav-8f7d4381d610b0f685e4e58be06e7010-1" width="48" height="48"></a></td><td class="recentcommentstextend" style=""><a href="http://www.os2museum.com/" rel="nofollow">Michal Necasek</a> on <a href="https://scalibq.wordpress.com/2017/03/29/trackers-vs-midi/#comment-10218">Trackers vs MIDI</a></td></tr><tr><td title="Scali" class="recentcommentsavatarend" style="height:48px; width:48px;"><a href="https://scalibq.wordpress.com/" rel="nofollow"><img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/2547913ebf910c8aa2c632619be46e93_002.png" class="avatar avatar-48 grav-hashed" id="grav-2547913ebf910c8aa2c632619be46e93-8" width="48" height="48"></a></td><td class="recentcommentstextend" style=""><a href="https://scalibq.wordpress.com/" rel="nofollow">Scali</a> on <a href="https://scalibq.wordpress.com/2017/01/24/programming-what-separates-the-men-from-the-boys/#comment-10137">Programming: What separates th…</a></td></tr>				</tbody></table>
+				</li><li id="archives-2" class="widget-container widget_archive"><h3 class="widget-title">Archives</h3>		<ul>
+			<li><a href="https://scalibq.wordpress.com/2017/05/">May 2017</a></li>
+	<li><a href="https://scalibq.wordpress.com/2017/03/">March 2017</a></li>
+	<li><a href="https://scalibq.wordpress.com/2017/02/">February 2017</a></li>
+	<li><a href="https://scalibq.wordpress.com/2017/01/">January 2017</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/12/">December 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/08/">August 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/07/">July 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/06/">June 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/05/">May 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/04/">April 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/03/">March 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/02/">February 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2016/01/">January 2016</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/12/">December 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/11/">November 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/09/">September 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/08/">August 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/06/">June 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/04/">April 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2015/01/">January 2015</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/12/">December 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/11/">November 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/10/">October 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/09/">September 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/08/">August 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/07/">July 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/06/">June 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/04/">April 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/03/">March 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2014/02/">February 2014</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/12/">December 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/11/">November 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/10/">October 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/09/">September 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/08/">August 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/07/">July 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/06/">June 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/05/">May 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/04/">April 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/03/">March 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/02/">February 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2013/01/">January 2013</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/12/">December 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/11/">November 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/10/">October 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/09/">September 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/08/">August 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/07/">July 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/06/">June 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/05/">May 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/04/">April 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/03/">March 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/02/">February 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2012/01/">January 2012</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/12/">December 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/11/">November 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/10/">October 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/09/">September 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/08/">August 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/07/">July 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/06/">June 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/05/">May 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/03/">March 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/02/">February 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2011/01/">January 2011</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/12/">December 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/11/">November 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/10/">October 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/09/">September 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/08/">August 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/07/">July 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/06/">June 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/05/">May 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/04/">April 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/03/">March 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/02/">February 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2010/01/">January 2010</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/12/">December 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/11/">November 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/10/">October 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/09/">September 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/08/">August 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/07/">July 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/06/">June 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/05/">May 2009</a></li>
+	<li><a href="https://scalibq.wordpress.com/2009/01/">January 2009</a></li>
+		</ul>
+		</li><li id="categories-2" class="widget-container widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-1067889"><a href="https://scalibq.wordpress.com/category/software-development/direct3d/">Direct3D</a>
+</li>
+	<li class="cat-item cat-item-66706"><a href="https://scalibq.wordpress.com/category/hardware-news/">Hardware news</a>
+</li>
+	<li class="cat-item cat-item-167494905"><a href="https://scalibq.wordpress.com/category/oldskoolretro-programming/">Oldskool/retro programming</a>
+</li>
+	<li class="cat-item cat-item-7881843"><a href="https://scalibq.wordpress.com/category/software-development/opencl/">OpenCL</a>
+</li>
+	<li class="cat-item cat-item-22939"><a href="https://scalibq.wordpress.com/category/software-development/opengl/">OpenGL</a>
+</li>
+	<li class="cat-item cat-item-460796258"><a href="https://scalibq.wordpress.com/category/science-or-pseudoscience/">Science or pseudoscience?</a>
+</li>
+	<li class="cat-item cat-item-2301"><a href="https://scalibq.wordpress.com/category/software-development/">Software development</a>
+</li>
+	<li class="cat-item cat-item-5742"><a href="https://scalibq.wordpress.com/category/software-news/">Software news</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://scalibq.wordpress.com/category/uncategorized/">Uncategorized</a>
+</li>
+	<li class="cat-item cat-item-1806847"><a href="https://scalibq.wordpress.com/category/software-development/vulkan/">Vulkan</a>
+</li>
+		</ul>
+</li><li id="meta-2" class="widget-container widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+			<li><a href="https://wordpress.com/start?ref=wplogin">Register</a></li>			<li><a href="https://scalibq.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="https://scalibq.wordpress.com/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://scalibq.wordpress.com/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
+			</li>			</ul>
+		</div><!-- #primary .widget-area -->
+
+	</div><!-- #main -->
+
+	<div id="footer" role="contentinfo">
+		<div id="colophon">
+
+
+
+			<div id="site-info">
+				<a href="https://scalibq.wordpress.com/" title="Scali's OpenBlog™" rel="home">
+					Scali's OpenBlog™				</a>
+			</div><!-- #site-info -->
+
+			<div id="site-generator">
+								<a href="https://wordpress.com/?ref=footer_blog">Blog at WordPress.com.</a>
+			</div><!-- #site-generator -->
+
+		</div><!-- #colophon -->
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<!--  -->
+
+
+
+
+	
+
+		<div style="display:none">
+	<div class="grofile-hash-map-8d4595bec98a6e7d621e85e7d41aac69">
+	</div>
+	<div class="grofile-hash-map-2547913ebf910c8aa2c632619be46e93">
+	</div>
+	<div class="grofile-hash-map-b9dfa98b68c6565919fa2bf944fe4a50">
+	</div>
+	<div class="grofile-hash-map-8debcca9e39d14ad8dd705ba5388e9f1">
+	</div>
+	<div class="grofile-hash-map-f6adea809afaf9ee6cfccdd6a45a9c14">
+	</div>
+	<div class="grofile-hash-map-cb9987e540b55e4bbeee71d4d891b6b7">
+	</div>
+	<div class="grofile-hash-map-33e7061280ca16ab0fc030b060b9cf83">
+	</div>
+	<div class="grofile-hash-map-756c892686ccce14de48c7e0d8f2b272">
+	</div>
+	<div class="grofile-hash-map-d23c3ae781e024a03366f12fa4f4dc85">
+	</div>
+	<div class="grofile-hash-map-8f7d4381d610b0f685e4e58be06e7010">
+	</div>
+	</div>
+
+
+
+
+<div id="actionbar" class="actnbr-pub-twentyten actnbr-has-follow"><ul><li class="actnbr-btn actnbr-hidden"> 			    	<a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a> 			    	<div class="actnbr-popover tip tip-top-left actnbr-notice"> 			    		<div class="tip-arrow"></div> 			    		<div class="tip-inner actnbr-follow-bubble"></div> 			    	</div> 			    </li><li class="actnbr-ellipsis actnbr-hidden"> 			  <svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 			  <div class="actnbr-popover tip tip-top-left actnbr-more"> 			  	<div class="tip-arrow"></div> 			  	<div class="tip-inner"> 				  <ul> 				    <li class="actnbr-sitename actnbr-hidden"><a href="http://scalibq.wordpress.com/"><img alt="" src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/wpcom-gray-white.png" class="avatar avatar-50" width="50" height="50"> Scali's OpenBlog™</a></li> 				   	<li class="actnbr-folded-customize actnbr-hidden"><a href="https://scalibq.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Fscalibq.wordpress.com%2F2016%2F06%2F16%2Fgameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Customize<span></span></span></a></li> 				    <li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a></li> 					<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Sign up</a></li> 				    <li class="actnbr-login actnbr-hidden"><a href="https://scalibq.wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Fscalibq.wordpress.com%2F2016%2F06%2F16%2Fgameworks-vs-gpuopen-closed-vs-open-does-not-work-the-way-you-think-it-does%2F">Log in</a></li> 				     				    <li class="actnbr-shortlink actnbr-hidden"><a href="http://wp.me/p15QUe-Ce">Copy shortlink</a></li> 				    <li class="flb-report actnbr-hidden"><a href="http://en.wordpress.com/abuse/">Report this content</a></li> 				     				     				    <li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Manage subscriptions</a></li> 				    <li class="actnbr-fold actnbr-hidden"><a href="">Collapse this bar</a></li> 			      </ul> 			    </div> 		      </div> 		    </li> 	      </ul></div>
+	
+			<iframe src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		
+		<noscript>
+			<p class="robots-nocontent"><img 
+src="https://sb.scorecardresearch.com/p?c1=2&c2=7518284&c3=&c4=&c5=&c6=&c15=&cv=2.0&cj=1"
+ alt="" style="display:none;" width="1" height="1" /></p>
+		</noscript>
+
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+
+
+<img src="GameWorks%20vs%20GPUOpen:%20closed%20vs%20open%20does%20not%20work%20the%20way%20you%20think%20it%20does%20%7C%20Scali%27s%20OpenBlog%E2%84%A2_tiedostot/g.gif" alt=":)" id="wpstats"></body></html>
