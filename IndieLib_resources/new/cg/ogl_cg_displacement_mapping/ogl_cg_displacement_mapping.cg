@@ -1,0 +1,37 @@
+struct vertex
+{
+    float4 position  : POSITION;
+	float3 normal    : NORMAL;
+    float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+struct fragment
+{
+	float4 position  : POSITION;
+	float4 color0    : COLOR0;
+	float2 texcoord0 : TEXCOORD0;
+};
+
+uniform float4x4 modelViewProj : state.matrix.mvp;
+
+fragment main( vertex IN, 
+			   uniform sampler2D displacementTexture : TEXUNIT1,
+			   uniform float4 displacementScaler )
+{
+	fragment OUT;
+
+	// Perform a texture look-up for the displacement value.
+    float4 displacement = tex2D( displacementTexture, IN.texcoord0 );
+
+	// Now, use the displacment value to move or displace the current vertex 
+	// along the surface normal. We'll also throw in a scaling factor so we'll
+	// have better control over the effect.
+	float4 displacedPosition = float4( IN.normal * (displacement.x * displacementScaler.x), 0.0 ) + IN.position;
+
+	OUT.position = mul( modelViewProj, displacedPosition );
+	OUT.color0 = IN.color0;
+	OUT.texcoord0 = IN.texcoord0;
+
+	return OUT;
+}

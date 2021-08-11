@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 4</title>
+</head>
+<body>
+<pre>
+const int NUM_IMPOSTER_VERTS = 6;
+
+/// Defines a vertex in an imposter billboard.
+struct ImposterVertex
+{
+	D3DXVECTOR3 pos;
+	D3DCOLOR colour;
+	D3DXVECTOR2 uv;
+};
+
+/// Represents an imposter.
+struct Imposter
+{
+	// The vertices that comprise the imposter billboard.
+	ImposterVertex verts[NUM_IMPOSTER_VERTS];
+
+	// Centre position of the imposter billboard.
+	D3DXVECTOR3 centre;
+
+	// Direction vector from imposter centre to camera position.
+	D3DXVECTOR3 cameraDir;
+
+	/// The offset of the imposter in the render texture.
+	D3DXVECTOR2 uvOffset;
+
+	// Set to ‘true’ when this imposter needs to be regenerated.
+	bool requiresRegeneration;
+
+	// The time the im	poster was created.
+	float startTime;
+
+	// The time the imposter was last generated.
+	float lastGeneratedTime;
+
+	/// Set to 'true' when an imposter is active.
+	bool active;
+
+	/// Set to 'true' when an imposter is generated.
+	bool generated;
+
+	// The current imposter camera distance, computed each time imposters are rendered.
+	// This is used for depth sorting alpha-blended imposters.
+	float cameraDistSq;
+
+};
+</pre>
+</body>
+</html>

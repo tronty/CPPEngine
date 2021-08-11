@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html class="wf-sortsmillgoudy1-n5-active wf-active" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/recaptcha__en.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://jeremykun.com/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="https://s2.wp.com/wp-content/themes/pub/confit/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+
+<title>Bezier Curves and Picasso – Math ∩ Programming</title>
+<script type="text/javascript" async="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ga.js"></script><script src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/webfont.js" type="text/javascript" async=""></script><script type="text/javascript">
+  WebFontConfig = {"typekit":{"id":"das4ere"}};
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = 'https://s0.wp.com/wp-content/plugins/custom-fonts/js/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+	})();
+</script><style id="jetpack-custom-fonts-css">.wf-active .site-title{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-size:32.6px;font-weight:500;font-style:normal}.wf-active .main-navigation{font-style:normal;font-weight:500}.wf-active .main-navigation a{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}.wf-active .main-small-navigation a{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}.wf-active .entry-title{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}.wf-active .comment-content h1, .wf-active .comment-content h2, .wf-active .comment-content h3, .wf-active .comment-content h4, .wf-active .comment-content h5, .wf-active .comment-content h6, .wf-active .entry-content h1, .wf-active .entry-content h2, .wf-active .entry-content h3, .wf-active .entry-content h4, .wf-active .entry-content h5, .wf-active .entry-content h6{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}.wf-active .comment-content h1, .wf-active .entry-content h1{font-style:normal;font-weight:500}.wf-active .comment-content h2, .wf-active .entry-content h2{font-style:normal;font-weight:500}.wf-active .comment-content h3, .wf-active .entry-content h3{font-style:normal;font-weight:500}.wf-active .comment-content h4, .wf-active .entry-content h4{font-style:normal;font-weight:500}.wf-active .comment-content h5, .wf-active .entry-content h5{font-style:normal;font-weight:500}.wf-active .comment-content h6, .wf-active .entry-content h6{font-style:normal;font-weight:500}.wf-active .page-template-page-menu-php .menu-group-title{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}.wf-active .widget-title{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;font-weight:500;font-style:normal}</style>
+<meta name="google-site-verification" content="8HY57qHGWbOLf0Mw2cmAeX9whInRfftYXbFRcYJ7JDA">
+
+<!-- Async WordPress.com Remote Login -->
+
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://jeremykun.wordpress.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://wordpress.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="alternate" type="application/rss+xml" title="Math ∩ Programming » Feed" href="https://jeremykun.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Math ∩ Programming » Comments Feed" href="https://jeremykun.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Math ∩ Programming » Bezier Curves and Picasso Comments Feed" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/feed/">
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s2.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1556893897h&ver=5.2.2"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="all-css-0-1" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="confit-font-muli-css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/css_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="confit-font-enriqueta-css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="all-css-4-1" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_003.css" type="text/css" media="all">
+<link rel="stylesheet" id="print-css-5-1" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/global-print.css" type="text/css" media="print">
+<link rel="stylesheet" id="all-css-6-1" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_004"></script>
+<link rel="stylesheet" id="all-css-0-2" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jeremykun.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Facebook Page, Google+ Community, and Whispers of Guest Posts" href="https://jeremykun.com/2013/05/04/facebook-page-google-community-and-whispers-of-guest-posts/">
+<link rel="next" title="“Dog” Print Available for Sale" href="https://jeremykun.com/2013/05/13/dog-print-available-for-sale/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/">
+<link rel="shortlink" href="https://wp.me/p1Cqvi-Sz">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bezier Curves and Picasso">
+<meta property="og:url" content="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/">
+<meta property="og:description" content="Simplicity and the Artist Some of my favorite of Pablo Picasso’s works are his line drawings. He did a number of them about animals: an owl, a camel, a butterfly, etc. This piece called &amp;#822…">
+<meta property="article:published_time" content="2013-05-11T05:32:05+00:00">
+<meta property="article:modified_time" content="2017-07-20T16:13:49+00:00">
+<meta property="og:site_name" content="Math ∩ Programming">
+<meta property="og:image" content="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=584">
+<meta property="og:image:width" content="584">
+<meta property="og:image:height" content="259">
+<meta property="og:image:alt" content="bezier-dog-for-web">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:creator" content="@MathProgramming">
+<meta name="twitter:site" content="@MathProgramming">
+<meta name="twitter:text:title" content="Bezier Curves and Picasso">
+<meta name="twitter:card" content="summary">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="shortcut icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/ffc08531463d8605aef9e0b51a9ac71f?s=32" sizes="16x16">
+<link rel="icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/ffc08531463d8605aef9e0b51a9ac71f?s=32" sizes="16x16">
+<link rel="apple-touch-icon-precomposed" href="https://secure.gravatar.com/blavatar/ffc08531463d8605aef9e0b51a9ac71f?s=114">
+<link rel="openid.server" href="https://jeremykun.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://jeremykun.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://jeremykun.com/osd.xml" title="Math ∩ Programming">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+<meta name="theme-color" content="#ffffff">
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="application-name" content="Math ∩ Programming"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://jeremykun.com/feed/;icon-uri=https://secure.gravatar.com/blavatar/ffc08531463d8605aef9e0b51a9ac71f?s=16"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s1.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico"><meta name="description" content="Simplicity and the Artist Some of my favorite of Pablo Picasso's works are his line drawings. He did a number of them about animals: an owl, a camel, a butterfly, etc. This piece called &quot;Dog&quot; is on my wall: (Jump to interactive demo&nbsp;where we recreate &quot;Dog&quot; using the math in this post) These paintings are…">
+<style type="text/css" id="custom-background-css">
+	body.custom-background { background-color: #ffffff; }
+	</style>
+<link rel="stylesheet" type="text/css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/shCore.css"><link rel="stylesheet" type="text/css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/shThemeDefault.css"><style type="text/css" id="syntaxhighlighteranchor"></style>
+<style type="text/css" id="custom-colors-css">.site-description,.entry-header .entry-meta,.entry-content blockquote,.comment-content blockquote,.comment-meta a{opacity:.5}@media screen and (min-width:768px) and (min-device-width:769px){#masthead,#secondary{background-color:transparent !important}}body{background-color:#fff}#page:before{background-color:#fff}#page:before{background-color:rgba(255,255,255,.95)}.site-footer{background-color:#fff}.site-footer{background-color:rgba(255,255,255,.95)}.main-navigation ul ul{background-color:#fff}.main-navigation ul ul{background-color:rgba(255,255,255,.95)}.site-content article{background-color:#fff}.site-content article{background-color:rgba(255,255,255,.95)}.archive-header,.page-header,.single .menu-group-header{background-color:#fff}.archive-header,.page-header,.single .menu-group-header{background-color:rgba(255,255,255,.95)}.page-template-page-menu-php .menu-items{background-color:#fff}.page-template-page-menu-php .menu-items{background-color:rgba(255,255,255,.95)}.menu-labels span{color:#fff}.pdf-menu a{color:#fff}.site-content .site-navigation{background-color:#fff}.site-content .site-navigation{background-color:rgba(255,255,255,.95)}.comments-area{background-color:#fff}.comments-area{background-color:rgba(255,255,255,.95)}.comment-author span{background-color:#fff}#infinite-handle span{background-color:#fff}#infinite-handle span{background-color:rgba(255,255,255,.95)}#masthead{background-color:#fff}#masthead{background-color:rgba(255,255,255,.95)}#secondary{background-color:#fff}#secondary{background-color:rgba(255,255,255,.95)}button,html input[type=button],input[type=reset],input[type=submit]{color:#fff}button,html input[type=button],input[type=reset],input[type=submit]{color:rgba(255,255,255,.95)}input[type=text],input[type=email],input[type=password],textarea{background-color:#d8d8d8}input[type=text],input[type=email],input[type=password],textarea{border-color:#e5e5e5}hr{background-color:#e5e5e5}.main-navigation li{border-color:#e5e5e5}.entry-content pre,.comment-content pre{border-color:#e5e5e5}.entry-content abbr,.comment-content abbr,.entry-content dfn,.comment-content dfn,.entry-content acronym,.comment-content acronym{border-color:#e5e5e5}.entry-content table,.comment-content table,.entry-content td,.comment-content td{border-color:#e5e5e5}.page-template-page-menu-php .menu-items article{border-color:#e5e5e5}.wp-caption{border-color:#e5e5e5}.widget_calendar #wp-calendar,.widget_calendar #wp-calendar thead th,.widget_calendar #wp-calendar tbody td,.widget_calendar #wp-calendar tfoot td#next{border-color:#e5e5e5}.entry-content div.sharedaddy div.sd-block{border-color:#e5e5e5}.main-small-navigation{border-color:#e5e5e5}body,button,input,select,textarea{color:#36312d}.main-navigation a,.main-small-navigation a,.main-navigation a:visited,.main-small-navigation a:visited{color:#36312d}.page-template-page-menu-php .menu-items .entry-title{color:#36312d}.widget-title a{color:#36312d}input[type=text],input[type=email],input[type=password],textarea{color:#36312d}.site-description{color:#36312d}.entry-meta{color:#36312d}.entry-header .entry-meta a{color:#36312d}.entry-content blockquote,.comment-content blockquote{color:#36312d}.comment-meta a{color:#36312d}a{color:#2f7de4}a:visited{color:#2f7de4}button,html input[type=button],input[type=reset],input[type=submit]{background-color:#2f7de4}.main-navigation a:hover,.main-navigation .current_page_item>a,.main-navigation .current_page_ancestor>a,.main-navigation .current-menu-item>a,.main-navigation .current-menu-ancestor>a{color:#2f7de4}.main-navigation .current_page_item>a:visited,.main-navigation .current_page_ancestor>a:visited,.main-navigation .current-menu-item>a:visited,.main-navigation .current-menu-ancestor>a:visited{color:#2f7de4}.entry-title{color:#2f7de4}.entry-title{border-color:#2f7de4}.page-template-page-menu-php .menu-group-title{color:#2f7de4}.menu-labels span{background-color:#2f7de4}.pdf-menu a{background-color:#2f7de4}.bypostauthor>article .comment-author span{background-color:#2f7de4}.widget_flickr #flickr_badge_uber_wrapper a{color:#2f7de4}#infinite-handle span{color:#2f7de4}#infinite-handle span:before{color:#2f7de4}.entry-content blockquote p,.comment-content blockquote p{border-color:#2f7de4}a:hover,a:focus,a:active{color:#000}button:hover,html input[type=button]:hover,input[type=reset]:hover,input[type=submit]:hover,button:focus,html input[type=button]:focus,input[type=reset]:focus,input[type=submit]:focus,button:active,html input[type=button]:active,input[type=reset]:active,input[type=submit]:active{background-color:#000}.site-title a:hover{color:#000}.entry-header .entry-meta a:hover{color:#000}.entry-title a:hover{color:#000}.pdf-menu a:hover{background-color:#000}.widget_flickr #flickr_badge_uber_wrapper a:hover{color:#000}#infinite-handle span:hover,#infinite-handle span:hover:before{color:#000}</style>
+		<link rel="stylesheet" id="custom-css-css" type="text/css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_004.css">
+		<style type="text/css"></style><link rel="stylesheet" type="text/css" id="gravatar-card-css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/hovercard.css"><style type="text/css">.tk-sorts-mill-goudy{font-family:"sorts-mill-goudy-1","sorts-mill-goudy-2",serif;}</style><style type="text/css">@font-face{font-family:sorts-mill-goudy-1;src:url(https://use.typekit.net/af/fd93b1/00000000000000000000d755/27/l?subset_id=2&fvd=n5&v=3) format("woff2"),url(https://use.typekit.net/af/fd93b1/00000000000000000000d755/27/d?subset_id=2&fvd=n5&v=3) format("woff"),url(https://use.typekit.net/af/fd93b1/00000000000000000000d755/27/a?subset_id=2&fvd=n5&v=3) format("opentype");font-weight:500;font-style:normal;}</style><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/services.css"></head>
+
+<body class="post-template-default single single-post postid-3383 single-format-standard custom-background mp6 customizer-styles-applied group-blog highlander-enabled highlander-light custom-colors">
+
+<div id="wrapper">
+	<div id="page" class="hfeed site">
+				<header id="masthead" class="site-header" role="banner">
+
+			
+			
+			<hgroup>
+				<h1 class="site-title"><a href="https://jeremykun.com/" title="Math ∩ Programming" rel="home">Math ∩ Programming</a></h1>
+				<h2 class="site-description"></h2>
+			</hgroup>
+
+			<nav role="navigation" class="site-navigation main-navigation">
+				<h1 class="assistive-text">Navigation</h1>
+				<div class="assistive-text skip-link"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+				<div class="menu"><ul>
+<li><a href="https://jeremykun.com/">Home</a></li><li class="page_item page-item-374"><a href="https://jeremykun.com/main-content/">Main Content</a></li>
+<li class="page_item page-item-150"><a href="https://jeremykun.com/primers/">Primers</a></li>
+<li class="page_item page-item-3990"><a href="https://jeremykun.com/research/">Research</a></li>
+<li class="page_item page-item-487"><a href="https://jeremykun.com/program-gallery/">Program Gallery</a></li>
+<li class="page_item page-item-360"><a href="https://jeremykun.com/proof-gallery/">Proof Gallery</a></li>
+<li class="page_item page-item-2"><a href="https://jeremykun.com/about/">About the Author</a></li>
+<li class="page_item page-item-3215"><a href="https://jeremykun.com/support/">Support</a></li>
+</ul></div>
+			</nav><!-- .site-navigation .main-navigation -->
+		</header><!-- #masthead .site-header -->
+
+		<div id="main" class="site-main">
+
+		<div id="primary" class="content-area">
+			<div id="content" class="site-content" role="main">
+
+			
+					<nav role="navigation" id="nav-above" class="site-navigation post-navigation">
+		<h1 class="assistive-text">Post navigation</h1>
+
+	
+		<div class="nav-previous"><a href="https://jeremykun.com/2013/05/04/facebook-page-google-community-and-whispers-of-guest-posts/" rel="prev"><span class="meta-nav">←</span> Facebook Page, Google+ Community, and Whispers of Guest Posts</a></div>		<div class="nav-next"><a href="https://jeremykun.com/2013/05/13/dog-print-available-for-sale/" rel="next">“Dog” Print Available for Sale <span class="meta-nav">→</span></a></div>
+	
+	</nav><!-- #nav-above -->
+	
+				
+<article id="post-3383" class="post-3383 post type-post status-publish format-standard hentry category-algorithms category-design tag-art tag-bezier-curves tag-de-casteljau tag-graphics tag-javascript tag-low-complexity-art tag-math tag-picasso tag-programming tag-svg">
+	<header class="entry-header">
+		<h1 class="entry-title">Bezier Curves and Picasso</h1>
+
+		<div class="entry-meta">
+		Posted on <a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/" title="12:32 am" rel="bookmark"><time class="entry-date" datetime="2013-05-11T00:32:05-07:00" pubdate="">May 11, 2013</time></a><span class="byline"> by <span class="author vcard"><a class="url fn n" href="https://jeremykun.com/author/jeremykun/" title="View all posts by j2kun" rel="author">j2kun</a></span></span>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<div data-shortcode="caption" id="attachment_3463" style="width: 594px" class="wp-caption aligncenter"><a href="https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg"><img aria-describedby="caption-attachment-3463" data-attachment-id="3463" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/s-pablo-picasso-large640/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg" data-orig-size="640,468" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;\u00a9 HERBERT LIST\/MAGNUM PHOTOS&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;PERSONALITIES.\u00a0Pablo PICASSO at his studio in front of \&quot;La Cuisine\&quot;. France. Paris. Rue des Grands-Augustins. 1948. (Inv. n\u00b0 P-FR-PIC-003B)&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;\u00a9 HERBERT LIST\/MAGNUM PHOTOS&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="s-PABLO-PICASSO-large640" data-image-description="&lt;p&gt;PERSONALITIES.&nbsp;Pablo PICASSO at his studio in front of “La Cuisine”. France. Paris. Rue des Grands-Augustins. 1948. (Inv. n° P-FR-PIC-003B)&lt;/p&gt;
+" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg?w=640" class=" wp-image-3463" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/s-pablo-picasso-large640.jpg" alt="Pablo Picasso" srcset="https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg?w=584&amp;h=427 584w, https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg?w=150&amp;h=110 150w, https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg?w=300&amp;h=219 300w, https://jeremykun.files.wordpress.com/2013/05/s-pablo-picasso-large640.jpg 640w" sizes="(max-width: 584px) 100vw, 584px" width="584" height="427"></a><p id="caption-attachment-3463" class="wp-caption-text">Pablo Picasso in front of The Kitchen, photo by Herbert List.</p></div>
+<h2 style="text-align:center;">Simplicity and the Artist</h2>
+<p>Some of my favorite of <a href="http://en.wikipedia.org/wiki/Pablo_Picasso">Pablo Picasso’s</a>
+ works are his line drawings. He did a number of them about animals: an 
+owl, a camel, a butterfly, etc. This piece called “Dog” is on my wall:</p>
+<p><a href="https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg"><img data-attachment-id="3443" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/dachshund-picasso-sketch/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg" data-orig-size="432,216" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="Dachshund-Picasso-Sketch" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg?w=432" class="size-full wp-image-3443 aligncenter" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/dachshund-picasso-sketch.jpg" alt="Dachshund-Picasso-Sketch" srcset="https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg 432w, https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg?w=150 150w, https://jeremykun.files.wordpress.com/2013/05/dachshund-picasso-sketch.jpg?w=300 300w" sizes="(max-width: 432px) 100vw, 432px"></a></p>
+<p>(Jump to interactive <a href="http://j2kun.github.io/bezier/index.html">demo</a>&nbsp;where we recreate “Dog” using the math in this post)</p>
+<p>These paintings are extremely simple but somehow strike the viewer as
+ deeply profound. They give the impression of being quite simple to 
+design and draw. A single stroke of the hand and a scribbled signature, 
+but what a masterpiece! It simultaneously feels like a hasty 
+afterthought and a carefully tuned overture to a symphony of elegance. 
+In fact, we know that Picasso’s process was deep. For example, in 
+1945-1946, Picasso made a series of eleven drawings (lithographs, 
+actually) showing the progression of his rendition of a bull. The first 
+few are more or less lifelike, but as the series progresses we see the 
+bull boiled down to its essence, the final painting requiring a mere ten
+ lines. Along the way we see drawings of a bull that resemble some of 
+Picasso’s other works (number 9 reminding me of the <a href="http://upload.wikimedia.org/wikipedia/commons/0/0a/Daley_Plaza_060716.jpg">sculpture at Daley Center Plaza</a> in Chicago). <a href="http://www.artyfactory.com/art_appreciation/animals_in_art/pablo_picasso.htm">Read more about the series of lithographs here</a>.</p>
+<div data-shortcode="caption" id="attachment_3384" style="width: 594px" class="wp-caption aligncenter"><a href="https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg"><img aria-describedby="caption-attachment-3384" data-attachment-id="3384" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/the-bull/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg" data-orig-size="1300,867" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="the bull" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=1024" class=" wp-image-3384" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/the-bull.jpg" alt="the bull" srcset="https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=584&amp;h=389 584w, https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=1168&amp;h=778 1168w, https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=150&amp;h=100 150w, https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=300&amp;h=200 300w, https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=768&amp;h=512 768w, https://jeremykun.files.wordpress.com/2013/04/the-bull.jpg?w=1024&amp;h=683 1024w" sizes="(max-width: 584px) 100vw, 584px" width="584" height="389"></a><p id="caption-attachment-3384" class="wp-caption-text">Picasso’s, “The Bull.” Photo taken by Jeremy Kun at the Art Institute of Chicago in 2013. Click to enlarge.</p></div>
+<p>Now I don’t pretend to be a qualified artist (I couldn’t draw a bull 
+to save my life), but I can recognize the mathematical aspects of his 
+paintings, and I can write a damn fine program. There is one obvious way
+ to consider Picasso-style line drawings as a mathematical object, and 
+it is essentially the Bezier curve. Let’s study the theory behind Bezier
+ curves, and then write a program to draw them. The mathematics involved
+ requires no background knowledge beyond basic algebra with polynomials,
+ and we’ll do our best to keep the discussion low-tech. Then we’ll 
+explore a very simple algorithm for drawing Bezier curves, implement it 
+in Javascript, and recreate one of Picasso’s line drawings as a sequence
+ of Bezier curves.</p>
+<h2 style="text-align:center;">The Bezier Curve and Parameterizations</h2>
+<p>When asked to conjure a “curve” most people (perhaps plagued by their
+ elementary mathematics education) will either convulse in fear or draw 
+part of the graph of a polynomial. While these are fine and dandy 
+curves, they only represent a small fraction of the world of curves. We 
+are particularly interested in curves which are&nbsp;<em>not</em>&nbsp;part of the graphs of any functions.</p>
+<div style="width: 181px" class="wp-caption alignright"><a href="http://upload.wikimedia.org/wikipedia/commons/0/0c/Krzywiki.jpg"><img class=" " src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/Krzywiki.jpg" alt="" width="171" height="236"></a><p class="wp-caption-text">Three French curves.</p></div>
+<p>For instance, a French curve is a physical template used in (manual) 
+sketching to aid the hand in drawing smooth curves. Tracing the edges of
+ any part of these curves will usually give you something that is&nbsp;<em>not</em>
+ the graph of a function. It’s obvious that we need to generalize our 
+idea of what a curve is a bit. The problem is that many fields of 
+mathematics define a curve to mean different things. &nbsp;The curves 
+we’ll be looking at, called Bezier curves, are a special case of &nbsp;<em>single-parameter polynomial</em>&nbsp;<em>plane&nbsp;curves.&nbsp;</em>This sounds like a mouthful, but what it means is that the entire curve can be evaluated with two polynomials: one for the <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_012.png" alt="x" title="x" class="latex"> values and one for the <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_072.png" alt="y" title="y" class="latex"> values. Both polynomials share the same variable, which we’ll call <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">, and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> is evaluated at real numbers.</p>
+<p>An example should make this clear. Let’s pick two simple polynomials in <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">, say <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_079.png" alt="x(t) = t^2" title="x(t) = t^2" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_023.png" alt="y(t) = t^3" title="y(t) = t^3" class="latex">. If we want to find points on this curve, we can just choose values of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> and plug them into both equations. For instance, plugging in <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_004.png" alt="t = 2" title="t = 2" class="latex"> gives the point <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_060.png" alt="(4, 8)" title="(4, 8)" class="latex"> on our curve. Plotting all such values gives a curve that is definitely not the graph of a function:</p>
+<p><a href="https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg"><img data-attachment-id="3448" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/example-curve-2/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg" data-orig-size="1165,1133" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="example-curve" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=1024" class="wp-image-3448 aligncenter" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/example-curve.jpg" alt="example-curve" srcset="https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=467&amp;h=454 467w, https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=934&amp;h=908 934w, https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=150&amp;h=146 150w, https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=300&amp;h=292 300w, https://jeremykun.files.wordpress.com/2013/05/example-curve.jpg?w=768&amp;h=747 768w" sizes="(max-width: 467px) 100vw, 467px" width="467" height="454"></a></p>
+<p>But it’s clear that we&nbsp;<em>can</em> write any single-variable function <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_073.png" alt="f(x)" title="f(x)" class="latex"> in this parametric form: just choose <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_039.png" alt="x(t) = t" title="x(t) = t" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_077.png" alt="y(t) = f(t)" title="y(t) = f(t)" class="latex">.
+ So these are really more general objects than regular old functions 
+(although we’ll only be working with polynomials in this post).</p>
+<p>Quickly recapping, a single-parameter polynomial plane curve is <em>defined</em> as a pair of polynomials <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_003.png" alt="x(t), y(t)" title="x(t), y(t)" class="latex"> in the same variable <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">. Sometimes, if we want to express the whole gadget in one piece, we can take the coefficients of common powers of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> and write them as <i>vectors</i> in the <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_012.png" alt="x" title="x" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_072.png" alt="y" title="y" class="latex"> parts. Using the <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_038.png" alt="x(t) = t^2, y(t) = t^3" title="x(t) = t^2, y(t) = t^3" class="latex"> example above, we can rewrite it as</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_074.png" alt="\mathbf{f}(t) = (0,1) t^3 + (1,0) t^2" title="\mathbf{f}(t) = (0,1) t^3 + (1,0) t^2" class="latex"></p>
+<p style="text-align:left;">Here the coefficients are points (which are the same as vectors) in the plane, and we represent the function <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_075.png" alt="f" title="f" class="latex">
+ in boldface to emphasize that the output is a point. The 
+linear-algebraist might recognize that pairs of polynomials form a 
+vector space, and further combine them as <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_027.png" alt="(0, t^3) + (t^2, 0) = (t^2, t^3)" title="(0, t^3) + (t^2, 0) = (t^2, t^3)" class="latex">. But for us, thinking of points as coefficients of a single polynomial is actually better.</p>
+<p style="text-align:left;">We will also restrict our attention to single-parameter polynomial plane curves for which the variable <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">
+ is allowed to range from zero to one. This might seem like an awkward 
+restriction, but in fact every finite single-parameter polynomial plane 
+curve can be written this way (we won’t bother too much with the details
+ of how this is done). For the purpose of brevity, we will henceforth 
+call a “single-parameter polynomial plane curve where <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> ranges from zero to one” simply a “curve.”</p>
+<p>Now there are some very nice things we can do with curves. For instance, given any two points in the plane <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_053.png" alt="P = (p_1, p_2), Q = (q_1, q_2)" title="P = (p_1, p_2), Q = (q_1, q_2)" class="latex"> we can describe the straight line between them as a curve: <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex.png" alt="\mathbf{L}(t) = (1-t)P + tQ" title="\mathbf{L}(t) = (1-t)P + tQ" class="latex">. Indeed, at <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_034.png" alt="t=0" title="t=0" class="latex"> the value <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_054.png" alt="\mathbf{L}(t)" title="\mathbf{L}(t)" class="latex"> is exactly <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_010.png" alt="P" title="P" class="latex">, at <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_046.png" alt="t=1" title="t=1" class="latex"> it’s exactly <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_016.png" alt="Q" title="Q" class="latex">, and the equation is a linear polynomial in <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">. Moreover (without getting too much into the calculus details), the line <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_044.png" alt="\mathbf{L}" title="\mathbf{L}" class="latex"> travels at “unit speed” from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_010.png" alt="P" title="P" class="latex"> to <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_016.png" alt="Q" title="Q" class="latex">. In other words, we can think of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_044.png" alt="\mathbf{L}" title="\mathbf{L}" class="latex"> as describing the motion of a particle from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_010.png" alt="P" title="P" class="latex"> to <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_016.png" alt="Q" title="Q" class="latex"> over time, and at time <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_047.png" alt="1/4" title="1/4" class="latex"> the particle is a quarter of the way there, at time <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_041.png" alt="1/2" title="1/2" class="latex"> it’s halfway, etc. (An example of a straight line which doesn’t have unit speed is, e.g. <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_070.png" alt="(1-t^2) P + t^2 Q" title="(1-t^2) P + t^2 Q" class="latex">.)</p>
+<p>More generally, let’s add a third point <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_064.png" alt="R" title="R" class="latex">. We can describe a path which goes from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_010.png" alt="P" title="P" class="latex"> to <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_064.png" alt="R" title="R" class="latex">, and is “guided” by <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_016.png" alt="Q" title="Q" class="latex">
+ in the middle. This idea of a “guiding” point is a bit abstract, but 
+computationally no more difficult. Instead of travelling from one point 
+to another at constant speed, we want to travel from one&nbsp;<em>line</em> to another at constant speed. That is, call the two curves describing lines from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_015.png" alt="P \to Q" title="P \to Q" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_009.png" alt="Q \to R" title="Q \to R" class="latex"> <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_048.png" alt="\mathbf{L}_1, \mathbf{L_2}" title="\mathbf{L}_1, \mathbf{L_2}" class="latex">, respectively. Then the curve “guided” by <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_016.png" alt="Q" title="Q" class="latex"> can be written as a curve</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_081.png" alt="\displaystyle \mathbf{F}(t) = (1-t)\mathbf{L}_1(t) + t \mathbf{L}_2(t)" title="\displaystyle \mathbf{F}(t) = (1-t)\mathbf{L}_1(t) + t \mathbf{L}_2(t)" class="latex"></p>
+<p style="text-align:left;">Multiplying&nbsp;this all out gives the formula</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_014.png" alt="\displaystyle \mathbf{F}(t) = (1-t)^2 P + 2t(1-t)Q + t^2 R" title="\displaystyle \mathbf{F}(t) = (1-t)^2 P + 2t(1-t)Q + t^2 R" class="latex"></p>
+<p style="text-align:left;">We can interpret this again in terms of a particle moving. At the beginning of our curve the value of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> is small, and so we’re sticking quite close to the line <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_063.png" alt="\mathbf{L}_1" title="\mathbf{L}_1" class="latex"> As time goes on the point <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_050.png" alt="\mathbf{F}(t)" title="\mathbf{F}(t)" class="latex"> moves along the line between the points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_058.png" alt="\mathbf{L}_1(t)" title="\mathbf{L}_1(t)" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_068.png" alt="\mathbf{L}_2(t)" title="\mathbf{L}_2(t)" class="latex">, which are themselves moving. This traces out a curve which looks like this</p>
+<p style="text-align:left;"><a href="https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png"><img data-attachment-id="3450" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/screen-shot-2013-05-07-at-9-38-42-pm/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png" data-orig-size="225,338" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="Screen Shot 2013-05-07 at 9.38.42 PM" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png?w=200" data-large-file="https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png?w=225" class="size-full wp-image-3450 aligncenter" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/screen-shot-2013-05-07-at-9-38-42-pm.png" alt="Screen Shot 2013-05-07 at 9.38.42 PM" srcset="https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png 225w, https://jeremykun.files.wordpress.com/2013/05/screen-shot-2013-05-07-at-9-38-42-pm.png?w=100 100w" sizes="(max-width: 225px) 100vw, 225px"></a></p>
+<p>This screenshot was taken from <a href="http://www.jasondavies.com/animated-bezier/">a wonderful demo</a>
+ by data visualization consultant Jason Davies. It expresses the 
+mathematical idea quite superbly, and one can drag the three points 
+around to see how it changes the resulting curve. One should play with 
+it for at least five minutes.</p>
+<p>The entire idea of a Bezier curve is a generalization of this principle: given a list <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_055.png" alt="P_0, \dots, P_n" title="P_0, \dots, P_n" class="latex">
+ of points in the plane, we want to describe a curve which travels from 
+the first point to the last, and is “guided” in between by the remaining
+ points. A Bezier curve is a realization of such a curve (a 
+single-parameter polynomial plane curve) which is the inductive 
+continuation of what we described above: we travel at unit speed from a 
+Bezier curve defined by the first <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_008.png" alt="n-1" title="n-1" class="latex"> points in the list to the curve defined by the last <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_008.png" alt="n-1" title="n-1" class="latex"> points. The base case is the straight-line segment (or the single point, if you wish). Formally,</p>
+<p><strong>Definition:&nbsp;</strong>Given a list of points in the plane <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_055.png" alt="P_0, \dots, P_n" title="P_0, \dots, P_n" class="latex"> we define the&nbsp;<em>degree&nbsp;</em><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_008.png" alt="n-1" title="n-1" class="latex">&nbsp;<em>Bezier curve </em>recursively as</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_030.png" alt="\begin{aligned} \mathbf{B}_{P_0}(t) &amp;= P_0 \\ \mathbf{B}_{P_0 P_1 \dots P_n}(t) &amp;= (1-t)\mathbf{B}_{P_0 P_1 \dots P_{n-1}} + t \mathbf{B}_{P_1P_2 \dots P_n}(t) \end{aligned}" title="\begin{aligned} \mathbf{B}_{P_0}(t) &amp;= P_0 \\ \mathbf{B}_{P_0 P_1 \dots P_n}(t) &amp;= (1-t)\mathbf{B}_{P_0 P_1 \dots P_{n-1}} + t \mathbf{B}_{P_1P_2 \dots P_n}(t) \end{aligned}" class="latex"></p>
+<p style="text-align:left;">We call <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_055.png" alt="P_0, \dots, P_n" title="P_0, \dots, P_n" class="latex"> the&nbsp;<em>control</em>&nbsp;<em>points</em> of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_062.png" alt="\mathbf{B}" title="\mathbf{B}" class="latex">.</p>
+<p>While the concept of travelling at unit speed between two lower-order
+ Bezier curves is the real heart of the matter (and allows us true <em>computational</em> insight), one can multiply all of this out (using the formula for binomial coefficients) and get an explicit formula. It is:</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_037.png" alt="\displaystyle \mathbf{B}_{P_0 \dots P_n} = \sum_{k=0}^n \binom{n}{k}(1-t)^{n-k}t^k P_k" title="\displaystyle \mathbf{B}_{P_0 \dots P_n} = \sum_{k=0}^n \binom{n}{k}(1-t)^{n-k}t^k P_k" class="latex"></p>
+<p style="text-align:left;">And for example, a cubic Bezier curve with control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_019.png" alt="P_0, P_1, P_2, P_3" title="P_0, P_1, P_2, P_3" class="latex"> would have equation</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_007.png" alt="\displaystyle (1-t)^3 P_0 + 3(1-t)^2t P_1 + 3(1-t)t^2 P_2 + t^3 P_3" title="\displaystyle (1-t)^3 P_0 + 3(1-t)^2t P_1 + 3(1-t)t^2 P_2 + t^3 P_3" class="latex"></p>
+<p>Higher dimensional Bezier curves can be quite complicated to picture 
+geometrically. For instance, the following is a fifth-degree Bezier 
+curve (with six control points).</p>
+<div data-shortcode="caption" id="attachment_3457" style="width: 483px" class="wp-caption aligncenter"><a href="https://jeremykun.files.wordpress.com/2013/05/beziercurve.gif"><img aria-describedby="caption-attachment-3457" data-attachment-id="3457" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/beziercurve/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/beziercurve.gif" data-orig-size="473,378" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="BezierCurve" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/beziercurve.gif?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/beziercurve.gif?w=473" class="size-full wp-image-3457 " src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/beziercurve.gif" alt="BezierCurve"></a><p id="caption-attachment-3457" class="wp-caption-text">A degree five Bezier curve, credit Wikipedia.</p></div>
+<p>The additional line segments drawn show the recursive nature of the 
+curve. The simplest are the green points, which travel from control 
+point to control point. Then the blue points travel on the line segments
+ between green points, the pink travel along the line segments between 
+blue, the orange between pink, and finally the red point travels along 
+the line segment between the orange points.</p>
+<p>Without the recursive structure of the problem (just seeing the 
+curve) it would be a wonder how one could actually compute with these 
+things. But as we’ll see, the algorithm for drawing a Bezier curve is 
+very natural.</p>
+<h2 style="text-align:center;">Bezier Curves as Data, and de Casteljau’s Algorithm</h2>
+<p>Let’s derive and implement the algorithm for painting a Bezier curve 
+to a screen using only the ability to draw straight lines. For 
+simplicity, we’ll restrict our attention to degree-three (cubic) Bezier 
+curves. Indeed, every Bezier curve can be written as a combination of 
+cubic curves via the recursive definition, and in practice cubic curves 
+balance computational efficiency and expressiveness. <a href="https://github.com/j2kun/bezier">All of the code</a> we present in this post will be in Javascript, and is available on <a href="https://github.com/j2kun/">this blog’s Github page</a>.</p>
+<p>So then a cubic Bezier curve is represented in a program by a list of four points. For example,</p>
+<pre>var curve = [[1,2], [5,5], [4,0], [9,3]];</pre>
+<p>Most graphics libraries (including the <a href="http://www.w3schools.com/html/html5_canvas.asp">HTML5 canvas</a>
+ standard) provide a drawing primitive that can output Bezier curves 
+given a list of four points. But suppose we aren’t given such a 
+function. Suppose that we only have the ability to draw straight lines. 
+How would one go about drawing an approximation to a Bezier curve? If 
+such an algorithm exists (it does, and we’re about to see it) then we 
+could make the approximation so fine that it is visually 
+indistinguishable from a true Bezier curve.</p>
+<p>The key property of Bezier curves that allows us to come up with such an algorithm is the following:</p>
+<p style="text-align:center;">Any cubic Bezier curve <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_062.png" alt="\mathbf{B}" title="\mathbf{B}" class="latex"> can be split into two, end to end,<br>
+which together trace out the same curve as <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_062.png" alt="\mathbf{B}" title="\mathbf{B}" class="latex">.</p>
+<p style="text-align:left;">Let see exactly how this is done. Let <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_033.png" alt="\mathbf{B}(t)" title="\mathbf{B}(t)" class="latex"> be a cubic Bezier curve with control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_019.png" alt="P_0, P_1, P_2, P_3" title="P_0, P_1, P_2, P_3" class="latex">, and let’s say we want to split it exactly in half. We notice that the formula for the curve when we plug in <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_041.png" alt="1/2" title="1/2" class="latex">, which is</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_056.png" alt="\displaystyle \mathbf{B}(1/2) = \frac{1}{2^3}(P_0 + 3P_1 + 3P_2 + P_3)" title="\displaystyle \mathbf{B}(1/2) = \frac{1}{2^3}(P_0 + 3P_1 + 3P_2 + P_3)" class="latex"></p>
+<p style="text-align:left;">Moreover, our recursive definition gave us a
+ way to evaluate the point in terms of smaller-degree curves. But when 
+these are evaluated at 1/2 their formulae are similarly easy to write 
+down. The picture looks like this:</p>
+<p style="text-align:left;"><a href="https://jeremykun.files.wordpress.com/2013/05/subdivision.png"><img data-attachment-id="3469" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/subdivision/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/subdivision.png" data-orig-size="500,410" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="subdivision" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/subdivision.png?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/subdivision.png?w=500" class="aligncenter size-full wp-image-3469" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/subdivision.png" alt="subdivision" srcset="https://jeremykun.files.wordpress.com/2013/05/subdivision.png 500w, https://jeremykun.files.wordpress.com/2013/05/subdivision.png?w=150 150w, https://jeremykun.files.wordpress.com/2013/05/subdivision.png?w=300 300w" sizes="(max-width: 500px) 100vw, 500px"></a></p>
+<p style="text-align:left;">The green points are the degree one curves, 
+the pink points are the degree two curves, and the blue point is the 
+cubic curve. We notice that, since each of the curves are evaluated at <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_011.png" alt="t=1/2" title="t=1/2" class="latex">, each of these points can be described as the midpoints of points we already know. So <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_069.png" alt="m_0 = (P_0 + P_1) / 2, q_0 = (m_0 + m_1)/2" title="m_0 = (P_0 + P_1) / 2, q_0 = (m_0 + m_1)/2" class="latex">, etc.</p>
+<p style="text-align:left;">In fact, the splitting of the two curves we 
+want is precisely given by these points. That is, the “left” half of the
+ curve is given by the curve <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_054.png" alt="\mathbf{L}(t)" title="\mathbf{L}(t)" class="latex"> with control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_080.png" alt="P_0, m_0, q_0, \mathbf{B}(1/2)" title="P_0, m_0, q_0, \mathbf{B}(1/2)" class="latex">, while the “right” half <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_071.png" alt="\mathbf{R}(t)" title="\mathbf{R}(t)" class="latex"> has control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_082.png" alt="\mathbf{B}(1/2), q_1, m_2, P_3" title="\mathbf{B}(1/2), q_1, m_2, P_3" class="latex">.</p>
+<p style="text-align:left;">How can we be completely sure these are the 
+same Bezier curves? Well, they’re just polynomials. We can compare them 
+for equality by doing a bunch of messy algebra. But note, since <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_054.png" alt="\mathbf{L}(t)" title="\mathbf{L}(t)" class="latex"> only travels halfway along <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_033.png" alt="\mathbf{B}(t)" title="\mathbf{B}(t)" class="latex">, to check they are the same is to equate <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_054.png" alt="\mathbf{L}(t)" title="\mathbf{L}(t)" class="latex"> with <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_018.png" alt="\mathbf{B}(t/2)" title="\mathbf{B}(t/2)" class="latex">, since as <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> ranges from zero to one, <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_029.png" alt="t/2" title="t/2" class="latex"> ranges from zero to one half. Likewise, we can compare <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_067.png" alt="\mathbf{B}((t+1)/2)" title="\mathbf{B}((t+1)/2)" class="latex"> with <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_071.png" alt="\mathbf{R}(t)" title="\mathbf{R}(t)" class="latex">.</p>
+<p style="text-align:left;">The algebra is very messy, but doable. As a 
+test of this blog’s newest tools, here’s a&nbsp;screen cast of me 
+doing&nbsp;the algebra involved in proving the two curves are identical.</p>
+<p style="text-align:center;"><strong><span class="embed-youtube" style="text-align:center; display: block;"><iframe class="youtube-player" type="text/html" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/lPJo1jayLdc.html" allowfullscreen="true" style="border:0;" width="558" height="314"></iframe></span><br>
+</strong></p>
+<p style="text-align:left;">Now that that’s settled, we have a nice algorithm for splitting a cubic Bezier (or any Bezier) into two pieces. In Javascript,</p>
+<div><div id="highlighter_602244" class="syntaxhighlighter  jscript"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="jscript keyword">function</code> <code class="jscript plain">subdivide(curve) {</code></div><div class="line number2 index1 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">firstMidpoints = midpoints(curve);</code></div><div class="line number3 index2 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">secondMidpoints = midpoints(firstMidpoints);</code></div><div class="line number4 index3 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">thirdMidpoints = midpoints(secondMidpoints);</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">return</code> <code class="jscript plain">[[curve[0], firstMidpoints[0], secondMidpoints[0], thirdMidpoints[0]],</code></div><div class="line number7 index6 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">[thirdMidpoints[0], secondMidpoints[1], firstMidpoints[2], curve[3]]];</code></div><div class="line number8 index7 alt1"><code class="jscript plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p>Here “curve” is a list of four points, as described at the beginning 
+of this section, and the output is a list of two curves with the correct
+ control points. The “midpoints” function used is quite simple, and we 
+include it here for compelteness:</p>
+<div><div id="highlighter_870767" class="syntaxhighlighter  jscript"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="jscript keyword">function</code> <code class="jscript plain">midpoints(pointList) {</code></div><div class="line number2 index1 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">midpoint = </code><code class="jscript keyword">function</code><code class="jscript plain">(p, q) {</code></div><div class="line number3 index2 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">return</code> <code class="jscript plain">[(p[0] + q[0]) / 2.0, (p[1] + q[1]) / 2.0];</code></div><div class="line number4 index3 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">};</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">midpointList = </code><code class="jscript keyword">new</code> <code class="jscript plain">Array(pointList.length - 1);</code></div><div class="line number7 index6 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">for</code> <code class="jscript plain">(</code><code class="jscript keyword">var</code> <code class="jscript plain">i = 0; i &lt; midpointList.length; i++) {</code></div><div class="line number8 index7 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">midpointList[i] = midpoint(pointList[i], pointList[i+1]);</code></div><div class="line number9 index8 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">}</code></div><div class="line number10 index9 alt1">&nbsp;</div><div class="line number11 index10 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">return</code> <code class="jscript plain">midpointList;</code></div><div class="line number12 index11 alt1"><code class="jscript plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p>It just accepts as input a list of points and computes their sequential midpoints. So a list of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_045.png" alt="n" title="n" class="latex"> points is turned into a list of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_008.png" alt="n-1" title="n-1" class="latex"> points. As we saw, we need to call this function <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_028.png" alt="d-1" title="d-1" class="latex"> times to compute the segmentation of a degree <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_057.png" alt="d" title="d" class="latex"> Bezier curve.</p>
+<p>As explained earlier, we can keep subdividing our curve over and over
+ until each of the tiny pieces are basically lines. That is, our 
+function to draw a Bezier curve from the beginning will be as follows:</p>
+<div><div id="highlighter_278740" class="syntaxhighlighter  jscript"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="jscript keyword">function</code> <code class="jscript plain">drawCurve(curve, context) {</code></div><div class="line number2 index1 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">if</code> <code class="jscript plain">(isFlat(curve)) {</code></div><div class="line number3 index2 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">drawSegments(curve, context);</code></div><div class="line number4 index3 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">} </code><code class="jscript keyword">else</code> <code class="jscript plain">{</code></div><div class="line number5 index4 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">pieces = subdivide(curve);</code></div><div class="line number6 index5 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">drawCurve(pieces[0], context);</code></div><div class="line number7 index6 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">drawCurve(pieces[1], context);</code></div><div class="line number8 index7 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript plain">}</code></div><div class="line number9 index8 alt2"><code class="jscript plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p style="text-align:left;">In words, as long as the curve isn’t “flat,” we want to subdivide and draw each piece recursively. If it&nbsp;<em>is</em>
+ flat, then we can simply draw the three line segments of the curve and 
+be reasonably sure that it will be a good approximation. The context 
+variable sitting there represents the canvas to be painted to; it must 
+be passed through to the “drawSegments” function, which simply paints a 
+straight line to the canvas.</p>
+<p style="text-align:left;">Of course this raises the obvious question: 
+how can we tell if a Bezier curve is flat? There are many ways to do so.
+ One could compute the angles of deviation (from a straight line) at 
+each interior control point and add them up. Or one could compute the 
+volume of the enclosed quadrilateral. However, computing angles and 
+volumes is usually not very nice: angles take a long time to compute and
+ volumes have stability issues, and <a href="http://link.springer.com/content/pdf/10.1007%2FBF01891832.pdf">the algorithms which are stable</a> are not very simple. We want a measurement which requires only basic arithmetic and perhaps a few logical conditions to check.</p>
+<p style="text-align:left;">It turns out there is such a measurement. 
+It’s originally attributed to Roger Willcocks, but it’s quite simple to 
+derive by hand.</p>
+<p style="text-align:left;">Essentially, we want to measure the “flatness” of a cubic Bezier curve by computing the distance of the actual curve at time <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> from where the curve <em>would</em> be at time <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> if the curve were a straight line.</p>
+<p style="text-align:left;">Formally, given <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_033.png" alt="\mathbf{B}(t)" title="\mathbf{B}(t)" class="latex"> with control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_019.png" alt="P_0, P_1, P_2, P_3" title="P_0, P_1, P_2, P_3" class="latex"> as usual, we can define the <em>straight-line Bezier cubic</em>&nbsp;as the colossal sum</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_061.png" alt="\displaystyle \mathbf{S}(t) = (1-t)^3P_0 + 3(1-t)^2t \left ( \frac{2}{3}P_0 + \frac{1}{3}P_3 \right ) + 3(1-t)t^2 \left ( \frac{1}{3}P_0 + \frac{2}{3}P_3 \right ) + t^3 P_3 " title="\displaystyle \mathbf{S}(t) = (1-t)^3P_0 + 3(1-t)^2t \left ( \frac{2}{3}P_0 + \frac{1}{3}P_3 \right ) + 3(1-t)t^2 \left ( \frac{1}{3}P_0 + \frac{2}{3}P_3 \right ) + t^3 P_3 " class="latex"></p>
+<p style="text-align:left;">There’s nothing magical going on here. We’re simply giving the Bezier curve with control points <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_022.png" alt="P_0, \frac{2}{3}P_0 + \frac{1}{3}P_3, \frac{1}{3}P_0 + \frac{2}{3}P_3, P_3" title="P_0, \frac{2}{3}P_0 + \frac{1}{3}P_3, \frac{1}{3}P_0 + \frac{2}{3}P_3, P_3" class="latex">. One should think about this as points which are a 0, 1/3, 2/3, and 1 fraction of the way from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_031.png" alt="P_0" title="P_0" class="latex"> to <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_065.png" alt="P_3" title="P_3" class="latex"> on a straight line.</p>
+<p style="text-align:left;">Then we define the function <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_040.png" alt="d(t) = \left \| \mathbf{B}(t) - \mathbf{S}(t) \right \|" title="d(t) = \left \| \mathbf{B}(t) - \mathbf{S}(t) \right \|" class="latex"> to be the distance between the two curves at the same time <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">. The flatness value of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_062.png" alt="\mathbf{B}" title="\mathbf{B}" class="latex"> is the maximum of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_057.png" alt="d" title="d" class="latex"> over all values of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">. If this flatness value is below a certain tolerance level, then we call the curve flat.</p>
+<p style="text-align:left;">With a bit of algebra we can simplify this expression. First, the value of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex">
+ for which the distance is maximized is the same as when its square is 
+maximized, so we can omit the square root computation at the end and 
+take that into account when choosing a flatness tolerance.</p>
+<p style="text-align:left;">Now lets actually write out the difference as a single polynomial. First, we can cancel the 3’s in <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_051.png" alt="\mathbf{S}(t)" title="\mathbf{S}(t)" class="latex"> and write the polynomial as</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_049.png" alt="\displaystyle \mathbf{S}(t) = (1-t)^3 P_0 + (1-t)^2t (2P_0 + P_3) + (1-t)t^2 (P_0 + 2P_3) + t^3 P_3" title="\displaystyle \mathbf{S}(t) = (1-t)^3 P_0 + (1-t)^2t (2P_0 + P_3) + (1-t)t^2 (P_0 + 2P_3) + t^3 P_3" class="latex"></p>
+<p style="text-align:left;">and so <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_002.png" alt="\mathbf{B}(t) - \mathbf{S}(t)" title="\mathbf{B}(t) - \mathbf{S}(t)" class="latex"> is (by collecting coefficients of the like terms <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_024.png" alt="(1-t)^it^j" title="(1-t)^it^j" class="latex">)</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_017.png" alt="\displaystyle (1-t)^2t (3 P_1 - 2P_0 - P_3) + (1-t)t^2 (3P_2 - P_0 - 2P_3) " title="\displaystyle (1-t)^2t (3 P_1 - 2P_0 - P_3) + (1-t)t^2 (3P_2 - P_0 - 2P_3) " class="latex"></p>
+<p style="text-align:left;">Factoring out the <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_078.png" alt="(1-t)t" title="(1-t)t" class="latex"> from both terms and setting <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_052.png" alt="a = 3P_1 - 2P_0 - P_3" title="a = 3P_1 - 2P_0 - P_3" class="latex">, <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_035.png" alt="b = 3P_2 - P_0 - 2P_3" title="b = 3P_2 - P_0 - 2P_3" class="latex">, we get</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_036.png" alt="\displaystyle d^2(t) = \left \| (1-t)t ((1-t)a + tb) \right \|^2 = (1-t)^2t^2 \left \| (1-t)a + tb \right \|^2" title="\displaystyle d^2(t) = \left \| (1-t)t ((1-t)a + tb) \right \|^2 = (1-t)^2t^2 \left \| (1-t)a + tb \right \|^2" class="latex"></p>
+<p style="text-align:left;">Since the maximum of a product is at most the product of the maxima, we can <em>bound</em> the above quantity by the product of the two maxes. The reason we want to do this is because we can <em>easily</em>&nbsp;compute
+ the two maxes separately. It wouldn’t be hard to compute the maximum 
+without splitting things up, but this way ends up with fewer 
+computational steps for our final algorithm, and the visual result is 
+equally good.</p>
+<p style="text-align:left;">Using some elementary single-variable calculus, the maximum value of <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_020.png" alt="(1-t)^2t^2" title="(1-t)^2t^2" class="latex"> for <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_066.png" alt="0 \leq t \leq 1" title="0 \leq t \leq 1" class="latex"> turns out to be <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_059.png" alt="1/16" title="1/16" class="latex">. And the norm of a vector is just the sum of squares of its components. If <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_025.png" alt="a = (a_x, a_y)" title="a = (a_x, a_y)" class="latex"> and <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_006.png" alt="b = (b_x, b_y)" title="b = (b_x, b_y)" class="latex">, then the norm above is exactly</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_042.png" alt="\displaystyle ((1-t)a_x + tb_x)^2 + ((1-t)a_y + tb_y)^2" title="\displaystyle ((1-t)a_x + tb_x)^2 + ((1-t)a_y + tb_y)^2" class="latex"></p>
+<p style="text-align:left;">And notice: for any real numbers <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_032.png" alt="z, w" title="z, w" class="latex"> the quantity <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_026.png" alt="(1-t)z + tw" title="(1-t)z + tw" class="latex"> is exactly the straight line from <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_005.png" alt="z" title="z" class="latex"> to <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_021.png" alt="w" title="w" class="latex"> we know so well. The maximum over all <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_043.png" alt="t" title="t" class="latex"> between zero and one is obviously the maximum of the endpoints <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_032.png" alt="z, w" title="z, w" class="latex">. So the max of our distance function <img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_013.png" alt="d^2(t)" title="d^2(t)" class="latex"> is bounded by</p>
+<p style="text-align:center;"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/latex_076.png" alt="\displaystyle \frac{1}{16} (\textup{max}(a_x^2, b_x^2) + \textup{max}(a_y^2, b_y^2))" title="\displaystyle \frac{1}{16} (\textup{max}(a_x^2, b_x^2) + \textup{max}(a_y^2, b_y^2))" class="latex"></p>
+<p style="text-align:left;">And so our condition for being flat is that 
+this bound is smaller than some allowable tolerance. We may safely 
+factor the 1/16 into this tolerance bound, and so this is enough to 
+write a function.</p>
+<div><div id="highlighter_903004" class="syntaxhighlighter  jscript"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="jscript keyword">function</code> <code class="jscript plain">isFlat(curve) {</code></div><div class="line number2 index1 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">tol = 10; </code><code class="jscript comments">// anything below 50 is roughly good-looking</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">ax = 3.0*curve[1][0] - 2.0*curve[0][0] - curve[3][0]; ax *= ax;</code></div><div class="line number5 index4 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">ay = 3.0*curve[1][1] - 2.0*curve[0][1] - curve[3][1]; ay *= ay;</code></div><div class="line number6 index5 alt1"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">bx = 3.0*curve[2][0] - curve[0][0] - 2.0*curve[3][0]; bx *= bx;</code></div><div class="line number7 index6 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">var</code> <code class="jscript plain">by = 3.0*curve[2][1] - curve[0][1] - 2.0*curve[3][1]; by *= by;</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="jscript spaces">&nbsp;&nbsp;&nbsp;</code><code class="jscript keyword">return</code> <code class="jscript plain">(Math.max(ax, bx) + Math.max(ay, by) &lt;= tol);</code></div><div class="line number10 index9 alt1"><code class="jscript plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p>And there we have it. We write a simple HTML page to access a canvas 
+element and a few extra helper functions to draw the line segments when 
+the curve is flat enough, and present <a href="http://j2kun.github.io/bezier/index.html">the final result in this interactive demonstration</a> (you can perturb the control points).<strong><br>
+</strong></p>
+<p>The picture you see on that page (given below) is my&nbsp;rendition 
+of Picasso’s “Dog” drawing as a sequence of nine Bezier curves. I 
+think&nbsp;the resemblance is uncanny <img draggable="false" class="emoji" alt="🙂" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/1f642.svg"></p>
+<div data-shortcode="caption" id="attachment_3460" style="width: 516px" class="wp-caption aligncenter"><a href="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png"><img aria-describedby="caption-attachment-3460" data-attachment-id="3460" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/bezier-dog-image/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png" data-orig-size="506,507" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="bezier-dog-image" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png?w=506" class="size-full wp-image-3460" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/bezier-dog-image.png" alt="Picasso's &quot;Dog,&quot; redesigned as a sequence of eight bezier curves." srcset="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png 506w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png?w=150 150w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-image.png?w=300 300w" sizes="(max-width: 506px) 100vw, 506px"></a><p id="caption-attachment-3460" class="wp-caption-text">Picasso’s “Dog,” redesigned as a sequence of nine bezier curves.</p></div>
+<p>While we didn’t invent the drawing itself (and hence shouldn’t attach
+ our signature to it), we did come up with the representation as a 
+sequence of Bezier curves. It only seems fitting to present&nbsp;<em>that</em>
+ as the work of art. Here we’ve distilled the representation down to a 
+single file: the first line is the dimension of the canvas, and each 
+subsequent line represents a cubic Bezier curve. Comments are included 
+for readability.</p>
+<div data-shortcode="caption" id="attachment_3492" style="width: 594px" class="wp-caption aligncenter"><a href="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png"><img aria-describedby="caption-attachment-3492" data-attachment-id="3492" data-permalink="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/bezier-dog-for-web/#main" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png" data-orig-size="800,356" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="bezier-dog-for-web" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=300" data-large-file="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=800" class=" wp-image-3492" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/bezier-dog-for-web.png" alt="bezier-dog-for-web" srcset="https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=582&amp;h=259 582w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=150&amp;h=67 150w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=300&amp;h=134 300w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png?w=768&amp;h=342 768w, https://jeremykun.files.wordpress.com/2013/05/bezier-dog-for-web.png 800w" sizes="(max-width: 584px) 100vw, 584px" width="584" height="259"></a><p id="caption-attachment-3492" class="wp-caption-text">“Dog” Jeremy Kun, 2013. Click to enlarge.</p></div>
+<p style="text-align:left;">Because standardizing things seems important, we define a new filetype “.bezier”, which has the format given above:</p>
+<pre style="text-align:left;">int int
+(int) curve 
+(int) curve
+...</pre>
+<p style="text-align:left;">Where the first two ints specify the size of the canvas, the first (optional) int on each line specifies the <a href="http://www.html5canvastutorials.com/tutorials/html5-canvas-line-width/">width of the stroke</a>,&nbsp;and a “curve” has the form</p>
+<pre style="text-align:left;">[int,int] [int,int] ... [int,int]</pre>
+<p style="text-align:left;">If an int is omitted at the beginning of a line, this specifies a width of three pixels.</p>
+<p style="text-align:left;">In a general .bezier file we allow a curve 
+to have arbitrarily many control points, though the code we gave above 
+does not draw them that generally. As an exercise, write a program which
+ accepts as input a .bezier file and produces as output an image of the 
+drawing. This will require an extension of the algorithm above for 
+drawing arbitrary Bezier curves, which loops its computation of the 
+midpoints and keeps track of which end up in the resulting subdivision. 
+Alternatively, one could write a program which accepts as input a 
+.bezier file with only cubic Bezier curves, and produces as output an <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG file</a>
+ of the drawing (SVG only supports cubic Bezier curves). So a .bezier 
+file is a simplification (fewer features) and an extension (Bezier 
+curves of arbitrary degree) of an SVG file.</p>
+<p style="text-align:left;">We didn’t go as deep into the theory of 
+Bezier curves as we could have. If the reader is itching for more (and a
+ more calculus-based approach), see <a href="http://pomax.github.io/bezierinfo/">this lengthy primer</a>.
+ It contains practically everything one could want to know about Bezier 
+curves, with nice interactive demos written in Processing.</p>
+<h2 style="text-align:center;">Low-Complexity Art</h2>
+<p>There are some philosophical implications of what we’ve done today 
+with Picasso’s “Dog.” Previously on this blog we’ve investigated the 
+idea of <a title="Low Complexity&nbsp;Art" href="https://jeremykun.com/2011/07/06/low-complexity-art/">low-complexity art</a>,
+ and it’s quite relevant here. The thesis is that “beautiful” art has a 
+small description length, and more formally the “complexity” of some 
+object (represented by text) is the length of the shortest program that 
+outputs that object given no inputs. More on that in our <a title="Kolmogorov Complexity – A&nbsp;Primer" href="https://jeremykun.com/2012/04/21/kolmogorov-complexity-a-primer/">primer on Kolmogorov complexity</a>.
+ The fact that we can describe Picasso’s line drawings with a small 
+number of Bezier curves (and a relatively short program to output the 
+bezier curves) is supposed to be a deep statement about the beauty of 
+the art itself. Obviously this is very subjective, but not without its <a href="http://www.idsia.ch/~juergen/locoart/locoart.html">proponents</a>.</p>
+<p>There has been a bit of recent interest in computers generating art. For instance, <a href="http://www.elegant.setup.nl/">this recent programming competition</a>&nbsp;(in Dutch)&nbsp;gave the task of generating art similar to the work of <a href="http://en.wikipedia.org/wiki/Piet_Mondrian">Piet Mondrian</a>.
+ The idea is that the more elegant the&nbsp;algorithm, the higher it 
+would be scored. The winner used MD5 hashes to generate Mondrian pieces,
+ and there were many many other impressive examples (the link above has a
+ gallery of submissions).</p>
+<p>In our earlier post on low-complexity art, we explored the 
+possibility of representing all images within a coordinate system 
+involving circles with shaded interiors.&nbsp;But it’s obvious that such
+ a coordinate system wouldn’t be able to represent “Dog” with very low 
+complexity. It seems that Bezier curves are a much more natural system 
+of coordinates. Some of the advantages include that length of lines and 
+slight perturbations don’t affect the resulting complexity. A cubic 
+Bezier curve can be described by any set of four points, and more 
+“intricate” (higher complexity) descriptions of curves require a larger 
+number of points. Bezier curves can be scaled up arbitrarily, and this 
+doesn’t significantly change the complexity of the curve (although 
+scaling many orders of magnitude will introduce a logarithmic factor 
+complexity increase, this is quite small). Curves with larger stroke are
+ slightly more complex than those with smaller stroke, and representing 
+many small sharp bends require more curves than long, smooth arcs.</p>
+<p>On the downside, it’s not so easy to represent a circle as a Bezier curve. In fact, <a href="http://stackoverflow.com/questions/1734745/how-to-create-circle-with-bezier-curves">it is impossible to do so exactly</a>.
+ Despite the simplicity of this object (it’s even defined as a single 
+polynomial, albeit in two variables), the best one can do is approximate
+ it. The same goes for ellipses. There are actually ways to overcome 
+this (the concept of <a href="http://mathworld.wolfram.com/BezierCurve.html"><em>rational Bezier curves</em></a>
+ which are quotients of polynomials), but they add to the inherent 
+complexity of the drawing algorithm and the approximations using regular
+ Bezier curves are good enough.</p>
+<p>And so we define the&nbsp;<em>complexity</em> of a drawing to be the number of bits in its .bezier file representation. Comments are ignored in this calculation.</p>
+<p>The real prize, and what we’ll explore next time, is to find a way to
+ generate art automatically. That is to do one of two things:</p>
+<ol>
+<li><span style="line-height:15px;">Given some sort of “seed,” write a program that produces a pseudo-random line drawing.</span></li>
+<li>Given an image, produce a .bezier image which accurately depicts the image as a line drawing.</li>
+</ol>
+<p>We will attempt to explore these possibilities in the follow-up to 
+this post. Depending on how things go, this may involve some local 
+search algorithms, genetic algorithms, or other methods.</p>
+<p>Until then!</p>
+<p>Addendum: want to buy a framed print of the source code for “Dog”? Head over to <a href="http://society6.com/JeremyKun">our page on Society6</a>.</p>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-3383" class="share-facebook sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=facebook&amp;nb=1" target="_blank" title="Click to share on Facebook"><span></span><span class="sharing-screen-reader-text">Click to share on Facebook (Opens in new window)</span></a></li><li class="share-reddit"><a rel="nofollow noopener noreferrer" data-shared="" class="share-reddit sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=reddit&amp;nb=1" target="_blank" title="Click to share on Reddit"><span></span><span class="sharing-screen-reader-text">Click to share on Reddit (Opens in new window)</span></a></li><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-3383" class="share-twitter sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=twitter&amp;nb=1" target="_blank" title="Click to share on Twitter"><span></span><span class="sharing-screen-reader-text">Click to share on Twitter (Opens in new window)</span></a></li><li><a href="#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-email share-service-visible"><a rel="nofollow noopener noreferrer" data-shared="" class="share-email sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=email&amp;nb=1" target="_blank" title="Click to email this to a friend"><span></span><span class="sharing-screen-reader-text">Click to email this to a friend (Opens in new window)</span></a></li><li class="share-pinterest"><a rel="nofollow noopener noreferrer" data-shared="sharing-pinterest-3383" class="share-pinterest sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=pinterest&amp;nb=1" target="_blank" title="Click to share on Pinterest"><span><span class="share-count">9</span></span><span class="sharing-screen-reader-text">Click to share on Pinterest (Opens in new window)<span class="share-count">9</span></span></a></li><li class="share-end"></li><li class="share-linkedin"><a rel="nofollow noopener noreferrer" data-shared="sharing-linkedin-3383" class="share-linkedin sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=linkedin&amp;nb=1" target="_blank" title="Click to share on LinkedIn"><span></span><span class="sharing-screen-reader-text">Click to share on LinkedIn (Opens in new window)</span></a></li><li class="share-tumblr"><a rel="nofollow noopener noreferrer" data-shared="" class="share-tumblr sd-button share-icon no-text" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?share=tumblr&amp;nb=1" target="_blank" title="Click to share on Tumblr"><span></span><span class="sharing-screen-reader-text">Click to share on Tumblr (Opens in new window)</span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-23934684-3383-5d0e38dd67ab6" data-src="//widgets.wp.com/likes/index.html?ver=20190321#blog_id=23934684&amp;post_id=3383&amp;origin=jeremykun.wordpress.com&amp;obj_id=23934684-3383-5d0e38dd67ab6&amp;domain=jeremykun.com" data-name="like-post-frame-23934684-3383-5d0e38dd67ab6"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-23934684-3383-5d0e38dd67ab6" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/index.html" width="100%" height="55px" frameborder="0"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="296" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://jeremykun.com/2011/06/20/featured-posts/" title="Featured Posts
+
+Making Hybrid Images Neural Networks and Backpropagation Elliptic Curves and Cryptography Bezier Curves and Picasso Computing Homology Probably Approximately Correct – A Formal Theory of Learning" rel="nofollow" data-origin="3383" data-position="0">Featured Posts</a></span><span class="jp-relatedposts-post-context">In "General"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="3518" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://jeremykun.com/2013/05/13/dog-print-available-for-sale/" title="&quot;Dog&quot; Print Available for Sale
+
+My girlfriend and I decided we want a print of my recent artistic creation from the post Bezier Curves and Picasso. I set up an account at Society6, which does professional art printing (framed or unframed). &nbsp;I can't imagine anyone beside me would be interested in including this in their…" rel="nofollow" data-origin="3383" data-position="1">"Dog" Print Available for Sale</a></span><span class="jp-relatedposts-post-context">In "General"</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="1414" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://jeremykun.com/2012/01/01/random-psychedelic-art/" title="Random (Psychedelic) Art
+
+And a Pinch of Python Next semester I am a lab TA for an introductory programming course, and it's taught in Python. My Python experience has a number of gaps in it, so we'll have the opportunity for a few more Python primers, and small exercises to go along with…" rel="nofollow" data-origin="3383" data-position="2">Random (Psychedelic) Art</a></span><span class="jp-relatedposts-post-context">In "Analysis"</span></p></div></div></div>			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		
+		This entry was posted in <a href="https://jeremykun.com/category/algorithms/" rel="category tag">Algorithms</a>, <a href="https://jeremykun.com/category/design/" rel="category tag">Design</a> and tagged <a href="https://jeremykun.com/tag/art/" rel="tag">art</a>, <a href="https://jeremykun.com/tag/bezier-curves/" rel="tag">bezier curves</a>, <a href="https://jeremykun.com/tag/de-casteljau/" rel="tag">de Casteljau</a>, <a href="https://jeremykun.com/tag/graphics/" rel="tag">graphics</a>, <a href="https://jeremykun.com/tag/javascript/" rel="tag">javascript</a>, <a href="https://jeremykun.com/tag/low-complexity-art/" rel="tag">low-complexity art</a>, <a href="https://jeremykun.com/tag/math/" rel="tag">math</a>, <a href="https://jeremykun.com/tag/picasso/" rel="tag">picasso</a>, <a href="https://jeremykun.com/tag/programming/" rel="tag">programming</a>, <a href="https://jeremykun.com/tag/svg/" rel="tag">svg</a>. Bookmark the <a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/" title="Permalink to Bezier Curves and Picasso" rel="bookmark">permalink</a>.
+			</footer><!-- .entry-meta -->
+</article><!-- #post-3383 -->
+
+					<nav role="navigation" id="nav-below" class="site-navigation post-navigation">
+		<h1 class="assistive-text">Post navigation</h1>
+
+	
+		<div class="nav-previous"><a href="https://jeremykun.com/2013/05/04/facebook-page-google-community-and-whispers-of-guest-posts/" rel="prev"><span class="meta-nav">←</span> Facebook Page, Google+ Community, and Whispers of Guest Posts</a></div>		<div class="nav-next"><a href="https://jeremykun.com/2013/05/13/dog-print-available-for-sale/" rel="next">“Dog” Print Available for Sale <span class="meta-nav">→</span></a></div>
+	
+	</nav><!-- #nav-below -->
+	
+				
+
+	<div id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			18 thoughts on “<span>Bezier Curves and Picasso</span>”		</h2>
+
+		<ol class="commentlist">
+				<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-2512">
+		<article id="comment-2512" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/pixelio_badge_300x300_normal.png" class="avatar avatar-44" width="44" height="44"></span>
+					<cite class="fn"><a href="http://twitter.com/pixelio" rel="external nofollow" class="url">Pixel I/O (@pixelio)</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2512"><time pubdate="" datetime="2013-05-11T17:13:12-07:00">
+					May 11, 2013 at 5:13 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2512#respond" data-commentid="2512" data-postid="3383" data-belowelement="comment-2512" data-respondelement="respond" aria-label="Reply to Pixel I/O (@pixelio)">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Great post!  Looking forward to the next one.</p>
+<p>An ever so slightly simpler yet still robust test for flatness was discussed here and on comp.graphics.algorithms:  <a href="http://antigrain.com/research/adaptive_bezier/index.html#toc0013" rel="nofollow">http://antigrain.com/research/adaptive_bezier/index.html#toc0013</a></p>
+<p>Also of interest, “Pyramid Algorithms” by Ron Goldman covers Wang’s 
+formula (chap. 5.6.3) for determining in advance how many levels of 
+subdivision you need to achieve a specified degree of flatness.  Wang’s 
+formula is also discussed in: DEC Paris Research Laboratory report #1, 
+May 1989.  Clearly this approach will be more conservative than testing 
+each segment.</p>
+<p id="comment-like-2512" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2512&amp;_wpnonce=6c4d811cb3" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2512" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor odd alt depth-2 highlander-comment" id="li-comment-2513">
+		<article id="comment-2513" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-0" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2513"><time pubdate="" datetime="2013-05-11T17:58:01-07:00">
+					May 11, 2013 at 5:58 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2513#respond" data-commentid="2513" data-postid="3383" data-belowelement="comment-2513" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>That’s a lot of great info! From what I understand the metric I 
+presented here is what’s used in the Postscript language. Not to say 
+whether that makes it good or not, but at least it’s stood the test of 
+time (and engineers).</p>
+<p id="comment-like-2513" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2513&amp;_wpnonce=ecf528f075" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2513" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment even depth-3 highlander-comment" id="li-comment-2546">
+		<article id="comment-2546" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/pixelio_badge_300x300_normal.png" class="avatar avatar-44" width="44" height="44"></span>
+					<cite class="fn"><a href="http://twitter.com/pixelio" rel="external nofollow" class="url">Pixel I/O (@pixelio)</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2546"><time pubdate="" datetime="2013-05-12T23:01:31-07:00">
+					May 12, 2013 at 11:01 pm					</time></a>
+														</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Another good read is here: “A History of Curves and Surfaces in CAGD” [ <a href="http://kowon.dongseo.ac.kr/~lbg/cagd/history1.pdf" rel="nofollow">http://kowon.dongseo.ac.kr/~lbg/cagd/history1.pdf</a> ].</p>
+<p id="comment-like-2546" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2546&amp;_wpnonce=a70b442b58" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2546" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2516">
+		<article id="comment-2516" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/79714f358b9258f337ba4166d0be6bbe.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-79714f358b9258f337ba4166d0be6bbe-0" width="44" height="44"></span>
+					<cite class="fn"><a href="http://ece.uic.edu/~cpress/" rel="external nofollow" class="url">cpress</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2516"><time pubdate="" datetime="2013-05-11T19:16:09-07:00">
+					May 11, 2013 at 7:16 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2516#respond" data-commentid="2516" data-postid="3383" data-belowelement="comment-2516" data-respondelement="respond" aria-label="Reply to cpress">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>the href link to ” this blog’s Google code page.” is incorrect</p>
+<p id="comment-like-2516" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2516&amp;_wpnonce=df14efe3d3" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2516" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-2517">
+		<article id="comment-2517" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ec325e7c3c35e354f2ea5ead5b0ec745.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-ec325e7c3c35e354f2ea5ead5b0ec745-0" width="44" height="44"></span>
+					<cite class="fn"><a href="http://2pif.info/" rel="external nofollow" class="url">mbaz</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2517"><time pubdate="" datetime="2013-05-11T19:46:19-07:00">
+					May 11, 2013 at 7:46 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2517#respond" data-commentid="2517" data-postid="3383" data-belowelement="comment-2517" data-respondelement="respond" aria-label="Reply to mbaz">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>What tools did you use to make the video? It’s great!</p>
+<p id="comment-like-2517" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2517&amp;_wpnonce=17d82b3a88" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2517" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor odd alt depth-2 highlander-comment" id="li-comment-2518">
+		<article id="comment-2518" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-1" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2518"><time pubdate="" datetime="2013-05-11T19:57:14-07:00">
+					May 11, 2013 at 7:57 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2518#respond" data-commentid="2518" data-postid="3383" data-belowelement="comment-2518" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Sketchbook for drawing with a Wacom Bamboo tablet, and Screenflow to capture it all. Made possible by donations to this blog <img draggable="false" class="emoji" alt="🙂" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/1f642.svg"></p>
+<p id="comment-like-2518" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2518&amp;_wpnonce=c7c2bff04f" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2518" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment even depth-3 highlander-comment" id="li-comment-2520">
+		<article id="comment-2520" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ec325e7c3c35e354f2ea5ead5b0ec745.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-ec325e7c3c35e354f2ea5ead5b0ec745-1" width="44" height="44"></span>
+					<cite class="fn"><a href="http://2pif.info/" rel="external nofollow" class="url">mbaz</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2520"><time pubdate="" datetime="2013-05-11T20:30:06-07:00">
+					May 11, 2013 at 8:30 pm					</time></a>
+														</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Thanks for your answer, and congratulations on getting enough out
+ of the blog to afford such awesome tools. Screenflow especially looks 
+great; too bad I don’t use Macs…</p>
+<p id="comment-like-2520" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2520&amp;_wpnonce=eb080697e8" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2520" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-stephanwehner odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2524">
+		<article id="comment-2524" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/72ea925c0ca3d19fdd2f12fa76681624.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-72ea925c0ca3d19fdd2f12fa76681624-0" width="44" height="44"></span>
+					<cite class="fn">stephanwehner</cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2524"><time pubdate="" datetime="2013-05-11T22:58:29-07:00">
+					May 11, 2013 at 10:58 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2524#respond" data-commentid="2524" data-postid="3383" data-belowelement="comment-2524" data-respondelement="respond" aria-label="Reply to stephanwehner">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>I tried to find out in which year Picasso made the dog drawing. 
+Do you know (since you have a copy)? A few years after 1957? See <a href="http://en.wikipedia.org/wiki/Lump_(dog)" rel="nofollow">http://en.wikipedia.org/wiki/Lump_(dog)</a></p>
+<p>The bull lithographs are from 1945 according to your link.</p>
+<p>So my guess is that Bezier curves came after Picasso’s lines, namely in the sixties, see <a href="http://en.wikipedia.org/wiki/B%C3%A9zier_curve" rel="nofollow">http://en.wikipedia.org/wiki/B%C3%A9zier_curve</a></p>
+<p>How stable is your drawing? (Sensitivity to small changes in the numbers)</p>
+<p>A related effort to yours, although less numerical, is at <a href="http://i-work-in-pages.blogspot.ca/2011/04/picasso-dog-in-one-line.html" rel="nofollow">http://i-work-in-pages.blogspot.ca/2011/04/picasso-dog-in-one-line.html</a></p>
+<p>Cheers,</p>
+<p>Stephan</p>
+<p id="comment-like-2524" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2524&amp;_wpnonce=9125b8378e" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2524" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor even depth-2 highlander-comment" id="li-comment-2535">
+		<article id="comment-2535" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-2" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2535"><time pubdate="" datetime="2013-05-12T11:58:27-07:00">
+					May 12, 2013 at 11:58 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2535#respond" data-commentid="2535" data-postid="3383" data-belowelement="comment-2535" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Apparently between 1936 and 1942. <a href="http://sapergalleries.com/PicassoLeChienDetail.html" rel="nofollow">http://sapergalleries.com/PicassoLeChienDetail.html</a></p>
+<p>The drawing is quite stable. The nature of Bezier curves makes them stable to small perturbations of the control points. </p>
+<p>In fact, the original inventor of Bezier curves was Paul de 
+Casteljau, and he published (or made public) his work on Bezier curves 
+in 1959. So it’s quite amazing how close together these two ideas are in
+ history.</p>
+<p id="comment-like-2535" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2535&amp;_wpnonce=0287494260" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2535" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-2539">
+		<article id="comment-2539" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/72ea925c0ca3d19fdd2f12fa76681624.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-72ea925c0ca3d19fdd2f12fa76681624-1" width="44" height="44"></span>
+					<cite class="fn"><a href="http://stephan.sugarmotor.org/" rel="external nofollow" class="url">stephanwehner</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2539"><time pubdate="" datetime="2013-05-12T17:50:49-07:00">
+					May 12, 2013 at 5:50 pm					</time></a>
+														</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Thanks, I saw that page, but couldn’t make out that it also 
+related to the simple line drawing.  So you think it is not a drawing of
+ Lump, the 1957 dog.</p>
+<p>There’s another sense of closeness, Picasso living in France during those years, as did, I take it, Bézier and de Casteljau.</p>
+<p>Cheers,</p>
+<p>S</p>
+<p id="comment-like-2539" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2539&amp;_wpnonce=0a7b2a342d" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2539" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-2529">
+		<article id="comment-2529" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/47c9923790637e5d9d1c969b6316d85f.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-47c9923790637e5d9d1c969b6316d85f-0" width="44" height="44"></span>
+					<cite class="fn">Frere Loup</cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2529"><time pubdate="" datetime="2013-05-12T07:20:32-07:00">
+					May 12, 2013 at 7:20 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2529#respond" data-commentid="2529" data-postid="3383" data-belowelement="comment-2529" data-respondelement="respond" aria-label="Reply to Frere Loup">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>It seems you left out the ‘3’ coefficients in the equation of the cubic Bezier curve?</p>
+<p id="comment-like-2529" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2529&amp;_wpnonce=97adcf4b3d" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2529" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor odd alt depth-2 highlander-comment" id="li-comment-2534">
+		<article id="comment-2534" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-3" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2534"><time pubdate="" datetime="2013-05-12T11:55:08-07:00">
+					May 12, 2013 at 11:55 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2534#respond" data-commentid="2534" data-postid="3383" data-belowelement="comment-2534" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Yeah, I found I do that a lot.</p>
+<p id="comment-like-2534" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2534&amp;_wpnonce=6d5115c239" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2534" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2541">
+		<article id="comment-2541" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/1fb3667b9f300111adbe3358b3c86b1e.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-1fb3667b9f300111adbe3358b3c86b1e-0" width="44" height="44"></span>
+					<cite class="fn">Peter Gorgson</cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2541"><time pubdate="" datetime="2013-05-12T20:14:03-07:00">
+					May 12, 2013 at 8:14 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2541#respond" data-commentid="2541" data-postid="3383" data-belowelement="comment-2541" data-respondelement="respond" aria-label="Reply to Peter Gorgson">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Picasso couldn’t have used Bezier curves because they hadn’t been invented in the 14th Century when Picasso was painting.</p>
+<p id="comment-like-2541" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2541&amp;_wpnonce=da1bd9e464" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2541" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor odd alt depth-2 highlander-comment" id="li-comment-2542">
+		<article id="comment-2542" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-4" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2542"><time pubdate="" datetime="2013-05-12T20:59:51-07:00">
+					May 12, 2013 at 8:59 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2542#respond" data-commentid="2542" data-postid="3383" data-belowelement="comment-2542" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>You must certainly be trolling.</p>
+<p id="comment-like-2542" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2542&amp;_wpnonce=6cf3618017" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2542" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-2548">
+		<article id="comment-2548" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/MyPicture2_normal.jpg" class="avatar avatar-44" width="44" height="44"></span>
+					<cite class="fn"><a href="http://twitter.com/robert_annett" rel="external nofollow" class="url">robert annett (@robert_annett)</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2548"><time pubdate="" datetime="2013-05-13T02:47:46-07:00">
+					May 13, 2013 at 2:47 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2548#respond" data-commentid="2548" data-postid="3383" data-belowelement="comment-2548" data-respondelement="respond" aria-label="Reply to robert annett (@robert_annett)">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Fantastic article! It’s wonderful to see different disciplines being explored at the same time.</p>
+<p id="comment-like-2548" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2548&amp;_wpnonce=7530dc444e" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2548" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2638">
+		<article id="comment-2638" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a1086c1c3d5563063380bab5f2725c86.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-a1086c1c3d5563063380bab5f2725c86-0" width="44" height="44"></span>
+					<cite class="fn">Tomas</cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2638"><time pubdate="" datetime="2013-05-21T09:45:42-07:00">
+					May 21, 2013 at 9:45 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2638#respond" data-commentid="2638" data-postid="3383" data-belowelement="comment-2638" data-respondelement="respond" aria-label="Reply to Tomas">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Great article, it inspired me to make something like it in Racket.<br>
+It took me more time that what i wanted, but now anyone can do this in DrRacket:<br>
+#lang s-exp (planet tomcoiro/doodle-draw:1:0/lang)<br>
+500 500<br>
+(180 280 183 268 186 256 189 244)<br>
+(191 244 290 244 300 230 339 245)<br>
+(340 246 350 290 360 300 355 210)<br>
+(353 210 370 207 380 196 375 193)<br>
+(375 193 310 220 190 220 164 205)<br>
+(164 205 135 194 135 265 153 275)<br>
+(153 275 168 275 170 180 150 190)<br>
+(149 190 122 214 142 204 85 240)<br>
+(86 240 100 247 125 233 140 238)<br>
+(show “Picasso’s Dog”)</p>
+<p>And get a frame with a dog drawed on it.</p>
+<p id="comment-like-2638" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2638&amp;_wpnonce=f4eaed092c" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2638" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jeremykun bypostauthor even depth-2 highlander-comment" id="li-comment-2648">
+		<article id="comment-2648" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/90b179348780a6e7fe8e502968dc534a.jpeg" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-90b179348780a6e7fe8e502968dc534a-5" width="44" height="44"></span>
+					<cite class="fn"><a href="https://jeremykun.wordpress.com/" rel="external nofollow" class="url">j2kun</a></cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-2648"><time pubdate="" datetime="2013-05-22T13:09:58-07:00">
+					May 22, 2013 at 1:09 pm					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=2648#respond" data-commentid="2648" data-postid="3383" data-belowelement="comment-2648" data-respondelement="respond" aria-label="Reply to j2kun">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>Very cool. I’ll have to try this.</p>
+<p id="comment-like-2648" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=2648&amp;_wpnonce=16104a2109" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-2648" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-54113">
+		<article id="comment-54113" class="comment">
+			<footer class="clear">
+				<div class="comment-author vcard">
+					<span><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/7cefe927c2ca86e1fb8e4e1b753230a3.png" class="avatar avatar-44 grav-hashed grav-hijack" id="grav-7cefe927c2ca86e1fb8e4e1b753230a3-0" width="44" height="44"></span>
+					<cite class="fn">Ahmed Hossam</cite>				</div><!-- .comment-author .vcard -->
+
+				<div class="comment-meta commentmetadata">
+					<a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#comment-54113"><time pubdate="" datetime="2016-06-08T01:27:50-07:00">
+					June 8, 2016 at 1:27 am					</time></a>
+										<a rel="nofollow" class="comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?replytocom=54113#respond" data-commentid="54113" data-postid="3383" data-belowelement="comment-54113" data-respondelement="respond" aria-label="Reply to Ahmed Hossam">Reply</a>				</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content">
+				<p>This is amazing! Now I know, what to do, in order to split a 
+Bezier Curve into two pieces! Could you please recommend me some clear 
+explanations on B-Splines too?! Thanks!!!!</p>
+<p id="comment-like-54113" data-liked="comment-not-liked" class="comment-likes comment-not-liked"><a href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/?like_comment=54113&amp;_wpnonce=ae1dd71e25" class="comment-like-link needs-login" rel="nofollow" data-blog="23934684"><span>Like</span></a><span id="comment-like-count-54113" class="comment-like-feedback">Liked by <a href="#" class="view-likers" data-like-count="1">1 person</a></span></p>
+							</div>
+
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+		</ol><!-- .commentlist -->
+
+		
+	
+	
+		<div id="respond" class="comment-respond js">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://jeremykun.com/2013/05/11/bezier-curves-and-picasso/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://jeremykun.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="be040777ba"><input type="hidden" name="_wp_http_referer" value="/2013/05/11/bezier-curves-and-picasso/">
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea aria-hidden="true" tabindex="-1" style="position: absolute; inset: -999px auto auto 0px; border: 0px none; padding: 0px; box-sizing: content-box; overflow-wrap: break-word; height: 0px !important; min-height: 0px !important; overflow: hidden; transition: none 0s ease 0s; font-family: Arial, Helvetica, Tahoma, Verdana, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 22.4px; width: 564.9px;" class="autosizejs ">Enter your comment here...</textarea><textarea id="comment" name="comment" title="Enter your comment here..." placeholder="Enter your comment here..." style="height: 42px; overflow: hidden; overflow-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" class="nascar-signin-link" title="Login via Guest">
+									</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" class="nascar-signin-link" title="Login via WordPress.com">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"></path></g></svg>				</a>
+			</li>
+			<li>
+			</li><li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" class="nascar-signin-link" title="Login via Twitter">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"></path></g></svg>				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" class="nascar-signin-link" title="Login via Facebook">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"></path></g></svg>				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Gravatar" class="no-grav" width="25">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email"></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text"></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="WordPress.com Logo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="">
+						<p class="comment-form-posting-as pa-wordpress">
+			<strong></strong>
+			You are commenting using your WordPress.com account.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"></path></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Google photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="">
+						<p class="comment-form-posting-as pa-googleplus">
+			<strong></strong>
+			You are commenting using your Google account.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Log&nbsp;Out</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" x="0px" y="0px" viewBox="0 0 60 60"><path fill="#519bf7" d="M56.3,30c0,-1.6 -0.2,-3.4 -0.6,-5h-3.1H42.2H30v10.6h14.8C44,39.3 42,42 39.1,43.9l8.8,6.8C53,46 56.3,39 56.3,30z"></path><path fill="#3db366" d="M30,57.5c6.7,0 13.1,-2.4 17.9,-6.8l-8.8,-6.8c-2.5,1.6 -5.6,2.4 -9.1,2.4c-7.2,0 -13.3,-4.7 -15.4,-11.2l-9.3,7.1C9.8,51.3 19.1,57.5 30,57.5z"></path><path fill="#fdc600" d="M5.3,42.2l9.3,-7.1c-0.5,-1.6 -0.8,-3.3 -0.8,-5.1s0.3,-3.5 0.8,-5.1l-9.3,-7.1C3.5,21.5 2.5,25.6 2.5,30S3.5,38.5 5.3,42.2z"></path><path fill="#f15b44" d="M40.1,17.4l8,-8C43.3,5.1 37,2.5 30,2.5C19.1,2.5 9.8,8.7 5.3,17.8l9.3,7.1c2.1,-6.5 8.2,-11.1 15.4,-11.1C33.9,13.7 37.4,15.1 40.1,17.4z"></path></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Twitter picture" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="">
+						<p class="comment-form-posting-as pa-twitter">
+			<strong></strong>
+			You are commenting using your Twitter account.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"></path></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ad516503a11cd5ca435acc9bb6523536.png" alt="Facebook photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="">
+						<p class="comment-form-posting-as pa-facebook">
+			<strong></strong>
+			You are commenting using your Facebook account.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24"><rect x="0" fill="none" width="24" height="24"></rect><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"></path></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p><p class="post-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog" style="display: inline;">Notify me of new posts via email.</label></p></div>
+
+
+
+
+<p class="form-submit" style="display: none;"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="3383" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="d2d3358910"></p>
+<input type="hidden" name="genseq" value="1561213149">
+<p style="display: none;"></p>			<input type="hidden" id="ak_js" name="ak_js" value="1561213150140"></form>
+			</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments .comments-area -->
+
+			
+			</div><!-- #content .site-content -->
+		</div><!-- #primary .content-area -->
+
+<script type="text/javascript">
+								var _gaq = _gaq || [];
+								_gaq.push(['_setAccount', 'UA-21256318-4']);
+_gaq.push(['_trackPageview']);
+
+								(function() {
+									var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+									ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+									var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+								})();
+							</script>
+
+		</div><!-- #main .site-main -->
+
+		
+		<div id="secondary" class="widget-area" role="complementary">
+						<aside id="search-3" class="widget widget_search">	<form method="get" id="searchform" action="https://jeremykun.com/" role="search">
+		<label for="s" class="assistive-text">Search</label>
+		<input type="text" class="field" name="s" id="s" placeholder="Search …">
+		<input type="submit" class="submit" name="submit" id="searchsubmit" value="Search">
+	</form>
+</aside><aside id="media_image-15" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><div style="width: 936px" class="wp-caption alignnone"><a href="http://pimbook.org/"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/screen-shot-2018-12-01-at-8-47-20-am.png" class="image wp-image-82462  attachment-926x474 size-926x474" alt="A Programmer's Introduction to Mathematics" style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png 926w, https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png?w=150 150w, https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png?w=300 300w, https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png?w=768 768w" sizes="(max-width: 926px) 100vw, 926px" data-attachment-id="82462" data-permalink="https://jeremykun.com/screen-shot-2018-12-01-at-8-47-20-am/" data-orig-file="https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png" data-orig-size="926,474" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="Screen Shot 2018-12-01 at 8.47.20 AM" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png?w=300" data-large-file="https://jeremykun.files.wordpress.com/2018/12/screen-shot-2018-12-01-at-8-47-20-am.png?w=926" width="926" height="474"></a><p class="wp-caption-text">Buy
+ my book, which teaches programmers how to engage with mathematics. 
+Every chapter includes an application, from cryptography to economics, 
+physics, neural networks, and more!</p></div></aside><aside id="media_image-14" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><div style="width: 490px" class="wp-caption alignnone"><a href="https://triplebyte.com/a/bW5ED6A/sidebar" target="_blank" rel="noopener noreferrer"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/3b_logo_on_black_480x120-e1500592615207.png" class="image wp-image-13169  attachment-480x120 size-480x120" alt="" style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2017/07/3b_logo_on_black_480x120-e1500592615207.png 300w, https://jeremykun.files.wordpress.com/2017/07/3b_logo_on_black_480x120-e1500592615207.png?w=150 150w" sizes="(max-width: 300px) 100vw, 300px" data-attachment-id="13169" data-permalink="https://jeremykun.com/3b_logo_on_black_480x120/" data-orig-file="https://jeremykun.files.wordpress.com/2017/07/3b_logo_on_black_480x120-e1500592615207.png" data-orig-size="300,75" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="3B_Logo_on_Black_480x120" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2017/07/3b_logo_on_black_480x120-e1500592615207.png?w=300" data-large-file="https://jeremykun.files.wordpress.com/2017/07/3b_logo_on_black_480x120-e1500592615207.png?w=300" width="300" height="75"></a><p class="wp-caption-text"><b>Write code, not cover letters</b><br>
+Triplebyte's common application lets talented programmers skip resume 
+and recruiter screens while applying to multiple top tech companies at 
+once. Beat their <a href="https://triplebyte.com/a/bW5ED6A/sidebar">online coding quiz</a> to get started. People interested in math and physics tend to do well.</p></div></aside><aside id="media_image-11" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><a href="https://www.patreon.com/user?u=615882"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/patreon-button-e1500592869591.png" class="image wp-image-5923 alignnone attachment-full size-full" alt="Become a patron with Patreon." style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2015/08/patreon-button-e1500592869591.png 220w, https://jeremykun.files.wordpress.com/2015/08/patreon-button-e1500592869591.png?w=150&amp;h=36 150w" sizes="(max-width: 220px) 100vw, 220px" data-attachment-id="5923" data-permalink="https://jeremykun.com/patreon-button/" data-orig-file="https://jeremykun.files.wordpress.com/2015/08/patreon-button-e1500592869591.png" data-orig-size="220,53" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="patreon-button" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2015/08/patreon-button-e1500592869591.png?w=220" data-large-file="https://jeremykun.files.wordpress.com/2015/08/patreon-button-e1500592869591.png?w=220" width="220" height="53"></a></aside><aside id="media_image-9" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><a href="https://github.com/j2kun/"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/github-icon.png" class="image wp-image-5618 alignnone attachment-180x180 size-180x180" alt="Github repository" style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2015/02/github-icon.png?w=180 180w, https://jeremykun.files.wordpress.com/2015/02/github-icon.png?w=150 150w, https://jeremykun.files.wordpress.com/2015/02/github-icon.png 244w" sizes="(max-width: 180px) 100vw, 180px" data-attachment-id="5618" data-permalink="https://jeremykun.com/github-icon/" data-orig-file="https://jeremykun.files.wordpress.com/2015/02/github-icon.png" data-orig-size="244,244" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="github-icon" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2015/02/github-icon.png?w=244" data-large-file="https://jeremykun.files.wordpress.com/2015/02/github-icon.png?w=244" width="180" height="180"></a></aside><aside id="media_image-8" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><a href="https://medium.com/@jeremyjkun"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/medium-icon1.png" class="image wp-image-5617  attachment-180x180 size-180x180" alt="Medium @jeremyjkun" style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png?w=180 180w, https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png?w=150 150w, https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png 244w" sizes="(max-width: 180px) 100vw, 180px" data-attachment-id="5617" data-permalink="https://jeremykun.com/medium-icon-2/" data-orig-file="https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png" data-orig-size="244,244" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="medium-icon" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png?w=244" data-large-file="https://jeremykun.files.wordpress.com/2015/02/medium-icon1.png?w=244" width="180" height="180"></a></aside><aside id="media_image-6" class="widget widget_media_image"><style>.widget.widget_media_image { overflow: hidden; }.widget.widget_media_image img { height: auto; max-width: 100%; }</style><a href="https://twitter.com/MathProgramming"><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/twitter1-e1500589540515.png" class="image wp-image-3436 alignnone attachment-180x180 size-180x180" alt="" style="max-width: 100%; height: auto;" srcset="https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png?w=180 180w, https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png?w=150 150w, https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png 200w" sizes="(max-width: 180px) 100vw, 180px" data-attachment-id="3436" data-permalink="https://jeremykun.com/twitter-2/" data-orig-file="https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png" data-orig-size="200,200" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="twitter" data-image-description="" data-medium-file="https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png?w=200" data-large-file="https://jeremykun.files.wordpress.com/2013/05/twitter1-e1500589540515.png?w=200" width="180" height="180"></a></aside><aside id="rss_links-2" class="widget widget_rss_links"><h1 class="widget-title">RSS</h1><ul><li><a href="https://jeremykun.com/feed/" title="Subscribe to Posts">RSS - Posts</a></li></ul>
+</aside>		</div><!-- #secondary .widget-area -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			<div class="site-info">
+								<a></a>
+				
+							</div><!-- .site-info -->
+		</footer><!-- #colophon .site-footer -->
+	</div><!-- #page .hfeed .site -->
+</div><!-- #wrapper -->
+<!--  -->
+<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/gprofiles.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/wpgroho.js"></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-842f065eb3e6fb9045edeb96978b13ef">
+	</div>
+	<div class="grofile-hash-map-90b179348780a6e7fe8e502968dc534a">
+	</div>
+	<div class="grofile-hash-map-79714f358b9258f337ba4166d0be6bbe">
+	</div>
+	<div class="grofile-hash-map-ec325e7c3c35e354f2ea5ead5b0ec745">
+	</div>
+	<div class="grofile-hash-map-72ea925c0ca3d19fdd2f12fa76681624">
+	</div>
+	<div class="grofile-hash-map-72ea925c0ca3d19fdd2f12fa76681624">
+	</div>
+	<div class="grofile-hash-map-47c9923790637e5d9d1c969b6316d85f">
+	</div>
+	<div class="grofile-hash-map-1fb3667b9f300111adbe3358b3c86b1e">
+	</div>
+	<div class="grofile-hash-map-b6b2b08f97c5b1d839b47813492959e8">
+	</div>
+	<div class="grofile-hash-map-a1086c1c3d5563063380bab5f2725c86">
+	</div>
+	<div class="grofile-hash-map-7cefe927c2ca86e1fb8e4e1b753230a3">
+	</div>
+	</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/jeremykun.wordpress.com\/public.api\/connect\/?action=request&domain=jeremykun.com","logoutURL":"https:\/\/jeremykun.wordpress.com\/wp-login.php?action=logout&_wpnonce=ae2a7669a4","homeURL":"https:\/\/jeremykun.com\/","postID":"3383","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"","text_direction":"ltr"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a"></script>
+
+	<div id="carousel-reblog-box">
+		<form action="#" name="carousel-reblog">
+			<textarea id="carousel-reblog-content" name="carousel-reblog-content" placeholder="Add your thoughts here... (optional)"></textarea>
+			<label for="carousel-reblog-to-blog-id" id="carousel-reblog-lblogid">Post to</label>
+			<select name="carousel-reblog-to-blog-id" id="carousel-reblog-to-blog-id">
+						</select>
+
+			<div class="submit">
+				<span class="canceltext"><a href="#" class="cancel">Cancel</a></span>
+				<input type="submit" name="carousel-reblog-submit" class="button" id="carousel-reblog-submit" value="Reblog Post">
+				<input type="hidden" id="carousel-reblog-blog-id" value="23934684">
+				<input type="hidden" id="carousel-reblog-blog-url" value="https://jeremykun.com">
+				<input type="hidden" id="carousel-reblog-blog-title" value="Math ∩ Programming">
+				<input type="hidden" id="carousel-reblog-post-url" value="">
+				<input type="hidden" id="carousel-reblog-post-title" value="">
+			</div>
+
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="57c73a530a"><input type="hidden" name="_wp_http_referer" value="/2013/05/11/bezier-curves-and-picasso/">		</form>
+
+		<div class="arrow"></div>
+	</div>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/jeremykun.com\/2013\/05\/11\/bezier-curves-and-picasso\/":3383};
+	</script>
+					
+		<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_003"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://s1.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://s2.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?m=1363304414h&amp;ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+
+	// Infinite scroll support
+	if ( typeof( jQuery ) !== 'undefined' ) {
+		jQuery( function( $ ) {
+			$( document.body ).on( 'post-load', function() {
+				SyntaxHighlighter.highlight();
+			} );
+		} );
+	}
+</script>
+<link rel="stylesheet" id="all-css-0-3" href="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/jetpack-carousel.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var comment_like_text = {"loading":"Loading..."};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var actionbardata = {"siteID":"23934684","siteName":"Math \u2229 Programming","siteURL":"https:\/\/jeremykun.com","icon":"<img alt='' src='https:\/\/secure.gravatar.com\/blavatar\/ffc08531463d8605aef9e0b51a9ac71f?s=50&d=https%3A%2F%2Fs2.wp.com%2Fi%2Flogo%2Fwpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/confit","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F&signup_flow=account&domain=jeremykun.com","themeURL":"https:\/\/wordpress.com\/theme\/confit\/","xhrURL":"https:\/\/jeremykun.com\/wp-admin\/admin-ajax.php","nonce":"3ee0015602","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"0d28388ba7\" \/>","referer":"https:\/\/jeremykun.com\/2013\/05\/11\/bezier-curves-and-picasso\/","canFollow":"1","feedID":"6655781","statusMessage":"","customizeLink":"https:\/\/jeremykun.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fjeremykun.wordpress.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F","postID":"3383","shortlink":"https:\/\/wp.me\/p1Cqvi-Sz","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/jeremykun.com\/3383","statsLink":"https:\/\/wordpress.com\/stats\/post\/3383\/jeremykun.com","i18n":{"view":"View site","follow":"Follow","following":"Following","edit":"Edit","login":"Log in","signup":"Sign up","customize":"Customize","report":"Report this content","themeInfo":"Get theme: Confit","shortlink":"Copy shortlink","copied":"Copied","followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar","editSubs":"Manage subscriptions","viewReader":"View site in Reader","viewReadPost":"View post in Reader","subscribe":"Sign me up","enterEmail":"Enter your email address","followers":"Join 19,624 other followers","alreadyUser":"Already have a WordPress.com account? <a href=\"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F&signup_flow=account&domain=jeremykun.com\">Log in now.<\/a>","stats":"Stats"}};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var jetpackCarouselStrings = {"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/jeremykun.com\/wp-admin\/admin-ajax.php","nonce":"6ffa0703ab","display_exif":"1","display_geo":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","copyright":"Copyright","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/jeremykun.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F","blog_id":"23934684","meta_data":["camera","aperture","shutter_speed","focal_length","copyright"],"local_comments_commenting_as":"<fieldset><label for=\"email\">Email (Required)<\/label> <input type=\"text\" name=\"email\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-email-field\" \/><\/fieldset><fieldset><label for=\"author\">Name (Required)<\/label> <input type=\"text\" name=\"author\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-author-field\" \/><\/fieldset><fieldset><label for=\"url\">Website<\/label> <input type=\"text\" name=\"url\" class=\"jp-carousel-comment-form-field jp-carousel-comment-form-text-field\" id=\"jp-carousel-comment-form-url-field\" \/><\/fieldset>","reblog":"Reblog","reblogged":"Reblogged","reblog_add_thoughts":"Add your thoughts here... (optional)","reblogging":"Reblogging...","post_reblog":"Post Reblog","stats_query_args":"blog=23934684&v=wpcom&tz=-7&user_id=0&subd=jeremykun","is_public":"1","reblog_enabled":""};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/a_002"></script><div id="actionbar" class="actnbr-pub-confit actnbr-has-follow actnbr-hidden"><ul><li class="actnbr-btn actnbr-hidden"> 			    	<a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a> 			    	<div class="actnbr-popover tip tip-top-left actnbr-notice"> 			    		<div class="tip-arrow"></div> 			    		<div class="tip-inner actnbr-follow-bubble"></div> 			    	</div> 			    </li><li class="actnbr-ellipsis actnbr-hidden"> 			  <svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 			  <div class="actnbr-popover tip tip-top-left actnbr-more"> 			  	<div class="tip-arrow"></div> 			  	<div class="tip-inner"> 				  <ul> 				    <li class="actnbr-sitename actnbr-hidden"><a href="https://jeremykun.com/"><img alt="" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/ffc08531463d8605aef9e0b51a9ac71f.png" class="avatar avatar-50" width="50" height="50"> Math ∩ Programming</a></li> 				   	<li class="actnbr-folded-customize actnbr-hidden"><a href="https://jeremykun.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Fjeremykun.wordpress.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Customize<span></span></span></a></li> 				    <li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a></li> 					<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Sign up</a></li> 				    <li class="actnbr-login actnbr-hidden"><a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fjeremykun.com%2F2013%2F05%2F11%2Fbezier-curves-and-picasso%2F&amp;signup_flow=account&amp;domain=jeremykun.com">Log in</a></li> 				     				    <li class="actnbr-shortlink actnbr-hidden"><a href="https://wp.me/p1Cqvi-Sz">Copy shortlink</a></li> 				    <li class="flb-report actnbr-hidden"><a href="http://en.wordpress.com/abuse/">Report this content</a></li> 				     				     				    <li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Manage subscriptions</a></li> 				    <li class="actnbr-fold actnbr-hidden"><a href="">Collapse this bar</a></li> 			      </ul> 			    </div> 		      </div> 		    </li> 	      </ul></div>
+<script type="text/javascript">
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-tumblr', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtumblr', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+</script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script>		<iframe src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+<script src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/w.js" type="text/javascript" async="" defer="defer"></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'23934684','blog_tz':'-7','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'23934684','v':'wpcom','tz':'-7','user_id':'0','post':'3383','subd':'jeremykun'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1TaVhzUzFMbjdWNHpwZGhTayxPSUFCMGNrd29+Smw0TDhnZmRTK0hlRi9QSGh6bi9GXVhBJWIlZlR5U1JMLU8/MkNtblkvY1d6eVJXLU13dlVUTUYlVD09YS1fM2lfKy1xRUs/UDdyRGtEZEloJm96fl9jRm9KWGdILTBmL1R2ZGIzTWs4RD9TLkFDREdiSFNMTEpjJlk4MHBydVBqWS1nLiwzUy90ZDdmVVRJUEdFd01PY1B3bGQxZGo3LX5RMDVMSmY/Zj9BW00/SmlSPTUsN1dUd193RHUyOU5CS21Sbn5LVkE0dy50Sl1sTzI0SzVrWkFNd09aRWd+QXRwZ1hjdG0yNW9TUEdSc2V+MS5jQyZZWXVLUUgsZCZFMWNmW3RYXWtqMT13Y0E1TkpVP0Y3L0I='}]);
+_stq.push([ 'clickTrackerInit', '23934684', '3383' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+
+<div class="comment-likes-overlay" style="display: none;"></div><div id="sharing_email" style="display: none;">
+		<form action="/2013/05/11/bezier-curves-and-picasso/" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email">
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name">
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email">
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" size="25" autocomplete="off" title="This field is for validation and should not be changed">
+			
+			<div class="g-recaptcha" data-sitekey="6LcmyE0UAAAAALID28yVNg7pFCodGaArJzHitez_" data-theme="light" data-type="image" data-tabindex="0"><div style="width: 304px; height: 78px;"><div><iframe src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/anchor.html" role="presentation" name="a-kjq0tujangga" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" width="304" height="78" frameborder="0"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div></div>
+			<script type="text/javascript" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/api.js" async=""></script>
+			
+			<img style="float: right; display: none" class="loading" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/loading.gif" alt="loading" width="16" height="16">
+			<input type="submit" value="Send Email" class="sharing_send">
+			<a rel="nofollow" href="#cancel" class="sharing_cancel" role="button">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;" class="g-recaptcha-bubble-arrow"></div><div style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;" class="g-recaptcha-bubble-arrow"></div><div style="z-index: 2000000000; position: relative;"><iframe title="recaptcha challenge" src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/bframe.html" style="width: 100%; height: 100%;" name="c-kjq0tujangga" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" frameborder="0"></iframe></div></div><img src="Bezier%20Curves%20and%20Picasso%20%E2%80%93%20Math%20%E2%88%A9%20Programming_tiedostot/g.gif" alt=":)" id="wpstats"></body></html>

@@ -1,0 +1,25 @@
+[Vertex shader]
+
+float4x4 mvp;
+
+struct VsOut {
+	float4 Pos: POSITION;
+	float2 tc0 : TEXCOORD0;
+};
+
+VsOut main(float4 pos: POSITION, float2 tc0 : TEXCOORD0){
+	VsOut Out;
+
+	Out.Pos = mul(mvp, pos);
+	Out.tc0 = tc0;
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler DiffuseMap: register(s0);
+
+float4 main(float2 tc0: TEXCOORD0) : COLOR {	
+	return tex2D(DiffuseMap, tc0);
+}

@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" class="fa-events-icons-ready" lang="en"><head>
+<!-- Google Tag Manager -->
+
+<!-- End Google Tag Manager -->
+
+		
+		
+
+                <meta http-equiv="X-UA-Compatible" content="IE=Edge"> 
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta content="True" name="HandheldFriendly">
+		<title>Object Space to World Space - DirectX and XNA - GameDev.net</title>
+ 
+		<link rel="shortcut icon" href="https://www.gamedev.net/favicon.ico?v=2">
+
+
+		
+
+		
+	
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+
+				
+	
+	
+<link href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/index.css" as="stylesheet">
+		<link rel="stylesheet" type="text/css" media="screen,print" href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/index.css">
+	
+
+	
+	<style type="text/css" screen,media="">
+		/* Inline CSS */
+		.breadcrumb > li:first-child > .nav_sep{display:none;}
+	</style>
+	
+
+
+<!--[if lte IE 7]>
+	<link rel="stylesheet" type="text/css" title='Main' media="screen" href="https://www.gamedev.net/public/style_css/css_24/ipb_ie.css" />
+<![endif]-->
+<!--[if lte IE 8]>
+	<style type='text/css'>
+		.ipb_table { table-layout: fixed; }
+		.ipsLayout_content { width: 99.5%; }
+	</style>
+<![endif]-->
+
+	<!-- Forces resized images to an admin-defined size -->
+	<style type="text/css">
+		img.bbc_img {
+			max-width: 640px;
+			max-height: 640px;
+		}
+	</style>
+
+
+<link href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/css.css" rel="stylesheet" type="text/css">
+
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/bootstrap.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- see http://vadikom.github.io/smartmenus/src/demo/bootstrap-navbar.html -->
+<link href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/jquery.css" rel="stylesheet">
+	
+		
+		    
+			<meta property="og:updated_time" content="1492000649">
+		    
+		    
+		    
+                    
+		
+	
+
+		
+		    
+			<meta name="keywords" content="Object,Space,World,Hey,through,looking,around,forums,internet,realize,place,object,into,correct,position,world,space,would">
+		    
+		    
+		    
+                    
+		
+	
+
+		
+		    
+			<meta name="description" content="Object Space to World Space - posted in DirectX and XNA: Hey, through looking around in the forums and on the internet, i realize to place an object into the correct position in world space, i would need to rotate and translate the object.
+For my example i don't need to rotate the object, only translate. I am using directX 10.
+
+I have created a ship in model space (origin 0,0,0) in class &quot;Ship&quot; and I would like to simply place this ship in the world space at (0, 8, 0). I am uns...">
+		    
+		    
+		    
+			<meta property="og:description" content="Object Space to World Space - posted in DirectX and XNA: Hey, through looking around in the forums and on the internet, i realize to place an object into the correct position in world space, i would need to rotate and translate the object.
+For my example i don't need to rotate the object, only translate. I am using directX 10.
+
+I have created a ship in model space (origin 0,0,0) in class &quot;Ship&quot; and I would like to simply place this ship in the world space at (0, 8, 0). I am uns...">
+		    
+                    
+		
+	
+
+		
+		    
+			<meta name="identifier-url" content="https://www.gamedev.net/topic/600204-object-space-to-world-space/">
+		    
+		    
+			<meta property="og:url" content="https://www.gamedev.net/topic/600204-object-space-to-world-space/">
+		    
+		    
+                    
+		
+	
+
+
+
+		
+		
+		<meta name="HandheldFriendly" content="true">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+		
+	
+		
+			
+			
+			
+			
+				<link id="ipsCanonical" rel="canonical" href="https://www.gamedev.net/topic/600204-object-space-to-world-space/">
+			
+		
+
+			
+			
+			
+			
+				<link rel="stylesheet" type="text/css" title="Main" media="print" href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/ipb_print.css">
+			
+		
+
+			
+			
+			
+			
+				<link rel="up" href="https://www.gamedev.net/forum/10-directx-and-xna/">
+			
+		
+
+			
+			
+			
+			
+				<link rel="author" href="https://www.gamedev.net/user/179129-believe82/">
+			
+		
+	
+
+		
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Forums RSS" href="https://www.gamedev.net/rss/forums/1-gamedevnet-forums-rss/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Game Programming Forum" href="https://www.gamedev.net/rss/forums/2-gamedevnet-game-programming-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Graphics Programming Forum" href="https://www.gamedev.net/rss/forums/3-gamedevnet-graphics-programming-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net OpenGL and Vulkan Forum" href="https://www.gamedev.net/rss/forums/4-gamedevnet-opengl-and-vulkan-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Artificial Intelligence Forum" href="https://www.gamedev.net/rss/forums/5-gamedevnet-artificial-intelligence-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="stylesheet" href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/6fe6597656.css" media="all"><link rel="stylesheet" type="text/css" href="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/prettify.css"><link rel="alternate" type="application/rss+xml" title="GameDev.net Math and Physics Forum" href="https://www.gamedev.net/rss/forums/6-gamedevnet-math-and-physics-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net VR/AR Forum" href="https://www.gamedev.net/rss/forums/7-gamedevnet-vrar-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Middleware Forum" href="https://www.gamedev.net/rss/forums/8-gamedevnet-middleware-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net DirectX Forum" href="https://www.gamedev.net/rss/forums/9-gamedevnet-directx-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Game Design Forum" href="https://www.gamedev.net/rss/forums/10-gamedevnet-game-design-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Visual Arts Forum" href="https://www.gamedev.net/rss/forums/11-gamedevnet-visual-arts-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Indie Projects Forum" href="https://www.gamedev.net/rss/forums/12-gamedevnet-indie-projects-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Hobby Project Classifieds" href="https://www.gamedev.net/rss/forums/13-gamedevnet-hobby-project-classifieds/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Music and Sound Forum" href="https://www.gamedev.net/rss/forums/14-gamedevnet-music-and-sound-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Writing Forum" href="https://www.gamedev.net/rss/forums/15-gamedevnet-writing-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Production Forum" href="https://www.gamedev.net/rss/forums/16-gamedevnet-production-forum/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Blogs RSS" href="https://www.gamedev.net/rss/blog/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="Articles" href="https://www.gamedev.net/rss/ccs/1-articles/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="Event Coverage" href="https://www.gamedev.net/rss/ccs/43-event-coverage/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="Events" href="https://www.gamedev.net/rss/ccs/42-events/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="News" href="https://www.gamedev.net/rss/ccs/41-news/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="Showdown" href="https://www.gamedev.net/rss/ccs/33-showdown/">
+			
+			
+			
+		
+
+			
+			
+				<link rel="alternate" type="application/rss+xml" title="GameDev.net Careers RSS" href="https://www.gamedev.net/rss/classifieds/">
+			
+			
+			
+		
+	
+
+<!-- All resources can be remote -->
+
+
+
+<!--[if IE]>
+		
+	<![endif]-->
+
+
+
+
+
+
+<!-- used for async loading of sync ads -->
+
+<!---->
+
+
+		<!--
+		-->
+	
+	<!--
+		
+	-->
+	
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style>
+
+<style>
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+</style>
+<!-- margin:15% auto;padding:20px; -->
+<style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head><body id="ipboard_body"><div id="MathJax_Message" style="display: none;"></div><div id="gd" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.4);-webkit-animation-name: fadeIn;-webkit-animation-duration: 0.4s;animation-name:fadeIn;animation-duration:0.4s;">
+   <div id="adblockcontent" style="position:fixed;bottom:0;left:30%;background-color:transparent;width:40%;-webkit-animation-name:slideIn;-webkit-animation-duration:0.4s;animation-name:slideIn;animation-duration:0.4s;">
+   	<div class="ipsSideBlock">
+   		<span id="adblockmodal_close" style="cursor:pointer;color:#2a2a2a;float:right;font-size:22px;font-weight:bold;">x</span>
+   		<div style="line-height:normal;color:4d4d4d;padding:10px;font-size:28px;font-weight:700;text-align:center;">
+   		   Ads are being blocked
+   		   	<div style="display:block;">
+   		   		<img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/gdnet-g-rendered.png" width="150" height="150">
+   			</div>
+   			<div style="line-height:normal;color:4d4d4d;font-size:18px;font-weight:normal;">
+	   		   <p style="margin-top:1.0em;">We get it. We use ad blockers too. But GameDev.net displays them so we can continue to be a great platform for you.</p>
+	   		   <p style="margin-top:1.25em;">Please whitelist GameDev.net and our advertisers.</p>
+
+	   		   <!--<p style="margin-top:1.25em;"><span id="countdown"></span> seconds remaining</p>-->
+<p style="margin-top:1.1em;font-size:14px;">Also consider a <a href="https://www.gamedev.net/subscribe">GDNet+ Pro subscription</a> to remove all ads from GameDev.net.</p>
+	   		</div>
+	   		
+	   	</div>
+   	</div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+
+
+ <!-- SmartMenus jQuery plugin -->
+
+        
+
+        <!-- SmartMenus jQuery Bootstrap Addon -->
+        
+
+<!-- attempt to deal with prototype, bootstrap, jquery conflicts -->
+
+
+<!-- for dropdown menus -->
+
+	
+
+
+	
+
+
+
+		
+		
+	
+
+
+	
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53ZH3NW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) --><p id="content_jump" class="hide"><a id="top"></a><a href="#j_content" title="Jump to content" accesskey="m">Jump to content</a></p>
+
+		<div id="ipbwrapper">
+            
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                    <div class="navbar-header pull-left" itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization">
+                        <a itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject" class="navbar-brand" href="https://www.gamedev.net/" title="GameDev.net Home" rel="home" accesskey="1">
+                            <img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/gd_small_logo_2016.png">
+                            <meta itemprop="url" content="https://public.gamedev.net/style_images/gd_small_logo_2017_blacktext.png">
+                            <meta itemprop="width" content="368">
+                            <meta itemprop="height" content="74">
+                        </a>
+                         <meta itemprop="name" content="GameDev.net">
+                         <meta itemprop="url" content="https://www.gamedev.net">
+                    </div>
+                    <div class="navbar-header pull-right">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        
+                            <div class="pull-right" id="user_navigation">
+                                <!--<button class="btn btn-primary btn-login" data-toggle="dropdown" data-target="dropdown-menu"><i class="fa fa-user"></i> Sign In</button>
+                                <div class="panel panel-default dropdown-menu dropdown-menu-right">
+	                                <form class="form-horizontal" action="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=login&amp;do=process" method="post" id='login'>
+                                        <input type='hidden' name='auth_key' value='880ea6a14ea49e853634fbdc5015a024' />
+                                        <input type="hidden" name="referer" value="https://www.google.fi/" />
+                                        <div class="
+                                        <h3>Sign In</h3>
+                                        <input type="text" name="ips_username" placeholder="Username"/>
+                                        <input type="password" name="ips_password" placeholder="Password"/>
+                                        
+                                        <div class="form-group">
+                                            <div class="checkbox"><input type="checkbox" id="inline_remember" checked="checked" name="rememberMe" value="1"/> Remember me</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="checkbox"><input type="checkbox" id="inline_invisible" name="anonymous" value="1"/> Anonymous login</div>
+                                        </div>
+                                        <input type="submit" name="login" class="btn btn-primary btn-login" value="Login">
+                                    </form>
+                                    <div class="login-help">
+                                        <a href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=register">Register</a> | <a href='https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=lostpass' class='ipsType_smaller' title='Retrieve password'>Forgot password</a>
+                                    </div>
+                                </div>-->
+                                <a class="btn btn-primary btn-login" style="color:#fff !important;" href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=login" title="Sign In">
+                                    <i class="fa fa-user" aria-hidden="true"></i> Sign In
+                                </a>
+                                <a class="btn btn-createaccount" style="color:#fff;" href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=register" title="Create Account">Sign Up</a>
+
+                            </div>
+                        
+                    </div>
+                    <div class="navbar-header pull-right">
+                        <ul class="nav navbar-nav" data-smartmenus-id="14920006540855864">
+                                <!-- logged in -->
+                            <!-- <li class="divider-vertical hidden-md hidden-sm hidden-xs"></li>-->
+                                
+                                <li class="hidden-sm hidden-xs" style="margin-left:-15px;margin-right:-15px;">
+                                    <a data-clicklaunch="getNotificationsList" href="https://www.gamedev.net/index.php?app=core&amp;module=usercp&amp;area=notificationlog" title="Notifications">
+                                        <i class="fa fa-bell" aria-hidden="true" style="color:#ddd;font-size:1.5em;vertical-align:middle;margin-left:10px;"></i>
+                                        &nbsp;
+                                    </a>
+                                </li>
+                                <li class="divider-vertical hidden-sm hidden-xs"></li> 
+                            <li class="dropdown pull-left hidden-sm hidden-xs" style="margin-right:-15px;">
+                                <button class="btn btn-search" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="true">
+        <i class="fa fa-search" style="color:#eee;font-size:1.5em" aria-hidden="true"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <form class="" role="search" action="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=search&amp;fromMainBar=1" method="post">          
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="input-group">
+                                <input name="search_term" id="main_search" class="form-control" placeholder="Search..." type="text">
+                                <div class="input-group-btn"> 
+                                    <button class="btn btn-default" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+		<!--<fieldset>
+			<label for='main_search' class='hide'>Search</label>
+			<a href='https://www.gamedev.net/index.php?app=core&amp;module=search&amp;search_in=forums' title='Advanced Search' accesskey='4' rel="search" ><i class='fa fa-cog right' style='color:#eee;font-size:1.5em;vertical-align:middle;margin-right:5px;margin-top:7px;'></i></a>
+
+			<span id='search_wrap' class='right'>
+				<input type='text' id='main_search' name='search_term' class='inactive' size='17' tabindex='6' />
+				<span class='choice ipbmenu clickable' id='search_options' style='display: none'></span>
+				<ul id='search_options_menucontent' class='ipbmenu_content ipsPad' style='display: none'>
+					<li class='title'><strong>Search section:</strong></li>
+					<li class='special'>
+	<label for='s_google' title='Google'>
+		<input type='radio' name='search_app' value="google" class='input_radio' id='s_google' />Google
+	</label>
+</li><li class='special'>
+							<label for='s_topic' title='This topic'>
+								
+									<input type='radio' name='search_app' value="forums:topic:600204" class='input_radio' id='s_topic' checked="checked" /> 
+								
+								<strong>This topic</strong>
+							</label>
+						</li>
+					
+					
+					<li class='app'><label for='s_forums' title='Forums'><input type='radio' name='search_app' class='input_radio' id='s_forums' value="forums"  />Forums</label></li><li class='app'><label for='s_members' title='Members'><input type='radio' name='search_app' class='input_radio' id='s_members' value="members"  />Members</label></li><li class='app'><label for='s_core' title='Help Files'><input type='radio' name='search_app' class='input_radio' id='s_core' value="core"  />Help Files</label></li>
+						
+					
+
+						
+					
+
+						
+					
+
+						<li class='app'><label for='s_blog' title='Developer Blogs'><input type='radio' name='search_app' class='input_radio' id='s_blog' value="blog"  />Developer Blogs</label></li>
+					
+
+						<li class='app'><label for='s_gallery' title='Gallery'><input type='radio' name='search_app' class='input_radio' id='s_gallery' value="gallery"  />Gallery</label></li>
+					
+
+						<li class='app'><label for='s_calendar' title='Calendar'><input type='radio' name='search_app' class='input_radio' id='s_calendar' value="calendar"  />Calendar</label></li>
+					
+
+						<li class='app'><label for='s_downloads' title='Downloads'><input type='radio' name='search_app' class='input_radio' id='s_downloads' value="downloads"  />Downloads</label></li>
+					
+
+						<li class='app'><label for='s_ccs' title='Resources'><input type='radio' name='search_app' class='input_radio' id='s_ccs' value="ccs"  />Resources</label></li>
+					
+
+						<li class='app'><label for='s_nexus' title='Store'><input type='radio' name='search_app' class='input_radio' id='s_nexus' value="nexus"  />Store</label></li>
+					
+
+						
+					
+
+						<li class='app'><label for='s_classifieds' title='Classifieds'><input type='radio' name='search_app' class='input_radio' id='s_classifieds' value="classifieds"  />Classifieds</label></li>
+					
+
+						
+					
+
+						<li class='app'><label for='s_tracker' title='Tracker'><input type='radio' name='search_app' class='input_radio' id='s_tracker' value="tracker"  />Tracker</label></li>
+					
+
+						
+					
+
+						
+					
+
+						
+					
+
+						
+					
+
+						<li class='app'><label for='s_links' title='Links'><input type='radio' name='search_app' class='input_radio' id='s_links' value="links"  />Links</label></li>
+					
+
+						
+					
+
+						
+					
+
+						
+					
+				</ul>
+                                <button type='submit' class='submit_input clickable' value='Search'><i class='fa fa-search' aria-hidden='true'></i></button>
+			</span>
+			
+		</fieldset>-->
+        <!--</div>
+	</form>-->
+<!--</div>-->
+                            </li>
+                            
+                        </ul>
+                    </div>    
+
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav" data-smartmenus-id="14920006544545586">
+                            <li><a href="https://www.gamedev.net/resources" class="has-submenu" id="sm-14920006544545586-1" aria-haspopup="true" aria-controls="sm-14920006544545586-2" aria-expanded="false">Articles <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sm-14920006544545586-2" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-1" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/resources/_/technical/" class="has-submenu" id="sm-14920006544545586-3" aria-haspopup="true" aria-controls="sm-14920006544545586-4" aria-expanded="false">Technical <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-4" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-3" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/game-programming/">Game Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/general-programming/">General Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/graphics-programming-and-theory/">Graphics Programming and Theory</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/directx-and-xna/">DirectX and XNA</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/opengl/">OpenGL and Vulkan</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/multiplayer-and-network-programming/">Multiplayer and Network Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/artificial-intelligence/">Artificial Intelligence</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/math-and-physics/">Math and Physics</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/mobile-development/">Mobile Development</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/apis-and-tools/">Middleware, Libraries, and Tools</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/technical/virtual-and-augmented-reality/">Virtual and Augmented Reality</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.gamedev.net/resources/_/creative/" class="has-submenu" id="sm-14920006544545586-5" aria-haspopup="true" aria-controls="sm-14920006544545586-6" aria-expanded="false">Creative <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-6" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-5" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/resources/_/creative/game-design/">Game Design</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/creative/music-and-sound/">Music and Sound</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/creative/visual-arts/">Visual Arts</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.gamedev.net/resources/_/business/" class="has-submenu" id="sm-14920006544545586-7" aria-haspopup="true" aria-controls="sm-14920006544545586-8" aria-expanded="false">Business <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-8" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-7" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/resources/_/business/breaking-into-the-industry/">Breaking into the Industry</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/business/production-and-management/">Production and Management</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/business/interviews/">Interviews</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/business/business-and-law/">Business and Law</a></li>
+                                            <li><a href="https://www.gamedev.net/resources/_/business/435/">Event Coverage</a></li>
+                                        </ul>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="http://www.gamedev.net/resources?do=add">Post an Article</a></li>
+                                    <!--<li><a href="/resources/_/gdnethelp/how-to-publish-on-gamedevnet-r2927">Post an Article</a></li>-->
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="https://www.gamedev.net/forums" class="dropdown-toggle has-submenu" id="sm-14920006544545586-9" aria-haspopup="true" aria-controls="sm-14920006544545586-10" aria-expanded="false">Forums <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sm-14920006544545586-10" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-9" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/forum/31-for-beginners/">Beginners </a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="https://www.gamedev.net/forum/123-the-technical-side/" class="has-submenu" id="sm-14920006544545586-11" aria-haspopup="true" aria-controls="sm-14920006544545586-12" aria-expanded="false">Technical <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-12" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-11" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/forum/11-game-programming/">Game Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/21-general-programming/">General Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/12-graphics-programming-and-theory/">Graphics Programming and Theory</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/10-directx-and-xna/">DirectX and XNA</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/25-opengl/">OpenGL and Vulkan</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/15-multiplayer-and-network-programming/">Multiplayer and Network Programming</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/9-artificial-intelligence/">Artificial Intelligence</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/20-math-and-physics/">Math and Physics</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/39-mobile-and-console-development/">Mobile Development</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/159-build-systems-and-source-control/">Build Systems &amp; Source Control</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/41-middleware-libraries-and-tools/">Middleware, Libraries, and Tools</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/162-virtual-and-augmented-reality/">Virtual and Augmented Reality</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="https://www.gamedev.net/forum/124-the-creative-side/" class="has-submenu" id="sm-14920006544545586-13" aria-haspopup="true" aria-controls="sm-14920006544545586-14" aria-expanded="false">Creative <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-14" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-13" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/forum/17-game-design/">Game Design</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/32-writing-for-games/">Writing For Games</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/19-music-and-sound/">Music and Sound</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/18-visual-arts/">Visual Arts</a></li>
+                                            <li><a href="https://www.gamedev.net/gallery">Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="https://www.gamedev.net/forum/133-the-business-side/" class="has-submenu" id="sm-14920006544545586-15" aria-haspopup="true" aria-controls="sm-14920006544545586-16" aria-expanded="false">Business <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-16" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-15" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/forum/101-breaking-into-the-games-industry/">Games Industry Job Advice</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/5-the-business-and-law-of-game-development/">Business &amp; Law</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/155-production-and-management/">Production &amp; Management</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="https://www.gamedev.net/forum/122-community-interaction/" class="has-submenu" id="sm-14920006544545586-17" aria-haspopup="true" aria-controls="sm-14920006544545586-18" aria-expanded="false">Community <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-18" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-17" aria-expanded="false">
+                                            <li><a href="https://www.gamedev.net/forum/3-gdnet-lounge/">GDNet Lounge</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/157-coding-horrors/">Coding Horrors</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/158-article-writing/">Article Writing</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/4-gdnet-comments-suggestions-and-ideas/">Comments, Suggestions and Ideas</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/6-your-announcements/">Your Announcements</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/156-classifieds-hobbyist-projects/">Hobby Project Classifieds</a></li>
+                                            <li><a href="https://www.gamedev.net/forum/161-indie-projects/">Indie Showcase</a></li>
+                                        </ul>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=viewNewContent&amp;search_app=forums&amp;search_app_filters[forums][searchInKey]=&amp;period=today&amp;userMode=&amp;followedItemsOnly=0">Latest Forum Activity</a></li>
+                                </ul>                  
+                            </li>   
+                            <li>
+                                <a href="https://www.gamedev.net/classifieds" class="has-submenu" id="sm-14920006544545586-19" aria-haspopup="true" aria-controls="sm-14920006544545586-20" aria-expanded="false">Careers <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sm-14920006544545586-20" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-19" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/classifieds/category/4-job-offers/">Jobs</a></li>
+                                    <li><a href="https://www.gamedev.net/classifieds/category/2-contractors/">Contractors</a></li>
+                                    <li><a href="https://www.gamedev.net/forum/156-classifieds-hobbyist-projects/">Hobby Projects</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="https://www.gamedev.net/blogs">Blogs</a></li>
+                            <li class="visible-lg-block visible-md-block visible-sm-block visible-xs-block">
+                                <a href="https://www.gamedev.net/members" class="has-submenu" id="sm-14920006544545586-21" aria-haspopup="true" aria-controls="sm-14920006544545586-22" aria-expanded="false">Community <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sm-14920006544545586-22" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-21" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/events">Events</a></li>
+                                    <li><a href="https://www.gamedev.net/gallery">Gallery</a></li>
+                                    <li><a href="https://www.gamedev.net/showdown/browse.html?view=top_week">Image of the Day</a></li>
+                                    <li><a href="https://www.gamedev.net/members">Members</a></li>
+                                    <li><a href="https://www.gamedev.net/sm">Member Ranking</a></li>
+                                    <li role="separator" class="divider visible-sm-block hidden-lg hidden-md hidden-xs"></li>
+                                <li class="visible-sm-block hidden-lg hidden-md hidden-xs">
+                                   <a href="https://www.gamedev.net/store" class="has-submenu" id="sm-14920006544545586-23" aria-haspopup="true" aria-controls="sm-14920006544545586-24" aria-expanded="false">Store <span class="caret"></span></a>
+                                   <ul class="dropdown-menu" id="sm-14920006544545586-24" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-23" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/store">GameDev.net Store</a></li>
+                                    <li><a href="https://www.gamedev.net/subscribe">GDNet+ Memberships</a></li>
+                                    <li><a target="_blank" href="https://gamedev.market/product-category/gamedev-net/">T-shirts and More</a></li>
+                                    <li>
+                                        <a target="_blank" href="https://gamedev.market/" class="has-submenu" id="sm-14920006544545586-25" aria-haspopup="true" aria-controls="sm-14920006544545586-26" aria-expanded="false">Asset Marketplace <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-26" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-25" aria-expanded="false">
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/2d-art/">2D Art</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/3d-art/">3D Art</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/music/">Music</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/sound-fx/">Sound FX</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/software/">Software</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>                                
+                            </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="visible-lg-block visible-md-block visible-xs-block">
+                                <a href="https://www.gamedev.net/store" class="has-submenu" id="sm-14920006544545586-27" aria-haspopup="true" aria-controls="sm-14920006544545586-28" aria-expanded="false">Store <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="sm-14920006544545586-28" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-27" aria-expanded="false">
+                                    <li><a href="https://www.gamedev.net/store">GameDev.net Store</a></li>
+                                    <li><a href="https://www.gamedev.net/subscribe">GDNet+ Memberships</a></li>
+                                    <li><a target="_blank" href="https://gamedev.market/product-category/gamedev-net/">T-shirts and More</a></li>
+                                    <li>
+                                        <a target="_blank" href="https://gamedev.market/" class="has-submenu" id="sm-14920006544545586-29" aria-haspopup="true" aria-controls="sm-14920006544545586-30" aria-expanded="false">Asset Marketplace <span class="caret"></span></a>
+                                        <ul class="dropdown-menu" id="sm-14920006544545586-30" role="group" aria-hidden="true" aria-labelledby="sm-14920006544545586-29" aria-expanded="false">
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/2d-art/">2D Art</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/3d-art/">3D Art</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/music/">Music</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/sound-fx/">Sound FX</a></li>
+                                            <li><a target="_blank" href="https://gamedev.market/product-category/software/">Software</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>                                
+                            </li>
+                        </ul>
+                    </div>
+            </nav>
+
+
+            <div class="fixedheadercontent">
+
+<!--<div style="width:100%;background-color:#54ae68;padding:5px;color:#eee;text-align:center;">We're back! Apologies for the downtime from 11:45pm-1:52am PDT due to a network outage.</div>-->
+
+                <ol class="breadcrumb hidden-sm hidden-xs">
+                                                
+                        
+                            <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                
+                                    <a href="http://www.gamedev.net/page/index.html/" title="Return to Home" itemprop="url">
+                                
+                                <span itemprop="title">Home</span>
+                                </a>
+                            </li>
+                            
+                        
+
+                            <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                
+                                    <a href="https://www.gamedev.net/index" title="Return to Forums" itemprop="url">
+                                
+                                <span itemprop="title">Forums</span>
+                                </a>
+                            </li>
+                            
+                        
+
+                            <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                
+                                    <a href="https://www.gamedev.net/forum/123-the-technical-side/" title="Return to The Technical Side" itemprop="url">
+                                
+                                <span itemprop="title">The Technical Side</span>
+                                </a>
+                            </li>
+                            
+                        
+
+                            <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                                
+                                    <a href="https://www.gamedev.net/forum/10-directx-and-xna/" title="Return to DirectX and XNA" itemprop="url">
+                                
+                                <span itemprop="title">DirectX and XNA</span>
+                                </a>
+                            </li>
+                            
+                        
+                        <li class="pull-right breadcrumb-right">
+                             <a class="breadcrumb-link" href="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=viewNewContent&amp;search_app=forums&amp;search_app_filters[forums][searchInKey]=&amp;period=today&amp;userMode=&amp;followedItemsOnly=0" data-tooltip="View new GameDev.net content"><i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;Latest Content</a>
+                            <a class="breadcrumb-link" href="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=followed" data-tooltip="View content you follow on GameDev.net">
+                            <i class="fa fa-bell-o" aria-hidden="true"></i>&nbsp;Followed Content</a>
+                            <a href="https://www.gamedev.net/chat.html" style="padding-right:10px; border-right: solid 1px black; margin-right: 5px" data-tooltip="Chat with GameDev.net members!"><i class="fa fa-commenting-o" aria-hidden="true"></i> &nbsp;Chat</a>
+                            <a class="breadcrumb-link" href="https://www.gamedev.net/newsletter.html"><i class="fa fa-newspaper-o" aria-hidden="true"></i>&nbsp;Newsletter</a>
+
+                            <a href="https://steamcommunity.com/groups/gamedevdotnet" data-tooltip="Join our official Steam group!" target="new">
+                            <i class="fa fa-steam-square fa-2x steamIcon" aria-hidden="true"></i></a>
+                            <a href="https://www.facebook.com/GameDev.net" data-tooltip="Join our Facebook group!" target="new">
+                            <i class="fa fa-facebook-square fa-2x facebookIcon" aria-hidden="true"></i></a>
+                            <a href="https://twitter.com/gdevnet" data-tooltip="Follow us on Twitter!" target="new">
+                            <i class="fa fa-twitter-square fa-2x twitterIcon" aria-hidden="true"></i></a>
+                            <a href="https://www.linkedin.com/groups?about=&amp;gid=132271&amp;trk=anet_ug_grppro" data-tooltip="Join our Linkedin group!" target="new">
+                            <i class="fa fa-linkedin-square fa-2x linkedInIcon" aria-hidden="true"></i></a>
+                            <a href="" id="rss_feed" class="clickable rssIcon" alt="RSS Feed" target="new">
+                            <i class="fa fa-rss-square fa-2x rssIcon" aria-hidden="true"></i></a><ul id="rss_menu" class="ipbmenu_content" style="position: absolute; display: none; z-index: 9999;"><li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/1-gamedevnet-forums-rss/" title="GameDev.net Forums RSS" style="z-index: 10000;">GameDev.net Forums RSS</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/2-gamedevnet-game-programming-forum/" title="GameDev.net Game Programming Forum" style="z-index: 10000;">GameDev.net Game Programming Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/3-gamedevnet-graphics-programming-forum/" title="GameDev.net Graphics Programming Forum" style="z-index: 10000;">GameDev.net Graphics Programming Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/4-gamedevnet-opengl-and-vulkan-forum/" title="GameDev.net OpenGL and Vulkan Forum" style="z-index: 10000;">GameDev.net OpenGL and Vulkan Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/5-gamedevnet-artificial-intelligence-forum/" title="GameDev.net Artificial Intelligence Forum" style="z-index: 10000;">GameDev.net Artificial Intelligence Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/6-gamedevnet-math-and-physics-forum/" title="GameDev.net Math and Physics Forum" style="z-index: 10000;">GameDev.net Math and Physics Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/7-gamedevnet-vrar-forum/" title="GameDev.net VR/AR Forum" style="z-index: 10000;">GameDev.net VR/AR Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/8-gamedevnet-middleware-forum/" title="GameDev.net Middleware Forum" style="z-index: 10000;">GameDev.net Middleware Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/9-gamedevnet-directx-forum/" title="GameDev.net DirectX Forum" style="z-index: 10000;">GameDev.net DirectX Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/10-gamedevnet-game-design-forum/" title="GameDev.net Game Design Forum" style="z-index: 10000;">GameDev.net Game Design Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/11-gamedevnet-visual-arts-forum/" title="GameDev.net Visual Arts Forum" style="z-index: 10000;">GameDev.net Visual Arts Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/12-gamedevnet-indie-projects-forum/" title="GameDev.net Indie Projects Forum" style="z-index: 10000;">GameDev.net Indie Projects Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/13-gamedevnet-hobby-project-classifieds/" title="GameDev.net Hobby Project Classifieds" style="z-index: 10000;">GameDev.net Hobby Project Classifieds</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/14-gamedevnet-music-and-sound-forum/" title="GameDev.net Music and Sound Forum" style="z-index: 10000;">GameDev.net Music and Sound Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/15-gamedevnet-writing-forum/" title="GameDev.net Writing Forum" style="z-index: 10000;">GameDev.net Writing Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/forums/16-gamedevnet-production-forum/" title="GameDev.net Production Forum" style="z-index: 10000;">GameDev.net Production Forum</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/blog/" title="GameDev.net Blogs RSS" style="z-index: 10000;">GameDev.net Blogs RSS</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/ccs/1-articles/" title="Articles" style="z-index: 10000;">Articles</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/ccs/43-event-coverage/" title="Event Coverage" style="z-index: 10000;">Event Coverage</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/ccs/42-events/" title="Events" style="z-index: 10000;">Events</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/ccs/41-news/" title="News" style="z-index: 10000;">News</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/ccs/33-showdown/" title="Showdown" style="z-index: 10000;">Showdown</a></li>
+<li style="z-index: 10000;"><a href="https://www.gamedev.net/rss/classifieds/" title="GameDev.net Careers RSS" style="z-index: 10000;">GameDev.net Careers RSS</a></li></ul>
+                           
+                        </li>                        
+                    </ol>
+                    <ol class="breadcrumb visible-sm-inline-block visible-xs-inline-block">
+                        <li class="pull-right breadcrumb-right">
+                             <a class="breadcrumb-link" href="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=viewNewContent&amp;search_app=forums&amp;search_app_filters[forums][searchInKey]=&amp;period=today&amp;userMode=&amp;followedItemsOnly=0" data-tooltip="View new GameDev.net content"><i class="fa fa-sitemap" aria-hidden="true"></i>&nbsp;Latest Content</a>
+                            <a href="https://www.gamedev.net/index.php?app=core&amp;module=search&amp;do=followed" data-tooltip="View content you follow on GameDev.net">
+                            <i class="fa fa-bell-o" aria-hidden="true"></i>&nbsp;Followed Content</a>
+                        </li>      
+                    </ol>
+			<!-- ::: MAIN CONTENT AREA ::: -->
+			<!--<div id='content' class='clearfix'>-->
+				<!-- ::: NAVIGATION BREADCRUMBS ::: -->
+                <div id="secondary_navigation" style="margin-bottom:-20px;" class="clearfix">
+                          <div class="container gamedev-content-container">
+                            <div class="row">
+				<!-- ::: CONTENT ::: -->
+				<div class="nexusad" align="center"><div id="forum_topper">
+<!-- Forum Topper -->
+<div id="div-gpt-ad-1439397978997-0" align="center">
+
+</div>
+</div></div>
+				
+
+
+
+
+
+
+
+
+
+<div class="gamedev-sidebar">
+    
+<div class="ipsSideBlock wide featured" id="block_1">
+<h3 class="draghandle featured">Getting Started</h3>
+Official Documentation<ul class="bbc"><li><a href="http://msdn.microsoft.com/en-us/library/ee663274%28v=vs.85%29.aspx" class="bbc_url" title="External link" rel="nofollow external">DirectX Graphics and Gaming</a></li><li><a href="http://msdn.microsoft.com/en-us/library/cc178930.aspx" class="bbc_url" title="External link" rel="nofollow external">XNA Game Studio</a></li></ul>Managed Wrappers<ul class="bbc"><li><a href="http://slimdx.org/" class="bbc_url" title="External link" rel="nofollow external">SlimDX</a></li><li><a href="http://code.google.com/p/sharpdx/" class="bbc_url" title="External link" rel="nofollow external">SharpDX</a></li></ul>Useful Links<ul class="bbc"><li><a href="http://msdn.microsoft.com/en-us/directx/aa937781" class="bbc_url" title="External link" rel="nofollow external">DirectX Developer Center</a></li><li><a href="http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=6812" class="bbc_url" title="External link" rel="nofollow external">DirectX June 2010 SDK</a> (last standalone SDK release)</li><li><a href="http://msdn.microsoft.com/en-us/windows/hardware/hh852363" class="bbc_url" title="External link" rel="nofollow external">Windows 8 SDK</a> (new location of core DirectX components)</li><li><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ee663275%28v=vs.85%29.aspx" class="bbc_url" title="External link" rel="nofollow external">Where is the DirectX SDK?</a></li><li><a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh452744.aspx" class="bbc_url" title="External link" rel="nofollow external">Developing games for Windows 8</a></li><li><a href="http://msdn.microsoft.com/en-us/library/ee416788%28v=vs.85%29.aspx" class="bbc_url" title="External link" rel="nofollow external">DirectX FAQ</a> (2009)</li><li><a href="http://msdn.microsoft.com/en-us/library/ee416805%28v=vs.85%29.aspx" class="bbc_url" title="External link" rel="nofollow external">Installing DirectX Games</a> (2009)</li><li><a href="http://fgiesen.wordpress.com/2011/07/09/a-trip-through-the-graphics-pipeline-2011-index/" class="bbc_url" title="External link" rel="nofollow external">A trip through the Graphics Pipeline 2011</a> (an overview of modern GPU architecture)</li><li><a href="http://bps10.idav.ucdavis.edu/talks/03-fatahalian_gpuArchTeraflop_BPS_SIGGRAPH2010.pdf" class="bbc_url" title="External link" rel="nofollow external">From Shader Code to a Teraflop: How GPU Shader Cores Work</a></li><li><a href="http://user.xmission.com/%7Elegalize/book/download/" class="bbc_url" title="External link" rel="nofollow external">Direct3D Graphics Pipeline</a> (free book about D3D 9)</li><li><a href="http://prelight.googlecode.com/files/Programming%20Vertex%20Geometry%20and%20Pixel%20Shaders.pdf" class="bbc_url" title="External link" rel="nofollow external">Programming Vertex, Geometry, and Pixel Shaders</a> (free book on D3D10)</li><li><a href="http://hieroglyph3.codeplex.com/" class="bbc_url" title="External link" rel="nofollow external">Hieroglpyh 3</a> (open source D3D11 engine and code samples)</li></ul>Support Libraries<ul class="bbc"><li><a href="http://directxtex.codeplex.com/" class="bbc_url" title="External link" rel="nofollow external">DirectXTex</a></li><li><a href="http://directxtk.codeplex.com/" class="bbc_url" title="External link" rel="nofollow external">DirectX Tool Kit</a> (includes DX11 SpriteBatch + SpriteFont)</li></ul>
+
+
+
+</div>
+<!-- Spotlight_Main -->
+<!-- /1004699/Spotlight_Main -->
+<!--
+<div class="ipsSideBlock wide fp_featured spotlight" style='background-color:#fefefe;'>
+    <h3 style='background-color:#54ae68;'>GameDev.net Spotlight</h3>
+    <div class="ipsPad" align=center>
+        <div id='div-gpt-ad-1439398297592-0' style='height:250px; width:250px;'>
+            <br>
+            
+	</div>
+    </div>
+</div>--><div class="panel panel-default feature-box-container">
+    <div class="panel-heading feature-box-title feature-box-title-gray"><a href="https://www.gamedev.net/classifieds"><h4>Game Jobs</h4></a></div>
+        <div class="panel-body" style="padding:5px">
+            <!--<ul class="media-list">-->
+            <ul class="list-group" style="border:none !important;margin-bottom:0 !important;">
+                 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5308-senior-full-stack-web-engineer/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="//public.gamedev.net/style_images/gamedev-g-new-200-ink.png" alt="Senior Full-Stack Web Engineer">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           
+                                <h5 style="margin-bottom:0;margin-top:0;">
+<!--<a href='https://www.gamedev.net/classifieds/item/5308-senior-full-stack-web-engineer/'>-->
+<a href="https://www.ziprecruiter.com/clk/sonosim-366d2e1e-senior-full-stack-web-engineer-8b7bf363?clk=qN6-rry6ojoGmbipNx-RGsKbtcphIc7qJ0uLPoyzxfNDDm5QC1Gm5cZ9jsh-E8S9qTjnd_2gsMjIAS1QRt6mw9Kdep-VYIx6o6a-yn8zyf9YtDObT3MXTGvAnQHeePUkMvp5BtmiG1hm9L_fBOhNXqL7Suoc9n2mgBN-iMt1rKaYS-MbS0pocq4EmxEiRhO1PRLSy7g6H9xMXc40X5GU3UZF8E6J4fiT1NpGhnNWgEOBF-BQdnGGhTKmifCL8_ovITZ-tZQWK3NmCN8EkYSFSukjU373DGXKz2zeZJjfltQRcd1-l2kCAGg22NIhMuCYVriK4F0YQ9Hlw0ZWRIsEmUEJOwRJio9owqCOV5Cr39NFLdPPbW1h2Pybmqnhlm0WMrw3wESQz8L-sWusIWXl9-mehIWxxxV5xKKj8JqyVDELVwJmaqprKqEQwI3NXZ9SFrDHWMopz6BWT4--UBlYSeEozEwWX0HOV7kC42FuhW_QrT8HnfBM4GhKm3hbn6NYzlTuEAaAULW-Q8oKL3N2DEfJzFJ0xAUVasEaA-2g0FxXmkK62o9EjhlLj7Q-wQCiQr-_e9ZoFLXoR5Ddm2PtMnJVca1OS4vLRfUVpAM9FAiV8lwBNEPhjXNbxVLS5bfA.88ae71d0f0318334f516393dc2f3c99e" target="_blank" rel="nofollow" title="Senior Full-Stack Web Engineer">Senior Full-Stack Web Engineer <sup><i class="fa fa-external-link fa-1" aria-hidden="true"></i></sup></a>
+<!--Senior Full-Stack Web Engineer</a>-->
+</h5>
+                            
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     SonoSim
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5342-assistant-hr/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="//public.gamedev.net/style_images/gamedev-g-new-200-ink.png" alt="Assistant, HR">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           
+                                <h5 style="margin-bottom:0;margin-top:0;">
+<!--<a href='https://www.gamedev.net/classifieds/item/5342-assistant-hr/'>-->
+<a href="https://www.ziprecruiter.com/clk/tv-film-00000000-assistant-hr-3252_348733?clk=JMcRUw8p3btNpspxroleJ-mzwlxbr_-SEDzZmaShlvHJDMCpoZPbPwZ0fqAYjCKsCC2603gWyObTfJB7cPbW1mKpF0IFLu_zlmCw20ey1j72SsqpzNOqlxuWOs8VUz3R9iUHDX53snW62lIUlUJLb2Cxl29m3UOoFiWfgFQ5U8Vle7MsGFaBWEHCJjW9KbdtuOnmxUwhPBlcuye-NjGW5-8rIkZ3v5-oXlZRuA2uos--CNJhIpB4zNcbjO_GGjItcevAuqLbvSkstIv6jCdcHEsl__nSpaABmXHak5PaByDjB85ekCZXbdOrqgAa0aMM5dIaHWx7Lh7G4GK2NWbw-eDBxiHoM-AXR82Eo-D1ZWWKP_s9g9wSdlg7eZ_SEgPwOv01NPhzhAOzGqtgjRGbAH7eU2C5dyNhMVRiTvu5acojIgw4mwMdvu5m6Gv8e7WVBR6WbkhGZHs3aafwlqz7M-P65lrrXq7jgK3KNXYuxPbZnc4pEplU5Tsqw0-RdjWeAFvv7SSVzfOupBhmwmRscHZD_7o83TNo6ts8ioz3UceEOUOiCDQlravweZZxjV8R.ffe128b13fd97725bcca5622542b176a" target="_blank" rel="nofollow" title="Assistant, HR">Assistant, HR <sup><i class="fa fa-external-link fa-1" aria-hidden="true"></i></sup></a>
+<!--Assistant, HR</a>-->
+</h5>
+                            
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     TV - Film
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5309-software-engineer-c/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="//public.gamedev.net/style_images/gamedev-g-new-200-ink.png" alt="Software Engineer C++">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           
+                                <h5 style="margin-bottom:0;margin-top:0;">
+<!--<a href='https://www.gamedev.net/classifieds/item/5309-software-engineer-c/'>-->
+<a href="https://www.ziprecruiter.com/clk/sonosim-366d2e1e-software-engineer-c-d03b223e?clk=7kd912CHn6FoPX0JE4QBZVBytCQ9q2dXUSfCqn4oD5IXI49Xux-w2dxLv-1TktwHusFpwXc0FbeZc4SDjFNpz5FHYte91a2h_ZQ1UNdcMxHn6Fgzj9H2_j1Ag3djqLXukwLBNsACr6PujJJuAJkOfnuzOuUiCanCs7oReZoS61gpxn8jNo1DNU_UCd4yZTTDSpgjD-QdCvRJUStu5lw2M6J_ydkPK7YfQaX4haUVMKm-sEgHH3UngJtpfLw-77aeomNtyKAER333-F5x6fW2ZC7lmDIfrvlmHusXeWuxOjRnbjGl1X5GcrY5zJV0DB_X2hSkAnsQJExlywHrrGuIhFybVAmgC3_03ov5SDOMr-aXBtALmu8IwK4DSxFt65F3K0MFuTj-Byva1HOcalRF24GlICwwCxKu1bpkRVrfpA722iziMlFIatL1vfiDV9yWwGkdkgeN5FXo8ZW0POuyJAFRHqbLEANLdjWpytyt8KVezXe4SIUVN0luOjZR2z1jrIlgnN2SoBb83J1HRBfhMDQG6YTSLi5NOZVZ98jR3M_Lw6HJO5BwNIJ6SP1nKSXyLr6cUI1fnNkufrZYZJ9gu31-56AdXxmYlb2W_apXvkE.00db2f32161a05b86d5ed56d8e008682" target="_blank" rel="nofollow" title="Software Engineer C++">Software Engineer C++ <sup><i class="fa fa-external-link fa-1" aria-hidden="true"></i></sup></a>
+<!--Software Engineer C++</a>-->
+</h5>
+                            
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     SonoSim
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5383-games-programmers-of-all-levels-aaa-vrpcconsole/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="//public.gamedev.net/style_images/gamedev-g-new-200-ink.png" alt="*Games Programmers of all levels - AAA VR/PC/console*">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           
+                                <h5 style="margin-bottom:0;margin-top:0;">
+<!--<a href='https://www.gamedev.net/classifieds/item/5383-games-programmers-of-all-levels-aaa-vrpcconsole/'>-->
+<a href="https://www.ziprecruiter.com/clk/creative-personnel-limited-00000000-games-programmers-of-all-levels-aaa-vr-pc-console-957893882?clk=BNBLrE3WppSLNRPEw0bXOTyK7dsI0vUpJbgNGDxM3D_Jvon4wDGuKZuXY-3xs6WIXyU7M72NJuxoIZv_o3qDm1QKw2pAy4GiauNL_Tn5M1Q1rSienr7aAmuxCtqE1YMLaknf4IZMQ_1pj2aB5yOaGP1QJQt6p_yBvbRsOd-XpJIDIozMWyL7fHa3l4Hk9ZZkd1CCI-eFtNMolauT-ohGCRN2MV7rar3DcW2by-nlJqh-qBC9x5AIQcSncUisyURPX2Oip_rhQI_9XyPQ--niZIRsG6iSgSE94objnTrw1-R078NAyo4tnNhkRUk_Ip9Yr1cGQsIW9OCJbfNpzvFnl0gqXO30V5FqVLkNpeT25qTm7f_qBVotEDe68ej3Sl9tNv3vc-9tcq89wvrGniY1hG8pyMMhxr6HdFJcchmnKJ8U6yJLLHWSQLHvk5kWP2TMFkdRvuaymN1Ocqpx3yOmZk-cLvZ3tBwf8eHrCSbUW8molt_nkVrb-aqboPRSJGzVB3K1HuQTVFdpk0ntBaOayvLccuxQw2oEnx5LA4jeRinaNjCvAy0m8YBYUtR6K5d7suYOkYgn2F-JfjT5Jz2raRSD4b5X_AE1QbptryxN_HdRf9Mc4IKL-N6yadu8VtId.43b4fb98b27ba0d660ba4534acf6f00b" target="_blank" rel="nofollow" title="*Games Programmers of all levels - AAA VR/PC/console*">*Games Programmers of all levels - AAA VR/PC/console* <sup><i class="fa fa-external-link fa-1" aria-hidden="true"></i></sup></a>
+<!--*Games Programmers of all levels - AAA VR/PC/console*</a>-->
+</h5>
+                            
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Creative Personnel Limited
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5187-developer-programmer/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="//public.gamedev.net/style_images/gamedev-g-new-200-ink.png" alt="Developer Programmer">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           
+                                <h5 style="margin-bottom:0;margin-top:0;">
+<!--<a href='https://www.gamedev.net/classifieds/item/5187-developer-programmer/'>-->
+<a href="https://www.ziprecruiter.com/clk/soap-creative-00000000-developer-programmer-514749644?clk=SK6sT0csbGi83ZBdBOtOXEuW3yTPMGrarL94CZLDDIeL_QlE8yH9bmNLAakZxTYCdnynkhEtehdGN-sEz9RWb2B0I8LkYAgMy4naIbKN4FY5bEFHv8kUBJhP78IZbcqzE18Awu55UmvejznEONx151KC6QP7e-HqNs_1jbhsSevw8v4MeVUHr7F5QtHHjz9AGe2Hwkwi2TlpptpbLmcplTVbEX1hF-K_Jl7QlZ9uNlE_aNkYGLiMK7RAT4_PnZz4kyxBPra2c0IkJ218AIx_kn9HC9m6RzjGeYSHM5tm76goOdDMaXrNqCsxPV0HW1Iktwx1xaFUrcrdrem9zxNDE8jkHyHiQJVaFE2meAbh73x2TIyWvUxXyREzmHgLOtvfe8M1LsVTpWwUxSY_Mczx9rYXfdyVwlk8Rr4lGxmRbG9WMNzkZRA8Ef8uBiSMU57jnsBF4XliuDsjinrWm14mgOYnp2e_baVWbS_MCr5F4u6J8P723nvpRDRXrjWTdHWefs0e_t6QQTvCirP45nyIUR2PPUQZrbtPXkVJQtHHBKdg3pB3337_AfY11iVRXNnO86miKW0r4eiIlr5AAoBxTrcO7hay3wXGrQzEHmldQhyHCuM70Pev2-SzIaxN5CkXYUb2ofwOK_BwhxyrcvlRiA.3ccec1a3dc867cf2ac39f4548cf1d8e9" target="_blank" rel="nofollow" title="Developer Programmer">Developer Programmer <sup><i class="fa fa-external-link fa-1" aria-hidden="true"></i></sup></a>
+<!--Developer Programmer</a>-->
+</h5>
+                            
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Soap Creative
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+            </ul>
+<p class="pull-right"><a href="https://www.gamedev.net/classifieds">View more</a></p>
+        </div>
+</div><div id="boxad">
+
+<div id="div-gpt-ad-1412653010761-0">
+
+</div>
+
+
+</div> 			
+    <div class="panel panel-default feature-box-container">
+    <div class="panel-heading feature-box-title feature-box-title-gray"><a href="https://www.gamedev.net/classifieds"><h4>Latest Game Freelancers</h4></a></div>
+        <div class="panel-body" style="padding:5px">
+            <!--<ul class="media-list">-->
+            <ul class="list-group" style="border:none !important;margin-bottom:0 !important;">
+                 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5401-award-winning-audio-indie-pricing/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-224799.jpg" alt="Award-Winning Audio, Indie Pricing">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5401-award-winning-audio-indie-pricing/">Award-Winning Audio, Indie Pricing</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     NoamGuterman
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5356-got-an-idea-and-a-limited-budget/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-148290.png" alt="Got an idea and a limited budget?">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5356-got-an-idea-and-a-limited-budget/">Got an idea and a limited budget?</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Orymus3
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5317-experienced-pixel-and-concept-artist/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-119142.jpg" alt="Experienced Pixel and Concept Artist">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5317-experienced-pixel-and-concept-artist/">Experienced Pixel and Concept Artist</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Garkudion
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5316-composermusic-for-hire/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-245850.jpg" alt="Composer/Music For Hire">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5316-composermusic-for-hire/">Composer/Music For Hire</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     KallieMarie
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5287-gamefund-well-get-your-project-funded/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-244903.png" alt="GameFund - We&#39;ll Get Your Project Funded">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5287-gamefund-well-get-your-project-funded/">GameFund - We'll Get Your Project Funded</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Gamefund
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5264-3d2d-art-and-animation/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-245571.jpg" alt="3D/2D art and animation">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5264-3d2d-art-and-animation/">3D/2D art and animation</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     AlexYaremchuk
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+ 
+                   <!-- <li class="media hentry">-->
+                   <li class="list-group-item" style="border:none;padding:5px 10px;">
+                       <!-- <div class="media-left media-middle">
+                            <a href='https://www.gamedev.net/classifieds/item/5232-elastic-music-professional-game-audio-for-indie-prices/'>
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="/uploads/profile/photo-thumb-218536.jpg" alt="Elastic Music - Professional Game Audio for Indie Prices">
+                            </a>
+                        </div>
+                        <div class="media-body">-->
+                        <div>
+                           <h5 class="clearfix" style="margin-bottom:0;"><a href="https://www.gamedev.net/classifieds/item/5232-elastic-music-professional-game-audio-for-indie-prices/">Elastic Music - Professional Game Audio for Indie Prices</a></h5>
+
+                            
+                                 <span class="news-stream-date-byline">
+                                     Elastic Music
+                                 </span>
+                             
+                        </div>
+                    </li>
+                
+            </ul>
+<p class="pull-right"><a href="https://www.gamedev.net/classifieds">View more</a></p>
+        </div>
+</div><div class="panel panel-default feature-box-container">
+    <div class="panel-heading feature-box-title feature-box-title-gray"><a href="https://www.gamedev.net/news"><h4>Latest News</h4></a></div>
+        <div class="panel-body">
+            <ul class="media-list">
+                
+                    <li class="media hentry">
+                        <div class="media-left media-middle">
+                            <a href="https://www.gamedev.net/news/index.html/_/industry/epic-releases-photorealistic-character-sample-for-ue4-r83" rel="bookmark" title="Epic Releases Photorealistic Character Sample for UE4">
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/7cea9895c07bbd0440b7ba1a77171ddf.png" alt="Epic Releases Photorealistic Character Sample for UE4">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                             <h5><a href="https://www.gamedev.net/news/index.html/_/industry/epic-releases-photorealistic-character-sample-for-ue4-r83" rel="bookmark" title="Epic Releases Photorealistic Character Sample for UE4" class="entry-title">Epic Releases Photorealistic Character Sample for UE4</a></h5>
+                             <span class="news-stream-date-byline" style="margin-top:-10px;"><span class="date updated published">11 April 2017 - 09:35 AM</span></span>
+                             <span class="vcard author" style="display:none;"><span class="fn">Khawk</span></span>
+                        </div>
+                    </li>
+                
+
+                    <li class="media hentry">
+                        <div class="media-left media-middle">
+                            <a href="https://www.gamedev.net/news/index.html/_/industry/finalists-for-women-in-games-awards-2017-announced-r82" rel="bookmark" title="Finalists for Women in Games Awards 2017 Announced">
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/44be27c7bfb40101e8247440a56d4bab.jpg" alt="Finalists for Women in Games Awards 2017 Announced">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                             <h5><a href="https://www.gamedev.net/news/index.html/_/industry/finalists-for-women-in-games-awards-2017-announced-r82" rel="bookmark" title="Finalists for Women in Games Awards 2017 Announced" class="entry-title">Finalists for Women in Games Awards 2017 Announced</a></h5>
+                             <span class="news-stream-date-byline" style="margin-top:-10px;"><span class="date updated published">11 April 2017 - 09:30 AM</span></span>
+                             <span class="vcard author" style="display:none;"><span class="fn">Khawk</span></span>
+                        </div>
+                    </li>
+                
+
+                    <li class="media hentry">
+                        <div class="media-left media-middle">
+                            <a href="https://www.gamedev.net/news/index.html/_/education/bill-gates-dives-into-vr-r81" rel="bookmark" title="Bill Gates Dives into VR">
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/817b6987149534d15290a2c61c8358fc.jpg" alt="Bill Gates Dives into VR">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                             <h5><a href="https://www.gamedev.net/news/index.html/_/education/bill-gates-dives-into-vr-r81" rel="bookmark" title="Bill Gates Dives into VR" class="entry-title">Bill Gates Dives into VR</a></h5>
+                             <span class="news-stream-date-byline" style="margin-top:-10px;"><span class="date updated published">11 April 2017 - 09:20 AM</span></span>
+                             <span class="vcard author" style="display:none;"><span class="fn">Khawk</span></span>
+                        </div>
+                    </li>
+                
+
+                    <li class="media hentry">
+                        <div class="media-left media-middle">
+                            <a href="https://www.gamedev.net/news/index.html/_/programming/visual-studio-native-debugging-tips-r80" rel="bookmark" title="Visual Studio Native Debugging Tips">
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/b599b15eacb528a93555424acde14d43.jpg" alt="Visual Studio Native Debugging Tips">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                             <h5><a href="https://www.gamedev.net/news/index.html/_/programming/visual-studio-native-debugging-tips-r80" rel="bookmark" title="Visual Studio Native Debugging Tips" class="entry-title">Visual Studio Native Debugging Tips</a></h5>
+                             <span class="news-stream-date-byline" style="margin-top:-10px;"><span class="date updated published">11 April 2017 - 12:45 AM</span></span>
+                             <span class="vcard author" style="display:none;"><span class="fn">Khawk</span></span>
+                        </div>
+                    </li>
+                
+
+                    <li class="media hentry">
+                        <div class="media-left media-middle">
+                            <a href="https://www.gamedev.net/news/index.html/_/industry/xbox-project-scorpio-specs-revealed-r79" rel="bookmark" title="Xbox Project Scorpio Specs Revealed">
+                                <img class="media-object img-thumbnail feature-latest-thumbnail-small" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/cf3c5020fd32cbc811f1c1ed3f104d6e.png" alt="Xbox Project Scorpio Specs Revealed">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                             <h5><a href="https://www.gamedev.net/news/index.html/_/industry/xbox-project-scorpio-specs-revealed-r79" rel="bookmark" title="Xbox Project Scorpio Specs Revealed" class="entry-title">Xbox Project Scorpio Specs Revealed</a></h5>
+                             <span class="news-stream-date-byline" style="margin-top:-10px;"><span class="date updated published">06 April 2017 - 12:45 PM</span></span>
+                             <span class="vcard author" style="display:none;"><span class="fn">Khawk</span></span>
+                        </div>
+                    </li>
+                
+            </ul>
+            <p class="pull-right"><a href="https://www.gamedev.net/news">View more</a></p>
+        </div>
+</div><div class="ipsSideBlock wide" id="block_iotd">
+  <h3>Image of the Day <div style="text-align:right;margin-top:-20px;"><a href="https://www.gamedev.net/showdown/about.html" style="font-size:0.7em;color:#fff !important;">Submit</a></div></h3>
+
+
+		<center>
+<div style="overflow:hidden;text-align:center;margin-bottom:5px;display:block;margin-top:5px;">
+<a href="http://www.gamedev.net/showdown/view.html/_/mrrelos-r198524"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/thumb-sss_8d0e2add2bf19c1451dcc333130df53d.jpg" style="max-width:310px; width:auto;max-height:270px" alt="This is a launchpad, it launches you ;) #gamedev #indiedev #madewithunity #screenshotsaturday https://t.co/rTfpg6DYoa"></a>
+</div>
+<a href="http://www.gamedev.net/showdown/view.html/_/mrrelos-r198524">IOTD</a> | <a href="https://www.gamedev.net/showdown/browse.html?view=top_week">Top Screenshots</a>
+</center>
+
+
+
+
+</div>
+<!-- /1004699/Skyscraper_Main -->
+<div id="div-gpt-ad-1479962805269-0" style="height:600px; width:300px;">
+
+</div>
+ 
+    <div class="ipsSideBlock clearfix" id="mailing_list">
+<!--<h3 class="draghandle">Newsletter</h3>-->
+
+	<h3>The latest, straight to your Inbox.</h3>
+	<p>Subscribe to GameDev.net Direct to receive the latest updates and exclusive content.</p>
+	<br>
+	<a style="display:inline-block;" class="ipsButton" href="https://www.gamedev.net/page/newsletter.html">Sign up now</a>
+	<!--
+	
+		<form action="http://www.gamedev.net/page/info/newsletter/thanks.html" method="POST" accept-charset="utf-8">
+			<label for="name" style="font-size=14px;"><strong>Name</strong></label><br/>
+			<input type="text" style="margin-top: 5px; border: 1px solid #999; padding: 8px;" name="name" id="name"/>
+			<br/><br/>
+			<label for="email" style="font-size=14px;"><strong>Email</strong></label><br/>
+			<input type="text" style="margin-top: 5px; border: 1px solid #999; padding: 8px;" name="email" id="email"/>
+			<br/><br/>
+			<p style="display:none;"><input type="text" name="emailaddress"/></p>
+			<input type="hidden" name="list" value="X6omtPEX6vk763N892dZGKg5wg"/>
+			<input type="submit" name="submit" id="submit" value="Signup" class="ipsButton"/>
+		</form>
+		-->	
+</div>
+</div>
+
+<div class="gamedev-content container-fluid hentry">
+
+<a href="https://www.gamedev.net/user/179129-believe82/" class="">
+	<img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left">
+</a>
+   <div class="ipsBox_withphoto" style="margin-top:-25px;">
+
+	
+        <div>
+<div class="__like right" data-app="forums" data-area="topics" data-relid="600204" data-isfave="">
+	<span class="ipsButton_extra right " title="0 member(s) subscribe to this topic" data-tooltip="0 member(s) subscribe to this topic">
+
+<i class="fa fa-users" aria-hidden="true"></i>
+<!--<img src='https://www.gamedev.net/public/style_images/master/icon_users.png' /> -->
+
+<strong>0</strong></span>
+
+</div>
+</div>
+
+    <div class="forum-header">
+	<h1 itemprop="headline" class="ipsType_pagetitle entry-title">Object Space to World Space</h1>
+
+	<div class="desc lighter blend_links">
+		 Started by <span class="vcard author"><span class="fn nickname"><a class="url" href="https://www.gamedev.net/user/179129-believe82/" title="View Profile">Believe82</a></span></span>, <span class="date updated published">Apr 19 2011 12:48 AM</span>
+	</div>
+
+	
+    </div>
+</div><!-- Leaderboard_Main -->
+
+
+<div id="leaderboard">
+    <div style="display:none;">2: Adsense</div>
+    <div id="div-gpt-ad-1410074947216-0">
+        
+    </div>
+</div>
+ 
+<br>
+	  <div class="message error">
+      <b>Old topic!</b><br>
+<p><strong class="bbc">Guest</strong>, the last post of this topic is over <strong class="bbc">60 days old</strong> and at this point you may not reply in this topic. If you wish to continue this conversation start a new topic.</p>
+</div>
+<br>
+
+<ul class="topic_buttons">
+		
+					<li class="disabled"><span>You cannot reply to this topic</span></li>
+				
+		
+	</ul>	
+
+
+<div class="topic_controls">
+	
+
+
+
+</div>
+
+<div class="maintitle clear clearfix">
+	<span class="ipsType_small">
+		7 replies to this topic
+	</span>
+		
+</div>
+
+
+<div class="topic hfeed clear clearfix">
+	
+	
+	
+	
+	
+
+	<div class="ipsBox">
+		<div class="ipsBox_container" id="ips_Posts">
+                        			
+				<!--post:4800221-->
+<div class="post_block hentry clear clearfix " id="post_id_4800221">
+		<a id="entry4800221"></a>
+<a href="https://www.gamedev.net/index.php?showuser=179129" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800221').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800221').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800221').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800221').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800221" rel="bookmark" title=": post #1">#1</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="179129" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/179129-believe82/" title="" id="anonymous_element_1"><span itemprop="name">Believe82</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/179129-believe82'>118</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/179129-believe82">118</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800221" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800221" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T06:48:04+00:00">19 April 2011 - 12:48 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="Believe82" post-date="1303195684" post-id="4800221" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->Hey,
+ through looking around in the forums and on the internet, i realize to 
+place an object into the correct position in world space, i would need 
+to rotate and translate the object.<br>
+For my example i don't need to rotate the object, only translate. I am using directX 10.<br>
+<br>
+I have created a ship in model space (origin 0,0,0) in class "Ship" and I
+ would like to simply place this ship in the world space at (0, 8, 0). I
+ am unsure where in my code i will do this translation.<br>
+<br>
+1.) Do i make this translation within my "Ship" class every time i update the ship?<br>
+2.) Do i make this translation within my main class everytime i draw and
+ after calculating the world matrix? (Which in my case is a combined 
+world view projection matrix)<br>
+<br>
+If i update this within my ship, am i supposed to go through each vertex
+ in my ship and translate the local points to whatever point the ship is
+ currently positioned, after <br>
+everytime i rotate it?<br>
+<br>
+If i update the translation within my main class everytime i draw would i
+ need to create a view matrix for my ship, and have the world matrix 
+be...<br>
+                                                         			m_WVP = m_camera.getView() * m_camera.getProj() * m_ship.getView();<br>
+                                                         			
+D3DXMatrixTranslation(&amp;m_WVP, 0, 8, 0); (I have no idea how to 
+translate it haha)<br>
+<br>
+All these assumptions are under the pretense that to change object 
+orientation, i must first change it's origin back to (0,0,0) (object 
+space) and then place it back onto the <br>
+world space to whatever position the ship was. <br>
+<br>
+While moving the object in world space (walk and stride) I would not 
+need to make updates to the object in object space, just simply 
+translate it's position in world space.<br>
+<br>
+Thank you for any help!<br>
+<br>
+EDIT: Realized that i was mostly just confused about the different 
+spaces, and how I orient objects according to different spaces, I now 
+have a better understanding of spaces.Real question is in post#3
+					
+					<br>
+					
+				</div>
+				
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+			<div class="nexusad" align="center">    
+</div>
+		
+
+			
+
+				<!--post:4800267-->
+<div class="post_block hentry clear clearfix " id="post_id_4800267">
+		<a id="entry4800267"></a>
+<a href="https://www.gamedev.net/index.php?showuser=90444" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800267').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800267').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800267').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800267').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800267" rel="bookmark" title=": post #2">#2</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="90444" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/90444-haegarr/" title="" id="anonymous_element_2"><span itemprop="name">haegarr</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/90444-haegarr'>7355</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/90444-haegarr">7355</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800267" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800267" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T08:58:04+00:00">19 April 2011 - 02:58 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="haegarr" post-date="1303203484" post-id="4800267" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->IMHO you are confusing several terms above...<br><br><br>The
+ Ship class is an abstraction of an entity. It stores data about an 
+instance of that kind of Ship. This includes its position (and 
+orientation) in (typically) world space. It may further include e.g. a 
+bounding volume for speeding up collision detection, and similar stuff.<br><br>Further
+ there is a model of the ship for graphical rendering purposes. This 
+model typically consists of a vertex mesh. The vertices are given w.r.t.
+ a co-ordinate frame, typically so that the model's hull is more or less
+ centered around <strong class="bbc">0</strong> (notice that this is a 
+vectorial zero, i.e. zero in 3 dimensions) and with its front facing 
+into a specific, usually cardinal direction (e.g. the cardinal z axis 
+direction).<br><br>Now, if you would use the model "as is" would mean that it appears in this default orientation and position <em class="bbc">but in the world space</em>.
+ That would not what you want, because you want it be placed as given by
+ the data in the Ship instance. Hence you need to rotate and translate 
+the model to make its world position and orientation match the data in 
+the Ship instance. This is accomplished by rotating the model into the 
+desired orientation and translating the rotated model to the desired 
+position. (Please notice the order of transformations as it is 
+important!)<br><br>Now, if you would apply these transformations on the 
+model's vertices and overwriting the vertices, you would a) use an 
+absolute transformation as a relative one (meaning that you would sum up
+ transformations although you wanted to apply it only once), and b) the 
+model will loose its shape over time because of accumulating small 
+numerical inaccuracies. Therefore, what you want to do is to compose the
+ matrix of the transformations to be applied, and supply it as well as 
+the model's vertices to (in this case) D3D, so that D3D can transform 
+the vertices on-the-fly for rendering without overwriting your original 
+vertices.<br><br>In summary, you want D3D let transform the vertices 
+each time it renders another frame. But you want to accumulate player 
+input that effects the ship's position and orientation into the data 
+stored in the Ship instance. And you want to compute the transformation 
+matrix from the said data.<br><br><br>The view matrix by itself is 
+independent on the Ship instance. It is rather dependent on where an 
+observer is located in the world (often called the "eye-point"), and 
+where s/he looks at (often called the "line-of-sight"). Together this is
+ often modeled as a virtual camera. Although this <em class="bbc">may</em> <em class="bbc">be attached</em>
+ to your Ship instance (used as a 3rd person camera or from the inside 
+like a 1st person camera), I won't say that you need to create a view 
+matrix for your ship but for a camera set-up.<br><br>However, you are 
+right in that the view matrix will have an effect on the rendering, of 
+course. This is because what you get to see on the screen is observer 
+centric: Regardless whether an object is placed at (1,0,0) or at 
+(1000,0,0) in the world, it appears just in front on the screen when the
+ observer is at (0,0,0) or at (999,0,0), resp., assuming that s/he looks
+ into the correct direction, of course. This is accomplished by 
+transforming the entire world so that the observer (or camera) is 
+located at <strong class="bbc">0</strong> and oriented in standard 
+direction. Hence you need to apply the inverse of the transformation 
+that is used to place the observer (or camera) in the world. And exactly
+ that is the view matrix application.<br><br><br>Coming to updates in world/model space: It is a mathematical fact that the matrix product is not commutative, so <strong class="bbc">A</strong> * <strong class="bbc">B</strong> != <strong class="bbc">B</strong> * <strong class="bbc">A</strong>
+ in general. So, if you want to continuously add up translation and 
+rotations to yield in the new current placement data of the Ship 
+instance, you need either to handle orientation and position apart from 
+each other (i.e. sum up rotations on an orientation and sum up 
+translation on a position), or else make sure that the the current delta
+ transformation has the desired effect on the (otherwise) composed 
+placement.<br><br>The former way means for step i, that<br><strong class="bbc">R</strong><sub class="bbc">i</sub> := <strong class="bbc">R</strong><sub class="bbc">i-1</sub> * <strong class="bbc">r</strong><sub class="bbc">i</sub><br><strong class="bbc">T</strong><sub class="bbc">i</sub> := <strong class="bbc">T</strong><sub class="bbc">i-1</sub> * <strong class="bbc">t<sub class="bbc">i</sub></strong><br><strong class="bbc">M</strong><sub class="bbc">i</sub> := <strong class="bbc">R</strong><sub class="bbc">i</sub> * <strong class="bbc">T</strong><sub class="bbc">i</sub> <br>when using row vectors (as is typical for D3D), where <strong class="bbc">R</strong> means the orientation, <strong class="bbc">r</strong> the current rotation, <strong class="bbc">T</strong> the position, and <strong class="bbc">t</strong> the translation. So you compose the model's world matrix <strong class="bbc">M</strong> after having applied the current delta transformations.<br><br>The latter way means that you do something like<br><strong class="bbc">M</strong><sub class="bbc">i</sub> := <strong class="bbc">M</strong><sub class="bbc">i-1</sub> * <strong class="bbc">r</strong><sub class="bbc">i</sub> * <strong class="bbc">t</strong><sub class="bbc">i</sub> <br>but that isn't exactly what you probably want, because if you set in <strong class="bbc">M</strong> recursively<br><strong class="bbc">M</strong><sub class="bbc">i</sub> = <strong class="bbc">M</strong><sub class="bbc">i-2</sub> * <strong class="bbc">r</strong><sub class="bbc">i-1</sub> * <strong class="bbc">t</strong><sub class="bbc">i-1</sub> * <strong class="bbc">r</strong><sub class="bbc">i</sub> * <strong class="bbc">t</strong><sub class="bbc">i</sub><br>you'll see that you rotate the already translated model. Hence you would need to undo the former translation (<strong class="bbc">t</strong><sub class="bbc">i-1</sub>) by applying its inverse before applying <strong class="bbc">r</strong><sub class="bbc">i</sub> (not to forget to later redo the translation) like so<br><strong class="bbc">M</strong><sub class="bbc">i</sub> := <strong class="bbc">M</strong><sub class="bbc">i-2</sub> * <strong class="bbc">r</strong><sub class="bbc">i-1</sub> * <strong class="bbc">t</strong><sub class="bbc">i-1</sub> * ( <strong class="bbc">t</strong><sub class="bbc">i-1</sub><sup class="bbc">-1</sup><sub class="bbc"> </sub>* <strong class="bbc">r</strong><sub class="bbc">i</sub> * <strong class="bbc">t</strong><sub class="bbc">i-1 </sub>) * <strong class="bbc">t</strong><sub class="bbc">i</sub><br>where
+ the parentheses are written only for cosmetic purposes; they are not 
+necessary from a mathematical point of view. The consequence is now, if 
+you continue to recursively set in <strong class="bbc">M</strong>, then you'll see that you actually compute<br><strong class="bbc">M</strong><sub class="bbc">i</sub> = <strong class="bbc">R</strong><sub class="bbc">i</sub> * <strong class="bbc">T</strong><sub class="bbc">i</sub> <br>like done in the first way shown above. That's the whole secret of this undo/redo transformation stuff.
+					
+					<br>
+					
+				</div>
+				
+				
+					<div class="signature" data-memberid="90444">
+	
+	<!--signature-cached-Tue, 11 Apr 2017 15:16:46 +0000--> 
+</div>
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800315-->
+<div class="post_block hentry clear clearfix " id="post_id_4800315">
+		<a id="entry4800315"></a>
+<a href="https://www.gamedev.net/index.php?showuser=179129" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800315').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800315').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800315').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800315').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800315" rel="bookmark" title=": post #3">#3</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="179129" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/179129-believe82/" title="" id="anonymous_element_3"><span itemprop="name">Believe82</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/179129-believe82'>118</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/179129-believe82">118</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800315" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800315" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T11:56:02+00:00">19 April 2011 - 05:56 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="Believe82" post-date="1303214162" post-id="4800315" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->Hi, thanks for the reply  you are right, i recently realized that i was very confused with many of terms i placed up there.<br>
+<br>
+My real question now is how do i take an object from Object space and transform it into World space?<br>
+<br>
+I created a transformation with my object with the following code...<br>
+<br>
+	D3DXMATRIX scale;<br>
+	D3DXMATRIX translation;<br>
+	D3DXMATRIX rotation;<br>
+<br>
+	D3DXMatrixIdentity( &amp;scale);<br>
+	D3DXMatrixIdentity( &amp;translation);<br>
+	D3DXMatrixIdentity( &amp;rotation);<br>
+<br>
+	D3DXMatrixTranslation( &amp;translation, m_position.x, m_position.y, 
+m_position.z); // m_position is local space origin position in world 
+space<br>
+	D3DXMatrixRotationY( &amp;result, angle );  // angle is a parameter i receive whenever the ships direction vector changes<br>
+<br>
+   transformMatrix = scale * rotation * translation<br>
+<br>
+	m_worldTransform = scale * rotation * translation;  	//Transformation matrix to transform from local to world space<br>
+  <br>
+Now to show this in world space i do the following calculation...<br>
+<br>
+	m_World = view * projection * m_worldTransform <br>
+<br>
+This doesn't work at all, it results in a very strange world.
+					
+					<br>
+					
+				</div>
+				
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800353-->
+<div class="post_block hentry clear clearfix " id="post_id_4800353">
+		<a id="entry4800353"></a>
+<a href="https://www.gamedev.net/index.php?showuser=158794" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800353').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800353').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800353').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800353').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800353" rel="bookmark" title=": post #4">#4</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="158794" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/158794-burnt_fyr/" title="" id="anonymous_element_4"><span itemprop="name">Burnt_Fyr</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/158794-burnt_fyr'>1664</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/158794-burnt_fyr">1664</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800353" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800353" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T13:47:03+00:00">19 April 2011 - 07:47 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="Burnt_Fyr" post-date="1303220823" post-id="4800353" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000--><p class="citation">'Believe82', on 19 Apr 2011 - 2:56 PM, said:<a class="snapback right" rel="citation" href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=4800315"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/snapback.png"></a></p><blockquote class="ipsBlockquote built" data-author="'Believe82'" data-cid="4800315" data-time="1303214162"><p>Hi, thanks for the reply  you are right, i recently realized that i was very confused with many of terms i placed up there.<br><br>My real question now is how do i take an object from Object space and transform it into World space?<br><br>I created a transformation with my object with the following code...<br><br>	D3DXMATRIX scale;<br>	D3DXMATRIX translation;<br>	D3DXMATRIX rotation;<br><br>	D3DXMatrixIdentity( &amp;scale);<br>	D3DXMatrixIdentity( &amp;translation);<br>	D3DXMatrixIdentity( &amp;rotation);<br><br>
+	D3DXMatrixTranslation( &amp;translation, m_position.x, m_position.y, 
+m_position.z); // m_position is local space origin position in world 
+space<br>	D3DXMatrixRotationY( &amp;result, angle );  // angle is a parameter i receive whenever the ships direction vector changes<br><br>   transformMatrix = scale * rotation * translation<br><br>	m_worldTransform = scale * rotation * translation;  	//Transformation matrix to transform from local to world space<br>  <br>Now to show this in world space i do the following calculation...<br><br>	m_World = view * projection * m_worldTransform <br><br>This doesn't work at all, it results in a very strange world.<br></p></blockquote><br>As haegarr ( who was kind enough to give a thorough explanation ) mentioned. Order of Matrix Multiplication is important.<br><br><pre class="prettyprint lang-auto linenums:0 prettyprinted" style=""><span class="pln">D3DXMATRIX world</span><span class="pun">,</span><span class="pln"> view</span><span class="pun">,</span><span class="pln"> projection</span><span class="pun">,</span><span class="pln"> objSpace_to_NDCSpace</span><span class="pun">;</span><span class="pln">
+
+objSpace_to_NDCSpace </span><span class="pun">=</span><span class="pln"> world </span><span class="pun">*</span><span class="pln"> view </span><span class="pun">*</span><span class="pln"> projection</span><span class="pun">;</span><span class="pln"> </span><span class="com">// world, then view then projection</span></pre><br>Since
+ you are using d3d, I must ask, are you using shaders or the Fixed 
+function pipleline. If shaders, then study hard my friend, because you 
+will need a much better understanding of this stuff if you plan to write
+ shaders. If not, ie you are using device-&gt;SetTransform() then you 
+don't want to concatenate the matrices your self.<br><br><pre class="prettyprint lang-auto linenums:0 prettyprinted" style=""><span class="pln">D3DDEVICE</span><span class="pun">-&gt;</span><span class="typ">SetTransform</span><span class="pun">(</span><span class="pln">D3DTS_WORLD</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">world</span><span class="pun">);</span><span class="pln">
+D3DDEVICE</span><span class="pun">-&gt;</span><span class="typ">SetTransform</span><span class="pun">(</span><span class="pln">D3DTS_VIEW</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">view</span><span class="pun">);</span><span class="pln">
+D3DDEVICE</span><span class="pun">-&gt;</span><span class="typ">SetTransform</span><span class="pun">(</span><span class="pln">D3DTS_PROJECTION</span><span class="pun">,</span><span class="pln"> </span><span class="pun">&amp;</span><span class="pln">projection</span><span class="pun">);</span></pre><br>You
+ just tell your d3ddevice where they are, and what they are for, and it 
+will do the rest. Easier, but less flexible in the long run.<br><br>
+					
+					<br>
+					
+				</div>
+				
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800366-->
+<div class="post_block hentry clear clearfix " id="post_id_4800366">
+		<a id="entry4800366"></a>
+<a href="https://www.gamedev.net/index.php?showuser=90444" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800366').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800366').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800366').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800366').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800366" rel="bookmark" title=": post #5">#5</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="90444" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/90444-haegarr/" title="" id="anonymous_element_5"><span itemprop="name">haegarr</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/90444-haegarr'>7355</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/90444-haegarr">7355</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800366" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800366" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T14:08:33+00:00">19 April 2011 - 08:08 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="haegarr" post-date="1303222113" post-id="4800366" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->You
+ take an object from one space into another by applying a space-to-space
+ descriptive transformation and re-interpret the transformed 
+co-ordinates with respect to the reference frame of the other space. 
+Well, to understand this, you must be aware that the world space has in 
+fact absolutely no feature that makes it superior to e.g. what is called
+ a model's local space. This is true for the view space, too, or any 
+other one. For example, if you have a model centered around <strong class="bbc">0</strong>,
+ and you don't apply a world or view transformation to it but render it 
+"as is", then you interpret the model's vertices as given with respect 
+to view co-ordinates (assuming that a projection <em class="bbc">is</em>
+ applied by D3D). If you apply, say, a translation to it and render it 
+thereafter, then you interpret the translated mesh in view co-ordinates.
+ Whether the translation counts to the local-to-world transformation or 
+to the view transformation is just a convention.<br><br>The transformation pipeline applied to a mesh is longish, but the following (written in order for row vectors, as used by D3D)<br><strong class="bbc">M</strong> * <strong class="bbc">V</strong> * <strong class="bbc">P </strong>* ...<br>where <strong class="bbc">M</strong> denotes the local-to-world space matrix, <strong class="bbc">V</strong> the view matrix, and <strong class="bbc">P</strong>
+ the projection matrix, is the part one primarily deals with. It can be 
+interpreted as transforming from the local space into the global space 
+(a.k.a. world) by applying <strong class="bbc">M</strong>, transforming from global space into view space by applying <strong class="bbc">V</strong>, and from view space further by applying the projection matrix <strong class="bbc">P</strong> (whereby e.g. perspective projection happens).<br><br>A
+ composite of such 3 matrices is probably what appears named as gWVP in 
+your shader script. It is probably composed by using D3D routines that 
+multiply matrices, and then set as a compact matrix into the GPU. (I 
+don't want to discuss the details because I'm not a D3D programmer.) 
+However, when you want to translate a model in a specific space then 
+look where in the transformation pipeline the space is active and insert
+ the translation there. It will usually be just before <strong class="bbc">V</strong>, i.e. as last part inside <strong class="bbc">M</strong>.<br><br><br>EDIT: Uh, the post I've answered has been altered in the meanwhile...
+					
+					<br>
+					
+				</div>
+				
+				
+					<div class="signature" data-memberid="90444">
+	
+	<!--signature-cached-Tue, 11 Apr 2017 15:16:46 +0000--> 
+</div>
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800380-->
+<div class="post_block hentry clear clearfix " id="post_id_4800380">
+		<a id="entry4800380"></a>
+<a href="https://www.gamedev.net/index.php?showuser=179129" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800380').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800380').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800380').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800380').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800380" rel="bookmark" title=": post #6">#6</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="179129" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/179129-believe82/" title="" id="anonymous_element_6"><span itemprop="name">Believe82</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/179129-believe82'>118</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/179129-believe82">118</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800380" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800380" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T14:40:57+00:00">19 April 2011 - 08:40 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="Believe82" post-date="1303224057" post-id="4800380" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->Thanks for the replies.  You guys have helped clarify some things.<br>
+<br>
+Burnt_Fyr, I am using DirectX10 so i am working with vertex shaders 
+since SetTransform seems to be deprecated. I think i understand the 
+input, and output of the vertex Shaders, but am i supposed to use 
+Shaders to perform the transformations or can i just do it within my 
+main class or ship class? <br>
+<br>
+Haegarr, the M*V*P logic made sense but it just resulted in translating the entire terrain along with my ship.<br>
+<br>
+Do i need to write a seperate shader for my terrain and ship?<br>
+<br>
+Thanks for all the help i think after i figure out if transformations 
+are done through the shader or can be done through matrix math <br>
+inside of my main class or ship class i'll learn through practicing and examples.
+					
+					<br>
+					
+				</div>
+				
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800387-->
+<div class="post_block hentry clear clearfix " id="post_id_4800387">
+		<a id="entry4800387"></a>
+<a href="https://www.gamedev.net/index.php?showuser=90444" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800387').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800387').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800387').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800387').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800387" rel="bookmark" title=": post #7">#7</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="90444" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/90444-haegarr/" title="" id="anonymous_element_7"><span itemprop="name">haegarr</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/90444-haegarr'>7355</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/90444-haegarr">7355</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800387" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800387" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T15:01:27+00:00">19 April 2011 - 09:01 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="haegarr" post-date="1303225287" post-id="4800387" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000--><p class="citation">'Believe82', on 19 Apr 2011 - 5:40 PM, said:<a class="snapback right" rel="citation" href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=4800380"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/snapback.png"></a></p><blockquote class="ipsBlockquote built" data-author="'Believe82'" data-cid="4800380" data-time="1303224057"><p>Haegarr, the M*V*P logic made sense but it just resulted in translating the entire terrain along with my ship.<br><br>Do i need to write a seperate shader for my terrain and ship?<br></p></blockquote>Perhaps, but not for this reason. Instead you have to push another <strong class="bbc">MVP</strong> into the shader. <strong class="bbc">P</strong> changes usually never. <strong class="bbc">V</strong>
+ changes from frame to frame (assuming the camera is in motion) but is 
+the same for all objects in the current frame. But each object has its 
+own <strong class="bbc">M</strong>, and it may change from frame to frame (animated objects) or not (keyword "static geometry"). So <strong class="bbc">MVP</strong> usually varies from object to object, and hence need to be set as its own value for each object to render.<br><br><p class="citation">'Believe82', on 19 Apr 2011 - 5:40 PM, said:<a class="snapback right" rel="citation" href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=4800380"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/snapback.png"></a></p><blockquote class="ipsBlockquote built" data-author="'Believe82'" data-cid="4800380" data-time="1303224057"><p>Thanks
+ for all the help i think after i figure out if transformations are done
+ through the shader or can be done through matrix math <br>inside of my main class or ship class i'll learn through practicing and examples.<br></p></blockquote>You
+ have to compose the transformation on the CPU, set it trough the 
+graphics API either in the FFP or the shader, and let the GPU apply the 
+transformation onto the mesh. That's the usual way (of course, special 
+use cases exist where something else happens).
+					
+					<br>
+					
+				</div>
+				
+				
+					<div class="signature" data-memberid="90444">
+	
+	<!--signature-cached-Tue, 11 Apr 2017 15:16:46 +0000--> 
+</div>
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+
+				<!--post:4800392-->
+<div class="post_block hentry clear clearfix " id="post_id_4800392">
+		<a id="entry4800392"></a>
+<a href="https://www.gamedev.net/index.php?showuser=179129" class="" style=""><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/default_large.png" class="ipsUserPhoto ipsUserPhoto_medium left photo" style="margin-top: -10px; margin-right: 10px; margin-left:10px"></a>
+		
+	
+		
+<!-- 
+onmouseenter="$('rep_post_4800392').fade({ duration: 0.4, from: 0.1, to: 1 });$('multiq_4800392').fade({ duration:0.4, from: 0.1,to:1});" onmouseleave="$('rep_post_4800392').fade({ duration: 0.2, from: 1, to: 0.1 });$('multiq_4800392').fade({ duration:0.2, from: 1,to:0.1});" -->
+		<div class="post_wrap">
+
+                       
+			<h3 class="row2">
+				
+				<span itemprop="headline" class="entry-title post_id right ipsType_small desc blend_links"><a href="https://www.gamedev.net/topic/600204-object-space-to-world-space/?view=findpost&amp;p=4800392" rel="bookmark" title=": post #8">#8</a></span>
+				
+					<span class="vcard author"><a itemprop="name" hovercard-ref="member" hovercard-id="179129" data-ipb="noparse" class="url fn nickname  ___hover___member _hoversetup" href="https://www.gamedev.net/user/179129-believe82/" title="" id="anonymous_element_8"><span itemprop="name">Believe82</span></a></span>
+				
+			        <span class="desc">&nbsp;&nbsp;Members &nbsp;&nbsp;
+                    <!--Reputation: <span data-tooltip="Reputation Points"><strong><a href='/sm/member/179129-believe82'>118</a></strong></span>-->
+                    </span>
+
+		
+
+				
+			</h3>
+
+			 <!-- author pane -->
+                        <div class="vcard author author_info" style="width:70px; padding: 0px 0px;clear:both;margin-top-20px;">
+                            <span data-tooltip="Reputation Points"><strong><a href="https://www.gamedev.net/sm/member/179129-believe82">118</a></strong></span>
+
+                        <div style="display:block; height: 120px;margin-left:3px;">
+  <div style="position:relative; margin-top:20px;">
+
+    <div style="position:absolute; width:43px;height:65px;background: url('/public/style_images/rating_bkg.png') no-repeat;top: -3px; left: 10px;"></div>
+        <a class="voteaction_like vdisabled" id="votelike_4800392" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+    <div class="votecard">
+      <div>
+        <em><strong>0</strong><span>Likes</span></em>
+      
+        <em><strong>1</strong><span>Likes</span></em>
+      </div>
+    </div>
+
+    <a class="voteaction_dislike vdisabled" id="votedislike_4800392" href="#" data-tooltip="&lt;b&gt;You must login to GameDev.net&lt;/b&gt;&lt;br/&gt;Login to vote on this post.&lt;br/&gt;">Like</a>
+
+  </div>
+</div>       
+			</div>
+
+			<div class="post_body" style="margin: 0 10px 0 65px;">
+
+				<p class="posted_info desc lighter ipsType_small">
+					Posted <abbr class="published updated" title="2011-04-19T15:39:10+00:00">19 April 2011 - 09:39 AM</abbr>
+				</p>
+				
+				<div class="post entry-content ">
+					<div class="ddk33_post_info" post-author="Believe82" post-date="1303227550" post-id="4800392" style="display:none;"></div><!--cached-Tue, 04 Apr 2017 14:21:33 +0000-->Haegarr,
+ Thank you very much the introduction of a world variable for my object,
+ and the introduction of a seperate for loop for drawing my ship now 
+allows my ship to walk, and strafe in world space imported in from Local
+ space. You've been a big help! You too Burnt_Fyr <span rel="lightbox"><img class="bbc_img" src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/smile.html" alt=":)"></span>
+					
+					<br>
+					
+				</div>
+				
+				
+			
+				<ul class="post_controls clear clearfix">
+					<li class="top hide"><a href="#ipboard_body" class="top" title="Back to top">Back to top</a></li>
+					
+					
+					
+					
+					
+					
+				</ul>
+					
+			</div>
+		</div>
+	</div>
+		
+		
+		<hr>
+		
+		
+
+			
+		</div>
+	</div>
+
+<hr>
+<!-- MOD LINKS -->
+
+<hr>
+<div class="topic_controls clear ipsPad_top_bottom_half">
+	
+	<div class="ipsPad_top_slimmer right">
+		<a href="https://www.gamedev.net/forum/10-directx-and-xna/" class="ipsType_small desc">Back to DirectX and XNA</a>
+		
+	</div>
+	
+	
+</div>
+<br>
+	  <div class="message error">
+      <b>Old topic!</b><br>
+<p><strong class="bbc">Guest</strong>, the last post of this topic is over <strong class="bbc">60 days old</strong> and at this point you may not reply in this topic. If you wish to continue this conversation start a new topic.</p>
+</div>
+<br>
+<!-- Close topic -->
+<!--</div>-->
+
+
+
+<!-- BOTTOM BUTTONS -->
+
+
+        
+
+</div>
+
+
+
+
+	
+	
+	<!-- By default we load generic code, php, css, sql and xml/html; load others here if desired -->
+	
+<div id="multiQuoteInsert" style="display: none;" class="ipsFloatingAction">
+	<span class="ipsButton no_width" id="mqbutton">Reply to quoted posts</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="multiQuoteClear" class="ipsType_smaller desc" title="Clear the posts you have selected with MultiQuote">Clear</a> &nbsp;&nbsp;&nbsp;
+</div>
+				<div class="nexusad" align="center"><div id="leaderboard">
+<div id="div-gpt-ad-1471133041330-0">
+
+</div>
+</div></div>
+                          </div>
+                         </div>
+</div> <!--bugworkaround-->
+				<ol class="breadcrumb hidden-sm hidden-xs">
+															<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<a href="https://www.gamedev.net/" itemprop="url">
+										<span itemprop="title">Home</span>
+									</a>
+								</li>
+								
+							
+
+								<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<a href="https://www.gamedev.net/index" itemprop="url">
+<span class="nav_sep"><b>»</b></span>
+										<span itemprop="title">Forums</span>
+									</a>
+								</li>
+
+							
+							
+								<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<span class="nav_sep"><b>»</b></span>
+									 
+                                    <a href="http://www.gamedev.net/page/index.html/" title="Return to Home" itemprop="url">
+                                
+                                                                         <span itemprop="title">Home</span>
+</a>
+
+								</li>
+								
+							
+
+								<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<span class="nav_sep"><b>»</b></span>
+									 
+                                    <a href="https://www.gamedev.net/index" title="Return to Forums" itemprop="url">
+                                
+                                                                         <span itemprop="title">Forums</span>
+</a>
+
+								</li>
+								
+							
+
+								<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<span class="nav_sep"><b>»</b></span>
+									 
+                                    <a href="https://www.gamedev.net/forum/123-the-technical-side/" title="Return to The Technical Side" itemprop="url">
+                                
+                                                                         <span itemprop="title">The Technical Side</span>
+</a>
+
+								</li>
+								
+							
+
+								<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+									<span class="nav_sep"><b>»</b></span>
+									 
+                                    <a href="https://www.gamedev.net/forum/10-directx-and-xna/" title="Return to DirectX and XNA" itemprop="url">
+                                
+                                                                         <span itemprop="title">DirectX and XNA</span>
+</a>
+
+								</li>
+								
+							
+						</ol>
+
+			</div>
+
+
+			<!-- ::: FOOTER (Change skin, language, mark as read, etc) ::: -->
+
+			<div id="footer_utilities" class="main_width clearfix clear">
+				<a rel="nofollow" href="#top" id="backtotop" title="Go to top"><span class="gdtop sprite" style="margin-top:5px"></span></a>
+				<ul class="ipsList_inline left">
+<!--
+					
+							-->
+
+<!-- test -->
+
+<!-- end test -->
+
+					
+						<li>
+							<a rel="nofollow" href="#" id="new_language" class="">English (USA)</a>							
+							<ul id="new_language_menucontent" class="ipbmenu_content with_checks" style="display: none; position: absolute; z-index: 9999;">
+								
+									<li class="selected" style="z-index: 10000;">
+										<a href="https://www.gamedev.net/index.php?showtopic=600204&amp;k=880ea6a14ea49e853634fbdc5015a024&amp;setlanguage=1&amp;langurlbits=showtopic=600204&amp;cal_id=&amp;langid=1" style="z-index: 10000;">English (USA)</a>
+									</li>
+								
+
+									<li style="z-index: 10000;">
+										<a href="https://www.gamedev.net/index.php?showtopic=600204&amp;k=880ea6a14ea49e853634fbdc5015a024&amp;setlanguage=1&amp;langurlbits=showtopic=600204&amp;cal_id=&amp;langid=2" style="z-index: 10000;">English (USA) (COPY)</a>
+									</li>
+								
+							</ul>
+						</li>
+					
+					<li>
+						<a rel="nofollow" id="mark_all_read" href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=all&amp;k=880ea6a14ea49e853634fbdc5015a024" title="Mark all as read" class="">Mark Community Read</a>
+						<ul id="mark_all_read_menucontent" class="ipbmenu_content" style="display: none; position: absolute; z-index: 9999;">
+							
+								<li style="z-index: 10000;">
+									
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=forums&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Forums</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=members&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Members</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=blog&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Developer Blogs</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=gallery&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Gallery</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=downloads&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Downloads</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=ccs&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Resources</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=nexus&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Store</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=classifieds&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Classifieds</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=tracker&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Tracker</a>
+								</li>
+							
+
+								<li style="z-index: 10000;">
+									<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=app&amp;markApp=links&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;">Links</a>
+								</li>
+							
+							<li style="z-index: 10000;">
+								<a href="https://www.gamedev.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=all&amp;k=880ea6a14ea49e853634fbdc5015a024" style="z-index: 10000;"><strong style="z-index: 10000;">Mark all as read</strong></a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="https://www.gamedev.net/index.php?app=core&amp;module=help" title="View help" rel="help" accesskey="6">Help</a>
+					</li>				
+				</ul>
+			</div>
+   
+<div id="footercontainer">
+	<div class="footer">
+			<div class="fRef">
+                                <div id="logo" style="margin-bottom:5px">
+	                            <a href="https://www.gamedev.net/" title="GameDev.net Home" rel="home" accesskey="1">
+                                        <img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/gd_small_logo_2016.png">
+                                    </a>
+				</div>
+				<div class="fRef-text">
+					Copyright © 1999-2017 GameDev.net, LLC
+                                        <p><br>GameDev.net™, the GameDev.net logo, and GDNet™ are trademarks of GameDev.net, LLC.<br></p>
+				</div>
+
+			</div>
+
+			<div class="fNav">
+                        <h5>Resources</h5>
+                        <ul>
+                        <li><a href="https://www.gamedev.net/">Home</a></li>
+                        <li><a href="https://www.gamedev.net/resources">Articles</a></li>
+                        <li><a href="https://www.gamedev.net/forums">GameDev.net Forums</a></li>
+                        <li><a href="https://www.gamedev.net/forum/31-for-beginners/">Beginners</a></li>
+                        </ul>
+                        </div>
+
+			<div class="fNav">
+                        <h5>Community</h5>
+                        <ul>
+                        <li><a href="https://www.gamedev.net/blogs">Blogs</a></li>
+                        <li><a href="https://www.gamedev.net/subscribe/">GDNet+ Membership</a></li>
+                        <li><a href="https://www.gamedev.net/showdown/browse.html?view=top_week">Image of the Day</a></li>
+                        <li><a href="https://www.gamedev.net/members">Members</a></li>
+                        </ul>
+                        </div>
+
+			<div class="fNav">
+                        <h5>Industry</h5>
+                        <ul>
+                        <li><a href="https://www.gamedev.net/classifieds/category/4-job-offers/">Job Advertising</a></li>
+                        <li><a href="https://www.gamedev.net/classifieds/category/2-contractors/">Freelancer Ads</a></li>
+                        <li><a href="https://gamedev.market/">Asset Marketplace</a></li>
+                        <li><a href="https://gamedev.market/product-category/gamedev-net/">GameDev.net Products</a></li>
+                        </ul>
+                        </div>
+
+			<div class="fNav">
+                        <h5>About GameDev.net</h5>
+                        <ul>
+                        <li><a href="https://www.gamedev.net/info/about">About Us</a></li>
+                        <li><a href="https://www.gamedev.net/info/legal/tos.html">Terms of Service</a></li>
+                        <li><a href="https://www.gamedev.net/info/legal/privacy.html">Privacy Policy</a></li>
+                        <li><a href="https://www.gamedev.net/info/about/contact.html">Contact</a></li>
+                        </ul>
+                        </div>
+
+                        <div class="fNav">
+                            <a href="https://steamcommunity.com/groups/gamedevdotnet" data-tooltip="Join our official Steam group!" target="new">
+                            <i class="fa fa-steam-square fa-2x steamIcon" style="color:#fff;" aria-hidden="true"></i></a>
+                            <a href="https://www.facebook.com/GameDev.net" data-tooltip="Join our Facebook group!" target="new">
+                            <i class="fa fa-facebook-square fa-2x facebookIcon" style="color:#fff;" aria-hidden="true"></i></a>
+                            <a href="https://twitter.com/gdevnet" data-tooltip="Follow us on Twitter!" target="new">
+                            <i class="fa fa-twitter-square fa-2x twitterIcon" style="color:#fff;" aria-hidden="true"></i></a>
+                            <a href="https://www.linkedin.com/groups?about=&amp;gid=132271&amp;trk=anet_ug_grppro" data-tooltip="Join our Linkedin group!" target="new">
+                            <i class="fa fa-linkedin-square fa-2x linkedInIcon" style="color:#fff;" aria-hidden="true"></i></a>
+                            <a href="" id="rss_feed" class="clickable rssIcon" alt="RSS Feed" target="new">
+                            <i class="fa fa-rss-square fa-2x rssIcon" style="color:#fff;" aria-hidden="true"></i></a>
+                        </div>
+
+			<div style="clear:both"><!--empty--></div>
+			<!--empty-->
+	</div>
+</div>
+
+			
+			
+		</div>
+
+
+
+
+
+				
+
+            
+            <div id="inline_login_form" style="display: none">
+		<form action="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=login&amp;do=process" method="post" id="login">
+				<input name="auth_key" value="880ea6a14ea49e853634fbdc5015a024" type="hidden">
+				<input name="referer" value="https://www.gamedev.net/topic/600204-object-space-to-world-space/" type="hidden">
+				<h3>Sign In</h3>
+				<div class="ipsBox_notice">
+                <ul class="ipsList_inline">
+                    <li><a href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=login&amp;do=process&amp;use_google=1&amp;auth_key=880ea6a14ea49e853634fbdc5015a024" class="ipsButton_secondary" id="googleAjax"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/login-google-icon.png" alt="Google"> &nbsp; Use Google</a></li>
+                </ul>
+            </div>
+<div class="ipsBox_notice">
+						<ul class="ipsList_inline">
+							
+								<li><a href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=login&amp;serviceClick=facebook" class="ipsButton_secondary"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/facebook.png" alt="Facebook"> &nbsp; Use Facebook</a></li>
+							
+							
+							
+							
+						</ul>
+					</div>
+				<br>
+				<div class="ipsForm ipsForm_horizontal">
+					<fieldset>
+						<ul>
+							<li class="ipsField">
+								<div class="ipsField_content">
+									Need an account? <a href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=register" title="Register now!">Register now!</a>
+								</div>
+							</li>
+							<li class="ipsField ipsField_primary">
+								<label for="ips_username" class="ipsField_title">Username or email:</label>
+								<div class="ipsField_content">
+									<input id="ips_username" class="input_text" name="ips_username" size="30" tabindex="0" type="text">
+								</div>
+							</li>
+							<li class="ipsField ipsField_primary">
+								<label for="ips_password" class="ipsField_title">Forum Password</label>
+								<div class="ipsField_content">
+									<input id="ips_password" class="input_text" name="ips_password" size="30" tabindex="0" type="password"><br>
+									<a href="https://www.gamedev.net/index.php?app=core&amp;module=global&amp;section=lostpass" title="Retrieve password">I've forgotten my password</a>
+								</div>
+							</li>
+							<li class="ipsField ipsField_checkbox">
+								<input id="inline_remember" checked="checked" name="rememberMe" value="1" class="input_check" tabindex="0" type="checkbox">
+								<div class="ipsField_content">
+									<label for="inline_remember">
+										<strong>Remember me</strong><br>
+										<span class="desc lighter">This is not recommended for shared computers</span>
+									</label>
+								</div>
+							</li>
+							
+								<li class="ipsField ipsField_checkbox">
+									<input id="inline_invisible" name="anonymous" value="1" class="input_check" tabindex="0" type="checkbox">
+									<div class="ipsField_content">
+										<label for="inline_invisible">
+											<strong>Sign in anonymously</strong><br>
+											<span class="desc lighter">Don't add me to the active users list</span>
+										</label>
+									</div>
+								</li>
+							
+							
+							<li class="ipsPad_top ipsForm_center desc ipsType_smaller">
+								<a rel="nofollow" href="https://www.gamedev.net/privacypolicy/">Privacy Policy</a>
+							</li>
+							
+						</ul>
+					</fieldset>
+					
+					<div class="ipsForm_submit ipsForm_center">
+						<input class="ipsButton" value="Sign In" tabindex="0" type="submit">
+					</div>
+				</div>
+			</form>
+	</div>
+	
+		
+<div id="infobar" style="display:none"><div id="infobarmsg"></div></div>
+<div id="nav_app_ipchat" style="display:none"><a href=""></a></div>
+
+</div> <!--fixedheadercontent-->
+<!--NOTHINGTOSEEHERE-->
+
+
+
+
+
+	
+<div id="overlay" style="display: none;"></div><div id="lightbox" style="display: none;"><div id="outerImageContainer" style="width: 250px; height: 250px;"><div id="imageContainer"><img id="lightboxImage"><div id="hoverNav"><a id="prevLink" href="#"></a><a id="nextLink" href="#"></a></div><div id="loading"><a id="loadingLink" href="#"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/loading.gif"></a></div></div></div><div id="imageDataContainer"><div id="imageData"><div id="imageDetails"><span id="caption"></span><span id="numberDisplay"></span></div><div id="bottomNav"><a id="bottomNavClose" href="#"><img src="Object%20Space%20to%20World%20Space%20-%20DirectX%20and%20XNA%20-%20GameDev.net_tiedostot/closelabel.gif"></a></div></div></div></div></body></html>

@@ -1,0 +1,52 @@
+struct appin
+{
+    float4 position  : POSITION;
+	float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+struct vertout
+{
+	float4 position  : POSITION;
+	float4 color0    : COLOR0;
+    float2 texcoord0 : TEXCOORD0;
+};
+
+// This binding semantic requires CG_PROFILE_ARBVP1 or higher.
+uniform float4x4 modelViewProj : state.matrix.mvp;
+
+vertout main( appin IN, uniform float4 currentAngle )
+{
+	vertout OUT;
+
+    //
+    // First, use the sin() function to displace the vertices' Y value as a 
+    // function of its X value summed with a uniform parameter which  
+    // continuously grows from 0 to 360 and repeats. This will cause the 
+    // geometry to ripple like a sine wave.
+    //
+    // Of course, we don't want our flag to look like a perfect sine wave, so
+    // add in some variation by calling sin() again, but this time, use the Z 
+    // value.
+    //
+    // Also, flag vertices, which are closer to the flagpole, shouldn't move  
+    // much at all because they're attached to the pole, so use the X value  
+    // again to diminish the movement of Y values which are closer to the  
+    // flagpole. This becomes easy since X values start out at 0.0f near the   
+    // flagpole and grow larger as they move away.
+    //
+    // Finally, I use a value of 0.08f to scale the effect for visual appeal.
+    //
+
+    float4 v = IN.position;
+
+    v.y  = sin( IN.position.x + currentAngle.x );
+    v.y += sin( IN.position.z + currentAngle.x );
+    v.y *= IN.position.x * 0.08f;
+
+    OUT.position  = mul( modelViewProj, v );
+    OUT.color0    = IN.color0;
+	OUT.texcoord0 = IN.texcoord0;
+
+	return OUT;
+}

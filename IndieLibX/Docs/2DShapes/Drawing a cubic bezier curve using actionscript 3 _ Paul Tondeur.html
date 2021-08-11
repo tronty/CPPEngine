@@ -1,0 +1,1190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"><head profile="http://gmpg.org/xfn/11"><script type="text/javascript" async="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ga.html"></script><script src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/analytics.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app57.us.archive.org';v.server_ms=225;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ait-client-rewrite.js" charset="utf-8"></script>
+<script type="text/javascript">
+WB_wombat_Init("https://web.archive.org/web", "20160304095548", "blog.paultondeur.com:80");
+</script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/wbhack.js" charset="utf-8"></script>
+<script type="text/javascript">
+__wbhack.init('https://web.archive.org/web');
+</script>
+<link rel="stylesheet" type="text/css" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drawing a cubic bezier curve using actionscript 3 | Paul Tondeur</title>
+<meta name="description" content="Recently I came up with an idea for a project to work on and where I plan to write about soon on this blog. As a part of this project...">
+
+<link rel="alternate" type="application/rss+xml" href="https://web.archive.org/web/20160304095548/http://www.paultondeur.com/feed/" title="Paul Tondeur latest posts">
+
+<link rel="alternate" type="application/rss+xml" href="https://web.archive.org/web/20160304095548/http://www.paultondeur.com/comments/feed/" title="Paul Tondeur latest comments">
+
+<link rel="pingback" href="http://blog.paultondeur.com/xmlrpc.php">
+
+<link rel="shortcut icon" href="https://web.archive.org/web/20160304095548im_/http://blog.paultondeur.com/favicon.ico">
+
+
+				
+	<script type="text/javascript">//<![CDATA[
+	// Google Analytics for WordPress by Yoast v4.06 | http://yoast.com/wordpress/google-analytics/
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount','UA-3440895-1']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://web.archive.org/web/20160304095548/https://ssl/' : 'https://web.archive.org/web/20160304095548/http://www/') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	// End of Google Analytics for WordPress by Yoast v4.0
+	//]]></script>
+<link rel="alternate" type="application/rss+xml" title="Paul Tondeur � Drawing a cubic bezier curve using actionscript 3 Comments Feed" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2008/03/09/drawing-a-cubic-bezier-curve-using-actionscript-3/feed/">
+<link rel="stylesheet" id="easy-fancybox.css-css" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/easy-fancybox.css" type="text/css" media="screen">
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/l10n.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/swfobject.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/jquery_002.html"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/hoverIntent.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/superfish.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/comment-reply.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/jquery.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/jquery_002.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/jquery_003.html"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/jquery.html"></script>
+
+<script type="text/javascript" charset="utf-8">
+
+	/**
+	 * Courtesy of Kimili Flash Embed - Version 2.1.5
+	 * by Michael Bester - http://kimili.com
+	 */
+
+	(function(){
+		try {
+			// Disabling SWFObject's Autohide feature
+			if (typeof swfobject.switchOffAutoHideShow === "function") {
+				swfobject.switchOffAutoHideShow();
+			}
+		} catch(e) {}
+	})();
+</script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.paultondeur.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.paultondeur.com/wp-includes/wlwmanifest.xml"> 
+<link rel="index" title="Paul Tondeur" href="http://blog.paultondeur.com/">
+<link rel="start" title="First post" href="http://blog.paultondeur.com/2008/01/19/first-post/">
+<link rel="prev" title="Colin Moock?s ActionScript 3.0 From The Ground Up Tour" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2008/02/27/colin-moocks-actionscript-30-from-the-ground-up-tour/">
+<link rel="next" title="Multiplayer Papervision3D using Red5" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2008/04/01/multiplayer-papervision3d-using-red5/">
+<meta name="generator" content="WordPress 3.1">
+<link rel="canonical" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2008/03/09/drawing-a-cubic-bezier-curve-using-actionscript-3/">
+<link rel="shortlink" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/?p=13">
+
+<!-- Easy FancyBox plugin for WordPress using FancyBox 1.3.4 - RavanH (http://4visions.nl/en/wordpress-plugins/easy-fancybox/) -->
+<script type="text/javascript">
+/* <![CDATA[ */
+jQuery(document).ready(function($){
+var fb_timeout = null;
+var fb_opts = { 'overlayShow' : true, 'centerOnScroll' : true, 'showCloseButton' : true, 'showNavArrows' : true, 'titleShow' : true, 'titlePosition' : 'over', 'titleFromAlt' : true, 'onCleanup' : function() { if(fb_timeout) { window.clearTimeout(fb_timeout); fb_timeout = null; } }, 'transitionIn' : 'elastic', 'easingIn' : 'easeOutBack', 'transitionOut' : 'elastic', 'easingOut' : 'easeInBack', 'opacity' : false };
+/* IMG */
+var fb_IMG_select = 'a[href$=".jpg"]:not(.nofancybox):not(:empty),a[href$=".JPG"]:not(.nofancybox):not(:empty),a[href$=".gif"]:not(.nofancybox):not(:empty),a[href$=".GIF"]:not(.nofancybox):not(:empty),a[href$=".png"]:not(.nofancybox):not(:empty),a[href$=".PNG"]:not(.nofancybox):not(:empty)';
+$(fb_IMG_select).addClass('fancybox');
+var fb_IMG_sections = jQuery('article, div.hentry');
+fb_IMG_sections.each(function() { jQuery(this).find(fb_IMG_select).attr('rel', 'gallery-' + fb_IMG_sections.index(this)); });
+$('a.fancybox').fancybox( $.extend({}, fb_opts, { }) );
+/* SWF */
+$('a[href$=".swf"]:not(.nofancybox):not(:empty)').addClass('fancybox-swf');
+$('a.fancybox-swf').fancybox( $.extend({}, fb_opts, { 'type' : 'swf', 'width' : 680, 'height' : 495, 'padding' : 0, 'autoScale' : false, 'titleShow' : false, 'titlePosition' : 'float', 'titleFromAlt' : false, 'transitionOut' : 'fade', 'easingIn' : 'swing', 'swf' : {'wmode':'opaque','allowfullscreen':true} }) );
+/* YouTube */
+$('a[href*="youtube.com/"]:not(.nofancybox):not(:empty)').addClass('fancybox-youtube');
+$('a[href*="youtu.be/"]').addClass('fancybox-youtube');
+$('a.fancybox-youtube').fancybox( $.extend({}, fb_opts, { 'type' : 'swf', 'width' : 640, 'height' : 385, 'padding' : 0, 'autoScale' : false, 'titleShow' : false, 'titlePosition' : 'float', 'titleFromAlt' : false, 'transitionOut' : 'fade', 'easingIn' : 'swing', 'swf' : {'wmode':'opaque','allowfullscreen':true}, 'onStart' : function(selectedArray, selectedIndex, selectedOpts) { selectedOpts.href = selectedArray[selectedIndex].href.replace(new RegExp('youtu.be', 'i'), 'www.youtube.com/v').replace(new RegExp('watch\\?v=', 'i'), 'v/') } }) );
+/* Vimeo */
+$('a[href*="vimeo.com/"]:not(.nofancybox):not(:empty)').addClass('fancybox-vimeo');
+$('a.fancybox-vimeo').fancybox( $.extend({}, fb_opts, { 'type' : 'swf', 'width' : 640, 'height' : 360, 'padding' : 0, 'autoScale' : false, 'transitionOut' : 'fade', 'easingIn' : 'swing', 'titleShow' : false, 'titlePosition' : 'float', 'titleFromAlt' : false, 'swf' : {'wmode':'opaque','allowfullscreen':true}, 'onStart' : function(selectedArray, selectedIndex, selectedOpts) { selectedOpts.href = selectedArray[selectedIndex].href.replace(new RegExp('/([0-9])', 'i'), '/moogaloop.swf?clip_id=$1') } }) );
+/* iFrame */
+$('a.fancybox-iframe, li.fancybox-iframe a').fancybox( $.extend({}, fb_opts, { 'type' : 'iframe', 'width' : '70%', 'height' : '90%', 'padding' : 0, 'scrolling' : 'auto', 'autoScale' : false, 'titleShow' : true, 'titlePosition' : 'float', 'titleFromAlt' : false, 'transitionOut' : 'fade', 'easingIn' : 'swing' }) );
+/* Auto-click */ 
+$('#fancybox-auto').trigger('click');
+});
+/* ]]> */
+</script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/swfobject_002.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+
+	/**
+	 * Courtesy of Kimili Flash Embed - Version 2.1.5
+	 * by Michael Bester - http://kimili.com
+	 */
+
+	(function(){
+		try {
+			// Registering Statically Published SWFs
+			swfobject.registerObject("fm_CubicBezierCurve_667689091","9","https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/wp-content/plugins/kimili-flash-embed/lib/expressInstall.swf");
+		} catch(e) {}
+	})();
+</script><style type="text/css" media="screen">#fm_CubicBezierCurve_667689091 {visibility:hidden}</style>
+<link rel="stylesheet" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/default.html" type="text/css" media="screen,projection"><link rel="stylesheet" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/1c-fixed.css" type="text/css">
+<!-- Generated by Arras WP Theme -->
+<style type="text/css">
+	.posts-default li  { width: 225px; height: 325px; }
+	.posts-default img, .posts-default .entry-thumbnails-link { width: 215px; height: 120px; }
+	.posts-default .entry-meta { width: 215px; }
+	.posts-default .entry-thumbnails { width: 225px; height: 130px; }
+			.posts-quick .entry-thumbnails img { width: 115px; height: 115px; }
+		.posts-quick .entry-meta { width: 115px; }
+			.featured { height: 310px; }
+	.featured-article { width: 950px; height: 300px; }
+	.featured-article img { width: 950px; height: 300px; }
+	#controls { width: 920px; top: 135px; }
+	#controls .next { left: 920px; }
+	.featured-entry { height: 100px; top: -100px; }
+	.featured-slideshow-inner { height: 300px }
+		.featured-stories-summary  { margin-left: 51px; }
+	.single .post .entry-photo img, .single-post .entry-photo img  { width: 930px; height: 375px; }
+		.footer-sidebar  { width: 920px; }
+	</style>
+	<script type="text/javascript">
+	jQuery(document).ready(function($) {
+
+$('.multi-sidebar').tabs();
+
+$('.sf-menu').superfish({autoArrows: true, speed: 'fast', dropShadows: 'true'});
+
+$('#commentform').validate();
+
+
+});	</script>
+	<link rel="stylesheet" type="text/css" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/shCore.css"><link rel="stylesheet" type="text/css" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/shThemeDefault.css"><meta id="syntaxhighlighteranchor" name="syntaxhighlighter-version" content="3.1.1">
+<link rel="stylesheet" href="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/user.css" type="text/css" media="screen,projection"></head>
+
+<body class="single single-post postid-13 single-format-standard layout-1c-fixed js style-default"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/timestamp.js" charset="utf-8"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/graph-calc.js" charset="utf-8"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/auto-complete.js" charset="utf-8"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/toolbar.js" charset="utf-8"></script>
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+.wb-autocomplete-suggestions {
+    text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+    position: absolute; display: none; z-index: 2147483647; max-height: 254px; overflow: hidden; overflow-y: auto; box-sizing: border-box;
+}
+.wb-autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.02em; color: #333; }
+.wb-autocomplete-suggestion b { font-weight: bold; }
+.wb-autocomplete-suggestion.selected { background: #f0f0f0; }
+</style>
+<div id="wm-ipp-base" style="display: block; direction: ltr;" lang="en">
+</div><script type="text/javascript">
+__wm.bt(600,27,25,2,"web","http://blog.paultondeur.com/2008/03/09/drawing-a-cubic-bezier-curve-using-actionscript-3/","2016-03-04",1996,"/_static/",['css/banner-styles.css','css/iconochive.css']);
+</script><div class="wb-autocomplete-suggestions "></div>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<script type="text/javascript">
+//<![CDATA[
+(function(){
+var c = document.body.className;
+c = c.replace(/no-js/, 'js');
+document.body.className = c;
+})();
+//]]>
+</script>
+
+<div id="top-menu" class="clearfix">
+	<div class="sf-menu menu clearfix"><ul><li class="page_item page-item-2"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/about/" title="About me">About me</a></li></ul></div>
+</div><!-- #top-menu -->
+<div id="header">
+	<div id="branding" class="clearfix">
+	<div class="logo">
+				<span class="blog-name"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/">Paul Tondeur</a></span>
+		<span class="blog-description"></span>
+			</div>
+	<div id="searchbar"><form method="get" class="searchform clearfix" action="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/">
+ <input type="text" value="Search..." name="s" class="s" onfocus="this.value=''">
+ <input type="submit" class="searchsubmit" value="Search" title="Search Paul Tondeur">
+</form>
+</div>
+	</div><!-- #branding -->
+</div><!-- #header -->
+
+<div id="nav">
+	<div id="nav-content" class="clearfix">
+	<ul class="sf-menu menu clearfix">	<li class="cat-item cat-item-3"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/actionscript/" title="View all posts filed under Actionscript">Actionscript</a>
+</li>
+	<li class="cat-item cat-item-33"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/away3d/" title="View all posts filed under Away3D">Away3D</a>
+</li>
+	<li class="cat-item cat-item-30"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/books/" title="View all posts filed under Books">Books</a>
+</li>
+	<li class="cat-item cat-item-19"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/events/" title="View all posts filed under Events">Events</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/uncategorized/" title="View all posts filed under General">General</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/javascript/" title="View all posts filed under Javascript">Javascript</a>
+</li>
+	<li class="cat-item cat-item-29"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/mobile-streaming/" title="View all posts filed under Mobile streaming">Mobile streaming</a>
+</li>
+	<li class="cat-item cat-item-18"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/papervision3d/" title="View all posts filed under Papervision3D">Papervision3D</a>
+</li>
+	<li class="cat-item cat-item-24"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/paperworld-3d/" title="View all posts filed under Paperworld 3D">Paperworld 3D</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/php/" title="View all posts filed under PHP">PHP</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/presentations/" title="View all posts filed under Presentations">Presentations</a>
+</li>
+	<li class="cat-item cat-item-23"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/red5/" title="View all posts filed under Red5">Red5</a>
+</li>
+	<li class="cat-item cat-item-26"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tutorial/" title="View all posts filed under Tutorial">Tutorial</a>
+</li>
+	<li class="cat-item cat-item-27"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/unity3d/" title="View all posts filed under Unity3D">Unity3D</a>
+</li>
+</ul>	
+		<ul class="quick-nav clearfix">
+					<li><a id="rss" title="Paul Tondeur RSS Feed" href="https://web.archive.org/web/20160304095548/http://www.paultondeur.com/feed/">RSS Feed</a></li>
+				
+							<li><a id="twitter" title="Paul Tondeur Twitter" href="https://web.archive.org/web/20160304095548/http://www.twitter.com/paultondeur//" target="_blank">Twitter</a></li>
+				
+						
+			<li><a id="linkedin" title="Paul Tondeur on LinkedIn" href="https://web.archive.org/web/20160304095548/http://www.linkedin.com/in/paultondeur" target="_blank">Paul Tondeur LinkedIn</a></li>
+	<li><a id="about" title="About Paul Tondeur" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/about/" target="_self">About Paul Tondeur</a></li>
+	</ul>
+	</div><!-- #nav-content -->
+</div><!-- #nav -->
+
+<div id="wrapper">
+	
+	  
+	<div id="main" class="clearfix">
+    <div id="container" class="clearfix">
+
+<div id="content" class="section">
+
+		<div id="post-13" class="post-13 post type-post status-publish format-standard hentry category-actionscript tag-cubic-bezier tag-curves tag-drawing clearfix single-post">
+
+        <h1 class="entry-title"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2008/03/09/drawing-a-cubic-bezier-curve-using-actionscript-3/" rel="bookmark">Drawing a cubic bezier curve using actionscript 3</a></h1><div class="entry-info"><div class="entry-author">By <address class="author vcard"><a class="url fn n" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/about/" title="Paul Tondeur">Paul Tondeur</a></address></div> – <abbr class="published" title="2008-03-09T22:29:30+00:00">March 9, 2008</abbr><span class="entry-cat"><strong>Posted in: </strong><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/actionscript/">Actionscript</a></span></div>        
+        <div class="entry-content clearfix">
+		<p><img style="float: left;" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/flashcurve.gif" alt="Flash curve example">Recently
+ I came up with an idea for a project to work on and where I plan to 
+write about soon on this blog. As a part of this project I need to draw 
+curved lines. I thought it would be a good idea to make this similar as 
+the curves which you can draw with the pen tool in Flash and 
+Illustrator. An example of this kind of curve is on the left.  I 
+expected this would be really simple and it was just a standard drawing 
+API which I had to use to draw this kind of curve…<br>
+<span id="more-13"></span> <a title="Adobe's curveTo documentation" href="https://web.archive.org/web/20160304095548/http://livedocs.adobe.com/flash/9.0/ActionScriptLangRefV3/flash/display/Graphics.html#curveTo()" target="_blank">Adobe’s documentation</a> shows the following image which suggests we have the option to draw a quadratic bezier and a cubic bezier.</p>
+<p><img src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/quad_bezier.jpg" alt="Quadric bezier vs cubic bezier"></p>
+<p>Unfortunately only a quadratic bezier is supported and nothing is 
+written about the cubic bezier. I really want to have the cubic bezier 
+curve, since we can make more advanced curves with a cubic curve. For 
+example, the curve at the beginning of this article is already too 
+advanced for being a quadratic curve.  I found some articles online 
+talking about these curves which you might find interesting to read:</p>
+<ul>
+<li><a title="Wikipedia bezier curves" href="https://web.archive.org/web/20160304095548/http://en.wikipedia.org/wiki/B%C3%A9zier_curve" target="_blank">Wikipedia</a></li>
+<li>Jim Armstrong’s
+<ul>
+<li><a title="Jim Armstrong's quadratic bezier technote" href="https://web.archive.org/web/20160304095548/http://www.algorithmist.net/bezier2.html" target="_blank">Quadratic bezier technote</a></li>
+<li><a title="Jim Armstrong's cubic bezier technote" href="https://web.archive.org/web/20160304095548/http://www.algorithmist.net/bezier3.html" target="_blank">Cubic bezier technote</a></li>
+</ul>
+</li>
+<li><a title="Timothée Groleau - Approximating Cubic Bezier Curves in Flash MX" href="https://web.archive.org/web/20160304095548/http://timotheegroleau.com/Flash/articles/cubic_bezier_in_flash.htm" target="_blank">Timothée Groleau – Approximating Cubic Bezier Curves in Flash MX</a></li>
+<li><a title="Interpolation with Bezier Curves" href="https://web.archive.org/web/20160304095548/http://www.antigrain.com/research/bezier_interpolation/index.html" target="_blank">Interpolation with Bezier Curves</a></li>
+</ul>
+<p>It’s quite simple to make these curves. There’s just a simple formula
+ to calculate the exact x and y position on a position of the curve 
+between 0 and 1:<img src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/cubic_bezier_formula.gif" alt="cubic bezier formula"></p>
+<ul>
+<li>B represents the curve</li>
+<li>Px represents one of the four points which makes the curve. P0 and 
+P3 are points which we know as anchor points, where P1 and P2 are the 
+control points.</li>
+<li><em>u</em> is the position of the curve which we want to calculate.</li>
+</ul>
+<p>In actionscript this would look like the following:</p>
+<div><div id="highlighter_75775" class="syntaxhighlighter  as3"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="as3 plain">posx = Math.pow(u,</code><code class="as3 value">3</code><code class="as3 plain">)*(anchor2.x+</code><code class="as3 value">3</code><code class="as3 plain">*(control1.x-control2.x)-anchor1.x)</code></div><div class="line number2 index1 alt1"><code class="as3 spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*Math.pow(u,</code><code class="as3 value">2</code><code class="as3 plain">)*(anchor1.x-</code><code class="as3 value">2</code><code class="as3 plain">*control1.x+control2.x)</code></div><div class="line number3 index2 alt2"><code class="as3 spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*u*(control1.x-anchor1.x)+anchor1.x;</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="as3 plain">posy = Math.pow(u,</code><code class="as3 value">3</code><code class="as3 plain">)*(anchor2.y+</code><code class="as3 value">3</code><code class="as3 plain">*(control1.y-control2.y)-anchor1.y)</code></div><div class="line number6 index5 alt1"><code class="as3 spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*Math.pow(u,</code><code class="as3 value">2</code><code class="as3 plain">)*(anchor1.y-</code><code class="as3 value">2</code><code class="as3 plain">*control1.y+control2.y)</code></div><div class="line number7 index6 alt2"><code class="as3 spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*u*(control1.y-anchor1.y)+anchor1.y;</code></div></div></td></tr></tbody></table></div></div>
+<p>Note that you have to calculate this for x and y separately.</p>
+<p>&nbsp;</p>
+<p>When we need to draw a curved line, we need to calculate this for let’s say in a 100 steps between 0 and 1 to see the curve:</p>
+<p><img src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/cubic_bezier_steps.gif" alt="Cubic bezier steps"></p>
+<p>As you can see this is almost the curve! If we divide the curve up in
+ 1000 steps instead of 100, we will in this case see a perfect curve! 
+But as you can imagine calculating this a 1000 times might be a little 
+heavy, especially when you want that a interactive curve which we can 
+change on the fly. Beside that when you want to draw a huge curve, 1000 
+steps might again be to little.<br>
+It’s better to connect each point with another so there won’t be any white-space in the curve and it seems fluent.</p>
+<div><div id="highlighter_635695" class="syntaxhighlighter  as3"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div><div class="line number23 index22 alt2">23</div><div class="line number24 index23 alt1">24</div><div class="line number25 index24 alt2">25</div><div class="line number26 index25 alt1">26</div><div class="line number27 index26 alt2">27</div><div class="line number28 index27 alt1">28</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="as3 variable">var</code> <code class="as3 plain">line:Shape = </code><code class="as3 keyword">new</code> <code class="as3 plain">Shape();</code></div><div class="line number2 index1 alt1"><code class="as3 plain">line.graphics.lineStyle(</code><code class="as3 value">2</code><code class="as3 plain">,</code><code class="as3 value">0x000000</code><code class="as3 plain">);</code></div><div class="line number3 index2 alt2"><code class="as3 plain">line.graphics.moveTo(anchor1.x,anchor1.y);</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="as3 comments">// store values where to lineTo</code></div><div class="line number6 index5 alt1"><code class="as3 variable">var</code> <code class="as3 plain">posx:</code><code class="as3 keyword">Number</code><code class="as3 plain">;</code></div><div class="line number7 index6 alt2"><code class="as3 variable">var</code> <code class="as3 plain">posy:</code><code class="as3 keyword">Number</code><code class="as3 plain">;</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="as3 comments">//loop through 100 steps of the curve</code></div><div class="line number10 index9 alt1"><code class="as3 keyword">for</code> <code class="as3 plain">(</code><code class="as3 variable">var</code> <code class="as3 plain">u:</code><code class="as3 keyword">Number</code> <code class="as3 plain">= </code><code class="as3 value">0</code><code class="as3 plain">; u &lt;= </code><code class="as3 value">1</code><code class="as3 plain">; u += </code><code class="as3 value">1</code><code class="as3 plain">/</code><code class="as3 value">100</code><code class="as3 plain">) {</code></div><div class="line number11 index10 alt2">&nbsp;</div><div class="line number12 index11 alt1"><code class="as3 plain">posx = Math.pow(u,</code><code class="as3 value">3</code><code class="as3 plain">)*(anchor2.x+</code><code class="as3 value">3</code><code class="as3 plain">*(control1.x-control2.x)-anchor1.x)</code></div><div class="line number13 index12 alt2"><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*Math.pow(u,</code><code class="as3 value">2</code><code class="as3 plain">)*(anchor1.x-</code><code class="as3 value">2</code><code class="as3 plain">*control1.x+control2.x)</code></div><div class="line number14 index13 alt1"><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*u*(control1.x-anchor1.x)+anchor1.x;</code></div><div class="line number15 index14 alt2">&nbsp;</div><div class="line number16 index15 alt1"><code class="as3 plain">posy = Math.pow(u,</code><code class="as3 value">3</code><code class="as3 plain">)*(anchor2.y+</code><code class="as3 value">3</code><code class="as3 plain">*(control1.y-control2.y)-anchor1.y)</code></div><div class="line number17 index16 alt2"><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*Math.pow(u,</code><code class="as3 value">2</code><code class="as3 plain">)*(anchor1.y-</code><code class="as3 value">2</code><code class="as3 plain">*control1.y+control2.y)</code></div><div class="line number18 index17 alt1"><code class="as3 plain">+</code><code class="as3 value">3</code><code class="as3 plain">*u*(control1.y-anchor1.y)+anchor1.y;</code></div><div class="line number19 index18 alt2">&nbsp;</div><div class="line number20 index19 alt1"><code class="as3 plain">line.graphics.lineTo(posx,posy);</code></div><div class="line number21 index20 alt2">&nbsp;</div><div class="line number22 index21 alt1"><code class="as3 plain">}</code></div><div class="line number23 index22 alt2">&nbsp;</div><div class="line number24 index23 alt1"><code class="as3 comments">//Let the curve end on the second anchorPoint</code></div><div class="line number25 index24 alt2">&nbsp;</div><div class="line number26 index25 alt1"><code class="as3 plain">line.graphics.lineTo(anchor2.x,anchor2.y);</code></div><div class="line number27 index26 alt2">&nbsp;</div><div class="line number28 index27 alt1"><code class="as3 plain">addChild(line);</code></div></div></td></tr></tbody></table></div></div>
+<p>Although this works and it’s a better option than drawing 1000 points
+ of a curve, I’m not sure this is the best option. I’m looking for a way
+ to divide the curve up in for example 5 point’s and use the built in 
+curveTo function to draw a quadratic curve between them. But so far I 
+don’t know how to solve this yet and if this will boost performance at 
+all. That’s something which I want to sort out soon. If you have any 
+idea’s I really would like to here from you.</p>
+<p>&nbsp;</p>
+<p>To make this cubic bezier easy to work with, I made a class (included
+ in the download at the bottom of this article) which draws this curve. 
+I’ve used this class in the working example from below. You can move the
+ anchors, control-points and add new points by clicking a random 
+position on the line.</p>
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="fm_CubicBezierCurve_667689091" class="flashmovie" style="visibility: visible;" width="540" height="300">
+	<param name="movie" value="/files/CubicBezierCurve/examples/CubicBezierCurve.swf">
+	<param name="bgcolor" value="#FFFFFF">
+	<!--[if !IE]>-->
+	<object type="application/x-shockwave-flash" data="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/CubicBezierCurve.swf" name="fm_CubicBezierCurve_667689091" width="540" height="300">
+		<param name="bgcolor" value="#FFFFFF">
+	<!--<![endif]-->
+		
+	<!--[if !IE]>-->
+	</object>
+	<!--<![endif]-->
+</object>
+<p><a title="Cubic bezier curve source files" href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/files/CubicBezierCurve/examples/CubicBezierCurve.zip" target="_blank">Download the source files here</a></p>
+  
+        		</div>
+
+		<div class="tags"><strong>Tags:</strong> <a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/cubic-bezier/" rel="tag">cubic bézier</a>, <a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/curves/" rel="tag">curves</a>, <a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/drawing/" rel="tag">drawing</a> </div>
+            </div>
+    
+		<a name="comments"></a>
+    
+	  
+	<h4 class="module-title">49 Comments</h4>
+		<ol id="commentlist" class="clearfix">
+				<li class="comment even thread-even depth-1" id="li-comment-34">
+		<div class="comment-node" id="comment-34">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/540f209dc5b81ad02f4034033563a39b.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://greg-dove.com/" rel="external nofollow" class="url">Greg Dove</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-03-30T11:16:07+00:00">March 30, 2008 at 11:16 AM</abbr>			</div>
+			<div class="comment-content"><p>You may want to check out the cubic 
+to quadratic bezier conversion code inside the SVG example at 
+flash-creations.com (as2) and also in packages like animationpackage 
+(alex ullhman I think – as2 and as3 code) and also if you use flex, 
+check out degrafa – degrafa.com. They all use similar recursive methods 
+to split the cubic bezier into quadratic beziers for a specified 
+tolerance/accuracy into flash native curveTo quadratics.</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-50">
+		<div class="comment-node" id="comment-50">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/465574875281b21383e7e9a837bfefa0.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.paultondeur.nl/" rel="external nofollow" class="url">Paul Tondeur</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-04-04T15:07:26+00:00">April 4, 2008 at 3:07 PM</abbr>			</div>
+			<div class="comment-content"><p>Thank you for providing these useful 
+tips. Splitting the cubic curve into quadratic curves is something I’ve 
+been thinking about too, but I didn’t figured out so far how to do this.</p>
+<p>I’ll soon dive into these examples you gave and write down on this blog how to implement it regarding to this article.</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-120">
+		<div class="comment-node" id="comment-120">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ac7f52e4ecc69475cef83853e1f60999.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">arthi</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-06-30T04:11:59+00:00">June 30, 2008 at 4:11 AM</abbr>			</div>
+			<div class="comment-content"><p>i was wondering if we can restrict 
+the curvature of the curve in the pencil points. m developin an app wre i
+ need to let the user draw a figure but i need to restrict the angle of 
+twisting and rotation of the curves that the user can perform .can u pls
+ tell me how do u implement it here</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-121">
+		<div class="comment-node" id="comment-121">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/a389bf3e44a8c73fcf30a4100b7d0561.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/!!!" rel="external nofollow" class="url">mfarooqi</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-06-30T08:55:17+00:00">June 30, 2008 at 8:55 AM</abbr>			</div>
+			<div class="comment-content"><p>great man!!!</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-314">
+		<div class="comment-node" id="comment-314">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/23b31f3de78f7d28f780045484378548.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://google/" rel="external nofollow" class="url">Idres</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-07-16T14:48:45+00:00">July 16, 2008 at 2:48 PM</abbr>			</div>
+			<div class="comment-content"><p>Dear sir or madam<br>
+I want to make a Bezier curve for three anchor points and two control 
+points.  Can you send me the the  right formula for that case, please.</p>
+<p>hte second anchor is exactly between the two othe points. Can you 
+right down the x- value of two control points, which is both of contro 
+points tangent to the middle anchor point.</p>
+<p>Kindest regards<br>
+Idres</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-2529">
+		<div class="comment-node" id="comment-2529">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/434c50b5d0f6b5d02e30887a3bf2b29e.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">rajesh m</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-10-07T21:32:39+00:00">October 7, 2008 at 9:32 PM</abbr>			</div>
+			<div class="comment-content"><p>lovely code .. thanks!</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-2900">
+		<div class="comment-node" id="comment-2900">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/fe0cc28c0dbb9a548134f7fbc5cb9d06.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://blog.steamboy.co.uk/" rel="external nofollow" class="url">owen</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-10-18T11:41:31+00:00">October 18, 2008 at 11:41 AM</abbr>			</div>
+			<div class="comment-content"><p>You might want to check out the 
+BezierSegment class in the fl.motion package – it provides native 
+support for cubic beziers. You have to draw them yourself, but the x/y 
+calculations are a magnitude faster than doing them yourself.</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-3989">
+		<div class="comment-node" id="comment-3989">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/2fbd3c0c4c9b48648bb777b97cea637a.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Davide</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-11-24T17:08:40+00:00">November 24, 2008 at 5:08 PM</abbr>			</div>
+			<div class="comment-content"><p>Hi,</p>
+<p>it is possible to have a .fla file that use this bezier library.</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-3990">
+		<div class="comment-node" id="comment-3990">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/2fbd3c0c4c9b48648bb777b97cea637a.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Davide</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-11-24T17:10:02+00:00">November 24, 2008 at 5:10 PM</abbr>			</div>
+			<div class="comment-content"><p>Hi,</p>
+<p>it is possible to have a .fla file that use this bezier library?</p>
+<p>Thank you very much and sorry for the double post<br>
+Best regards<br>
+Davide C.</p>
+</div>
+		</div>
+</li>
+	<li class="comment byuser comment-author-1 bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-4020">
+		<div class="comment-node" id="comment-4020">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/465574875281b21383e7e9a837bfefa0.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Paul Tondeur</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2008-11-25T23:17:10+00:00">November 25, 2008 at 11:17 PM</abbr>			</div>
+			<div class="comment-content"><p>Hi Davide,</p>
+<p>That’s indeed possible and it’s quite easy as well. All you need to 
+do is set your classpath in flash to the source folder (included in the 
+download from above). Once that is done you can import my custom classes
+ and use them within the Flash IDE. I’ve send you an e-mail with an 
+example of this.</p>
+<p>Paul</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-9404">
+		<div class="comment-node" id="comment-9404">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/a6f6cf488f57f4242508df544e50c7d4.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">ilhan</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-04-20T12:47:40+00:00">April 20, 2009 at 12:47 PM</abbr>			</div>
+			<div class="comment-content"><p>well im not a actionscript coder but i was looking for something like this. it worked perfect. thank u.</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-12332">
+		<div class="comment-node" id="comment-12332">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/789b8d4e8c9ff4b71c7a632e1e1c1f94.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Mrinny</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-07-02T16:04:05+00:00">July 2, 2009 at 4:04 PM</abbr>			</div>
+			<div class="comment-content"><p>Is there a way to split a quadratic bezier into smaller parts WITH EQUAL LENGTHS??</p>
+<p>That too in AS2</p>
+<p>There are some very complicated math equations…  I was hoping a 
+simpler way is possible… basically for constant motion along a quad 
+bezier path</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-13532">
+		<div class="comment-node" id="comment-13532">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/933f5a72f100ce60d6a317dc42a1067a.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://nodename.com/" rel="external nofollow" class="url">Alan Shaw</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-08-01T17:06:29+00:00">August 1, 2009 at 5:06 PM</abbr>			</div>
+			<div class="comment-content"><p><a href="https://web.archive.org/web/20160304095548/http://www.youtube.com/watch?v=jEjZl2nqcAU" rel="nofollow">http://www.youtube.com/watch?v=jEjZl2nqcAU</a></p>
+<p>I think this lecture “The Marriage of Fractals and Splines” may be 
+relevant. He talks about a spline subdivision method into line segments 
+that rapidly converge to the curve.</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-14970">
+		<div class="comment-node" id="comment-14970">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/2abd643ecb33f1a18a7a4f976cef0dbe.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.caffeineowl.com/" rel="external nofollow" class="url">Adrian Colomitchi</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-09-14T12:03:09+00:00">September 14, 2009 at 12:03 PM</abbr>			</div>
+			<div class="comment-content"><p>On Nov 2008, you wrote:<br>
+“Thank you for providing these useful tips. Splitting the cubic curve 
+into quadratic curves is something I’ve been thinking about too, but I 
+didn’t figured out so far how to do this.”</p>
+<p>Coming a bit late, but try this: <a href="https://web.archive.org/web/20160304095548/http://www.caffeineowl.com/graphics/2d/vectorial/cubic2quad01.html" rel="nofollow">http://www.caffeineowl.com/graphics/2d/vectorial/cubic2quad01.html</a> (adaptive splitting: at the same precision, results in smaller quad segs that half-subdivision)</p>
+<p>Regards,</p>
+<p>Adrian</p>
+</div>
+		</div>
+<ul class="children">
+	<li class="comment even depth-2" id="li-comment-292179">
+		<div class="comment-node" id="comment-292179">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/2809efb3b37e6df69c834f51ab138597.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.facebook.com/profile.php?id=100003469599941" rel="external nofollow" class="url">Lovely</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-03-24T18:17:09+00:00">March 24, 2015 at 6:17 PM</abbr>			</div>
+			<div class="comment-content"><p>26 Jan ’12  12:20 pm                 
+               by sonofwitz                                             
+                                                                        
+    Thanks so much for this. I have to bang out a pecrjot and was 
+fretting about the quickest way to do it. I knew I had to start with 
+some curves for this one part, but I didn’t know how easy it was to take
+ them so far, even having read the documentation. There is a huge 
+difference between these walkthroughs and the docs when it comes to 
+understanding quickly. Great stuff.</p>
+</div>
+		</div>
+</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-15355">
+		<div class="comment-node" id="comment-15355">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/045e25afc1ac5e0475d08d31c6a72dd5.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Tim</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-09-23T14:36:02+00:00">September 23, 2009 at 2:36 PM</abbr>			</div>
+			<div class="comment-content"><p>Paul… many thanks for this 
+beautifully clear explanation of the cubic Bezier!  It was extremely 
+useful and a breeze to follow and adapt.<br>
+Regards,<br>
+Tim</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-15655">
+		<div class="comment-node" id="comment-15655">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/e5dd36a4b6ef33378f83b73dcf6371f6.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Teo Iliev</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-10-01T10:01:18+00:00">October 1, 2009 at 10:01 AM</abbr>			</div>
+			<div class="comment-content"><p>Good and useful post.</p>
+</div>
+		</div>
+</li>
+	<li class="comment byuser comment-author-1 bypostauthor odd alt thread-even depth-1" id="li-comment-15797">
+		<div class="comment-node" id="comment-15797">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/465574875281b21383e7e9a837bfefa0.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Paul Tondeur</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2009-10-07T10:57:01+00:00">October 7, 2009 at 10:57 AM</abbr>			</div>
+			<div class="comment-content"><p>Hi Adrian,</p>
+<p>Due to the writing of my book I’ve not been able yet to create an 
+updated class, so your comment is still of use. The page you refer to 
+seems very helpful and is definitely worth looking at once I start 
+working on this.</p>
+<p>Thanks!</p>
+<p>Paul</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-18923">
+		<div class="comment-node" id="comment-18923">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/9eeeb7f5968f3bd3a72daa3e3c79cbc7.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://flex.exposedout.net/" rel="external nofollow" class="url">Vikram Singh</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-01-25T14:45:55+00:00">January 25, 2010 at 2:45 PM</abbr>			</div>
+			<div class="comment-content"><p>can you please tell me how to calculate the control points   as you have mentioned in your above example?</p>
+<p>I tried using my own maths logic and the result came out nothing as i expected.</p>
+<p>My assumptions :<br>
+1) Every curve(in my case a s curve) between 2 points is made up of 2 
+simple curves. and  it intersects the straight line between the 2 points
+ at its midpoint.<br>
+ 2) The controlpoint is the point where the tangents of the  single curve meet.</p>
+<p>so to calculate the  control point  i use a simple triangle equation 
+where 2 sides of the triangle are my tangents to the curve and the third
+ side is  half of  line joining the 2 points. to calculate the angle i 
+use the 2 point slope formula and  after calculating the control points 
+coordinates; i  use it in the equation you mentioned  draw a curve.</p>
+<p>please tell me where i am going wrong,</p>
+<p>thanks and regards<br>
+Vikram</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-19411">
+		<div class="comment-node" id="comment-19411">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/be69c09e33a6c8bf95cf3c0e019cc666.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">xristos</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-02-11T19:26:33+00:00">February 11, 2010 at 7:26 PM</abbr>			</div>
+			<div class="comment-content"><p>Hi Paul, </p>
+<p>thank you very much for this example-tutorial.</p>
+<p> Any ideas or guides on how we can place some movieclips at equal distances along the curve’s length?</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-19517">
+		<div class="comment-node" id="comment-19517">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/d28a8a9c29c1085605f63cb7ed69a261.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Risabh</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-02-16T08:16:28+00:00">February 16, 2010 at 8:16 AM</abbr>			</div>
+			<div class="comment-content"><p>Hi,<br>
+if i want to display the sprite in mxml file which calls this actionscript class’s function.<br>
+how to do?</p>
+<p>regards,<br>
+Risabh</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-21713">
+		<div class="comment-node" id="comment-21713">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/84573bffefd82430d5312d47daa31c2d.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://michaelstorer.com/" rel="external nofollow" class="url">Michael Storer</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-04-02T20:54:22+00:00">April 2, 2010 at 8:54 PM</abbr>			</div>
+			<div class="comment-content"><p>I want to have Flash AS3 produce 3 
+curly lines of “aroma” coming out of a perfume bottle for my opening 
+page on my perfumery website. The idea is to have the lines grow over 
+three or four seconds from zero to full length. They should curl out and
+ up like stylized “smoke.”</p>
+<p>I know this is very doable, but I just can’t seem to find out where 
+to begin. I’ve already drawn the bezier lines out in Illustrator as 
+guides.<br>
+This means that the entire information for producing the lines already 
+exists, including directionality, although not the delayed time I want. 
+Perhaps the formulas for the lines could be gotten somehow straight from
+ Illustrator?</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-21951">
+		<div class="comment-node" id="comment-21951">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/6ce4bc2c972fe12c4a01c213d13c650b.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Ashwani</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-04-20T06:21:02+00:00">April 20, 2010 at 6:21 AM</abbr>			</div>
+			<div class="comment-content"><p>Dear sir ,<br>
+    By doing some modification in your code i have created a closed 
+shape by Quadratic bezier curve ,and fill it by beginFill method,but the
+ closed shape is not filled with color,it is filled in bezier curve with
+ straight line.the internal area is not filled,<br>
+    Kindly help me.<br>
+                  I need too much in my project .Thanks in advance…………………………………………………………………………….</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-22082">
+		<div class="comment-node" id="comment-22082">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/05027aa3e76a59d96e44b45639dc4f07.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.eleqtriq.com/" rel="external nofollow" class="url">dirk</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-04-27T12:42:32+00:00">April 27, 2010 at 12:42 PM</abbr>			</div>
+			<div class="comment-content"><p>Hello Paul,</p>
+<p>better late than never: you must find the tangents through the bezier
+ at each of your steps. The intersection-point of the tangent and its 
+predecessors tangent is the control-point for your quadratic 
+approximated segment. See <a href="https://web.archive.org/web/20160304095548/http://www.eleqtriq.com/2010/04/cubic-bezier-in-flash/" rel="nofollow">http://www.eleqtriq.com/2010/04/cubic-bezier-in-flash/</a></p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-23960">
+		<div class="comment-node" id="comment-23960">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/35255f24a9a7fd5026b15fe3aade501e.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.codeguyz.com/" rel="external nofollow" class="url">Codeguyz</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-08-13T18:55:11+00:00">August 13, 2010 at 6:55 PM</abbr>			</div>
+			<div class="comment-content"><p>Awesome Article.</p>
+<p>This is how I optimize the number of steps needed in drawing the curve.</p>
+<p>What i have done is calculated the distance between the points of the
+ handles and also the distance between the start point and end point you
+ are going to. Then taking the longest distance of those and using that 
+to determine how many steps to use. I then ended up dividing by 10 to 
+give it just enough steps. I can then kind of see some sharp edges, but 
+only at a couple of angles.</p>
+<p>It works really well that if it is a longer string then it does more 
+points and then a shorter one it does less rather than plugging in a 
+fixed value of 100 points that just overlap each other if they are too 
+close.</p>
+<p>Point.distance(pointA,pointB); // this is how you calculate distance between points in AS3</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-24785">
+		<div class="comment-node" id="comment-24785">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/5cd17444fda9e98181891fbe4947390e.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://andrewcox.ca/" rel="external nofollow" class="url">Drew</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-09-27T23:57:07+00:00">September 27, 2010 at 11:57 PM</abbr>			</div>
+			<div class="comment-content"><p>Hey there,<br>
+Thanks for all your help with this. I came to the same conclusions as 
+you did, in terms of dividing the curve into points to which join them 
+with lines.<br>
+If you want to join them with a curveTo that is almost perfect, the code should look like this:<br>
+curve_sp.graphics.curveTo(p1_2.x*2-p0.x/2-p1.x/2, p1_2.y*2-p0.y/2-p1.y/2, p1.x, p1.y);</p>
+<p>Where:<br>
+p0 is the point of orgin,</p>
+<p>p1 is the destination anchor point</p>
+<p>p1_2 is a point on the cubic bezier curve that is exactly 1/2 way from p0 – p1</p>
+<p>Hope this helps anyone who was looking for that solution as I was.</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-27123">
+		<div class="comment-node" id="comment-27123">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/6b66b7f6f517501992bcb626cfc3c660.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">d.</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-12-12T23:24:48+00:00">December 12, 2010 at 11:24 PM</abbr>			</div>
+			<div class="comment-content"><p>I love it, thanks for sharing! Good explanation as well.</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-27286">
+		<div class="comment-node" id="comment-27286">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/f11cecdc4be771439e9ae18b442ad65c.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Sergio</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2010-12-17T21:43:46+00:00">December 17, 2010 at 9:43 PM</abbr>			</div>
+			<div class="comment-content"><p>Hi, beatiful code.. but i have a problem.. i need fill the bezier curve.. that is posible? </p>
+<p>Thanks</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-41767">
+		<div class="comment-node" id="comment-41767">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/7e1fce9a4306fa68da0e6e8241d3ac6f.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.boardvantage.com/" rel="external nofollow" class="url">Ashish</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2011-11-10T14:20:26+00:00">November 10, 2011 at 2:20 PM</abbr>			</div>
+			<div class="comment-content"><p>Thanks a ton Paul for this amazing 
+algorithm. I was having problem converting 2 control point bezier data 
+to flex recognizable (1control point format) data. This algorithm works 
+very smoothly</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-129438">
+		<div class="comment-node" id="comment-129438">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/27071825571a08cca633b7c55cc3dec6.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">Alex</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2013-01-28T20:11:14+00:00">January 28, 2013 at 8:11 PM</abbr>			</div>
+			<div class="comment-content"><p>You can use the built-in cubicCurveTo() method.<br>
+You give it two control points and the anchor point.</p>
+</div>
+		</div>
+<ul class="children">
+	<li class="comment byuser comment-author-1 bypostauthor even depth-2" id="li-comment-129482">
+		<div class="comment-node" id="comment-129482">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/465574875281b21383e7e9a837bfefa0.jpeg" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/" rel="external nofollow" class="url">Paul Tondeur</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2013-01-28T22:43:02+00:00">January 28, 2013 at 10:43 PM</abbr>			</div>
+			<div class="comment-content"><p>Thanks for pointing this out Alex. As of Flash Player 11, this is indeed part of the AS3 API.</p>
+</div>
+		</div>
+</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-236426">
+		<div class="comment-node" id="comment-236426">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/a79310d82722f5ba9154d080d2212c7d.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn">vadim</cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2014-09-25T23:28:17+00:00">September 25, 2014 at 11:28 PM</abbr>			</div>
+			<div class="comment-content"><p>Could you provide  source code as a plain text please</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-even depth-1" id="li-comment-283996">
+		<div class="comment-node" id="comment-283996">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/0f98ecf17f9a4f7714b3718574fa4ab9.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://afarberandpartners.tumblr.com/" rel="external nofollow" class="url">debt recovery agency</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-02-24T18:09:11+00:00">February 24, 2015 at 6:09 PM</abbr>			</div>
+			<div class="comment-content"><p>I relish, result in I found exactly what I used to be looking for.<br>
+You’ve ended my four day lengthy hunt! God Bless you man. Have a nice day.<br>
+Bye</p>
+</div>
+		</div>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-284588">
+		<div class="comment-node" id="comment-284588">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/eae2f44c386282697aaa5b00e9a44bd7.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.lomoalopobre.com/?option=com_k2&amp;view=itemlist&amp;task=user&amp;id=3522" rel="external nofollow" class="url">audio transcription rates uk</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-02-26T14:16:12+00:00">February 26, 2015 at 2:16 PM</abbr>			</div>
+			<div class="comment-content"><p>Good information. Lucky me I recently found your site<br>
+by chance (stumbleupon). I’ve saved it for later!</p>
+</div>
+		</div>
+<ul class="children">
+	<li class="comment even depth-2" id="li-comment-292121">
+		<div class="comment-node" id="comment-292121">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/56ed20059c4ecf06f1d34feddb8866c0.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://www.facebook.com/profile.php?id=100003469758162" rel="external nofollow" class="url">Keris</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-03-24T13:17:23+00:00">March 24, 2015 at 1:17 PM</abbr>			</div>
+			<div class="comment-content"><p>13 Nov ’11  12:10 am                 
+               by                                                       
+                                                                   
+Indeed alt + C and choose to cnorevt curve to mesh.In order to UV unwrap
+ these things, they would need to be a mesh.There is an issue with 
+cnorevting the logo in particular to a mesh which means one needs to 
+choose really, whether to use curves for such a task in the first place,
+ and that is the conversion process at the moment creates a lot of 
+triangles and pretty nasty topology.The round forms will cnorevt well, 
+so the pipe and “lathe” style objects, the logo though, could be messy, 
+at least with the mesh system as it currently is.</p>
+</div>
+		</div>
+</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-291249">
+		<div class="comment-node" id="comment-291249">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/7938b85615d2617cf8baf11120f2e4c3.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/http://condosforsale.roon.io/" rel="external nofollow" class="url">Roosevelt</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-03-20T20:52:12+00:00">March 20, 2015 at 8:52 PM</abbr>			</div>
+			<div class="comment-content"><p>you’re in reality a just right webmaster. The site loading velocity is incredible.<br>
+It sort of feels that you are doing any unique trick.</p>
+<p>Furthermore, The contents are masterwork. you’ve performed a wonderful task in this subject!</p>
+</div>
+		</div>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-315725">
+		<div class="comment-node" id="comment-315725">
+			<div class="comment-controls">
+						</div>
+			<div class="comment-author vcard">
+			<img alt="" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/a538e2f9cff66afd7a6267b01e627184.png" class="avatar avatar-32 photo" width="32" height="32">			<cite class="fn"><a href="https://web.archive.org/web/20160304095548/https://www.youtube.com/watch?v=ScwLoIib9Uo" rel="external nofollow" class="url">Duplicate File Finder</a></cite>
+			</div>
+						<div class="comment-meta commentmetadata">
+				Posted <abbr class="comment-datetime" title="2015-04-20T17:21:07+00:00">April 20, 2015 at 5:21 PM</abbr>			</div>
+			<div class="comment-content"><p>I believe that is among the most important information for<br>
+me. And i’m glad studying your article. But want to observation on few common issues, The<br>
+website taste is ideal, the articles is truly excellent : D.</p>
+<p>Excellent activity, cheers</p>
+</div>
+		</div>
+</li>
+		</ol>
+		
+	<div class="comments-navigation clearfix">
+			</div>
+	
+		<h4 class="module-title">Trackbacks / Pings</h4>
+	<ol class="pingbacks">	<li class="pingback even thread-even depth-1" id="li-trackback-1523">
+		<div id="trackback-1523">
+		<a href="https://web.archive.org/web/20160304095548/http://www.iamtheshit.net/blog/archives/cubic-bezier-curves/" rel="external nofollow" class="url">THE SH*TLAB » Blog Archive » Cubic bezier curves</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-1646">
+		<div id="trackback-1646">
+		<a href="https://web.archive.org/web/20160304095548/http://www.iamtheshit.net/blog/archives/cubic-bezier-curves-update/" rel="external nofollow" class="url">THE SH*T » Blog Archive » Cubic bezier curves update</a>		</div>
+</li>
+	<li class="pingback even thread-even depth-1" id="li-trackback-6001">
+		<div id="trackback-6001">
+		<a href="https://web.archive.org/web/20160304095548/http://www.arturoparacuellos.com/blog/?p=85" rel="external nofollow" class="url">Bubbles V1.0 - Continuous bezier curves | arturoparacuellos blog</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-9120">
+		<div id="trackback-9120">
+		<a href="https://web.archive.org/web/20160304095548/http://guache.org/1-vetores-curvas-e-bezier/" rel="external nofollow" class="url">#1 - Vetores, curvas e Bézier | guache.org</a>		</div>
+</li>
+	<li class="pingback even thread-even depth-1" id="li-trackback-9167">
+		<div id="trackback-9167">
+		<a href="https://web.archive.org/web/20160304095548/http://eztier.com/dba2day/?p=181" rel="external nofollow" class="url">DBA by Day » Blog Archive » Path Animation with Silverlight 2 (Part 2)</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-12494">
+		<div id="trackback-12494">
+		<a href="https://web.archive.org/web/20160304095548/http://www.neuroproductions.be/experiments/envelope-distort-with-actionscript/" rel="external nofollow" class="url">Envelope Distort with ActionScript | Neuro Productions</a>		</div>
+</li>
+	<li class="pingback even thread-even depth-1" id="li-trackback-17217">
+		<div id="trackback-17217">
+		<a href="https://web.archive.org/web/20160304095548/http://www.flepstudio.org/forum/flash-cs3-design/5280-curve-di-bezier.html#post28961" rel="external nofollow" class="url">[Flash CS3] curve di bezier - FlepStudio forum</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-19426">
+		<div id="trackback-19426">
+		<a href="https://web.archive.org/web/20160304095548/http://testwp.neuroproductions.be/?p=53" rel="external nofollow" class="url">Envelope Distort with ActionScript&nbsp;|&nbsp;Neuro Productions</a>		</div>
+</li>
+	<li class="pingback even thread-even depth-1" id="li-trackback-22680">
+		<div id="trackback-22680">
+		<a href="https://web.archive.org/web/20160304095548/http://notepadwebdevelopment.com/archives/390" rel="external nofollow" class="url">Save The DJ | Notepad Web Development</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-22912">
+		<div id="trackback-22912">
+		<a href="https://web.archive.org/web/20160304095548/http://www.designdrop.net/blog/?p=523" rel="external nofollow" class="url">Rain Inspired Processing sketch at Design Drop</a>		</div>
+</li>
+	<li class="pingback even thread-even depth-1" id="li-trackback-25733">
+		<div id="trackback-25733">
+		<a href="https://web.archive.org/web/20160304095548/http://www.flepstudio.org/forum/aiuto-utilit-free/6563-effetto-lenza-mossa-dal-vento.html#post34480" rel="external nofollow" class="url">Effetto lenza mossa dal vento</a>		</div>
+</li>
+	<li class="pingback odd alt thread-odd thread-alt depth-1" id="li-trackback-161077">
+		<div id="trackback-161077">
+		<a href="https://web.archive.org/web/20160304095548/http://unitycoder.com/blog/2011/08/14/function-cubicbezier-2d/" rel="external nofollow" class="url">Function: CubicBezier (2D) « UnityCoder – Unity3D</a>		</div>
+</li>
+</ol>
+		
+
+	<h4 class="module-title">Comments Closed</h4>
+	<p class="nocomments">Comments are closed. You will not be able to post a comment in this post.</p>
+	    
+
+</div><!-- #content -->
+
+</div><!-- #container -->
+
+
+<div id="primary" class="aside main-aside sidebar">
+  
+	<ul class="xoxo">
+					<li class="widgetcontainer clearfix">
+				<h5 class="widgettitle">Welcome to Arras!</h5>
+				<div class="widgetcontent">
+				<div class="textwidget">
+					<p>Arras is a WordPress theme designed for news or review sites with lots of customisable features.</p>
+				</div>
+				</div>
+			</li>
+			<li class="widgetcontainer clearfix">
+				<h5 class="widgettitle">Recent Posts</h5>
+				<div class="widgetcontent">
+				<ul>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2013/11/11/dependency-injection-for-javascript-with-injector-js/">Dependency injection for JavaScript with injector.js </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2011/03/07/robotlegs-away3d-4-broomstick-integration-with-a-wink-at-unity/">Robotlegs Away3D 4 Broomstick integration with a wink at Unity </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2011/03/04/time-for-a-redesign/">Time for a redesign </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2010/03/23/tutorial-loading-and-parsing-external-xml-and-json-files-with-unity-part-2-json/">Tutorial: Loading and parsing external XML and JSON files with Unity – Part 2: JSON </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2010/03/23/tutorial-loading-and-parsing-external-xml-and-json-files-with-unity-part-1-xml/">Tutorial: Loading and parsing external XML and JSON files with Unity – Part 1: XML </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2009/11/10/getting-started-with-unity-workshop-adobe-usergroup-xl/">Getting started with Unity workshop @ Adobe Usergroup XL </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2009/10/29/unity-and-flash-the-best-of-both-worlds-unite-presentation-slides/">Unity and Flash, the best of both worlds! – Unite presentation slides </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2009/10/09/speaking-at-unite-2009-in-san-fransisco-unity-for-flash-developers/">Speaking at Unite 2009 in San Fransisco – Unity for Flash developers </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2009/09/03/papervision3d-essentials-out-now/">Papervision3D Essentials – Out now! </a></li>
+								<li><a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/2009/07/24/papervision3d-essentials-a-book-by-paul-tondeur-and-jeff-winder-officially-announced/">Papervision3D Essentials – A Book By Paul Tondeur and Jeff Winder Officially Announced </a></li>
+							
+				</ul>
+				</div>
+			</li>
+			<li class="widgetcontainer clearfix">
+				<h5 class="widgettitle">Tag Cloud</h5>
+				<div class="tags widgetcontent">
+				<a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/cubic-bezier/" class="tag-link-21" title="1 topic" style="font-size: 8pt;">cubic bézier</a>
+<a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/curves/" class="tag-link-20" title="1 topic" style="font-size: 8pt;">curves</a>
+<a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/drawing/" class="tag-link-22" title="1 topic" style="font-size: 8pt;">drawing</a>
+<a href="https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/tag/onairtour/" class="tag-link-25" title="1 topic" style="font-size: 8pt;">onairtour</a>				</div>
+			</li>
+			</ul>		
+</div><!-- #primary -->
+<div id="secondary" class="aside main-aside sidebar">
+    <ul class="xoxo">
+        <!-- Widgetized sidebar, if you have the plugin installed.  -->
+        		<li></li>		
+            </ul>
+	  
+</div><!-- #secondary -->
+	</div><!-- #main -->
+	
+	    
+    <div id="footer">
+		<div class="footer-sidebar-container clearfix">
+							<ul id="footer-sidebar-1" class="footer-sidebar clearfix xoxo">
+										<li></li>
+									</ul>
+					</div>
+		
+		<div class="footer-message">
+		<p class="floatright"><a class="arras" href="https://web.archive.org/web/20160304095548/http://www.arrastheme.com/"><strong>About Arras WordPress Theme</strong></a></p>
+		<p>Copyright Paul Tondeur. All Rights Reserved.</p>		
+		</div><!-- .footer-message -->
+    </div>
+</div><!-- #wrapper -->
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ui_002.html"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ui.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/ui.html"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+
+	
+});
+</script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/shCore.js"></script>
+<script type="text/javascript" src="Drawing%20a%20cubic%20bezier%20curve%20using%20actionscript%203%20|%20Paul%20Tondeur_tiedostot/shBrushAS3.js"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://web.archive.org/web/20160304095548/http://blog.paultondeur.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.83b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+
+
+   
+</body></html>
+<!--
+     FILE ARCHIVED ON 09:55:48 Mar 04, 2016 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:02:22 Jun 18, 2019.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  LoadShardBlock: 60.639 (3)
+  esindex: 0.009
+  captures_list: 107.602
+  CDXLines.iter: 9.174 (3)
+  PetaboxLoader3.datanode: 61.026 (4)
+  exclusion.robots: 0.37
+  exclusion.robots.policy: 0.354
+  RedisCDXSource: 34.07
+  PetaboxLoader3.resolve: 26.987
+  load_resource: 74.939
+-->

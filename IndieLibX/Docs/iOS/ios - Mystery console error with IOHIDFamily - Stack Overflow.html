@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>ios - Mystery console error with IOHIDFamily - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico?v=4f32ecc8f43d">
+    <link rel="apple-touch-icon image_src" href="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="stackoverflow.com">
+    <meta property="og:type" content="website">    
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&amp;a">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Mystery console error with IOHIDFamily">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="For one of my projects, this error message in Xcode's console happens every time I run a build in the iOS Simulator. It's been happening for over a year and I thought it would eventually go away wi...">
+    <meta property="og:url" content="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily">
+    <link rel="canonical" href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily">
+
+    
+    
+    
+    
+    <link rel="stylesheet" type="text/css" href="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'Mystery console error with IOHIDFamily'" href="http://stackoverflow.com/feeds/question/29785320">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        
+
+
+    
+    
+        
+<link href="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/adFeedback.css" rel="stylesheet"><link href="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/jobs-multi.css" rel="stylesheet" type="text/css"></head>
+<body class="question-page new-topbar">
+    <noscript><div id="noscript-padding"></div></noscript>
+    
+        
+        
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+<div class="topbar-dialog siteSwitcher-dialog dno">
+    <div class="header">
+        <h3><a href="http://stackoverflow.com/">current community</a></h3>
+    </div>
+    <div class="modal-content current-site-container">
+        <ul class="current-site">
+                <li>
+                        <div class="related-links">
+                    <a href="http://chat.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+
+
+
+    <a href="http://stackoverflow.com/" class="current-site-link site-link js-gps-track" data-id="1" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-stackoverflow" title="Stack Overflow"></div>
+        Stack Overflow
+    </a>
+
+                </li>
+                <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    
+
+
+
+    <a href="http://meta.stackoverflow.com/" class="site-link js-gps-track" data-id="552" data-gps-track="
+            site.switch({ target_site:552, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-stackoverflowmeta" title="Meta Stack Overflow"></div>
+        Meta Stack Overflow
+    </a>
+
+                </li>
+                            <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    <a class="site-link js-gps-track" href="http://careers.stackoverflow.com/?utm_source=stackoverflow.com&amp;utm_medium=site-ui&amp;utm_campaign=multicollider" data-gps-track="site_switcher.click({ item_type:9 })">
+                        <div class="site-icon favicon favicon-careers" title="Stack Overflow Careers"></div>
+                        Stack Overflow Careers
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="header" id="your-communities-header">
+        <h3>
+your communities        </h3>
+            
+    </div>
+    <div class="modal-content" id="your-communities-section">
+            
+            <div class="call-to-login">
+<a href="https://stackoverflow.com/users/signup?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://stackoverflow.com/users/login?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+            </div>
+    </div>
+    <div class="header">
+        <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a></h3>
+        <a href="http://blog.stackoverflow.com/" class="fr">company blog</a>
+    </div>
+    <div class="modal-content">
+            <div class="child-content"></div>
+    </div>
+</div>
+        </div>
+
+        <div class="network-items">
+
+            <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 154 Stack Exchange sites">
+                <span class="hidden-text">Stack Exchange</span>
+            </a>
+
+    <a href="#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#" class="topbar-icon icon-achievements yes-hover js-achievements-button" data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://stackoverflow.com/users/signup?ssrc=head&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily" class="login-link">sign up</a>
+                                <a href="https://stackoverflow.com/users/login?ssrc=head&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily" class="login-link">log in</a>
+
+                        <a href="http://stackoverflow.com/tour">tour</a>
+                            <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+        help
+        <span class="triangle"></span>
+    </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://stackoverflow.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                    <li>
+                        <a href="http://meta.stackoverflow.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                            Meta
+                            <span class="item-summary">
+                                Discuss the workings and policies of this site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                        About Us
+                        <span class="item-summary">
+                            Learn more about Stack Overflow the company
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://business.stackoverflow.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                        Business
+                        <span class="item-summary">
+                            Learn more about hiring developers or posting ads with us
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+                    </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" placeholder="Search Q&amp;A" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">
+                    Stack Overflow
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                            <li><a id="nav-jobs" href="http://stackoverflow.com/jobs">Jobs</a></li>
+                        <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://stackoverflow.com/help/badges">Badges</a></li>
+                                            </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content" class="snippet-hidden">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+
+<div id="herobox">
+    <div id="hero-content">
+            <div id="close"><a title="click to minimize">_</a></div>
+        <div id="blurb">
+            Stack Overflow is a community of 4.7 million programmers, just like you, helping each other.
+            <br>
+                <br>Join them; it only takes a minute:<br>
+            <br>
+            <a href="http://stackoverflow.com/users/signup?ssrc=hero&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily" id="tell-me-more" class="button">Sign up</a>
+        </div>
+        <div id="desc">
+            <b>Join the Stack Overflow community to:</b>
+            <ol id="hiw">
+                <li id="q">Ask programming questions
+                </li>
+                <li id="an">Answer and help your peers
+                </li>
+                <li id="b">Get recognized for your expertise
+                </li>
+            </ol>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    
+</div>
+			<div id="question-header">
+                <h1 itemprop="name"><a href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily" class="question-hyperlink">Mystery console error with IOHIDFamily</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="29785320" id="question">
+
+    
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk926576567"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiYnQiOjAsImNtIjozMjI1MTQsImNoIjoxMTc4LCJjayI6e30sImNyIjoxMjY3ODEzLCJkaSI6IjYwNWM0NzgwNDUzODQxYTU5MGE1YTZmMTNhMTcwZmY4IiwiZG0iOjEsImZjIjoxMzY2MzEyLCJmbCI6ODY0MjI2LCJpcCI6IjkxLjE1NS40Ny41MyIsImt3IjoiaW9zLG9iamVjdGl2ZS1jLHhjb2RlIiwibnciOjIyLCJwYyI6MCwiZWMiOjAsInByIjoxNTY4LCJydCI6MSwicmYiOiJodHRwczovL3d3dy5nb29nbGUuY29tIiwic3QiOjgyNzcsInVrIjoidWUxLTlhNWVjOGY2NzE3YTQ4NjliYTZhYWEyNTEzNzJkYTY1Iiwiem4iOjQzLCJ0cyI6MTQ2MTM3NjM4OTI0MCwiYmYiOnRydWUsInBuIjoiYWR6ZXJrOTI2NTc2NTY3IiwidXIiOiJodHRwOi8vc3RhY2tvdmVyZmxvdy5jb20vam9icy93aHktam9icz9tZWQ9enJrJnJlZj1jYW5kaWRhdGVzLWFkZC1jdl9sYi1iaXJkcyJ9&amp;s=OFWAqBcSwyyQ9epwqp_dTifLYRc" rel="nofollow" target="_blank" title=""><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/82dad5859089475ba9131caf8f71c2cc.png" title="" alt="" width="728" height="90" border="0"></a><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/i.gif" style="position:absolute;" width="0px" height="0px" border="0"><div class="adzerk-vote-controls" style="display: none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input value="12" name="downvoteReason" type="radio">Uninteresting</label></li><li><label><input value="13" name="downvoteReason" type="radio">Misleading</label></li><li><label><input value="14" name="downvoteReason" type="radio">Offensive</label></li><li><label><input value="15" name="downvoteReason" type="radio">Repetitive</label></li><li><label><input value="16" name="downvoteReason" type="radio">Other</label></li></ul><a href="#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="29785320" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">35</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>13</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>For one of my projects, this error message in Xcode's console happens
+ every time I run a build in the iOS Simulator. It's been happening for 
+over a year and I thought it would eventually go away with an update to 
+Xcode. I've dereferenced and relinked all the Frameworks and I am not 
+explicitly calling anything from the IOHIDFamily, whatever that is! It 
+doesn't seem to affect my program execution but I would really like to 
+figure out why it dumps all this every time.</p>
+
+<pre style="" class="lang-c prettyprint prettyprinted"><code><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.997</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Error</span><span class="pln"> loading </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln">  dlopen</span><span class="pun">(/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">,</span><span class="pln"> </span><span class="lit">262</span><span class="pun">):</span><span class="pln"> no suitable image found</span><span class="pun">.</span><span class="pln">  </span><span class="typ">Did</span><span class="pln"> find</span><span class="pun">:</span><span class="pln">
+    </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln"> mach</span><span class="pun">-</span><span class="pln">o</span><span class="pun">,</span><span class="pln"> but not built </span><span class="kwd">for</span><span class="pln"> iOS simulator
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.997</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Cannot</span><span class="pln"> find function pointer </span><span class="typ">IOHIDLibFactory</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> factory </span><span class="lit">13AA9C44</span><span class="pun">-</span><span class="lit">6F1B</span><span class="pun">-</span><span class="lit">11D4</span><span class="pun">-</span><span class="lit">907C</span><span class="pun">-</span><span class="lit">0005028F18D5</span><span class="pln"> in </span><span class="typ">CFBundle</span><span class="pun">/</span><span class="typ">CFPlugIn</span><span class="pln"> </span><span class="lit">0x78da9a80</span><span class="pln"> </span><span class="pun">&lt;/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">bundle</span><span class="pun">,</span><span class="pln"> not loaded</span><span class="pun">)</span><span class="pln">
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.997</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Error</span><span class="pln"> loading </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln">  dlopen</span><span class="pun">(/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">,</span><span class="pln"> </span><span class="lit">262</span><span class="pun">):</span><span class="pln"> no suitable image found</span><span class="pun">.</span><span class="pln">  </span><span class="typ">Did</span><span class="pln"> find</span><span class="pun">:</span><span class="pln">
+    </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln"> mach</span><span class="pun">-</span><span class="pln">o</span><span class="pun">,</span><span class="pln"> but not built </span><span class="kwd">for</span><span class="pln"> iOS simulator
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.997</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Cannot</span><span class="pln"> find function pointer </span><span class="typ">IOHIDLibFactory</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> factory </span><span class="lit">13AA9C44</span><span class="pun">-</span><span class="lit">6F1B</span><span class="pun">-</span><span class="lit">11D4</span><span class="pun">-</span><span class="lit">907C</span><span class="pun">-</span><span class="lit">0005028F18D5</span><span class="pln"> in </span><span class="typ">CFBundle</span><span class="pun">/</span><span class="typ">CFPlugIn</span><span class="pln"> </span><span class="lit">0x78da9a80</span><span class="pln"> </span><span class="pun">&lt;/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">bundle</span><span class="pun">,</span><span class="pln"> not loaded</span><span class="pun">)</span><span class="pln">
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.998</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Error</span><span class="pln"> loading </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln">  dlopen</span><span class="pun">(/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">,</span><span class="pln"> </span><span class="lit">262</span><span class="pun">):</span><span class="pln"> no suitable image found</span><span class="pun">.</span><span class="pln">  </span><span class="typ">Did</span><span class="pln"> find</span><span class="pun">:</span><span class="pln">
+    </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln"> mach</span><span class="pun">-</span><span class="pln">o</span><span class="pun">,</span><span class="pln"> but not built </span><span class="kwd">for</span><span class="pln"> iOS simulator
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.998</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Cannot</span><span class="pln"> find function pointer </span><span class="typ">IOHIDLibFactory</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> factory </span><span class="lit">13AA9C44</span><span class="pun">-</span><span class="lit">6F1B</span><span class="pun">-</span><span class="lit">11D4</span><span class="pun">-</span><span class="lit">907C</span><span class="pun">-</span><span class="lit">0005028F18D5</span><span class="pln"> in </span><span class="typ">CFBundle</span><span class="pun">/</span><span class="typ">CFPlugIn</span><span class="pln"> </span><span class="lit">0x78da9a80</span><span class="pln"> </span><span class="pun">&lt;/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">bundle</span><span class="pun">,</span><span class="pln"> not loaded</span><span class="pun">)</span><span class="pln">
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.998</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Error</span><span class="pln"> loading </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln">  dlopen</span><span class="pun">(/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">,</span><span class="pln"> </span><span class="lit">262</span><span class="pun">):</span><span class="pln"> no suitable image found</span><span class="pun">.</span><span class="pln">  </span><span class="typ">Did</span><span class="pln"> find</span><span class="pun">:</span><span class="pln">
+    </span><span class="pun">/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">MacOS</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">:</span><span class="pln"> mach</span><span class="pun">-</span><span class="pln">o</span><span class="pun">,</span><span class="pln"> but not built </span><span class="kwd">for</span><span class="pln"> iOS simulator
+</span><span class="lit">2015</span><span class="pun">-</span><span class="lit">04</span><span class="pun">-</span><span class="lit">21</span><span class="pln"> </span><span class="lit">18</span><span class="pun">:</span><span class="lit">20</span><span class="pun">:</span><span class="lit">13.998</span><span class="pln"> </span><span class="typ">Vector</span><span class="pun">-</span><span class="pln">Z_beta</span><span class="pun">[</span><span class="lit">12370</span><span class="pun">:</span><span class="lit">1453236</span><span class="pun">]</span><span class="pln"> </span><span class="typ">Cannot</span><span class="pln"> find function pointer </span><span class="typ">IOHIDLibFactory</span><span class="pln"> </span><span class="kwd">for</span><span class="pln"> factory </span><span class="lit">13AA9C44</span><span class="pun">-</span><span class="lit">6F1B</span><span class="pun">-</span><span class="lit">11D4</span><span class="pun">-</span><span class="lit">907C</span><span class="pun">-</span><span class="lit">0005028F18D5</span><span class="pln"> in </span><span class="typ">CFBundle</span><span class="pun">/</span><span class="typ">CFPlugIn</span><span class="pln"> </span><span class="lit">0x78da9a80</span><span class="pln"> </span><span class="pun">&lt;/</span><span class="typ">System</span><span class="pun">/</span><span class="typ">Library</span><span class="pun">/</span><span class="typ">Extensions</span><span class="pun">/</span><span class="typ">IOHIDFamily</span><span class="pun">.</span><span class="pln">kext</span><span class="pun">/</span><span class="typ">Contents</span><span class="pun">/</span><span class="typ">PlugIns</span><span class="pun">/</span><span class="typ">IOHIDLib</span><span class="pun">.</span><span class="pln">plugin</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">bundle</span><span class="pun">,</span><span class="pln"> not loaded</span><span class="pun">)</span></code></pre>
+    </div>
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/ios" class="post-tag js-gps-track" title="show questions tagged 'ios'" rel="tag">ios</a> <a href="http://stackoverflow.com/questions/tagged/objective-c" class="post-tag js-gps-track" title="show questions tagged 'objective-c'" rel="tag">objective-c</a> <a href="http://stackoverflow.com/questions/tagged/xcode" class="post-tag js-gps-track" title="show questions tagged 'xcode'" rel="tag">xcode</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/q/29785320" title="short permalink to this question" class="short-link" id="link-post-29785320">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/29785320/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature" align="right">
+<div class="user-info user-hover">
+    <div class="user-action-time">
+        <a href="http://stackoverflow.com/posts/29785320/revisions" title="show all edits to this post">edited <span title="2015-04-22 00:19:32Z" class="relativetime">Apr 22 '15 at 0:19</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/608639/jww"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/aPIhh.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/608639/jww">jww</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 29,988" dir="ltr">30k</span><span title="20 gold badges"><span class="badge1"></span><span class="badgecount">20</span></span><span title="92 silver badges"><span class="badge2"></span><span class="badgecount">92</span></span><span title="189 bronze badges"><span class="badge3"></span><span class="badgecount">189</span></span>
+        </div>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info user-hover">
+    <div class="user-action-time">
+        asked <span title="2015-04-22 00:01:33Z" class="relativetime">Apr 22 '15 at 0:01</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/326398/avance"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/b92534ef7e5b6cfc30591ec201d75a87.jpeg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/326398/avance">avance</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">1,261</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="16 silver badges"><span class="badge2"></span><span class="badgecount">16</span></span><span title="22 bronze badges"><span class="badge3"></span><span class="badgecount">22</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-29785320" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-55400130" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I get the same, did you 
+resolve this? I have tried all the (relevant) suggestions below to no 
+avail. I'm using XCode 7.1 to build an app with Swift</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/560612/wheeliebin" title="357 reputation" class="comment-user">wheeliebin</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment55400130_29785320"><span title="2015-11-20 00:57:29Z" class="relativetime-clean">Nov 20 '15 at 0:57</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-55643651" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I second that and will start a bounty because this is bugging me</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/3576234/milesper" title="5,523 reputation" class="comment-user">milesper</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment55643651_29785320"><span title="2015-11-26 15:34:03Z" class="relativetime-clean">Nov 26 '15 at 15:34</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-55685170" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I'm using XCode 7.1.1 too, and i'm trying to build an app with objective c</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/3050085/jose920405" title="781 reputation" class="comment-user">jose920405</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment55685170_29785320"><span title="2015-11-27 19:46:04Z" class="relativetime-clean">Nov 27 '15 at 19:46</span></a></span>
+                    <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-57401806" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Any resolve to this. I have an app that used to work and not it doesn't and I get these errors.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/899345/luke-irvin" title="303 reputation" class="comment-user">Luke Irvin</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment57401806_29785320"><span title="2016-01-16 17:46:40Z" class="relativetime-clean">Jan 16 at 17:46</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-58163251" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Still occurring for me with XCode 7.2</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/560612/wheeliebin" title="357 reputation" class="comment-user">wheeliebin</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment58163251_29785320"><span title="2016-02-05 12:48:10Z" class="relativetime-clean">Feb 5 at 12:48</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-29785320" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								6 Answers
+                                <span style="display:none;" itemprop="answerCount">6</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active">
+            active</a>
+        <a href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest">
+            oldest</a>
+        <a class="youarehere" href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="33970257"></a>
+<div id="answer-33970257" class="answer accepted-answer" data-answerid="33970257" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="33970257" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">40</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+<div class="bounty-award-container"><span class="bounty-award" title="This answer has been awarded bounties worth 100 reputation by milesper">+100</span></div>
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>When deploying to a real iOS device you are building for an ARM 
+architecture, when deploying to the iOS simulator you are building for 
+an x386 architecture.</p>
+
+<p>In the latter case your app links with mach-o files present on your 
+Mac (unless as someone suggested you only link with SDK assemblies, not 
+native Mac ones, but this will really slow down your build and isn’t an 
+available option anymore in recent Xcode versions I believe). </p>
+
+<p>Apparently, one of these mach-o files - the IOHIDFamily extension 
+one, which seems to be linked if GameKit.framework is linked as a 
+library - is not specifically built for the iOS simulator. Hence, the 
+message.
+As I understand this is a confirmed Apple bug and will be fixed by Apple
+ at some point.</p>
+
+<p>It is an issue with the iOS simulator only and can be safely ignored.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/33970257" title="short permalink to this answer" class="short-link" id="link-post-33970257">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/33970257/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2015-11-28 10:26:22Z" class="relativetime">Nov 28 '15 at 10:26</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/1073995/integrating-stuff"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/Zl0Le.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/1073995/integrating-stuff">Integrating Stuff</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">3,033</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="16 silver badges"><span class="badge2"></span><span class="badgecount">16</span></span><span title="29 bronze badges"><span class="badge3"></span><span class="badgecount">29</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-33970257" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-57685673" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Add ons to the answer, build and run you app using real device and those annoying error will not present.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/1135503/kent-liau" title="368 reputation" class="comment-user">Kent Liau</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment57685673_33970257"><span title="2016-01-24 16:20:28Z" class="relativetime-clean">Jan 24 at 16:20</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-33970257" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1863809438"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiYnQiOjAsImNtIjozMjI1MTQsImNoIjoxMTc4LCJjayI6e30sImNyIjoxMjY3NTkwLCJkaSI6ImE0YjFmYzU0OWZiNTRiOWZiYmExZTgyMmZmZDM3YmQ1IiwiZG0iOjEsImZjIjoxMzY1OTUzLCJmbCI6ODY0MjI1LCJpcCI6IjkxLjE1NS40Ny41MyIsImt3IjoiaW9zLG9iamVjdGl2ZS1jLHhjb2RlIiwibnciOjIyLCJwYyI6MCwiZWMiOjAsInByIjoxNjA0LCJydCI6MSwicmYiOiJodHRwczovL3d3dy5nb29nbGUuY29tIiwic3QiOjgyNzcsInVrIjoidWUxLTlhNWVjOGY2NzE3YTQ4NjliYTZhYWEyNTEzNzJkYTY1Iiwiem4iOjQ0LCJ0cyI6MTQ2MTM3NjM4OTI0MiwiYmYiOnRydWUsInBuIjoiYWR6ZXJrMTg2MzgwOTQzOCIsInVyIjoiaHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL2pvYnMvcmVtb3RlP21lZD16cmsmcmVmPWNhbmRpZGF0ZXMtd2ZoX2xiLXdmaC1wYWphbWFzIn0&amp;s=8UajcG1f4QiVqU2sl8OjKAbVkCI" rel="nofollow" target="_blank" title=""><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/1e340e02d6c4484cb02bb42c8da9778a.png" title="" alt="" width="728" height="90" border="0"></a><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/i_002.gif" style="position:absolute;" width="0px" height="0px" border="0"><div class="adzerk-vote-controls" style="display:none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input value="12" name="downvoteReason" type="radio">Uninteresting</label></li><li><label><input value="13" name="downvoteReason" type="radio">Misleading</label></li><li><label><input value="14" name="downvoteReason" type="radio">Offensive</label></li><li><label><input value="15" name="downvoteReason" type="radio">Repetitive</label></li><li><label><input value="16" name="downvoteReason" type="radio">Other</label></li></ul><a href="#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div></div>
+  
+<a name="32711849"></a>
+<div id="answer-32711849" class="answer" data-answerid="32711849" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="32711849" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">4</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Disabling Game Center capabilities remove these messages for me. On your Project, select the <em>Desired target</em> and go to <em>Capabilities</em>.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/32711849" title="short permalink to this answer" class="short-link" id="link-post-32711849">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/32711849/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-09-22 08:17:40Z" class="relativetime">Sep 22 '15 at 8:17</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/540780/domsware"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/ATxU2.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/540780/domsware">Domsware</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">773</span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="24 bronze badges"><span class="badge3"></span><span class="badgecount">24</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-32711849" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-54955740" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">2</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I'm using Game Center in my app, so not really an option here.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/326398/avance" title="1,261 reputation" class="comment-user owner">avance</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment54955740_32711849"><span title="2015-11-08 01:53:35Z" class="relativetime-clean">Nov 8 '15 at 1:53</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-54969059" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Same things for me. I disabled Game Center on the early stage of development but now I need it so I have to face these warnings.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/540780/domsware" title="773 reputation" class="comment-user">Domsware</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment54969059_32711849"><span title="2015-11-08 17:45:48Z" class="relativetime-clean">Nov 8 '15 at 17:45</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-32711849" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="29786868"></a>
+<div id="answer-29786868" class="answer" data-answerid="29786868" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="29786868" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">2</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Vinnie posted this solution</p>
+
+<blockquote>
+  <p>try setting the IOS Build Options: Linker options to "Link SDK assemblies only", fixed it for me</p>
+</blockquote>
+
+<p>here:
+<a href="http://forums.xamarin.com/discussion/24656/error-running-app-after-upgrading-xamarin" rel="nofollow">http://forums.xamarin.com/discussion/24656/error-running-app-after-upgrading-xamarin</a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/29786868" title="short permalink to this answer" class="short-link" id="link-post-29786868">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/29786868/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-04-22 02:51:24Z" class="relativetime">Apr 22 '15 at 2:51</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/2840583/larry-b"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/be70c6e18f0cc4bd6202c16546d4ac15.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/2840583/larry-b">Larry B</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">96</span><span title="6 bronze badges"><span class="badge3"></span><span class="badgecount">6</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-29786868" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-47748395" class="comment ">
+        <td class="comment-actions">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                <span title="number of 'useful comment' votes received" class="cool">1</span>
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I'm using Xcode 6.3, and that's not an option I have on the build target.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/326398/avance" title="1,261 reputation" class="comment-user owner">avance</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment47748395_29786868"><span title="2015-04-22 22:37:49Z" class="relativetime-clean">Apr 22 '15 at 22:37</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-55756346" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I can not find this option</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/3050085/jose920405" title="781 reputation" class="comment-user">jose920405</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment55756346_29786868"><span title="2015-11-30 14:02:14Z" class="relativetime-clean">Nov 30 '15 at 14:02</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-29786868" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="32594335"></a>
+<div id="answer-32594335" class="answer" data-answerid="32594335" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="32594335" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">0</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>When I encountered this problem in iOS code, it was because two of my
+ classes contained an import Foundation.  New File was defaulting to OS X
+ / Source / Swift file and I hadn't noticed.</p>
+
+<p>Removing those imports eliminated the problem.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/32594335" title="short permalink to this answer" class="short-link" id="link-post-32594335">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/32594335/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-09-15 19:43:12Z" class="relativetime">Sep 15 '15 at 19:43</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/29454/refactor"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/7804d3b23a0b494ee96a15e148cfb29b.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/29454/refactor">Refactor</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">371</span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="15 bronze badges"><span class="badge3"></span><span class="badgecount">15</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-32594335" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-53214219" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">thanks, but I only have one line that reads <code>#import &lt;Foundation/Foundation.h&gt;</code> (in my prefix header file) and it has the iOS framework path.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/326398/avance" title="1,261 reputation" class="comment-user owner">avance</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment53214219_32594335"><span title="2015-09-20 21:56:39Z" class="relativetime-clean">Sep 20 '15 at 21:56</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-54433326" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Can you please elaborate on this "New File was defaulting to OS X / Source / Swift file". I don't understand. Thanks!</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/1091780/fredrik-johansson" title="446 reputation" class="comment-user">Fredrik Johansson</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment54433326_32594335"><span title="2015-10-24 11:31:40Z" class="relativetime-clean">Oct 24 '15 at 11:31</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-54505927" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Hmm.  At this time, neither 
+do I.  Both iOS and OSX Source choice (now?) give import Foundation.  I 
+do know, that for the problem I was seeing, at that time, eliminating 
+the import Foundation, or replacing Foundation with UIKit in the swift 
+file's import resolved the problem.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/29454/refactor" title="371 reputation" class="comment-user">Refactor</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment54505927_32594335"><span title="2015-10-26 20:33:02Z" class="relativetime-clean">Oct 26 '15 at 20:33</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-32594335" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="34198036"></a>
+<div id="answer-34198036" class="answer" data-answerid="34198036" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="34198036" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">0</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>On new Xcode 7.2 these messages do not display anymore.</p>
+
+<p>But I have new messages related to <em>SpriteKit</em> :<br>
+<code>CUICatalog: Invalid Request: requesting subtype without specifying idiom</code></p>
+
+<p><a href="http://stackoverflow.com/q/33686413/540780">CUICatalog: Invalid Request: requesting subtype without specifying idiom</a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/34198036" title="short permalink to this answer" class="short-link" id="link-post-34198036">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/34198036/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-12-10 09:27:21Z" class="relativetime">Dec 10 '15 at 9:27</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/540780/domsware"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/ATxU2.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/540780/domsware">Domsware</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">773</span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="24 bronze badges"><span class="badge3"></span><span class="badgecount">24</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-34198036" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-56313908" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">As I wrote "I have" meaning in my case.Your case maybe different.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/540780/domsware" title="773 reputation" class="comment-user">Domsware</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment56313908_34198036"><span title="2015-12-15 10:06:20Z" class="relativetime-clean">Dec 15 '15 at 10:06</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-56588246" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Funny enough, but I have both
+ these problems now. Both are issues with the iOS 9 SDK from what I've 
+read on the official Apple Dev forums.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/814861/artsabintsev" title="3,234 reputation" class="comment-user">ArtSabintsev</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment56588246_34198036"><span title="2015-12-22 19:44:09Z" class="relativetime-clean">Dec 22 '15 at 19:44</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-59280598" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I still get this error</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/1554632/nikita-p" title="1,373 reputation" class="comment-user">Nikita P</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment59280598_34198036"><span title="2016-03-04 20:36:48Z" class="relativetime-clean">Mar 4 at 20:36</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-34198036" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+
+  
+<a name="32677181"></a>
+<div id="answer-32677181" class="answer" data-answerid="32677181" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="32677181" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">-1</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>I solved this issue by going on GENERAL tab and uncheck <strong>Requires Full Screen</strong> option to disable iPad multitasking. But you can get validation errors if multitasking is not handled properly!</p>
+
+<p><a href="http://i.stack.imgur.com/HEV2f.png" rel="nofollow"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/HEV2f.png" alt="Requires Full Screen"></a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://stackoverflow.com/a/32677181" title="short permalink to this answer" class="short-link" id="link-post-32677181">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/32677181/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-09-20 08:06:06Z" class="relativetime">Sep 20 '15 at 8:06</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/4823237/itzo"><div class="gravatar-wrapper-32"><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/0acfe15232e21ecf386ed4551b6cef10.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/4823237/itzo">itzo</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">44</span><span title="7 bronze badges"><span class="badge3"></span><span class="badgecount">7</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-32677181" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-53214265" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Thanks but this problem predates iPad multitasking, and I don't have it checked anyway.</span>
+                    –&nbsp;<a href="http://stackoverflow.com/users/326398/avance" title="1,261 reputation" class="comment-user owner">avance</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment53214265_32677181"><span title="2015-09-20 21:59:42Z" class="relativetime-clean">Sep 20 '15 at 21:59</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-32677181" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/29785320/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="29785320" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="https://www.google.com" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+
+            
+    
+
+
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li style="left: 0px;" class="wmd-button" id="wmd-bold-button"><span style="background-position: 0px -20px;"></span></li><li style="left: 25px;" class="wmd-button" id="wmd-italic-button"><span style="background-position: -20px -20px;"></span></li><li style="left: 50px;" class="wmd-spacer" id="wmd-spacer1"><span style="background-position: -40px -20px;"></span></li><li style="left: 75px;" class="wmd-button" id="wmd-link-button"><span style="background-position: -40px -20px;"></span></li><li style="left: 100px;" class="wmd-button" id="wmd-quote-button"><span style="background-position: -60px -20px;"></span></li><li style="left: 125px;" class="wmd-button" id="wmd-code-button"><span style="background-position: -80px -20px;"></span></li><li style="left: 150px;" class="wmd-button" id="wmd-image-button"><span style="background-position: -100px -20px;"></span></li><li style="left: 175px;" class="wmd-spacer" id="wmd-spacer2"><span style="background-position: -120px -20px;"></span></li><li style="left: 200px;" class="wmd-button" id="wmd-olist-button"><span style="background-position: -120px -20px;"></span></li><li style="left: 225px;" class="wmd-button" id="wmd-ulist-button"><span style="background-position: -140px -20px;"></span></li><li style="left: 250px;" class="wmd-button" id="wmd-heading-button"><span style="background-position: -160px -20px;"></span></li><li style="left: 275px;" class="wmd-button" id="wmd-hr-button"><span style="background-position: -180px -20px;"></span></li><li style="left: 300px;" class="wmd-spacer" id="wmd-spacer3"><span style="background-position: -200px -20px;"></span></li><li style="left: 325px;" class="wmd-button" id="wmd-undo-button"><span style="background-position: -200px -20px;"></span></li><li style="left: 350px;" class="wmd-button" id="wmd-redo-button"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="d7b64f2b644e9484c6cb7a3b13fbe4c7" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://stackoverflow.com/users/login?ssrc=question_page&amp;returnurl=http%3a%2f%2fstackoverflow.com%2fquestions%2f29785320%2fmystery-console-error-with-iohidfamily%23new-answer">log in</a></h3>
+                        
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" size="30" maxlength="100" value="" tabindex="106" placeholder="required, but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://stackoverflow.com/questions/tagged/ios" class="post-tag" title="show questions tagged 'ios'" rel="tag">ios</a> <a href="http://stackoverflow.com/questions/tagged/objective-c" class="post-tag" title="show questions tagged 'objective-c'" rel="tag">objective-c</a> <a href="http://stackoverflow.com/questions/tagged/xcode" class="post-tag" title="show questions tagged 'xcode'" rel="tag">xcode</a>  or <a href="http://stackoverflow.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2015-04-22 00:01:33Z"><b>1 year ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>6611 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://stackoverflow.com/questions/29785320/mystery-console-error-with-iohidfamily?lastactivity" class="lastactivity-link" title="2015-12-10 09:27:21Z">4 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+						
+			
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1773173047"><div id="careersadsdoublehigh" style="display:none;"></div><img src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/i_003.gif" style="position:absolute;" width="0px" height="0px" border="0"><div class="adzerk-vote-controls" style="display:none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input value="12" name="downvoteReason" type="radio">Uninteresting</label></li><li><label><input value="13" name="downvoteReason" type="radio">Misleading</label></li><li><label><input value="14" name="downvoteReason" type="radio">Offensive</label></li><li><label><input value="15" name="downvoteReason" type="radio">Repetitive</label></li><li><label><input value="16" name="downvoteReason" type="radio">Other</label></li></ul><a href="#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div></div>
+        <div class=" orange looking tagged clc-jobs-multi" id="hireme"><a href="http://stackoverflow.com/jobs" target="_blank" data-tz="1" data-ti="0" class="top"><span>Looking for a job?</span></a><div class="middle"><ul class="jobs"><li><a data-at="0" data-tz="3" data-ti="209818" href="http://stackoverflow.com/jobs/109818/java-architect-with-nosql-and-solr-80k-crossover" target="_blank" title="Java Architect (with NoSql and SOLR) - $80k at Crossover. Click to learn more."><div class="title">Java Architect (with NoSql and SOLR) - $80k</div><div><span class="company">Crossover</span><span class="location">No office location</span></div><div class="opts"><span class="opt remote">Remote</span></div><span class="post-tag highlight">c++</span><span class="post-tag">java</span></a></li><li><a data-at="0" data-tz="3" data-ti="212016" href="http://stackoverflow.com/jobs/112016/experienced-ios-developer-innogiant-oy" target="_blank" title="Experienced iOS developer at Innogiant Oy. Click to learn more."><div class="title">Experienced iOS developer</div><div><span class="company">Innogiant Oy</span><span class="location">Tampere, Finland</span></div><span class="post-tag">android</span><span class="post-tag">ios</span></a></li><li><a data-at="0" data-tz="3" data-ti="190757" href="http://stackoverflow.com/jobs/104830/mobile-developer-ios-android-beddit-ltd" target="_blank" title="Mobile Developer (iOS, Android) at Beddit Ltd. Click to learn more."><div class="title">Mobile Developer (iOS, Android)</div><div><span class="company">Beddit Ltd</span><span class="location">Espoo, Finland</span></div><span class="post-tag">android</span><span class="post-tag">ios</span></a></li><li><a data-at="0" data-tz="3" data-ti="211748" href="http://stackoverflow.com/jobs/111748/ios-developers-sports-tracker" target="_blank" title="iOS Developers at Sports Tracker. Click to learn more."><div class="title">iOS Developers</div><div><span class="company">Sports Tracker</span><span class="location">Vantaa, Finland</span></div><span class="post-tag">ios</span><span class="post-tag">objective-c</span></a></li></ul><div style="clear:both"></div></div><img class="impression" src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/soi.gif" style="display:none;"></div>
+			  
+    
+            <div class="module sidebar-linked">
+	<h4 id="h-linked">Linked</h4>
+	<div class="linked" data-tracker="lq=1">
+<div class="spacer">
+	<a href="http://stackoverflow.com/q/33686413?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">24</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/33686413/cuicatalog-invalid-request-requesting-subtype-without-specifying-idiom?lq=1" class="question-hyperlink">CUICatalog: Invalid Request: requesting subtype without specifying idiom</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/32855671?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">1</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/32855671/xcode-update-impossible-to-debug?lq=1" class="question-hyperlink">Xcode update - impossible to debug</a>
+</div><div class="spacer">
+	<a href="http://stackoverflow.com/q/33926898?lq=1" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">1</div>
+	</a>
+	<a href="http://stackoverflow.com/questions/33926898/sprite-image-not-loading?lq=1" class="question-hyperlink">Sprite Image Not Loading</a>
+</div>			</div>
+</div>
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/1760518?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">456
+    </div>
+</a><a href="http://stackoverflow.com/questions/1760518/codesign-error-provisioning-profile-cannot-be-found-after-deleting-expired-prof?rq=1" class="question-hyperlink">Codesign error: Provisioning profile cannot be found after deleting expired profile</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/7961840?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">114
+    </div>
+</a><a href="http://stackoverflow.com/questions/7961840/what-does-this-gdb-output-mean?rq=1" class="question-hyperlink">What does this gdb output mean?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/11711893?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">7
+    </div>
+</a><a href="http://stackoverflow.com/questions/11711893/error-symbol-not-found-cfobjciscollectable?rq=1" class="question-hyperlink">Error: Symbol not found: ___CFObjCIsCollectable</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/11812305?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/11812305/playing-music-error-and-relative-pathing?rq=1" class="question-hyperlink">Playing music error and relative pathing</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/12402092?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">374
+    </div>
+</a><a href="http://stackoverflow.com/questions/12402092/file-is-universal-three-slices-but-it-does-not-contain-an-armv7-s-slice-err?rq=1" class="question-hyperlink">File
+ is universal (three slices), but it does not contain a(n) ARMv7-s slice
+ error for static libraries on iOS, anyway to bypass?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/30736932?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes large">358
+    </div>
+</a><a href="http://stackoverflow.com/questions/30736932/xcode-error-could-not-find-developer-disk-image?rq=1" class="question-hyperlink">Xcode error “Could not find Developer Disk Image”</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/31735040?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/31735040/mysterious-errors-is-xcode?rq=1" class="question-hyperlink">Mysterious errors is Xcode?</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/32344082?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes large">150
+    </div>
+</a><a href="http://stackoverflow.com/questions/32344082/error-handlenonlaunchspecificactions-in-ios9?rq=1" class="question-hyperlink">Error: _handleNonLaunchSpecificActions in iOS9</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/32821189?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">633
+    </div>
+</a><a href="http://stackoverflow.com/questions/32821189/xcode-7-error-missing-ios-distribution-signing-identity-for?rq=1" class="question-hyperlink">Xcode 7 error: “Missing iOS Distribution signing identity for …”</a>
+</div>
+<div class="spacer js-gps-track">
+<a href="http://stackoverflow.com/q/32855671?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">1
+    </div>
+</a><a href="http://stackoverflow.com/questions/32855671/xcode-update-impossible-to-debug?rq=1" class="question-hyperlink">Xcode update - impossible to debug</a>
+</div>
+
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/120701/how-can-mom-monitor-my-internet-history-from-a-distance" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can mom monitor my internet history from a distance?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-mechanics" title="Motor Vehicle Maintenance &amp; Repair Stack Exchange"></div><a href="http://mechanics.stackexchange.com/questions/28724/what-does-it-mean-to-retard-an-engine" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:224 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What does it mean to retard an engine?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/125642/why-does-the-terminator-have-genitalia" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why does the terminator have genitalia?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/277892/how-do-i-create-a-blank-pdf-from-the-command-line" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do I create a blank PDF from the command line?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-programmers" title="Programmers Stack Exchange"></div><a href="http://programmers.stackexchange.com/questions/316407/what-style-is-better-instance-variable-vs-return-value-in-java" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:131 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What Style is Better (Instance Variable vs. Return Value) in Java
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/40497/how-if-at-all-can-space-battleships-mitigate-gun-recoil" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How, if at all, can space battleships mitigate gun recoil?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/320976/in-the-book-the-wealth-of-nations-what-does-it-mean-to-receive-money-by-tale" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    In the book, The Wealth of Nations, what does it mean to "receive money by tale"?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-space" title="Space Exploration Stack Exchange"></div><a href="http://space.stackexchange.com/questions/14947/did-the-mars-rovers-actually-confirm-the-gravity-of-mars" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:508 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Did the mars rovers actually confirm the gravity of Mars?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-mathematica" title="Mathematica Stack Exchange"></div><a href="http://mathematica.stackexchange.com/questions/113307/how-to-generate-this-structure-of-a-list-without-while-and-the-like" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:387 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to generate this structure of a list without `While` and the like?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1754681/why-only-consider-dolbeault-cohomology" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why only consider Dolbeault cohomology?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-dba" title="Database Administrators Stack Exchange"></div><a href="http://dba.stackexchange.com/questions/136210/where-do-this-constant-scan-and-left-outer-join-come-from-in-a-trivial-select-qu" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:182 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Where do this Constant Scan and Left Outer Join come from in a trivial SELECT query plan?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/125782/why-isnt-the-first-order-the-second-order" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why isn't the First Order the Second Order?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="http://puzzling.stackexchange.com/questions/31299/game-of-life-move-the-sun" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Game of Life: Move the Sun
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-dsp" title="Signal Processing Stack Exchange"></div><a href="http://dsp.stackexchange.com/questions/30275/can-a-narrowband-beamformer-be-used-for-speech-separation" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:295 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can a narrowband beamformer be used for speech separation
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/278433/changing-a-files-modified-date-based-on-date-in-file-name" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Changing a file's modified date based on date in file name
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/79136/what-are-turns-and-rounds-and-how-long-are-they-each" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What are turns and rounds and how long are they each?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/79133/not-clear-on-number-of-skills-my-character-can-have" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Not clear on number of skills my character can have
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1754712/orthogonal-matrix-norm" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Orthogonal matrix norm
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1754812/open-cover-why-is-the-following-open" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Open cover; why is the following open?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/125866/which-marvel-character-is-on-this-tie" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Which Marvel Character is on this tie?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-physics" title="Physics Stack Exchange"></div><a href="http://physics.stackexchange.com/questions/251406/what-are-the-accelerations-of-blocks" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:151 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What are the accelerations of blocks?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/67053/berlin-public-transport-ticket-validity" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Berlin Public Transport Ticket Validity
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/321044/is-it-conceivable-that-president-obama-might-use-the-word-queue" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it conceivable that President Obama might use the word "queue"?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-biology" title="Biology Stack Exchange"></div><a href="http://biology.stackexchange.com/questions/45502/is-it-possible-to-feel-pain-in-some-part-of-a-body-but-the-pain-feeling-is-in" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:375 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it possible to feel pain in some part of a body, but the pain "feeling" is introduced somewhere else?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://stackoverflow.com/feeds/question/29785320" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	
+<noscript>
+    <div><img src="/posts/29785320/ivc/34d9" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-c</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="http://stackoverflow.com/tour">tour</a>
+                    <a href="http://stackoverflow.com/help">help</a>
+                    <a href="http://blog.stackoverflow.com/?blb=1">blog</a>
+                        <a href="http://chat.stackoverflow.com/">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="http://stackoverflow.com/contact">contact us</a></b>
+                        <b><a href="http://meta.stackoverflow.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://programmers.stackexchange.com/" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="http://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (13)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (9)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="http://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="http://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (5)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="http://careers.stackoverflow.com/">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2016 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2016.4.22.3505
+            </div>
+        </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Stack Overflow works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+
+
+    
+                <iframe src="ios%20-%20Mystery%20console%20error%20with%20IOHIDFamily%20-%20Stack%20Overflow_tiedostot/a.html" id="teststackoverflow" style="display:none"></iframe>
+        
+
+    
+    
+</body></html>

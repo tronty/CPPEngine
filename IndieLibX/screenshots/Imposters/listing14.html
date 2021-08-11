@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 14</title>
+</head>
+<body>
+<pre>
+/// Determine if an imposter requires regeneration.
+bool ImposterSystem::UpdateImposter(const D3DXVECTOR3& curCameraPos, Imposter* pImposter)
+{
+	if (pImposter->requiresRegeneration)
+	{
+		// This imposter already requires regeneration, don't bother with anymore tests.
+
+		return true;
+	}
+
+	// Test the age of the imposter.
+
+    	float curTime = (float) DXUTGetTime();
+	float age = curTime - pImposter->lastGeneratedTime;
+    	if (age > MAX_IMPOSTER_AGE)
+    	{
+       	// Imposter has expired.
+
+        	pImposter->requiresRegeneration = true;
+        	return true;
+    	}
+
+    	// Test the angle between the current camera vector and the camera vector at the
+    	// time the imposter was last generated.
+
+    	D3DXVECTOR3 curCameraDir = curCameraPos - pImposter->centre;
+    	D3DXVec3Normalize(&curCameraDir, &curCameraDir);
+    	float viewAngle = D3DXVec3Dot(&curCameraDir, &pImposter->cameraDir);
+    	if (viewAngle <= VIEW_ANGLE_THRESHOLD)
+    	{
+       	// The camera view angle has become to extreme.
+
+pImposter->requiresRegeneration = true;
+return true;
+    	}
+
+return false;
+}
+
+
+</pre>
+</body>
+</html>
+
+
+
+
