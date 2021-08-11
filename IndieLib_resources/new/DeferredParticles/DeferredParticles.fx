@@ -18,14 +18,14 @@
 #define MAX_FLASH_LIGHTS 8
 #define MAX_INSTANCES 200
 
-cbuffer cbInstancedGlobals
-{
+//cbuffer cbInstancedGlobals
+//{
 	float4x4 g_mWorldInst[MAX_INSTANCES];
 	float4x4 g_mViewProj;
-};
+//};
 
-cbuffer cbPerFrame
-{
+//cbuffer cbPerFrame
+//{
 	float  g_fTime;   
 	float3 g_LightDir;
 	float3 g_vEyePt;
@@ -35,17 +35,17 @@ cbuffer cbPerFrame
 	float4x4 g_mWorldViewProjection;   
 	float4x4 g_mInvViewProj;
 	float4x4 g_mWorld;
-};
+//};
 
-cbuffer cbglowlights
-{
+//cbuffer cbglowlights
+//{
 	uint   g_NumGlowLights;
 	float4 g_vGlowLightPosIntensity[MAX_GLOWLIGHTS];
 	float4 g_vGlowLightColor[MAX_GLOWLIGHTS];
 	
 	float3  g_vGlowLightAttenuation;
 	float3  g_vMeshLightAttenuation;
-};
+//};
 
 //--------------------------------------------------------------------------------------
 // Texture samplers

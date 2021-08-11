@@ -579,7 +579,7 @@ PSOut PSQuad(PSInQuad input)
     return output;
 }
 
-
+#if 0
 //--------------------------------------------------------------------------------------
 // Compiled shaders used in different techniques
 //--------------------------------------------------------------------------------------
@@ -594,81 +594,86 @@ PixelShader ps_Trilinear_Parallax = CompileShader( ps_4_0, PS_Trilinear_Parallax
 PixelShader ps_Anisotropic = CompileShader( ps_4_0, PS_Anisotropic() );
 PixelShader ps_Anisotropic_Parallax = CompileShader( ps_4_0, PS_Anisotropic_Parallax() );
 PixelShader ps_Color = CompileShader( ps_4_0, PS_Color() );
-PixelShader psComiledQuad = CompileShader( ps_4_0, PSQuad() );
+PixelShader psCompiledQuad = CompileShader( ps_4_0, PSQuad() );
+#endif
 
 BlendState NoBlending
 {
     BlendEnable[0] = FALSE;
 };
 
-technique10 Trilinear
-{
-    pass p0
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiled );
-        SetGeometryShader( NULL );
-        SetPixelShader( ps_Trilinear );
-        SetRasterizerState(RStateMSAA);
-    }
-    
-    pass p1
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiled );
-        SetGeometryShader( NULL );
-        SetPixelShader( ps_Trilinear_Parallax );
-        SetRasterizerState(RStateMSAA);
-    }
-}
+[techniques]
+<Textures>
+	    <Texture sampler="Base" file="/test.bmp" dimension="2" mipmap="false" SamplerState="linear" />
+</Textures>
+<Techniques>
+<technique name="Trilinear">
+    <pass name="p0">
+    <VertexShader profile="vs_5_0" name="VSMain" />
+	<PixelShader profile="ps_5_0" name="PS_Trilinear" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+    <pass name="p1">
+    <VertexShader profile="vs_5_0" name="VSMain" />
+	<PixelShader profile="ps_5_0" name="PS_Trilinear_Parallax" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+</technique>
+<technique name="Anisotropic">
+    <pass name="p0">
+    <VertexShader profile="vs_5_0" name="VSMain" />
+	<PixelShader profile="ps_5_0" name="PS_Anisotropic" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+    <pass name="p1">
+    <VertexShader profile="vs_5_0" name="VSMain" />
+	<PixelShader profile="ps_5_0" name="PS_Anisotropic_Parallax" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+</technique>
+<technique name="ColoredMips">
+    <pass name="p0">
+    <VertexShader profile="vs_5_0" name="VSMain" />
+	<PixelShader profile="ps_5_0" name="PS_Color" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+</technique>
+<technique name="StackDrawPass">
+    <pass name="p0">
+    <VertexShader profile="vs_5_0" name="VSMainQuad" />
+	<PixelShader profile="ps_5_0" name="PSQuad" />
+    <HullShader profile="hs_5_0" name="" />
+    <DomainShader profile="ds_5_0" name="" />
+    <GeometryShader profile="gs_5_0" name="GSMainQuad" />
+    <ComputeShader profile="cs_5_0" name="" />
+        <RasterizerState name="RStateMSAA" />
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+    </pass>
+</technique>
+</Techniques>
 
-technique10 Anisotropic
-{
-    pass p0
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiled );
-        SetGeometryShader( NULL );
-        SetPixelShader( ps_Anisotropic );
-        SetRasterizerState(RStateMSAA);
-    }
-    
-    pass p1
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiled );
-        SetGeometryShader( NULL );
-        SetPixelShader( ps_Anisotropic_Parallax );
-        SetRasterizerState(RStateMSAA);
-    }
-}
-
-technique10 ColoredMips
-{
-    pass p0
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiled );
-        SetGeometryShader( NULL );
-        SetPixelShader( ps_Color );
-        SetRasterizerState(RStateMSAA);
-    }
-}
-
-technique10 StackDrawPass
-{
-    pass p0
-    {
-        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
-		
-		SetVertexShader( vsCompiledQuad );
-        SetGeometryShader( gsCompiledQuad );
-        SetPixelShader( psComiledQuad );
-        SetRasterizerState(RStateMSAA);
-    }
-}

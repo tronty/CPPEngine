@@ -48,36 +48,36 @@ struct PSSkinnedIn
 //--------------------------------------------------------------------------------------
 // Constant buffers
 //--------------------------------------------------------------------------------------
-cbuffer cb0
-{
+//cbuffer cb0
+//{
     float4x4 g_mWorldViewProj;
     float4x4 g_mWorld;
-};
+//};
 
-cbuffer cbUserChange
-{
+//cbuffer cbUserChange
+//{
     float3 g_vLightPos;
     float3 g_vEyePt;
-};
+//};
 
-cbuffer cbImmutable
-{
+//cbuffer cbImmutable
+//{
     float4 g_directional = float4(1.0,1.0,1.0,1.0);
     float4 g_ambient = float4(0.1,0.1,0.1,0.0);
     float4 g_objectspeccolor = float4(1.0,1.0,1.0,1.0);
-};
+//};
 
 // Constant buffer for bone matrices
-cbuffer cbAnimMatrices
-{
+//cbuffer cbAnimMatrices
+//{
     matrix g_mConstBoneWorld[MAX_BONE_MATRICES];
-};
+//};
 
 // TBuffer for bone matrices
-tbuffer tbAnimMatrices
-{
+//tbuffer tbAnimMatrices
+//{
     matrix g_mTexBoneWorld[MAX_BONE_MATRICES];
-};
+//};
 
 //--------------------------------------------------------------------------------------
 // Textures
@@ -334,9 +334,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
 	    <Texture sampler="Base" file="/test.bmp" dimension="2" mipmap="false" SamplerState="linear" />
 </Textures>
 <Techniques>
+<!--
 //--------------------------------------------------------------------------------------
 // Render the scene by fetching bone matrices from a constant buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderConstantBuffer">
     <pass name="P0">
         <VertexShader profile="vs_4_0" name="VSSkinnedmain">
@@ -347,10 +349,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="EnableDepth" X="0" />
     </pass>
 </technique>
-
+<!--
 //--------------------------------------------------------------------------------------
 // Render the scene by fetching bone matrices from a texture buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderTextureBuffer">
     <pass name="P0">
         <VertexShader profile="vs_4_0" name="VSSkinnedmain">
@@ -361,10 +364,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="EnableDepth" X="0" />
     </pass>
 </technique>
-
+<!--
 //--------------------------------------------------------------------------------------
 // Render the scene by fetching bone matrices from a texture
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderTexture">
     <pass name="P0">
         <VertexShader profile="vs_4_0" name="VSSkinnedmain">
@@ -375,10 +379,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="EnableDepth" X="0" />
     </pass>
 </technique>
-
+<!--
 //--------------------------------------------------------------------------------------
 // Render the scene by fetching bone matrices from a buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderBuffer">
     <pass name="P0">
         <VertexShader profile="vs_4_0" name="VSSkinnedmain">
@@ -389,9 +394,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="EnableDepth" X="0" />
     </pass>
 </technique>
+<!--
 //--------------------------------------------------------------------------------------
 // Stream out the scene by fetching bone matrices from a constant buffer (StreamOut)
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderConstantBuffer_SO">
     <pass name="P0">
         <VertexShader name="vsConstantBuffer" />
@@ -400,10 +407,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="DisableDepth" X="0" />
     </pass>
 </technique>
-    
+<!--
 //--------------------------------------------------------------------------------------
 // Stream out the scene by fetching bone matrices from a texture buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderTextureBuffer_SO">
     <pass name="P0">
         <VertexShader name="vsTextureBuffer" />
@@ -412,10 +420,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="DisableDepth" X="0" />
     </pass>
 </technique>
-    
+<!--
 //--------------------------------------------------------------------------------------
 // Stream out the scene by fetching bone matrices from a texture
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderTexture_SO">
     <pass name="P0">	
         <VertexShader name="vsTexture" />
@@ -424,10 +433,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="DisableDepth" X="0" />
     </pass>
 </technique>
-
+<!--
 //--------------------------------------------------------------------------------------
 // Stream out the scene by fetching bone matrices from a buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderBuffer_SO">
     <pass name="P0">
         <VertexShader name="vsBuffer" />
@@ -436,10 +446,11 @@ GeometryShader vsBufferSO = ConstructGSWithSO( vsBuffer, "POSITION.xyzw; NORMAL.
         <DepthStencilState name="DisableDepth" X="0" />
     </pass>
 </technique>
-
+<!--
 //--------------------------------------------------------------------------------------
 // Render the scene by fetching bone matrices from a buffer
 //--------------------------------------------------------------------------------------
+-->
 <technique name="RenderPostTransformed">
     <pass name="P0">
         <VertexShader profile="vs_4_0" name="VSRenderPostTransformedmain" />

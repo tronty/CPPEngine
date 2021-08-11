@@ -16,8 +16,8 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-cbuffer QuadObject
-{
+//cbuffer QuadObject
+//{
     const float2 QuadVertices[4] =
     {
         {-1.0, -1.0},
@@ -33,7 +33,7 @@ cbuffer QuadObject
         {0.0, 0.0},
         {1.0, 0.0}
     };
-}
+//}
 
 SamplerState SamplerPointClamp
 {
@@ -303,8 +303,8 @@ struct PatchData
 // Constant Buffers
 //--------------------------------------------------------------------------------------
 
-shared cbuffer cb0
-{
+//shared cbuffer cb0
+//{
 
 	// rendering control variables
 	float		g_RenderCaustics;
@@ -357,7 +357,7 @@ shared cbuffer cb0
 	float		g_FogDensity = 1.0f/700.0f;
     float2		g_HeightFieldOrigin = float2(0, 0);
 	float		g_HeightFieldSize = 512;
-};
+//};
 
 //--------------------------------------------------------------------------------------
 // Misc functions

@@ -97,8 +97,8 @@ float maxHeight;
 float g_Near; 
 float g_Far; 
 
-cbuffer cbImmutable
-{
+//cbuffer cbImmutable
+//{
     float3 g_positions[4] =
     {
         float3( -1, 1, 0 ),
@@ -178,7 +178,7 @@ cbuffer cbImmutable
     float g_diffXScale = 0.5;
     float g_diffYOffset = 0;        
     float g_diffYScale = 0.3183099;  //1/PI   
-}
+//}
 
 BlendState CorrectBlending
 {

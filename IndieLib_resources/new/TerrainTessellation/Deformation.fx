@@ -132,32 +132,30 @@ RasterizerState NoMultisampling
     CullMode = None;
 };
 
-technique10 InitializationTechnique
-{
-    pass Init
-    {
-		// Same as deformation, but with an alternate PS and without blending.
-        SetBlendState( NoBlending, float4( 0, 0, 0, 0 ), 0xffffffff );
-        SetDepthStencilState( DisableDepthWrites, 0 );
-        SetRasterizerState( NoMultisampling );
+[techniques]
+<Textures>
+	    <Texture sampler="Base" file="/test.bmp" dimension="2" mipmap="false" SamplerState="linear" />
+</Textures>
+<Techniques>
+<technique name="InitializationTechnique">
+    <pass name="Init">
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+        <DepthStencilState name="DisableDepthWrites" X="0" />
+        <RasterizerState name="NoMultisampling" />
+        <VertexShader name="vs_5_0" name="InitializationVS" />
+        <PixelShader name="ps_5_0" name="InitializationPS" />
+    </pass>
+    </pass>
+</technique>
+<technique name="GradientTechnique">
+    <pass name="Grad">
+        <BlendState name="NoBlending" R="0.0" G="0.0" B="0.0" A="0.0" X="0xFFFFFFFF" />
+        <DepthStencilState name="DisableDepthWrites" X="0" />
+        <RasterizerState name="NoMultisampling" />
+        <VertexShader name="vs_4_0" name="InitializationVS" />
+        <PixelShader name="ps_4_0" name="GradientPS" />
+    </pass>
+    </pass>
+</technique>
+</Techniques>
 
-        SetVertexShader( CompileShader( vs_4_0, InitializationVS()));
-        SetGeometryShader(NULL);
-        SetPixelShader( CompileShader( ps_4_0, InitializationPS()));
-    }
-}
-
-technique10 GradientTechnique
-{
-    pass Grad
-    {
-		// Same as deformation, but with an alternate PS and without blending.
-        SetBlendState( NoBlending, float4( 0, 0, 0, 0 ), 0xffffffff );
-        SetDepthStencilState( DisableDepthWrites, 0 );
-        SetRasterizerState( NoMultisampling );
-
-        SetVertexShader( CompileShader( vs_4_0, InitializationVS()));
-        SetGeometryShader(NULL);
-        SetPixelShader( CompileShader( ps_4_0, GradientPS()));
-    }
-}
