@@ -1,4 +1,5 @@
-#if defined(GLES3_2) || defined(GLES2)
+//if defined(GLES3_2) || defined(GLES2)
+#if (defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 #ifndef __RendererGLES_H__
 #define __RendererGLES_H__ 1
 
