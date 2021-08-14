@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>c++ - Rotation around a pivot point with OpenGL - Stack Overflow</title>
+    <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico?v=4f32ecc8f43d">
+    <link rel="apple-touch-icon image_src" href="https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="https://stackoverflow.com/opensearch.xml">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+        <meta name="twitter:domain" content="stackoverflow.com">
+
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Rotation around a pivot point with OpenGL">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="I am trying to rotate an object about one of its side and already tried the common approach as found on the forums:
+
+translate(-P);
+rotate();
+translate(P);
+In OpenGL (reversing the order of transl...">
+    <meta property="og:url" content="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl">
+    <link rel="canonical" href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl">
+
+    
+    
+    
+    
+    <link rel="stylesheet" type="text/css" href="c++%20-%20Rotation%20around%20a%20pivot%20point%20with%20OpenGL%20-%20Stack%20Overflow_tiedostot/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'Rotation around a pivot point with OpenGL'" href="https://stackoverflow.com/feeds/question/17630313">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        
+
+
+    
+
+        
+    <noscript id="noscript-css"><style>body,.top-bar{margin-top:1.9em}</style></noscript>
+</head>
+<body class="question-page new-topbar">
+            
+
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+<header class="top-bar js-top-bar _fixed _scrolling">
+    <div class="-container">
+        <div class="-main">
+            
+                <a href="https://stackoverflow.com/" class="-logo js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:8})">
+                   <span class="-img">Stack Overflow</span>
+                </a>
+
+            <nav class="navigation" role="navigation" aria-label="site navigation">
+                <ol class="-list">
+    <li class="-item _current">
+        <a id="nav-questions" href="https://stackoverflow.com/questions" class="-link js-gps-track" data-gps-track="top_nav.click({is_current:true, location:2, destination:1})">Questions</a>
+    </li>
+    <li class="-item">
+        <a id="nav-jobs" href="https://stackoverflow.com/jobs?med=site-ui&amp;ref=jobs-tab" class="-link js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:6})">Developer Jobs</a>
+    </li>
+    <li class="-item">
+        <a id="nav-tags" href="https://stackoverflow.com/tags" class="-link js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:2})">Tags</a>
+    </li>
+    <li class="-item">
+        <a id="nav-users" href="https://stackoverflow.com/users" class="-link js-gps-track" data-gps-track="top_nav.click({is_current:false, location:2, destination:3})">Users</a>
+    </li>
+                </ol>
+            </nav>
+
+        </div>
+        
+            <form id="search" action="/search" method="get" class="searchbar" autocomplete="off" role="search">
+                <input name="q" placeholder="Search…" tabindex="1" autocomplete="off" maxlength="240" class="f-input js-search-field" type="text">
+                <button type="submit" aria-label="Search..." class="btn-topbar-primary js-search-submit"><svg aria-hidden="true" class="svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="M12.86 11.32L18 16.5 16.5 18l-5.18-5.14v-.35a7 7 0 1 1 1.19-1.19h.35zM7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10z"></path></svg></button>
+            </form>
+
+        
+
+
+    
+
+<div class="-actions">
+    <nav class="secondary-nav">
+        <div class="-dialog-container js-topbar-dialog-corral">
+
+
+    <div class="topbar-dialog siteSwitcher-dialog dno">
+        <div class="header">
+            <h3><a href="https://stackoverflow.com/">current community</a>
+            </h3>
+        </div>
+        <div class="modal-content current-site-container">
+            <ul class="current-site">
+                    <li>
+                            <div class="related-links">
+            <a href="https://stackoverflow.com/help" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:14 })">help</a>
+                    <a href="https://chat.stackoverflow.com/" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+    <a href="https://stackoverflow.com/" class="current-site-link site-link js-gps-track" data-id="1" data-gps-track="site_switcher.click({ item_type:3 })">
+        <div class="favicon favicon-stackoverflow site-icon" title="Stack Overflow"></div>
+        Stack Overflow
+    </a>
+
+                    </li>
+                    <li class="related-site">
+                            <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                            <a href="https://meta.stackoverflow.com/" class="site-link js-gps-track" data-id="552" data-gps-track="site.switch({ target_site:552, item_type:3 }),site_switcher.click({ item_type:4 })">
+        <div class="favicon favicon-stackoverflowmeta site-icon" title="Meta Stack Overflow"></div>
+        Meta Stack Overflow
+    </a>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="header" id="your-communities-header">
+            <h3>
+your communities            </h3>
+
+        </div>
+        <div class="modal-content" id="your-communities-section">
+
+                <div class="call-to-login">
+<a href="https://stackoverflow.com/users/signup?ssrc=site_switcher&amp;returnurl=%2fusers%2fstory%2fcurrent&amp;amp;utm_source=stackoverflow.com&amp;amp;utm_medium=dev-story&amp;amp;utm_campaign=signup-redirect" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://stackoverflow.com/users/login?ssrc=site_switcher&amp;returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f17630313%2frotation-around-a-pivot-point-with-opengl" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+                </div>
+        </div>
+
+        <div class="header">
+            <h3><a href="https://stackexchange.com/sites">more stack exchange communities</a>
+            </h3>
+            <a href="https://stackoverflow.blog/" class="fr">company blog</a>
+        </div>
+        <div class="modal-content">
+                <div class="child-content"></div>
+        </div>        
+    </div>
+                <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="https://stackoverflow.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="https://stackoverflow.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="https://meta.stackoverflow.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.stackoverflowbusiness.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+
+        </div>
+        <ol class="-list">
+
+
+    <li class="-item"><a href="#" class="-link js-help-button" title="Help Center and other resources">
+        <svg aria-hidden="true" class="svg-icon iconHelp" width="18" height="18" viewBox="0 0 18 18"><path d="M9 1a8 8 0 1 0 0 16A8 8 0 0 0 9 1zm.81 12.13c-.02.71-.55 1.15-1.24 1.13-.66-.02-1.17-.49-1.15-1.2.02-.72.56-1.18 1.22-1.16.7.03 1.2.51 1.17 1.23zM11.77 8a5.8 5.8 0 0 1-1.02.91l-.53.37c-.26.2-.42.43-.5.69a4 4 0 0 0-.09.75c0 .05-.03.16-.18.16H7.88c-.16 0-.18-.1-.18-.15.03-.66.12-1.21.4-1.66a5.29 5.29 0 0 1 1.43-1.22c.16-.12.28-.25.38-.39a1.34 1.34 0 0 0 .02-1.71c-.24-.31-.51-.46-1.03-.46-.51 0-.8.26-1.02.6-.21.33-.18.73-.18 1.1H5.75c0-1.38.35-2.25 1.1-2.76.52-.35 1.17-.5 1.93-.5 1 0 1.79.18 2.49.71.64.5.98 1.18.98 2.12 0 .57-.2 1.05-.48 1.44z"></path></svg>
+    </a></li>
+                <li class="-item">
+        <a href="https://stackexchange.com/" class="-link js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 171 Stack Exchange sites">
+            <svg aria-hidden="true" class="svg-icon iconStackExchange" width="18" height="18" viewBox="0 0 18 18"><path d="M1 13c0 1.1.9 2 2 2h8v3l3-3h1a2 2 0 0 0 2-2v-2H1v2zM15 1H3a2 2 0 0 0-2 2v2h16V3a2 2 0 0 0-2-2zM1 6h16v4H1V6z"></path></svg>
+        </a>
+    </li>
+
+        </ol>
+    </nav>
+        <div class="-ctas">
+                <a href="https://stackoverflow.com/users/login?ssrc=head&amp;returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f17630313%2frotation-around-a-pivot-point-with-opengl" class="login-link btn-clear" rel="nofollow">Log In</a>
+                    <a href="https://stackoverflow.com/users/signup?ssrc=head&amp;returnurl=%2fusers%2fstory%2fcurrent&amp;utm_source=stackoverflow.com&amp;utm_medium=dev-story&amp;utm_campaign=signup-redirect" class="login-link btn-topbar-primary" rel="nofollow">Sign Up</a>
+
+        </div>
+</div>
+    </div>
+</header>
+
+    
+
+    <div class="container _full ">
+        
+
+
+        <div id="content" class="snippet-hidden">
+
+
+
+
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a">
+
+
+
+
+
+<div class="s-hero hero-container">
+    <div class="-container g-row jc-sp-between ai-center">
+        <div class="g-col6">
+            <h1 class="-title">Learn, Share, Build</h1>
+            <p class="-paragraph">Each month, over 50 million developers come to Stack Overflow to learn, share their knowledge, and build their careers.</p>
+            <p class="-paragraph">Join the world’s largest developer community.</p>
+        </div>
+        
+        <div class="s-signup _hero g-col5">
+
+            <div id="openid-buttons" class="-social">
+                    <div class="major-provider btn _block _medium _google" data-provider="google" data-oauthserver="https://accounts.google.com/o/oauth2/auth" data-oauthversion="2.0">Google</div>
+                    <div class="major-provider btn _block _medium _facebook" data-provider="facebook" data-oauthserver="https://www.facebook.com/v2.0/dialog/oauth" data-oauthversion="2.0">Facebook</div>
+                            </div>
+
+
+            <small class="-divider text-centered">or</small>
+
+            <form id="login-form" action="/users/signup?ssrc=hero&amp;returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f17630313%2frotation-around-a-pivot-point-with-opengl" method="POST">
+        
+                <input name="fkey" value="28564fe745e934b2667076a3395dab9b" type="hidden">
+
+                <input name="ssrc" value="" type="hidden">
+
+                <input id="oauth_version" name="oauth_version" value="" type="hidden">
+                <input id="oauth_server" name="oauth_server" value="" type="hidden">
+
+                    <div id="se-login-fields">
+
+                        <input name="legalLinksShown" value="1" type="hidden">
+
+                        <div class="input-group">
+                            <div class="g-row">
+                                <label for="display-name" class="g-col -fill">Display name</label>
+                                <div class="g-col">
+                                    <input id="display-name" name="inline-display-name" class="f-input" placeholder="J. Doe" data-error-my="right top" data-error-at="left center" type="text">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="g-row">
+                                <label for="email" class="g-col -fill">Email address</label>
+                                <div class="g-col">
+                                    <input id="email" name="inline-email" maxlength="100" class="f-input" placeholder="you@example.com" data-error-my="right top" data-error-at="left center" type="email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="g-row">
+                                <label for="password" class="g-col -fill">Password</label>
+                                <div class="g-col">
+                                    <input id="password" name="inline-password" class="js-inline-signup f-input" placeholder="********" data-error-my="right top" data-error-at="left center" type="password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="button-group g-row ai-center jc-sp-between">
+                            <input id="submit-button" name="submit-button" class="btn-outlined -white _medium _block" value="Sign Up" type="button">
+
+                            <small class="g-col -policy js-terms">By registering, you agree to the <a href="https://stackexchange.com/legal/privacy-policy" name="privacy" target="_blank" class="-link">privacy policy</a> and <a href="https://stackexchange.com/legal/terms-of-service" name="tos" target="_blank" class="-link">terms of service</a>.</small>
+                        </div>
+                    </div>
+            </form>
+            
+        </div>
+
+            <a id="close" href="#" class="js-dismiss -dismiss" title="dismiss"><svg aria-hidden="true" class="svg-icon iconClear" width="18" height="18" viewBox="0 0 18 18"><path d="M15 4.41L13.59 3 9 7.59 4.41 3 3 4.41 7.59 9 3 13.59 4.41 15 9 10.41 13.59 15 15 13.59 10.41 9z"></path></svg></a>
+    </div>
+</div>    <div class="inner-content">
+        <div id="question-header">
+                <h1 itemprop="name"><a href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl" class="question-hyperlink">Rotation around a pivot point with OpenGL</a></h1>
+
+            
+<div class="aside-cta" role="navigation" aria-label="ask new question">
+    <a href="https://stackoverflow.com/questions/ask" class="btn-outlined">Ask Question</a>
+</div>
+        </div>
+            <div id="mainbar" role="main" aria-label="question and answers">
+
+            
+
+<div class="question" data-questionid="17630313" id="question">
+
+    <div id="dfp-tlb" class="everyonelovesstackoverflow"></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="17630313" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">3</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>1</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>I am trying to rotate an object about one of its side and already tried the common approach as found on the forums:<br></p>
+
+<pre class="lang-cpp prettyprint prettyprinted" style=""><code><span class="pln">translate</span><span class="pun">(-</span><span class="pln">P</span><span class="pun">);</span><span class="pln">
+rotate</span><span class="pun">();</span><span class="pln">
+translate</span><span class="pun">(</span><span class="pln">P</span><span class="pun">);</span></code></pre>
+
+<p>In <code>OpenGL</code> (reversing the order of translations/rotations), I used the following code:<br></p>
+
+<pre class="lang-cpp prettyprint prettyprinted" style=""><code><span class="pln">glMatrixMode</span><span class="pun">(</span><span class="pln">GL_MODELVIEW</span><span class="pun">);</span><span class="pln">
+glLoadIdentity</span><span class="pun">();</span><span class="pln">
+glPushMatrix</span><span class="pun">();</span><span class="pln">
+    glTranslatef</span><span class="pun">(-</span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+        glRotatef</span><span class="pun">(</span><span class="pln">rotationCoord</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glTranslatef</span><span class="pun">(</span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glBegin</span><span class="pun">(</span><span class="pln">GL_QUADS</span><span class="pun">);</span><span class="pln"> 
+        glVertex3f</span><span class="pun">(-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+        glVertex3f</span><span class="pun">(</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+        glVertex3f</span><span class="pun">(</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+        glVertex3f</span><span class="pun">(-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glEnd</span><span class="pun">();</span><span class="pln">
+glPopMatrix</span><span class="pun">();</span></code></pre>
+
+<p>However, the rectangle that I am drawing doesn't seem to be rotating 
+around one side as pivot.  (trying to set the left side as the pivot 
+point and rotate around it). I made a screen capture  vid to show what 
+kind of rotation I am getting right now. Here's the video:<br></p>
+
+<p><a href="http://youtu.be/VgEZ_rsG3xU" rel="nofollow">http://youtu.be/VgEZ_rsG3xU</a></p>
+
+<p>How do I set the pivot for this object so that it rotated around that point?</p>
+    </div>
+    <div class="post-taglist">
+        <a href="https://stackoverflow.com/questions/tagged/c%2b%2b" class="post-tag js-gps-track" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="https://stackoverflow.com/questions/tagged/algorithm" class="post-tag js-gps-track" title="show questions tagged 'algorithm'" rel="tag">algorithm</a> <a href="https://stackoverflow.com/questions/tagged/opengl" class="post-tag js-gps-track" title="show questions tagged 'opengl'" rel="tag">opengl</a> <a href="https://stackoverflow.com/questions/tagged/3d" class="post-tag js-gps-track" title="show questions tagged '3d'" rel="tag">3d</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="https://stackoverflow.com/q/17630313" title="short permalink to this question" class="short-link" id="link-post-17630313">share</a><span class="lsep">|</span><a href="https://stackoverflow.com/posts/17630313/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2013-07-13 12:45:18Z" class="relativetime">Jul 13 '13 at 12:45</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://stackoverflow.com/users/1240679/user1240679"><div class="gravatar-wrapper-32"><img src="c++%20-%20Rotation%20around%20a%20pivot%20point%20with%20OpenGL%20-%20Stack%20Overflow_tiedostot/817742e06feb1d4b5bece2e7cd043969.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://stackoverflow.com/users/1240679/user1240679">user1240679</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">1,923</span><span title="12 gold badges"><span class="badge1"></span><span class="badgecount">12</span></span><span title="36 silver badges"><span class="badge2"></span><span class="badgecount">36</span></span><span title="70 bronze badges"><span class="badge3"></span><span class="badgecount">70</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                    
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-17630313" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="4" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-25668999" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">The choice of pivot is odd. 
+The y-axis translation component has no effect, since you're rotating in
+ the xz-plane. Is this what you intended?</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/9990/marcelo-cantos" title="130,008 reputation" class="comment-user">Marcelo Cantos</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25668999_17630313"><span title="2013-07-13 13:03:08Z" class="relativetime-clean">Jul 13 '13 at 13:03</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25669044" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@MarceloCantos : I didn't 
+intend to rotate the around the Y-axis for now. Just X-axis. But the 
+left hadn side of the rectangle seems to be moving whereas the pivot 
+should be stationary. right?</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/1240679/user1240679" title="1,923 reputation" class="comment-user owner">user1240679</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25669044_17630313"><span title="2013-07-13 13:06:27Z" class="relativetime-clean">Jul 13 '13 at 13:06</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25669072" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy"><code>glRotatef(…, 0, 1, 0)</code> is a rotation around the y-axis (aka xz-plane), not the x-axis.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/9990/marcelo-cantos" title="130,008 reputation" class="comment-user">Marcelo Cantos</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25669072_17630313"><span title="2013-07-13 13:08:11Z" class="relativetime-clean">Jul 13 '13 at 13:08</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25669111" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@MarceloCantos : Oops. I had 
+to mention in the above comment that rotaiton has to be only around 
+Y-axis for now, not X-axis. Apologies for the confusion. That said, with
+ rotatio around Y-axis as well as it  is happening now, the pivot should
+ be stationary about which I am not sure why.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/1240679/user1240679" title="1,923 reputation" class="comment-user owner">user1240679</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25669111_17630313"><span title="2013-07-13 13:11:26Z" class="relativetime-clean">Jul 13 '13 at 13:11</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25669357" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Try reversing the order: T(P)
+ R() T(-P). This is clutching at straws, but it would be good to at 
+least eliminate the possibility.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/9990/marcelo-cantos" title="130,008 reputation" class="comment-user">Marcelo Cantos</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25669357_17630313"><span title="2013-07-13 13:30:36Z" class="relativetime-clean">Jul 13 '13 at 13:30</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-17630313" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link  dno" title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."></a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link " title="expand to show all comments on this post" href="#" onclick="">show <b>4</b> more comments</a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+            <div id="answers">
+
+                <a name="tab-top"></a>
+                <div id="answers-header">
+                    <div class="subheader answers-subheader">
+                        <h2>
+                                1 Answer
+                                <span style="display:none;" itemprop="answerCount">1</span>
+                        </h2>
+                        <div>
+                            <div id="tabs">
+        <a href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active" data-shortcut="A">
+            active</a>
+        <a href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest" data-shortcut="O">
+            oldest</a>
+        <a class="youarehere" href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes" data-shortcut="V">
+            votes</a>
+</div>
+                        </div>
+                    </div>    
+                </div>    
+
+
+
+
+  
+<a name="17638513"></a>
+<div id="answer-17638513" class="answer" data-answerid="17638513" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="17638513" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">2</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>The problem comes from the </p>
+
+<pre class="lang-cpp prettyprint prettyprinted" style=""><code><span class="pln">glTranslatef</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">10.0</span><span class="pun">);</span></code></pre>
+
+<p>you're calling <em>after</em> the rotation. That means the (0,0,-10) 
+is applied to the object coordinates (+-50,+-50,0) before they are 
+transformed by anything else, so the quad is offset before it's being 
+rotated.</p>
+
+<p>Here's the code I used for testing, maybe you get something out of it:</p>
+
+<pre class="lang-cpp prettyprint prettyprinted" style=""><code><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;glm/glm.hpp&gt;</span><span class="pln">
+</span><span class="com">#include</span><span class="pln"> </span><span class="str">&lt;glm/ext.hpp&gt;</span><span class="pln">
+</span><span class="kwd">using</span><span class="pln"> </span><span class="kwd">namespace</span><span class="pln"> glm</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">void</span><span class="pln"> display</span><span class="pun">(</span><span class="kwd">void</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+  glClearColor</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+  glClear</span><span class="pun">(</span><span class="pln">GL_COLOR_BUFFER_BIT </span><span class="pun">|</span><span class="pln"> GL_DEPTH_BUFFER_BIT</span><span class="pun">);</span><span class="pln">
+
+  </span><span class="typ">GLfloat</span><span class="pln"> aspect </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="typ">float</span><span class="pun">)</span><span class="pln">g_Width </span><span class="pun">/</span><span class="pln"> g_Height</span><span class="pun">;</span><span class="pln">
+  mat4 eyeToCamera </span><span class="pun">=</span><span class="pln"> perspective</span><span class="pun">(</span><span class="lit">45.f</span><span class="pun">,</span><span class="pln"> aspect</span><span class="pun">,</span><span class="pln"> g_nearPlane</span><span class="pun">,</span><span class="pln"> g_farPlane</span><span class="pun">);</span><span class="pln"> </span><span class="com">// projection</span><span class="pln">
+  mat4 cameraToWorld </span><span class="pun">=</span><span class="pln"> lookAt</span><span class="pun">(</span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">150</span><span class="pun">),</span><span class="pln"> vec3</span><span class="pun">(),</span><span class="pln"> vec3</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">));</span><span class="pln"> </span><span class="com">// view</span><span class="pln">
+
+  vec3 pivot</span><span class="pun">(</span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+  mat4 worldToObject </span><span class="pun">=</span><span class="pln"> translate</span><span class="pun">(</span><span class="pln">pivot</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">*</span><span class="pln"> rotate</span><span class="pun">(</span><span class="pln">rotationAngle</span><span class="pun">,</span><span class="pln"> vec3</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">))</span><span class="pln">
+    </span><span class="pun">*</span><span class="pln"> translate</span><span class="pun">(-</span><span class="pln">pivot</span><span class="pun">);</span><span class="pln"> </span><span class="com">// model</span><span class="pln">
+  glLoadMatrixf</span><span class="pun">(</span><span class="pln">value_ptr</span><span class="pun">(</span><span class="pln">eyeToCamera </span><span class="pun">*</span><span class="pln"> cameraToWorld </span><span class="pun">*</span><span class="pln"> worldToObject</span><span class="pun">));</span><span class="pln">
+  glBegin</span><span class="pun">(</span><span class="pln">GL_QUADS</span><span class="pun">);</span><span class="pln">
+    glVertex3f</span><span class="pun">(-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glVertex3f</span><span class="pun">(</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glVertex3f</span><span class="pun">(</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+    glVertex3f</span><span class="pun">(-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="pun">-</span><span class="lit">50.0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">);</span><span class="pln">
+  glEnd</span><span class="pun">();</span><span class="pln">
+
+  glutSwapBuffers</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>Note that I don't use any matrix stack functions, and I only set the GL_MODELVIEW matrix.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="https://stackoverflow.com/a/17638513" title="short permalink to this answer" class="short-link" id="link-post-17638513">share</a><span class="lsep">|</span><a href="https://stackoverflow.com/posts/17638513/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2013-07-14 10:21:17Z" class="relativetime">Jul 14 '13 at 10:21</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://stackoverflow.com/users/872616/andreas-haferburg"><div class="gravatar-wrapper-32"><img src="c++%20-%20Rotation%20around%20a%20pivot%20point%20with%20OpenGL%20-%20Stack%20Overflow_tiedostot/00949aef46ef5e7c8171154d23cf5545.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://stackoverflow.com/users/872616/andreas-haferburg">Andreas Haferburg</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">3,068</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="15 silver badges"><span class="badge2"></span><span class="badgecount">15</span></span><span title="37 bronze badges"><span class="badge3"></span><span class="badgecount">37</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-17638513" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-25685312" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I needed to translate the translate the back by <code>-10</code>
+ first because I have the projection matrix applied as above (which is 
+needed for one of my subsequent operations that is to come later). I 
+tried reducing the <code>z value</code> of the rectangle to change how 
+far the rectangle is drawn and to see if that is creating a problem with
+ the rotation. But even if the rectangle is at <code>-0.1</code>, I still don't get a fixed pivot. Because of OpenGL's post-multiplication, that translate by <code>-10</code> has to be there after rotation so as to make the rectangle fully visible inside the perspective projection.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/1240679/user1240679" title="1,923 reputation" class="comment-user owner">user1240679</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25685312_17638513"><span title="2013-07-14 13:26:33Z" class="relativetime-clean">Jul 14 '13 at 13:26</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 2 times"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25685346" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I am not sure why that translate by <code>-10</code> is causing or how should I go around for fixed pivot with a rectangle still being shown in my perspective projection.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/1240679/user1240679" title="1,923 reputation" class="comment-user owner">user1240679</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25685346_17638513"><span title="2013-07-14 13:28:51Z" class="relativetime-clean">Jul 14 '13 at 13:28</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25686154" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@user1240679 Put the <code>glTranslatef(0, 0, -10.0)</code> call before the rotation, i.e. directly after calling <code>glPushMatrix</code> above. That way the translation is applied after the object is rotated.</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/872616/andreas-haferburg" title="3,068 reputation" class="comment-user">Andreas Haferburg</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25686154_17638513"><span title="2013-07-14 14:31:20Z" class="relativetime-clean">Jul 14 '13 at 14:31</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-25686639" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">Superb! Thanks. A lil 
+off-topic doubt to be cleared here. I have the vector positions of a 
+rectangle (which is rotated in the real world - two Z vertices at Z=0, 
+other two at Z=200). I want to get the rotation matrix from these 
+vertices and apply it as I did above in my post (but instead of <code>glRotatef</code> will be using <code>glMultMatrix</code>). The question is here btw: <a href="http://stackoverflow.com/questions/17585424/creating-different-matrices-for-separate-asymmetric-frustums?noredirect=1#comment25670543_17585424" title="creating different matrices for separate asymmetric frustums">stackoverflow.com/questions/17585424/…</a> If you could just give a read to  comments discussion below that would give the context. Thanks</span>
+                    –&nbsp;<a href="https://stackoverflow.com/users/1240679/user1240679" title="1,923 reputation" class="comment-user owner">user1240679</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="#comment25686639_17638513"><span title="2013-07-14 15:06:23Z" class="relativetime-clean">Jul 14 '13 at 15:06</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-17638513" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+                                    <a name="new-answer"></a>
+                        <form id="post-form" action="/questions/17630313/answer/submit" method="post" class="post-form">
+                            <input id="post-id" value="17630313" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="https://www.google.fi/" type="hidden">
+                            <h2 class="space">Your Answer</h2>
+
+
+            
+    
+
+
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;"> 
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li id="wmd-bold-button" class="wmd-button" style="left: 0px;"><span style="background-position: 0px -20px;"></span></li><li id="wmd-italic-button" class="wmd-button" style="left: 25px;"><span style="background-position: -20px -20px;"></span></li><li id="wmd-spacer1" class="wmd-spacer" style="left: 50px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-link-button" class="wmd-button" style="left: 75px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-quote-button" class="wmd-button" style="left: 100px;"><span style="background-position: -60px -20px;"></span></li><li id="wmd-code-button" class="wmd-button" style="left: 125px;"><span style="background-position: -80px -20px;"></span></li><li id="wmd-image-button" class="wmd-button" style="left: 150px;"><span style="background-position: -100px -20px;"></span></li><li id="wmd-spacer2" class="wmd-spacer" style="left: 175px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-olist-button" class="wmd-button" style="left: 200px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-ulist-button" class="wmd-button" style="left: 225px;"><span style="background-position: -140px -20px;"></span></li><li id="wmd-heading-button" class="wmd-button" style="left: 250px;"><span style="background-position: -160px -20px;"></span></li><li id="wmd-hr-button" class="wmd-button" style="left: 275px;"><span style="background-position: -180px -20px;"></span></li><li id="wmd-spacer3" class="wmd-spacer" style="left: 300px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-undo-button" class="wmd-button" style="left: 325px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-redo-button" class="wmd-button" style="left: 350px;"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="28564fe745e934b2667076a3395dab9b" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+
+                            <div style="position: relative;">
+                                
+                                            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="https://stackoverflow.com/users/login?ssrc=question_page&amp;returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f17630313%2frotation-around-a-pivot-point-with-opengl%23new-answer">log in</a></h3>
+                        
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" 
+type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" 
+size="30" maxlength="100" value="" tabindex="106" placeholder="required,
+ but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+                            </div>
+           
+                                                            <div class="form-submit cbt">
+                                    <input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+                                    <a href="#" class="btn-clear discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="https://stackexchange.com/legal/privacy-policy" name="privacy" target="_blank">privacy policy</a> and <a href="https://stackexchange.com/legal/terms-of-service" name="tos" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">                                </div>
+                        </form>
+
+
+
+                        <h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?                            Browse other questions tagged <a href="https://stackoverflow.com/questions/tagged/c%2b%2b" class="post-tag" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="https://stackoverflow.com/questions/tagged/algorithm" class="post-tag" title="show questions tagged 'algorithm'" rel="tag">algorithm</a> <a href="https://stackoverflow.com/questions/tagged/opengl" class="post-tag" title="show questions tagged 'opengl'" rel="tag">opengl</a> <a href="https://stackoverflow.com/questions/tagged/3d" class="post-tag" title="show questions tagged '3d'" rel="tag">3d</a>  or <a href="https://stackoverflow.com/questions/ask">ask your own question</a>.                        </h2>
+            </div>
+        </div>
+                <div id="sidebar" class="show-votes" role="complementary" aria-label="sidebar">
+                            <div class="module question-stats">
+                    <table id="qinfo">
+                        <tbody><tr>
+                            <td>
+                                <p class="label-key">asked</p>
+                            </td>
+                            <td style="padding-left: 10px">
+                                <p class="label-key" title="2013-07-13 12:45:18Z"><b>4 years, 3 months ago</b></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="label-key">viewed</p>
+                            </td>
+
+                            <td style="padding-left: 10px">
+                                <p class="label-key">
+                                    <b>7,245 times</b>
+                                </p>
+                            </td>
+                        </tr>
+                            <tr>
+                                <td>
+                                    <p class="label-key">active</p>
+                                </td>
+                                <td style="padding-left: 10px">
+                                    <p class="label-key"><b><a href="https://stackoverflow.com/questions/17630313/rotation-around-a-pivot-point-with-opengl?lastactivity" class="lastactivity-link" title="2014-05-06 16:54:21Z">3 years, 5 months ago</a></b></p>
+                                </td>
+                            </tr>
+                    </tbody></table>
+                </div>
+                        
+            <div id="dfp-tsb" class="everyonelovesstackoverflow" data-clc-stalled="true"></div>
+            <div id="hireme"></div>
+                
+            
+            
+
+            
+
+                <div class="module sidebar-related">
+                    <h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/287655?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">27</div></a><a href="https://stackoverflow.com/questions/287655/opengl-rotating-a-camera-around-a-point?rq=1" class="question-hyperlink">OpenGL rotating a camera around a point</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/10371391?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">2</div></a><a href="https://stackoverflow.com/questions/10371391/opengl-simple-scene-object-navigation-basics-for-lookthrough-camera?rq=1" class="question-hyperlink">OpenGL (simple) scene &amp; object navigation basics for “lookthrough” camera</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/13067717?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">0</div></a><a href="https://stackoverflow.com/questions/13067717/opengl-transformation-around-arbitrary-anchor-point?rq=1" class="question-hyperlink">OpenGL transformation around arbitrary anchor point</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/14308595?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">2</div></a><a href="https://stackoverflow.com/questions/14308595/rotate-camera-around-point-of-interest-in-opengl?rq=1" class="question-hyperlink">Rotate camera around point-of-interest in opengl</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/22482305?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">2</div></a><a href="https://stackoverflow.com/questions/22482305/why-does-this-opengl-rotation-also-translate-my-object?rq=1" class="question-hyperlink">Why does this OpenGL rotation also translate my object?</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/26695432?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">1</div></a><a href="https://stackoverflow.com/questions/26695432/opengl-rotation-around-point?rq=1" class="question-hyperlink">OpenGl Rotation around point</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/26961471?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">0</div></a><a href="https://stackoverflow.com/questions/26961471/opengl-rotation-around-a-point-using-glm?rq=1" class="question-hyperlink">OpenGL Rotation Around a Point Using GLM</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/27429657?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="https://stackoverflow.com/questions/27429657/how-to-get-the-new-point-by-which-i-rotate-an-object-around-opengl?rq=1" class="question-hyperlink">How to get the new point by which I rotate an object around (OpenGL)</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/29996197?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="https://stackoverflow.com/questions/29996197/opengl-glrotatef-mechanism-how-to-rotate-square-around-itself-without-moving?rq=1" class="question-hyperlink">OpenGl: glRotatef mechanism &amp; how to rotate square around itself without moving</a></div><div class="spacer js-gps-track"><a href="https://stackoverflow.com/q/40429635?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="https://stackoverflow.com/questions/40429635/rotating-object-in-opengl-around-specific-point?rq=1" class="question-hyperlink">Rotating object in OpenGL around specific point</a></div>
+                    </div>
+                </div>
+
+<div id="hot-network-questions" class="module tex2jax_ignore">
+    <h4>
+        <a href="https://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="https://travel.stackexchange.com/questions/103982/us-driving-pulling-onto-a-busy-highway-using-on-off-ramp" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    US Driving - pulling onto a busy highway using on/off ramp
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="https://tex.stackexchange.com/questions/397323/three-equations-in-two-columns" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Three equations in two columns
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="https://tex.stackexchange.com/questions/397315/why-is-subsection-undefined-when-using-titleformat" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is \subsection undefined when using \titleformat?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-cooking" title="Seasoned Advice"></div><a href="https://cooking.stackexchange.com/questions/85108/how-to-dissolve-salt-into-mashed-potatoes" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:49 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to dissolve salt into mashed potatoes
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-interpersonal" title="Interpersonal Skills Stack Exchange"></div><a href="https://interpersonal.stackexchange.com/questions/5421/how-to-communicate-to-my-co-workers-that-they-dont-have-to-say-bless-you-when" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:680 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to communicate to my co-workers that they don't have to say "bless you" when I sneeze?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-ell" title="English Language Learners Stack Exchange"></div><a href="https://ell.stackexchange.com/questions/145210/whats-your-favorite-actor-ame" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:481 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    "What's your favorite actor?" (AmE)
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-interpersonal" title="Interpersonal Skills Stack Exchange"></div><a href="https://interpersonal.stackexchange.com/questions/5683/i-gave-a-gift-back-to-a-friend-after-he-asked-for-it-back-now-he-is-trying-to" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:680 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I gave a "gift" back to a friend after he asked for it back, now he is trying to tax me for using it
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="https://scifi.stackexchange.com/questions/172338/what-wouldve-happened-if-harry-and-hermione-didnt-manage-to-return-on-time-in" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What would've happened if Harry and Hermione didn't manage to return on time in the Prisoner of Azkaban?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-interpersonal" title="Interpersonal Skills Stack Exchange"></div><a href="https://interpersonal.stackexchange.com/questions/5515/how-to-ask-your-girlfriend-to-pay-her-share-of-the-rent-when-she-moves-in" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:680 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to ask your girlfriend to pay her share of the rent when she moves in?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="https://puzzling.stackexchange.com/questions/56191/my-colleague-gave-me-a-number-puzzle" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    My colleague gave me a number puzzle
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-pets" title="Pets Stack Exchange"></div><a href="https://pets.stackexchange.com/questions/18638/how-to-keep-my-cat-stress-free-during-periods-of-constant-90db-sound" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:518 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to keep my cat stress free during periods of constant 90dB+ sound?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-photo" title="Photography Stack Exchange"></div><a href="https://photo.stackexchange.com/questions/93478/is-my-current-gear-sufficient-for-wedding-photography" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:61 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is my current gear sufficient for wedding photography?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-interpersonal" title="Interpersonal Skills Stack Exchange"></div><a href="https://interpersonal.stackexchange.com/questions/5711/alternative-to-get-well-soon-card-for-terminally-ill" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:680 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Alternative to "Get well soon" card for terminally ill?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="https://security.stackexchange.com/questions/171790/password-accepted-when-added-characters" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Password accepted when added characters
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-interpersonal" title="Interpersonal Skills Stack Exchange"></div><a href="https://interpersonal.stackexchange.com/questions/5502/how-do-i-ask-my-dads-friend-if-hes-interested-in-me" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:680 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do I ask my dad's friend if he's interested in me?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="https://english.stackexchange.com/questions/414675/it-really-doesnt-matter-v-it-doesnt-really-matter" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    "It really doesn't matter" v "It doesn't really matter"
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-physics" title="Physics Stack Exchange"></div><a href="https://physics.stackexchange.com/questions/363992/how-to-read-maxwells-equations" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:151 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to read Maxwell's Equations?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="https://math.stackexchange.com/questions/2482366/hole-in-the-axioms-of-hartshornes-foundations-of-projective-geometry" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Hole in the axioms of Hartshorne's "Foundations of Projective Geometry"?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="https://puzzling.stackexchange.com/questions/56195/a-hungry-ant-on-a-matchbox" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    A hungry ant on a matchbox
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="https://academia.stackexchange.com/questions/97570/what-is-the-reason-that-once-a-student-has-passed-a-university-course-the-stude" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the reason that once a student has passed a 
+university course, the student cannot take the course again?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="https://unix.stackexchange.com/questions/399545/awk-built-in-filename-variable-on-empty-file" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    awk: Built-in FILENAME variable on empty file
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="https://worldbuilding.stackexchange.com/questions/95033/why-does-the-conjoined-alliance-of-space-travellers-keep-producing-red-uniforms" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why does the Conjoined Alliance of Space Travellers keep producing red uniforms?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-codegolf" title="Programming Puzzles &amp; Code Golf Stack Exchange"></div><a href="https://codegolf.stackexchange.com/questions/145741/the-prime-frog" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:200 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    The prime frog 🐸
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="https://travel.stackexchange.com/questions/104017/can-you-see-the-isles-of-scilly-from-cornwall" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can you see the Isles of Scilly from Cornwall?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+        </div>
+    <div id="feed-link">
+    <div id="feed-link-text">
+        <a href="https://stackoverflow.com/feeds/question/17630313" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>    </div>
+
+<noscript>
+    <div><img src="/posts/17630313/ivc/dbf0" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-cpp</div></div>
+
+
+        </div>
+    </div>
+
+    <footer id="footer" class="s-footer js-footer" role="contentinfo">
+        <div class="-container">
+            <div class="g-row">
+                    <div class="-logo">
+
+                        <a href="https://stackoverflow.com/"><svg aria-hidden="true" class="svg-icon native iconLogo" width="150" height="30" viewBox="0 0 150 30"><g><path d="M33.9 18.6l-1.7-.2c-1.3-.1-1.9-.6-1.9-1.6 0-1.1.8-1.8 2.4-1.8 1.1 0 2.1.3 2.8.8l1-1c-1-.8-2.3-1.1-3.8-1.1-2.3 0-3.9 1.2-3.9 3.1 0 1.8 1.1 2.7 3.2 2.9l1.8.2c1.2.1 1.8.6 1.8 1.6 0 1.3-1.1 1.9-2.8 1.9-1.3 0-2.5-.3-3.3-1.2l-1 1c1.2 1.1 2.6 1.5 4.4 1.5 2.6 0 4.3-1.2 4.3-3.2-.2-2-1.5-2.7-3.3-2.9zm13.3-4.8c-1.7 0-2.8.3-3.7 1.5l1 1c.6-.9 1.3-1.2 2.7-1.2 1.9 0 2.7.8 2.7 2.3v1h-3.2c-2.4 0-3.7 1.2-3.7 3.1 0 .8.3 1.6.8 2.2.7.7 1.5 1 3 1 1.4 0 2.2-.3 3.1-1.1v1h1.6v-7.2c-.1-2.4-1.5-3.6-4.3-3.6zm2.7 7c0 .9-.2 1.5-.5 1.8-.7.6-1.5.7-2.4.7-1.7 0-2.4-.6-2.4-1.8 0-1.2.8-1.9 2.4-1.9h3l-.1 1.2zm7.6-5.6c1 0 1.6.3 2.4 1.2l1-1c-1.1-1.2-2-1.6-3.5-1.6-2.7 0-4.7 1.8-4.7 5.5 0 3.6 2 5.5 4.7 5.5 1.5 0 2.4-.4 3.5-1.6l-1.1-1c-.8.9-1.4 1.2-2.4 1.2s-1.9-.4-2.5-1.2c-.5-.7-.7-1.5-.7-2.9 0-1.3.2-2.2.7-2.9.7-.8 1.6-1.2 2.6-1.2zm13.4-1.3H69l-4.8 4.7V9.1h-1.6v15.4h1.6v-3.9l1.9-1.9 3.6 5.8h1.9l-4.4-6.9 3.7-3.7zm7.3-.33c-1.6 0-2.7.6-3.4 1.4-1 1-1.3 2.3-1.3 4.3s.3 3.3 1.3 4.3c.7.7 1.8 1.4 3.4 1.4 1.6 0 2.8-.6 3.4-1.4 1-1 1.3-2.3 1.3-4.3s-.3-3.3-1.3-4.3c-.6-.8-1.7-1.4-3.4-1.4zm1.3 8.3c-.3.3-.7.5-1.3.5-.6 0-1-.2-1.3-.5-.6-.6-.6-1.6-.6-2.7 0-1.2.1-2.1.6-2.7.3-.3.7-.5 1.3-.5.6 0 1 .2 1.3.5.6.6.6 1.5.6 2.7.1 1.2 0 2.2-.6 2.7zm10.8-8.2l-2.2 6.9-2.3-6.9h-2.9l4.1 11.1h2.2l4.1-11.1h-3zm7.6-.1c-2.9 0-4.8 2-4.8 5.7 0 4.5 2.5 5.7 5.1 5.7 2 0 3.1-.6 4.2-1.7l-1.7-1.6c-.7.7-1.3 1-2.5 1-1.6 0-2.4-1-2.4-2.5h6.9v-1.2c0-3.2-1.7-5.4-4.8-5.4zm-2.1 4.6c0-.5.1-.8.3-1.2.3-.7.9-1.2 1.9-1.2.9 0 1.6.5 1.9 1.2.2.4.2.7.3 1.2h-4.4zm11-3.4v-1.1h-2.7v11.1h2.8v-6.7c0-1.4.9-2 1.8-2 .7 0 1 .2 1.5.7l2.1-2.1c-.8-.8-1.5-1-2.6-1-1.3-.1-2.3.4-2.9 1.1zm6.3-2.3v12.3h2.8v-8.8h2v-2.1h-2v-1.2c0-.6.3-1 1-1h1.1v-2.3h-1.6c-2.3 0-3.3 1.6-3.3 3.1zm16.2 1.1c-1.6 0-2.7.6-3.4 1.4-1 1-1.3 2.3-1.3 4.3s.3 3.3 1.3 4.3c.7.7 1.8 1.4 3.4 1.4 1.6 0 2.8-.6 3.4-1.4 1-1 1.3-2.3 1.3-4.3s-.3-3.3-1.3-4.3c-.6-.8-1.8-1.4-3.4-1.4zm1.3 8.3c-.3.3-.7.5-1.3.5-.6 0-1-.2-1.3-.5-.6-.6-.6-1.6-.6-2.7 0-1.2.1-2.1.6-2.7.3-.3.7-.5 1.3-.5.6 0 1 .2 1.3.5.6.6.6 1.5.6 2.7 0 1.2 0 2.2-.6 2.7zm16.5-8.2l-1.8 6.9-2.3-6.9h-2l-2.3 6.9-1.8-6.9H134l3.4 11.1h2.3l2.3-7 2.3 7h2.3l3.4-11.1h-2.9zm-25.1 7.7V9.27h-2.8v12.3c0 1.6 1 3.2 3.2 3.2h1.6v-2.3h-1c-.7 0-1-.4-1-1.1zM41.3 15.6l1.4-1.4h-3v-3.5h-1.6v11.1c0 1.6.9 2.9 2.7 2.9h1.1v-1.3h-.8c-1 0-1.5-.6-1.5-1.6v-6.1h1.7v-.1z" fill="#222426"></path><path fill="#BCBBBB" d="M21 27v-8h3v11H0V19h3v8z"></path><path d="M5.4 19.1l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zm1.8-6.8l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm3.4-5.9l10.2 8.5 1.7-2-10.2-8.5-1.7 2zM17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zM5 25h14v-3H5v3z" fill="#F48024"></path></g></svg></a>
+                    </div>
+                
+                    <nav class="-nav js-category _visible" data-name="default">
+                        <h5 class="-title"><a href="https://stackoverflow.com/" class="js-gps-track" data-gps-track="footer.click({ location: 2, link: 15})">Stack Overflow</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="https://stackoverflow.com/questions" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 16})">Questions</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 17})">Jobs</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs/directory/developer-jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 11})">Developer Jobs Directory</a></li>
+                                     <li class="-item"><a href="https://stackoverflow.com/jobs/salary" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 28})">Salary Calculator</a></li>
+                                                            <li class="-item"><a href="https://stackoverflow.com/help" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 3 })">Help</a></li>
+                                <li class="-item"><a onclick='StackExchange.switchMobile("on")' class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 12 })">Mobile</a></li>
+                        </ul>
+                    </nav>
+                    <nav class="-nav js-category _visible" data-name="default">
+                        <h5 class="-title"><a href="https://www.stackoverflowbusiness.com/?utm_source=so-footer&amp;utm_medium=referral&amp;utm_campaign=brand-activation&amp;utm_term=sotob2b-footer-business-category" class="js-gps-track" data-gps-track="footer.click({ location: 2, link: 19 })">Stack Overflow<br> Business</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/talent?utm_source=so-footer&amp;utm_medium=referral&amp;utm_campaign=brand-activation&amp;utm_term=sotob2b-footer-talent" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 20 })">Talent</a></li>
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/advertise?utm_source=so-footer&amp;utm_medium=referral&amp;utm_campaign=brand-activation&amp;utm_term=sotob2b-footer-advertise" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 21 })">Ads</a></li>
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/enterprise?utm_source=so-footer&amp;utm_medium=referral&amp;utm_campaign=brand-activation&amp;utm_term=sotob2b-footer-enterprise" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 22 })">Enterprise</a></li>
+                            <li class="-item"><a href="https://www.stackoverflowbusiness.com/insights?utm_source=so-footer&amp;utm_medium=referral&amp;utm_campaign=brand-activation&amp;utm_term=sotob2b-footer-insights" class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 23 })">Insights</a></li>
+                        </ul>
+                    </nav>
+                <nav class="-nav js-category _visible" data-name="default">
+                    <h5 class="-title"><a class="js-gps-track" data-gps-track="footer.click({ location: 2, link: 1 })" href="https://stackoverflow.com/company/about">Company</a></h5>
+                    <ul class="-list">
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 1 })" href="https://stackoverflow.com/company/about">About</a></li>
+                                                <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 27 })" href="https://stackoverflow.com/company/press">Press</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 9 })" href="https://stackoverflow.com/company/work-here">Work Here</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 7 })" href="https://stackexchange.com/legal">Legal</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 8 })" href="https://stackexchange.com/legal/privacy-policy">Privacy Policy</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link: 13 })" href="https://stackoverflow.com/company/contact">Contact Us</a></li>
+                    </ul>
+                </nav>
+                <div class="-network g-row">
+                    <a href="#" class="-back-trigger js-back"><svg aria-hidden="true" class="svg-icon iconArrowLeftAlt" width="18" height="18" viewBox="0 0 18 18"><path d="M10.58 16L12 14.59 6.4 9 12 3.41 10.57 2l-7 7z"></path></svg></a>
+                    <div>
+                        <h5 class="-title"><a href="https://stackexchange.com/">Stack Exchange<br> Network</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="#" class="-link _expandable js-category-trigger js-gps-track" data-gps-track="footer.click({ location: 2, link: 24 })" data-target="Technology">Technology</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-category-trigger js-gps-track" data-gps-track="footer.click({ location: 2, link: 24 })" data-target="Life / Arts">Life / Arts</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-category-trigger js-gps-track" data-gps-track="footer.click({ location: 2, link: 24 })" data-target="Culture / Recreation">Culture / Recreation</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-category-trigger js-gps-track" data-gps-track="footer.click({ location: 2, link: 24 })" data-target="Science">Science</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-category-trigger js-gps-track" data-gps-track="footer.click({ location: 2, link: 24 })" data-target="Other">Other</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <nav class="-nav js-category" data-name="Technology">
+        <ul class="-list">
+                <li class="-item"><a href="https://stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                <li class="-item"><a href="https://serverfault.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="system and network administrators">Server Fault</a></li>
+                <li class="-item"><a href="https://superuser.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="computer enthusiasts and power users">Super User</a></li>
+                <li class="-item"><a href="https://webapps.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="power users of web applications">Web Applications</a></li>
+                <li class="-item"><a href="https://askubuntu.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                <li class="-item"><a href="https://webmasters.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="pro webmasters">Webmasters</a></li>
+                <li class="-item"><a href="https://gamedev.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professional and independent game developers">Game Development</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://tex.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                <li class="-item"><a href="https://softwareengineering.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professionals, academics, and students working within the systems development life cycle">Software Engineering</a></li>
+                <li class="-item"><a href="https://unix.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                <li class="-item"><a href="https://apple.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                <li class="-item"><a href="https://wordpress.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="WordPress developers and administrators">WordPress Development</a></li>
+                <li class="-item"><a href="https://gis.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                <li class="-item"><a href="https://electronics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://android.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                <li class="-item"><a href="https://security.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="information security professionals">Information Security</a></li>
+                <li class="-item"><a href="https://dba.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                <li class="-item"><a href="https://drupal.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Drupal developers and administrators">Drupal Answers</a></li>
+                <li class="-item"><a href="https://sharepoint.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="SharePoint enthusiasts">SharePoint</a></li>
+                <li class="-item"><a href="https://ux.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="user experience researchers and experts">User Experience</a></li>
+                <li class="-item"><a href="https://mathematica.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users of Wolfram Mathematica">Mathematica</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://salesforce.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                <li class="-item"><a href="https://expressionengine.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                <li class="-item"><a href="https://pt.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="programadores profissionais e entusiastas">Stack Overflow em Português</a></li>
+                <li class="-item"><a href="https://blender.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people who use Blender to create 3D graphics, animations, or games">Blender</a></li>
+                <li class="-item"><a href="https://networkengineering.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="network engineers">Network Engineering</a></li>
+                <li class="-item"><a href="https://crypto.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                <li class="-item"><a href="https://codereview.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="peer programmer code reviews">Code Review</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://magento.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users of the Magento e-Commerce platform">Magento</a></li>
+                <li class="-item"><a href="https://softwarerecs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people seeking specific software recommendations">Software Recommendations</a></li>
+                <li class="-item"><a href="https://dsp.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                <li class="-item"><a href="https://emacs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="those using, extending or developing Emacs">Emacs</a></li>
+                <li class="-item"><a href="https://raspberrypi.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                <li class="-item"><a href="https://ru.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="программистов">Stack Overflow на русском</a></li>
+                <li class="-item"><a href="https://codegolf.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="programming puzzle enthusiasts and code golfers">Programming Puzzles &amp; Code Golf</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://es.stackoverflow.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="programadores y profesionales de la informática">Stack Overflow en español</a></li>
+                <li class="-item"><a href="https://ethereum.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="users of Ethereum, the decentralized application platform and smart contract enabled blockchain">Ethereum</a></li>
+                <li class="-item"><a href="https://datascience.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Data science professionals, Machine Learning specialists, and those interested in learning more about the field">Data Science</a></li>
+                <li class="-item"><a href="https://arduino.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="developers of open-source hardware and software that is compatible with Arduino">Arduino</a></li>
+                <li class="-item"><a href="https://bitcoin.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Bitcoin crypto-currency enthusiasts">Bitcoin</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#technology" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 26 })">
+                        <strong>
+                            more (26)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </nav>
+    <nav class="-nav js-category" data-name="Life / Arts">
+        <ul class="-list">
+                <li class="-item"><a href="https://photo.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                <li class="-item"><a href="https://scifi.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                <li class="-item"><a href="https://graphicdesign.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                <li class="-item"><a href="https://movies.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                <li class="-item"><a href="https://music.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                <li class="-item"><a href="https://worldbuilding.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="writers/artists using science, geography and culture to construct imaginary worlds and settings">Worldbuilding</a></li>
+                <li class="-item"><a href="https://cooking.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Life / Arts"><ul class="-list">
+                <li class="-item"><a href="https://diy.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="contractors and serious DIYers">Home Improvement</a></li>
+                <li class="-item"><a href="https://money.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                <li class="-item"><a href="https://academia.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="academics and those enrolled in higher education">Academia</a></li>
+                <li class="-item"><a href="https://law.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="legal professionals, students, and others with experience or interest in law">Law</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#lifearts" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 26 })">
+                        <strong>
+                            more (16)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </nav>
+    <nav class="-nav js-category" data-name="Culture / Recreation">
+        <ul class="-list">
+                <li class="-item"><a href="https://english.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                <li class="-item"><a href="https://skeptics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="scientific skepticism">Skeptics</a></li>
+                <li class="-item"><a href="https://judaism.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                <li class="-item"><a href="https://travel.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="road warriors and seasoned travelers">Travel</a></li>
+                <li class="-item"><a href="https://christianity.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                <li class="-item"><a href="https://ell.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="speakers of other languages learning English">English Language Learners</a></li>
+                <li class="-item"><a href="https://japanese.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://gaming.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                <li class="-item"><a href="https://bicycles.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                <li class="-item"><a href="https://rpg.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                <li class="-item"><a href="https://anime.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="anime and manga fans">Anime &amp; Manga</a></li>
+                <li class="-item"><a href="https://puzzling.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="those who create, solve, and study puzzles">Puzzling</a></li>
+                <li class="-item"><a href="https://mechanics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#culturerecreation" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 26 })">
+                        <strong>
+                            more (32)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </nav>
+    <nav class="-nav js-category" data-name="Science">
+        <ul class="-list">
+                <li class="-item"><a href="https://mathoverflow.net/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="professional mathematicians">MathOverflow</a></li>
+                <li class="-item"><a href="https://math.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                <li class="-item"><a href="https://stats.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                <li class="-item"><a href="https://cstheory.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                <li class="-item"><a href="https://physics.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="active researchers, academics and students of physics">Physics</a></li>
+                <li class="-item"><a href="https://chemistry.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="scientists, academics, teachers and students">Chemistry</a></li>
+                <li class="-item"><a href="https://biology.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="biology researchers, academics, and students">Biology</a></li>
+                    </ul></nav><nav class="-nav js-category" data-name="Science"><ul class="-list">
+                <li class="-item"><a href="https://cs.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                <li class="-item"><a href="https://philosophy.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#science" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 26 })">
+                        <strong>
+                            more (10)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </nav>
+    <nav class="-nav js-category" data-name="Other">
+        <ul class="-list">
+                <li class="-item"><a href="https://meta.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                <li class="-item"><a href="https://stackapps.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                <li class="-item"><a href="https://api.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="programmatic interaction with Stack Exchange sites">API</a></li>
+                <li class="-item"><a href="https://data.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="querying Stack Exchange data using SQL">Data</a></li>
+                <li class="-item"><a href="https://area51.stackexchange.com/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 25 })" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                    </ul>
+    </nav>
+                <div class="-copyright g-row jc-end">
+                    <div class="g-column jc-sp-between">
+                        <ul class="-list">
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 2, link:4 })" href="https://stackoverflow.blog/?blb=1">Blog</a></li>
+                            <li class="-item"><a href="https://www.facebook.com/officialstackoverflow/" class="-link">Facebook</a></li>
+                            <li class="-item"><a href="https://twitter.com/stackoverflow" class="-link">Twitter</a></li>
+                            <li class="-item"><a href="https://linkedin.com/company/stack-overflow" class="-link">LinkedIn</a></li>
+                        </ul>
+
+                        <div>
+                            <p>
+                                site design / logo © 2017 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license" class="-link">cc by-sa 3.0</a>
+                                with <a href="https://stackoverflow.blog/2009/06/25/attribution-required/" rel="license" class="-link">attribution required</a>.
+                                <span id="svnrev">rev 2017.10.20.27536</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                    </div>
+    </footer>
+
+    <noscript>
+        <div id="noscript-warning">Stack Overflow works best with JavaScript enabled
+            <img src="https://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno">
+        </div>
+    </noscript>
+        
+
+    
+        
+    
+            
+    
+
+</body></html>

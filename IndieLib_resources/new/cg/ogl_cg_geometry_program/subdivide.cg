@@ -1,0 +1,84 @@
+//------------------------------------------------------------------------------
+// This geometry program subdivides each triangle contained in a triangle list 
+// (GL_TRIANGLES) into 4 new triangles which are rendered as strips 
+// (GL_TRIANGLE_STRIP).
+//
+// Input triangle   = GL_TRIANGLES layout
+// Output triangles = GL_TRIANGLE_STRIP layout
+//------------------------------------------------------------------------------
+
+TRIANGLE void main( AttribArray<float4> position : POSITION,
+                    AttribArray<float4> color : COLOR0,
+                    AttribArray<float4> texcoords : TEXCOORD0 )
+{
+    float4 v0, v1, v2;
+    float4 c0, c1, c2;
+    float4 t0, t1, t2;
+
+    // Temps to hold midpoint values
+    float4 mv0, mv1, mv2; // New vertices
+    float4 mc0, mc1, mc2; // New colors
+    float4 mt0, mt1, mt2; // New texcoords
+
+    //
+    // Compute midpoint vertices
+    //
+
+    mv0 = position[0] + position[1];
+    mv0 = mv0 * 0.5;
+
+    mv1 = position[1] + position[2];
+    mv1 = mv1 * 0.5;
+
+    mv2 = position[2] + position[0];
+    mv2 = mv2 * 0.5;
+
+    //
+    // Compute midpoint colors
+    //
+
+    mc0 = color[0] + color[1];
+    mc0 = mc0 * 0.5;
+
+    mc1 = color[1] + color[2];
+    mc1 = mc1 * 0.5;
+
+    mc2 = color[2] + color[0];
+    mc2 = mc2 * 0.5;
+
+    //
+    // Compute midpoint texccords
+    //
+
+    mt0 = texcoords[0] + texcoords[1];
+    mt0 = mt0 * 0.5;
+
+    mt1 = texcoords[1] + texcoords[2];
+    mt1 = mt1 * 0.5;
+
+    mt2 = texcoords[2] + texcoords[0];
+    mt2 = mt2 * 0.5;
+
+    //
+    // Output the first 3 triangles as a triangle strip...
+    //
+
+    emitVertex( position[0], color[0], texcoords[0] );
+    emitVertex( mv2 : POSITION, mc2 : COLOR, mt2 : TEXCOORD0 );
+    emitVertex( mv0 : POSITION, mc0 : COLOR, mt0 : TEXCOORD0 );
+    emitVertex( mv1 : POSITION, mc1 : COLOR, mt1 : TEXCOORD0 );
+    emitVertex( position[1], color[1], texcoords[1] );
+
+    restartStrip();
+
+    //
+    // Output the 4th triangle (top half) as a triangle strip which has only 
+    // one triangle...
+    //
+
+    emitVertex( position[2], color[2], texcoords[2] );
+    emitVertex( mv1 : POSITION, mc1 : COLOR, mt1 : TEXCOORD0 );
+    emitVertex( mv2 : POSITION, mc2 : COLOR, mt2 : TEXCOORD0 );
+
+    restartStrip();
+}

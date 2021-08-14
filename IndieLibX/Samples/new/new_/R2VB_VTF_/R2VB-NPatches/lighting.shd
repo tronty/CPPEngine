@@ -1,0 +1,60 @@
+//-----------------------------------------------------------------------------
+// File: lighting.shd
+// Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
+//-----------------------------------------------------------------------------
+
+
+
+
+
+[Vertex shader]
+
+float4x4 mvp;
+float3 lightPos;
+float3 camPos;
+
+struct VsOut {
+	float4 Pos      : POSITION;
+	float2 texCoord : TEXCOORD0;
+	float3 normal   : TEXCOORD1;
+	float3 lightVec : TEXCOORD2;
+	float3 viewVec  : TEXCOORD3;
+};
+
+VsOut main(float4 pos: POSITION, float4 normal: NORMAL, float2 texCoord: TEXCOORD0){
+	VsOut Out;
+
+#ifdef N_PATCHES
+	Out.texCoord.x = pos.w;
+	Out.texCoord.y = normal.w;
+#else
+	Out.texCoord = texCoord;
+#endif
+	Out.normal = normal.xyz;
+
+	pos.w = 1;
+
+	Out.Pos = mul(mvp, pos);
+
+	Out.lightVec = lightPos - pos.xyz;
+	Out.viewVec = camPos - pos.xyz;
+
+	return Out;
+}
+
+[Fragment shader]
+
+sampler2D Base;
+
+float4 main(float2 texCoord: TEXCOORD0, float3 normal: TEXCOORD1, float3 lightVec: TEXCOORD2, float3 viewVec : TEXCOORD3) : COLOR {
+	float4 base = tex2D(Base, texCoord);
+
+//	normal = normalize(normal);
+	lightVec = normalize(lightVec);
+	viewVec = normalize(viewVec);
+
+	float diffuse = dot(lightVec, normal) * 0.4 + 0.7;
+	float specular = pow(saturate(dot(reflect(-viewVec, normal), lightVec)), 16.0);
+
+	return diffuse * base + 0.5 * specular;
+}

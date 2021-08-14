@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 8</title>
+</head>
+<body>
+<pre>
+/// Render the imposter.
+/// ** BEWARE ** this is the inefficient imposter rendering method and is for example only.
+void RenderImposter(RenderTexture* pImposterRenderTexture, Imposter* pImposter)
+{
+	// Bind the imposter texture.
+
+	LPDIRECT3DDEVICE9 pD3DDevice = DXUTGetD3DDevice();
+	pD3DDevice->SetTexture(0, pImposterRenderTexture->GetD3DTexture());
+
+	// Set world-tranform to identity (imposter billboard is already in world-space).
+
+	D3DXMATRIX identity;
+	D3DXMatrixIdentity(&identity);
+	pD3DDevice->SetTransform(D3DTS_WORLD, &identity);
+
+	// Setup render state.
+
+	pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
+	pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	pD3DDevice->SetRenderState(D3DRS_FOGENABLE, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_EXP2);
+	pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, FOG_COLOUR);
+	pD3DDevice->SetRenderState(D3DRS_FOGDENSITY, FloatToDWORD(FOG_DENSITY));
+	pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TEXTURE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
+
+	// Render the imposter
+
+	int vertFVF = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
+	int stride = sizeof(ImposterVertex);
+	pD3DDevice->SetFVF(vertFVF);
+	pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, 2, pImposter->verts, stride);
+}
+
+</pre>
+</body>
+</html>

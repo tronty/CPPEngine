@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="js video maskImage placeholder" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Simple C++: From Makefiles to Xcode Builds - Hiltmon</title>
+  <meta name="author" content="Hilton Lipschitz">
+
+  
+  <meta name="description" content="This post will present a step-by-step process to convert C++/C++11 Makefile-based projects to Xcode build tools. I use it all the time to set up, …">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1">
+
+  
+  <link rel="canonical" href="http://hiltmon.com/blog/2015/08/01/simple-c-plus-plus-from-makefiles-to-xcode-builds/">
+  <link href="http://hiltmon.com/favicon.png" rel="icon">
+  <link href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="http://hiltmon.com/feed" rel="alternate" title="Hiltmon" type="application/atom+xml">
+  
+  
+  
+  
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/css.css" rel="stylesheet" type="text/css">
+<link rel="apple-touch-icon" href="http://hiltmon.com/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="http://hiltmon.com/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="http://hiltmon.com/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="144x144" href="http://hiltmon.com/apple-touch-icon-144x144.png"> 
+
+
+
+
+  
+  
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><link rel="prefetch" href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/a_data/lounge.css"><link rel="prefetch" href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/a_data/common.js"><link rel="prefetch" href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/a_data/lounge.js"><link rel="prefetch" href="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/a_data/config.js"><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+  <header role="banner"><hgroup>
+  <div>
+    <h1><a href="http://hiltmon.com/">Hiltmon</a></h1>
+    
+      <h2>On walkabout in life and technology</h2>
+    
+  </div>		
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://hiltmon.com/feed" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input name="sitesearch" value="hiltmon.com" type="hidden">
+    <input class="search" name="q" results="0" placeholder="Search" type="text">
+  </fieldset>
+</form>
+  
+<fieldset class="mobile-nav"><select><option value="" selected="selected">Navigate…</option><option value="http://hiltmon.com/about/">» About</option><option value="http://hiltmon.com/code/">» Code</option><option value="http://hiltmon.com/products/">» Products</option><option value="http://hiltmon.com/">» Blog</option><option value="http://hiltmon.com/blog/archives">» Archives</option><option value="http://hiltmon.com/feed">» RSS</option></select></fieldset><ul class="main-navigation">
+  <li><a href="http://hiltmon.com/about/" title="About the Hiltmon">About</a></li>
+  <li><a href="http://hiltmon.com/code/" title="Public code or projects that you can use">Code</a></li>
+  <li><a href="http://hiltmon.com/products/" title="Some of my personal and client projects">Products</a></li>
+  <li><a href="http://hiltmon.com/" title="Words from the Hiltmon">Blog</a></li>
+  <li><a href="http://hiltmon.com/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Simple C++: From Makefiles to Xcode Builds</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class="entry-date" datetime="2015-08-01T11:25:51-04:00"><span class="date"><span class="date-month">Aug</span> <span class="date-day">1</span><span class="date-suffix">st</span>, <span class="date-year">2015</span></span> <span class="time">11:25 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This post will present a step-by-step 
+process to convert C++/C++11 Makefile-based projects to Xcode build 
+tools. I use it all the time to set up, convert, build and debug 
+Unix/Linux executables that I develop on my Macintosh.</p>
+
+<!--more-->
+
+
+<h2>Context and Benefits</h2>
+
+<p>I write a lot of concurrent, complex, real-time C++11 code these days
+ using my Macintosh. I prefer the look, feel, tools and services that 
+the Macintosh and its ecosystem provides.</p>
+
+<p>But the applications I build all run on Linux CentOS 6.6 Servers.</p>
+
+<p>I could do this development on a Linux desktop, as a lot of people 
+do. The tools exist and the Linux desktop sure is maturing. But, in my 
+opinion, the OS X tools, third party productivity products, robustness, 
+ecosystem and my habits make me far more productive on OS X. I can 
+leverage Xcode and its amazing compilers, debuggers and IDE tools to 
+help me build better C++11 products quicker, and then deploy using <code>git</code> and <code>make</code> to Linux. Since I use only clean C++11 and open source dependencies, all available via <a href="http://hiltmon.com/blog/2013/09/29/homebrew-happiness/">HomeBrew</a>, this model works great.</p>
+
+<p><span class="pullquote-right" data-pullquote="Xcode provides an amazing set of tools over and above the code editor.">
+Xcode provides an amazing set of tools over and above the code editor. The integrated <code>clang</code> compiler detects far more potential issues than others. The integrated <code>llvm</code>
+ debugger and inspectors make it easy to view the content of objects at 
+breakpoints. The thread, memory and networking panels show exactly what 
+the program is doing and Instruments is pure wizardry. There is no 
+reason not to take advantage of all of these robust and easy to use 
+technologies when developing.
+</span></p>
+
+<h2>An Example C++ Makefile with Dependencies</h2>
+
+<p>Lets start with a <em>real</em> Makefile I use for a semi-complex product with many dependencies. Its a long Makefile, but I’ll go though the highlights below.</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tbody><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+</pre></td><td class="code"><pre><code class="make"><span class="line"><span class="c">#</span>
+</span><span class="line"><span class="c">#  Makefile</span>
+</span><span class="line"><span class="c">#  CoralSeaServer</span>
+</span><span class="line"><span class="c">#</span>
+</span><span class="line"><span class="c">#  Created by Hilton Lipschitz on 2014-10-20.</span>
+</span><span class="line"><span class="c">#  Copyright (c) 2014 Maritime Capital LP. All rights reserved.</span>
+</span><span class="line"><span class="c">#</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># HIL: No spaces or comments after otherwise it captures them!</span>
+</span><span class="line"><span class="c"># Determine the platform</span>
+</span><span class="line"><span class="nv">UNAME_S</span> <span class="o">:=</span> <span class="k">$(</span>shell uname -s<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="cp">ifeq ($(UNAME_S),Darwin)</span>
+</span><span class="line">  CC :<span class="o">=</span> clang++ -arch x86_64
+</span><span class="line"><span class="cp">else</span>
+</span><span class="line">  CC :<span class="o">=</span> g++
+</span><span class="line"><span class="cp">endif</span>
+</span><span class="line">
+</span><span class="line"><span class="nv">SRCDIR</span> <span class="o">:=</span> src
+</span><span class="line"><span class="nv">LIBDIR</span> <span class="o">:=</span> lib
+</span><span class="line"><span class="nv">BUILDDIR</span> <span class="o">:=</span> build
+</span><span class="line"><span class="nv">TARGETDIR</span> <span class="o">:=</span> bin
+</span><span class="line"><span class="nv">INSTALLBINDIR</span> <span class="o">:=</span> /usr/local/bin
+</span><span class="line"><span class="nv">TARGET</span> <span class="o">:=</span> bin/CoralSeaServer
+</span><span class="line">
+</span><span class="line"><span class="c"># Normal CPP files</span>
+</span><span class="line"><span class="nv">SRCEXT</span> <span class="o">:=</span> cpp
+</span><span class="line"><span class="nv">SOURCES</span> <span class="o">:=</span> <span class="k">$(</span>shell find <span class="k">$(</span>SRCDIR<span class="k">)</span> -type f -name *.<span class="k">$(</span>SRCEXT<span class="k">))</span>
+</span><span class="line"><span class="nv">OBJECTS</span> <span class="o">:=</span> <span class="k">$(</span>patsubst <span class="k">$(</span>SRCDIR<span class="k">)</span>/%,<span class="k">$(</span>BUILDDIR<span class="k">)</span>/%,<span class="k">$(</span>SOURCES:.<span class="k">$(</span>SRCEXT<span class="k">)</span><span class="o">=</span>.o<span class="k">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Protobuf CC files</span>
+</span><span class="line"><span class="nv">SRCEXT2</span> <span class="o">:=</span> cc
+</span><span class="line"><span class="nv">SOURCES2</span> <span class="o">:=</span> <span class="k">$(</span>shell find <span class="k">$(</span>SRCDIR<span class="k">)</span>/proto -type f -name *.<span class="k">$(</span>SRCEXT2<span class="k">))</span>
+</span><span class="line"><span class="nv">OBJECTS2</span> <span class="o">:=</span> <span class="k">$(</span>patsubst <span class="k">$(</span>SRCDIR<span class="k">)</span>/%,<span class="k">$(</span>BUILDDIR<span class="k">)</span>/%,<span class="k">$(</span>SOURCES2:.<span class="k">$(</span>SRCEXT2<span class="k">)</span><span class="o">=</span>.o<span class="k">))</span>
+</span><span class="line">
+</span><span class="line"><span class="nv">CFLAGS</span> <span class="o">:=</span> -c
+</span><span class="line"><span class="cp">ifeq ($(UNAME_S),Linux)</span>
+</span><span class="line">  CFLAGS +<span class="o">=</span> -std<span class="o">=</span>gnu++11 -O2 <span class="c"># -fPIC</span>
+</span><span class="line"><span class="cp">else</span>
+</span><span class="line">  CFLAGS +<span class="o">=</span> -std<span class="o">=</span>c++11 -stdlib<span class="o">=</span>libc++ -O2
+</span><span class="line"><span class="cp">endif</span>
+</span><span class="line">
+</span><span class="line"><span class="nv">LIB</span> <span class="o">:=</span> -L /usr/local/lib -lcorinth -lprotobuf -lzmq
+</span><span class="line"><span class="nv">INC</span> <span class="o">:=</span> -I include -I include/proto -I /usr/local/include
+</span><span class="line">
+</span><span class="line"><span class="nf">$(TARGET)</span><span class="o">:</span> <span class="k">$(</span><span class="nv">OBJECTS</span><span class="k">)</span> <span class="k">$(</span><span class="nv">OBJECTS</span>2<span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>TARGETDIR<span class="k">)</span>
+</span><span class="line">  @echo <span class="s2">" Linking..."</span>
+</span><span class="line">  @echo <span class="s2">" $(CC) $^ -o $(TARGET) $(LIB)"</span><span class="p">;</span> <span class="k">$(</span>CC<span class="k">)</span> <span class="nv">$^</span> -o <span class="k">$(</span>TARGET<span class="k">)</span> <span class="k">$(</span>LIB<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">$(BUILDDIR)/%.o</span><span class="o">:</span> <span class="k">$(</span><span class="nv">SRCDIR</span><span class="k">)</span>/%.<span class="k">$(</span><span class="nv">SRCEXT</span><span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>BUILDDIR<span class="k">)</span>
+</span><span class="line">  @echo <span class="s2">" $(CC) $(CFLAGS) $(INC) -c -o $@ $&lt;"</span><span class="p">;</span> <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> <span class="k">$(</span>INC<span class="k">)</span> -c -o <span class="nv">$@</span> <span class="nv">$&lt;</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">$(BUILDDIR)/proto/%.o</span><span class="o">:</span> <span class="k">$(</span><span class="nv">SRCDIR</span><span class="k">)</span>/<span class="n">proto</span>/%.<span class="k">$(</span><span class="nv">SRCEXT</span>2<span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>BUILDDIR<span class="k">)</span>
+</span><span class="line">  @mkdir -p <span class="k">$(</span>BUILDDIR<span class="k">)</span>/proto
+</span><span class="line">  @echo <span class="s2">" $(CC) $(CFLAGS) $(INC) -c -o $@ $&lt;"</span><span class="p">;</span> <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> <span class="k">$(</span>INC<span class="k">)</span> -c -o <span class="nv">$@</span> <span class="nv">$&lt;</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">clean</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">" Cleaning..."</span><span class="p">;</span>
+</span><span class="line">  @echo <span class="s2">" $(RM) -r $(BUILDDIR) $(TARGET)"</span><span class="p">;</span> <span class="k">$(</span>RM<span class="k">)</span> -r <span class="k">$(</span>BUILDDIR<span class="k">)</span> <span class="k">$(</span>TARGET<span class="k">)</span>
+</span><span class="line">
+</span><span class="line"><span class="nf">install</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">" Installing..."</span><span class="p">;</span>
+</span><span class="line">  @echo <span class="s2">" cp $(TARGET) $(INSTALLBINDIR)"</span><span class="p">;</span> cp <span class="k">$(</span>TARGET<span class="k">)</span> <span class="k">$(</span>INSTALLBINDIR<span class="k">)</span>
+</span><span class="line">  
+</span><span class="line"><span class="nf">distclean</span><span class="o">:</span>
+</span><span class="line">  @echo <span class="s2">" Un-Installing..."</span><span class="p">;</span>
+</span><span class="line">  @echo <span class="s2">" rm /usr/local/bin/CoralSeaServer"</span><span class="p">;</span> rm /usr/local/bin/CoralSeaServer
+</span><span class="line">
+</span><span class="line"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+</span></code></pre></td></tr></tbody></table></div></figure>
+
+
+<p>Since this is a multi-platform Makefile, I determine the platform on line <strong>11</strong>. Lines <strong>13</strong> to <strong>17</strong> then select the compiler, <code>clang</code> for OS X and <code>g++</code> for Linux. Lines <strong>37</strong> to <strong>41</strong> set the platform specific compiler flags. Everything else is the same for all platforms.</p>
+
+<p>Also, note line <strong>43</strong>, this product has three dependencies, libraries called <code>corinth</code> (my common code), <code>protobuf</code> (Google’s protocol buffers) and <code>zmq</code> (ZeroMQ). These are installed in OS X using HomeBrew and on Linux using <code>yum</code> or the standard source distributions. All third party libraries on my OS X development box and in CentOS are in <code>/usr/local</code>.</p>
+
+<p>To build this product on any supported platform, I just type the command:</p>
+
+<pre><code>make clean; make -j 8
+</code></pre>
+
+<p>To install the product:</p>
+
+<pre><code>sudo make install
+</code></pre>
+
+<p><span class="light">Note: On OS X I do not use <code>sudo</code> for installs.</span></p>
+
+<h2>Building the Xcode Project</h2>
+
+<p>We will go through several steps to build the Xcode project:</p>
+
+<ul>
+<li>Create the Xcode Project file (and then move it)</li>
+<li>Add existing project files to the project</li>
+<li>Remove unnecessary Target Memberships</li>
+<li>Add <code>/usr/local/..</code> to searches</li>
+<li>Select the libraries to link in (and create a <code>lib</code> group)</li>
+<li>Live long and prosper</li>
+</ul>
+
+
+<h3>Creating the Xcode Project</h3>
+
+<p>Launch Xcode and select <strong>Create a new Xcode project</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-001.png" width="602" height="353"></p>
+
+<p>Choose <strong>Command Line Tool</strong> under <strong>OS X</strong> / <strong>Application</strong>. Click <strong>Next</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-002.png" width="548" height="323"></p>
+
+<p>Type in the Project Name (I use the name of the executable) and make sure that you choose a <code>C++</code> project. Click <strong>Next</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-003.png" width="548" height="323"></p>
+
+<p>Save the new project file in the root of the project folder (the same place the Makefile is). Click <strong>Create</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-004.png" width="572" height="387"></p>
+
+<p>The basic project should look like this (no source files have been added yet).</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-005.png" width="720" height="450"></p>
+
+<p>Right-click on project (in this case CoralSeaServer) in the left pane and choose <strong>Show in Finder</strong></p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-006.png" width="578" height="328"></p>
+
+<p>Unfortunately, Xcode has created a new folder <em>inside</em> the project folder and placed the <code>.xcodeproj</code> file inside that. We need it at the same level as the Makefile. It has also created its own code folder and a new <code>main.cpp</code> which we no longer need. Here is how to fix it (<strong>the project file trick</strong>):</p>
+
+<ul>
+<li><strong>Quit Xcode</strong>, we’re going to move things around in the Finder.</li>
+<li>In <strong>Finder</strong>, drag and drop the <code>.xcodeproj</code> up a folder level to be in the same place as the Makefile.</li>
+</ul>
+
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-007.png" width="578" height="328"></p>
+
+<ul>
+<li>Then, delete the project folder created by Xcode</li>
+</ul>
+
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-008.png" width="578" height="328"></p>
+
+<p>Resulting in a clean file system.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-009.png" width="578" height="328"></p>
+
+<p><img class="right" src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-010.png" width="222" height="113"></p>
+
+<p>Double-click the <code>.xcodeproj</code> file to launch and open the project in Xcode. You will see the <code>main.cpp</code> is now in red, indicating that it does not exist. This is what we expect because we deleted Xcode’s created <code>main.cpp</code> in Finder. Right-click the group above the missing <code>main.cpp</code> and choose <strong>Delete</strong>. Your left pane should look something like the one on the right.</p>
+
+<h3>Add existing files to the Project</h3>
+
+<p>We now need to add the existing code files to the Xcode project so 
+that it can compile and index them. Right-click on the project in the 
+top-left and select <strong>Add files to “…”</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-011.png" width="720" height="450"></p>
+
+<p>Select all files <em>except</em> the <code>bin</code> and <code>build</code> folders (if they exist). Make sure <strong>Create groups</strong> is selected and <strong>Add to targets</strong> refers to your new project. Click <strong>Add</strong>.</p>
+
+<p><span class="light">For more information on the folders and files I use, see <a href="http://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/">A Simple C++ Project Structure</a>.</span></p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-012.png" width="720" height="450"></p>
+
+<p>Xcode will create groups for the folders in the project.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-013.png" width="720" height="450"></p>
+
+<h3>Remove any unnecessary Target Memberships</h3>
+
+<p>By default, Xcode tries to compile every file (except headers) that 
+you add. Since Makefiles and Markdown files cannot be compiled, you will
+ get errors when you first try to build the application. This happens 
+because we added all files to the target when importing above.</p>
+
+<p>Select the Makefile and <em>un</em>check <strong>Target Membership</strong>. If this is not shown, click the top-right toolbar item to show it.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-014.png" width="720" height="450"></p>
+
+<p>Repeat the <em>un</em>check for any other non-compilable files. In my case, that includes the <code>README.markdown</code> file. <strong>Do not remove any source-code files from the target or the project will not build.</strong></p>
+
+<h3>Add <code>/usr/local/...</code> to searches</h3>
+
+<p>Since this C++11 project uses shared libraries, we need to tell the compiler where they are.</p>
+
+<p>Select the Project in the top-left, and then the target. Then scroll down until you see <strong>Search Paths</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-015.png" width="720" height="450"></p>
+
+<p>Double-click the column <em>to the right</em> of <strong>Header Search Paths</strong>. It brings up a panel of search paths.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-016.png" width="408" height="196"></p>
+
+<p>Click the <code>+</code> at the bottom to add a new search path and type in <code>/usr/local/include</code>. This tells the compiler to look for headers in the public tree.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-017.png" width="408" height="196"></p>
+
+<p>Double-click the column <em>to the right</em> of <strong>Library Search Paths</strong>. It brings up a panel of search paths. Add <code>/usr/local/lib</code> to tell the compiler where to find the shared libraries.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-018.png" width="408" height="196"></p>
+
+<h3>Choose the Libraries to be linked</h3>
+
+<p>Now we need to add the libraries that are included in Line <strong>43</strong> of the Makefile to the compilation.</p>
+
+<pre><code>LIB := -L /usr/local/lib -lcorinth -lprotobuf -lzmq
+</code></pre>
+
+<p>Click <strong>Build Phases</strong> and then expand <strong>Link Binary With Libraries</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-019.png" width="720" height="450"></p>
+
+<p>There are 2 ways to add libraries, drag and drop from finder or manual add.</p>
+
+<h4>EITHER Drag and Drop from Finder</h4>
+
+<p>Open a Finder window and press <code>⌘⇧G</code> (Command-Shift-G) or select <strong>Go</strong> / <strong>Go to Folder…</strong> from the menu. Type in <code>/usr/local/lib/</code> to select the public libraries folder.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-020.png" width="720" height="450"></p>
+
+<p>Drag and drop the libraries you need into the space called <strong>Add frameworks and libraries here</strong>.</p>
+
+<p><strong>Tip</strong>: Libraries in UNIX are named <code>libxxx.dylib</code> where <code>xxx</code> is the same name as the <code>-l</code> in the makefile. So, in my makefile I have a <code>-lzmq</code>, then the library to drag over will be named <code>libzmq.dylib</code>. There may be other names, extensions and versions, do <em>not</em> drag these over. Only drag over the plain one. Xcode will add the correct and latest version to your project.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-021.png" width="720" height="450"></p>
+
+<p>Repeat for all the libraries in the Makefile.</p>
+
+<h4>OR Manually Add Libraries</h4>
+
+<p>Click the <code>+</code> below <strong>Add frameworks and libraries here</strong>. Choose <strong>Add Other…</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-022.png" width="300" height="345"></p>
+
+<p>This brings up a standard OS X Open Sheet. Here’s the trick: press <code>⌘⇧G</code> (Command-Shift-G) to access the <em>hidden</em> Go to Folder window. Type in <code>/usr/local/lib/</code> and click <strong>Open</strong>.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-023.png" width="528" height="342"></p>
+
+<p>Select the library file you want to add. Since I am adding the file for <code>-lzmq</code>, I add <code>libzmq.dylib</code>. Click <strong>Open</strong>.</p>
+
+<p>Repeat for all the libraries in the Makefile.</p>
+
+<h3>Create a lib group</h3>
+
+<p>After adding all the libraries, your list of libraries to link should match the Makefile.</p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-025.png" width="720" height="450"></p>
+
+<p>Select all the <code>lib</code> files in the left-hand pane, then right-click and choose <strong>New Group from Selection</strong>. Type <code>lib</code> to create a nice lib group and drag it down the project. <span class="light">I do this to keep the left-hand pane clean.</span></p>
+
+<p><img src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/xbuild-026.png" width="720" height="450"></p>
+
+<h3>Build and Run</h3>
+
+<p>We have created an Xcode project, added the source files, removed 
+unnecessary target memberships, added search paths and link libraries, 
+so we’re ready to build and run.</p>
+
+<p>Hit <code>⌘B</code> or click the Xcode run arrow.</p>
+
+<p>The project should compile and run.</p>
+
+<h3>What if it does not Compile and Run</h3>
+
+<p>Check the following:</p>
+
+<ul>
+<li>You added all the sources needed</li>
+<li>You typed in the search paths properly</li>
+<li>You added all the dependent libraries</li>
+<li>Most Makefiles do not include all the project include files and rely on the programmer to <em>know</em>
+ where each header is. The programmer then has to add paths to internal 
+includes. Xcode (and good Makefiles) do not need this. If you see an 
+error on a <code>#include "this/that.h"</code>, replace it with <code>#include "that.h"</code> and fix the Makefile (see re-testing the Makefile below on how).</li>
+<li>Read the <code>clang</code> error (not warning) messages, they will tell you what went wrong and what needs to change.</li>
+</ul>
+
+
+<h2>Re-testing the Makefile</h2>
+
+<p>The project is now building in Xcode and you gain all the benefits of
+ the Xcode ecosystem. But it is worth checking that the Makefile version
+ still works, especially if you have made code changes.</p>
+
+<p>Open a terminal, <code>cd</code> to the project folder and:</p>
+
+<pre><code>make clean; make -j 8
+</code></pre>
+
+<p>If all is well, the project will compile as well.</p>
+
+<p>If it does not compile, chances are you changed <code>#include</code> paths. Add the missing include paths as per my line <strong>44</strong>:</p>
+
+<pre><code>INC := -I include -I include/proto -I /usr/local/include
+</code></pre>
+
+<h2>Live Long and Prosper</h2>
+
+<p>You now have a C++ project that compiles both ways, from a Makefile 
+and via the Xcode build system and get the best of both worlds:</p>
+
+<ul>
+<li>The Makefile version works cross platform and can be used for production deploys.</li>
+<li>The Xcode build system gives you access to IDE error checking, inspection, monitors and Instruments.</li>
+</ul>
+
+
+<p>For more <strong>C++</strong> articles, see my <a href="http://hiltmon.com/blog/categories/c-plus-plus/">C++ Category</a>.</p>
+
+<p>Enjoy</p>
+
+<p><em>Follow the author as <a href="http://twitter.com/hiltmon">@hiltmon</a> on Twitter.</em></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Hilton Lipschitz</span></span>
+
+      
+
+
+
+
+<time class="entry-date" datetime="2015-08-01T11:25:51-04:00"><span class="date"><span class="date-month">Aug</span> <span class="date-day">1</span><span class="date-suffix">st</span>, <span class="date-year">2015</span></span> <span class="time">11:25 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class="category" href="http://hiltmon.com/blog/categories/c-plus-plus/">c++</a>, <a class="category" href="http://hiltmon.com/blog/categories/development/">development</a>, <a class="category" href="http://hiltmon.com/blog/categories/programming/">programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="http://hiltmon.com/blog/2015/07/05/kindred-family/" title="Previous Post: Kindred-Family">« Kindred-Family</a>
+      
+      
+        <a class="basic-alignment right" href="http://hiltmon.com/blog/2015/08/05/in-the-press-this-weeks-hedge-fund-alert/" title="Next Post: In the Press: This Week's Hedge Fund Alert">In the Press: This Week's Hedge Fund Alert »</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 1246px !important;" src="Simple%20C++:%20From%20Makefiles%20to%20Xcode%20Builds%20-%20Hiltmon_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" frameborder="0" width="100%"></iframe></div>
+  </section>
+
+</div>
+
+<aside class="sidebar thirds">
+  
+    
+<section class="first odd">
+	<div id="carbonads"></div>
+</section><section class="even">
+  <h1>The Hiltmon</h1>
+  <p><strong>Hilton Lipschitz</strong> (<a href="http://twitter.com/hiltmon">@hiltmon</a>)
+ is CTO of an up and coming Hedge Fund, who loves to craft brilliant and
+ delightful web, iPhone, iPad and Macintosh software products. Before 
+this he was an independent software consultant, designer and developer 
+at <a href="http://www.noverse.com/">Noverse LLC</a>.</p>
+</section>
+<section class="odd">
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/03/12/notification-city/">Notification City</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/03/05/coding-style-standards-in-2017/">Coding Style Standards in 2017</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2017/01/28/mathjax-in-markdown/">MathJax in Markdown</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/11/06/on-the-new-macbook-pros/">On the New MacBook Pros</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/10/07/the-gentleman-james-v/">The Gentleman James V</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/09/25/the-annual-dependency-library-upgrade-process/">The Annual Dependency Library Upgrade Process</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/08/28/minimal-project-management-6-months-later/">Minimal Project Management - 6 Months Later</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/26/attractive-multi-line-sql-statements-in-c-plus-plus/">Attractive Multi-Line SQL Statements in C++</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/24/apple-watch-after-1-year/">Apple Watch - After 1 Year</a>
+      </li>
+    
+      <li class="post">
+        <a href="http://hiltmon.com/blog/2016/04/10/spotlight-only-nine-months-later/">Spotlight Only - Nine Months Later</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    <span class="toggle-sidebar"></span></div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright © 2017 - Hilton Lipschitz -
+  <span class="credit">Powered by <a href="http://octopress.org/">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<iframe style="display: none;"></iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

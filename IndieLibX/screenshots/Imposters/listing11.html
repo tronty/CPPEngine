@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<title>Listing 11</title>
+</head>
+<body>
+<pre>
+/// Efficiently generate multiple imposters packed into a single render texture.
+bool GenerateImposters(const D3DXVECTOR3& curCameraPos, const D3DXVECTOR3& curCameraUp,
+			   const D3DXMATRIX& viewMatrix, const D3DXMATRIX& projMatrix,
+			   RenderTexture* pImposterRenderTexture)
+{
+	// Note that calling BeginScene (changing render target) is the
+// expensive part and is only done
+	// once to generate multiple of imposters.
+
+	if (!pImposterRenderTexture->BeginScene())
+	{
+		return false;
+	}
+
+	// Setup render state.
+
+	LPDIRECT3DDEVICE9 pD3DDevice = DXUTGetD3DDevice();
+	pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	pD3DDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+	pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TEXTURE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
+	pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE);
+	pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP
+	pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
+	// Calculate the uv scale for render texture sub-regions.
+
+	float imposterDistSq = IMPOSTER_DIST * IMPOSTER_DIST;
+	D3DXVECTOR2 imposterUVScale(1.0f / (float) g_pImposterSystem->GetNumImpostersU(),
+		                     1.0f / (float) g_pImposterSystem->GetNumImpostersV());
+
+	// Get the bounding box for the mesh that is being impostered.
+	D3DXVECTOR3 boundingBoxVerts[NUM_BOX_VERTS];
+
+	g_pMesh->GetBoundingBoxVerts(boundingBoxVerts);
+
+	int numMeshs = g_RenderLoadsOfMeshes ? NUM_MESHES : 1;
+
+	for (int i = 0; i < numMeshs; ++i)
+	{
+		Imposter* pImposter = g_pImposterSystem->GetImposter(i);
+
+		if (!pImposter->requiresRegeneration)
+		{
+			// This imposter does not need to be regenerated at the moment.
+			continue;
+		}
+
+		// Create the imposter geometry, view and projection matrices.
+
+		float nearPlane, farPlane;
+		g_pImposterSystem->CreateImposterBillboard(curCameraPos,
+viewMatrix, projMatrix, g_WorldMatrices[i],
+boundingBoxVerts,
+g_pMesh->GetBoundingSphere().radius,
+pImposter, nearPlane, farPlane);
+
+		D3DXMATRIX imposterViewMatrix, imposterProjMatrix;
+		g_pImposterSystem->CreateMatrices(curCameraPos, curCameraUp,
+							imposterViewMatrix, imposterProjMatrix,
+             						pImposter, nearPlane, farPlane);
+
+		// Set viewport for rendering to the sub-region of the render texture.
+
+		g_pImposterSystem->InitImposterViewport(
+pImposterRenderTexture->GetWidth(),
+						pImposterRenderTexture->GetHeight(),
+						pImposter->uvOffset, imposterUVScale);
+
+		// Initialise DirectX transforms.
+
+		pD3DDevice->SetTransform(D3DTS_VIEW, &imposterViewMatrix);
+		pD3DDevice->SetTransform(D3DTS_PROJECTION, &imposterProjMatrix);
+
+		// Set the world transform for the Mesh.
+
+		pD3DDevice->SetTransform(D3DTS_WORLD, &g_WorldMatrices[i]);
+
+		// Clear the texture.
+
+		D3DCOLOR color = D3DCOLOR_RGBA(0, 0, 0, 0);
+		pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, color, 1.0f, 0);
+
+		// Render the mesh to the imposter.
+
+		g_pMesh->Render();
+
+		pImposter->requiresRegeneration = false;
+		pImposter->lastGeneratedTime = (float) DXUTGetTime();
+	}
+
+	pImposterRenderTexture->EndScene();
+
+	return true;
+}
+
+
+
+</pre>
+</body>
+</html>
+

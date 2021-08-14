@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>       <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>          <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>          <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style id="qc-cmp2">.qc-cmp2-persistent-link {cursor:pointer; position:fixed; background-color:#368BD6;padding:5px 15px; color:#FFF; display:flex;align-items:center; max-height:30px; z-index:2147483640;bottom:0; right:0;border-top-left-radius:3px;border-top-right-radius:3px;}.qc-cmp2-persistent-link img {width:16px; height:17px; margin-right:5px;}</style>
+    <title>Images - Vulkan Tutorial</title>
+    <meta name="description" content="A tutorial that teaches you everything it takes to render 3D graphics with the Vulkan API. It covers everything from Windows/Linux setup to rendering and debugging.">
+    <meta name="author" content="Alexander Overvoorde">
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://vulkan-tutorial.com/images/favicon.png" type="image/png">
+    <!-- Mobile -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font -->
+    <link href="Images%20-%20Vulkan%20Tutorial_tiedostot/css.css" rel="stylesheet" type="text/css">
+    <!-- CSS -->
+    <link href="Images%20-%20Vulkan%20Tutorial_tiedostot/theme.css" rel="stylesheet" type="text/css"><link href="Images%20-%20Vulkan%20Tutorial_tiedostot/theme-blue.css" rel="stylesheet" type="text/css">
+    
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Matomo -->
+    <script src="Images%20-%20Vulkan%20Tutorial_tiedostot/osd.js"></script><script src="Images%20-%20Vulkan%20Tutorial_tiedostot/rules-p-fTfJtcPmQDwZG.js" async=""></script><script src="Images%20-%20Vulkan%20Tutorial_tiedostot/quant.js" async="" type="text/javascript"></script><script async="" type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/cmp2.js"></script><script async="" type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/gpt.js"></script><script async="" type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/choice.js"></script><script type="text/javascript" async="" defer="defer" src="Images%20-%20Vulkan%20Tutorial_tiedostot/piwik.html"></script><script type="text/javascript">
+      var _paq = _paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+      _paq.push(["setCookieDomain", "*.vulkan-tutorial.com"]);
+      _paq.push(["setDomains", ["*.vulkan-tutorial.com"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//matomo.while.io/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
+
+    <script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/4309.js"></script><style type="text/css">#waldo-sticky-footer-wrapper {position: fixed; width: 100%; bottom: 0px; left: 0px; text-align: center; z-index: 9999;margin-bottom: 0 !important;}#waldo-sticky-footer-wrapper > div {position: relative; display: inline-block; margin-bottom: 0 !important;}#waldo-sticky-footer-wrapper iframe, #waldo-sticky-footer-wrapper div {margin-left: auto;margin-right: auto;}.waldo-sticky-sidebar{position: fixed; top: 10px;z-index: 90}.waldo-bfleft {position: fixed; left: 0; top: 10px;z-index:101;}.waldo-bfright {position: fixed; right: 0; top: 10px;z-index:101;}#nm-ccpa-widget {width: 400px;}#nm-ccpa-widget {position: fixed; right: 20px; z-index: 9999; margin-bottom: 15px;box-shadow: 0 3px 36px 0 rgba(0,0,0,0.3); background-color: #fff;border-radius: 10px;bottom: 20px;margin-top: 10px;font-size: 14px;}.nm-ccpa-widget-header {background: #179f84;color: #fff;padding: 20px;}.nm-ccpa-widget-header .nm-ccpa-widget-main-title {margin-bottom: 0;margin-top: 0;font-size: 16px;font-weight: bold;}.nm-ccpa-widget-body {padding: 20px;background: #fff;}.nm-ccpa-widget-body label {font-size: 16px;}.nm-ccpa-widget-submit-btn {margin-top: 15px;padding-left: 25px;}.nm-ccpa-widget-submit-btn input {background: #179f84;color: #fff;padding: 10px 20px;border-radius: 8px;border: 0;outline: 0;}.nm-ccpa-widget-submit-btn input:hover,.nm-ccpa-widget-submit-btn input:focus {cursor: pointer;}.nm-ccpa-widget-checkbox-label {font-size: 20px;}.nm-ccpa-widget-header {position: relative;}.nm-ccpa-widget-close-btn {position: absolute;right: 10px;top: 10px;}.nm-ccpa-widget-close-btn a {color: #fff;font-size: 20px;text-decoration: none;}.nm-ccpa-widget-message {padding-left: 25px;}#waldo-tag-6038 {clear: both !important;}div[class^="app_gdpr-"] a {color: #41afbb !important; text-decoration: underline !important}#waldo-close-button {position: absolute; right: 0;top: -24px; line-height: normal !important;}#waldo-close-button a {border: 1px solid rgba(0,0,0,.35) !important;padding: 3px !important;font-size: 12px !important;color: #fff !important;font-weight: bold !important;background-color: #777 !important;line-height: normal !important;}.waldo-display-unit {display: flex !important; justify-content: center !important; align-items: center !important;}</style>
+<script src="Images%20-%20Vulkan%20Tutorial_tiedostot/embed.js" data-timestamp="1628882018570"></script><script type="text/javascript">googletag.cmd.push(function() {googletag.pubads().addEventListener('slotRenderEnded', function(event) {waldoPassbackCheck(event);waldoAddCloseBtn(event);});googletag.pubads().enableSingleRequest();googletag.enableServices();gptAdSlots[4310] = googletag.defineSlot('/124067137/vulkan-tutorial300x250FL_1', [[300, 250], [300, 600], [160, 600]], 'waldo-tag-4310').defineSizeMapping(googletag.sizeMapping().addSize([1024, 0], [[300, 250], [300, 600], [160, 600]]).addSize([768, 0], [[300, 250], [300, 600], [160, 600]]).addSize([0, 0], [[300, 250], [300, 600], [160, 600]]).build()).addService(googletag.pubads());googletag.display('waldo-tag-4310');gptAdSlots[4312] = googletag.defineSlot('/124067137/vulkan-tutorial300x250FL_2', [[300, 250], [300, 600], [160, 600]], 'waldo-tag-4312').defineSizeMapping(googletag.sizeMapping().addSize([1024, 0], [[300, 250], [300, 600], [160, 600]]).addSize([768, 0], [[300, 250], [300, 600], [160, 600]]).addSize([0, 0], [[300, 250], [300, 600], [160, 600]]).build()).addService(googletag.pubads());googletag.display('waldo-tag-4312');gptAdSlots[4314] = googletag.defineSlot('/124067137/vulkan-tutorial728x90FS_1', [[728, 90], [970, 90], [970, 250], [320, 50]], 'waldo-tag-4314').defineSizeMapping(googletag.sizeMapping().addSize([1024, 0], [[728, 90], [970, 90], [970, 250]]).addSize([768, 0], [[320, 50]]).addSize([0, 0], [[320, 50]]).build()).addService(googletag.pubads());googletag.display('waldo-tag-4314');});</script><link rel="prefetch" as="style" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data_002/lounge.css"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data_002/common.js"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data_002/lounge.js"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data_002/config.js"><script async="" id="dsq_recs_scr" src="Images%20-%20Vulkan%20Tutorial_tiedostot/recommendations.js"></script><style type="text/css"> .qc-cmp-button.qc-cmp-secondary-button:hover {    background-color: #368bd6 !important;    border-color: transparent !important;  }  .qc-cmp-button.qc-cmp-secondary-button:hover {    color: #ffffff !important;  }  .qc-cmp-button.qc-cmp-secondary-button {    color: #368bd6 !important;  }  .qc-cmp-button.qc-cmp-secondary-button {    background-color: #eee !important;    border-color: transparent !important;  } </style><link rel="prefetch" as="style" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data/recommendations.css"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data/common.js"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data/recommendations.js"><link rel="prefetch" as="script" href="Images%20-%20Vulkan%20Tutorial_tiedostot/a_data_002/config.js"><script type="text/javascript" id="__tcfapiuiscript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/cmp2ui-en.js"></script><style qc-data-emotion="css-global" data-s=""></style><meta http-equiv="origin-trial" content="A88otRz1Fd3Nt567e2IYshC18LL3KGVXpVJW9oTCId4RYaygt23pbb4JqrbdIO/bwZPWEmRjBIRBu/bZbDR7Pg4AAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="A0gCLbXCcL0R1Oc8tFPDs0G4Elz17w3zHp+Zst66+D17veE2o7fUcPsA114QtSTRqfVJLMeTSdeWOom0CcyCsgYAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A9RQ+LxFazAousxUwSCzaihJjHLO1UyjQp0teZKHl7WdbVjPDfHSKMd6D/ZI5MTjqClFycbl70EFd7cBJWXqKQEAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A6WKeWsdn1Ct+ZPqS9NCxxaiBoQ7wdTkK2/gE69Yu0gfBKJfo1gOvgkGmf5/xaIajT/RUb9AbnF1FsSZ47cCcQcAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MzQwODMxOTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A04ZCu7yjrHgwQJK5ISHhH1DSg0qqowEay3n70KO6wV3D2Mj+OX3Kw20aSMitzgdG1xfrN7sOJV/dZIk+RvCzA4AAAB2eyJvcmlnaW4iOiJodHRwczovL2dvb2dsZS5jb206NDQzIiwiZmVhdHVyZSI6IlRydXN0VG9rZW5zIiwiZXhwaXJ5IjoxNjM0MDgzMTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A2YAd4xOntTGygIDjApOTtXOgVI3IWsd5OnOGq3RbRkIQwyqYWNl1JGRAcvtm6VOHDj4n07T/J19VqLuJn3MmQ8AAACWeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjMxNjYzOTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="A2c5Ux+hivdkLh/KbZUGr6f7SCR0mZrBVfPJ+/OuDVHNwiYv+Lo83b9z5qL8sod78bQl0pSLtbvRWURo+xRl7AIAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjMxNjYzOTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AzNJ4sd3tVurolpdvWYZ4cmP9Po7RJhEHSqmC3pgxW9fFVZvchhtcMUgHAs97npxMD1jhXHO8s6q6Wy1MMLxKgEAAACceyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjMxNjYzOTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlLCJ1c2FnZSI6InN1YnNldCJ9"><meta http-equiv="origin-trial" content="AwfG8hAcHnPa/kJ1Co0EvG/K0F9l1s2JZGiDLt2mhC3QI5Fh4qmsmSwrWObZFbRC9ieDaSLU6lHRxhGUF/i9sgoAAACBeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AwQ7dCmHkvR6FuOFxAuNnktYSQrGbL4dF+eBkrwNLALc69Wr//PnO1yzns3pjUoCaYbKHtVcnng2hU+8OUm0PAYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AysVDPGQTLD/Scn78x4mLwB1tMfje5jwUpAAzGRpWsr1NzoN7MTFhT3ClmImi2svDZA7V6nWGIV8YTPsSRTe0wYAAACHeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiSW50ZXJlc3RDb2hvcnRBUEkiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><script src="Images%20-%20Vulkan%20Tutorial_tiedostot/pubads_impl_2021081201.js" async=""></script><style qc-data-emotion="css" data-s=""></style><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><script src="Images%20-%20Vulkan%20Tutorial_tiedostot/beacon.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator_002.js"></script><link rel="preload" href="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js" as="script"><script type="text/javascript" src="Images%20-%20Vulkan%20Tutorial_tiedostot/integrator.js"></script></head>
+<body class=""><div class="qc-cmp2-container" id="qc-cmp2-container"><a class="qc-cmp2-persistent-link" id="qc-cmp2-persistent-link"><img src="data:image/svg+xml,%3Csvg viewBox='0 0 16 17' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' style='margin-right: 5px; height: 17px;'%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='cog' fill='%23FFFFFF' fill-rule='nonzero'%3E%3Cpath d='M15.596917,9.98326938 L14.5041079,9.33798816 C14.5728064,8.7815386 14.5728064,8.2184614 14.5041079,7.66201184 L15.596917,7.01673062 C15.9178229,6.82726259 16.0726124,6.43742732 15.9670848,6.0741546 C15.5912871,4.78033611 14.9223646,3.61573153 14.0390021,2.66061113 C13.7831755,2.38401797 13.3749053,2.32348965 13.0525249,2.51384881 L11.9613243,3.15813608 C11.5248519,2.81840117 11.0481221,2.53648663 10.542482,2.31910255 L10.542482,1.02991108 C10.542482,0.648438733 10.2860522,0.316869683 9.92305592,0.229024792 C8.66155,-0.07632446 7.33871809,-0.0763587342 6.07694408,0.229024792 C5.71398131,0.316869683 5.457518,0.648404458 5.457518,1.02991108 L5.457518,2.31910255 C4.95187406,2.53647872 4.47514334,2.81839382 4.03867572,3.15813608 L2.94747511,2.51384881 C2.62506122,2.32348965 2.21679094,2.38401797 1.96099786,2.66061113 C1.07763542,3.61573153 0.40871289,4.78037038 0.0329152236,6.0741546 C-0.072612407,6.43742732 0.0821770899,6.82722832 0.403082962,7.01673062 L1.49589212,7.66201184 C1.42719356,8.2184614 1.42719356,8.7815386 1.49589212,9.33798816 L0.403082962,9.98326938 C0.0821770899,10.1727374 -0.072612407,10.5625727 0.0329152236,10.9258454 C0.40871289,12.2196296 1.07763542,13.3842685 1.96099786,14.3393889 C2.21682445,14.615982 2.62509474,14.6765103 2.94747511,14.4861855 L4.03867572,13.8418982 C4.47514096,14.1816349 4.95187243,14.4635389 5.457518,14.6808975 L5.457518,15.9700889 C5.457518,16.3515613 5.7139478,16.6831303 6.07694408,16.7709752 C7.33848351,17.0763245 8.66128191,17.0763587 9.92305592,16.7709752 C10.2860187,16.6831303 10.542482,16.3515955 10.542482,15.9700889 L10.542482,14.6808975 C11.0481183,14.4635198 11.5248475,14.1816171 11.9613243,13.8418982 L13.0525249,14.4861855 C13.3749053,14.6765446 13.7831755,14.6160163 14.0390021,14.3393889 C14.9223646,13.3842685 15.5912871,12.2196296 15.9670848,10.9258454 C16.0726124,10.5625727 15.9178229,10.1727717 15.596917,9.98326938 Z M13.4026193,13.4264943 L11.8507364,12.510001 C10.9463288,13.3007421 10.6255905,13.4997041 9.47011484,13.9172673 L9.47011484,15.7502196 C8.50024808,15.9548373 7.49975192,15.9548373 6.52988516,15.7502196 L6.52988516,13.9172673 C5.4031959,13.5101235 5.07699522,13.3210668 4.14926358,12.510001 L2.59738075,13.4264943 C1.9368696,12.6693763 1.43490124,11.7817076 1.12525522,10.8230912 L2.67780828,9.90659789 C2.4588108,8.69270694 2.45871027,8.30790999 2.67780828,7.09340211 L1.12525522,6.17690879 C1.43490124,5.21829242 1.93690311,4.33058946 2.59738075,3.57312864 L4.14926358,4.49030745 C5.0667072,3.68712478 5.39129933,3.4941265 6.52988516,3.08269846 L6.52988516,1.24978037 C7.49971774,1.04482059 8.50028226,1.04482059 9.47011484,1.24978037 L9.47011484,3.08273274 C10.6087677,3.49419505 10.9333933,3.6872276 11.8507364,4.49034172 L13.4026193,3.57316291 C14.0630969,4.33058946 14.5650988,5.21829242 14.8747448,6.17694306 L13.3221917,7.09343638 C13.5412227,8.3076358 13.5412897,8.69212428 13.3221917,9.90663217 L14.8747448,10.8231255 C14.5650988,11.7817076 14.0631304,12.6694105 13.4026193,13.4264943 Z M8,5.20968958 C6.22607014,5.20968958 4.78289853,6.68570996 4.78289853,8.50001714 C4.78289853,10.3143243 6.22607014,11.7903447 8,11.7903447 C9.77392986,11.7903447 11.2171015,10.3143243 11.2171015,8.50001714 C11.2171015,6.68570996 9.77392986,5.20968958 8,5.20968958 Z M8,10.6935688 C6.81738009,10.6935688 5.85526568,9.70955526 5.85526568,8.50001714 C5.85526568,7.29047902 6.81738009,6.30646543 8,6.30646543 C9.18261991,6.30646543 10.1447343,7.29047902 10.1447343,8.50001714 C10.1447343,9.70955526 9.18261991,10.6935688 8,10.6935688 Z' id='Shape'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E" alt="Privacy">Privacy</a><div class="qc-cmp2-main" id="qc-cmp2-main"></div></div>
+    
+<div class="container-fluid fluid-height wrapper">
+    <div class="row columns content">
+        <div class="left-column article-tree col-sm-3 hidden-print">
+            <!-- For Mobile -->
+            <div class="responsive-collapse">
+                <button type="button" class="btn btn-sidebar" id="menu-spinner-button">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="sub-nav-collapse" class="sub-nav-collapse">
+                <div class="nav-logo">
+                    Vulkan Tutorial
+                </div>
+
+                <!-- Language picker -->
+                <div class="language-picker">
+                <a href="https://vulkan-tutorial.com/Introduction">English</a> / <a href="https://vulkan-tutorial.com/fr/Introduction">Français</a>                </div>
+
+                <!-- Navigation -->
+                <div style="padding-top: 20px; padding-bottom: 20px; background: #272525">
+                <ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Introduction">Introduction</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Overview">Overview</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Development_environment">Development environment</a></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Base_code" class="folder"><i class="Nav__arrow">&nbsp;</i>Drawing a triangle</a><ul class="Nav"><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Base_code" class="folder"><i class="Nav__arrow">&nbsp;</i>Setup</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Base_code">Base code</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Instance">Instance</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Validation_layers">Validation layers</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Physical_devices_and_queue_families">Physical devices and queue families</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Logical_device_and_queues">Logical device and queues</a></li></ul></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Window_surface" class="folder"><i class="Nav__arrow">&nbsp;</i>Presentation</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Window_surface">Window surface</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Swap_chain">Swap chain</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Presentation/Image_views">Image views</a></li></ul></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Introduction" class="folder"><i class="Nav__arrow">&nbsp;</i>Graphics pipeline basics</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Introduction">Introduction</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Shader_modules">Shader modules</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Fixed_functions">Fixed functions</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Render_passes">Render passes</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Graphics_pipeline_basics/Conclusion">Conclusion</a></li></ul></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Drawing/Framebuffers" class="folder"><i class="Nav__arrow">&nbsp;</i>Drawing</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Drawing/Framebuffers">Framebuffers</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Drawing/Command_buffers">Command buffers</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Drawing/Rendering_and_presentation">Rendering and presentation</a></li></ul></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Drawing_a_triangle/Swap_chain_recreation">Swap chain recreation</a></li></ul></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Vertex_buffers/Vertex_input_description" class="folder"><i class="Nav__arrow">&nbsp;</i>Vertex buffers</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Vertex_buffers/Vertex_input_description">Vertex input description</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Vertex_buffers/Vertex_buffer_creation">Vertex buffer creation</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Vertex_buffers/Staging_buffer">Staging buffer</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Vertex_buffers/Index_buffer">Index buffer</a></li></ul></li><li class="Nav__item  has-children"><a href="https://vulkan-tutorial.com/Uniform_buffers/Descriptor_layout_and_buffer" class="folder"><i class="Nav__arrow">&nbsp;</i>Uniform buffers</a><ul class="Nav"><li class="Nav__item "><a href="https://vulkan-tutorial.com/Uniform_buffers/Descriptor_layout_and_buffer">Descriptor layout and buffer</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Uniform_buffers/Descriptor_pool_and_sets">Descriptor pool and sets</a></li></ul></li><li class="Nav__item Nav__item--open has-children"><a href="https://vulkan-tutorial.com/Texture_mapping/Images" class="folder"><i class="Nav__arrow">&nbsp;</i>Texture mapping</a><ul class="Nav"><li class="Nav__item Nav__item--active"><a href="https://vulkan-tutorial.com/Texture_mapping/Images">Images</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Texture_mapping/Image_view_and_sampler">Image view and sampler</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Texture_mapping/Combined_image_sampler">Combined image sampler</a></li></ul></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Depth_buffering">Depth buffering</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Loading_models">Loading models</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Generating_Mipmaps">Generating Mipmaps</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Multisampling">Multisampling</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/FAQ">FAQ</a></li><li class="Nav__item "><a href="https://vulkan-tutorial.com/Privacy_policy">Privacy policy</a></li></ul>                </div>
+
+                <div class="sidebar-links">
+                    
+                        <!-- Links -->
+                        <a href="https://github.com/Overv/VulkanTutorial" target="_blank">GitHub Repository</a><br><a href="https://www.paypal.me/AOvervoorde" target="_blank">Support the website</a><br><br><a href="https://www.khronos.org/registry/vulkan/specs/1.0-wsi_extensions/pdf/vkspec.pdf" target="_blank">Vulkan Specification</a><br><a href="https://www.khronos.org/files/vulkan10-reference-guide.pdf" target="_blank">Vulkan Quick Reference</a><br><a href="https://lunarg.com/vulkan-sdk/" target="_blank">LunarG Vulkan SDK</a><br><a href="http://vulkan.gpuinfo.org/" target="_blank">Vulkan Hardware Database</a><br><br><a href="https://github.com/bwasty/vulkan-tutorial-rs" target="_blank">Tutorial for Rust</a><br><a href="https://github.com/Naitsirc98/Vulkan-Tutorial-Java" target="_blank">Tutorial for Java</a><br><a href="https://github.com/jjYBdx4IL/VulkanTutorial-VisualStudioProjectFiles" target="_blank">Visual Studio 2019 samples</a><br>
+                        <div id="toggleCodeBlock">
+                                                </div>
+
+                        <!-- Twitter -->
+                                                            </div>
+
+                <div style="color: #666; padding: 0 20px 0 20px; font-size: 90%">
+                    This site is not affiliated with or endorsed by the 
+Khronos Group. Vulkan® and the Vulkan logo are trademarks of the Khronos
+ Group Inc.
+                </div>
+            </div>
+        </div>
+        <div class="right-column  content-area col-sm-9">
+            <div class="content-page" style="position: relative;">
+                <div class="adbox-side" style="position: absolute; left: calc(100% + 50px);">
+                    <div id="waldo-tag-4310" class="waldo-display-unit" style="min-width: 300px; min-height: 600px;" data-processed="true" data-google-query-id="CLDG-v3arvICFRdlGQodfowH9w"><div id="google_ads_iframe_/124067137/vulkan-tutorial300x250FL_1_0__container__" style="border: 0pt none; display: inline-block; width: 300px; height: 600px;"><iframe style="border: 0px none; vertical-align: bottom;" src="Images%20-%20Vulkan%20Tutorial_tiedostot/container_003.html" id="google_ads_iframe_/124067137/vulkan-tutorial300x250FL_1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" data-google-container-id="a" data-load-complete="true" width="300" height="600" frameborder="0"></iframe></div></div>
+                </div>
+
+                <div class="adbox-side" style="position: absolute; left: -350px">
+                    <div id="waldo-tag-4312" class="waldo-display-unit" style="min-width: 300px; min-height: 600px;" data-processed="true" data-google-query-id="CJ2oz47brvICFRJcwgodR6cEcQ"><div id="google_ads_iframe_/124067137/vulkan-tutorial300x250FL_2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/124067137/vulkan-tutorial300x250FL_2_0" title="3rd party ad content" name="google_ads_iframe_/124067137/vulkan-tutorial300x250FL_2_0" scrolling="no" marginwidth="0" marginheight="0" style="border: 0px none; vertical-align: bottom; width: 160px; height: 600px;" srcdoc="" data-google-container-id="c" data-load-complete="true" width="160" height="600" frameborder="0"></iframe></div></div>
+                </div>
+
+                
+                <div class="doc_content">
+                    <article>
+            <div class="page-header">
+            <h1>Images</h1>
+        </div>
+    
+    <ul class="TableOfContents">
+<li>
+<p><a href="#page_Introduction">Introduction</a></p>
+</li>
+<li>
+<p><a href="#page_Image-library">Image library</a></p>
+</li>
+<li>
+<p><a href="#page_Loading-an-image">Loading an image</a></p>
+</li>
+<li>
+<p><a href="#page_Staging-buffer">Staging buffer</a></p>
+</li>
+<li>
+<p><a href="#page_Texture-Image">Texture Image</a></p>
+</li>
+<li>
+<p><a href="#page_Layout-transitions">Layout transitions</a></p>
+</li>
+<li>
+<p><a href="#page_Copying-buffer-to-image">Copying buffer to image</a></p>
+</li>
+<li>
+<p><a href="#page_Preparing-the-texture-image">Preparing the texture image</a></p>
+</li>
+<li>
+<p><a href="#page_Transition-barrier-masks">Transition barrier masks</a></p>
+</li>
+<li>
+<p><a href="#page_Cleanup">Cleanup</a></p>
+</li>
+</ul>
+<h2 id="page_Introduction">Introduction</h2>
+<p>The geometry has been colored using per-vertex colors so far, which is a rather
+limited approach. In this part of the tutorial we're going to implement texture
+mapping to make the geometry look more interesting. This will also allow us to
+load and draw basic 3D models in a future chapter.</p>
+<p>Adding a texture to our application will involve the following steps:</p>
+<ul>
+<li>Create an image object backed by device memory</li>
+<li>Fill it with pixels from an image file</li>
+<li>Create an image sampler</li>
+<li>Add a combined image sampler descriptor to sample colors from the texture</li>
+</ul>
+<p>We've already worked with image objects before, but those were automatically
+created by the swap chain extension. This time we'll have to create one by
+ourselves. Creating an image and filling it with data is similar to vertex
+buffer creation. We'll start by creating a staging resource and filling it with
+pixel data and then we copy this to the final image object that we'll use for
+rendering. Although it is possible to create a staging image for this purpose,
+Vulkan also allows you to copy pixels from a <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkBuffer.html"><code>VkBuffer</code></a> to an image and the API
+for this is actually <a href="https://developer.nvidia.com/vulkan-memory-management" class="Link--external">faster on some hardware</a>.
+We'll first create this buffer and fill it with pixel values, and then we'll
+create an image to copy the pixels to. Creating an image is not very different
+from creating buffers. It involves querying the memory requirements, allocating
+device memory and binding it, just like we've seen before.</p>
+<p>However, there is something extra that we'll have to take care of when working
+with images. Images can have different <em>layouts</em> that affect how the pixels are
+organized in memory. Due to the way graphics hardware works, simply storing the
+pixels row by row may not lead to the best performance, for example. When
+performing any operation on images, you must make sure that they have the layout
+that is optimal for use in that operation. We've actually already seen some of
+these layouts when we specified the render pass:</p>
+<ul>
+<li>
+<code>VK_IMAGE_LAYOUT_PRESENT_SRC_KHR</code>: Optimal for presentation</li>
+<li>
+<code>VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL</code>: Optimal as attachment for writing
+colors from the fragment shader</li>
+<li>
+<code>VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL</code>: Optimal as source in a transfer
+operation, like <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCmdCopyImageToBuffer.html"><code>vkCmdCopyImageToBuffer</code></a>
+</li>
+<li>
+<code>VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</code>: Optimal as destination in a transfer
+operation, like <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCmdCopyBufferToImage.html"><code>vkCmdCopyBufferToImage</code></a>
+</li>
+<li>
+<code>VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL</code>: Optimal for sampling from a shader</li>
+</ul>
+<p>One of the most common ways to transition the layout of an image is a <em>pipeline
+barrier</em>. Pipeline barriers are primarily used for synchronizing access to
+resources, like making sure that an image was written to before it is read, but
+they can also be used to transition layouts. In this chapter we'll see how
+pipeline barriers are used for this purpose. Barriers can additionally be used
+to transfer queue family ownership when using <code>VK_SHARING_MODE_EXCLUSIVE</code>.</p>
+<h2 id="page_Image-library">Image library</h2>
+<p>There are many libraries available for loading images, and you can even write
+your own code to load simple formats like BMP and PPM. In this tutorial we'll be
+using the stb_image library from the <a href="https://github.com/nothings/stb" class="Link--external">stb collection</a>.
+The advantage of it is that all of the code is in a single file, so it doesn't
+require any tricky build configuration. Download <code>stb_image.h</code> and store it in a
+convenient location, like the directory where you saved GLFW and GLM. Add the
+location to your include path.</p>
+<p><strong>Visual Studio</strong></p>
+<p>Add the directory with <code>stb_image.h</code> in it to the <code>Additional Include Directories</code> paths.</p>
+<p><img src="Images%20-%20Vulkan%20Tutorial_tiedostot/include_dirs_stb.png" alt=""></p>
+<p><strong>Makefile</strong></p>
+<p>Add the directory with <code>stb_image.h</code> to the include directories for GCC:</p>
+<pre><code class="language-text">VULKAN_SDK_PATH = /home/user/VulkanSDK/x.x.x.x/x86_64
+STB_INCLUDE_PATH = /home/user/libraries/stb
+
+...
+
+CFLAGS = -std=c++17 -I$(VULKAN_SDK_PATH)/include -I$(STB_INCLUDE_PATH)
+</code></pre>
+<h2 id="page_Loading-an-image">Loading an image</h2>
+<p>Include the image library like this:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> STB_IMAGE_IMPLEMENTATION</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stb_image.h&gt;</span></span>
+</code></pre>
+<p>The header only defines the prototypes of the functions by default. One code
+file needs to include the header with the <code>STB_IMAGE_IMPLEMENTATION</code> definition
+to include the function bodies, otherwise we'll get linking errors.</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">initVulkan</span><span class="hljs-params">()</span> </span>{
+    ...
+    createCommandPool();
+    createTextureImage();
+    createVertexBuffer();
+    ...
+}
+
+...
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createTextureImage</span><span class="hljs-params">()</span> </span>{
+
+}
+</code></pre>
+<p>Create a new function <code>createTextureImage</code> where we'll load an image and upload
+it into a Vulkan image object. We're going to use command buffers, so it should
+be called after <code>createCommandPool</code>.</p>
+<p>Create a new directory <code>textures</code> next to the <code>shaders</code> directory to store
+texture images in. We're going to load an image called <code>texture.jpg</code> from that
+directory. I've chosen to use the following
+<a href="https://pixabay.com/en/statue-sculpture-fig-historically-1275469/" class="Link--external">CC0 licensed image</a>
+resized to 512 x 512 pixels, but feel free to pick any image you want. The
+library supports most common image file formats, like JPEG, PNG, BMP and GIF.</p>
+<p><img src="Images%20-%20Vulkan%20Tutorial_tiedostot/texture.jpg" alt=""></p>
+<p>Loading an image with this library is really easy:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createTextureImage</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> texWidth, texHeight, texChannels;
+    stbi_uc* pixels = stbi_load(<span class="hljs-string">"textures/texture.jpg"</span>, &amp;texWidth, &amp;texHeight, &amp;texChannels, STBI_rgb_alpha);
+    <span class="hljs-type">VkDeviceSize</span> imageSize = texWidth * texHeight * <span class="hljs-number">4</span>;
+
+    <span class="hljs-keyword">if</span> (!pixels) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to load texture image!"</span>);
+    }
+}
+</code></pre>
+<p>The <code>stbi_load</code> function takes the file path and number of channels to load as
+arguments. The <code>STBI_rgb_alpha</code> value forces the image to be loaded with an
+alpha channel, even if it doesn't have one, which is nice for consistency with
+other textures in the future. The middle three parameters are outputs for the
+width, height and actual number of channels in the image. The pointer that is
+returned is the first element in an array of pixel values. The pixels are laid
+out row by row with 4 bytes per pixel in the case of <code>STBI_rgb_alpha</code> for a
+total of <code>texWidth * texHeight * 4</code> values.</p>
+<h2 id="page_Staging-buffer">Staging buffer</h2>
+<p>We're now going to create a buffer in host visible memory so that we can use
+<a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkMapMemory.html"><code>vkMapMemory</code></a> and copy the pixels to it. Add variables for this temporary buffer
+to the <code>createTextureImage</code> function:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkBuffer</span> stagingBuffer;
+<span class="hljs-type">VkDeviceMemory</span> stagingBufferMemory;
+</code></pre>
+<p>The buffer should be in host visible memory so that we can map it and it should
+be usable as a transfer source so that we can copy it to an image later on:</p>
+<pre><code class="language-c++ hljs cpp">createBuffer(imageSize, <span class="hljs-literal">VK_BUFFER_USAGE_TRANSFER_SRC_BIT</span>, <span class="hljs-literal">VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT</span> | <span class="hljs-literal">VK_MEMORY_PROPERTY_HOST_COHERENT_BIT</span>, stagingBuffer, stagingBufferMemory);
+</code></pre>
+<p>We can then directly copy the pixel values that we got from the image loading
+library to the buffer:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-keyword">void</span>* data;
+<span class="hljs-function">vkMapMemory</span>(device, stagingBufferMemory, <span class="hljs-number">0</span>, imageSize, <span class="hljs-number">0</span>, &amp;data);
+    <span class="hljs-built_in">memcpy</span>(data, pixels, <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">size_t</span>&gt;(imageSize));
+<span class="hljs-function">vkUnmapMemory</span>(device, stagingBufferMemory);
+</code></pre>
+<p>Don't forget to clean up the original pixel array now:</p>
+<pre><code class="language-c++ hljs cpp">stbi_image_free(pixels);
+</code></pre>
+<h2 id="page_Texture-Image">Texture Image</h2>
+<p>Although we could set up the shader to access the pixel values in the buffer,
+it's better to use image objects in Vulkan for this purpose. Image objects will
+make it easier and faster to retrieve colors by allowing us to use 2D
+coordinates, for one. Pixels within an image object are known as texels and
+we'll use that name from this point on. Add the following new class members:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkImage</span> textureImage;
+<span class="hljs-type">VkDeviceMemory</span> textureImageMemory;
+</code></pre>
+<p>The parameters for an image are specified in a <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkImageCreateInfo.html"><code>VkImageCreateInfo</code></a> struct:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkImageCreateInfo</span> imageInfo{};
+imageInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO</span>;
+imageInfo.imageType = <span class="hljs-literal">VK_IMAGE_TYPE_2D</span>;
+imageInfo.extent.width = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(texWidth);
+imageInfo.extent.height = <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(texHeight);
+imageInfo.extent.depth = <span class="hljs-number">1</span>;
+imageInfo.mipLevels = <span class="hljs-number">1</span>;
+imageInfo.arrayLayers = <span class="hljs-number">1</span>;
+</code></pre>
+<p>The image type, specified in the <code>imageType</code> field, tells Vulkan with what kind
+of coordinate system the texels in the image are going to be addressed. It is
+possible to create 1D, 2D and 3D images. One dimensional images can be used to
+store an array of data or gradient, two dimensional images are mainly used for
+textures, and three dimensional images can be used to store voxel volumes, for
+example. The <code>extent</code> field specifies the dimensions of the image, basically how
+many texels there are on each axis. That's why <code>depth</code> must be <code>1</code> instead of
+<code>0</code>. Our texture will not be an array and we won't be using mipmapping for now.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.format = <span class="hljs-literal">VK_FORMAT_R8G8B8A8_SRGB</span>;
+</code></pre>
+<p>Vulkan supports many possible image formats, but we should use the same format
+for the texels as the pixels in the buffer, otherwise the copy operation will
+fail.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.tiling = <span class="hljs-literal">VK_IMAGE_TILING_OPTIMAL</span>;
+</code></pre>
+<p>The <code>tiling</code> field can have one of two values:</p>
+<ul>
+<li>
+<code>VK_IMAGE_TILING_LINEAR</code>: Texels are laid out in row-major order like our
+<code>pixels</code> array</li>
+<li>
+<code>VK_IMAGE_TILING_OPTIMAL</code>: Texels are laid out in an implementation defined
+order for optimal access</li>
+</ul>
+<p>Unlike the layout of an image, the tiling mode cannot be changed at a later
+time. If you want to be able to directly access texels in the memory of the
+image, then you must use <code>VK_IMAGE_TILING_LINEAR</code>. We will be using a staging
+buffer instead of a staging image, so this won't be necessary. We will be using
+<code>VK_IMAGE_TILING_OPTIMAL</code> for efficient access from the shader.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.initialLayout = <span class="hljs-literal">VK_IMAGE_LAYOUT_UNDEFINED</span>;
+</code></pre>
+<p>There are only two possible values for the <code>initialLayout</code> of an image:</p>
+<ul>
+<li>
+<code>VK_IMAGE_LAYOUT_UNDEFINED</code>: Not usable by the GPU and the very first
+transition will discard the texels.</li>
+<li>
+<code>VK_IMAGE_LAYOUT_PREINITIALIZED</code>: Not usable by the GPU, but the first
+transition will preserve the texels.</li>
+</ul>
+<p>There are few situations where it is necessary for the texels to be preserved
+during the first transition. One example, however, would be if you wanted to use
+an image as a staging image in combination with the <code>VK_IMAGE_TILING_LINEAR</code>
+layout. In that case, you'd want to upload the texel data to it and then
+transition the image to be a transfer source without losing the data. In our
+case, however, we're first going to transition the image to be a transfer
+destination and then copy texel data to it from a buffer object, so we don't
+need this property and can safely use <code>VK_IMAGE_LAYOUT_UNDEFINED</code>.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.usage = <span class="hljs-literal">VK_IMAGE_USAGE_TRANSFER_DST_BIT</span> | <span class="hljs-literal">VK_IMAGE_USAGE_SAMPLED_BIT</span>;
+</code></pre>
+<p>The <code>usage</code> field has the same semantics as the one during buffer creation. The
+image is going to be used as destination for the buffer copy, so it should be
+set up as a transfer destination. We also want to be able to access the image
+from the shader to color our mesh, so the usage should include
+<code>VK_IMAGE_USAGE_SAMPLED_BIT</code>.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.sharingMode = <span class="hljs-literal">VK_SHARING_MODE_EXCLUSIVE</span>;
+</code></pre>
+<p>The image will only be used by one queue family: the one that supports graphics
+(and therefore also) transfer operations.</p>
+<pre><code class="language-c++ hljs cpp">imageInfo.samples = <span class="hljs-literal">VK_SAMPLE_COUNT_1_BIT</span>;
+imageInfo.flags = <span class="hljs-number">0</span>; <span class="hljs-comment">// Optional</span>
+</code></pre>
+<p>The <code>samples</code> flag is related to multisampling. This is only relevant for images
+that will be used as attachments, so stick to one sample. There are some
+optional flags for images that are related to sparse images. Sparse images are
+images where only certain regions are actually backed by memory. If you were
+using a 3D texture for a voxel terrain, for example, then you could use this to
+avoid allocating memory to store large volumes of "air" values. We won't be
+using it in this tutorial, so leave it to its default value of <code>0</code>.</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-keyword">if</span> (<span class="hljs-function">vkCreateImage</span>(device, &amp;imageInfo, <span class="hljs-literal">nullptr</span>, &amp;textureImage) != <span class="hljs-literal">VK_SUCCESS</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to create image!"</span>);
+}
+</code></pre>
+<p>The image is created using <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCreateImage.html"><code>vkCreateImage</code></a>, which doesn't have any particularly
+noteworthy parameters. It is possible that the <code>VK_FORMAT_R8G8B8A8_SRGB</code> format
+is not supported by the graphics hardware. You should have a list of acceptable
+alternatives and go with the best one that is supported. However, support for
+this particular format is so widespread that we'll skip this step. Using
+different formats would also require annoying conversions. We will get back to
+this in the depth buffer chapter, where we'll implement such a system.</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkMemoryRequirements</span> memRequirements;
+<span class="hljs-function">vkGetImageMemoryRequirements</span>(device, textureImage, &amp;memRequirements);
+
+<span class="hljs-type">VkMemoryAllocateInfo</span> allocInfo{};
+allocInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO</span>;
+allocInfo.allocationSize = memRequirements.size;
+allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, <span class="hljs-literal">VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT</span>);
+
+<span class="hljs-keyword">if</span> (<span class="hljs-function">vkAllocateMemory</span>(device, &amp;allocInfo, <span class="hljs-literal">nullptr</span>, &amp;textureImageMemory) != <span class="hljs-literal">VK_SUCCESS</span>) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to allocate image memory!"</span>);
+}
+
+<span class="hljs-function">vkBindImageMemory</span>(device, textureImage, textureImageMemory, <span class="hljs-number">0</span>);
+</code></pre>
+<p>Allocating memory for an image works in exactly the same way as allocating
+memory for a buffer. Use <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkGetImageMemoryRequirements.html"><code>vkGetImageMemoryRequirements</code></a> instead of
+<a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkGetBufferMemoryRequirements.html"><code>vkGetBufferMemoryRequirements</code></a>, and use <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkBindImageMemory.html"><code>vkBindImageMemory</code></a> instead of
+<a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkBindBufferMemory.html"><code>vkBindBufferMemory</code></a>.</p>
+<p>This function is already getting quite large and there'll be a need to create
+more images in later chapters, so we should abstract image creation into a
+<code>createImage</code> function, like we did for buffers. Create the function and move
+the image object creation and memory allocation to it:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createImage</span><span class="hljs-params">(<span class="hljs-keyword">uint32_t</span> width, <span class="hljs-keyword">uint32_t</span> height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage&amp; image, VkDeviceMemory&amp; imageMemory)</span> </span>{
+    <span class="hljs-type">VkImageCreateInfo</span> imageInfo{};
+    imageInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO</span>;
+    imageInfo.imageType = <span class="hljs-literal">VK_IMAGE_TYPE_2D</span>;
+    imageInfo.extent.width = width;
+    imageInfo.extent.height = height;
+    imageInfo.extent.depth = <span class="hljs-number">1</span>;
+    imageInfo.mipLevels = <span class="hljs-number">1</span>;
+    imageInfo.arrayLayers = <span class="hljs-number">1</span>;
+    imageInfo.format = format;
+    imageInfo.tiling = tiling;
+    imageInfo.initialLayout = <span class="hljs-literal">VK_IMAGE_LAYOUT_UNDEFINED</span>;
+    imageInfo.usage = usage;
+    imageInfo.samples = <span class="hljs-literal">VK_SAMPLE_COUNT_1_BIT</span>;
+    imageInfo.sharingMode = <span class="hljs-literal">VK_SHARING_MODE_EXCLUSIVE</span>;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-function">vkCreateImage</span>(device, &amp;imageInfo, <span class="hljs-literal">nullptr</span>, &amp;image) != <span class="hljs-literal">VK_SUCCESS</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to create image!"</span>);
+    }
+
+    <span class="hljs-type">VkMemoryRequirements</span> memRequirements;
+    <span class="hljs-function">vkGetImageMemoryRequirements</span>(device, image, &amp;memRequirements);
+
+    <span class="hljs-type">VkMemoryAllocateInfo</span> allocInfo{};
+    allocInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO</span>;
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-function">vkAllocateMemory</span>(device, &amp;allocInfo, <span class="hljs-literal">nullptr</span>, &amp;imageMemory) != <span class="hljs-literal">VK_SUCCESS</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to allocate image memory!"</span>);
+    }
+
+    <span class="hljs-function">vkBindImageMemory</span>(device, image, imageMemory, <span class="hljs-number">0</span>);
+}
+</code></pre>
+<p>I've made the width, height, format, tiling mode, usage, and memory properties
+parameters, because these will all vary between the images we'll be creating
+throughout this tutorial.</p>
+<p>The <code>createTextureImage</code> function can now be simplified to:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createTextureImage</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> texWidth, texHeight, texChannels;
+    stbi_uc* pixels = stbi_load(<span class="hljs-string">"textures/texture.jpg"</span>, &amp;texWidth, &amp;texHeight, &amp;texChannels, STBI_rgb_alpha);
+    <span class="hljs-type">VkDeviceSize</span> imageSize = texWidth * texHeight * <span class="hljs-number">4</span>;
+
+    <span class="hljs-keyword">if</span> (!pixels) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::runtime_error(<span class="hljs-string">"failed to load texture image!"</span>);
+    }
+
+    <span class="hljs-type">VkBuffer</span> stagingBuffer;
+    <span class="hljs-type">VkDeviceMemory</span> stagingBufferMemory;
+    createBuffer(imageSize, <span class="hljs-literal">VK_BUFFER_USAGE_TRANSFER_SRC_BIT</span>, <span class="hljs-literal">VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT</span> | <span class="hljs-literal">VK_MEMORY_PROPERTY_HOST_COHERENT_BIT</span>, stagingBuffer, stagingBufferMemory);
+
+    <span class="hljs-keyword">void</span>* data;
+    <span class="hljs-function">vkMapMemory</span>(device, stagingBufferMemory, <span class="hljs-number">0</span>, imageSize, <span class="hljs-number">0</span>, &amp;data);
+        <span class="hljs-built_in">memcpy</span>(data, pixels, <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">size_t</span>&gt;(imageSize));
+    <span class="hljs-function">vkUnmapMemory</span>(device, stagingBufferMemory);
+
+    stbi_image_free(pixels);
+
+    createImage(texWidth, texHeight, <span class="hljs-literal">VK_FORMAT_R8G8B8A8_SRGB</span>, <span class="hljs-literal">VK_IMAGE_TILING_OPTIMAL</span>, <span class="hljs-literal">VK_IMAGE_USAGE_TRANSFER_DST_BIT</span> | <span class="hljs-literal">VK_IMAGE_USAGE_SAMPLED_BIT</span>, <span class="hljs-literal">VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT</span>, textureImage, textureImageMemory);
+}
+</code></pre>
+<h2 id="page_Layout-transitions">Layout transitions</h2>
+<p>The function we're going to write now involves recording and executing a command
+buffer again, so now's a good time to move that logic into a helper function or
+two:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkCommandBuffer</span> beginSingleTimeCommands() {
+    <span class="hljs-type">VkCommandBufferAllocateInfo</span> allocInfo{};
+    allocInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO</span>;
+    allocInfo.level = <span class="hljs-literal">VK_COMMAND_BUFFER_LEVEL_PRIMARY</span>;
+    allocInfo.commandPool = commandPool;
+    allocInfo.commandBufferCount = <span class="hljs-number">1</span>;
+
+    <span class="hljs-type">VkCommandBuffer</span> commandBuffer;
+    <span class="hljs-function">vkAllocateCommandBuffers</span>(device, &amp;allocInfo, &amp;commandBuffer);
+
+    <span class="hljs-type">VkCommandBufferBeginInfo</span> beginInfo{};
+    beginInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO</span>;
+    beginInfo.flags = <span class="hljs-literal">VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT</span>;
+
+    <span class="hljs-function">vkBeginCommandBuffer</span>(commandBuffer, &amp;beginInfo);
+
+    <span class="hljs-keyword">return</span> commandBuffer;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">endSingleTimeCommands</span><span class="hljs-params">(VkCommandBuffer commandBuffer)</span> </span>{
+    <span class="hljs-function">vkEndCommandBuffer</span>(commandBuffer);
+
+    <span class="hljs-type">VkSubmitInfo</span> submitInfo{};
+    submitInfo.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_SUBMIT_INFO</span>;
+    submitInfo.commandBufferCount = <span class="hljs-number">1</span>;
+    submitInfo.pCommandBuffers = &amp;commandBuffer;
+
+    <span class="hljs-function">vkQueueSubmit</span>(graphicsQueue, <span class="hljs-number">1</span>, &amp;submitInfo, <span class="hljs-literal">VK_NULL_HANDLE</span>);
+    <span class="hljs-function">vkQueueWaitIdle</span>(graphicsQueue);
+
+    <span class="hljs-function">vkFreeCommandBuffers</span>(device, commandPool, <span class="hljs-number">1</span>, &amp;commandBuffer);
+}
+</code></pre>
+<p>The code for these functions is based on the existing code in <code>copyBuffer</code>. You
+can now simplify that function to:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyBuffer</span><span class="hljs-params">(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size)</span> </span>{
+    <span class="hljs-type">VkCommandBuffer</span> commandBuffer = beginSingleTimeCommands();
+
+    <span class="hljs-type">VkBufferCopy</span> copyRegion{};
+    copyRegion.size = size;
+    <span class="hljs-function">vkCmdCopyBuffer</span>(commandBuffer, srcBuffer, dstBuffer, <span class="hljs-number">1</span>, &amp;copyRegion);
+
+    endSingleTimeCommands(commandBuffer);
+}
+</code></pre>
+<p>If we were still using buffers, then we could now write a function to record and
+execute <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCmdCopyBufferToImage.html"><code>vkCmdCopyBufferToImage</code></a> to finish the job, but this command requires
+the image to be in the right layout first. Create a new function to handle
+layout transitions:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">transitionImageLayout</span><span class="hljs-params">(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout)</span> </span>{
+    <span class="hljs-type">VkCommandBuffer</span> commandBuffer = beginSingleTimeCommands();
+
+    endSingleTimeCommands(commandBuffer);
+}
+</code></pre>
+<p>One of the most common ways to perform layout transitions is using an <em>image
+memory barrier</em>. A pipeline barrier like that is generally used to synchronize
+access to resources, like ensuring that a write to a buffer completes before
+reading from it, but it can also be used to transition image layouts and
+transfer queue family ownership when <code>VK_SHARING_MODE_EXCLUSIVE</code> is used. There
+is an equivalent <em>buffer memory barrier</em> to do this for buffers.</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkImageMemoryBarrier</span> barrier{};
+barrier.sType = <span class="hljs-literal">VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER</span>;
+barrier.oldLayout = oldLayout;
+barrier.newLayout = newLayout;
+</code></pre>
+<p>The first two fields specify layout transition. It is possible to use
+<code>VK_IMAGE_LAYOUT_UNDEFINED</code> as <code>oldLayout</code> if you don't care about the existing
+contents of the image.</p>
+<pre><code class="language-c++ hljs cpp">barrier.srcQueueFamilyIndex = <span class="hljs-literal">VK_QUEUE_FAMILY_IGNORED</span>;
+barrier.dstQueueFamilyIndex = <span class="hljs-literal">VK_QUEUE_FAMILY_IGNORED</span>;
+</code></pre>
+<p>If you are using the barrier to transfer queue family ownership, then these two
+fields should be the indices of the queue families. They must be set to
+<code>VK_QUEUE_FAMILY_IGNORED</code> if you don't want to do this (not the default value!).</p>
+<pre><code class="language-c++ hljs cpp">barrier.image = image;
+barrier.subresourceRange.aspectMask = <span class="hljs-literal">VK_IMAGE_ASPECT_COLOR_BIT</span>;
+barrier.subresourceRange.baseMipLevel = <span class="hljs-number">0</span>;
+barrier.subresourceRange.levelCount = <span class="hljs-number">1</span>;
+barrier.subresourceRange.baseArrayLayer = <span class="hljs-number">0</span>;
+barrier.subresourceRange.layerCount = <span class="hljs-number">1</span>;
+</code></pre>
+<p>The <code>image</code> and <code>subresourceRange</code> specify the image that is affected and the
+specific part of the image. Our image is not an array and does not have mipmapping
+levels, so only one level and layer are specified.</p>
+<pre><code class="language-c++ hljs cpp">barrier.srcAccessMask = <span class="hljs-number">0</span>; <span class="hljs-comment">// TODO</span>
+barrier.dstAccessMask = <span class="hljs-number">0</span>; <span class="hljs-comment">// TODO</span>
+</code></pre>
+<p>Barriers are primarily used for synchronization purposes, so you must specify
+which types of operations that involve the resource must happen before the
+barrier, and which operations that involve the resource must wait on the
+barrier. We need to do that despite already using <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkQueueWaitIdle.html"><code>vkQueueWaitIdle</code></a> to manually
+synchronize. The right values depend on the old and new layout, so we'll get
+back to this once we've figured out which transitions we're going to use.</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function">vkCmdPipelineBarrier</span>(
+    commandBuffer,
+    <span class="hljs-number">0</span> <span class="hljs-comment">/* TODO */</span>, <span class="hljs-number">0</span> <span class="hljs-comment">/* TODO */</span>,
+    <span class="hljs-number">0</span>,
+    <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>,
+    <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>,
+    <span class="hljs-number">1</span>, &amp;barrier
+);
+</code></pre>
+<p>All types of pipeline barriers are submitted using the same function. The first
+parameter after the command buffer specifies in which pipeline stage the
+operations occur that should happen before the barrier. The second parameter
+specifies the pipeline stage in which operations will wait on the barrier. The
+pipeline stages that you are allowed to specify before and after the barrier
+depend on how you use the resource before and after the barrier. The allowed
+values are listed in <a href="https://www.khronos.org/registry/vulkan/specs/1.0/html/vkspec.html#synchronization-access-types-supported" class="Link--external">this table</a>
+of the specification. For example, if you're going to read from a uniform after
+the barrier, you would specify a usage of <code>VK_ACCESS_UNIFORM_READ_BIT</code> and the
+earliest shader that will read from the uniform as pipeline stage, for example
+<code>VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT</code>. It would not make sense to specify
+a non-shader pipeline stage for this type of usage and the validation layers
+will warn you when you specify a pipeline stage that does not match the type of
+usage.</p>
+<p>The third parameter is either <code>0</code> or <code>VK_DEPENDENCY_BY_REGION_BIT</code>. The latter
+turns the barrier into a per-region condition. That means that the
+implementation is allowed to already begin reading from the parts of a resource
+that were written so far, for example.</p>
+<p>The last three pairs of parameters reference arrays of pipeline barriers of the
+three available types: memory barriers, buffer memory barriers, and image memory
+barriers like the one we're using here. Note that we're not using the <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkFormat.html"><code>VkFormat</code></a>
+parameter yet, but we'll be using that one for special transitions in the depth
+buffer chapter.</p>
+<h2 id="page_Copying-buffer-to-image">Copying buffer to image</h2>
+<p>Before we get back to <code>createTextureImage</code>, we're going to write one more helper
+function: <code>copyBufferToImage</code>:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">copyBufferToImage</span><span class="hljs-params">(VkBuffer buffer, VkImage image, <span class="hljs-keyword">uint32_t</span> width, <span class="hljs-keyword">uint32_t</span> height)</span> </span>{
+    <span class="hljs-type">VkCommandBuffer</span> commandBuffer = beginSingleTimeCommands();
+
+    endSingleTimeCommands(commandBuffer);
+}
+</code></pre>
+<p>Just like with buffer copies, you need to specify which part of the buffer is
+going to be copied to which part of the image. This happens through
+<a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkBufferImageCopy.html"><code>VkBufferImageCopy</code></a> structs:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkBufferImageCopy</span> region{};
+region.bufferOffset = <span class="hljs-number">0</span>;
+region.bufferRowLength = <span class="hljs-number">0</span>;
+region.bufferImageHeight = <span class="hljs-number">0</span>;
+
+region.imageSubresource.aspectMask = <span class="hljs-literal">VK_IMAGE_ASPECT_COLOR_BIT</span>;
+region.imageSubresource.mipLevel = <span class="hljs-number">0</span>;
+region.imageSubresource.baseArrayLayer = <span class="hljs-number">0</span>;
+region.imageSubresource.layerCount = <span class="hljs-number">1</span>;
+
+region.imageOffset = {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+region.imageExtent = {
+    width,
+    height,
+    <span class="hljs-number">1</span>
+};
+</code></pre>
+<p>Most of these fields are self-explanatory. The <code>bufferOffset</code> specifies the byte
+offset in the buffer at which the pixel values start. The <code>bufferRowLength</code> and
+<code>bufferImageHeight</code> fields specify how the pixels are laid out in memory. For
+example, you could have some padding bytes between rows of the image. Specifying
+<code>0</code> for both indicates that the pixels are simply tightly packed like they are
+in our case. The <code>imageSubresource</code>, <code>imageOffset</code> and <code>imageExtent</code> fields
+indicate to which part of the image we want to copy the pixels.</p>
+<p>Buffer to image copy operations are enqueued using the <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCmdCopyBufferToImage.html"><code>vkCmdCopyBufferToImage</code></a>
+function:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function">vkCmdCopyBufferToImage</span>(
+    commandBuffer,
+    buffer,
+    image,
+    <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span>,
+    <span class="hljs-number">1</span>,
+    &amp;region
+);
+</code></pre>
+<p>The fourth parameter indicates which layout the image is currently using. I'm
+assuming here that the image has already been transitioned to the layout that is
+optimal for copying pixels to. Right now we're only copying one chunk of pixels
+to the whole image, but it's possible to specify an array of <a href="https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkBufferImageCopy.html"><code>VkBufferImageCopy</code></a>
+to perform many different copies from this buffer to the image in one operation.</p>
+<h2 id="page_Preparing-the-texture-image">Preparing the texture image</h2>
+<p>We now have all of the tools we need to finish setting up the texture image, so
+we're going back to the <code>createTextureImage</code> function. The last thing we did
+there was creating the texture image. The next step is to copy the staging
+buffer to the texture image. This involves two steps:</p>
+<ul>
+<li>Transition the texture image to <code>VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</code>
+</li>
+<li>Execute the buffer to image copy operation</li>
+</ul>
+<p>This is easy to do with the functions we just created:</p>
+<pre><code class="language-c++ hljs cpp">transitionImageLayout(textureImage, <span class="hljs-literal">VK_FORMAT_R8G8B8A8_SRGB</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_UNDEFINED</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span>);
+copyBufferToImage(stagingBuffer, textureImage, <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(texWidth), <span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">uint32_t</span>&gt;(texHeight));
+</code></pre>
+<p>The image was created with the <code>VK_IMAGE_LAYOUT_UNDEFINED</code> layout, so that one
+should be specified as old layout when transitioning <code>textureImage</code>. Remember
+that we can do this because we don't care about its contents before performing
+the copy operation.</p>
+<p>To be able to start sampling from the texture image in the shader, we need one
+last transition to prepare it for shader access:</p>
+<pre><code class="language-c++ hljs cpp">transitionImageLayout(textureImage, <span class="hljs-literal">VK_FORMAT_R8G8B8A8_SRGB</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL</span>);
+</code></pre>
+<h2 id="page_Transition-barrier-masks">Transition barrier masks</h2>
+<p>If you run your application with validation layers enabled now, then you'll see that
+it complains about the access masks and pipeline stages in
+<code>transitionImageLayout</code> being invalid. We still need to set those based on the
+layouts in the transition.</p>
+<p>There are two transitions we need to handle:</p>
+<ul>
+<li>Undefined → transfer destination: transfer writes that don't need to wait on
+anything</li>
+<li>Transfer destination → shader reading: shader reads should wait on transfer
+writes, specifically the shader reads in the fragment shader, because that's
+where we're going to use the texture</li>
+</ul>
+<p>These rules are specified using the following access masks and pipeline stages:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-type">VkPipelineStageFlags</span> sourceStage;
+<span class="hljs-type">VkPipelineStageFlags</span> destinationStage;
+
+<span class="hljs-keyword">if</span> (oldLayout == <span class="hljs-literal">VK_IMAGE_LAYOUT_UNDEFINED</span> &amp;&amp; newLayout == <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span>) {
+    barrier.srcAccessMask = <span class="hljs-number">0</span>;
+    barrier.dstAccessMask = <span class="hljs-literal">VK_ACCESS_TRANSFER_WRITE_BIT</span>;
+
+    sourceStage = <span class="hljs-literal">VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT</span>;
+    destinationStage = <span class="hljs-literal">VK_PIPELINE_STAGE_TRANSFER_BIT</span>;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (oldLayout == <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span> &amp;&amp; newLayout == <span class="hljs-literal">VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL</span>) {
+    barrier.srcAccessMask = <span class="hljs-literal">VK_ACCESS_TRANSFER_WRITE_BIT</span>;
+    barrier.dstAccessMask = <span class="hljs-literal">VK_ACCESS_SHADER_READ_BIT</span>;
+
+    sourceStage = <span class="hljs-literal">VK_PIPELINE_STAGE_TRANSFER_BIT</span>;
+    destinationStage = <span class="hljs-literal">VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT</span>;
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::invalid_argument(<span class="hljs-string">"unsupported layout transition!"</span>);
+}
+
+<span class="hljs-function">vkCmdPipelineBarrier</span>(
+    commandBuffer,
+    sourceStage, destinationStage,
+    <span class="hljs-number">0</span>,
+    <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>,
+    <span class="hljs-number">0</span>, <span class="hljs-literal">nullptr</span>,
+    <span class="hljs-number">1</span>, &amp;barrier
+);
+</code></pre>
+<p>As you can see in the aforementioned table, transfer writes must occur in the
+pipeline transfer stage. Since the writes don't have to wait on anything, you
+may specify an empty access mask and the earliest possible pipeline stage
+<code>VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT</code> for the pre-barrier operations. It should be
+noted that <code>VK_PIPELINE_STAGE_TRANSFER_BIT</code> is not a <em>real</em> stage within the
+graphics and compute pipelines. It is more of a pseudo-stage where transfers
+happen. See <a href="https://www.khronos.org/registry/vulkan/specs/1.1-extensions/man/html/VkPipelineStageFlagBits.html" class="Link--external">the documentation</a>
+for more information and other examples of pseudo-stages.</p>
+<p>The image will be written in the same pipeline stage and subsequently read by
+the fragment shader, which is why we specify shader reading access in the
+fragment shader pipeline stage.</p>
+<p>If we need to do more transitions in the future, then we'll extend the function.
+The application should now run successfully, although there are of course no
+visual changes yet.</p>
+<p>One thing to note is that command buffer submission results in implicit
+<code>VK_ACCESS_HOST_WRITE_BIT</code> synchronization at the beginning. Since the
+<code>transitionImageLayout</code> function executes a command buffer with only a single
+command, you could use this implicit synchronization and set <code>srcAccessMask</code> to
+<code>0</code> if you ever needed a <code>VK_ACCESS_HOST_WRITE_BIT</code> dependency in a layout
+transition. It's up to you if you want to be explicit about it or not, but I'm
+personally not a fan of relying on these OpenGL-like "hidden" operations.</p>
+<p>There is actually a special type of image layout that supports all operations,
+<code>VK_IMAGE_LAYOUT_GENERAL</code>. The problem with it, of course, is that it doesn't
+necessarily offer the best performance for any operation. It is required for
+some special cases, like using an image as both input and output, or for reading
+an image after it has left the preinitialized layout.</p>
+<p>All of the helper functions that submit commands so far have been set up to
+execute synchronously by waiting for the queue to become idle. For practical
+applications it is recommended to combine these operations in a single command
+buffer and execute them asynchronously for higher throughput, especially the
+transitions and copy in the <code>createTextureImage</code> function. Try to experiment
+with this by creating a <code>setupCommandBuffer</code> that the helper functions record
+commands into, and add a <code>flushSetupCommands</code> to execute the commands that have
+been recorded so far. It's best to do this after the texture mapping works to
+check if the texture resources are still set up correctly.</p>
+<h2 id="page_Cleanup">Cleanup</h2>
+<p>Finish the <code>createTextureImage</code> function by cleaning up the staging buffer and
+its memory at the end:</p>
+<pre><code class="language-c++ hljs cpp">    transitionImageLayout(textureImage, <span class="hljs-literal">VK_FORMAT_R8G8B8A8_SRGB</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL</span>, <span class="hljs-literal">VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL</span>);
+
+    <span class="hljs-function">vkDestroyBuffer</span>(device, stagingBuffer, <span class="hljs-literal">nullptr</span>);
+    <span class="hljs-function">vkFreeMemory</span>(device, stagingBufferMemory, <span class="hljs-literal">nullptr</span>);
+}
+</code></pre>
+<p>The main texture image is used until the end of the program:</p>
+<pre><code class="language-c++ hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">cleanup</span><span class="hljs-params">()</span> </span>{
+    cleanupSwapChain();
+
+    <span class="hljs-function">vkDestroyImage</span>(device, textureImage, <span class="hljs-literal">nullptr</span>);
+    <span class="hljs-function">vkFreeMemory</span>(device, textureImageMemory, <span class="hljs-literal">nullptr</span>);
+
+    ...
+}
+</code></pre>
+<p>The image now contains the texture, but we still need a way to access it from
+the graphics pipeline. We'll work on that in the next chapter.</p>
+<p><a href="https://vulkan-tutorial.com/code/23_texture_image.cpp">C++ code</a> /
+<a href="https://vulkan-tutorial.com/code/21_shader_ubo.vert">Vertex shader</a> /
+<a href="https://vulkan-tutorial.com/code/21_shader_ubo.frag">Fragment shader</a></p>
+
+        <nav>
+        <ul class="pager">
+            <li><a href="https://vulkan-tutorial.com/en/Uniform_buffers/Descriptor_pool_and_sets">Previous</a></li>            <li><a href="https://vulkan-tutorial.com/en/Texture_mapping/Image_view_and_sampler">Next</a></li>        </ul>
+    </nav>
+    
+        <div id="waldo-tag-4314" class="waldo-display-unit" style="min-width: 970px; min-height: 250px;" data-processed="true" data-google-query-id="CP2t2oLbrvICFVZGHgId6dYH9g"><div id="google_ads_iframe_/124067137/vulkan-tutorial728x90FS_1_0__container__" style="border: 0pt none; display: inline-block; width: 728px; height: 90px;"><iframe style="border: 0px none; vertical-align: bottom;" src="Images%20-%20Vulkan%20Tutorial_tiedostot/container_003.html" id="google_ads_iframe_/124067137/vulkan-tutorial728x90FS_1_0" title="3rd party ad content" name="" scrolling="no" marginwidth="0" marginheight="0" data-is-safeframe="true" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" data-google-container-id="b" data-load-complete="true" width="728" height="90" frameborder="0"></iframe></div></div>
+
+    <div id="disqus_recommendations" style="margin-bottom: 12px;"><iframe id="dsq-app8936" name="dsq-app8936" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 100% !important; border: medium none !important; overflow: hidden !important; height: 240px !important; display: inline !important; box-sizing: border-box !important;" src="Images%20-%20Vulkan%20Tutorial_tiedostot/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div><div id="disqus_thread"><iframe id="dsq-app6134" name="dsq-app6134" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 8881px !important;" src="Images%20-%20Vulkan%20Tutorial_tiedostot/a_002.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+    <script>
+    if (document.location.host) {
+        var disqus_config = function() {
+            var path = '/Texture_mapping/Images';
+            this.page.identifier = path;
+        };
+
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.src = '//vulkan-tutorial.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    }
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </article>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <!-- jQuery -->
+    <script src="Images%20-%20Vulkan%20Tutorial_tiedostot/jquery-1.js"></script>
+
+    <!-- hightlight.js -->
+    <script src="Images%20-%20Vulkan%20Tutorial_tiedostot/highlight.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- JS -->
+    
+    <script src="Images%20-%20Vulkan%20Tutorial_tiedostot/daux.js"></script><iframe src="Images%20-%20Vulkan%20Tutorial_tiedostot/container_003.html" style="visibility: hidden; display: none;"></iframe>
+
+    
+
+
+<iframe src="Images%20-%20Vulkan%20Tutorial_tiedostot/sync.html" style="display: none; visibility: hidden;"></iframe><iframe style="display: none;"></iframe><iframe style="display: none;"></iframe><iframe style="display: none;" name="__tcfapiLocator"></iframe><iframe id="google_osd_static_frame_1379001509080" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe><iframe src="Images%20-%20Vulkan%20Tutorial_tiedostot/aframe.html" style="display: none;" width="0" height="0"></iframe></body><iframe sandbox="allow-scripts allow-same-origin" id="384487fb6e3016e" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="Images%20-%20Vulkan%20Tutorial_tiedostot/pixel_002.png" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="39f27177927c349" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="Images%20-%20Vulkan%20Tutorial_tiedostot/async_usersync.html" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="405572d5f7e02388" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="https://match.adsrvr.org/track/cmf/generic?ttd_pid=gumgum&amp;ttd_tpi=1&amp;gdpr=1&amp;gdpr_consent=CPK46vjPK46vjAKAhAENBnCsAP_AAH_AABpYILtf_X__bX9j-_59f_t0eY1P9_r_v-Qzjhfdt-8F2L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzPsak2Mr6NKJ7LEmnMZO2dYGHtPn91TuZKY7_78__fz3z-v_t___9f3r-3_3__5_X---_e_V399zLv9____39nN___9uCCYBJhqX0AXYljgybRpVCiBGFYSHQCgAooBhaJrABgcFOysAj1BCwAQmoCMCIEGIKMWAQACAQBIREBIAWCARAEQCAAEAKkBCAAiYBBYAWBgEAAoBoWIEUAQgSEGRwVHKYEBEi0UE9lYAlF3saYQhllgBQKP6KjARKEECwMhIWDmOAJAS4AA.YAAAAAAAAAAA" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="411b65a476f0c94" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="Images%20-%20Vulkan%20Tutorial_tiedostot/apacdex.html" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="42e246c04a7cb05" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="https://ssc-cms.33across.com/ps/?m=xch&amp;rt=html&amp;ru=deb&amp;id=dVQ06ADzGr6yooaKlId8sQ&amp;gdpr_consent=CPK46vjPK46vjAKAhAENBnCsAP_AAH_AABpYILtf_X__bX9j-_59f_t0eY1P9_r_v-Qzjhfdt-8F2L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzPsak2Mr6NKJ7LEmnMZO2dYGHtPn91TuZKY7_78__fz3z-v_t___9f3r-3_3__5_X---_e_V399zLv9____39nN___9uCCYBJhqX0AXYljgybRpVCiBGFYSHQCgAooBhaJrABgcFOysAj1BCwAQmoCMCIEGIKMWAQACAQBIREBIAWCARAEQCAAEAKkBCAAiYBBYAWBgEAAoBoWIEUAQgSEGRwVHKYEBEi0UE9lYAlF3saYQhllgBQKP6KjARKEECwMhIWDmOAJAS4AA.YAAAAAAAAAAA&amp;us_privacy=1---&amp;gdpr=1" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="4312f521a206aaf8" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="https://ap.lijit.com/beacon?gdpr_consent=CPK46vjPK46vjAKAhAENBnCsAP_AAH_AABpYILtf_X__bX9j-_59f_t0eY1P9_r_v-Qzjhfdt-8F2L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzPsak2Mr6NKJ7LEmnMZO2dYGHtPn91TuZKY7_78__fz3z-v_t___9f3r-3_3__5_X---_e_V399zLv9____39nN___9uCCYBJhqX0AXYljgybRpVCiBGFYSHQCgAooBhaJrABgcFOysAj1BCwAQmoCMCIEGIKMWAQACAQBIREBIAWCARAEQCAAEAKkBCAAiYBBYAWBgEAAoBoWIEUAQgSEGRwVHKYEBEi0UE9lYAlF3saYQhllgBQKP6KjARKEECwMhIWDmOAJAS4AA.YAAAAAAAAAAA&amp;us_privacy=1---&amp;informer=12352498" width="0" height="0" frameborder="0">
+    </iframe><iframe sandbox="allow-scripts allow-same-origin" id="44123deeb09feb1" allowtransparency="true" marginheight="0" marginwidth="0" hspace="0" vspace="0" style="height:0px;width:0px;display:none;" scrolling="no" src="https://sync.mathtag.com/sync/img?mt_exid=71&amp;gdpr=1&amp;gdpr_consent=CPK46vjPK46vjAKAhAENBnCsAP_AAH_AABpYILtf_X__bX9j-_59f_t0eY1P9_r_v-Qzjhfdt-8F2L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzPsak2Mr6NKJ7LEmnMZO2dYGHtPn91TuZKY7_78__fz3z-v_t___9f3r-3_3__5_X---_e_V399zLv9____39nN___9uCCYBJhqX0AXYljgybRpVCiBGFYSHQCgAooBhaJrABgcFOysAj1BCwAQmoCMCIEGIKMWAQACAQBIREBIAWCARAEQCAAEAKkBCAAiYBBYAWBgEAAoBoWIEUAQgSEGRwVHKYEBEi0UE9lYAlF3saYQhllgBQKP6KjARKEECwMhIWDmOAJAS4AA.YAAAAAAAAAAA&amp;redir=https%3a%2f%2frtb.gumgum.com%2fusersync%3fb%3dmmh%26i%3d%5bMM_UUID%5d" width="0" height="0" frameborder="0">
+    </iframe></html>

@@ -1,0 +1,25 @@
+struct VertexIn
+{
+    float4 position : POSITION;
+    float4 color    : COLOR0;
+    float2 texcoord : TEXCOORD0;
+    float3 normal   : NORMAL;
+};
+
+struct Vertex
+{
+    float4 position : HPOS;
+    float4 color    : COLOR0;
+    float2 texcoord : TEXCOORD0;
+    float3 normal   : TEXCOORD1;
+};
+
+void main( VertexIn In,
+           out Vertex Out,
+           uniform float4x4 modelViewProj : state.matrix.mvp )
+{
+    Out.position = mul( modelViewProj, In.position );
+    Out.color    = In.color;
+    Out.texcoord = In.texcoord;
+    Out.normal   = In.normal;
+}

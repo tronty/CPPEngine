@@ -1,0 +1,37 @@
+particlesystem "Explosion" 1.00 {
+  position = XYZ(0,0,0)
+  eventsequence "Flaming Debris" {
+    sourceblendmode = D3DBLEND_ONE
+    destblendmode = D3DBLEND_ONE
+    loops = 1
+    numparticles = 50
+    gravity = XYZ(0,0,0)
+    emitrate = 1000
+    emitradius = XYZ(random(-1,1),random(-1,1),random(-1,1))
+    lifetime = random(1,4)
+    texture = "Ch20p3_FlamingDebris.png"
+    initial size = random(0.1,1)
+    initial color = rgba(1,1,1,1)
+    fade so at 0.5 color = rgba(1,1,0,1)
+    fade so at 1 color = rgba(1,0,0,1)
+    fade so final color = rgba(0,0,0,1)
+    initial velocity = XYZ(random(-10,10),random(-10,10),random(-10,10))
+  }
+
+  eventsequence "Spaceship Debris" {
+    sourceblendmode = D3DBLEND_SRCALPHA
+    destblendmode = D3DBLEND_DESTALPHA
+    loops = 1
+    numparticles = 20
+    gravity = XYZ(0,0,0)
+    emitrate = 1000
+    emitradius = XYZ(random(-1,1),random(-1,1),random(-1,1))
+    lifetime = 1
+    texture = "Ch20p3_FlamingDebris.png"
+    initial size = random(0.1,2)
+
+    initial color = rgba(0,1,0,1)
+    fade so final color = rgba(0,0,0,1)
+    initial velocity = XYZ(random(-24,24),random(-24,24),random(-24,24))
+  }
+}

@@ -1,0 +1,1272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="AsciiDoc 8.6.9">
+<title>Nvidia On Linux</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #f0f0f0;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #cecece;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #666666;
+  background: #d8d8d8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #777777;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+/*
+ * Theme specific overrides of the preceding (asciidoc.css) CSS.
+ *
+ */
+body {
+  font-family: Garamond, Georgia, serif;
+  font-size: 16px;
+  color: #3E4349;
+  line-height: 1.3em;
+}
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Garmond, Georgia, serif;
+  font-weight: normal;
+  border-bottom-width: 2px;
+  color: #3E4349;
+}
+div.title, caption.title { color: #596673; font-weight: bold; }
+h1 { font-size: 240%; }
+h2 { font-size: 180%; }
+h3 { font-size: 150%; }
+h4 { font-size: 130%; }
+h5 { font-size: 115%; }
+h6 { font-size: 100%; }
+#header h1 { margin-top: 0; }
+#toc {
+  color: #444444;
+  line-height: 1.5;
+  padding-top: 1.5em;
+}
+#toctitle {
+  font-size: 20px;
+}
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #444444 !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #6D4100;
+    color: #6D4100 !important;
+    text-decoration: none !important;
+}
+div.toclevel1 { margin-top: 0.2em; font-size: 16px; }
+div.toclevel2 { margin-top: 0.15em; font-size: 14px; }
+em, dt, td.hdlist1 { color: black; }
+strong { color: #3E4349; }
+a { color: #004B6B; text-decoration: none; border-bottom: 1px dotted #004B6B; }
+a:visited { color: #615FA0; border-bottom: 1px dotted #615FA0; }
+a:hover { color: #6D4100; border-bottom: 1px solid #6D4100; }
+div.tableblock > table, table.tableblock { border: 3px solid #E8E8E8; }
+th.tableblock, td.tableblock { border: 1px solid #E8E8E8; }
+ul > li > * { color: #3E4349; }
+pre, tt, .monospaced { font-family: Consolas,Menlo,'Deja Vu Sans Mono','Bitstream Vera Sans Mono',monospace; }
+tt, .monospaced { font-size: 0.9em; color: black;
+}
+
+div.exampleblock > div.content, div.sidebarblock > div.content, div.listingblock > div.content {
+    border-width: 0 0 0 3px;
+    /*border-color: #E8E8E8;*/
+    }
+
+div.verseblock { border-left-width: 0; margin-left: 3em; }
+div.quoteblock { border-left-width: 3px; margin-left: 0; margin-right: 0;}
+div.admonitionblock td.content { border-left: 3px solid #E8E8E8; }
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Nvidia On Linux</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="#nv">Graphics Drivers</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#cuda">CUDA And GPU Programming</a>
+</p>
+</li>
+<li>
+<p>
+<a href="#ml">Machine Learning And Jetson</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nv">Graphics Drivers</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>nVidia is the best and worst graphics card for Linux. It is the worst
+because it is fraught with proprietary <a href="http://goo.gl/9pWmj">nonsense</a>
+and it is the best, well, because it works pretty well.</p></div>
+<div class="paragraph"><p>If you need a system where you can audit all the source code, nVidia
+hardware may not be an option. But if you just need some simple Linux
+workstations for 3d graphics, it might be the simplest option.</p></div>
+<div class="paragraph"><p>I find that using nVidia’s automagical installer/driver just works.
+Usually.</p></div>
+<div class="paragraph"><p>I have separate notes for <a href="http://xed.ch/h/cuda">CUDA</a>.</p></div>
+<div class="paragraph"><p>Also for CentOS specific package technology involving Nvidia drivers
+see <a href="http://xed.ch/h/centos#nv">my CentOS notes</a>.</p></div>
+<div class="sect2">
+<h3 id="_drivers">Drivers</h3>
+<div class="paragraph"><p>At the current time (late 2012) the Linux drivers live
+<a href="http://www.nvidia.com/object/unix.html">here</a>. Note that "Linux
+x86/IA32" is for 32 bit systems. (Check yours with something like
+<code>file /sbin/init</code>). These days, you probably want "Linux
+x86_64/AMD64/EM64T".</p></div>
+<div class="paragraph"><p>What version are you currently using? Check with this.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>cat /proc/driver/nvidia/version</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_installing_and_updates">Installing and Updates</h3>
+<div class="paragraph"><p>It turns out that GPU drivers are deeply in touch with the kernel.
+The driver itself is a kernel module. This module must match the
+kernel and must be built to fit. The nVidia installer automagically
+takes care of all this (assuming you have a build environment with a
+complier, etc).</p></div>
+<div class="paragraph"><p>The problem is that whenever you update your machine and there is a
+kernel update (which is about every two weeks in my experience), the
+graphics will stop working. You must reboot into the new kernel (you
+can’t fix it right after doing the update while running the previous
+kernel). Then you’ll be in some no-mans-land text console with no
+prompt (CentOS6). Use "Alt-F2" to go to a console with a <code>getty</code> login
+prompt. Log in and re install the nVidia driver. This also is the
+process after you first install CentOS.</p></div>
+<div class="paragraph"><p>I find that I do this so often that I have a tiny script to make it
+automatic so I don’t have to answer questions and generally hold its
+hand. My little script looks like:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/bin/bash</span></span>
+sh /pro/nvidia/current -a -q -X --ui<span style="color: #990000">=</span>none -f -n</tt></pre></div></div>
+<div class="paragraph"><p>For the Debian style distributions this works.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.7
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">#!/bin/bash</span></span>
+
+echo <span style="color: #FF0000">"Shutting down X server..."</span>
+sudo service lightdm stop
+
+echo <span style="color: #FF0000">"Running NVIDIA kernel module installer..."</span>
+sudo sh <span style="color: #990000">~</span>/src/NVIDIA-Linux-x86_64-<span style="color: #993399">304.117</span><span style="color: #990000">.</span>run -a -q -X --ui<span style="color: #990000">=</span>none -f -n</tt></pre></div></div>
+<div class="paragraph"><p>And that lives in a directory with an assortment of drivers where
+<code>current</code> is a link to the one I need most often:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>:-&gt;[host][~]$ ls /usr/local/nvidia/
+NVIDIA-Linux-x86-304.64.run             NVIDIA-Linux-x86_64-304.64.run
+NVIDIA-Linux-x86_64-173.14.22-pkg2.run  current
+NVIDIA-Linux-x86_64-190.53-pkg2.run     nvfix
+NVIDIA-Linux-x86_64-195.36.15-pkg2.run</code></pre>
+</div></div>
+<div class="sect3">
+<h4 id="_update_process">Update Process</h4>
+<div class="paragraph"><p>When I update I usually do it remotely. I log in and do <code>sudo yum -y
+update</code>. Then if a new kernel has been installed, I do <code>sudo reboot</code>.
+Then wait a couple of minutes (<code>sleep 111</code>). And then log in again.
+This time everything seems fine and is updated, but the users sitting
+at the workstation will find a confusing text screen with no prompt.
+This is because graphics are actually dead. This is when you need to
+run the <code>nvfix</code> script shown above, that’s <code>sudo
+/usr/local/nvidia/nvfix</code> of course since it must be run as root. Then
+you must <code>sudo reboot</code> again. At that point everything should be cool.
+It’s a good idea to wait and log back in when it comes up. I’ve had
+machines mysteriously not wake up after the reboot.</p></div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_elrepo">ElRepo</h3>
+<div class="paragraph"><p>It might be smarter these days to try to use prepackaged proprietary
+drivers from the ElRepo repository.</p></div>
+<div class="paragraph"><p><a href="https://elrepo.org/tiki/kmod-nvidia">https://elrepo.org/tiki/kmod-nvidia</a></p></div>
+<div class="paragraph"><p>One problem I had after upgrading from 7.x to 7.4 is that although the
+modules seem inserted and everything seems fine, no graphics happen.
+<a href="https://devtalk.nvidia.com/default/topic/1021871/304-135-fails-to-build-load-on-rhel-7-4-kernel-3-10-0-693/">This</a>
+talks about it and has some good general troubleshooting tips. It
+seems that lightdm wasn’t starting or staying started. But doing
+<code>systemctl start lightdm</code> seems to have started it and <code>system enable
+lightdm</code> seems to have cured it.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_nouveau_issues">Nouveau Issues</h3>
+<div class="paragraph"><p>In CentOS 6 and later the default thing to do on installation is to
+use the new open source <a href="http://nouveau.freedesktop.org/wiki/">Nouveau
+drivers</a>. That’s nice and I’m glad that someone’s working on a
+wholesome alternative. But the problem is that these drivers
+under-perform, by a factor of 2 in my tests. Test it yourself before
+committing.</p></div>
+<div class="paragraph"><p>Now the really gruesome bit is that you can’t easily install the
+proprietary drivers while the Nouveau ones are in. Maybe nVidia will
+fix their installer to be less stupid but for now it’s quite a chore
+to extricate the Nouveau driver. The best plan is to often reinstall
+CentOS and make sure you select the reduced graphics mode. I forget
+what it’s called, but it doesn’t just affect the installation
+graphics, it affects what drivers are installed. With the low quality
+(or whatever it’s called) mode, the normal non-accelerated X drivers
+are installed and those <em>can</em> be replaced by the nVidia installer.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_legacy">Legacy</h3>
+<div class="paragraph"><p>Sometimes you’ll have an older machine:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>:-&gt;[ws9-ablab.ucsd.edu][~]$ lspci | grep -i [n]vi
+01:00.0 VGA compatible controller: NVIDIA Corporation NV43
+[GeForce 6600 GT] (rev a2)</code></pre>
+</div></div>
+<div class="paragraph"><p>And running the normal installer fails with some kind of message about
+legacy drivers. On the machine above I had to run
+<code>NVIDIA-Linux-x86_64-304.64.run</code> and then it worked. This version was
+found on the driver page above and called <code>Latest Legacy GPU version
+(304.xx series)</code>.  There are other legacy series like 71.86.xx,
+96.43.xx, and 173.14.xx. Use what the installers suggest.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_manual_tweaking_with_xrandr">Manual Tweaking With xrandr</h3>
+<div class="paragraph"><p>I had two vertical 1080x1920 monitors and the "Display" program in
+Mate was just garbling them. Here’s what I did to sort that out.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>xrandr --fb 2160x1920   \
+       --output HDMI-1  \
+       --auto \
+       --pos 0x0 \
+       --output DVI-I-1 \
+       --auto \
+       --pos 1080x0</code></pre>
+</div></div>
+<div class="paragraph"><p>Or more recently with a different card…</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>xrandr --fb 2160x1920 \
+    --output HDMI-0 --auto --rotate left --pos 0x0 \
+    --output DVI-D-0 --auto --rotate right --pos 1080x0</code></pre>
+</div></div>
+<div class="paragraph"><p>Here’s another example of my 3 vertical HP monitor setup which each
+have the slightly unusual resolution of 1920x1200.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>xrandr --fb 3600x1920 \
+       --output VGA-0   --auto --pos 0x0 \
+       --output DVI-D-0 --auto --pos 1200x0 \
+       --output HDMI-0  --auto --pos 2400x0</code></pre>
+</div></div>
+<div class="paragraph"><p>Also note these, which I did not need, if required for emphasis.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>--rotate left
+--output A --left-of B</code></pre>
+</div></div>
+<div class="paragraph"><p>In CentOS 7’s Mate I’m finding that the
+<code>System-&gt;Preference-&gt;Hardware-&gt;Displays</code> tool just can’t put my vertical
+monitors together properly. What works is to close that, use an
+<code>xrandr</code> command as shown above. Then go back to the Displays GUI tool
+when everything is correct. Then it will come up detected correctly
+and this is when you want to click "Apply" and then "Apply
+system-wide". I don’t know what that writes but it once it’s written,
+things work as they should. Well, not the display manager of course,
+but who cares about that?</p></div>
+</div>
+<div class="sect2">
+<h3 id="_dummy">Dummy</h3>
+<div class="paragraph"><p>From the <a href="https://www.xpra.org/trac/wiki/Xdummy">xpra Xdummy
+documentation</a>.
+"Proprietary drivers often install their own copy of libGL which
+conflicts with the use of software GL rendering. You cannot use this
+GL library to render directly on Xdummy (or Xvfb)."</p></div>
+<div class="paragraph"><p>This is why you might have trouble using non-interactive rendering
+tools.</p></div>
+<div class="paragraph"><p>Here is one way Andrey got this problem solved. First he grabbed a
+libGL.so.1 from a Mesa system (no nvidia drivers). That can be stored
+locally with no privileges.</p></div>
+<div class="paragraph"><p>Then run the application with something like this.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>LD_PRELOAD=/home/${USER}/tmp/libGL.so.1 /usr/bin/Xvfb :96 -cc 4 -screen 0 1024x768x16</code></pre>
+</div></div>
+</div>
+<div class="sect2">
+<h3 id="_amd">AMD</h3>
+<div class="paragraph"><p>Just some quick notes on AMD/ATI drivers. AMD tries to match nVidia,
+but they’re a bit behind. However, here are some programs that might
+come in handy.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>amdcccle
+fglrxinfo
+fgl_glxgears</code></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cuda">CUDA And GPU Programming</h2>
+<div class="sectionbody">
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://developer.nvidia.com/category/zone/cuda-zone">CUDA Developer
+  Zone</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://developer.nvidia.com/cuda-toolkit">CUDA Toolkit</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://www.udacity.com/course/cs344">Udacity’s Parallel Programming</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://developer.nvidia.com/embedded/learn/tutorials">Nvidia
+  Tutorials</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_checking_gpu_action">Checking GPU Action</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I do not understand the name of this command at all but this is
+important for (1) seeing what kind of GPU your system thinks it has
+access to and (2) how hard that GPU is working right now.</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>cat /proc/driver/nvidia/version
+sudo apt-get install nvidia-smi
+nvidia-smi
+nvidia-smi -l 1 # One second refresh.</code></pre>
+</div></div>
+<div class="paragraph"><p>What processes are using your nvidia device? This can be interesting.</p></div>
+<div class="paragraph"><p>------------------------------------------------------ $ sudo fuser -v /dev/nvidia*
+USER        PID ACCESS COMMAND
+/dev/nvidia0:        root        752 F…m Xorg
+/dev/nvidiactl:      root        752 F…m Xorg
+/dev/nvidia-modeset: root        752 F…. Xorg</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Also for real time monitoring try this.
+
+    nvidia-smi pmon
+
+That stands for
+https://developer.nvidia.com/nvidia-system-management-interface[System
+Management Interface].
+
+== Compiling
+Using CUDA is pretty well behaved because it is easiest (required
+maybe) to use `nvcc` which seems to be a gcc wrapper that just
+includes all the right stuff properly.</code></pre>
+</div></div>
+<div class="paragraph"><p>nvcc -O3 -arch sm_30 -lineinfo -DDEBUG -c kernel.cu
+nvcc -O3 -arch sm_30 -lineinfo -DDEBUG -o x.naive_transpose kernel.o</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>=== Concurrency
+Can concurrently do any of the following.
+
+* Compute
+* move data from host to device
+* move data from device to host
+* 4-way concurrency would also have CPU involved
+* each thread can do basic 3-way so many more parallel concurrencies
+
+This is serial (input, compute, output).
+
+    iiiiiiccccccoooooo
+
+This is with concurrencies.
+
+    iiicccooo
+       iiicccooo
+
+Nvidia offers a fancy
+https://developer.nvidia.com/nvidia-visual-profiler[visual profiler]
+that does the visualizations quite nicely to optimize concurrency.
+
+== Organizational Structures
+* SM - Streaming Multiprocessors
+  - Scalar processors or "cores" (32 or so out of maybe 512)
+  - Shared memory
+  - L1 data cache
+  - Shared registers
+  - Special Function Units
+  - Clocks
+* blocks
+* warp
+  - executed in parallel (SIMD)
+  - contains 32 threads
+* threads
+* registers are 32bit
+* global memory is not really system wide global.
+  - coalesce loads and stores
+* shared memory
+  - the /cfs of GPUs
+  - 32 banks of 4 bytes
+  - Needs `syncthreads()`
+* banks
+  - like a doorway to provide access to threads
+  - two threads accessing one bank get serialized
+  - best to get each thread accessing their own unique bank
+* streams
+  - a queue of work
+  - ordered list of commands
+  - FIFO
+  - multiple streams have no ordering between them
+  - if not specified, goes to default stream, 0.
+  - multistream programming needs &gt;0 stream for async
+* kernel - is the callback like function that runs in the CUDA cores.
+  - `__global__ void mykernelfn(const int a, const int b){...}`
+  - `kernel&lt;&lt;&lt;blocks,threads,[smem[,stream]]&gt;&gt;&gt;();`
+
+== Examples
+.Example Performance of Transposing a Matrix</code></pre>
+</div></div>
+<div class="paragraph"><p>Using GPU 0: Tesla K80
+Matrix size is 16000
+Total memory required per matrix is 2048.000000 MB
+Total time CPU is 1.255781 sec
+Performance is 3.261715 GB/s
+Total time GPU is 0.067238 sec
+Performance is 60.918356 GB/s</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>.Same Matrix Transpose Optimizing Concurrent Memory Access</code></pre>
+</div></div>
+<div class="paragraph"><p>Using GPU 0: Tesla K80
+Matrix size is 16000
+Total memory required per matrix is 2048.000000 MB
+Total time CPU is 1.256058 sec
+Performance is 3.260996 GB/s
+Total time GPU is 0.035628 sec
+Performance is 114.964519 GB/s</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[[ml]]
+== Machine Learning And Jetson
+Nvidia is into machine learning in a big way. They have specialized
+products and dev kits.
+
+=== Resources
+* https://nvidia.com/JetsonNano[Jetson Nano]
+  - https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit[Getting
+    Started With Jetson Nano Developer Kit]
+* https://github.com/dusty-nv/jetson-inference/
+  - Hello AI World
+  - Two Days to a Demo
+
+=== Jetson Nano
+* Model P3448-0000
+* Gigabit ethernet
+* (x4) USB3.0 ports
+* 4K HDMI and DisplayPort connector (groan)
+* https://mipi.org/specifications/camera-and-imaging[MIPI CSI] (Mobile
+  Industry Processor Interface
+  https://en.wikipedia.org/wiki/Camera_Serial_Interface[Camera Serial
+  Interface]) - listed as working with Raspberry Pi Camera Module V2
+* Dedicated UART header
+* 40 pin header (GPIO, I2C, UART)
+* J48 jumper - connected means micro-usb2.0 jack operates in device
+  mode, otherwise power supply
+* J40 jumpers - power, reset, etc
+* J15 PWM fan header
+    * J18 M.2 Key E connector
+
+https://github.com/dusty-nv/jetson-inference
+
+=== Tools
+
+    sudo nvpmodel -q # Check active power mode.
+    tegrastats # Sort of a top for jetson. Includes power too.
+
+=== GPIO
+
+    echo 38 &gt; /sys/class/gpio/export # Map GPIO pin
+    echo out &gt; /sys/class/gpio/gpio38/direction # Set direction
+    echo 1 &gt; /sys/class/gpio/gpio38/value # Bit banging
+    echo 38 &gt; /sys/class/gpio/unexport  # Unmap GPIO
+    cat /sys/kernel/debug/gpio # Diagnostic
+
+=== Video
+
+Argus (libargus) = Nvidia's library
+
+12 CSI lanes.
+
+nvarguscamerasrc
+
+    nvgstcapture # Camera view application
+
+v4l2 puts video streams on /dev/video
+
+* `nvhost-msenc`
+* `nvhost-nvdec`
+* `gstinspect`</code></pre>
+</div></div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+<div id="footer-text">
+Original date: 2012-11-27 - Last updated: 2019-05-02 15:22:15 EDT
+</div>
+</div>
+
+
+</body></html>

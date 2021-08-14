@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="google-site-verification" content="XG_JsyJ9GV_OKm21mEHc1qzgcsW0VpIWweWUJIj6vnI">
+<title>zophusX - DX9 C++ Tutorial 11 - Drawing a Cube</title>
+<meta name="author" content="Ber'Zophus">
+<meta name="keywords" content="tutorial, directX9, dx9, c++, cpp, direct3D, cube, triangle strip, triangle fan, triangle list, fill mode, fillmode, necker cube">
+<meta name="description" content="Learn how to draw the most efficient, but perfectly dynamic, cube possible.">
+
+<link href="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/base.css" type="text/css" rel="stylesheet">
+<link href="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/menu.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+<div id="topHeader">
+<div class="greyBar10"></div>
+<div class="titleBox"><a href="http://zophusx.byethost11.com/main.php"><div class="titleShadow">zophusX<div class="title">zophusX</div></div></a></div><div class="subTitleBox"><h1>A Beginner's Source for all things DirectX</h1></div><div class="greyBar5"></div>
+</div>
+
+<ul class="menu"><li><a href="#">About ZophusX ▼</a><ul><li><a href="http://zophusx.byethost11.com/about.php">About This Website</a></li><li><a href="http://zophusx.byethost11.com/mail.php">E-mail Ber'Zophus</a></li></ul></li><li><a href="#">DX9 C++ Tutorials ▼</a><ul><li><a href="#"># 0-4 ►</a><ul><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=0">0: Before you Begin </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=1">1: Creating a Window </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=2">2: Initializing Direct3D </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=3">3: Colour </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=4">4: Vertices &amp; Vertex Formats </a></li></ul></li>
+<li><a href="#"># 5-9 ►</a><ul><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=5">5: Drawing a Triangle </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=6">6: Culling </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=7">7: Vertex Buffers </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=8">8: Matrices &amp; Untransformed Space </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=9">9: Toggling the View Mode </a></li></ul></li>
+<li><a href="#"># 10-14 ►</a><ul><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10">10: The Primitives </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=11">11: Drawing a Cube </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=12">12: Index Buffers </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=13">13: Texture Mapping </a></li><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=14">14: The Spinning Cube </a></li></ul></li>
+<li><a href="#"># 15 ►</a><ul><li><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=15">15: World Transformations </a></li></ul></li>
+</ul></li>
+</ul>
+
+<div id="mainBody">
+<p></p><div class="h3l"><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10">&lt;-- Tutorial #10: The Primitives</a></div><div class="h3r"><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=12">Tutorial #12: Index Buffers --&gt;</a></div><div class="clear"></div><p></p><h1>DX9 C++ Tutorial 11 - Drawing a Cube</h1>
+<div class="download"><a href="http://zophusx.byethost11.com/dx9/DX9%20Tutorial%2011%20-%20Drawing%20a%20Cube.zip">Download code for this tutorial</a></div><br>
+<a name="Cubes is the new Triangles"></a><span class="boxtitle">Cubes is the new Triangles</span><div class="box">
+<p></p><div class="floatLeft"><img alt="Tutorial 11" src="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/Tutorial11.jpg" width="300" border="0"></div>Welcome
+ to Tutorial 11, where you'll finally draw something in that new 
+fandangled Third-Dimension that's become popular these days. 
+Specifically, a cube. In full 3D and everything! Why, you'll no doubt 
+see the cube is ready to just jump right out of the screen, rip your 
+throat out and eat your family. (Note the cube you draw in this tutorial
+ cannot do that, but I bet the ability to do that is hidden somewhere in
+ Microsoft's DirectX code...)<p></p>
+<p>From the knowledge you learned in Tutorial 10, you probably are 
+saying.....drawing a cube? That's easy! Why does this need it's own 
+tutorial? Well, see, from the knowledge you learned in Tutorial 10 
+you'll probably realize there are many, many ways to draw a cube. Do you
+ use a Triangle List? Triangle Strip? Triangle Fan? Can it even be done 
+with a triangle fan? Or will you go for the gusto and draw your cube 
+with a point list?</p>
+<p>While there's no wrong answer, the only right one is Triangle Strip. 
+And even then, there's many ways to use a triangle strip that will 
+result in a cube, but be really bad ideas. (For example, did you know 
+you can draw a cube with one giant triangle strip, and you should never,
+ ever do it?</p>
+<p>That's the purpose of this tutorial. We'll discuss the ways you can 
+draw a cube, but settle on the best one that works just about 
+everywhere. But you can always find uses, even for the single-triangle 
+strip cube. But the one I focus on is the best simply because it'll work
+ anywhere and takes the least amount of space.</p>
+<div class="clear"></div></div>
+<a name="Purpose"></a><span class="boxtitle">Purpose</span><div class="box">
+<p>Today we're going to learn to draw the best cube. The one that works 
+in almost every situation, and is dynamic enough to be adapted 
+everywhere, such as textures, colours, lighting, etc. AND is the most 
+efficient.</p>
+<p>And we have one new feature to add. Remember last tutorial when we 
+added a toggle-key to change the cull-mode? Well, there's another render
+ state we can make use of to help you understand how Direct3D draws: the
+ fill-mode. There's three fill modes: full-fill, wireframe, and points. 
+Wireframe is really, really helpful (points not so much), so we'll code 
+in another key-reading option to toggle the fill mode. Let's say, oh, 
+'V' will toggle the fill mode. Because 'V' is for 'Fill Mode'. It was 
+where I went to school, where the hell did YOU go to school!?</p>
+<p>...Okay, maybe it's because we're already using F for 
+FullScreen-Windowed toggle. Maybe we're using V because shutup that's 
+why. (Actually, two reasons....it's next to C, and I tend to use 'view 
+mode' and 'fill mode' interchangeably.)</p>
+<p>Again, most of this tutorial is a discussion of concepts. After we 
+discuss the best way to draw a cube, we'll move into the few, few, few 
+lines of code it takes to do it. This will be a nice and short lecture.</p>
+</div>
+<a name="The Anatomy of a Cube"></a><span class="boxtitle">The Anatomy of a Cube</span><div class="box">
+<p></p><div class="floatLeft"><img alt="A Necker Cube" src="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/Necker%2520Cube.jpg" width="200" border="0"></div>Here's a cube in all its glory. This cube actually has a name: it's called a <b>Necker Cube</b>, after it's inventor. <a href="http://en.wikipedia.org/wiki/Necker_cube">Seriously</a>.
+ (So if you learned anything at all today...) It is clearly the most 
+famous and obvious representation of a 3D cube on 2D paper/screen.<p></p>
+<p>We'll use this drawing to the left in planning exactly how to draw 
+our cube in 3D. As you can see, the basic cube as 8 vertices. The 4 
+yellow vertices are the ones in the front, and the last 4 green ones are
+ the ones in the back. We'll refer to these when planning how to draw 
+the cube in Direct3D.</p>
+<p>So to draw our cube, we'll have to fill 6 sides. Namely, 1-2-3-4 
+(front), 5-6-7-8 (back), 1-5-3-7 (left), 6-2-8-4 (right), 1-2-5-6 (top),
+ and 7-8-3-4 (bottom). Clearly each side being a rectangle, it'll take 2
+ triangles to draw each. Hence, 12 triangles in total.</p>
+<p>So, where to start? Well, first, let's plan what primitive to use.</p>
+<div class="clear"></div><br><a name="Triangle List?"></a><span class="boxtitle">Triangle List?</span><div class="box">
+<p>Let's start with the <a class="inner" href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10#Triangle%20List">Triangle List</a>. How would we go about drawing that?</p>
+<p>Recall the triangle list just draws in order, never reusing any vertices. So drawing the cube would actually be pretty easy.</p>
+<ul><li>Front: 1-2-3, 3-2-4</li><li>Back: 6-5-8, 8-5-7</li><li>Left: 5-1-7, 7-1-3</li><li>Right: 2-6-4, 4-6-8</li><li>Top: 5-6-1, 1-6-2</li><li>Bottom: 3-4-7, 7-4-8</li></ul>
+<p>First, when you're making your cube, don't forget about culling. 
+Namely, we're dealing in 3D space now. Now that our object clearly has a
+ front and a back, we need to respect CCW culling. Namely, the sides 
+that shouldn't be drawn, because they're back-facing, should be CCW. 
+That is why the back, left, and bottom sides are all CCW triangles, and 
+the right- top, and front sides are all CW triangles. There's no reason 
+to draw the back, left, and bottom. We won't see it. Let's use the 
+Culling feature Direct3D already has in place.</p>
+<p>Now, because a triangle list just moves forward by 3 vertices each 
+time and never reuses a single vertex in the stream, that means we 
+require 24 vertices to be saved in our stream in order to draw a cube 
+with a Triangle List. Seems kinda wasteful, huh? A triangle only has 8 
+vertices total, yet we save 24 in memory. Each vertex is used 3 times 
+total.</p>
+<p>Of course, this is the best you can do with a triangle list. And the 
+worst. It's really the only way to draw a cube using a triangle list. 
+But the benefit of this is it's really easy to do, and you will be able 
+to do anything with it, like textures and lighting.</p>
+<p>But you can do better...</p>
+</div>
+<a name="Triangle Fan?"></a><span class="boxtitle">Triangle Fan?</span><div class="box">
+<p>How about <a class="inner" href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10#Triangle%20Fan">a Triangle Fan</a>? Is it even possible to draw a cube with a triangle fan?</p>
+<p>Actually, yes, it is possible. But not with only one triangle fan. 
+Recall the triangle fan pivots around a central point, moving the last 2
+ vertices forward. Here's the necker cube image again, below. Take a 
+look.</p>
+<img alt="A Necker Cube" src="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/Necker%2520Cube.jpg" width="200" border="0"><p>Let's
+ look at vertex #1. You can draw a lot of triangles off of this, but 
+remember, in the Triangle Fan, the vertices keep getting moved forward 
+(ie, 1-2-3, 1-3-4, 1-4-5, etc). Hence, careful planning is necessary. 
+But you can do all the sides that involve vertex #1 in one triangle fan.
+ Namely, 6 triangles.</p>
+<ul><li>Front: 1-2-4, 1-4-3</li><li>Left: 1-3-7, 1-7-5</li><li>Top: 1-5-6, 1-6-2</li></ul>
+<p>Neat, huh? It even culls properly. So in the end, you'd store your 
+vertices in the vertex buffer as: 1-2-4-3-7-5-6-2. But of course that's 
+all we can do with #1 being the pivot. But we can do the remaining sides
+ of the cube with the opposite vertex: #8. So in a second triangle fan, 
+you'd draw the following:</p>
+<ul><li>Back: 8-6-5, 8-5-7</li><li>Bottom: 8-7-3, 8-3-4</li><li>Right: 8-4-2, 8-2-6</li></ul>
+<p>Meaning the storage would be 8-6-5-7-3-4-2-6. This too culls 
+correctly, and would work perfectly. (And yes, there's more than one way
+ to setup your vertices in a triangle fan that culls properly; my 
+solution is not the only one.) Hence, your cube would work out fine with
+ two triangle fans. And you'd only have 16 vertices total stored in 
+memory. That's much better than the 24 from Triangle List. This is about
+ as efficient as you can get.</p>
+<p>...But this is not what we use. There's a problem with this, and it's
+ tough to define now. See, this cube would never work with Textures or 
+Lighting. In abstract for now, vertices can also store important 
+information about their orientation. It allows your texture to define 
+what side is what (ie, take the front face, what makes your picture 
+upright, or upside down? The vertices do.) The problem with the Triangle
+ Fan cube is that the vertex is spread too thin.</p>
+<p>Take vertex #1. Let's say we want to draw a texture on it. We have to
+ orient #1 to be upper-left on the front face. But what about the left 
+face? Should it really be upper-left? No, upper-right would be better. 
+Otherwise, the image on the left face is going to be inside out! If you,
+ for some reason, don't care about this orientation, then yeah, you can 
+use triangle fan to draw your cube. Likewise (take my word for it): 
+lighting is completely screwed up because of this.</p>
+<p>That's really the big downfall with this cube: you really can't 
+control orientation on them, except for 2 of the faces. The remaining 4 
+will be based on the 2 you set, and will be inside out. But otherwise, 
+if you're only doing colours and don't care about lighting, this is a 
+good cube to use.</p>
+</div>
+<a name="Triangle Strip!"></a><span class="boxtitle">Triangle Strip!</span><div class="box">
+<p>Yes, the best balance between form and function comes from <a class="inner" href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10#Triangle%20Strip">the Triangle Strip</a>, and it's what we're going to use.</p>
+<p>The solution is very simple. Just draw 6 triangle strips, one per 
+face. It's just like the Triangle List example above, only we reuse the 
+middle two each time. This saves 12 vertices. But each face can keep its
+ own orientation as we see fit. We can orient our textures however we 
+feel like. This is the best balance possible. Here's the results:</p>
+<ul><li>Front: 1-2-3, 3-2-4</li><li>Back: 6-5-8, 8-5-7</li><li>Left: 5-1-7, 7-1-3</li><li>Right: 2-6-4, 4-6-8</li><li>Top: 5-6-1, 1-6-2</li><li>Bottom: 3-4-7, 7-4-8</li></ul>
+<p>So you'll store the following 6 triangle strips: 1-2-3-4, 6-5-8-7, 
+5-1-7-3, 2-6-4-8, 5-6-1-2, 3-4-7-8. And we can orient all of them 
+properly for textures or lighting. Yet it's only 24 vertices, unlike the
+ 36 in Triangle List, and loses literally nothing.</p>
+<p>Remember, the ordering here is still very important from culling. You
+ want the front face to be shown and the back face to not be shown, 
+right? Not that my way is the only way that works, but you can test it 
+for yourself. The faces that don't face us will be culled properly. You 
+can verify this by running the program and toggling the cullmode with C
+.</p>
+<hr><div class="floatLeft"><img alt="A Necker Cube" src="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/Necker%2520Cube.jpg" width="200" border="0"></div><p>But,
+ hmm, kinda looks like you can draw a cube with nothing but one giant 
+triangle strip. Is it possible? Actually, yes, you can draw a cube in 
+one giant triangle strip, using only 14 vertices. But the same problem 
+with it will result with the Triangle Fan...only worse. You can't orient
+ textures at all, and some of the sides of your cube will have two of 
+the same orientation! (ie, the upper left and lower right each are 
+stored as "upper-left"!)</p>
+<p>For the curious, here's how: 4-3-2-1-5-3-7-4-8-2-6-5-8-7. Yeah, even 
+that will cull properly. But unless you want some funky-ass lighting 
+effects and messed up textures, don't use it. It is, however, 2 vertices
+ more efficient than the Triangle Fan above. That doesn't mean you 
+should use either, though. Really, you should use the proper Triangle 
+Strip answer I gave above.</p>
+<p>But what if you want just a bland cube with no lighting or textures? 
+Well...there's something even better than both. A way that uses only 8 
+vertices. But don't go scratching your head trying to figure it 
+out....it's not possible without a new concept we'll teach in the next 
+tutorial.</p>
+<div class="clear"></div></div>
+<p>So there you have it, the many ways to draw a cube, with one clear 
+winner. ...Well, ok, there are more ways to draw a cube than we cover 
+today...and I really don't like referring to future tutorials in such a 
+vague way, but I do not want to tell you "No, there's no more ways to 
+draw a cube", then have me turn around tomorrow and say "Nyah nyah, 
+fooled you, stupid students!". Suffice to say, I mention you're only 
+ever going to want to use the 24-vertex Triangle Strip, and the solution
+ provided tomorrow to draw your cubes. Don't ever bother with the 
+triangle list, triangle fan or 14-vertex triangle strip.</p>
+<p><em>So why did you cover those, Mr. Zophus, when they're topics I'd never need!?</em>
+ For one, to get you thinking about how to draw your objects with 
+triangles. Understand, there's never only ever one solution to your 
+drawing needs. It's not like we'll always be drawing cubes, here. There 
+are times Triangle Fans will be the winner, times Triangle Lists will be
+ the winner. And we even came up with two different ways to use Triangle
+ Strips. Get thinking about how to use all these drawing features, that 
+way you'll be able to think up the best solution for your needs in the 
+future.</p>
+<p>Now let's get onto coding. We'll start with adding that fill-mode feature.</p>
+</div>
+<a name="D3DManager"></a><span class="boxtitle">D3DManager</span><div class="box">
+<p>The style of this new method will look just like the <a class="inner" href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10#D3DManager%20-%20toggleCullMode%20Method">toggleCullMode</a> one we wrote last lecture. Same functionality: we get the current fill mode, and toggle to the next one.</p>
+<p>Add this method to your public methods in D3DManager.h:</p>
+<div class="code"><br><div class="tab">void toggleFillMode();<br></div><br></div>
+<br><a name="D3DManager - toggleFillMode Method"></a><span class="boxtitle">D3DManager - toggleFillMode Method</span><div class="box">
+<p>Here's the raw code:</p>
+<div class="code"><br><rem>// -------------------------------------------------<br>/* public toggleFillMode */<br>// This cycles through the filling modes, from Solid to Wireframe to Point.<br>// -------------------------------------------------<br></rem>void D3DManager::toggleFillMode() {<br><div class="tab"><rem>// First, get the current fill mode.<br></rem>DWORD fillMode; device-&gt;GetRenderState(D3DRS_FILLMODE, &amp;fillMode);<br><br><rem>// Cycle...<br></rem>if (fillMode == D3DFILL_SOLID) fillMode = D3DFILL_WIREFRAME;<br>else if (fillMode == D3DFILL_WIREFRAME) fillMode = D3DFILL_POINT;<br>else fillMode = D3DFILL_SOLID;<br><br><rem>// And set.<br></rem>device-&gt;SetRenderState(D3DRS_FILLMODE, fillMode);<br></div>}<br><br></div>
+<p>This doesn't need a lot of explanation does it? We're once again using <a class="msdn" href="http://msdn.microsoft.com/en-us/library/ee421726.aspx">GetRenderState</a> to get the current render state, and setting it with <a class="msdn" href="http://msdn.microsoft.com/en-us/library/ee421767.aspx">SetRenderState</a>. Only this time, the render state we're using is <code>D3DRS_FILLMODE</code> (from the <a class="msdn" href="http://msdn.microsoft.com/en-us/library/ee416531.aspx">D3DRENDERSTATETYPE</a> enumeration). Here's the three options we can set:</p>
+<ul><li><code>D3DFILL_SOLID</code> - Draws the entire object and fills it completely.</li>
+
+<li><code>D3DFILL_WIREFRAME</code> - Draws just the wireframe (that is, the edges of all your triangles) but doesn't otherwise fill it.</li>
+
+<li><code>D3DFILL_POINT</code> - Draws just the points of your vertices, nothing else.</li></ul>
+<p>Mess around with this when you're drawing your shapes. It's very 
+handy to get an idea of how the triangles go towards making those 
+complex 3D shapes.</p>
+</div>
+</div>
+<a name="KeyCodes.h"></a><span class="boxtitle">KeyCodes.h</span><div class="box">
+<p>We're going to start reading V to toggle the view mode, so that means
+ yet another keycode to add in. You know what? Let's just add all of 
+them.</p>
+<div class="code"><br>#define VK_0 0x0030<br>#define VK_1 0x0031<br>#define VK_2 0x0032<br>#define VK_3 0x0033<br>#define VK_4 0x0034<br>#define VK_5 0x0035<br>#define VK_6 0x0036<br>#define VK_7 0x0037<br>#define VK_8 0x0038<br>#define VK_9 0x0039<br><br>#define VK_A 0x0041<br>#define VK_B 0x0042<br>#define VK_C 0x0043<br>#define VK_D 0x0044<br>#define VK_E 0x0045<br>#define VK_F 0x0046<br>#define VK_G 0x0047<br>#define VK_H 0x0048<br>#define VK_I 0x0049<br>#define VK_J 0x004A<br>#define VK_K 0x004B<br>#define VK_L 0x004C<br>#define VK_M 0x004D<br>#define VK_N 0x004E<br>#define VK_O 0x004F<br>#define VK_P 0x0050<br>#define VK_Q 0x0051<br>#define VK_R 0x0052<br>#define VK_S 0x0053<br>#define VK_T 0x0054<br>#define VK_U 0x0055<br>#define VK_V 0x0056<br>#define VK_W 0x0057<br>#define VK_X 0x0058<br>#define VK_Y 0x0059<br>#define VK_Z 0x005A<br><br></div>
+<p>There. That's all the damn keys. Most of the others, like VK_ESCAPE, 
+are already defined in Microsoft's header files we've already included. 
+We shouldn't need to change this header file again in the future.</p>
+</div>
+<a name="Tutorial Mainfile"></a><span class="boxtitle">Tutorial Mainfile</span><div class="box">
+<br><a name="Tutorial - Initialization"></a><span class="boxtitle">Tutorial - Initialization</span><div class="box">
+<p>Let's start at initialization. Remember, we're drawing 6 Triangle 
+Strips, but we can, of course, just store them in one vertex buffer. 
+Hence, you can remove the <code>D3DPRIMITIVETYPE primitiveType</code> and <code>UINT primitiveCount</code> from your fields. We still need that same vertexBuffer, though.</p>
+<div class="code"><br>IDirect3DVertexBuffer9* vertexBuffer = NULL;<br><br></div>
+</div>
+<a name="Tutorial - initializeMatrices Method"></a><span class="boxtitle">Tutorial - initializeMatrices Method</span><div class="box">
+<p>Now, we don't want the same boring-old head-on view we've kept for a 
+while, right? Especially because you're not going to see much of the 
+cube if you're looking at it head-on. Let's switch the view to something
+ a little more dynamic. In your initializeMatrices method, change your 
+view vectors to the following:</p>
+<div class="code"><br><div class="tab">D3DXVECTOR3 viewVectors[3] = {<br><div class="tab">D3DXVECTOR3(2.5f, 3.5f, -3.5f),<br>D3DXVECTOR3(0.0f, 0.0f, 0.0f),<br>D3DXVECTOR3(0.0f, 1.0f, 0.0f)<br></div>};<br></div><br></div>
+<p>We're moving just the eye position, the first one. Specifically, same
+ distance back, but a little to the right and a little up. But still 
+looking at the origin, giving us a view of three sides. And you can 
+always mess around with the CullMode to see the other sides. (and prove 
+you oriented all the sides properly)</p>
+</div>
+<a name="Tutorial - initializeResources Method"></a><span class="boxtitle">Tutorial - initializeResources Method</span><div class="box">
+<p>Time to initialize our new cube. We're drawing 6 separate triangle 
+strips, but that doesn't mean we can't do it in one vertex array and one
+ vertex buffer. Hence, in your initializeResources method, the only 
+thing you have to change is your definition of the 
+UntransformedColouredVertex we've used for a long while now. It's simply
+ going up from 6 vertices in the last lecture to 24 in this one.</p>
+<div class="floatLeft"><img alt="A Necker Cube" src="zophusX%20-%20DX9%20C++%20Tutorial%2011%20-%20Drawing%20a%20Cube_tiedostot/Necker%2520Cube.jpg" width="200" border="0"></div><p>Here's
+ that picture one more time. Now it's time to think of that in terms of 
+(x, y, z) transformed space. For simplicity, let's make our cube really,
+ really big. We'll assume the center of the cube is right at the origin,
+ and each side is 2.0f long. For example, point #1 is (-1.0f, 1.0f, 
+-1.0f). That is, 1 unit left, one unit up, one unit forward. Thus, it's a
+ simple matter of following the plan we came up with for <a class="inner" href="#Triangle%20Strip%21">the triangle strip</a>.</p>
+<div class="clear"></div><br><div class="code"><br><div class="tab">UntransformedColouredVertex vertices[] = {<br><div class="tab"><rem>// Front Face (1-2-3-4)<br></rem>{ -1.0f, 1.0f, -1.0f, 0xffff0000 },<br>{ 1.0f, 1.0f, -1.0f, 0xffffafaf },<br>{ -1.0f, -1.0f, -1.0f, 0xffffafaf },<br>{ 1.0f, -1.0f, -1.0f, 0xffff0000 },<br><br><rem>// Right Face (2-6-4-8)<br></rem>{ 1.0f, 1.0f, -1.0f, 0xff00ff00 },<br>{ 1.0f, 1.0f, 1.0f, 0xffafffaf },<br>{ 1.0f, -1.0f, -1.0f, 0xffafffaf },<br>{ 1.0f, -1.0f, 1.0f, 0xff00ff00 },<br><br><rem>// Top Face (5-6-1-2)<br></rem>{ -1.0f, 1.0f, 1.0f, 0xff0000ff },<br>{ 1.0f, 1.0f, 1.0f, 0xffafafff },<br>{ -1.0f, 1.0f, -1.0f, 0xffafafff },<br>{ 1.0f, 1.0f, -1.0f, 0xff0000ff },<br><br><rem>// Back Face (6-5-8-7)<br></rem>{ 1.0f, 1.0f, 1.0f, 0xffffff00 },<br>{ -1.0f, 1.0f, 1.0f, 0xffffffaf },<br>{ 1.0f, -1.0f, 1.0f, 0xffffffaf },<br>{ -1.0f, -1.0f, 1.0f, 0xffffff00 },<br><br><rem>// Left Face (5-1-7-3)<br></rem>{ -1.0f, 1.0f, 1.0f, 0xffff00ff },<br>{ -1.0f, 1.0f, -1.0f, 0xffffafff },<br>{ -1.0f, -1.0f, 1.0f, 0xffffafff },<br>{ -1.0f, -1.0f, -1.0f, 0xffff00ff },<br><br><rem>// Bottom Face (3-4-7-8)<br></rem>{ -1.0f, -1.0f, -1.0f, 0xff00ffff },<br>{ 1.0f, -1.0f, -1.0f, 0xffafffff },<br>{ -1.0f, -1.0f, 1.0f, 0xffafffff },<br>{ 1.0f, -1.0f, 1.0f, 0xff00ffff }<br></div>};<br></div><br></div>
+<p>Make sense? Well, it's a little confusing looking at all those +1.0fs
+ and -1.0fs. I suggest you use the Triangle Strip plan along with the 
+image of the cube and come up with all these vertices yourself. It will 
+give you good practice thinking in 3D space.</p>
+</div>
+<a name="Tutorial - render Method"></a><span class="boxtitle">Tutorial - render Method</span><div class="box">
+<p>One small change to the render method to draw our 6 separate triangle strips.</p>
+<div class="code"><br><rem>// -------------------------------------------------<br>/* render */<br>// This will render the scene.<br>// -------------------------------------------------<br></rem>void render() {<br><div class="tab"><rem>// We have 6 different trianglestrips to draw with 2 triangles each in them.<br></rem>for (int i = 0; i &lt; 6; i++)<br><div class="tab">d3dManager-&gt;getDevice().DrawPrimitive(D3DPT_TRIANGLESTRIP, i * 4, 2);<br></div></div>}<br><br></div>
+<p>Remember, we have 6 triangle strips, not one. Don't just try to draw 
+all of them at once, it'll really really screw it up. It's 6 separate 
+triangle strips of 2 triangles each.</p>
+</div>
+<a name="Tutorial - messageHandler Method"></a><span class="boxtitle">Tutorial - messageHandler Method</span><div class="box">
+<p>Finally, one small change to our keyboard-catching method. Clearly, 
+you can remove all the code in Tutorial 10 that read in the #1-6 number 
+keys, as they're meaningless here. Just add in this so that we can catch
+ V and toggle the fill mode:</p>
+<div class="code"><br><div class="tab"><div class="tab"><div class="tab"><div class="tab"><rem>// *NEW* - V changes the fill mode (Points, Wireframe, or Solid)<br></rem>case VK_V:<br><div class="tab">d3dManager-&gt;toggleFillMode();<br>return 0;<br></div></div></div></div></div><br></div>
+</div>
+<p>That's it! Try using the V and C toggle keys to get a better 
+understanding of how our cube is drawn, and how Culling impacts it all.</p>
+</div>
+<p>Done and done and done. You might have come to this conclusion 
+yourself....it's not hard to draw the best cube. But hey, isn't it nice 
+to have an easy, simple, relaxing tutorial now and then?</p>
+<p>I couldn't help but teach this tutorial without referring to the next
+ one. Of course, the 16-vertex Triangle Fan and 14-vertex Triangle Strip
+ are each pretty neat, efficient solutions. But both are kinda useless 
+when it comes to textures and lighting. But what if you didn't care and 
+you just wanted to draw your damn cube as efficient as possible?</p>
+<p>Well remember how I said it's possible to draw a cube with only 8 
+vertices? Yes, somewhere in the bowels of Direct3D there is a solution 
+that you'd never otherwise find on your own. It's possible to draw a 
+cube with only 8 vertices. The magic word is Index Buffers. Read on.</p>
+<p><em>- Ber'Zophus</em></p>
+<br><div class="download"><a href="http://zophusx.byethost11.com/dx9/DX9%20Tutorial%2011%20-%20Drawing%20a%20Cube.zip">Download code for this tutorial</a></div><br>
+<div class="h3l"><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=10">&lt;-- Tutorial #10: The Primitives</a></div><div class="h3r"><a href="http://zophusx.byethost11.com/tutorial.php?lan=dx9&amp;num=12">Tutorial #12: Index Buffers --&gt;</a></div><div class="clear"></div></div>
+
+<div id="footer">
+Disclaimer: In using the materials and/or code on this website, you 
+agree to the terms specified in the Disclaimer section of the <a href="http://localhost/main.php">main page</a>.<br>
+Copyright © 2005-09 - ZophusX and Ber'Zophus<br>All Rights Reserved
+</div>
+
+
+
+</body></html>

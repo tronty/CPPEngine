@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx">
+        <title>D3DReflect function (Windows)</title>
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/windows/desktop/dd607334(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607334(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607334(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607334(d=default,l=en-us,v=vs.85).aspx">
+
+<meta name="MN" content="4B9B1F2A-6:38:21 AM">
+
+<meta name="Search.ShortId" content="dd607334">
+
+<meta name="ms.shortidmsdn" content="dd607334">
+
+<meta name="Ms.Locale" content="en-us">
+
+<meta name="ms.prodver" content="VS.85">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="EN">
+
+<meta name="ms.loc" content="US">
+
+<meta name="ms.sitever" content="2015.01.20.2">
+
+<meta name="ms.assetid" content="VS|directx_sdk|~\d3dreflect.htm">
+
+<meta name="ms.auth" content="0">
+
+
+
+
+
+
+
+
+        
+    <link rel="shortcut icon" href="https://msdn.microsoft.com/Areas/Epx/Themes/Windows/Content/Winlogo_favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="D3DReflect%20function%20%28Windows%29_tiedostot/Combined.css"><link media="print" type="text/css" rel="stylesheet" href="D3DReflect%20function%20%28Windows%29_tiedostot/PrintView.css"><meta content="windows desktop" name="ms.Center"><meta content="windows desktop: learn" name="ms.Section"><meta content="dd607334" name="ms.ShortId"><meta content="windows desktop: learn: dd607334" name="ms.TOC"></head>
+    <body class="library FF FF3">
+        <div id="page">
+            
+
+            
+            
+            
+    
+    
+
+    <div id="ux-header" class="ltr en-us">
+        <div id="headerContainer">
+            <div id="logoAndSearchBox">
+                <div id="logo">
+                    <a href="https://msdn.microsoft.com/windows/desktop" title="Windows"><img alt="Windows" src="D3DReflect%20function%20%28Windows%29_tiedostot/Windows_logo.png"></a>
+                </div>
+
+        <div id="selectedTab">
+            <a class="dropDownToggle" href="javascript:void(0);">Dev Center - Desktop</a>    
+        </div>
+    <div id="toclevel1_menu" style="display: none; left: 125px; top: 57px;">
+        <ul>
+                <li><a href="http://dev.windows.com/" title="Windows">Windows</a></li>
+                <li><a href="http://msdn.microsoft.com/windows/desktop/" title="Desktop">Desktop</a></li>
+                <li><a href="http://msdn.microsoft.com/windows/hardware/" title="Hardware">Hardware</a></li>
+                <li><a href="http://msdn.microsoft.com/ie/" title="Internet Explorer">Internet Explorer</a></li>
+        </ul>
+        <div style="clear: both"></div>
+    </div> 
+
+                
+
+    <div class="SearchBox">   
+        <form id="HeaderSearchForm" name="HeaderSearchForm" method="get" onsubmit="return Epx.Controls.SearchBox.searchBoxOnSubmit(this);">
+        <input autocomplete="off" id="HeaderSearchTextBox" name="query" maxlength="200" onfocus="Epx.Controls.SearchBox.watermarkFocus(event, this.title)" onblur="Epx.Controls.SearchBox.watermarkBlur(event, this.title)" type="text">            
+        <button title="Search" id="HeaderSearchButton" value="" type="submit" class="header-search-button"></button>
+        <div style="display: none; text-align: left; border: 1px solid buttonshadow; position: absolute; z-index: 1000; padding: 2px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: &quot;Segoe UI&quot;,&quot;Lucida Grande&quot;,Verdana,Arial,Helvetica,sans-serif; font-size: 12px;" id="SearchFlyoutContainer"><div id="SuggestionContainer"><ul style="list-style: outside none none; padding: 4px 2px 0px 1px; cursor: pointer; margin: 1px; white-space: nowrap;"></ul></div></div></form>
+         
+            
+             
+    
+    </div>
+
+                <div class="Clear"></div>
+            </div>
+            <div class="Clear"></div>
+            <div class="ux-internav"> 
+    <div class="toclevel2"> 
+            <a class="normal" href="https://sysdev.microsoft.com/en-us/desktop/" title="Dashboard">Dashboard</a>
+            <a class="normal" href="http://msdn.microsoft.com/windows/desktop/bg161546.aspx" title="Get started">Get started</a>
+            <a class="normal" href="http://msdn.microsoft.com/windows/desktop/aa511258.aspx" title="Design">Design</a>
+            <a class="active" href="http://msdn.microsoft.com/windows/desktop/aa904962.aspx" title="Develop">Develop</a>
+            <a class="normal" href="http://msdn.microsoft.com/windows/desktop/dn553326.aspx" title="Test and deploy">Test and deploy</a>
+            <a class="normal" href="http://msdn.microsoft.com/windows/desktop/jj134964.aspx" title="Certify">Certify</a>
+    </div>
+    <div class="clear"></div>
+            </div>
+            <div id="signIn">
+
+<a class="scarabLink" href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1423579101&amp;rver=6.0.5276.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-us%2flibrary%2fwindows%2fdesktop%2fdd607334%2528v%3dvs.85%2529.aspx&amp;lc=1033&amp;id=254354&amp;mkt=en-US" title="Sign in">Sign in</a></div>
+
+    
+
+        </div>
+        <div id="blackBar">            
+    <div class="toclevel3"> 
+            <a style="opacity: 1; left: 0px;" class="active" href="http://msdn.microsoft.com/en-us/library/windows/desktop/bg126469.aspx" title="Desktop technologies">Desktop technologies</a>
+            <a style="opacity: 1; left: 0px;" class="normal" href="http://msdn.microsoft.com/en-us/library/windows/desktop/bg125390.aspx" title="Server and system ">Server and system </a>
+            <a style="opacity: 1; left: 0px;" class="normal" href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh920508%28vs.85%29.aspx" title="API index">API index</a>
+            <a style="opacity: 1; left: 0px;" class="normal" href="http://code.msdn.microsoft.com/windowsdesktop/" title="Samples">Samples</a>
+            <a style="opacity: 1; left: 0px;" class="normal" href="http://msdn.microsoft.com/windows/desktop/aa904945.aspx" title="Community">Community</a>
+    </div>
+    <div class="clear"></div>
+        </div>
+    </div>
+
+
+
+            <div id="body">
+                
+
+
+
+
+
+
+
+    <div style="width: 280px; max-width: 480px; min-height: 1776px; height: 923px;" id="leftNav">
+
+
+
+<div style="width: 280px; position: fixed; top: -360px;" id="tocnav">
+
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ee663279%28v=vs.85%29.aspx" id="bg126526_VS.85_en-us" mtpsaliasid="" mtpsassetid="516c969c-9f31-4f00-ac8c-140fdded72e1_VS.85_en-us" mtpsshortid="ee663279_VS.85_en-us" title="Graphics and Gaming">Graphics and Gaming</a>            </div>
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/ee663274%28v=vs.85%29.aspx" id="bg126527_VS.85_en-us" mtpsaliasid="" mtpsassetid="23693eb7-cc8d-4757-bca7-394114d9a3c9_VS.85_en-us" mtpsshortid="ee663274_VS.85_en-us" title="DirectX Graphics and Gaming">DirectX Graphics and Gaming</a>            </div>
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh309466%28v=vs.85%29.aspx" id="bg126528_VS.85_en-us" mtpsaliasid="" mtpsassetid="193640FE-7E88-4BC4-B4CD-867169375F2B_VS.85_en-us" mtpsshortid="hh309466_VS.85_en-us" title="Direct3D">Direct3D</a>            </div>
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509561%28v=vs.85%29.aspx" id="ff471955_VS.85_en-us" mtpsaliasid="" mtpsassetid="VS|directx_sdk|~\dx_graphics_hlsl.htm_VS.85_en-us" mtpsshortid="bb509561_VS.85_en-us" title="HLSL">HLSL</a>            </div>
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb509638%28v=vs.85%29.aspx" id="ff471963_VS.85_en-us" mtpsaliasid="" mtpsassetid="VS|directx_sdk|~\dx_graphics_hlsl_reference.htm_VS.85_en-us" mtpsshortid="bb509638_VS.85_en-us" title="Reference for HLSL">Reference for HLSL</a>            </div>
+            <div style="padding-left: 0px;" class="toclevel0" data-toclevel="0">
+<a class="toc_collapsed" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607340%28v=vs.85%29.aspx" id="ff472063_VS.85_en-us" mtpsaliasid="" mtpsassetid="VS|directx_sdk|~\dx_graphics_d3dcompiler_reference.htm_VS.85_en-us" mtpsshortid="dd607340_VS.85_en-us" title="D3DCompiler Reference">D3DCompiler Reference</a>            </div>
+            <div data-childrenloaded="true" style="padding-left: 13px;" class="toclevel1" data-toclevel="1">
+<a class="toc_expanded" href="#"></a><a data-tochassubtree="true" href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607342%28v=vs.85%29.aspx" id="ff472064_VS.85_en-us" mtpsaliasid="" mtpsassetid="VS|directx_sdk|~\dx_graphics_d3dcompiler_reference_functions.htm_VS.85_en-us" mtpsshortid="dd607342_VS.85_en-us" title="Functions">Functions</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728670%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3D11Reflect">D3D11Reflect</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607324%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCompile">D3DCompile</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446869%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCompile2">D3DCompile2</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446872%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCompileFromFile">D3DCompileFromFile</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728671%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCompressShaders">D3DCompressShaders</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728672%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCreateBlob">D3DCreateBlob</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn280340%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCreateFunctionLinkingGraph">D3DCreateFunctionLinkingGraph</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn280341%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DCreateLinker">D3DCreateLinker</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728673%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DDecompressShaders">D3DDecompressShaders</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607326%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DDisassemble">D3DDisassemble</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607327%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DDisassemble10Effect">D3DDisassemble10Effect</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh706343%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DDisassemble11Trace">D3DDisassemble11Trace</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh706344%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DDisassembleRegion">D3DDisassembleRegion</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff728674%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetBlobPart">D3DGetBlobPart</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607328%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetDebugInfo">D3DGetDebugInfo</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607329%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetInputAndOutputSignatureBlob">D3DGetInputAndOutputSignatureBlob</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607330%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetInputSignatureBlob">D3DGetInputSignatureBlob</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607331%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetOutputSignatureBlob">D3DGetOutputSignatureBlob</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446875%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DGetTraceInstructionOffsets">D3DGetTraceInstructionOffsets</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn280342%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DLoadModule">D3DLoadModule</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607332%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DPreprocess">D3DPreprocess</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446877%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DReadFileToBlob">D3DReadFileToBlob</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2 current" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DReflect">D3DReflect</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn280343%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DReflectLibrary">D3DReflectLibrary</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446880%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DSetBlobPart">D3DSetBlobPart</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607335%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DStripShader">D3DStripShader</a>            </div>
+            <div style="padding-left: 26px;" class="toclevel2" data-toclevel="2">
+<span class="toc_empty"></span><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/hh446883%28v=vs.85%29.aspx" mtpsaliasid="" mtpsassetid="" mtpsshortid="" title="D3DWriteBlobToFile">D3DWriteBlobToFile</a>            </div>
+</div>
+        
+
+        
+
+        
+        
+        <div id="toc-resizable-ew" class="toc-resizable-ew"></div>
+        
+
+<a style="left: 280px; display: inline-block;" id="NavigationResize" href="javascript:void(0)">
+    <img style="" class="cl_nav_resize_open" src="D3DReflect%20function%20%28Windows%29_tiedostot/ImageSprite.png" title="Expand" alt="Expand">
+    <img style="display: none;" class="cl_nav_resize_close" src="D3DReflect%20function%20%28Windows%29_tiedostot/ImageSprite.png" title="Minimize" alt="Minimize">
+</a>
+
+
+
+    </div>
+<div style="margin-left: 280px; width: auto;" id="content" class="content">
+
+
+
+
+
+
+
+        
+
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">D3DReflect function</h1>
+  
+  <div id="mainSection">
+<div class="clsServerSDKContent">
+
+</div>
+<p>Gets a pointer to a reflection interface.</p>
+<h2>Syntax</h2>
+
+<div id="code-snippet-1" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_5c0efbf4-9c10-430d-af68-f4e693207ad0');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_5c0efbf4-9c10-430d-af68-f4e693207ad0" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>HRESULT WINAPI D3DReflect(
+  in&nbsp;&nbsp;&nbsp;LPCVOID pSrcData,
+  in&nbsp;&nbsp;&nbsp;SIZE_T SrcDataSize,
+  in&nbsp;&nbsp;&nbsp;REFIID pInterface,
+  out&nbsp;&nbsp;void **ppReflector
+);
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<h2>Parameters</h2>
+<dl>
+<dt><em>pSrcData</em> [in]</dt>
+<dd>
+<p>Type: <strong><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">LPCVOID</strong></a></strong></p>
+<p>A pointer to source data as compiled HLSL code.</p>
+</dd>
+<dt><em>SrcDataSize</em> [in]</dt>
+<dd>
+<p>Type: <strong><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx"><strong xmlns="http://www.w3.org/1999/xhtml">SIZE_T</strong></a></strong></p>
+<p>Length of <em>pSrcData</em>.</p>
+</dd>
+<dt><em>pInterface</em> [in]</dt>
+<dd>
+<p>Type: <strong>REFIID</strong></p>
+<p>The reference GUID of the COM interface to use. For example, <strong>IID_ID3D11ShaderReflection</strong>.</p>
+</dd>
+<dt><em>ppReflector</em> [out]</dt>
+<dd>
+<p>Type: <strong>void**</strong></p>
+<p>A pointer to a reflection interface.</p>
+</dd>
+</dl>
+<h2>Return value</h2>
+<p>Type: <strong><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx#HRESULT"><strong xmlns="http://www.w3.org/1999/xhtml">HRESULT</strong></a></strong></p>
+<p>Returns one of the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476174%28v=vs.85%29.aspx">Direct3D 11 return codes</a>.</p>
+<h2>Remarks</h2>
+<p>Shader code contains metadata that can be inspected using the reflection APIs.</p>
+<p>The following code illustrates retrieving a ID3D11ShaderReflection Interface from a shader.</p>
+
+<div id="code-snippet-2" class="codeSnippetContainer" xmlns="">
+    <div class="codeSnippetContainerTabs">
+        
+    </div>
+    <div class="codeSnippetContainerCodeContainer">
+        <div class="codeSnippetToolBar">
+            <div class="codeSnippetToolBarText">
+                <a name="CodeSnippetCopyLink" style="display: none;" title="Copy to clipboard." href="javascript:if%20(window.epx.codeSnippet)window.epx.codeSnippet.copyCode('CodeSnippetContainerCode_ac17e587-91e0-4c35-bc11-dd5bc493645a');">Copy</a>
+            </div>
+        </div>
+        <div id="CodeSnippetContainerCode_ac17e587-91e0-4c35-bc11-dd5bc493645a" class="codeSnippetContainerCode" dir="ltr">
+            <div style="color:Black;"><pre>
+
+pd3dDevice-&gt;CreatePixelShader( pPixelShaderBuffer-&gt;GetBufferPointer(),
+                               pPixelShaderBuffer-&gt;GetBufferSize(), g_pPSClassLinkage, &amp;g_pPixelShader );
+
+ID3D11ShaderReflection* pReflector = NULL; 
+D3DReflect( pPixelShaderBuffer-&gt;GetBufferPointer(), pPixelShaderBuffer-&gt;GetBufferSize(), 
+            IID_ID3D11ShaderReflection, (void**) &amp;pReflector);
+
+
+</pre></div>
+            
+        </div>
+    </div>
+</div>
+
+<p><strong>Windows Phone 8.1:</strong> This API is supported.</p>
+<h2>Requirements</h2>
+<table>
+<tbody><tr><th>
+<p>Header</p>
+</th><td>
+<dl>
+<dt>D3Dcompiler.h</dt>
+</dl>
+</td></tr>
+<tr><th>
+<p>Library</p>
+</th><td>
+<dl>
+<dt>D3dcompiler_xx.dll</dt>
+</dl>
+</td></tr>
+</tbody></table>
+<h2><a id="see_also"></a>See also</h2>
+<dl>
+<dt>
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd607342%28v=vs.85%29.aspx">Functions</a>
+</dt>
+</dl>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+
+
+    
+
+
+
+
+
+<div class="communityContentContainer">
+    <div id="CommunityContentHeader" class="communityContentHeader">
+        <div class="communityContentHeaderTitleContainer">
+            <h2>Community Additions</h2>
+                <a class="communityContentAddLink" href="https://msdn.microsoft.com/en-us/library/windows/desktop/community/add/dd607334%28v=vs.85%29.aspx">
+                    <span class="communityContentAddButton" title="Add">
+                        ADD
+                    </span>
+                </a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    
+    <div id="CommunityComments" data-url="/en-us/library/windows/desktop/community/comments/dd607334(v=vs.85).aspx"></div>
+</div>
+
+
+
+
+<div class="libraryMemberFilter">
+    <div class="filterContainer">
+        <span>Show:</span>
+        <label>
+            <input class="libraryFilterInherited" checked="checked" value="Inherit" type="checkbox">Inherited
+        </label>
+        <label>
+            <input class="libraryFilterProtected" checked="checked" value="Protected" type="checkbox">Protected
+        </label>
+    </div>
+</div>
+    
+<input id="libraryMemberFilterEmptyWarning" value="There are no members available with your current filter settings." type="hidden">
+
+
+ 
+</div>
+
+
+
+
+            </div>
+            <div class="clear"></div>
+
+            
+    
+<input name="__RequestVerificationToken" value="a0_nXDeeCbkCSFHVQdyFS6pch7EcO9wxZcVyF_UljSQd3cQf8KgFJpKxtzHac4n3VKDSEKFj8uNHjNcRKvmjGCMg3sw1" type="hidden">
+<input id="ratingSubmitUrl" value="https://msdn.microsoft.com/en-us/library/feedback/add/dd607334(v=vs.85).aspx" type="hidden">
+<input id="isTopicRated" value="false" type="hidden">
+
+
+
+
+    
+
+
+    <div id="ux-footer" class="ltr">
+        
+            <div id="footerSock">
+                <div id="footerSockInner">
+                    <a name="feedback"></a>
+                    <div data-fragmentname="Survey" id="Fragment_Survey" xmlns="http://www.w3.org/1999/xhtml"></div>
+
+<div style="display: block;" class="rating">
+    <div id="ratingSection1">
+        <div class="title">
+            Was this page helpful?
+        </div>
+        <div class="description">
+            Your feedback about this content is important.<br>Let us know what you think.
+        </div>
+        <div class="buttons">
+            <button class="button" id="ratingYes">Yes</button>
+            <button class="button" id="ratingNo">No</button>
+        </div>
+        <input id="ratingValue" value="" type="hidden">
+    </div>
+    <div id="ratingSection2">
+        <div class="title">
+            Additional feedback?
+        </div>
+        <textarea id="ratingText" rows="6" cols="" maxlength="1500"></textarea>
+        <div class="counter right">
+            <span id="feedbackTextCounter">1500</span> characters remaining
+        </div>
+        <div class="buttons left">
+            <button class="button" id="ratingSubmit">Submit</button>
+            <button class="button" id="ratingSkipThis">Skip this</button>
+        </div>
+    </div>
+    <div id="ratingSection3">
+        <div class="title">
+            Thank you!
+        </div>
+        <div class="description">
+            We appreciate your feedback.
+        </div>
+    </div>
+    
+    
+    <div id="contentFeedbackQAContainer" style="display: none;"></div>
+</div>
+    
+
+                    <div data-fragmentname="SockLinks" id="Fragment_SockLinks" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links">
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=317809" id="SockLinks_726_11" xmlns="http://www.w3.org/1999/xhtml">Find us on Facebook</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=317811" id="SockLinks_726_12" xmlns="http://www.w3.org/1999/xhtml">Follow us on Twitter</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=393788" id="SockLinks_726_42" xmlns="http://www.w3.org/1999/xhtml">Read the blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        <div id="footerContainer">
+            <div id="fourColumnFooter">
+                <div data-fragmentname="Column1" id="Fragment_Column1" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Centers</div>
+        <ul class="links">
+          <li>
+            <a href="http://dev.windows.com/" id="Column1_726_13" xmlns="http://www.w3.org/1999/xhtml">Windows Dev Center</a>
+          </li>
+          <li>
+            <a href="http://msdn.microsoft.com/windows/desktop" id="Column1_726_16" xmlns="http://www.w3.org/1999/xhtml">Desktop</a>
+          </li>
+          <li>
+            <a href="http://msdn.microsoft.com/windows/hardware" id="Column1_726_17" xmlns="http://www.w3.org/1999/xhtml">Hardware</a>
+          </li>
+          <li>
+            <a href="http://msdn.microsoft.com/ie" id="Column1_726_15" xmlns="http://www.w3.org/1999/xhtml">Internet Explorer</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                <div data-fragmentname="Column2" id="Fragment_Column2" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Related developer sites</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285622" id="Column2_726_18" xmlns="http://www.w3.org/1999/xhtml">Microsoft Connect</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285623" id="Column2_726_19" xmlns="http://www.w3.org/1999/xhtml">.NET Framework</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=282089" id="Column2_726_20" xmlns="http://www.w3.org/1999/xhtml">Visual Studio</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=282087" id="Column2_726_22" xmlns="http://www.w3.org/1999/xhtml">Windows Server</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Other Windows sites</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=280294" id="Column2_726_23" xmlns="http://www.w3.org/1999/xhtml">Enterprise</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=280295" id="Column2_726_24" xmlns="http://www.w3.org/1999/xhtml">Small business</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=280296" id="Column2_726_25" xmlns="http://www.w3.org/1999/xhtml">Students</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=280297" id="Column2_726_26" xmlns="http://www.w3.org/1999/xhtml">Home users</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                <div data-fragmentname="Column3" id="Fragment_Column3" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Downloads</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=267554" id="Column3_726_27" xmlns="http://www.w3.org/1999/xhtml">Windows 8.1</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=328183" id="Column3_726_28" xmlns="http://www.w3.org/1999/xhtml">Windows SDK</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=316619" id="Column3_726_29" xmlns="http://www.w3.org/1999/xhtml">Visual Studio Express 2013</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285626" id="Column3_726_30" xmlns="http://www.w3.org/1999/xhtml">More downloads</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Support</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285632" id="Column3_726_43" xmlns="http://www.w3.org/1999/xhtml">Forums</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285633" id="Column3_726_44" xmlns="http://www.w3.org/1999/xhtml">More support options</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+                <div data-fragmentname="Column4" id="Fragment_Column4" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="ListOfLinkLists">
+    <div class="listItems">
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Essentials</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285627" id="Column4_726_35" xmlns="http://www.w3.org/1999/xhtml">Windows APIs</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285628" id="Column4_726_36" xmlns="http://www.w3.org/1999/xhtml">Samples</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285629" id="Column4_726_37" xmlns="http://www.w3.org/1999/xhtml">Compatibility and certification</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285630" id="Column4_726_45" xmlns="http://www.w3.org/1999/xhtml">Desktop dashboard</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="linkList" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="linkListTitle">Stay connected</div>
+        <ul class="links">
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=285954" id="Column4_726_41" xmlns="http://www.w3.org/1999/xhtml">Microsoft events</a>
+          </li>
+          <li>
+            <a href="http://go.microsoft.com/fwlink/p/?linkid=313895" id="Column4_726_39" xmlns="http://www.w3.org/1999/xhtml">Building Apps for Windows Devices</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>              
+            </div>
+
+            <div id="baseFooterLogos">
+                <span class="microsoftlogo" title="Microsoft"></span>
+                <a href="https://msdn.microsoft.com/en-us" class="msdnlogo" title="MSDN"></a>
+            </div>
+        
+            <div id="baseFooter">
+                <div id="FooterCopyright">© 2015 Microsoft</div>
+                <div data-fragmentname="BaseFooter" id="Fragment_BaseFooter" xmlns="http://www.w3.org/1999/xhtml">
+  
+  <div class="linkList">
+    <ul class="links horizontal">
+      <li>
+        <a href="http://go.microsoft.com/fwlink/?LinkId=248681" id="BaseFooter_35351_3" xmlns="http://www.w3.org/1999/xhtml">Privacy and Cookies</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=248155" id="BaseFooter_35351_1" xmlns="http://www.w3.org/1999/xhtml">Terms of Use</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?linkid=248154" id="BaseFooter_35351_2" xmlns="http://www.w3.org/1999/xhtml">Trademarks</a>
+      </li>
+      <li>
+        <a href="http://go.microsoft.com/fwlink/p/?LinkId=400453" id="BaseFooter_730_5" xmlns="http://www.w3.org/1999/xhtml">Site map</a>
+      </li>
+    </ul>
+  </div>
+</div>  
+                <div data-fragmentname="HelloText" id="Fragment_HelloText" xmlns="http://www.w3.org/1999/xhtml">Hello from Seattle.
+</div>  
+                        
+    
+    <span id="selectLocaleFromPopUp">
+        <div class="locale-selector" style="position: relative">
+            <a class="current-locale" href="javascript:void(0)">
+                <span class="text">English</span>
+                <span class="gear"></span>
+            </a>
+            <div class="locale-selection-panel site-flag site-flag-lang" style="top: -245px; display: none;">
+                <div class="content">
+                    <table class="all-locales" autogeneratecolumns="false" allowpaging="false" allowsorting="false" style="border-collapse: collapse;" cellspacing="0">
+                        <tbody>
+                            <tr>
+
+
+                                    <td><a title="Deutsch" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=de-de&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Deutsch</a></td>
+                                    <td><a title="English" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=en-us&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link selected">English</a></td>
+                                    <td><a title="Español" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=es-es&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Español</a></td>
+                                    <td><a title="Français" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=fr-fr&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Français</a></td>
+                                        </tr><tr>
+                                    <td><a title="Italiano" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=it-it&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Italiano</a></td>
+                                    <td><a title="日本語" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ja-jp&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">日本語</a></td>
+                                    <td><a title="한국어" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ko-kr&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">한국어</a></td>
+                                    <td><a title="Português" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=pt-br&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Português</a></td>
+                                        </tr><tr class="last">
+                                    <td><a title="Pусский" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=ru-ru&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">Pусский</a></td>
+                                    <td><a title="简体中文" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-cn&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">简体中文</a></td>
+                                    <td><a title="繁體中文" href="http://msdn.microsoft.com/?action=SelectLocale&amp;currentLocale=en-us&amp;newLocale=zh-tw&amp;fromPage=/en-us/library/windows/desktop/dd607334%28v=vs.85%29.aspx/" class="locale-link">繁體中文</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="arrow">
+                        &nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+  
+                <link type="text/css" rel="stylesheet">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div> 
+
+
+            <div class="footerPrintView">
+                <div class="footerCopyrightPrintView">© 2015 Microsoft</div>
+            </div>
+
+            
+            
+    
+
+
+
+            <input id="MtpsDevice" value="Default" type="hidden">
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+            
+            
+            
+            
+            
+
+
+
+
+
+
+
+<noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="https://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No" /></div></noscript>
+
+
+
+
+
+
+
+
+
+<noscript>
+  <a href="http://www.omniture.com" title="Web Analytics">
+    <img src="//msstonojsmsdn.112.2o7.net/b/ss/msstonojsmsdn/1/H.20.2--NS/0" height="1" width="1" border="0" alt="" />
+  </a>
+</noscript>
+
+
+
+
+<div id="globalRequestVerification">
+    <input name="__RequestVerificationToken" value="uMKEXDe5W8H3yTEo8_JP-YXQjo2ef4bpGw53rOGjPBqKlS1-bRy_ymQTY3lcudVXUnbnr-8SOpU9Hh4uqpSeU0kxNio1" type="hidden">
+</div>
+
+
+        </div>
+
+        
+        
+        
+        
+    
+</body></html>
