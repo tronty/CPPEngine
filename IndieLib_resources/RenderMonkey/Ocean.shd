@@ -26,44 +26,51 @@
 // Water
 //--------------------------------------------------------------//
 
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 float4 scale = float4( 0.01, 0.01, 0.01, 1.00 );
 float4 view_position = float4( 0.0, 0.0, 0.0, 0.0 );
 
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
+struct VS_INPUT {
+    float3 Pos	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
+    float2 UV		: TEXCOORD1;
 };
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
+struct VS_OUTPUT {
+   float4 Pos:    POSITION;
+   float3 pos:    TEXCOORD0;
+   float3 normal: TEXCOORD1;
+   float3 vVec:   TEXCOORD2;
 };
 
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
+VS_OUTPUT main(VS_INPUT IN){
+   VS_OUTPUT Out;
 
+   // Get some size on the water
+   //Pos.xy *= 1000;
+   //Pos.z = -30;
+
+	float4 v = float4(IN.Pos, 1);
+	Out.Pos = mul(worldViewProj, v);
+
+   //Out.Pos = mul(worldViewProj, Pos);
+   Out.pos = IN.Pos.xyz * scale;
+   Out.vVec = IN.Pos - view_position;
+   Out.normal = IN.Normal;
+
+   return Out;
+}
 [Fragment shader]
+
+struct VS_OUTPUT 
+{
+   float4 Pos: POSITION;
+   float2 texCoord: TEXCOORD0;
+};
 //
 // Noise Shader Library for Unity - https://github.com/keijiro/NoiseShader
 //
@@ -267,7 +274,7 @@ float waveSpeed = float( 0.34 );
 float noiseSpeed = float( 0.18 );
 float fadeBias = float( 0.30 );
 float fadeExp = float( 6.08 );
-float time_0_X=0;
+float time_0_X;
 float4 waterColor = float4( 0.20, 0.35, 0.68, 1.00 );
 
 //sampler Noise;

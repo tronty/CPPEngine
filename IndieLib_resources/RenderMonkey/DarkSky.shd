@@ -43,6 +43,44 @@
 // https://github.com/ashima/webgl-noise
 //
 
+[Vertex shader]
+
+struct VS_INPUT {
+    float3 Pos	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 UV		: TEXCOORD1;
+};
+struct VS_OUTPUT {
+   float4 Pos: POSITION;
+   float3 texCoord: TEXCOORD0;
+};
+
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VS_OUTPUT main(VS_INPUT IN){
+   VS_OUTPUT Out;
+
+   // Get the sky in place
+   IN.Pos.xyz = skyScale * normalize(IN.Pos.xyz);
+   IN.Pos.y += skyZBias;
+
+   Out.Pos = mul(worldViewProj, float4(IN.Pos, 1));
+   //Out.Pos = mul(float4(IN.Pos, 1), worldViewProj);
+   // Pass the position to the fragment shader
+   Out.texCoord = IN.Pos.xyz;
+
+   return Out;
+}
+
+[Fragment shader]
+
+struct VS_OUTPUT 
+{
+   float4 Pos: POSITION;
+   float2 texCoord: TEXCOORD0;
+};
 float3 mod(float3 x, float3 y)
 {
   return x - y * floor(x / y);
@@ -223,12 +261,14 @@ float noise( float3 a)
 //--------------------------------------------------------------//
 
 //float skyZBias = float( -720.00 );
-float scale = float( 0.00 );
+#if 0
 float cloudSpeed = float( 0.10 );
+float scale = float( 0.00 );
 float noiseSpeed = float( 0.03 );
-float time_0_X=0;
+float time_0_X;
 float noiseScale = float( 6.20 );
 float noiseBias = float( -3.00 );
+#endif
 float4 lightPos = float4( 1200.00, 0.00, 576.00, 1.00 );
 //float skyScale = float( 996.00 );
 
@@ -236,42 +276,6 @@ float4 lightPos = float4( 1200.00, 0.00, 576.00, 1.00 );
 
 float skyScale = float( 996.00 );
 float skyZBias = float( -720.00 );
-
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
-    float3 Normal	: NORMAL;
-    float3 Binormal	: BINORMAL;
-    float3 Tangent	: TANGENT;
-    float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-
-[Fragment shader]
 float noiseSpeed = float( 0.03 );
 float time_0_X=0;
 float noiseScale = float( 6.20 );

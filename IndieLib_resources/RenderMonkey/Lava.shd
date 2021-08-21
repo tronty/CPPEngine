@@ -19,44 +19,52 @@
 //    and function names as necessary to reduce name conflicts.
 //**************************************************************//
 
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 //--------------------------------------------------------------//
 // Lava
 //--------------------------------------------------------------//
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
+struct VS_INPUT {
+    float3 Pos	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
+    float2 UV		: TEXCOORD1;
 };
 
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
+struct VS_OUTPUT 
 {
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
+   float4 Pos: POSITION;
+   float2 pos: TEXCOORD0;
+};
+
+VS_OUTPUT main(VS_INPUT IN)
 {
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
+   VS_OUTPUT Out;
+
+   // Clean up inaccuracies   
+   //IN.Pos.xy = sign(IN.Pos.xy);
+
+   //Out.Pos = float4(Pos.xy, 0, 1);
+   //Out.Pos = mul(float4(IN.Pos, 1), worldViewProj); // transform Position
+   Out.Pos = mul(worldViewProj, float4(IN.Pos, 1)); // transform Position
+   //Out.Pos.zw = float2(0, 1);
+   // Image-space
+   Out.pos = 0.5 * IN.Pos.xy;
+
+	// ??? Out.pos=IN.UV;
+
+   return Out;
 }
 
 [Fragment shader]
+
+struct VS_OUTPUT 
+{
+   float4 Pos: POSITION;
+   float2 texCoord: TEXCOORD0;
+};
 //
 // Noise Shader Library for Unity - https://github.com/keijiro/NoiseShader
 //
@@ -260,7 +268,7 @@ float noiseScale = float( 0.21 );
 float morphRate = float( 0.05 );
 float bubbleRate = float( 0.12 );
 float bubbleScale = float( 0.95 );
-float time_0_X=0;
+float time_0_X;
 float scale = float( 0.82 );
 float bias = float( -0.12 );
 

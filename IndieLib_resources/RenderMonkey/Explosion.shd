@@ -19,45 +19,49 @@
 //    and function names as necessary to reduce name conflicts. 
 //**************************************************************//
 
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 //--------------------------------------------------------------//
 // Explosion
 //--------------------------------------------------------------//
 
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
+struct VS_INPUT {
+    float3 Pos	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
+    float2 UV		: TEXCOORD1;
 };
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
+struct VS_OUTPUT 
+{
+   float4 Pos: POSITION;
+   float2 texCoord: TEXCOORD0;
 };
 
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
+VS_OUTPUT main(VS_INPUT IN)
 {
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
+   VS_OUTPUT Out;
+
+   // Clean up inaccuracies
+   //IN.Pos.xy = sign(IN.Pos.xy);
+
+   //Out.Pos = float4(IN.Pos.xy, 0, 1);
+   //Out.Pos = mul(float4(IN.Pos, 1), worldViewProj); // transform Position
+   Out.Pos = mul(worldViewProj, float4(IN.Pos, 1)); // transform Position
+   
+   Out.texCoord = IN.Pos.xy;
+
+   return Out;
 }
 
 [Fragment shader]
+
+struct VS_OUTPUT 
+{
+   float4 Pos: POSITION;
+   float2 texCoord: TEXCOORD0;
+};
 //
 // Noise Shader Library for Unity - https://github.com/keijiro/NoiseShader
 //
@@ -263,7 +267,7 @@ float powerBoost = float( 0.16 );
 float intensity = float( 1.00 );
 float speed = float( 0.15 );
 float noisiness = float( 0.50 );
-float time_0_X=0;
+float time_0_X;
 float explositivity = float( 0.45 );
 sampler2D Flame;
 //sampler Noise;
