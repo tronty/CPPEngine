@@ -932,7 +932,7 @@ const char *psName,
 	GLint len, infoLogPos = 0;
 	shaderGL1_1.shader[eVertexShader] = 0;
 	shaderGL1_1.shader[ePixelShader] = 0;
-	GLhandleARB id_=glCreateProgram(void);
+	//GLhandleARB id_=glCreateProgram(void);
 	GLhandleARB id=glCreateProgramObjectARB(void);
 	shaderGL1_1.program = id;
 	checkGlError("");

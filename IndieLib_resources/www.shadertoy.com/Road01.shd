@@ -19,7 +19,6 @@ struct VsIn3 {
 struct VsOut {
     float4 position	: POSITION;
     float2 uv		: TEXCOORD0;
-    float2 uv1		: TEXCOORD1;
 };
 
 [Vertex shader]
@@ -29,7 +28,6 @@ VsOut main2(VsIn2 In)
 	VsOut Out=(VsOut)0;
 	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
 	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	Out.uv1 = Out.uv;
 	return Out;
 }
 VsOut main3(VsIn3 In)
@@ -37,18 +35,19 @@ VsOut main3(VsIn3 In)
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
 	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	Out.uv1 = Out.uv;
 	return Out;
 }
 
 [Fragment shader]
 float3 mod(float3 x, float y)
 {
+  //return x;
   return x - y * floor(x / y); // ???
 }
 
 float snoise(float3 uv, float res)
 {
+	//return 1;
 	const float3 s = float3(1e0, 1e2, 1e3);
 	
 	uv *= res;
@@ -70,7 +69,7 @@ float snoise(float3 uv, float res)
 	return mix(r0, r1, f.z)*2.-1.;
 }
 
-float2 iResolution=float2(800, 600);
+float2 iResolution=float2(1, 1);
 float iTime=0.0;
 
 const float speed = 7.0;
@@ -174,7 +173,7 @@ float4 main(VsOut IN): COLOR
     float z = map_z(0.0);
     float bob = -0.3 + 0.025 * cos(z * 0.2);
     float swivel = 0.05 * sin(z * 0.1);
-    #if 0
+    #if 1
     float4x4 inverseViewMatrix = float4x4(
         1.0, 0.0, 0.0, 0.0,
         0.0, 1.0, 0.0, 0.0,
@@ -191,6 +190,7 @@ float4 main(VsOut IN): COLOR
     float x = get_x(float3(0.0, 0.0, 0.0));
     float3 ro = float3(-x, 2.0, 0.0);
     float3 rd = (mul(inverseViewMatrix , float4(viewRayDir.x, viewRayDir.y, viewRayDir.z, 0.0))).xyz;
+    //rd = float3(viewRayDir.x, viewRayDir.y, viewRayDir.z);
     float resT;
     
     #if 0

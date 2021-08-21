@@ -44,11 +44,11 @@ float3 mod(float3 x, float3 y)
   return x - y * floor(x / y);
 }
 // https://www.shadertoy.com/view/XsB3Rm
-float3      iResolution;                  // viewport resolution (in pixels)
-float4      iMouse;                       // mouse pixel coords
+float2 iMouse=float2(1, 1);
+float2 iResolution=float2(1, 1);
+float iTime=0.0;
 sampler2D iChannel0;
 
-float     iTime;                        // shader playback time (in seconds)
 float     iGlobalTime;                  // shader playback time (in seconds)
 float4      iDate;                        // (year, month, day, time in seconds)
 float     iSampleRate;                  // sound sample rate (i.e., 44100)

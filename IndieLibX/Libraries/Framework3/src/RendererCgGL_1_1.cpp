@@ -31,19 +31,10 @@ CGprogram g_programfs;
 std::vector<std::string> g_textureNames;
 std::vector<TextureID> g_textures;
 
-#if !defined(GLCG1_1)
-#define LOG_FNLN
-#define LOG_PRINT
-#define LOG_FNLN_X
-#define LOG_PRINT_X
-#define LOG_FNLN_NONE
-#define LOG_PRINT_NONE
-#else
-#define LOG_PRINT_(...) STX_PRINT(__VA_ARGS__);
-#define LOG_FNLN_ LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-#endif
-#define LOG_FNLN_
-#define LOG_PRINT_
+#define LOG_PRINT_(...) printf(__VA_ARGS__)
+#define LOG_FNLN_ printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+#define STX_PRINT_(...) printf(__VA_ARGS__)
+#define STX_FNLN_ printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 
   void MyCgErrorCallback( void ){
 	const char *situation=0;

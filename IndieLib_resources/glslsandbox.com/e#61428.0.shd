@@ -20,7 +20,6 @@ struct VsIn3 {
 struct VsOut {
     float4 position	: POSITION;
     float2 uv		: TEXCOORD0;
-    float2 uv1		: TEXCOORD1;
 };
 
 [Vertex shader]
@@ -30,7 +29,6 @@ VsOut main2(VsIn2 In)
 	VsOut Out=(VsOut)0;
 	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
 	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	Out.uv1 = Out.uv;
 	return Out;
 }
 VsOut main3(VsIn3 In)
@@ -38,14 +36,13 @@ VsOut main3(VsIn3 In)
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
 	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	Out.uv1 = Out.uv;
 	return Out;
 }
 
 [Fragment shader]
 
-float2 mouse=float2(0, 0);
-float2 resolution=float2(800, 600);
+float2 mouse=float2(1, 1);
+float2 resolution=float2(1, 1);
 float time=0.0;
 
 float mod(float x, float y)
@@ -132,7 +129,7 @@ float4 main_(VsOut IN) : COLOR0
 {
     float4 vertexin=IN.position;
     float2 FragCoord=IN.uv;
-    float2 surfacePosition=IN.uv1;
+    float2 surfacePosition=IN.uv;
 
 	float2 res = resolution.xy/resolution.y;
 	float2 uv = FragCoord.xy / resolution.y;
