@@ -58,7 +58,7 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
 		#endif
-	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main2", "main");
+	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main", "main");
 		if(shaders[0]==-1)
 		{
 			printf("/RenderMonkey/BlueSky.shd\n");
@@ -73,7 +73,7 @@ int init(const char* aTitle)
 	shaders[2]=-1;
 	vfs[2]=-1;
 	#else
-	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main2", "main");
+	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main", "main");
 		if(shaders[1]==-1)
 		{
 			printf("/RenderMonkey/Explosion.shd\n");
@@ -82,7 +82,7 @@ int init(const char* aTitle)
 	{
 	vfs[1] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);
 	}
-	shaders[2]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main2", "main");
+	shaders[2]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main", "main");
 		if(shaders[2]==-1)
 		{
 			printf("/RenderMonkey/Inferno.shd\n");
@@ -92,7 +92,7 @@ int init(const char* aTitle)
 	vfs[2] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[2]);
 	}
 	#endif
-	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main2", "main");
+	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main", "main");
 		if(shaders[3]==-1)
 		{
 			printf("/RenderMonkey/Ocean.shd\n");
@@ -102,7 +102,7 @@ int init(const char* aTitle)
 	vfs[3] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[3]);
 	}
 
-	shaders[4]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main2", "main");
+	shaders[4]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main", "main");
 		if(shaders[4]==-1)
 		{
 			printf("/RenderMonkey/DarkSky.shd\n");
@@ -118,7 +118,7 @@ int init(const char* aTitle)
 	shaders[6]=-1;
 	vfs[6]=-1;
 	#else
-	shaders[5]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main2", "main");
+	shaders[5]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main", "main");
 			if(shaders[5]==-1)
 		{
 			printf("/RenderMonkey/FireBall.shd\n");
@@ -127,7 +127,7 @@ int init(const char* aTitle)
 	{
 	vfs[5] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[5]);
 	}
-	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main2", "main");
+	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main", "main");
 			if(shaders[6]==-1)
 		{
 			printf("/RenderMonkey/Lava.shd\n");
