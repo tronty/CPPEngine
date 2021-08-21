@@ -45,8 +45,8 @@
 	<GLESskip>android_fopen SDL2 Effects11</GLESskip>
 	<MWskip__>android_fopen SDL2 OpenAL zlib-1.2.11 Effects11 hlsl2glsl</MWskip__>
 	<MWskip_>android_fopen SDL2 OpenAL Effects11 hlsl2glsl</MWskip_>
-	<MWskip>android_fopen SDL2 OpenAL Effects11 hlsl2glsl</MWskip>
-	<NMAKEskip>android_fopen SDL2 OpenAL hlsl2glsl</NMAKEskip>
+	<MWskip>android_fopen SDL2 OpenAL Effects11</MWskip>
+	<NMAKEskip>android_fopen SDL2 OpenAL</NMAKEskip>
 	<VCskip>android_fopen SDL2 OpenAL</VCskip>
 	<!-- LNXskip>android_fopen SDL2 OpenAL zlib-1.2.11 assimp-5.0.1_x Effects11</LNXskip -->
 	<LNXskip>android_fopen SDL2 OpenAL zlib-1.2.11 Effects11</LNXskip>
@@ -1204,6 +1204,10 @@ skydome.xml
 					#vnoise2
 					#vnoise2
 					#xx
+			Road01
+			Road02
+			Road03
+			Road04
 					BallOfFire
 					TestNoise
 					pbr
@@ -1593,8 +1597,19 @@ skydome.xml
                         otlutils
                         opentree
 			c3dbool
+			#GLTest
+			opengl_simple
+			#opengl_simple2
+			opengl_simple3
 			SimpleTexture
-			<!-- SimpleEffect
+			Road01
+			Road02
+			Road03
+			Road04
+					BallOfFire
+					TestNoise
+			<!-- 
+			SimpleEffect
 			SimpleEffect_
 			#SkyBox
 			#SkyBox2
@@ -1609,10 +1624,6 @@ skydome.xml
 			DrawDX11TexturedQuad
 			opengl_simple
 			Load_Custom_Textures
-			Road01
-			Road02
-			Road03
-			Road04
 			TestNoise
 			BallOfFire
             		VTF
@@ -4391,7 +4402,8 @@ hlslang/MachineIndependent/SymbolTable.cpp
 						Libraries/Framework3/include
 						Libraries/otl/include</include_directories>
                     <src_directory>Libraries/Framework3/src</src_directory>
-                    <src_files>		#fft_512x512_c2c.cpp
+                    <src_files>		RendererVulkan.cpp
+					#fft_512x512_c2c.cpp
                                     ProceduralBuilding5.cpp
 					camera3.cpp
 					ProceduralTerrain.cpp
@@ -4420,7 +4432,6 @@ hlslang/MachineIndependent/SymbolTable.cpp
 					Turtle.cpp
 					tinydx.cpp
 					tinyvk.cpp
-					RendererVulkan.cpp
 					</src_files>
                     <flags>_LIB</flags>
                     <construct>static_library</construct>
@@ -7376,11 +7387,16 @@ hlslang/MachineIndependent/SymbolTable.cpp
 	<src_files>Samples/GL/sdl_opengl_simple/sdl_opengl_simple.cpp</src_files>
 	<construct>application</construct>
 </project>
-
 <project>
 	<name>opengl_simple2</name>
 	<include_directories>Libraries/NSGUI Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/Image3 Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Libraries/MeshRenderer2 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include Samples/GL/sdl_opengl_simple</include_directories>
 	<src_files>Samples/GL/sdl_opengl_simple/sdl_opengl_simple2.cpp</src_files>
+	<construct>application</construct>
+</project>
+<project>
+	<name>opengl_simple3</name>
+	<include_directories>Libraries/NSGUI Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/Image3 Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Libraries/MeshRenderer2 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include Samples/GL/sdl_opengl_simple</include_directories>
+	<src_files>Samples/GL/sdl_opengl_simple/sdl_opengl_simple3.cpp</src_files>
 	<construct>application</construct>
 </project>
 <project>

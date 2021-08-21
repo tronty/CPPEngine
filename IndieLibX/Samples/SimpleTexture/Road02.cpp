@@ -38,7 +38,8 @@ void draw()
 {
 	D3DXFROMWINEMATRIX I;
 	D3DXFROMWINEMatrixIdentity(&I);
-	D3DXFROMWINEVECTOR2 iResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	//D3DXFROMWINEVECTOR2 iResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	D3DXFROMWINEVECTOR2 iResolution(1,1);
 	float iTime=0.001f*timeGetTime();
 #if 0
 	m_Mesh.BeginDraw(&I);

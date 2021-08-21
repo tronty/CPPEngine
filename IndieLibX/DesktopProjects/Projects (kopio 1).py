@@ -274,27 +274,30 @@ class Configuration:
 	#	self.buildtool='GNUMAKE'
 	#	self.platform='OSX'
 	if getRealOS() in ['Ubuntu', 'LinuxMint', 'Debian', 'Linux']:
-		if 0==supportsVulkan():
+		if (g_renderer=='VULKAN') and (0==supportsVulkan()):
 			self.renderer='VULKAN'
+		elif g_renderer=="GLSL1_1":
+			self.renderer='GLSL1_1'
+		elif g_renderer=="GLCG1_1":
+			self.renderer='GLCG1_1'
 	elif getRealOS()=='Windows':
 		self.buildtool='NMAKE'
 		self.platform='WIN'
-		if 0==supportsVulkan():
+		if (g_renderer=='VULKAN') and (0==supportsVulkan()):
 			self.renderer='VULKAN'
+		elif g_renderer=="GLSL1_1":
+			self.renderer='GLSL1_1'
+		elif g_renderer=="GLCG1_1":
+			self.renderer='GLCG1_1'
 		else:
-			if g_renderer=="GLSL1_1":
-				self.renderer='GLSL1_1'
-			else:
-				self.renderer='D3D11'
-		self.renderer='VULKAN'
+			self.renderer='D3D11'
 	elif getRealOS()=='Darwin':
 		self.buildtool='GNUMAKE'
 		self.platform='OSX'
-		if 0==supportsVulkan():
+		if (g_renderer=='VULKAN') and (0==supportsVulkan()):
 			self.renderer='VULKAN'
 		else:
 			self.renderer='GLSL1_1'
-			#self.renderer='VULKAN'
 
 	print 'renderer:',self.renderer
 	#exit(0)
@@ -6609,23 +6612,26 @@ if __name__ == "__main__":
 	#	renderer='GLES2'
 	#	buildtool='GNUMAKE'
 	#	platform_=''
-	if 0==supportsVulkan():
+	if ((g_renderer=="VULKAN") and (0==supportsVulkan())):
 		renderer='VULKAN'
+	elif g_renderer=="GLCG1_1":
+		renderer='GLCG1_1'
 	else:
 		renderer='GLSL1_1'
 		#renderer='VULKAN'
 	buildtool='GNUMAKE'
 	if getOS()=='Windows':
 		platform_='WIN'
-		if 0==supportsVulkan():
+		if ((g_renderer=="VULKAN") and (0==supportsVulkan())):
 			renderer='VULKAN'
+		elif g_renderer=="GLSL1_1":
+			renderer='GLSL1_1'
+		elif g_renderer=="GLCG1_1":
+			renderer='GLCG1_1'
 		else:
-			if g_renderer=="GLSL1_1":
-				self.renderer='GLSL1_1'
-			else:
-				self.renderer='D3D11'
+			renderer='D3D11'
 		buildtool='NMAKE'
-
+	#self.renderer=renderer
 	#print '#:2'
 
 	try:

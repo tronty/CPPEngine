@@ -38,7 +38,8 @@ void draw()
 {
 	D3DXFROMWINEMATRIX I;
 	D3DXFROMWINEMatrixIdentity(&I);
-	D3DXFROMWINEVECTOR2 iResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	//D3DXFROMWINEVECTOR2 iResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	D3DXFROMWINEVECTOR2 iResolution(1,1);
 	float iTime=0.001f*timeGetTime();
 #if 0
 	m_Mesh.BeginDraw(&I);
@@ -52,7 +53,7 @@ void draw()
 	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", iResolution);
-	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", iTime);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("time", iTime);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	#if 1
