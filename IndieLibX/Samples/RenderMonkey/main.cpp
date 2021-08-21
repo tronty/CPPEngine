@@ -40,16 +40,30 @@ int init(const char* aTitle)
 	texture[6]=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/NVIDIA_Corporation/2d/Spectrum.png",false, IRenderer::GetRendererInstance()->Getlinear());
 	env = RendererHLSLCg::addTexture("/SkyBox/cubemaps/x/DragonFireGL.dds", true, IRenderer::GetRendererInstance()->Gettrilinear());
 
+
+		#if 1
 	FormatDesc format[] =
 	{
-		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
-		0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
-		0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
-		0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
-		0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
-		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 
+		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
+		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 	};
-	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main", "main");
+		#else
+		FormatDesc format[] =
+		{
+			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+			0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+			0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
+			0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
+			0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
+			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+		};
+		#endif
+	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main2", "main");
+		if(shaders[0]==-1)
+		{
+			printf("/RenderMonkey/BlueSky.shd\n");
+		}
+		else
 	{
 	vfs[0] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[0]);
 	}
@@ -59,21 +73,41 @@ int init(const char* aTitle)
 	shaders[2]=-1;
 	vfs[2]=-1;
 	#else
-	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main", "main");
+	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main2", "main");
+		if(shaders[1]==-1)
+		{
+			printf("/RenderMonkey/Explosion.shd\n");
+		}
+		else
 	{
 	vfs[1] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);
 	}
-	shaders[2]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main", "main");
+	shaders[2]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main2", "main");
+		if(shaders[2]==-1)
+		{
+			printf("/RenderMonkey/Inferno.shd\n");
+		}
+		else
 	{
 	vfs[2] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[2]);
 	}
 	#endif
-	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main", "main");
+	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main2", "main");
+		if(shaders[3]==-1)
+		{
+			printf("/RenderMonkey/Ocean.shd\n");
+		}
+		else
 	{
 	vfs[3] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[3]);
 	}
 
-	shaders[4]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main", "main");
+	shaders[4]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main2", "main");
+		if(shaders[4]==-1)
+		{
+			printf("/RenderMonkey/DarkSky.shd\n");
+		}
+		else
 	{
 	vfs[4] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[4]);
 	}
@@ -84,11 +118,21 @@ int init(const char* aTitle)
 	shaders[6]=-1;
 	vfs[6]=-1;
 	#else
-	shaders[5]=-1;//IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main", "main");
+	shaders[5]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main2", "main");
+			if(shaders[5]==-1)
+		{
+			printf("/RenderMonkey/FireBall.shd\n");
+		}
+		else
 	{
-	vfs[5] = -1;//IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[5]);
+	vfs[5] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[5]);
 	}
-	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main", "main");
+	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main2", "main");
+			if(shaders[6]==-1)
+		{
+			printf("/RenderMonkey/Lava.shd\n");
+		}
+		else
 	{
 	vfs[6] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[6]);
 	}
@@ -123,12 +167,50 @@ void render( )
 	//D3DXFROMWINEMatrixIdentity(&matRot);
 	float d=0;
 	D3DXFROMWINEMatrixInverse(&viewInv, &d, &matRot);
-        shape3D[m_i].BeginDraw(&matRot, -1, shaders[s_i], vfs[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
 
 	float time=timeGetTime()/1000.0f;
 	float rnd = (float)stx_rand() / RAND_MAX * 0.5f + 0.5f;
     	D3DXFROMWINEVECTOR4 lightPos( 0.25f * (rnd - 0.5f), 5.7f, 1.0f * (rnd - 0.5f), 1.0f );
 	D3DXFROMWINEVECTOR3 vEye(0, 0, 0);
+		
+	#if 1
+		IRenderer::GetRendererInstance()->setShader(shaders[s_i]);
+	IRenderer::GetRendererInstance()->setVertexFormat(vfs[s_i]);
+	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
+	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
+	
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("time_0_X", time);
+	IRenderer::GetRendererInstance()->setTexture("Flame", texture[t_i]);
+	if(s_i==3)
+	{
+		IRenderer::GetRendererInstance()->setTexture("skyBox", env);
+	}
+	
+	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
+	#if 1
+	//		           x	 y     tx    ty
+	float v[16] =  {  1.0f,-1.0f, 1.0f, 1.0f,
+			          1.0f, 1.0f, 1.0f, 0.0f,
+			         -1.0f,-1.0f, 0.0f, 1.0f,
+			         -1.0f, 1.0f, 0.0f, 0.0f };
+	unsigned int N=4;
+	#else
+	float v[16] =  {  1.0f,-1.0f,
+			           1.0f, 1.0f,
+			          -1.0f,-1.0f,
+			          -1.0f, 1.0f };
+	unsigned int N=2;
+	#endif
+#if 1
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 2, &v[0], &v[0], N*sizeof(float));
+#else
+	__WORD__ i[6] ={0,1,2,2,1,3};
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES, 0, 4, 2, &i[0], &i[0], CONSTANT_INDEX2, &v[0], &v[0], N*sizeof(float));
+#endif
+	#else
+        shape3D[m_i].BeginDraw(&matRot, -1, shaders[s_i], vfs[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
+
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time_0_X", time);
 	IRenderer::GetRendererInstance()->setTexture("Flame", texture[t_i]);
@@ -138,6 +220,7 @@ void render( )
 	}
 
 	shape3D[m_i].EndDraw();
+	#endif
 	
 	STXGUI::update();
 

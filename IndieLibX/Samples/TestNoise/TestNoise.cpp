@@ -132,6 +132,10 @@ int init(const char* aTitle)
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/NVIDIA_Corporation/1D/FireGrade.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB-Sort/FirePalette.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/Spectrum.png", false, IRenderer::GetRendererInstance()->Getlinear()));
+	#elif 0
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#else
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
@@ -139,9 +143,25 @@ int init(const char* aTitle)
 	#endif
 
 	for(unsigned int i=0;i<elementsOf(filename);i++)
-	{
-		shader.push_back(IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main", "main"));
+	{	
+			//printf("Shader=%s failed!\n", filename[i]);
+		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main2", "main");
+		if(id==-1)
+		{
+			printf("Shader=%s failed!\n", filename[i]);
+			//stx_exit(0);
+			continue;
+		}
+		shader.push_back(id);
+		
 		//ShaderFiles.push_back(filename[i]);
+		#if 1
+	FormatDesc format[] =
+	{
+		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
+		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+	};
+		#else
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -151,6 +171,7 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
+		#endif
 		if(shader[shader.size()-1]!=-1)
 		vf.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shader[shader.size()-1]));
 		else
@@ -223,15 +244,16 @@ void render( )
 					D3DXFROMWINEVECTOR4 silver=stx_GetRGBA(eSilver);
 					a=silver;
 					d=silver;
-	
-	shape3D[m_i].BeginDraw(&matRot, -1, shader[s_i], vf[s_i], a, d, l, e);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", matRot);
-#if 1
+
 	D3DXFROMWINEVECTOR2 vMouse((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
 	D3DXFROMWINEVECTOR2 vResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
 	float time=.00025 * (timeGetTime() - start );
+#if 0
+	shape3D[m_i].BeginDraw(&matRot, -1, shader[s_i], vf[s_i], a, d, l, e);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", matRot);
+#if 1
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", vMouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", vResolution);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", vResolution);
@@ -245,7 +267,48 @@ int iI=0;
 sampler2D tExplosion;
 #endif
 	shape3D[m_i].EndDraw();
+#else
+	D3DXFROMWINEMATRIX I;
+	D3DXFROMWINEMatrixIdentity(&I);
+	matRot=I;
+	IRenderer::GetRendererInstance()->setShader(shader[s_i]);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
+	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
+	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
+	
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", matRot);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", vMouse);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", vResolution);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", vResolution);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
+	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
 
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
+	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
+	#if 1
+	//		           x	 y     tx    ty
+	float v[16] =  {  1.0f,-1.0f, 1.0f, 1.0f,
+			          1.0f, 1.0f, 1.0f, 0.0f,
+			         -1.0f,-1.0f, 0.0f, 1.0f,
+			         -1.0f, 1.0f, 0.0f, 0.0f };
+	unsigned int N=4;
+	#else
+	float v[16] =  {  1.0f,-1.0f,
+			           1.0f, 1.0f,
+			          -1.0f,-1.0f,
+			          -1.0f, 1.0f };
+	unsigned int N=2;
+	#endif
+#if 1
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 2, &v[0], &v[0], N*sizeof(float));
+#else
+	__WORD__ i[6] ={0,1,2,2,1,3};
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES, 0, 4, 2, &i[0], &i[0], CONSTANT_INDEX2, &v[0], &v[0], N*sizeof(float));
+#endif
+#endif
 
 		const char* txt = "Use mouse buttons to rotate the model.";
 		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 

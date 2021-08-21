@@ -91,9 +91,23 @@ int init(const char* aTitle)
 	LOG_FNLN;
 	for(unsigned int i=0;i<elementsOf(filename);i++)
 	{
-		STX_PRINT("i=%d\n", i);
-		shd.push_back(IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main", "main"));
+			//printf("Shader=%s failed!\n", filename[i]);
+		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main2", "main");
+		if(id==-1)
+		{
+			printf("Shader=%s failed!\n", filename[i]);
+			//stx_exit(0);
+			continue;
+		}
+		shd.push_back(id);
 		//ShaderFiles.push_back(filename[i]);
+		#if 1
+	FormatDesc format[] =
+	{
+		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
+		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+	};
+		#else
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -103,6 +117,7 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
+		#endif
 		if(shd[shd.size()-1]!=-1)
 		vf.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd[shd.size()-1]));
 		else
@@ -178,7 +193,7 @@ void render()
 		if(t_i>tex.size()-1)
 			t_i=0;
 	}
-#if 1
+
 	float mAngleX=0.0f;
 	float mAngleY=0.0f;
 	stx_GetAngles(mAngleX, mAngleY);
@@ -208,19 +223,19 @@ void render()
 	LOG_PRINT("shd[%d]=%d\n", s_i, shd[s_i]);
 	LOG_PRINT("vf[%d]=%d\n", s_i, vf[s_i]);
 	#endif
-        shape3D[m_i].BeginDraw(&W, -1, shd[s_i], vf[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
 
-	D3DXFROMWINEMATRIX I;
-	D3DXFROMWINEMatrixIdentity(&I);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", W);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", W);
-#endif
-	//IRenderer::GetRendererInstance()->setShader(shd[s_i]);
-	//IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
 	D3DXFROMWINEVECTOR2 mouse((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
 	D3DXFROMWINEVECTOR2 resolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
-	float time=.00025 * (timeGetTime() - start );	
+	float time=.00025 * (timeGetTime() - start );
+	D3DXFROMWINEMATRIX I;
+	D3DXFROMWINEMatrixIdentity(&I);
+#if 0
+        shape3D[m_i].BeginDraw(&W, -1, shd[s_i], vf[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", W);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", W);
+	//IRenderer::GetRendererInstance()->setShader(shd[s_i]);
+	//IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
@@ -228,7 +243,6 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
-
 	#if 0
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iGlobalTime", );                  // shader playback time (in seconds)
 	IRenderer::GetRendererInstance()->setShaderConstant4f("iMouse", );                       // mouse pixel coords
@@ -240,7 +254,45 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iFrameRate", );
 	#endif
 	shape3D[m_i].EndDraw();
+#else
+	IRenderer::GetRendererInstance()->setShader(shd[s_i]);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
+	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
+	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
+	
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", I);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
+	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
 
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
+	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
+	#if 1
+	//		           x	 y     tx    ty
+	float v[16] =  {  1.0f,-1.0f, 1.0f, 1.0f,
+			          1.0f, 1.0f, 1.0f, 0.0f,
+			         -1.0f,-1.0f, 0.0f, 1.0f,
+			         -1.0f, 1.0f, 0.0f, 0.0f };
+	unsigned int N=4;
+	#else
+	float v[16] =  {  1.0f,-1.0f,
+			           1.0f, 1.0f,
+			          -1.0f,-1.0f,
+			          -1.0f, 1.0f };
+	unsigned int N=2;
+	#endif
+#if 1
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 2, &v[0], &v[0], N*sizeof(float));
+#else
+	__WORD__ i[6] ={0,1,2,2,1,3};
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES, 0, 4, 2, &i[0], &i[0], CONSTANT_INDEX2, &v[0], &v[0], N*sizeof(float));
+#endif
+#endif
 
 		const char* txt = "Use mouse buttons to rotate the model.";
 		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 

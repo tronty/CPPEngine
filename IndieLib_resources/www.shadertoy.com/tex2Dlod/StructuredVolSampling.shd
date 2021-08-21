@@ -3,19 +3,18 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-#if 1
+
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
 #define fract frac
 #define mix lerp
 #define atan(x,y) atan2(y,x)
-#elif 0
-struct VsIn {
+struct VsIn2 {
+    float2 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+struct VsIn3 {
     float3 position	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
@@ -23,10 +22,21 @@ struct VsIn {
     float3 Color	: TEXCOORD0;
     float2 uv		: TEXCOORD1;
 };
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
 
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main(VsIn In)
+VsOut main2(VsIn2 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+VsOut main3(VsIn3 In)
 {
 	VsOut Out=(VsOut)0;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
