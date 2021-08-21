@@ -57,7 +57,7 @@ float sphere(float3 p, float4 spr)
 {
 	return length(spr.xyz-p) - spr.w;
 }
-float iTime;
+float iTime=0.0;
 float flame(float3 p)
 {
 	float d = sphere(p*float3(1.,.5,1.), float4(.0,-1.,.0,1.));
@@ -90,7 +90,8 @@ float4 raymarch(float3 org, float3 dir)
 	return float4(p,glow);
 }
 
-float2 iResolution;
+const float2 iMouse=float2(1, 1);
+const float2 iResolution=float2(1, 1);
 float4 main(VsOut IN): COLOR 
 {
 	float2 fragCoord=IN.uv;

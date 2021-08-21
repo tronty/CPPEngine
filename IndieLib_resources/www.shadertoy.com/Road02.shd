@@ -33,7 +33,7 @@ VsOut main2(VsIn2 In)
 VsOut main3(VsIn3 In)
 {
 	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.position = mul(worldViewProj, float4(In.position.x, In.position.y, In.position.z, 1.0));
 	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
 	return Out;
 }
@@ -69,7 +69,7 @@ float snoise(float3 uv, float res)
 	return mix(r0, r1, f.z)*2.-1.;
 }
 
-float2 iResolution=float2(1, 1);
+const float2 iResolution=float2(1, 1);
 float iTime=0.0;
 const float speed = 16.0;
 

@@ -44,21 +44,21 @@ float3 mod(float3 x, float3 y)
   return x - y * floor(x / y);
 }
 // https://www.shadertoy.com/view/XsB3Rm
-float2 iMouse=float2(1, 1);
-float2 iResolution=float2(1, 1);
+const float2 iMouse=float2(1, 1);
+const float2 iResolution=float2(1, 1);
 float iTime=0.0;
 sampler2D iChannel0;
 
-float     iGlobalTime;                  // shader playback time (in seconds)
-float4      iDate;                        // (year, month, day, time in seconds)
-float     iSampleRate;                  // sound sample rate (i.e., 44100)
+float     iGlobalTime=0;                  // shader playback time (in seconds)
+float4      iDate=float4(0,0,0,0);                        // (year, month, day, time in seconds)
+float     iSampleRate=1;                  // sound sample rate (i.e., 44100)
 float3      iChannelResolution[4];        // channel resolution (in pixels)
 float     iChannelTime[4];              // channel playback time (in sec)
 
-float2      ifFragCoordOffsetUniform;     // used for tiled based hq rendering
-float     iTimeDelta;                   // render time (in seconds)
-int       iFrame;                       // shader playback frame
-float     iFrameRate;
+float2      ifFragCoordOffsetUniform=float2(0,0);     // used for tiled based hq rendering
+float     iTimeDelta=0;                   // render time (in seconds)
+int       iFrame=1;                       // shader playback frame
+float     iFrameRate=1;
 
 struct Channel {
     float3  resolution;
