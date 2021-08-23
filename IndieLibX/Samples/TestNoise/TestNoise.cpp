@@ -150,7 +150,7 @@ int init(const char* aTitle)
 		{
 			printf("Shader=%s failed!\n", filename[i]);
 			//stx_exit(0);
-			continue;
+			//continue;
 		}
 		shader.push_back(id);
 		
@@ -205,12 +205,25 @@ void render( )
 			s_i=shader.size()-1;
 		else
 			s_i--;
+		while((shader[s_i]==-1)||(vf[s_i]==-1))
+		{
+			if(!s_i)
+				s_i=shader.size()-1;
+			else
+				s_i--;
+		}
 	}
 	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F3))
 	{
 		s_i++;
 		if(s_i>shader.size()-1)
 			s_i=0;
+		while((shader[s_i]==-1)||(vf[s_i]==-1))
+		{
+			s_i++;
+			if(s_i>shader.size()-1)
+				s_i=0;
+		}
 	}
 	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F6))
 	{
@@ -228,6 +241,8 @@ void render( )
 
 	float mAngleX=21.0f;
 	float mAngleY=112.0f;
+//if((shader[s_i]>-1)&&(vf[s_i]>-1))
+{
 	stx_GetAngles(mAngleX, mAngleY);
 
 		D3DXFROMWINEMATRIX matRot;
@@ -309,7 +324,7 @@ sampler2D tExplosion;
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES, 0, 4, 2, &i[0], &i[0], CONSTANT_INDEX2, &v[0], &v[0], N*sizeof(float));
 #endif
 #endif
-
+}
 		const char* txt = "Use mouse buttons to rotate the model.";
 		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 
 			15, 18,

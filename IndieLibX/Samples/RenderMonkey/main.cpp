@@ -8,8 +8,8 @@
 class _Shape3D: public STXGUI
 {
 	TextureID texture[7], env;
-	ShaderID shaders[7];
-	VertexFormatID vfs[7];
+	std::vector<ShaderID> shaders;
+	std::vector<VertexFormatID> vfs;
 	MeshRenderer2 shape3D[3];
 	unsigned int s_i;
 	unsigned int m_i;
@@ -58,14 +58,15 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
 		#endif
-	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main", "main");
-		if(shaders[0]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main", "main"));
+		if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/BlueSky.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[0] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[0]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 	#if 0
 	shaders[1]=-1;
@@ -73,43 +74,47 @@ int init(const char* aTitle)
 	shaders[2]=-1;
 	vfs[2]=-1;
 	#else
-	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main", "main");
-		if(shaders[1]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main", "main"));
+		if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/Explosion.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[1] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
-	shaders[2]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main", "main");
-		if(shaders[2]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main", "main"));
+		if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/Inferno.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[2] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[2]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 	#endif
-	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main", "main");
-		if(shaders[3]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main", "main"));
+		if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/Ocean.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[3] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[3]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 
-	shaders[4]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main", "main");
-		if(shaders[4]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main", "main"));
+		if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/DarkSky.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[4] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[4]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 
 	#if 0
@@ -118,23 +123,25 @@ int init(const char* aTitle)
 	shaders[6]=-1;
 	vfs[6]=-1;
 	#else
-	shaders[5]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main", "main");
-			if(shaders[5]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main", "main"));
+			if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/FireBall.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[5] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[5]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
-	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main", "main");
-			if(shaders[6]==-1)
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main", "main"));
+			if(shaders[shaders.size()-1]==-1)
 		{
 			printf("/RenderMonkey/Lava.shd\n");
+			vfs.push_back(-1);
 		}
 		else
 	{
-	vfs[6] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[6]);
+	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 	#endif
 
@@ -147,7 +154,8 @@ void render( )
 	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
 	IRenderer::GetRendererInstance()->BeginScene();
 
-	{
+if((shaders[s_i]>-1)&&(vfs[s_i]>-1))
+{
 	float mAngleX=0.0f;
 	float mAngleY=0.0f;
 	stx_GetAngles(mAngleX, mAngleY);
@@ -221,7 +229,7 @@ void render( )
 
 	shape3D[m_i].EndDraw();
 	#endif
-	
+}	
 	STXGUI::update();
 
 		const char* txt = "Use mouse buttons to rotate the model.";
@@ -239,7 +247,7 @@ void render( )
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
-	}
+	
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present( );
 }

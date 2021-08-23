@@ -29,12 +29,17 @@ float time_0_X;
 float timeSampleDist = float( 0.30 );
 
 struct VS_INPUT {
+#if 1
+    float2 Pos		: POSITION;
+    float2 UV		: TEXCOORD0;
+#else
     float3 Pos	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 UV		: TEXCOORD1;
+#endif
 };
 struct VS_OUTPUT 
 {
@@ -54,7 +59,8 @@ VS_OUTPUT main(VS_INPUT IN)
 
    //Out.Pos = float4(Pos.xy, 0, 1);
    //Out.Pos = mul(float4(IN.Pos, 1), worldViewProj); // transform Position
-   Out.Pos = mul(worldViewProj, float4(IN.Pos, 1)); // transform Position
+   //Out.Pos = mul(worldViewProj, float4(IN.Pos, 1)); // transform Position
+   Out.Pos = float4(In.Pos.x, In.Pos.y, 0.0 , 1.0);
    //Out.Pos.zw = float2(0, 1);
    //Out.pos = IN.Pos.xy;
 

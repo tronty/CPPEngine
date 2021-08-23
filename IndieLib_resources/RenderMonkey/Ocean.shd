@@ -32,22 +32,38 @@ ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 float4 scale = float4( 0.01, 0.01, 0.01, 1.00 );
 float4 view_position = float4( 0.0, 0.0, 0.0, 0.0 );
 
+
 struct VS_INPUT {
+#if 1
+    float2 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+#else
     float3 Pos	: POSITION;
     float3 Normal	: NORMAL;
     float3 Binormal	: BINORMAL;
     float3 Tangent	: TANGENT;
     float3 Color	: TEXCOORD0;
     float2 UV		: TEXCOORD1;
+#endif
 };
 struct VS_OUTPUT {
-   float4 Pos:    POSITION;
-   float3 pos:    TEXCOORD0;
-   float3 normal: TEXCOORD1;
-   float3 vVec:   TEXCOORD2;
+#if 1
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+#else
+   float4 Pos: POSITION;
+   float3 texCoord: TEXCOORD0;
+#endif
 };
 
-VS_OUTPUT main(VS_INPUT IN){
+VS_OUTPUT main(VS_INPUT In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+VS_OUTPUT main3(VS_INPUT IN){
    VS_OUTPUT Out;
 
    // Get some size on the water
