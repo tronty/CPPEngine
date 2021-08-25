@@ -3051,6 +3051,7 @@ void RendererHLSLD3D11::setShaderConstantRaw(const char *name, const void *data,
 }
 
 void RendererHLSLD3D11::applyConstants(){
+	if(shaders.size()<=currentShader) return;
 	if (currentShader != SHADER_NONE){
 		ShaderD3D11 *shader = &shaders[currentShader];
 

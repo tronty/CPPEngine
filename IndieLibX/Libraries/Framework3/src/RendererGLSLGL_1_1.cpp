@@ -171,6 +171,7 @@ typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboo
 		}
 
 void RendererGLSLGL_1_1::applyConstants(){
+	if(currentShader>=shaders.size()) return;
 	if (currentShader != SHADER_NONE){
 		for (unsigned int i = 0; i < shaders[currentShader].uniforms.size(); i++){
 			ConstantShaderGLSLGL3* uni = &shaders[currentShader].uniforms[0] + i;
@@ -1346,26 +1347,30 @@ void RendererGLSLGL_1_1::applyTextures(){
 	for (unsigned int i = 0; i < MAX_TEXTUREUNIT; i++){
 		TextureID texture = selectedTextures[i];
 		TextureID currTex = currentTextures[i];
+		if(texture>=textures.size()) texture=-1;
+		if(currTex>=textures.size()) currTex=-1;
 		#if defined(LINUX)
 		if (texture != currTex)
 		#endif
 		{
 		LOG_FNLN;
 			glActiveTextureARB(GL_TEXTURE0 + i);
-			if (texture == TEXTURE_NONE){
+			if ((currTex>-1) && (texture == TEXTURE_NONE)){
 				glDisable(textures[currTex].glTarget);
 				glBindTexture(textures[currTex].glTarget, 0);
 	LOG_PRINT("glBindTexture(%x, %d);\n", textures[currTex].glTarget, 0);
 			} else {
-				if (currTex == TEXTURE_NONE){
+				if ((texture>-1) && (currTex == TEXTURE_NONE)){
 					glEnable(textures[texture].glTarget);
-				} else if (textures[texture].glTarget != textures[currTex].glTarget){
-					glDisable(textures[currTex].glTarget);
-					glEnable(textures[texture].glTarget);
+				} else if ((currTex > -1) && (texture > -1)) if (textures[texture].glTarget != textures[currTex].glTarget)
+				{
+						glDisable(textures[currTex].glTarget);
+						glEnable(textures[texture].glTarget);
 				}
+				if (texture>-1){
 				glBindTexture(textures[texture].glTarget, textures[texture].glTexID);
-            LOG_PRINT("glBindTexture(%x, %d);\n", textures[texture].glTarget, textures[texture].glTexID);
-				if (textures[texture].lod != textureLod[i]){
+            	LOG_PRINT("glBindTexture(%x, %d);\n", textures[texture].glTarget, textures[texture].glTexID);}
+				if ((texture>-1) && (textures[texture].lod != textureLod[i])){
 					glTexEnvf(GL_TEXTURE_FILTER_CONTROL_EXT, GL_TEXTURE_LOD_BIAS_EXT, textureLod[i] = textures[texture].lod);
 				}
 			}

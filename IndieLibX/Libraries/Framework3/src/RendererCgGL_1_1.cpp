@@ -255,6 +255,7 @@ void RendererCgGL_1_1::changeVertexBufferVrtl(const int stream, const VertexBuff
 
 void RendererCgGL_1_1::applyConstants()
 {
+	if(currentShader>=shaders.size()) return;
 	if (currentShader != SHADER_NONE)
 	{
 		for (unsigned int i = 0; i < shaders[currentShader]->nUniforms; i++)
@@ -1150,6 +1151,7 @@ ErrorMsg(infoLog);
 void RendererCgGL_1_1::applyTextures()
 {
     LOG_FNLN_;
+    //if(!g_textures.size()) return;
     for(unsigned int i=0;i<g_textureNames.size();i++)
     {
         CGparameter param = cgGetNamedParameter(g_programfs /* ??? */ , g_textureNames[i].c_str());

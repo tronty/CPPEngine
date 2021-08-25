@@ -16,7 +16,6 @@
 ShaderID shd=-1;
 VertexFormatID vf=-1;
 //MeshRenderer2 m_Mesh;
-std::vector<TextureID> tex;
 
 int init(const char* aTitle)
 {
@@ -32,9 +31,6 @@ int init(const char* aTitle)
 	vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 	STX_FNLN;
 	//m_Mesh.CreateSphere(1.0f, shd);
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	return 0;
 }
 

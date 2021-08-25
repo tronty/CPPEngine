@@ -92,6 +92,7 @@ LOG_PRINT_X("pointer=%x\n", base + cvf.generic[i].offset);
 		}
 void RendererGLES2::applyConstants()
 {
+	if(shaders.size()<=currentShader) return;
 	if (currentShader != SHADER_NONE)
 	{
 		for (unsigned int i = 0; i < (shaders[currentShader]).uniforms.size(); i++)
@@ -457,20 +458,24 @@ void RendererGLES2::applyTextures(){
 	for (unsigned int i = 0; i < MAX_TEXTUREUNIT; i++){
 		TextureID texture = selectedTextures[i];
 		TextureID currTex = currentTextures[i];
+		if(texture>=textures.size()) texture=-1;
+		if(currTex>=textures.size()) currTex=-1;
 
 		//if (texture != currTex)
 		{
-			if (texture == TEXTURE_NONE){
+			if ((currTex>-1) && (texture == TEXTURE_NONE)){
 				glDisable(textures[currTex].glTarget);
 				glBindTexture(textures[currTex].glTarget, 0);
 			} else {
-				if (currTex == TEXTURE_NONE){
+				if ((currTex>-1) && (texture == TEXTURE_NONE)){
 					glEnable(textures[texture].glTarget);
-				} else if (textures[texture].glTarget != textures[currTex].glTarget){
+				} else if ((currTex > -1) && (texture > -1)) if (textures[texture].glTarget != textures[currTex].glTarget)
+				{
 					glDisable(textures[currTex].glTarget);
 					glEnable(textures[texture].glTarget);
 				}
-				glBindTexture(textures[texture].glTarget, textures[texture].glTexID);
+				if (texture>-1)
+					glBindTexture(textures[texture].glTarget, textures[texture].glTexID);
 			}
 
 			currentTextures[i] = texture;
