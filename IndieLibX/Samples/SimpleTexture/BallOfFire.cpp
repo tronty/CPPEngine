@@ -83,11 +83,12 @@ unsigned int m_i=2;
 int init(const char* aTitle)
 {
 	LOG_FNLN;
+	#if 0
 	//stx_InitShape3D("/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
 	shape3D[0].CreateTexturedQuad(2.0f, 2.0f, eShaderNone);
         shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
         shape3D[2].CreateSphere(1.0f, eShaderNone);
-
+	#endif
 	LOG_FNLN;
 	for(unsigned int i=0;i<elementsOf(filename);i++)
 	{
@@ -137,7 +138,7 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	#else
+	#elif 1
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));	
@@ -154,20 +155,8 @@ void render()
 	float f=128.0f/256.0f;
 	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
 	IRenderer::GetRendererInstance()->BeginScene();
-	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F2))
-	{
-		if(!m_i)
-			m_i=elementsOf(shape3D)-1;
-		else
-			m_i--;
-	}
-	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F1))
-	{
-		m_i++;
-		if(m_i>elementsOf(shape3D))
-			m_i=0;
-	}
-	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F4))
+	
+	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F1))
 	{
 		if(!s_i)
 			s_i=shd.size()-1;
@@ -181,7 +170,7 @@ void render()
 				s_i--;
 		}
 	}
-	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F3))
+	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F2))
 	{
 		s_i++;
 		if(s_i>shd.size()-1)
@@ -192,19 +181,6 @@ void render()
 			if(s_i>shd.size()-1)
 				s_i=0;
 		}
-	}
-	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F6))
-	{
-		if(!t_i)
-			t_i=tex.size()-1;
-		else
-			t_i--;
-	}
-	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F5))
-	{
-		t_i++;
-		if(t_i>tex.size()-1)
-			t_i=0;
 	}
 
 	float mAngleX=0.0f;
@@ -325,58 +301,14 @@ void render()
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
 
-		char buf[64];
-		stx_snprintf(buf, 64, "mAngleX=%f\n", mAngleX); 
-		IRenderer::GetRendererInstance()->drawText(buf, 10, 50, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-		stx_snprintf(buf, 64, "mAngleY=%f\n", mAngleY); 
-		IRenderer::GetRendererInstance()->drawText(buf, 10, 70, 
+	IRenderer::GetRendererInstance()->drawText("F1-key: previous shader", 10, 50, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
 
-	IRenderer::GetRendererInstance()->drawText("F1-key: previous shape", 10, 90, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F2-key: next shape", 10, 110, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F3-key: previous shader", 10, 130, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F4-key: next shader", 10, 150, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F5-key: previous texture", 10, 170, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F6-key: next texture", 10, 190, 
+	IRenderer::GetRendererInstance()->drawText("F2-key: next shader", 10, 70, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
@@ -385,29 +317,12 @@ void render()
 
 		char txt2[512];
 		stx_snprintf(txt2, 512, "s_i=%d: %s\n", s_i, filename[s_i]);
-		IRenderer::GetRendererInstance()->drawText(txt2, 10, 210, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-#if 0
-		char txt2[256];
-		stx_snprintf(txt2, 256, "Shader=%s\n", ShaderFiles[s_i].c_str());
 		IRenderer::GetRendererInstance()->drawText(txt2, 10, 90, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
-		stx_snprintf(txt2, 256, "Texture=%s\n", TextureFiles[t_i].c_str());
-		IRenderer::GetRendererInstance()->drawText(txt2, 10, 110, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-#endif
 
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present( );
