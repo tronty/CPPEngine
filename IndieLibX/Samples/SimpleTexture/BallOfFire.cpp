@@ -285,30 +285,15 @@ void render()
 #endif
 #endif
 }
-		const char* txt = "Use mouse buttons to rotate the model.";
-		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 
+
+	IRenderer::GetRendererInstance()->drawText("F1-key: previous shader", 10, 10, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
 
-		txt = "CTRL-r resets the scene.";
-		IRenderer::GetRendererInstance()->drawText(txt, 10, 30, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F1-key: previous shader", 10, 50, 
-			15, 18,
-			IRenderer::GetRendererInstance()->GetdefaultFont(), 
-			IRenderer::GetRendererInstance()->GetlinearClamp(), 
-			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
-			IRenderer::GetRendererInstance()->GetnoDepthTest());
-
-	IRenderer::GetRendererInstance()->drawText("F2-key: next shader", 10, 70, 
+	IRenderer::GetRendererInstance()->drawText("F2-key: next shader", 10, 30, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
@@ -317,7 +302,7 @@ void render()
 
 		char txt2[512];
 		stx_snprintf(txt2, 512, "s_i=%d: %s\n", s_i, filename[s_i]);
-		IRenderer::GetRendererInstance()->drawText(txt2, 10, 90, 
+		IRenderer::GetRendererInstance()->drawText(txt2, 10, 50, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
