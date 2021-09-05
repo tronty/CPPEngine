@@ -79,7 +79,7 @@ const char* filename[] =
 "/www.shadertoy.com/tex2Dlod/type2supernova.shd",
 "/www.shadertoy.com/tex2Dlod/volumetricexplosion.shd",
 "/www.shadertoy.com/tex2Dlod/Watchitburn.shd",
-#if 0
+#if 1
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68825.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72317.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72645.0.shd",
@@ -230,8 +230,8 @@ void render( )
 					a=silver;
 					d=silver;
 
-	D3DXFROMWINEVECTOR2 vMouse((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
-	D3DXFROMWINEVECTOR2 vResolution(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	D3DXFROMWINEVECTOR2 vMouse(1.0f,1.0f);//((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
+	D3DXFROMWINEVECTOR2 vResolution(1.0f,1.0f);//(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
 	float time=.00025 * (timeGetTime() - start );
 #if 0
