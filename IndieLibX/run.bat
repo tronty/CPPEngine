@@ -184,9 +184,6 @@ cd bin
 call Quad.exe
 cd ..
 cd bin
-call RenderMonkey.exe
-cd ..
-cd bin
 call Shape3D.exe
 cd ..
 cd bin

@@ -1028,9 +1028,38 @@ LOG_FNLN;
 				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
-				STX_PRINT("\n%s\n", infoLog);
+				//printf("\n%s\n", infoLog);
 			}
 			else vsResult = GL_TRUE;
+			
+			if(0){
+				GLint blen = 0;	
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[eVertexShader], GL_INFO_LOG_LENGTH , &blen);       
+				if (blen > 1)
+				{
+ 					GLchar* compiler_log = (GLchar*)malloc(blen);
+ 					glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], blen, &slen, compiler_log);
+ 					printf("\n%s\n", compiler_log);
+ 					free (compiler_log);
+				}
+			}else if(0){
+				char infobuffer[1000];
+				GLsizei infobufferlen = 0;
+				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], 999, &infobufferlen, infobuffer);
+				if (infobufferlen != 0) {
+					infobuffer[infobufferlen] = 0;
+					printf("vertexShader reports: %s \n", infobuffer);
+					return -1;
+				}
+			}else if(0){
+			GLint length;
+			glGetShaderiv(shaderGL1_1.shader[eVertexShader],GL_INFO_LOG_LENGTH,&length);
+			std::vector<unsigned char> log(length);
+			glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader],200,&length,&log[0]);log[length]='\0';
+			if(length>1) printf("%s\n",&log[0]);
+			}
+			
 			if (fsText.length())
 			{
 			shaderGL1_1.shader[ePixelShader] = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
@@ -1065,13 +1094,41 @@ LOG_FNLN;
 				else
 				{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Fragment shader error:\n");
-				STX_PRINT("\n%s\n", infoLog);
+				//printf("\n%s\n", infoLog);
 			}
 			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 			}
 			else fsResult = GL_TRUE;
+
+			if(0){
+				GLint blen = 0;	
+				GLsizei slen = 0;
+				glGetShaderiv(shaderGL1_1.shader[ePixelShader], GL_INFO_LOG_LENGTH , &blen);       
+				if (blen > 1)
+				{
+ 					GLchar* compiler_log = (GLchar*)malloc(blen);
+ 					glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], blen, &slen, compiler_log);
+ 					printf("\n%s\n", compiler_log);
+ 					free (compiler_log);
+				}
+			}else if(0){
+				char infobuffer[1000];
+				GLsizei infobufferlen = 0;
+				glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], 999, &infobufferlen, infobuffer);
+				if (infobufferlen != 0) {
+					infobuffer[infobufferlen] = 0;
+					printf("vertexShader reports: %s \n", infobuffer);
+					return -1;
+				}
+			}else if(0){
+			GLint length;
+			glGetShaderiv(shaderGL1_1.shader[ePixelShader],GL_INFO_LOG_LENGTH,&length);
+			std::vector<unsigned char> log(length+1);
+			glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader],200,&length,&log[0]);log[length]='\0';
+			if(length>1) printf("%s\n",&log[0]);
+			}
 LOG_FNLN;
 if (vsResult)
     {LOG_PRINT("vsResult=true");}

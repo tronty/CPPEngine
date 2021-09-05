@@ -213,7 +213,9 @@ def txt2array(txt):
     l=r.split(txt)
     l2=[]
     for i in l:
-        l2.append(i.strip())
+    	i_=i.strip()
+    	if not i_ in l2:
+        	l2.append(i_)
     return l2
 
 def itoh(i):

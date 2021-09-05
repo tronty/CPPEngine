@@ -3,14 +3,6 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-#if 0
-#define WSIGN +
-#define ROW_MAJOR
-#define MVPSEMANTIC
-#define fract frac
-#define mix lerp
-#define atan(x,y) atan2(y,x)
-#endif
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -48,7 +40,7 @@ VsOut main3(VsIn3 In)
 [Fragment shader]
 float3 mod(float3 x, float y)
 {
-  return x - y * floor(x / y); // ???
+  return x - y * floor(x / y);
 }
 
 float snoise(float3 uv, float res)

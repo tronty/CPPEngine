@@ -59,7 +59,6 @@ cd ./bin;./ProceduralHouse.bin;cd .. &&
 cd ./bin;./ProceduralHouse2.bin;cd .. &&
 cd ./bin;./ProceduralHouse3.bin;cd .. &&
 cd ./bin;./Quad.bin;cd .. &&
-cd ./bin;./RenderMonkey.bin;cd .. &&
 cd ./bin;./Shape3D.bin;cd .. &&
 cd ./bin;./Shape3D2.bin;cd .. &&
 cd ./bin;./Shape3D3.bin;cd .. &&

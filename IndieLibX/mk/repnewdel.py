@@ -1,9 +1,19 @@
 import os, sys, re
 
 def replaceString(outtext):
-
+    outtext=re.sub(r'1e\-3', '0.001', outtext)
+    outtext=re.sub(r'\bfract\b', 'frac', outtext)
+    outtext=re.sub(r'\bgl_FragCoord\b', 'fragCoord', outtext)
+    outtext=re.sub(r'\bgl_FragColor\b', 'fragColor', outtext)
+    outtext=re.sub(r'\buniform\b', '', outtext)
+    outtext=re.sub(r'\bvec2\b', 'float2', outtext)
+    outtext=re.sub(r'\bvec3\b', 'float3', outtext)
+    outtext=re.sub(r'\bvec4\b', 'float4', outtext)
+    outtext=re.sub(r'\bmat2\b', 'float2x2', outtext)
+    outtext=re.sub(r'\bmat3\b', 'float3x3', outtext)
+    outtext=re.sub(r'\bmat4\b', 'float4x4', outtext)
     #outtext=re.sub(r'\bOut\.uv \= In\.uv\;', 'Out.uv = 1.0-In.uv;', outtext)
-    outtext=outtext.replace('Out.uv = 1.0-In.uv;', 'Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;');
+    #outtext=outtext.replace('Out.uv = 1.0-In.uv;', 'Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;');
     #outtext=re.sub(r'\bapp\.initGUI\b', 'BaseApp::initGUI', outtext)
     #outtext=re.sub(r'\<SDL\/SDL\.h\>', '<SDL2/SDL.h>', outtext)
     #outtext=re.sub(r'\<SDL\/', '<SDL2/', outtext)
@@ -673,7 +683,7 @@ def myfunmem(dummy, dirr, filess):
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
 
-os.path.walk('../../IndieLib_resources/www.shadertoy.com', myfunshd, 13)
+os.path.walk('../../IndieLib_resources/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com', myfunshd, 13)
 #os.path.walk('../Samples/new/new/new/javagames/src/Pacman', myfun, 13)
 #os.path.walk('../Samples/new/new_/R2VB_VTF', myfun, 13)
 exit(0)

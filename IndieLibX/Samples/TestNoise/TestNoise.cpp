@@ -29,6 +29,9 @@ const char* filename[] =
 //"/HLSL-noise/HLSL-noise4.shd"
 #else
 "/glslsandbox.com/e#59382.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/Mountains.shd",
+"/www.shadertoy.com/www.shadertoy.com/Seascape.shd",
+"/www.shadertoy.com/www.shadertoy.com/Tree_in_the_wind.shd",
 "/www.shadertoy.com/301FireShaderRemix1.shd",
 "/www.shadertoy.com/301FireShaderRemix2.shd",
 "/www.shadertoy.com/301FireShaderRemix3.shd",
@@ -76,6 +79,22 @@ const char* filename[] =
 "/www.shadertoy.com/tex2Dlod/type2supernova.shd",
 "/www.shadertoy.com/tex2Dlod/volumetricexplosion.shd",
 "/www.shadertoy.com/tex2Dlod/Watchitburn.shd",
+#if 0
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68825.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72317.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72645.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#67654.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68826.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72421.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#73091.1.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68576.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68827.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72423.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#73092.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68577.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68829.0.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72444.0.shd",
+#endif
 #endif
 };
 
