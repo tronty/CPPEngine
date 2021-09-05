@@ -10,7 +10,6 @@ const char* filename[] =
 //"/www.shadertoy.com/Load_Custom_Textures.shd",
 #if 0
 "/glslsandbox.com/e#61428.0.shd",
-"/glslsandbox.com/e#59382.0.shd",
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 #if 1
@@ -65,6 +64,7 @@ const char* filename[] =
 "/www.shadertoy.com/tex2Dlod/type2supernova.shd",
 "/www.shadertoy.com/tex2Dlod/volumetricexplosion.shd",
 "/www.shadertoy.com/tex2Dlod/Watchitburn.shd",
+"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72423.0.shd",
 #if 1
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68825.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72317.0.shd",
@@ -75,7 +75,6 @@ const char* filename[] =
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#73091.1.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68576.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68827.0.shd",
-"/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72423.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#73092.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68577.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#68829.0.shd",
