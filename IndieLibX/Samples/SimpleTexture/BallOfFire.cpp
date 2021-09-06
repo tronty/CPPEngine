@@ -268,8 +268,11 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", I);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
-	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
