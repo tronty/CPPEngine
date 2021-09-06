@@ -38,8 +38,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-const float2 iMouse=float2(1, 1);
-const float2 iResolution=float2(1, 1);
+
+float2 iMouse=float2(1, 1);
+float2 iResolution=float2(1, 1);
 float iTime=0.0;
 
 float3 mod(float3 x, float y)
@@ -53,23 +54,23 @@ float3 mod(float3 x, float y)
  * Contact: tdmaav@gmail.com
  */
 
-const int NUM_STEPS = 8;
-const float PI	 	= 3.141592;
-const float EPSILON	= 1e-3;
+int NUM_STEPS = 8;
+float PI	 	= 3.141592;
+float EPSILON	= 1e-3;
 #define EPSILON_NRM (0.1 / iResolution.x)
 #define AA
 
 // sea
-const int ITER_GEOMETRY = 3;
-const int ITER_FRAGMENT = 5;
-const float SEA_HEIGHT = 0.6;
-const float SEA_CHOPPY = 4.0;
-const float SEA_SPEED = 0.8;
-const float SEA_FREQ = 0.16;
-const float3 SEA_BASE = float3(0.0,0.09,0.18);
-const float3 SEA_WATER_COLOR = float3(0.8,0.9,0.6)*0.6;
+int ITER_GEOMETRY = 3;
+int ITER_FRAGMENT = 5;
+float SEA_HEIGHT = 0.6;
+float SEA_CHOPPY = 4.0;
+float SEA_SPEED = 0.8;
+float SEA_FREQ = 0.16;
+float3 SEA_BASE = float3(0.0,0.09,0.18);
+float3 SEA_WATER_COLOR = float3(0.8,0.9,0.6)*0.6;
 #define SEA_TIME (1.0 + iTime * SEA_SPEED)
-const float2x2 octave_m = float2x2(1.6,1.2,-1.2,1.6);
+float2x2 octave_m = float2x2(1.6,1.2,-1.2,1.6);
 
 // math
 float3x3 fromEuler(float3 ang) {
