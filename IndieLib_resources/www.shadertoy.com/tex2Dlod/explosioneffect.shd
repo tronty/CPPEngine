@@ -39,9 +39,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-const float2 mouse=float2(1, 1);
-const float2 resolution=float2(1, 1);
-float time=0.0;
+float3 iMouse=float3(1,1, 1);
+float2 iResolution=float2(1, 1);
+float iTime=0.0;
 sampler2D iChannel0;
 sampler2D iChannel1;
 /* Explosion
@@ -214,9 +214,9 @@ float expRadius = 1.75;
 float explosion_seed = 0.0;			// keep this constant for a whole explosion, but when differing from explosion to the next one, you get non-identical looking ones
 float downscale = 1.25;				// how much smaller (than expRadius) one explosion ball should be. bigger value = smaller. 1.0 = no scale down.
 #ifndef SHADERTOY_APP
-const int steps = 64;				// iterations when marching through cloud noise_. default = 64. 40 might still suffice. When putting higher, explosion becomes too dense, so make colBottom and colTop more transparent.
+int steps = 64;				// iterations when marching through cloud noise_. default = 64. 40 might still suffice. When putting higher, explosion becomes too dense, so make colBottom and colTop more transparent.
 #else
-const int steps = 25;
+int steps = 25;
 #endif
 float grain = 2.0;					// increase for more detailed explosions, but then you should also increase iterations (and decrease step, which is done automatically)
 float speed = 0.3;					// total animation speed (time stretch). nice = 0.5, default = 0.4
@@ -233,10 +233,10 @@ float color_low = 0.25;				// the lower the value, the more black spots appear i
 float contrast = 1.0;				// final color contrast. higher values make ligher contrast. default = 1.0
 float rolling_init_damp = 0.3;		// rolling animation initial damping. 0.0 = no damping. nice = 0.2, default = 0.15
 float rolling_speed = 2.0;			// rolling animation speed (static over time). default = 1.0
-const int mult_explosions = MAX_MULT_EXPLOSIONS;	// how many explosion balls to draw
+int mult_explosions = MAX_MULT_EXPLOSIONS;	// how many explosion balls to draw
 float variation_seed = 0.0;			// influences position variation of the different explosion balls
 float delay_seed = 0.0;				// influences the start delay variation of the different explosion balls
-const float delay_range = 0.25;			// describes the maximum delay for explosion balls to start up. Notice, this delay is relative to one explosion ball duration, so actually before speed is applied.
+float delay_range = 0.25;			// describes the maximum delay for explosion balls to start up. Notice, this delay is relative to one explosion ball duration, so actually before speed is applied.
 float ball_spread = 1.0;			// how much to spread ball starting positions from the up vector. 0.0 = all on up vector, 1.0 = any direction between up and down vector.
 
 /* for up-moving explosion similar to explosion mushroom, put
@@ -288,40 +288,40 @@ float getTime()
 #if defined (ALTERNATE_MOUSE) && !defined (SHADERTOY_APP)
 	if( iMouse.z > 0.0 ) return iMouse.y/iResolution.y*tmax;
 #endif
-	return fract(iTime * speed / tmax) * tmax;
+	return frac(iTime * speed / tmax) * tmax;
 }
 
-const float pi=3.14159265;
+float pi=3.14159265;
 
 float hash( float n )
 {
-	return fract(cos(n)*41415.92653);	//https://www.shadertoy.com/view/4sXGRM
-    //return fract(sin(n)*753.5453123);	//https://www.shadertoy.com/view/4sfGzS
+	return frac(cos(n)*41415.92653);	//https://www.shadertoy.com/view/4sXGRM
+    //return frac(sin(n)*753.5453123);	//https://www.shadertoy.com/view/4sfGzS
 }
 
 float2 hash2( float n )
 {
-    //return fract(cos(n)*float2(10003.579, 37049.7));	//https://www.shadertoy.com/view/XtsSWs
-    return fract(sin(float2(n,n+1.0))*float2(13.5453123,31.1459123));
+    //return frac(cos(n)*float2(10003.579, 37049.7));	//https://www.shadertoy.com/view/XtsSWs
+    return frac(sin(float2(n,n+1.0))*float2(13.5453123,31.1459123));
 }
 
 float3 hash3( float n )
 {
-    return fract(sin(float3(n,n+1.0,n+2.0))*float3(13.5453123,31.1459123,37.3490423));
+    return frac(sin(float3(n,n+1.0,n+2.0))*float3(13.5453123,31.1459123,37.3490423));
 }
 
 float hash13(float3 p3)
 {
-	p3  = fract(p3 * float3(.1031,.11369,.13787));
+	p3  = frac(p3 * float3(.1031,.11369,.13787));
     p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.x + p3.y) * p3.z);
+    return frac((p3.x + p3.y) * p3.z);
 }
 
 #ifdef NOISE_LUT
 //iq's LUT 3D noise_
 float noise_( in float3 x )
 {
-    float3 f = fract(x);
+    float3 f = frac(x);
     float3 p = x - f; // this avoids the floor() but doesnt affect performance for me.
 #ifndef LOW_Q		// in low quality setting, for speed, we try to live without that. we compensate with growth and fade.
     f = f*f*(3.0-2.0*f);
@@ -329,23 +329,23 @@ float noise_( in float3 x )
      
     float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
     float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0 ).yx;
-    return mix( rg.x, rg.y, f.z );
+    return lerp( rg.x, rg.y, f.z );
 }
 #else
 
 float noise_( in float3 x )
 {
-    float3 f = fract(x);
+    float3 f = frac(x);
     float3 p = x - f; // this avoids the floor() but doesnt affect performance for me.
 #ifndef LOW_Q		// in low quality setting, for speed, we try to live without that. we compensate with growth and fade.
     f = f*f*(3.0-2.0*f);
 #endif
 	
     float n = p.x + p.y*157.0 + 113.0*p.z;
-    return mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
-                   mix( hash(n+157.0), hash(n+158.0),f.x),f.y),
-               mix(mix( hash(n+113.0), hash(n+114.0),f.x),
-                   mix( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z);
+    return lerp(lerp(lerp( hash(n+  0.0), hash(n+  1.0),f.x),
+                   lerp( hash(n+157.0), hash(n+158.0),f.x),f.y),
+               lerp(lerp( hash(n+113.0), hash(n+114.0),f.x),
+                   lerp( hash(n+270.0), hash(n+271.0),f.x),f.y),f.z);
 }
 #endif
 
@@ -373,7 +373,7 @@ float fbm( float3 p, float3 dir )
 }
 
 
-float tri(in float x){return abs(fract(x)-.5);}
+float tri(in float x){return abs(frac(x)-.5);}
 float3 tri3(in float3 p){return float3( tri(p.z+tri(p.y*1.)), tri(p.z+tri(p.x*1.)), tri(p.y+tri(p.x*1.)));}
 
 float triNoise3d(in float3 p, in float spd, float ti)
@@ -418,8 +418,8 @@ float3 clouds(in float3 col, in float3 ro, in float3 rd, in float mt, float ti, 
         //float3 cloudcolor = (float3(.1,0.8,.5)*.5 + .5*float3(.5, .8, 1.)*(1.7-grd))*0.55;
         //float3 cloudcolor = (2.*float3(.4,0.4,.4) + .5*float3(.5)*(1.7-grd))*0.55;
         //float3 cloudcolor = 2.*(float3(.4,0.4,.4));
-        col = mix(col,cloudcolor,clamp(rz*smoothstep(d-0.4,2.+d*1.75,mt),0.,1.) );
-        //col = mix(col,cloudcolor,clamp(rz*smoothstep(d,d*1.86,mt),0.,1.) );
+        col = lerp(col,cloudcolor,clamp(rz*smoothstep(d-0.4,2.+d*1.75,mt),0.,1.) );
+        //col = lerp(col,cloudcolor,clamp(rz*smoothstep(d,d*1.86,mt),0.,1.) );
         d *= 1.5+0.3;
     }
     return col;
@@ -433,7 +433,7 @@ float stars(float3 ray)
 {
     float3 p = ray * STARDISTANCE;
     float brigtness = smoothstep(1.0 - STARDENCITY, 1.0, hash13(floor(p)));
-    return smoothstep(STARBRIGHTNESS, 0., length(fract(p) - 0.5)) * brigtness;
+    return smoothstep(STARBRIGHTNESS, 0., length(frac(p) - 0.5)) * brigtness;
 }
 
 
@@ -442,31 +442,31 @@ float4 computeColour( float density, float radius, float bright )
 {
 	// colour based on density alone. gives impression of occlusion within
 	// the media
-	//float4 result = float4( mix( float3(1.0,0.9,0.8), float3(.7,0.3,0.2), density ), density );
-	//float4 result = float4( mix( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), density ), density );
-	float f=mix( 1.0, color_low, density );
+	//float4 result = float4( lerp( float3(1.0,0.9,0.8), float3(.7,0.3,0.2), density ), density );
+	//float4 result = float4( lerp( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), density ), density );
+	float f=lerp( 1.0, color_low, density );
 	float3 v3=float3(f,f,f);
 	float4 result = float4( v3.x, v3.y, v3.z, density );
-    //float4 result = float4( mix( 1.1*float3(1.0,0.9,0.8), 0.9*float3(0.4,0.15,0.1), density ), density );
+    //float4 result = float4( lerp( 1.1*float3(1.0,0.9,0.8), 0.9*float3(0.4,0.15,0.1), density ), density );
     //float4 result = float4(1.,1.,1.,density);
 
 	
 	// colour added for explosion
-    //result *= mix( colBottom * bright, colTop * bright, min( (radius+0.5)*0.588, 1.0 ) );
-	result *= mix( colBottom, colTop, min( (radius+0.5)*0.588, 1.0 ) ) * bright;
-    //result *= mix( colBottom, colTop, radius ) * bright;
-	//result.rgb *= mix( colBottom * bright, colTop, smoothstep( 0., 1., (radius-0.5)*0.6+0.5 ) );
-	//result *= mix( colBottom * bright, colTop, clamp( radius * 1.7-.2, 0.0, 1.0 ) );
+    //result *= lerp( colBottom * bright, colTop * bright, min( (radius+0.5)*0.588, 1.0 ) );
+	result *= lerp( colBottom, colTop, min( (radius+0.5)*0.588, 1.0 ) ) * bright;
+    //result *= lerp( colBottom, colTop, radius ) * bright;
+	//result.rgb *= lerp( colBottom * bright, colTop, smoothstep( 0., 1., (radius-0.5)*0.6+0.5 ) );
+	//result *= lerp( colBottom * bright, colTop, clamp( radius * 1.7-.2, 0.0, 1.0 ) );
     //result.a*=density*1.5;
-	//result.a *= mix( 1.0, 0.0, min( (radius / expRadius + 0.2)*0.5, 1.0 ) );
-    //result.a *= mix( 1.0, 0.2, min( (radius+0.5)/1.7, 1.0 ) );
-	//result.a *= mix( 0.0, 1.0, 1.0-radius*0.25 );
+	//result.a *= lerp( 1.0, 0.0, min( (radius / expRadius + 0.2)*0.5, 1.0 ) );
+    //result.a *= lerp( 1.0, 0.2, min( (radius+0.5)/1.7, 1.0 ) );
+	//result.a *= lerp( 0.0, 1.0, 1.0-radius*0.25 );
 	//if(radius<1.0-mouseY) result.a=0.0;
 	// make central hole
 	//result.a *= clamp((radius/expRadius-0.5*mouseIn)*15.0, 0.0, 1.0);
-	//result.xyz *= mix( 3.1*float3(1.0,0.5,0.05), float3(0.48,0.53,0.5), min( radius*.76, 1.0 ) );
+	//result.xyz *= lerp( 3.1*float3(1.0,0.5,0.05), float3(0.48,0.53,0.5), min( radius*.76, 1.0 ) );
 	
-    //result = mix( colBottom * bright * float4(1.0,0.9,0.8,1.0), colTop*float4(0.4,0.15,0.1,1.0), min( (radius+0.5)/1.7, 1.0 ) );
+    //result = lerp( colBottom * bright * float4(1.0,0.9,0.8,1.0), colTop*float4(0.4,0.15,0.1,1.0), min( (radius+0.5)/1.7, 1.0 ) );
     //result.a *= density;
     
 	return result;
@@ -475,7 +475,7 @@ float4 computeColour( float density, float radius, float bright )
 // maps 3d position to density
 float densityFn( in float3 p, in float r, float t, in float3 dir, float seed )
 {
-    //const float pi = 3.1415926;
+    //float pi = 3.1415926;
 	float den = ballness + (growth+ballness)*log(t)*r;
     den -= (2.5+ballness)*pow(t,fade)/r;
     //den = -1.7 - p.y;
@@ -670,7 +670,7 @@ float4 raymarch( in float3 rayo, in float3 rayd, in float2 expInter, in float t,
      
     // start iterating on the ray at the intersection point with the near half of the bounding sphere
 	//float3 pos = rayo + rayd * (expInter.x + step*tex2D( iChannel2, gl_FragCoord.xy/iChannelResolution[0].x ).x);		// dither start pos to break up aliasing
-	//float3 pos = rayo + rayd * (expInter.x + 1.0*step*fract(0.5*(gl_FragCoord.x+gl_FragCoord.y)));	// regular dither
+	//float3 pos = rayo + rayd * (expInter.x + 1.0*step*frac(0.5*(gl_FragCoord.x+gl_FragCoord.y)));	// regular dither
 	float3 pos = rayo + rayd * (expInter.x);	// no dither
 
     float march_pos = expInter.x;
@@ -887,7 +887,7 @@ float4 main(VsOut IN): COLOR
 
  #ifdef WITH_FUN
     // day-night cycling
-    float dnt = fract(iTime / DAY_NIGHT_CYCLE_TIME);
+    float dnt = frac(iTime / DAY_NIGHT_CYCLE_TIME);
     float day = 1.-smoothstep(.3, .5, dnt);
     float night = smoothstep(.8, 1., dnt);
     day += night;
@@ -929,7 +929,7 @@ float4 main(VsOut IN): COLOR
 #endif
 #endif
     float4 fragColor;
-	fragColor.xyz = mix( back.xyz, col.xyz, col.a );
+	fragColor.xyz = lerp( back.xyz, col.xyz, col.a );
 
     //fragColor.rgb = clouds(fragColor.rgb,cameraPos, rayDir, d, iTime*3., cloudcolor);
 

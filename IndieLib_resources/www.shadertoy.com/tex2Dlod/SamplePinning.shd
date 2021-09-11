@@ -4,12 +4,14 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+#if 0
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
-#define fract frac
-#define mix lerp
+#define frac frac
+#define lerp lerp
 #define atan(x,y) atan2(y,x)
+#endif
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -45,10 +47,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels
 float     iTime=0;                        // shader playback time (in seconds)
-const float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
 sampler2D iChannel0;
 float mod(float x, float y)
 {
@@ -128,7 +129,7 @@ float3 camVel = float3(-3.,0.,0.);
 float zoom = 1.2; // 1.5;
 
 // cam spin around on spot
-float samplesCurvature = 0.; // can mix between fixed z and fixed radius sampling
+float samplesCurvature = 0.; // can lerp between fixed z and fixed radius sampling
 
 float3 sundir = normalize(float3(-1.0,0.0,-1.));
 
@@ -136,12 +137,12 @@ float3 sundir = normalize(float3(-1.0,0.0,-1.));
 float noise_( in float3 x )
 {
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
     f = f*f*(3.0-2.0*f);
     
     float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
     float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0 ).yx;
-    return mix( rg.x, rg.y, f.z );
+    return lerp( rg.x, rg.y, f.z );
 }
 
 
@@ -164,7 +165,7 @@ float4 map( in float3 p )
     
     float3 col = 1.15 * float3(1.0,0.95,0.8);
     col += float3(1.,0.,0.) * exp2(res.x*10.-10.);
-    res.xyz = mix( col, float3(0.7,0.7,0.7), res.x );
+    res.xyz = lerp( col, float3(0.7,0.7,0.7), res.x );
     
     return res;
 }
@@ -200,7 +201,7 @@ bool on_boundary( float x, float y )
 }
 
 // put t on an appropriate sample location and initialise sampling data
-void firstT( out float t, out float dt, out float wt, out bool even )
+void firstT( inout float t, out float dt, out float wt, out bool even )
 {
     dt = exp2(floor(log2(spacing(0.))));
     t = dt - mov_mod(t,dt); // ???
@@ -234,6 +235,7 @@ float4 raymarch( in float3 ro, in float3 rd )
     
     // setup sampling
     float t, dt, wt; bool even;
+    t=0;
     firstT( t, dt, wt, even );
     
     for(int i=0; i<SAMPLE_COUNT; i++)
@@ -292,7 +294,7 @@ float3 sky( float3 rd )
     float st2 = tex2D( iChannel0, .25*float2(ax,ay) ).x;
     st *= st2;
     st = smoothstep(0.65,.9,st);
-    col = mix(col,col+1.8*st,clamp(1.-1.1*length(col),0.,1.));
+    col = lerp(col,col+1.8*st,clamp(1.-1.1*length(col),0.,1.));
     
     return col;
 }
@@ -322,10 +324,10 @@ float4 main(VsOut IN): COLOR
     float3 col = sky(rd);
     
     // divide by forward component to get fixed z layout instead of fixed dist layout
-    float3 rd_layout = rd/mix(dot(rd,ww),1.0,samplesCurvature);
+    float3 rd_layout = rd/lerp(dot(rd,ww),1.0,samplesCurvature);
     float4 clouds = raymarch( ro, rd_layout );
     
-    col = mix( col, clouds.xyz, clouds.w );
+    col = lerp( col, clouds.xyz, clouds.w );
     
 	col = clamp(col, 0., 1.);
     col = smoothstep(0.,1.,col);

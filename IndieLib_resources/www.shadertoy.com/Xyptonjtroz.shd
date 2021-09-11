@@ -20,7 +20,6 @@ struct VsOut {
     float4 position	: POSITION;
     float2 uv		: TEXCOORD0;
 };
-
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 VsOut main2(VsIn2 In)
@@ -54,9 +53,9 @@ float3 mod(float3 x, float3 y)
 {
   return x - y * floor(x / y);
 }
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
-const float4      iMouse=flaot4(1,1,1,1);                       // mouse pixel coords
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
 // Xyptonjtroz by nimitz (twitter: @stormoid)
 // https://www.shadertoy.com/view/4ts3z2
 
@@ -101,17 +100,17 @@ float height(in float2 p)
 //smooth min form iq
 float smin( float a, float b)
 {
-    const float k = 0.7;
+    float k = 0.7;
 	float h = clamp( 0.5 + 0.5*(b-a)/k, 0.0, 1.0 );
-	return mix( b, a, h ) - k*h*(1.0-h);
+	return lerp( b, a, h ) - k*h*(1.0-h);
 }
 
 //form Dave
 float2 hash22(float2 p)
 {
-	p  = fract(p * float2(5.3983, 5.4427));
+	p  = frac(p * float2(5.3983, 5.4427));
     p += dot(p.yx, p.xy +  float2(21.5351, 14.3137));
-	return fract(float2(p.x * p.y * 95.4337, p.x * p.y * 97.597));
+	return frac(float2(p.x * p.y * 95.4337, p.x * p.y * 97.597));
 }
 
 float vine(float3 p, in float c, in float h)
@@ -156,7 +155,7 @@ float march(in float3 ro, in float3 rd)
 	return d;
 }
 
-float tri(in float x){return abs(fract(x)-.5);}
+float tri(in float x){return abs(frac(x)-.5);}
 float3 tri3(in float3 p){return float3( tri(p.z+tri(p.y*1.)), tri(p.z+tri(p.x*1.)), tri(p.y+tri(p.x*1.)));}
                                  
 float2x2 m2 = float2x2(0.970,  0.242, -0.242,  0.970);
@@ -198,7 +197,7 @@ float3 fog(in float3 col, in float3 ro, in float3 rd, in float mt)
         float rz = fogmap(pos, d);
 		float grd =  clamp((rz - fogmap(pos+.8-float(i)*0.1,d))*3., 0.1, 1. );
         float3 col2 = (float3(.1,0.8,.5)*.5 + .5*float3(.5, .8, 1.)*(1.7-grd))*0.55;
-        col = mix(col,col2,clamp(rz*smoothstep(d-0.4,d+2.+d*.75,mt),0.,1.) );
+        col = lerp(col,col2,clamp(rz*smoothstep(d-0.4,d+2.+d*.75,mt),0.,1.) );
         d *= 1.5+0.3;
         if (d>mt)break;
     }
@@ -279,7 +278,7 @@ float4 main(VsOut IN): COLOR
     
 	float rz = march(ro,rd);
 	
-    float3 fogb = mix(float3(.7,.8,.8	)*0.3, float3(1.,1.,.77)*.95, pow(dot(rd,ligt2)+1.2, 2.5)*.25);
+    float3 fogb = lerp(float3(.7,.8,.8	)*0.3, float3(1.,1.,.77)*.95, pow(dot(rd,ligt2)+1.2, 2.5)*.25);
     fogb *= clamp(rd.y*.5+.6, 0., 1.);
     float3 col = fogb;
     
@@ -296,13 +295,13 @@ float4 main(VsOut IN): COLOR
         float fre = pow( clamp(1.0+dot(nor,rd),0.0,1.0), 1.5 );
         float3 brdf = float3(0.10,0.11,0.13);
         brdf += 1.5*dif*float3(1.00,0.90,0.7);
-        col = mix(float3(0.1,0.2,1),float3(.3,.5,1),pos.y*.5)*0.2+.1;
+        col = lerp(float3(0.1,0.2,1),float3(.3,.5,1),pos.y*.5)*0.2+.1;
         col *= (sin(bnoise(pos)*900.)*0.2+0.8);
         col = col*brdf + col*spe*.5 + fre*float3(.7,1.,0.2)*.3*crv;
     }
     
     //ordinary distance fog first
-    col = mix(col, fogb, smoothstep(FAR-7.,FAR,rz));
+    col = lerp(col, fogb, smoothstep(FAR-7.,FAR,rz));
     
     //then volumetric fog
     col = fog(col, ro, rd, rz);

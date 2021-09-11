@@ -4,12 +4,15 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+#if 0
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
 #define fract frac
 #define mix lerp
 #define atan(x,y) atan2(y,x)
+#endif
+
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -45,7 +48,6 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
 const int ITERATIONS = 20;
 const float STEP = 0.08;
 const float DURATION = 5.0;
@@ -211,7 +213,7 @@ float3 lookAtDir(float2 uv, float3 eye, float3 at, float3 up, float fov)
     return normalize(f + fov * (uv.x*r + uv.y*u));
 }
 
-float mod(float x, float y)s
+float mod(float x, float y)
 {
   return x - y * floor(x / y);
 }

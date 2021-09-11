@@ -4,12 +4,15 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+#if 0
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
-#define fract frac
-#define mix lerp
+#define frac frac
+#define lerp lerp
 #define atan(x,y) atan2(y,x)
+#endif
+
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -45,7 +48,6 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
 float     iTime=0;                        // shader playback time (in seconds)
 float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float mod(float x, float y)
@@ -83,9 +85,9 @@ int idObj;
 float3 qHit, sunDir, wPos, cgPos;
 float dstFar, tCur, cbLen, cbRad, cgRad, cgLen, wRad, wGap, wtRad, wcRad;
 bool showElev;
-const int idHub = 1, idSph = 2, idTor = 3, idCbl = 4, idCage = 5;
-const float pi = 3.14159;
-const float sqrt3 = 1.73205;
+int idHub = 1, idSph = 2, idTor = 3, idCbl = 4, idCage = 5;
+float pi = 3.14159;
+float sqrt3 = 1.73205;
 
 float CageDf (float3 p, float pAng, float dMin)
 {
@@ -239,14 +241,14 @@ float4 ObjCol ()
     aa = atan (qHit.z, length (qHit.xy) - wRad) / (2. * pi);
     f = max (SmoothBump (0.3, 0.7, 0.02, mod (0.5 + 63. * a, 1.)),
        SmoothBump (0.3, 0.7, 0.02, mod (4. * aa, 1.)));
-    col = mix (float4 (0.7, 0.7, 0.2, 1.), col, f);
+    col = lerp (float4 (0.7, 0.7, 0.2, 1.), col, f);
   } else if (idObj == idSph) {
     col = float4 (0.9, 0.9, 1., 0.3);
     a = (atan (qHit.y, - qHit.x) / (2. * pi));
     aa = atan (qHit.z, length (qHit.xy)) / (2. * pi);
     f = max (SmoothBump (0.3, 0.7, 0.02, mod (0.5 + 14. * a, 1.)),
        1. - SmoothBump (-0.05, 0.05, 0.01, aa));
-    col = mix (float4 (0.7, 0.7, 0.2, 1.), col, f);
+    col = lerp (float4 (0.7, 0.7, 0.2, 1.), col, f);
     if (length (qHit.xy) < 1.5 * wcRad) col = float4 (0.1, 0.1, 0., -1.);
   } else if (idObj == idCbl) {
     col = float4 (0.9, 1., 0.9, 0.3);
@@ -268,16 +270,16 @@ float3 PlCol (float3 rd, float3 vn)
   s = min ((0.5 + 0.5 * sn.y * sn.y) *
      Fbm3 (3. * normalize (float3 (sn.xz, 0.8 * sn.y))), 1.);
   col = float3 (0.5, 0.5, 1.);
-  col = mix (col, float3 (0.1, 0.2, 0.1), step (0.6, s));
-  col = mix (col, float3 (0.3, 0.25, 0.1), step (0.7, s));
-  col = mix (col, float3 (0.7), step (0.9, s));
-  spec = mix (0.8, 0.1, step (0.6, s));
+  col = lerp (col, float3 (0.1, 0.2, 0.1), step (0.6, s));
+  col = lerp (col, float3 (0.3, 0.25, 0.1), step (0.7, s));
+  col = lerp (col, float3 (0.7), step (0.9, s));
+  spec = lerp (0.8, 0.1, step (0.6, s));
   gCol = float4 (col, spec);
   sn = vn;
   sn.xz = Rot2D (sn.xz, 0.12 * tCur);
   vc = normalize (float3 (0.7 * sn.xz, sn.y));
   cCol = float4 (1., 1., 1., 0.2) * (1. - 0.2 * Fbm3 (27. * vc));
-  gCol = mix (gCol, cCol, smoothstep (0.5, 0.9, 0.7 * Fbm3 (7. * vc)));
+  gCol = lerp (gCol, cCol, smoothstep (0.5, 0.9, 0.7 * Fbm3 (7. * vc)));
   if (s > 0.6) vn = VaryNf (20. * sn, vn, 1.);
   col = gCol.rgb * (0.1 +
      0.1 * max (dot (vn, - normalize (float3 (sunDir.x, 0., sunDir.z))), 0.) +
@@ -343,16 +345,16 @@ float3 ShowScene (float3 ro, float3 rd)
     col = objCol.rgb * (0.1 +
        0.2 * max (dot (vn, - normalize (float3 (sunDir.x, 0., sunDir.z))), 0.) +
        0.7 * sh * max (0., max (dot (vn, sunDir), 0.)));
-    col = sh * mix (col, rCol, 0.2);
+    col = sh * lerp (col, rCol, 0.2);
     col += objCol.a * sh * float3 (1., 1., 0.95) *
        pow (max (0., dot (sunDir, reflect (rd, vn))), 16.);
   } else col = HvnCol (ro, rd);
   if (idObj == idCbl && abs (qHit.z) > 0.9 * cbLen)
-     col = mix (col, HvnCol (roo, rdo), smoothstep (0.9, 1., abs (qHit.z) / cbLen));
+     col = lerp (col, HvnCol (roo, rdo), smoothstep (0.9, 1., abs (qHit.z) / cbLen));
   if (showElev && dstWin < min (dstHit, dstFar)) {
     vn = float3 (normalize (roo.xy), 0.);
     rCol = float3 (0.05, 0.05, 0.) + HvnCol (roo, reflect (rdo, vn));
-    col = mix (col * float3 (1., 1., 0.5), rCol,
+    col = lerp (col * float3 (1., 1., 0.5), rCol,
        1. - pow (max (- dot (rdo, vn), 0.), 5.));
   }
   col = pow (clamp (col, 0., 1.), float3 (0.8));
@@ -455,13 +457,13 @@ float PrHexp2Df (float2 p, float r)
   return max (0.5 * (pa.x * sqrt3 + pa.y), pa.y) - r;
 }
 
-const float4 cHashA4 = float4 (0., 1., 57., 58.);
-const float3 cHashA3 = float3 (1., 57., 113.);
-const float cHashM = 43758.54;
+float4 cHashA4 = float4 (0., 1., 57., 58.);
+float3 cHashA3 = float3 (1., 57., 113.);
+float cHashM = 43758.54;
 
 float4 Hashv4f (float p)
 {
-  return fract (sin (p + cHashA4) * cHashM);
+  return frac (sin (p + cHashA4) * cHashM);
 }
 
 float Noisefv2 (float2 p)
@@ -469,10 +471,10 @@ float Noisefv2 (float2 p)
   float4 t;
   float2 ip, fp;
   ip = floor (p);
-  fp = fract (p);
+  fp = frac (p);
   fp = fp * fp * (3. - 2. * fp);
   t = Hashv4f (dot (ip, cHashA3.xy));
-  return mix (mix (t.x, t.y, fp.x), mix (t.z, t.w, fp.x), fp.y);
+  return lerp (lerp (t.x, t.y, fp.x), lerp (t.z, t.w, fp.x), fp.y);
 }
 
 float Noisefv3 (float3 p)
@@ -481,13 +483,13 @@ float Noisefv3 (float3 p)
   float3 ip, fp;
   float q;
   ip = floor (p);
-  fp = fract (p);
+  fp = frac (p);
   fp = fp * fp * (3. - 2. * fp);
   q = dot (ip, cHashA3);
   t1 = Hashv4f (q);
   t2 = Hashv4f (q + cHashA3.z);
-  return mix (mix (mix (t1.x, t1.y, fp.x), mix (t1.z, t1.w, fp.x), fp.y),
-              mix (mix (t2.x, t2.y, fp.x), mix (t2.z, t2.w, fp.x), fp.y), fp.z);
+  return lerp (lerp (lerp (t1.x, t1.y, fp.x), lerp (t1.z, t1.w, fp.x), fp.y),
+              lerp (lerp (t2.x, t2.y, fp.x), lerp (t2.z, t2.w, fp.x), fp.y), fp.z);
 }
 
 float Fbm3 (float3 p)
@@ -519,7 +521,7 @@ float Fbmn (float3 p, float3 n)
 
 float3 VaryNf (float3 p, float3 n, float f)
 {
-  const float3 e = float3 (0.1, 0., 0.);
+  float3 e = float3 (0.1, 0., 0.);
   float3 g;
   float s;
   s = Fbmn (p, n);

@@ -58,8 +58,8 @@ float3 mod(float3 x, float3 y)
 #define int2 float2
 sampler2D iChannel0;
 float     iTime=0;                        // shader playback time (in seconds)
-const float2      iResolution=float2(1,1);                  // viewport resolution (in pixels)
-const float2 iMouse=float2(1,1);
+float2      iResolution=float2(1,1);                  // viewport resolution (in pixels)
+float2 iMouse=float2(1,1);
 // Created by inigo quilez - iq/2013
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
@@ -68,7 +68,7 @@ const float2 iMouse=float2(1,1);
 float noise_( in float3 x )
 {
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
 	f = f*f*(3.0-2.0*f);
     
 #if 1
@@ -78,13 +78,13 @@ float noise_( in float3 x )
     ivec3 q = ivec3(p);
 	int2 uv = q.xy + int2(37,17)*q.z;
 
-	float2 rg = mix( mix( texelFetch( iChannel0, (uv           )&255, 0 ),
+	float2 rg = lerp( lerp( texelFetch( iChannel0, (uv           )&255, 0 ),
 				        texelFetch( iChannel0, (uv+int2(1,0))&255, 0 ), f.x ),
-				   mix( texelFetch( iChannel0, (uv+int2(0,1))&255, 0 ),
+				   lerp( texelFetch( iChannel0, (uv+int2(0,1))&255, 0 ),
 				        texelFetch( iChannel0, (uv+int2(1,1))&255, 0 ), f.x ), f.y ).yx;
 #endif    
     
-	return -1.0+2.0*mix( rg.x, rg.y, f.z );
+	return -1.0+2.0*lerp( rg.x, rg.y, f.z );
 }
 
 float map5( in float3 p )
@@ -133,9 +133,9 @@ float4 integrate( in float4 sum, in float dif, in float den, in float3 bgcol, in
 {
     // lighting
     float3 lin = float3(0.65,0.7,0.75)*1.4 + float3(1.0, 0.6, 0.3)*dif;        
-    float4 col = float4( mix( float3(1.0,0.95,0.8), float3(0.25,0.3,0.35), den ), den );
+    float4 col = float4( lerp( float3(1.0,0.95,0.8), float3(0.25,0.3,0.35), den ), den );
     col.xyz *= lin;
-    col.xyz = mix( col.xyz, bgcol, 1.0-exp(-0.003*t*t) );
+    col.xyz = lerp( col.xyz, bgcol, 1.0-exp(-0.003*t*t) );
     // front to back blending    
     col.a *= 0.4;
     col.rgb *= col.a;
@@ -201,11 +201,11 @@ float4 main(VsOut IN): COLOR
     // ray
     float3 rd = mul(ca , normalize( float3(p.x, p.y, 1.5)));
     
-    fragColor = render( ro, rd, int2(fragCoord-0.5, fragCoord-0.5) ); // ???
+    fragColor = render( ro, rd, int2(fragCoord.x-0.5, fragCoord.y-0.5) ); // ???
 	return fragColor;
 }
 
 void mainVR( out float4 fragColor, in float2 fragCoord, in float3 fragRayOri, in float3 fragRayDir )
 {
-    fragColor = render( fragRayOri, fragRayDir, int2(fragCoord-0.5, fragCoord-0.5) );
+    fragColor = render( fragRayOri, fragRayDir, int2(fragCoord.x-0.5, fragCoord.y-0.5) );
 }

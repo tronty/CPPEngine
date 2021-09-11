@@ -3,12 +3,15 @@
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
+
+#if 0
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
-#define fract frac
-#define mix lerp
+#define frac frac
+#define lerp lerp
 #define atan(x,y) atan2(y,x)
+#endif
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -44,10 +47,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
-const float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
 sampler2D iChannel0;
 sampler2D iChannel1;
 sampler2D iChannel2;
@@ -94,28 +96,28 @@ float3 mod(float3 x, float3 y)
 // keeping the black smoky look.
 //
 // Explosion colors
-const float3 veDensityBeg  = float3(0.22,0.16,0.046);
-const float3 veDensityEnd  = float3(0.403,0.291,0.216);
-const float3 veMediaCenter = float3(0.305,0.49,0.616);
-const float3 veMediaEdge   = float3(0.918,0.796,0.495);
+float3 veDensityBeg  = float3(0.22,0.16,0.046);
+float3 veDensityEnd  = float3(0.403,0.291,0.216);
+float3 veMediaCenter = float3(0.305,0.49,0.616);
+float3 veMediaEdge   = float3(0.918,0.796,0.495);
 // Sky colors
-const float3 veColSkyHigh = float3(0.2, 0.4, 0.6);
-const float3 veColSkyLow  = float3(0.0, 0.1, 0.3);
-const float3 veColStars   = float3(0.8, 0.9, 1.0);
-const float accuscale = -0.005;
-const float scalestar = 18.1  ;
-const float subdiv    = 11.714;
-const float variable  = 0.612 ;
-const float variable2 = 1.171 ;
+float3 veColSkyHigh = float3(0.2, 0.4, 0.6);
+float3 veColSkyLow  = float3(0.0, 0.1, 0.3);
+float3 veColStars   = float3(0.8, 0.9, 1.0);
+float accuscale = -0.005;
+float scalestar = 18.1  ;
+float subdiv    = 11.714;
+float variable  = 0.612 ;
+float variable2 = 1.171 ;
 // Default
-const bool veBOTH         = false;
-const bool veLEFT         = true ;
-const bool veLOW_QUALITY  = false;
-const bool veDITHERING    = true ;
-const bool veTONEMAPPING  = false;
-const bool veBackground   = true ;
-const float veBackgroundCutoff      = 0.891;
-const float veBackgroundCutoffStart = 0.387;
+bool veBOTH         = false;
+bool veLEFT         = true ;
+bool veLOW_QUALITY  = false;
+bool veDITHERING    = true ;
+bool veTONEMAPPING  = false;
+bool veBackground   = true ;
+float veBackgroundCutoff      = 0.891;
+float veBackgroundCutoffStart = 0.387;
 
 float veProgress;// = mod(iTime * 0.1, 1.);
 //-------------------
@@ -132,11 +134,11 @@ void veR( inout float2 p, in float a) {
 // iq's noise_
 float veNoise( in float3 x) {
 	float3 p = floor(x);
-	float3 f = fract(x);
+	float3 f = frac(x);
 	f = f * f * (3.0 - 2.0 * f);
 	float2 uv = (p.xy + float2(37.0, 17.0) * p.z) + f.xy;
 	float2 rg = tex2D( iChannel0, (uv+.5)/256.).yx;
-	return 1. - 0.82 * mix(rg.x, rg.y, f.z);
+	return 1. - 0.82 * lerp(rg.x, rg.y, f.z);
 }
 
 float veFBM(float3 p) {
@@ -154,7 +156,7 @@ float veSphere(float3 p, float r) {
 // This spiral noise_ works by successively adding and rotating sin waves while increasing frequency.
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise_ functions if you're ok with some repetition.
-const float veNudge = 100.3 * 4.;	// size of perpendicular vector
+float veNudge = 100.3 * 4.;	// size of perpendicular vector
 // pythagorean theorem on that perpendicular to maintain scale
 #define veNormalizer 1.0 / sqrt(1.0 + veNudge * veNudge)
 float veSpiralNoiseC(float3 p) {
@@ -199,12 +201,12 @@ float veMap(float3 p) {
 float3 veComputeColor(float density, float radius) {
 	// color based on density alone, gives impression of occlusion within
 	// the media
-	float3 result = mix(veDensityBeg, veDensityEnd, 1. - density);
+	float3 result = lerp(veDensityBeg, veDensityEnd, 1. - density);
 
 	// color added to the media
 	float3 colCenter = 7. * veMediaCenter;
 	float3 colEdge = 1.5 * veMediaEdge;
-	result *= mix(colCenter, colEdge, min((radius + .05) / .9, 1.15));
+	result *= lerp(colCenter, colEdge, min((radius + .05) / .9, 1.15));
 
 	return result;
 }
@@ -231,9 +233,9 @@ float3 veToneMapFilmicALU(float3 _color) {
 }
 
 float3 veAddZoom(float3 rd, float3 ro) {
-	const float KEY_1 = 49.5 / 256.0;
-	const float KEY_2 = 50.5 / 256.0;
-	const float KEY_3 = 51.5 / 256.0;
+	float KEY_1 = 49.5 / 256.0;
+	float KEY_2 = 50.5 / 256.0;
+	float KEY_3 = 51.5 / 256.0;
 	float key = 0.0;
 	key += 0.7 * tex2D(iChannel1, float2(KEY_1, 0.25)).x;
 	key += 1.4 * tex2D(iChannel1, float2(KEY_2, 0.25)).x;
@@ -241,22 +243,22 @@ float3 veAddZoom(float3 rd, float3 ro) {
 	return ro - (ro - rd) * key * 1.6 / 6.;
 }
 
-const float4 vecHashA4 = float4(0., 1., 57., 58.);
-const float3 vecHashA3 = float3(1., 57., 113.);
-const float vecHashM = 43758.54;
+float4 vecHashA4 = float4(0., 1., 57., 58.);
+float3 vecHashA3 = float3(1., 57., 113.);
+float vecHashM = 43758.54;
 
 float4 veHashv4f(float p) {
-	return fract(sin(p + vecHashA4) * vecHashM);
+	return frac(sin(p + vecHashA4) * vecHashM);
 }
 
 float veNoisefv2(float2 p) {
 	float4 t;
 	float2 ip, fp;
 	ip = floor(p);
-	fp = fract(p);
+	fp = frac(p);
 	fp = fp * fp * (3. - 2. * fp);
 	t = veHashv4f(dot(ip, vecHashA3.xy));
-	return mix(mix(t.x, t.y, fp.x), mix(t.z, t.w, fp.x), fp.y);
+	return lerp(lerp(t.x, t.y, fp.x), lerp(t.z, t.w, fp.x), fp.y);
 }
 
 float veNoisefv3(float3 p) {
@@ -264,13 +266,13 @@ float veNoisefv3(float3 p) {
 	float3 ip, fp;
 	float q;
 	ip = floor(p);
-	fp = fract(p);
+	fp = frac(p);
 	fp = fp * fp * (3. - 2. * fp);
 	q = dot(ip, vecHashA3);
 	t1 = veHashv4f(q);
 	t2 = veHashv4f(q + vecHashA3.z);
-	return mix(mix(mix(t1.x, t1.y, fp.x), mix(t1.z, t1.w, fp.x), fp.y),
-			mix(mix(t2.x, t2.y, fp.x), mix(t2.z, t2.w, fp.x), fp.y), fp.z);
+	return lerp(lerp(lerp(t1.x, t1.y, fp.x), lerp(t1.z, t1.w, fp.x), fp.y),
+			lerp(lerp(t2.x, t2.y, fp.x), lerp(t2.z, t2.w, fp.x), fp.y), fp.z);
 }
 
 float veFbm3(float3 p) {
@@ -316,84 +318,84 @@ float3 veSpaceCol(float3 ro, float3 rd) {
 //----------------------------------------------------------------------------------------
 //  1 out, 1 in...
 float hash11(float p) {
-	float3 p3 = fract(float3(p,p,p) * HASHSCALE1);
+	float3 p3 = frac(float3(p,p,p) * HASHSCALE1);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract((p3.x + p3.y) * p3.z);
+	return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  1 out, 2 in...
 float hash12(float2 p) {
-	float3 p3 = fract(float3(p.xyx) * HASHSCALE1);
+	float3 p3 = frac(float3(p.xyx) * HASHSCALE1);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract((p3.x + p3.y) * p3.z);
+	return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  1 out, 3 in...
 float hash13(float3 p3) {
-	p3 = fract(p3 * HASHSCALE1);
+	p3 = frac(p3 * HASHSCALE1);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract((p3.x + p3.y) * p3.z);
+	return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  2 out, 1 in...
 float2 hash21(float p) {
-	float3 p3 = fract(float3(p,p,p) * HASHSCALE3);
+	float3 p3 = frac(float3(p,p,p) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+	return frac(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
 //----------------------------------------------------------------------------------------
 ///  2 out, 2 in...
 float2 hash22(float2 p) {
-	float3 p3 = fract(float3(p.xyx,p.xyx,p.xyx) * HASHSCALE3); // ???
+	float3 p3 = frac(float3(p.xyx,p.xyx,p.xyx) * HASHSCALE3); // ???
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+	return frac(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
 //----------------------------------------------------------------------------------------
 ///  2 out, 3 in...
 float2 hash23(float3 p3) {
-	p3 = fract(p3 * HASHSCALE3);
+	p3 = frac(p3 * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
+	return frac(float2((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y));
 }
 
 //----------------------------------------------------------------------------------------
 //  3 out, 1 in...
 float3 hash31(float p) {
-	float3 p3 = fract(float3(p,p,p) * HASHSCALE3);
+	float3 p3 = frac(float3(p,p,p) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
-	return fract(
+	return frac(
 			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
 }
 
 //----------------------------------------------------------------------------------------
 ///  3 out, 2 in...
 float3 hash32(float2 p) {
-	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	float3 p3 = frac(float3(p.xyx) * HASHSCALE3);
 	p3 += dot(p3, p3.yxz + 19.19);
-	return fract(
+	return frac(
 			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
 }
 
 //----------------------------------------------------------------------------------------
 ///  3 out, 3 in...
 float3 hash33(float3 p3) {
-	p3 = fract(p3 * HASHSCALE3);
+	p3 = frac(p3 * HASHSCALE3);
 	p3 += dot(p3, p3.yxz + 19.19);
-	return fract(
+	return frac(
 			float3((p3.x + p3.y) * p3.z, (p3.x + p3.z) * p3.y, (p3.y + p3.z) * p3.x));
 }
 
 //----------------------------------------------------------------------------------------
 // 4 out, 1 in...
 float4 hash41(float p) {
-	float4 p4 = fract(float4(p) * HASHSCALE4);
+	float4 p4 = frac(float4(p) * HASHSCALE4);
 	p4 += dot(p4, p4.wzxy + 19.19);
-	return fract(
+	return frac(
 			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
 					(p4.z + p4.w) * p4.x));
 
@@ -402,9 +404,9 @@ float4 hash41(float p) {
 //----------------------------------------------------------------------------------------
 // 4 out, 2 in...
 float4 hash42(float2 p) {
-	float4 p4 = fract(float4(p.xyxy) * HASHSCALE4);
+	float4 p4 = frac(float4(p.xyxy) * HASHSCALE4);
 	p4 += dot(p4, p4.wzxy + 19.19);
-	return fract(
+	return frac(
 			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
 					(p4.z + p4.w) * p4.x));
 }
@@ -412,9 +414,9 @@ float4 hash42(float2 p) {
 //----------------------------------------------------------------------------------------
 // 4 out, 3 in...
 float4 hash43(float3 p) {
-	float4 p4 = fract(float4(p.xyzx) * HASHSCALE4);
+	float4 p4 = frac(float4(p.xyzx) * HASHSCALE4);
 	p4 += dot(p4, p4.wzxy + 19.19);
-	return fract(
+	return frac(
 			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
 					(p4.z + p4.w) * p4.x));
 }
@@ -422,9 +424,9 @@ float4 hash43(float3 p) {
 //----------------------------------------------------------------------------------------
 // 4 out, 4 in...
 float4 hash44(float4 p4) {
-	p4 = fract(p4 * HASHSCALE4);
+	p4 = frac(p4 * HASHSCALE4);
 	p4 += dot(p4, p4.wzxy + 19.19);
-	return fract(
+	return frac(
 			float4((p4.x + p4.y) * p4.z, (p4.x + p4.z) * p4.y, (p4.y + p4.z) * p4.w,
 					(p4.z + p4.w) * p4.x));
 }
@@ -506,7 +508,7 @@ float4 main(VsOut IN): COLOR
 	// t: length of the ray
 	// d: distance function
 	float density = 1., t = 0.;
-	const float h = 0.1;
+	float h = 0.1;
 	float4 sum = float4(0.0);
 	float min_dist = 0.0, max_dist = 0.0;
 	if (veRaySphereIntersect(ro, rd, min_dist, max_dist)) {
@@ -589,9 +591,9 @@ float4 main(VsOut IN): COLOR
 		// stars background
 		//float3 stars = float3(veNoise(rd * 200.0) * 0.5 + 0.5);
 		float3 stars = veStars(ro, rd);
-		float3 starbg = mix(veColSkyHigh, veColSkyLow,
+		float3 starbg = lerp(veColSkyHigh, veColSkyLow,
 				abs(1.5 * dot(normalize(rd), float3(0., 1., 0.))));
-		//float3 starbg = mix(veColSkyHigh, veColSkyLow, uv.y);
+		//float3 starbg = lerp(veColSkyHigh, veColSkyLow, uv.y);
 		//float3 brightness = smoothstep(0.95, 1.0, stars);
 		//float limits = dot(float3(0.0), rd) + 0.75;
 		//starbg += veColStars * brightness * limits;

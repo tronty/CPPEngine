@@ -39,24 +39,23 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
 sampler2D iChannel0;
 // based on https://www.shadertoy.com/view/ls2SDd
 // noise_ from https://www.shadertoy.com/view/XslGRr
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0
 
-const int MAX_RAY_STEPS = 64;
+int MAX_RAY_STEPS = 64;
 
 float noise_( in float3 x )
 {
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
 	f = f*f*(3.0-2.0*f);
 	float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
 	float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0 ).yx;
-	return -1.0+2.0*mix( rg.x, rg.y, f.z );
+	return -1.0+2.0*lerp( rg.x, rg.y, f.z );
 }
 
 float2 rotate2d(float2 v, float a) {

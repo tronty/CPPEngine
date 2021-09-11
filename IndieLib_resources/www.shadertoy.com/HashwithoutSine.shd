@@ -53,8 +53,8 @@ float3 mod(float3 x, float3 y)
 {
   return x - y * floor(x / y);
 }
-const float2 iMouse=float2(1, 1);
-const float2 iResolution=float2(1, 1);
+float2 iMouse=float2(1, 1);
+float2 iResolution=float2(1, 1);
 float iTime=0.0;
 // Hash without Sine
 // Creative Commons Attribution-ShareAlike 4.0 International Public License
@@ -92,36 +92,36 @@ float iTime=0.0;
 //  1 out, 1 in...
 float hash11(float p)
 {
-	float3 p3  = fract(float3(p, p, p) * HASHSCALE1);
+	float3 p3  = frac(float3(p, p, p) * HASHSCALE1);
     p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.x + p3.y) * p3.z);
+    return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  1 out, 2 in...
 float hash12(float2 p)
 {
-	float3 p3  = fract(float3(p.xyx, p.xyx, p.xyx) * HASHSCALE1); // ???
+	float3 p3  = frac(float3(p.xy, p.xy, p.xy) * HASHSCALE1); // ???
     p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.x + p3.y) * p3.z);
+    return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  1 out, 3 in...
 float hash13(float3 p3)
 {
-	p3  = fract(p3 * HASHSCALE1);
+	p3  = frac(p3 * HASHSCALE1);
     p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.x + p3.y) * p3.z);
+    return frac((p3.x + p3.y) * p3.z);
 }
 
 //----------------------------------------------------------------------------------------
 //  2 out, 1 in...
 float2 hash21(float p)
 {
-	float3 p3 = fract(float3(p) * HASHSCALE3);
+	float3 p3 = frac(float3(p) * HASHSCALE3);
 	p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.xx+p3.yz)*p3.zy);
+    return frac((p3.xx+p3.yz)*p3.zy);
 
 }
 
@@ -129,9 +129,9 @@ float2 hash21(float p)
 ///  2 out, 2 in...
 float2 hash22(float2 p)
 {
-	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	float3 p3 = frac(float3(p.xyx) * HASHSCALE3);
     p3 += dot(p3, p3.yzx+19.19);
-    return fract((p3.xx+p3.yz)*p3.zy);
+    return frac((p3.xx+p3.yz)*p3.zy);
 
 }
 
@@ -139,18 +139,18 @@ float2 hash22(float2 p)
 ///  2 out, 3 in...
 float2 hash23(float3 p3)
 {
-	p3 = fract(p3 * HASHSCALE3);
+	p3 = frac(p3 * HASHSCALE3);
     p3 += dot(p3, p3.yzx+19.19);
-    return fract((p3.xx+p3.yz)*p3.zy);
+    return frac((p3.xx+p3.yz)*p3.zy);
 }
 
 //----------------------------------------------------------------------------------------
 //  3 out, 1 in...
 float3 hash31(float p)
 {
-   float3 p3 = fract(float3(p) * HASHSCALE3);
+   float3 p3 = frac(float3(p) * HASHSCALE3);
    p3 += dot(p3, p3.yzx+19.19);
-   return fract((p3.xxy+p3.yzz)*p3.zyx); 
+   return frac((p3.xxy+p3.yzz)*p3.zyx); 
 }
 
 
@@ -158,18 +158,18 @@ float3 hash31(float p)
 ///  3 out, 2 in...
 float3 hash32(float2 p)
 {
-	float3 p3 = fract(float3(p.xyx) * HASHSCALE3);
+	float3 p3 = frac(float3(p.xyx) * HASHSCALE3);
     p3 += dot(p3, p3.yxz+19.19);
-    return fract((p3.xxy+p3.yzz)*p3.zyx);
+    return frac((p3.xxy+p3.yzz)*p3.zyx);
 }
 
 //----------------------------------------------------------------------------------------
 ///  3 out, 3 in...
 float3 hash33(float3 p3)
 {
-	p3 = fract(p3 * HASHSCALE3);
+	p3 = frac(p3 * HASHSCALE3);
     p3 += dot(p3, p3.yxz+19.19);
-    return fract((p3.xxy + p3.yxx)*p3.zyx);
+    return frac((p3.xxy + p3.yxx)*p3.zyx);
 
 }
 
@@ -177,9 +177,9 @@ float3 hash33(float3 p3)
 // 4 out, 1 in...
 float4 hash41(float p)
 {
-	float4 p4 = fract(float4(p) * HASHSCALE4);
+	float4 p4 = frac(float4(p) * HASHSCALE4);
     p4 += dot(p4, p4.wzxy+19.19);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
+    return frac((p4.xxyz+p4.yzzw)*p4.zywx);
     
 }
 
@@ -187,9 +187,9 @@ float4 hash41(float p)
 // 4 out, 2 in...
 float4 hash42(float2 p)
 {
-	float4 p4 = fract(float4(p.xyxy) * HASHSCALE4);
+	float4 p4 = frac(float4(p.xyxy) * HASHSCALE4);
     p4 += dot(p4, p4.wzxy+19.19);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
+    return frac((p4.xxyz+p4.yzzw)*p4.zywx);
 
 }
 
@@ -197,18 +197,18 @@ float4 hash42(float2 p)
 // 4 out, 3 in...
 float4 hash43(float3 p)
 {
-	float4 p4 = fract(float4(p.xyzx)  * HASHSCALE4);
+	float4 p4 = frac(float4(p.xyzx)  * HASHSCALE4);
     p4 += dot(p4, p4.wzxy+19.19);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
+    return frac((p4.xxyz+p4.yzzw)*p4.zywx);
 }
 
 //----------------------------------------------------------------------------------------
 // 4 out, 4 in...
 float4 hash44(float4 p4)
 {
-	p4 = fract(p4  * HASHSCALE4);
+	p4 = frac(p4  * HASHSCALE4);
     p4 += dot(p4, p4.wzxy+19.19);
-    return fract((p4.xxyz+p4.yzzw)*p4.zywx);
+    return frac((p4.xxyz+p4.yzzw)*p4.zywx);
 }
 
 //###############################################################################
@@ -217,11 +217,11 @@ float4 hash44(float4 p4)
 float hashOld12(float2 p)
 {
     // Two typical hashes...
-	return fract(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453);
+	return frac(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453);
     
     // This one is better, but it still stretches out quite quickly...
     // But it's really quite bad on my Mac(!)
-    //return fract(sin(dot(p, float2(1.0,113.0)))*43758.5453123);
+    //return frac(sin(dot(p, float2(1.0,113.0)))*43758.5453123);
 
 }
 
@@ -231,7 +231,7 @@ float3 hashOld33( float3 p )
 			  dot(p,float3(269.5,183.3,246.1)),
 			  dot(p,float3(113.5,271.9,124.6)));
 
-	return fract(sin(p)*43758.5453123);
+	return frac(sin(p)*43758.5453123);
 }
 
 //----------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ float4 main(VsOut IN): COLOR
         a += hash12(pos);
     	b += hashOld12(pos);
     }
-    float3 col = float3(mix(b, a, step(uv.x, .5))) / float(ITERATIONS);
+    float3 col = float3(lerp(b, a, step(uv.x, .5))) / float(ITERATIONS);
 #else
 	float3 a = float3(0.0), b = a;
     for (int t = 0; t < ITERATIONS; t++)
@@ -262,10 +262,10 @@ float4 main(VsOut IN): COLOR
         a += hash33(pos);
         b += hashOld33(pos);
     }
-    float3 col = float3(mix(b, a, step(uv.x, .5))) / float(ITERATIONS);
+    float3 col = float3(lerp(b, a, step(uv.x, .5))) / float(ITERATIONS);
 #endif
 
-    col = mix(float3(.4, 0.0, 0.0), col, smoothstep(.5, .495, uv.x) + smoothstep(.5, .505, uv.x));
+    col = lerp(float3(.4, 0.0, 0.0), col, smoothstep(.5, .495, uv.x) + smoothstep(.5, .505, uv.x));
 	fragColor = float4(col, 1.0);
 	return fragColor;
 }

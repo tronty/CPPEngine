@@ -39,10 +39,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
-const float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
 sampler2D iChannel0;
 sampler2D iChannel1;
 float3      iChannelResolution[4];        // channel resolution (in pixels)
@@ -60,30 +59,30 @@ float3      iChannelResolution[4];        // channel resolution (in pixels)
 // https://www.shadertoy.com/view/4djSRW
 float Hash11(float p)
 {
-	float3 p3  = fract(float3(p,p,p) * .1031);
+	float3 p3  = frac(float3(p,p,p) * .1031);
     p3 += dot(p3, p3.yzx + 19.19);
-    return fract((p3.x + p3.y) * p3.z);
+    return frac((p3.x + p3.y) * p3.z);
 }
 
 //=================================================================================================
 float Noise( in float x )
 {
     float p = floor(x);
-    float f = fract(x);
+    float f = frac(x);
     f = f*f*(3.0-2.0*f);
-    return mix(Hash11(p), Hash11(p+1.0), f);
+    return lerp(Hash11(p), Hash11(p+1.0), f);
 }
 
 //=================================================================================================
 float Bump( in float3 x )
 {
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
 	f = f*f*(3.0-2.0*f);
 	
 	float2 uv = (p.xy + float2(37.0, 17.0) * p.z) + f.xy;
 	float2 rg = tex2D( iChannel0, (uv+ 0.5) / 256.0).yx;
-	return mix(rg.x, rg.y, f.z);
+	return lerp(rg.x, rg.y, f.z);
 }
 
 //=================================================================================================
@@ -91,12 +90,12 @@ float Noise( in float3 x )
 {
 	x.y -= iTime *4.0;	
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
 	f = f*f*(3.0-2.0*f);
 	
 	float2 uv = (p.xy + float2(37.0, 17.0) * p.z) + f.xy;
 	float2 rg = tex2D( iChannel0, (uv+ 0.5) / 256.0).yx;
-	return mix(rg.x, rg.y, f.z);
+	return lerp(rg.x, rg.y, f.z);
 }
 
 //=================================================================================================
@@ -340,10 +339,10 @@ float4 main(VsOut IN): COLOR
 			f = pow(abs(f), 15.0) * .0001;
 			
 			hearth += f * float3(.7, .15, 0.) * max(85.-d, 0.0);
-			mat = mix(hearth, mat, smoothstep(80.0, 180.0, d));
+			mat = lerp(hearth, mat, smoothstep(80.0, 180.0, d));
 			
 			mat *= float3(1.0, .3, 0.1) * bri;
-			col = mix(col, mat, min((ray.y*ray.y) * 146.0, 1.0));
+			col = lerp(col, mat, min((ray.y*ray.y) * 146.0, 1.0));
 		}
 		else
 		{
@@ -363,7 +362,7 @@ float4 main(VsOut IN): COLOR
 	col = (1.0-exp(-col*2.0))*1.15;
 	col = sqrt(col);	
 	
-	//col = min(mix(float3(length(col)),col, 1.1), 1.0);
+	//col = min(lerp(float3(length(col)),col, 1.1), 1.0);
 	// Vignette...
 	col *= 0.5 + 0.5 * pow(150.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y), .5 );	
 	

@@ -4,12 +4,14 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 
+#if 0
 #define WSIGN +
 #define ROW_MAJOR
 #define MVPSEMANTIC
-#define fract frac
-#define mix lerp
+#define frac frac
+#define lerp lerp
 #define atan(x,y) atan2(y,x)
+#endif
 struct VsIn2 {
     float2 position	: POSITION;
     float2 uv		: TEXCOORD0;
@@ -45,10 +47,9 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#endif
-const float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
+float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
-const float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
 sampler2D iChannel0;
 sampler2D iChannel1;
 sampler2D iChannel2;
@@ -93,11 +94,11 @@ float3 mod(float3 x, float3 y)
 float noise_( in float3 x )
 {
     float3 p = floor(x);
-    float3 f = fract(x);
+    float3 f = frac(x);
 	f = f*f*(3.0-2.0*f);
 	float2 uv = (p.xy+float2(37.0,17.0)*p.z) + f.xy;
 	float2 rg = tex2D( iChannel0, (uv+ 0.5)/256.0 ).yx;
-	return 1. - 0.82*mix( rg.x, rg.y, f.z );
+	return 1. - 0.82*lerp( rg.x, rg.y, f.z );
 }
 
 float fbm( float3 p )
@@ -116,7 +117,7 @@ float Sphere( float3 p, float r )
 // This spiral noise_ works by successively adding and rotating sin waves while increasing frequency.
 // It should work the same on all computers since it's not based on a hash function like some other noises.
 // It can be much faster than other noise_ functions if you're ok with some repetition.
-const float nudge = 4.;	// size of perpendicular vector
+float nudge = 4.;	// size of perpendicular vector
 // pythagorean theorem on that perpendicular to maintain scale
 #define normalizer 1.0 / sqrt(1.0 + nudge*nudge)
 float SpiralNoiseC(float3 p)
@@ -163,12 +164,12 @@ float3 computeColor( float density, float radius )
 {
 	// color based on density alone, gives impression of occlusion within
 	// the media
-	float3 result = mix( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), density );
+	float3 result = lerp( float3(1.0,0.9,0.8), float3(0.4,0.15,0.1), density );
 	
 	// color added to the media
 	float3 colCenter = 7.*float3(0.8,1.0,1.0);
 	float3 colEdge = 1.5*float3(0.48,0.53,0.5);
-	result *= mix( colCenter, colEdge, min( (radius+.05)/.9, 1.15 ) );
+	result *= lerp( colCenter, colEdge, min( (radius+.05)/.9, 1.15 ) );
 	
 	return result;
 }
@@ -198,9 +199,9 @@ float3 ToneMapFilmicALU(float3 _color)
 float4 main(VsOut IN): COLOR 
 {
 	float2 fragCoord=IN.uv;
-    const float KEY_1 = 49.5/256.0;
-	const float KEY_2 = 50.5/256.0;
-	const float KEY_3 = 51.5/256.0;
+    float KEY_1 = 49.5/256.0;
+	float KEY_2 = 50.5/256.0;
+	float KEY_3 = 51.5/256.0;
     float key = 0.0;
     key += 0.7*tex2D(iChannel1, float2(KEY_1,0.25)).x;
     key += 0.7*tex2D(iChannel1, float2(KEY_2,0.25)).x;
@@ -221,7 +222,7 @@ float4 main(VsOut IN): COLOR
 	// d: distance function
 	float d=1., t=0.;
     
-    const float h = 0.1;
+    float h = 0.1;
    
 	float4 sum = float4(0,0,0,0);
    
@@ -310,7 +311,7 @@ float4 main(VsOut IN): COLOR
     	float f=noise_(rd*500.0)*0.5+0.5;
         float3 stars = float3(f,f,f);
         float3 starbg = float3(0,0,0);
-        starbg = mix(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0,0,0),rd)+0.75,0.0,1.0));
+        starbg = lerp(starbg, float3(0.8,0.9,1.0), smoothstep(0.99, 1.0, stars)*clamp(dot(float3(0,0,0),rd)+0.75,0.0,1.0));
         starbg = clamp(starbg, 0.0, 1.0);
         sum.xyz += starbg; 
     }
