@@ -25,7 +25,7 @@ const char* filename[] =
 "/www.shadertoy.com/CheapCloudFlythrough.shd",
 "/www.shadertoy.com/CheapCurvature.shd",
 "/www.shadertoy.com/AlienBeacon.shd",
-"/www.shadertoy.com/Common.shd",
+//"/www.shadertoy.com/Common.shd",
 "/www.shadertoy.com/dustynebula1.shd",
 "/www.shadertoy.com/explosionno12.shd",
 "/www.shadertoy.com/explosionno13.shd",
