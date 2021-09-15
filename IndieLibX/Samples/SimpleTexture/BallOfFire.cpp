@@ -13,6 +13,8 @@ const char* filename[] =
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 #if 1
+"/www.shadertoy.com/TileableNoise.shd",
+"/www.shadertoy.com/InfiniteTerrainII.shd",
 "/glslsandbox.com/e#59382.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/Mountains.shd",
 "/www.shadertoy.com/www.shadertoy.com/Seascape.shd",
