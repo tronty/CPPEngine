@@ -14,7 +14,7 @@ const char* filename[] =
 #endif
 #if 1
 "/www.shadertoy.com/video_heightfield2.shd",
-//"/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
+"/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
 "/www.shadertoy.com/TileableNoise.shd",
 //"/www.shadertoy.com/InfiniteTerrainII.shd",
 "/glslsandbox.com/e#59382.0.shd",
@@ -280,8 +280,6 @@ void render()
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
-
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	#if 1
 	//		           x	 y     tx    ty
