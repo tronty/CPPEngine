@@ -22,6 +22,7 @@ struct VsOut {
 	float3 normal   : TEXCOORD1;
 	float  fog      : TEXCOORD2;
 	float2 scale    : TEXCOORD3;
+	float3 cubeCoord: TEXCOORD4;
 };
 
 float mod(float x, float y)
@@ -39,7 +40,7 @@ float3 mod(float3 x, float3 y)
   return x - y * floor(x / y);
 }
 
-float3 camPos=float3(0.000000, 0.800000, 0.000000);
+float3 camPos=float3(0.000000, 0.000000, 1.000000);
 float pixel=0.001953;
 float halfPixel=0.000977;
 float scale = 10;
@@ -82,12 +83,12 @@ float Noise(in float2 p, in float scale_ )
 
 #if 0
 //----------------------------------------------------------------------------------------
-float fBm(in float2 p)
+float fBm(in float2 p, in float scale_)
 {
     p += float2(sin(iTime * .7), cos(iTime * .45))*(.1) + iMouse.xy*.1/iResolution.xy;
 	float f = 0.0;
 	// Change starting scale to any integer value...
-	float scale = 10.;
+	float scale = scale_;
     p = mod(p, scale);
 	float amp   = 0.6;
 	
@@ -102,7 +103,7 @@ float fBm(in float2 p)
 	return min(f, 1.0);
 }
 
-float turb(float2 c){
+float turb(float2 c, in float scale_){
 	float t = 0.0;
 
 	float k = 1.0;
@@ -110,7 +111,7 @@ float turb(float2 c){
 		#if 0
 		float n = tex2D(Noise, c).x;
 		#else
-		float n = Noise(c, scale);
+		float n = Noise(c, scale_);
 		#endif
 
 		t += k * n;
@@ -122,11 +123,13 @@ float turb(float2 c){
 	return t;
 }
 
+#if 0
 #define NOISE_SIZE 128	
 float Height(float2 texCoord)
 {
 	return tileableNoise2(x * 0.143f, z * 0.143f, 0.143f * NOISE_SIZE, 0.143f * NOISE_SIZE); // ???
 }
+#endif
 #endif
 
 [Vertex shader]
@@ -148,13 +151,22 @@ VsOut main2(VsIn2 In)
 	float2 texCoord3 = texCoord + float2( 0.0, -pixel);
 	float2 texCoord4 = texCoord;
 
-	// Height = tileableNoise2(x * 0.143f, z * 0.143f, 0.143f * NOISE_SIZE, 0.143f * NOISE_SIZE);	
+	// Height = tileableNoise2(x * 0.143f, z * 0.143f, 0.143f * NOISE_SIZE, 0.143f * NOISE_SIZE);
+	#if 1
 	float height = Noise(texCoord, scale);	
 	float height0 = Noise(texCoord0, scale).x;
 	float height1 = Noise(texCoord1, scale).x;
 	float height2 = Noise(texCoord2, scale).x;
 	float height3 = Noise(texCoord3, scale).x;
 	float height4 = Noise(texCoord4, scale).x;
+	#else
+	float height = turb(texCoord, scale);	
+	float height0 = turb(texCoord0, scale).x;
+	float height1 = turb(texCoord1, scale).x;
+	float height2 = turb(texCoord2, scale).x;
+	float height3 = turb(texCoord3, scale).x;
+	float height4 = turb(texCoord4, scale).x;
+	#endif
 	float4 vertex = float4(In.position.x, height, In.position.y, 1.0);
 	
 	float3 tangent  = float3(0.004, height0 - height1, 0.0  );
@@ -165,13 +177,16 @@ VsOut main2(VsIn2 In)
 	Out.scale = saturate(vertex.w * 1.2 - 0.3) * float2(0.6, 0.5);
 
 	Out.position = mul(worldViewProj, vertex);
+	// Nvidia seems to have some kind of weird precision problem here
+	Out.position.z *= 0.99999;
+	Out.cubeCoord = Out.position.xyz;
 	return Out;
 }
 VsOut main3(VsIn3 In)
 {
 	VsOut Out=(VsOut)0;
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
 	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
 	return Out;
 }
 
@@ -218,6 +233,8 @@ float4 main(VsOut IN): COLOR
 sampler2D Ground;
 float3 lightDir=float3(0.000000, 0.600000, 0.800000);
 float4 fogColor=float4(1.000000, 0.500000, 0.100000, 1.000000);
+samplerCUBE Env;
+float4 scaleBias=float4(0.003,-0.003,-1,1);
 
 float4 main(VsOut IN): COLOR 
 {
@@ -225,6 +242,13 @@ float4 main(VsOut IN): COLOR
 	float2 fragCoord=IN.uv;
 	float2 uv = fragCoord.xy / iResolution.xy;
 	float2 coord=uv;
+	float4 fogColor_=fogColor;
+#if 1
+	float4 sky = texCUBE(Env, IN.cubeCoord);
+	float fog = saturate(normalize(IN.cubeCoord).y * scaleBias.x + scaleBias.y);
+	fog *= fog * (3 - 2 * fog);
+	fogColor_=lerp(fogColor_, sky, fog);
+#endif
 #if 0
 	float t = turb(coord);
 	float3 p = float3(uv.x, t * t * 0.45, uv.y);
@@ -235,7 +259,7 @@ float4 main(VsOut IN): COLOR
 	#else
 	float4 base = float4(0,1,0,1);
 	#endif
-	return lerp(diffuse * base, fogColor, IN.fog);
+	return lerp(diffuse * base, fogColor_, IN.fog);
 #endif
 }
 #endif

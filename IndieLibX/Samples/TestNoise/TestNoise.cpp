@@ -24,8 +24,10 @@ const char* filename[] =
 //"/HLSL-noise/HLSL-noise3.shd",
 //"/HLSL-noise/HLSL-noise4.shd"
 #else
+"/www.shadertoy.com/video_heightfield2.shd",
+//"/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
 "/www.shadertoy.com/TileableNoise.shd",
-"/www.shadertoy.com/InfiniteTerrainII.shd",
+//"/www.shadertoy.com/InfiniteTerrainII.shd",
 "/glslsandbox.com/e#59382.0.shd",
 "/www.shadertoy.com/www.shadertoy.com/Mountains.shd",
 "/www.shadertoy.com/www.shadertoy.com/Seascape.shd",
