@@ -13,6 +13,12 @@ const char* filename[] =
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 #if 1
+"/www.shadertoy.com/www.shadertoy.com_/4df3Rn.shd",
+"/www.shadertoy.com/www.shadertoy.com_/4dSXWt.shd",
+"/www.shadertoy.com/www.shadertoy.com_/4sX3Rn.shd",
+"/www.shadertoy.com/www.shadertoy.com_/4tfBWX.shd",
+"/www.shadertoy.com/www.shadertoy.com_/7dyGWV.shd",
+"/www.shadertoy.com/www.shadertoy.com_/MsdBD2.shd",
 "/www.shadertoy.com/video_heightfield2.shd",
 "/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
 "/www.shadertoy.com/TileableNoise.shd",
