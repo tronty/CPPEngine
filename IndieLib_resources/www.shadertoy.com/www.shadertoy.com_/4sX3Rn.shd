@@ -38,8 +38,10 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
+
 float iTime=0;
 float2 iResolution=float2(1,1);
+float2 iMouse=float2(1,1);
 
 float mod(float x, float y)
 {
@@ -96,8 +98,9 @@ float2 iBox( in float3 ro, in float3 rd, in float3 rad )
 float3x3 ma = float3x3( 0.60, 0.00,  0.80,
                       0.00, 1.00,  0.00,
                      -0.80, 0.00,  0.60 );
-float4 map( in float3 p )
+float4 map( in float3 p_ )
 {
+	float3 p=p_;
     float d = sdBox(p,float3(1,1,1));
     float4 res = float4( d, 1.0, 0.0, 0.0 );
 
@@ -133,14 +136,14 @@ float4 map( in float3 p )
 
 float4 intersect( in float3 ro, in float3 rd )
 {
-    float2 bb = iBox( ro, rd, float3(1.05) );
-    if( bb.y<bb.x ) return float4(-1.0);
+    float2 bb = iBox( ro, rd, float3(1.05,1.05,1.05) );
+    if( bb.y<bb.x ) return float4(-1.0,-1.0,-1.0,-1.0);
     
     float tmin = bb.x;
     float tmax = bb.y;
     
     float t = tmin;
-    float4 res = float4(-1.0);
+    float4 res = float4(-1.0,-1.0,-1.0,-1.0);
     for( int i=0; i<64; i++ )
     {
         float4 h = map(ro + rd*t);
@@ -148,13 +151,13 @@ float4 intersect( in float3 ro, in float3 rd )
         res = float4(t,h.yzw);
         t += h.x;
     }
-	if( t>tmax ) res=float4(-1.0);
+	if( t>tmax ) res=float4(-1.0,-1.0,-1.0,-1.0);
     return res;
 }
 
 float softshadow( in float3 ro, in float3 rd, float mint, float k )
 {
-    float2 bb = iBox( ro, rd, float3(1.05) );
+    float2 bb = iBox( ro, rd, float3(1.05,1.05,1.05) );
     float tmax = bb.y;
     
     float res = 1.0;
@@ -219,7 +222,7 @@ float3 render( in float3 ro, in float3 rd )
     return col;
 }
 
-float4 main( in float2 fragCoord ):COLOR
+float4 main( in float2 fragCoord:TEXCOORD0 ):COLOR
 {
     // camera
     float3 ro = 1.1*float3(2.5*sin(0.25*iTime),1.0+1.0*cos(iTime*.13),2.5*cos(0.25*iTime));
@@ -251,11 +254,11 @@ float4 main( in float2 fragCoord ):COLOR
     float3 col = render( ro, rd );
 #endif        
     
-    fragColor = float4(col,1.0);
+    return float4(col,1.0);
 }
 
 
-flaot4 main( in float2 fragCoord, in float3 fragRayOri, in float3 fragRayDir ) : COLOR
+float4 main_( in float2 fragCoord:TEXCOORD0, in float3 fragRayOri:TEXCOORD1, in float3 fragRayDir:TEXCOORD2 ) : COLOR
 {
     float time = iTime*0.25 + 0.01*iMouse.x;
     float anim = 1.1 + 0.5*smoothstep( -0.3, 0.3, cos(0.1*iTime) );

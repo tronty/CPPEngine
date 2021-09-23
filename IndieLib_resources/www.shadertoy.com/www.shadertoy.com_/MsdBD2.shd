@@ -42,6 +42,9 @@ VsOut main3(VsIn3 In)
 // LICENSE: http://unlicense.org/
 #define SCALE 13
 
+int iFrame=1;
+#define SCALE 13
+
 float4 hash( float2 p)
 {   
 	// uvec4 q = ( p.x + p.y + uvec4(3U*p.x, 2U*p.y, p.x, 0) )  >> SCALE;
@@ -59,6 +62,7 @@ float4 hash( float2 p)
 float4 main( in float2 fragCoord:TEXCOORD ) : COLOR
 {
     float2 uv = abs(fragCoord);
-    float4 col = 0.5*sqrt(hash(uv+abs(float2(4U << SCALE))+abs(float2(1U,3U))*abx(int(iFrame))));
+    float4 col = 0.5*sqrt(hash(uv+abs(float2(4U << SCALE))+abs(float2(1U,3U))*abs(int(iFrame))));
     return float4(col.xyz+col.yzw,1.0);
 }
+
