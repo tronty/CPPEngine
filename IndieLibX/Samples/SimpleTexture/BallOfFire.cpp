@@ -18,6 +18,8 @@ const char* filename[] =
 "/www.shadertoy.com/www.shadertoy.com_/XdSXWt.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4sX3Rn.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4tfBWX.shd",
+"/www.shadertoy.com/www.shadertoy.com_/Desert_biome.shd",
+"/www.shadertoy.com/www.shadertoy.com_/Sandstone_canyons.shd",
 "/www.shadertoy.com/www.shadertoy.com_/7dyGWV.shd",
 "/www.shadertoy.com/www.shadertoy.com_/MsdBD2.shd",
 "/www.shadertoy.com/video_heightfield2.shd",
