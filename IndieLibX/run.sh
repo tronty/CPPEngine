@@ -6,6 +6,7 @@ cd ./bin;./Road04.bin;cd .. &&
 cd ./bin;./BallOfFire.bin;cd .. &&
 cd ./bin;./TestNoise.bin;cd .. &&
 cd ./bin;./RenderMonkey.bin;cd .. &&
+cd ./bin;./Skinning10.bin;cd .. &&
 cd ./bin;./pbr.bin;cd .. &&
 cd ./bin;./teapots_8c.bin;cd .. &&
 cd ./bin;./DirectionalLighting.bin;cd .. &&

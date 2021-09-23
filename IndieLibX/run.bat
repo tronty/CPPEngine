@@ -25,6 +25,9 @@ cd bin
 call RenderMonkey.exe
 cd ..
 cd bin
+call Skinning10.exe
+cd ..
+cd bin
 call pbr.exe
 cd ..
 cd bin

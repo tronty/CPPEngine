@@ -1,3 +1,14 @@
+#if 0
+E:\>fxc Skinning10.fx /EVSSkinnedmain /Tvs_3_0
+Microsoft (R) Direct3D Shader Compiler 9.29.952.3111
+Copyright (C) Microsoft Corporation 2002-2009. All rights reserved.
+
+E:\Skinning10.fx(159,16): error X4532: cannot map expression to vertex shader instruction set
+
+compilation failed; no code produced
+
+E:\>
+#endif
 //--------------------------------------------------------------------------------------
 // File: Skinning10.fx
 //
@@ -21,10 +32,10 @@
 struct VSSkinnedIn
 {
     float3 Pos	: POSITION;			//Position
-    float4 Weights : WEIGHTS;		//Bone weights
-    uint4  Bones : BONES;			//Bone indices
+    float4 Weights : TEXCOORD0;//WEIGHTS;		//Bone weights
+    uint4  Bones : TEXCOORD1;//BONES;			//Bone indices
     float3 Norm : NORMAL;			//Normal
-    float2 Tex	: TEXCOORD;		    //Texture coordinate
+    float2 Tex	: TEXCOORD2;		    //Texture coordinate
     float3 Tan : TANGENT;		    //Normalized Tangent vector
 };
 
@@ -38,10 +49,10 @@ struct VSStreamOut
 
 struct PSSkinnedIn
 {
-    float4 Pos	: SV_Position;		//Position
-    float3 vPos : POSWORLD;			//world space Pos
+    float4 Pos	: POSITION;		//Position
+    float3 vPos : TEXCOORD0;//POSWORLD;			//world space Pos
     float3 Norm : NORMAL;			//Normal
-    float2 Tex	: TEXCOORD;		    //Texture coordinate
+    float2 Tex	: TEXCOORD1;		    //Texture coordinate
     float3 Tangent : TANGENT;		//Normalized Tangent vector
 };
 
@@ -50,8 +61,10 @@ struct PSSkinnedIn
 //--------------------------------------------------------------------------------------
 //cbuffer cb0
 //{
-    float4x4 g_mWorldViewProj;
-    float4x4 g_mWorld;
+    //ROW_MAJOR 
+    float4x4 g_mWorldViewProj;// MVPSEMANTIC;
+    //ROW_MAJOR 
+    float4x4 g_mWorld;// MVPSEMANTIC;
 //};
 
 //cbuffer cbUserChange
@@ -67,6 +80,7 @@ struct PSSkinnedIn
     float4 g_objectspeccolor = float4(1.0,1.0,1.0,1.0);
 //};
 
+#if 0
 // Constant buffer for bone matrices
 //cbuffer cbAnimMatrices
 //{
@@ -78,14 +92,15 @@ struct PSSkinnedIn
 //{
     float4x4 g_mTexBoneWorld[MAX_BONE_MATRICES];
 //};
+#endif
 
 //--------------------------------------------------------------------------------------
 // Textures
 //--------------------------------------------------------------------------------------
-Texture2D g_txDiffuse;
-Texture2D g_txNormal;
+sampler2D g_txDiffuse;
+sampler2D g_txNormal;
 // Texture for bone matrices
-Texture1D g_txTexBoneWorld;
+sampler1D g_txTexBoneWorld;
 
 //--------------------------------------------------------------------------------------
 // Buffers (this is the buffer object for bone matrices)
@@ -123,8 +138,9 @@ struct SkinnedInfo
 //			the stream.  This should give better linear access performance.
 //--------------------------------------------------------------------------------------
 uniform uint iFetchType = FT_TEXTURE;
-float4x4 FetchBoneTransform( uint iBone )
+float4x4 FetchBoneTransform( uint iBone_ )
 {
+	uint iBone=iBone_;
     float4x4 mret;
     #if 0
     if( FT_CONSTANTBUFFER == iFetchType )
@@ -138,11 +154,11 @@ float4x4 FetchBoneTransform( uint iBone )
     else if ( FT_TEXTURE == iFetchType )
     #endif
     {
-        iBone *= 4;
-        float4 row1 = g_txTexBoneWorld.Load( float2(iBone,     0) );
-        float4 row2 = g_txTexBoneWorld.Load( float2(iBone + 1, 0) );
-        float4 row3 = g_txTexBoneWorld.Load( float2(iBone + 2, 0) );
-        float4 row4 = g_txTexBoneWorld.Load( float2(iBone + 3, 0) );
+        //iBone *= 4;
+        float4 row1 = tex1D(g_txTexBoneWorld, 4.0*iBone );
+        float4 row2 = tex1D(g_txTexBoneWorld, 4.0*iBone + 1 );
+        float4 row3 = tex1D(g_txTexBoneWorld, 4.0*iBone + 2 );
+        float4 row4 = tex1D(g_txTexBoneWorld, 4.0*iBone + 3 ); // ??? E:\Skinning10.fx(159,16): error X4532: cannot map expression to vertex shader instruction set
         
         mret = float4x4( row1, row2, row3, row4 );
     }
@@ -177,33 +193,33 @@ SkinnedInfo SkinVert( VSSkinnedIn Input) //, uniform uint iFetchType )
     uint iBone = Input.Bones.x;
     float fWeight = Input.Weights.x;
     float4x4 m = FetchBoneTransform( iBone);//, iFetchType );
-    Output.Pos += fWeight * mul( Pos, m );
-    Output.Norm += fWeight * mul( Norm, (float3x3)m );
-    Output.Tan += fWeight * mul( Tan, (float3x3)m );
+    Output.Pos += fWeight * mul( m, Pos );
+    Output.Norm += fWeight * mul( (float3x3)m, Norm );
+    Output.Tan += fWeight * mul( (float3x3)m, Tan );
     
     //Bone1
     iBone = Input.Bones.y;
     fWeight = Input.Weights.y;
     m = FetchBoneTransform( iBone);//, iFetchType );
-    Output.Pos += fWeight * mul( Pos, m );
-    Output.Norm += fWeight * mul( Norm, (float3x3)m );
-    Output.Tan += fWeight * mul( Tan, (float3x3)m );
+    Output.Pos += fWeight * mul( m, Pos );
+    Output.Norm += fWeight * mul( (float3x3)m, Norm );
+    Output.Tan += fWeight * mul( (float3x3)m, Tan );
     
     //Bone2
     iBone = Input.Bones.z;
     fWeight = Input.Weights.z;
     m = FetchBoneTransform( iBone);//, iFetchType );
-    Output.Pos += fWeight * mul( Pos, m );
-    Output.Norm += fWeight * mul( Norm, (float3x3)m );
-    Output.Tan += fWeight * mul( Tan, (float3x3)m );
+    Output.Pos += fWeight * mul( m, Pos );
+    Output.Norm += fWeight * mul( (float3x3)m, Norm );
+    Output.Tan += fWeight * mul( (float3x3)m, Tan );
     
     //Bone3
     iBone = Input.Bones.w;
     fWeight = Input.Weights.w;
     m = FetchBoneTransform( iBone);//, iFetchType );
-    Output.Pos += fWeight * mul( Pos, m );
-    Output.Norm += fWeight * mul( Norm, (float3x3)m );
-    Output.Tan += fWeight * mul( Tan, (float3x3)m );
+    Output.Pos += fWeight * mul( m, Pos );
+    Output.Norm += fWeight * mul( (float3x3)m, Norm );
+    Output.Tan += fWeight * mul( (float3x3)m, Tan );
     
     return Output;
 }
@@ -211,20 +227,23 @@ SkinnedInfo SkinVert( VSSkinnedIn Input) //, uniform uint iFetchType )
 //--------------------------------------------------------------------------------------
 // Vertex shader used for skinning the mesh for immediate render
 //--------------------------------------------------------------------------------------
-PSSkinnedIn VSSkinnedmain(VSSkinnedIn input)//, uniform uint iFetchType )
+[Vertex shader]
+PSSkinnedIn //VSSkinnedmain
+	main(VSSkinnedIn input)//, uniform uint iFetchType )
 {
     PSSkinnedIn output;
     
     SkinnedInfo vSkinned = SkinVert( input);//, iFetchType );
-    output.Pos = mul( vSkinned.Pos, g_mWorldViewProj );
-    output.vPos = mul( vSkinned.Pos, g_mWorld );
-    output.Norm = normalize( mul( vSkinned.Norm, (float3x3)g_mWorld ) );
-    output.Tangent = normalize( mul( vSkinned.Tan, (float3x3)g_mWorld ) );
+    output.Pos = mul( g_mWorldViewProj, vSkinned.Pos );
+    output.vPos = mul( (float3x3)g_mWorld, vSkinned.Pos.xyz ); // ???
+    output.Norm = normalize( mul( (float3x3)g_mWorld, vSkinned.Norm ));
+    output.Tangent = normalize( mul( (float3x3)g_mWorld, vSkinned.Tan ));
     output.Tex = input.Tex;
     
     return output;
 }
 
+#if 0
 //--------------------------------------------------------------------------------------
 // Vertex shader used for skinning and streaming out
 //--------------------------------------------------------------------------------------
@@ -256,14 +275,21 @@ PSSkinnedIn VSRenderPostTransformedmain(VSStreamOut input )
     
     return output;
 }
-
+#endif
 //--------------------------------------------------------------------------------------
 // Pixel shader that performs bump mapping on the final vertex
 //--------------------------------------------------------------------------------------
-float4 PSSkinnedmain(PSSkinnedIn input) : SV_Target
-{	
+[Fragment shader]
+float4 //PSSkinnedmain
+	main(PSSkinnedIn input) : COLOR0
+{
+#if 0
     float4 diffuse = g_txDiffuse.Sample( g_samLinear, input.Tex );
     float3 Norm = g_txNormal.Sample( g_samLinear, input.Tex );
+#else // ???
+    float4 diffuse = tex2D(g_txDiffuse, input.Tex );
+    float3 Norm = tex2D(g_txNormal, input.Tex ).xyz;
+#endif
     Norm *= 2.0;
     Norm -= float3(1,1,1);
     
@@ -286,6 +312,7 @@ float4 PSSkinnedmain(PSSkinnedIn input) : SV_Target
     return lightColor*diffuse + spec*g_objectspeccolor*diffuse.a;
 }
 
+#if 0
 #if 0
 ///////////////////////////////////////////////////////////
 //This is how we stream out straight from the VS
@@ -470,4 +497,4 @@ DepthStencilState EnableDepth
     </pass>
 </technique>
 </Techniques>
-
+#endif

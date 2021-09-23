@@ -1,6 +1,9 @@
 import os, sys, re
 
 def replaceString(outtext):
+    outtext=re.sub(r'\bsrand\b', 'stx_srand', outtext)
+    outtext=re.sub(r'\brand\b', 'stx_rand', outtext)
+    return outtext
     outtext=re.sub(r'1e\-3', '0.001', outtext)
     outtext=re.sub(r'\bfract\b', 'frac', outtext)
     outtext=re.sub(r'\bgl_FragCoord\b', 'fragCoord', outtext)
@@ -683,7 +686,8 @@ def myfunmem(dummy, dirr, filess):
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
 
-os.path.walk('../../IndieLib_resources/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com', myfunshd, 13)
+os.path.walk('../Samples', myfun, 13)
+#os.path.walk('../../IndieLib_resources/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com', myfunshd, 13)
 #os.path.walk('../Samples/new/new/new/javagames/src/Pacman', myfun, 13)
 #os.path.walk('../Samples/new/new_/R2VB_VTF', myfun, 13)
 exit(0)

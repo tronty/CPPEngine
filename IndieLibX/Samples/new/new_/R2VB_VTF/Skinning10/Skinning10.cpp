@@ -42,19 +42,22 @@ D3DXFROMWINEMATRIX                  g_View;
 D3DXFROMWINEVECTOR3			g_EyePt;
 
 MeshRenderer2                        g_SkinnedMesh;			// The skinned mesh
-stx_Effect*                       g_pEffect10 = 0;
-VertexFormatID                   g_pSkinnedVertexLayout = 0;
-VertexFormatID                   g_pTransformedVertexLayout = 0;
+ShaderID                       g_pEffect10 = -1;
+VertexFormatID                   g_pSkinnedVertexLayout = -1;
+VertexFormatID                   g_pTransformedVertexLayout = -1;
 
+#if 0
 stx_Effect::stx_Technique*              g_pRenderConstantBuffer = 0;
 stx_Effect::stx_Technique*              g_pRenderTextureBuffer = 0;
 stx_Effect::stx_Technique*              g_pRenderTexture = 0;
 stx_Effect::stx_Technique*              g_pRenderBuffer = 0;
 
+#ifdef USEGEOMETRYSHADERS
 stx_Effect::stx_Technique*              g_pRenderConstantBuffer_SO = 0;
 stx_Effect::stx_Technique*              g_pRenderTextureBuffer_SO = 0;
 stx_Effect::stx_Technique*              g_pRenderTexture_SO = 0;
 stx_Effect::stx_Technique*              g_pRenderBuffer_SO = 0;
+#endif
 
 stx_Effect::stx_Technique*              g_pRenderPostTransformed = 0;
 
@@ -68,16 +71,21 @@ stx_Effect::stx_Variable* g_pBoneBufferVar = 0;
 stx_Effect::stx_Variable* g_ptxBoneTexture = 0;
 stx_Effect::stx_Variable* g_ptxDiffuse = 0;
 stx_Effect::stx_Variable* g_ptxNormal = 0;
-
+#endif
+#if 0
 VertexBufferID                        g_pBoneBuffer = 0;
 TextureID            g_pBoneBufferRV = 0;
 TextureID                     g_pBoneTexture = 0;
 TextureID            g_pBoneTextureRV = 0;
 
 VertexBufferID*                       g_ppTransformedVBs = 0;
+#endif
+TextureID g_ptxBoneTexture = -1;
+TextureID g_ptxDiffuse = -1;
+TextureID g_ptxNormal = -1;
 
 D3DXFROMWINEVECTOR3                         g_vLightPos = D3DXFROMWINEVECTOR3( 159.47f, 74.23f, 103.60f );
-FETCH_TYPE                          g_FetchType = FT_CONSTANTBUFFER;
+FETCH_TYPE                          g_FetchType = FT_TEXTURE;//FT_CONSTANTBUFFER;
 bool                                g_bUseStreamOut = true;
 unsigned int                                g_iInstances = 10;
 
@@ -96,23 +104,31 @@ int  OnCreateDevice()
     // Read the D3DXFROMWINE effect file
     #if 0
     g_pEffect10=IRenderer::GetRendererInstance()->addEffectFromFile("/new/R2VB_VTF/Skinning10/Skinning10.fx");
-    #else
+    #elif 0
     g_pEffect10=IRenderer::GetRendererInstance()->addEffectFromFile("/SimpleTexture/SimpleTexture.fx");
+    #else
+    g_pEffect10=IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/Skinning10/Skinning10.shd", "main", "main");
+    //if(g_pEffect10==-1) printf("g_pEffect10=%x\n", g_pEffect10);
+    g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
     #endif
 
+#if 0
     // Get effects techniques
     g_pRenderConstantBuffer = g_pEffect10->GetTechniqueByName( "RenderConstantBuffer" );
     g_pRenderTextureBuffer = g_pEffect10->GetTechniqueByName( "RenderTextureBuffer" );
     g_pRenderTexture = g_pEffect10->GetTechniqueByName( "RenderTexture" );
     g_pRenderBuffer = g_pEffect10->GetTechniqueByName( "RenderBuffer" );
 
+#ifdef USEGEOMETRYSHADERS
     g_pRenderConstantBuffer_SO = g_pEffect10->GetTechniqueByName( "RenderConstantBuffer_SO" );
     g_pRenderTextureBuffer_SO = g_pEffect10->GetTechniqueByName( "RenderTextureBuffer_SO" );
     g_pRenderTexture_SO = g_pEffect10->GetTechniqueByName( "RenderTexture_SO" );
     g_pRenderBuffer_SO = g_pEffect10->GetTechniqueByName( "RenderBuffer_SO" );
+#endif
 
     g_pRenderPostTransformed = g_pEffect10->GetTechniqueByName( "RenderPostTransformed" );
-
+#endif
+#if 0
     // Get effects variables
     g_pmWorldViewProj = g_pEffect10->GetVariableByName( "g_mWorldViewProj" );
     g_pmWorld = g_pEffect10->GetVariableByName( "g_mWorld" );
@@ -124,6 +140,7 @@ int  OnCreateDevice()
     g_ptxBoneTexture = g_pEffect10->GetVariableByName( "g_txTexBoneWorld" );
     g_ptxDiffuse = g_pEffect10->GetVariableByName( "g_txDiffuse" );
     g_ptxNormal = g_pEffect10->GetVariableByName( "g_txNormal" );
+#endif
 
     // Define our vertex data layout for skinned objects
 	#if 0
@@ -136,7 +153,7 @@ int  OnCreateDevice()
         { "TEXCOORD", 0, FORMAT_R32G32_FLOAT, 0,       32, D3D10_INPUT_PER_VERTEX_DATA, 0 },
         { "TANGENT", 0, FORMAT_R32G32B32_FLOAT, 0,     40, D3D10_INPUT_PER_VERTEX_DATA, 0 },
     };
-	#elif 0
+	#elif 1
 	{FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -146,7 +163,7 @@ int  OnCreateDevice()
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2,
 		0, TYPE_TANGENT, FORMAT_FLOAT, 3
 	};
-	g_pSkinnedVertexLayout = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), -1);}
+	g_pSkinnedVertexLayout = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), g_pEffect10);}
 	#endif
 	#if 0
     // Define our vertex data layout for post-transformed objects
@@ -157,7 +174,7 @@ int  OnCreateDevice()
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2,
 		0, TYPE_TANGENT, FORMAT_FLOAT, 3
 	};
-	g_pTransformedVertexLayout = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), -1);}
+	g_pTransformedVertexLayout = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), g_pEffect10);}
 	#endif
 
     // Load the animated mesh
@@ -165,7 +182,9 @@ int  OnCreateDevice()
     g_SkinnedMesh.Load("Soldier/soldier.sdkmesh");
     // ??? g_SkinnedMesh.LoadAnimation( "Soldier/soldier.sdkmesh_anim" );
     #else
-    g_SkinnedMesh.Load("/assimp--1.0.412-sdk/dwarf.x");
+    g_SkinnedMesh.Load("/assimp--1.0.412-sdk/test.x");
+    g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/assimp--1.0.412-sdk/test.png", false, IRenderer::GetRendererInstance()->Getlinear());
+    //if(0) printf("g_ptxDiffuse=%x\n", g_ptxDiffuse);
     #endif
     D3DXFROMWINEMATRIX mIdentity;
     D3DXFROMWINEMatrixIdentity( &mIdentity );
@@ -175,14 +194,15 @@ int  OnCreateDevice()
     // It will be updated more than once per frame (in a typical game) so make it dynamic ???
 	Image3 img;
 	img.create(FORMAT_RGBA32f, MAX_BONE_MATRICES * 4, 1, 1, 1);
-	g_pBoneTexture=IRenderer::GetRendererInstance()->addTexture(&img, false, IRenderer::GetRendererInstance()->Getlinear());
-
+	g_ptxBoneTexture=IRenderer::GetRendererInstance()->addTexture(&img, false, IRenderer::GetRendererInstance()->Getlinear());
+    
+#if 0
     // Create a bone matrix buffer
     // It will be updated more than once per frame (in a typical game) so make it dynamic
     g_pBoneBuffer=IRenderer::GetRendererInstance()->addVertexBuffer(MAX_BONE_MATRICES * sizeof( D3DXFROMWINEMATRIX ), DYNAMIC);
-
+    
     // Again, we need a resource view to use it in the shader ???
-
+    
     // Create VBs that will hold all of the skinned vertices that need to be streamed out
     g_ppTransformedVBs = new VertexBufferID [ g_SkinnedMesh.GetNumMeshes() ];
     if( !g_ppTransformedVBs )
@@ -192,7 +212,7 @@ int  OnCreateDevice()
         unsigned int iStreamedVertexCount = ( unsigned int )g_SkinnedMesh.GetNumVertices( m, 0 );
 	g_ppTransformedVBs[m]=IRenderer::GetRendererInstance()->addVertexBuffer(iStreamedVertexCount * sizeof( STREAM_OUT_VERTEX ), STATIC); // ???
     }
-
+#endif
     // Setup the camera's view parameters
     D3DXFROMWINEVECTOR3 vecEye( 2.0f, 0.5f, 2.0f );
     D3DXFROMWINEVECTOR3 vecAt ( 0.0f, 0.5f, -1.0f );
@@ -253,14 +273,14 @@ void  OnFrameRender(double fTime, float fElapsedTime)
     mProj = g_Proj;
     mView = g_View;
     mViewProj = mView * mProj;
-
+    D3DXFROMWINEVECTOR3 vEye = g_EyePt;
+#if 0
     // Set general effect values
     g_pvLightPos->SetFloatVector( ( float* )&g_vLightPos );
-    D3DXFROMWINEVECTOR3 vEye = g_EyePt;
     g_pvEyePt->SetFloatVector( ( float* )&vEye );
-
     // Set technique
     stx_Effect::stx_Technique* pTech = 0;
+#ifdef USEGEOMETRYSHADERS
     if( g_bUseStreamOut )
     {
         switch( g_FetchType )
@@ -280,6 +300,7 @@ void  OnFrameRender(double fTime, float fElapsedTime)
         };
     }
     else
+#endif
     {
         switch( g_FetchType )
         {
@@ -302,6 +323,7 @@ void  OnFrameRender(double fTime, float fElapsedTime)
     unsigned int stride[1];
     unsigned int offset[1] = { 0 };
 
+#if USEGEOMETRYSHADERS
     if( g_bUseStreamOut )
     {
         //
@@ -391,14 +413,22 @@ void  OnFrameRender(double fTime, float fElapsedTime)
         //clear out the vb bindings for the next pass
     }
     else
+    #endif
     {
         for( unsigned int iInstance = 0; iInstance < g_iInstances; iInstance++ )
         {
             // Set effect variables
             GetInstanceWorldMatrix( iInstance, &mWorld );
             mWorldViewProj = mWorld * mViewProj;
-            g_pmWorldViewProj->SetMatrix( ( float* )&mWorldViewProj );
-            g_pmWorld->SetMatrix( ( float* )&mWorld );
+           //g_pmWorldViewProj->SetMatrix( ( float* )&mWorldViewProj );
+            //g_pmWorld->SetMatrix( ( float* )&mWorld );
+            IRenderer::GetRendererInstance()->setShaderConstant4x4f( "g_mWorldViewProj", g_pmWorldViewProj );
+            IRenderer::GetRendererInstance()->setShaderConstant4x4f( "g_mWorld", g_pmWorld );
+            IRenderer::GetRendererInstance()->setShaderConstant3f( "g_vLightPos", g_pvLightPos );
+            IRenderer::GetRendererInstance()->setShaderConstant3f( "g_vEyePt", g_EyePt );
+            IRenderer::GetRendererInstance()->setTexture( "g_txTexBoneWorld", g_ptxBoneTexture );
+            IRenderer::GetRendererInstance()->setTexture( "g_txDiffuse", g_ptxDiffuse );
+            IRenderer::GetRendererInstance()->setTexture( "g_txNormal", g_ptxNormal );
 
             // Set vertex Layout
             //IRenderer::GetRendererInstance()->setVertexFormat( g_pSkinnedVertexLayout );
@@ -442,6 +472,44 @@ void  OnFrameRender(double fTime, float fElapsedTime)
             }//nummeshes
         }
     }
+    #else
+	D3DXFROMWINEMATRIX I;
+	D3DXFROMWINEMatrixIdentity(&I);
+	IRenderer::GetRendererInstance()->setShader(g_pEffect10);
+	IRenderer::GetRendererInstance()->setVertexFormat(g_pSkinnedVertexLayout);
+            g_SkinnedMesh.BeginDraw();
+            IRenderer::GetRendererInstance()->setShaderConstant4x4f( "g_mWorldViewProj", I);//g_pmWorldViewProj );
+            IRenderer::GetRendererInstance()->setShaderConstant4x4f( "g_mWorld", I);//g_pmWorld );
+            IRenderer::GetRendererInstance()->setShaderConstant3f( "g_vLightPos", g_vLightPos );
+            IRenderer::GetRendererInstance()->setShaderConstant3f( "g_vEyePt", g_EyePt );
+            IRenderer::GetRendererInstance()->setTexture( "g_txTexBoneWorld", g_ptxBoneTexture );
+            IRenderer::GetRendererInstance()->setTexture( "g_txDiffuse", g_ptxDiffuse );
+            IRenderer::GetRendererInstance()->setTexture( "g_txNormal", g_ptxNormal );
+            g_SkinnedMesh.EndDraw(&I);
+  		//STXGUI::update();
+		const char* txt = "Use mouse buttons to rotate the model.";
+		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 
+			15, 18,
+			IRenderer::GetRendererInstance()->GetdefaultFont(), 
+			IRenderer::GetRendererInstance()->GetlinearClamp(), 
+			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
+			IRenderer::GetRendererInstance()->GetnoDepthTest());
+
+		txt = "CTRL-r resets the scene.";
+		IRenderer::GetRendererInstance()->drawText(txt, 10, 30, 
+			15, 18,
+			IRenderer::GetRendererInstance()->GetdefaultFont(), 
+			IRenderer::GetRendererInstance()->GetlinearClamp(), 
+			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
+			IRenderer::GetRendererInstance()->GetnoDepthTest());
+	/* if(0)
+	{
+		printf("g_pEffect10=%x\n", g_pEffect10);
+		printf("g_pSkinnedVertexLayout=%x\n", g_pSkinnedVertexLayout);
+    		printf("g_ptxDiffuse=%x\n", g_ptxDiffuse);
+		stx_exit(0);
+	} */
+    #endif
 }
 
 //--------------------------------------------------------------------------------------
@@ -479,6 +547,7 @@ void  OnFrameMove( double fTime, float fElapsedTime)
 //--------------------------------------------------------------------------------------
 void SetBoneMatrices( FETCH_TYPE ft, unsigned int iMesh )
 {
+#if 0
     switch( ft )
     {
         case FT_CONSTANTBUFFER:
@@ -497,19 +566,24 @@ void SetBoneMatrices( FETCH_TYPE ft, unsigned int iMesh )
             break;
         case FT_TEXTURE:
         {
+        #endif
 		//D3DXFROMWINEMATRIX Matrices[g_SkinnedMesh.GetNumInfluences( iMesh )];
             D3DXFROMWINEMATRIX* pMatrices=0;
             int hr = 0;
 		int pitch;
-		pMatrices=(D3DXFROMWINEMATRIX*)IRenderer::GetRendererInstance()->LockTexture(g_pBoneTexture, 0, pitch);
+		pMatrices=(D3DXFROMWINEMATRIX*)IRenderer::GetRendererInstance()->LockTexture(g_ptxBoneTexture, 0, pitch);
             for( unsigned int i = 0; i < g_SkinnedMesh.GetNumInfluences( iMesh ); i++ )
             {
                 pMatrices[i] = *g_SkinnedMesh.GetMeshInfluenceMatrix( 0, i );
             }
-    		IRenderer::GetRendererInstance()->UnlockTexture(g_pBoneTexture, 0);
+    		IRenderer::GetRendererInstance()->UnlockTexture(g_ptxBoneTexture, 0);
 
+#if 0
             g_ptxBoneTexture->SetResource( g_pBoneTexture );
-            //IRenderer::GetRendererInstance()->setTexture("g_txTexBoneWorld", g_pBoneTexture);
+#else
+            IRenderer::GetRendererInstance()->setTexture("g_txTexBoneWorld", g_ptxBoneTexture);
+#endif
+        #if 0
         }
             break;
         case FT_BUFFER:
@@ -528,6 +602,7 @@ void SetBoneMatrices( FETCH_TYPE ft, unsigned int iMesh )
         }
             break;
     };
+    #endif
 };};
 App app;
 int init(const char* aTitle)
