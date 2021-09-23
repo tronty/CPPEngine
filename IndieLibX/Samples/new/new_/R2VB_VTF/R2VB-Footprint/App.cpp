@@ -439,7 +439,7 @@ void accumulateTerrain(TextureID &accumulatedHeightMap, float speed)
 		IRenderer::GetRendererInstance()->setDepthFunc(eDEPTH_NONE);
 		
 		IRenderer::GetRendererInstance()->setShaderConstant1f("accumulateSpeed", speed);
-		IRenderer::GetRendererInstance()->setShaderConstant2f("random", D3DXFROMWINEVECTOR2((rand()%137)/100.0f, (rand()%531)/100.0f));
+		IRenderer::GetRendererInstance()->setShaderConstant2f("random", D3DXFROMWINEVECTOR2((stx_rand()%137)/100.0f, (stx_rand()%531)/100.0f));
 		
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR4));	
 }
@@ -515,9 +515,9 @@ void AILoop()
 	}
 	else
 	{
-		if (!(rand()%5) && player.bInSafeZone)
+		if (!(stx_rand()%5) && player.bInSafeZone)
 		{
-			player.Deg -= 1.0f + (2 - rand()%4);
+			player.Deg -= 1.0f + (2 - stx_rand()%4);
 			yawMatrix(player.Trans, player.Deg);	
 		}
 	}

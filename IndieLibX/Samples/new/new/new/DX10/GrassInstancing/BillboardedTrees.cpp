@@ -65,16 +65,16 @@ int BillboardedTrees::Initialize( D3DXFROMWINEVECTOR2 offPos, int numTrees, floa
 	for( int i=0; i<m_treeCnt; i++ )
 	{
 
-		float rot  = 2.0f*D3DXFROMWINE_PI*(float)rand()/RAND_MAX;
-		float spreadRadius = spread + 2.0f*spread*(float)rand()/RAND_MAX;
+		float rot  = 2.0f*D3DXFROMWINE_PI*(float)stx_rand()/RAND_MAX;
+		float spreadRadius = spread + 2.0f*spread*(float)stx_rand()/RAND_MAX;
 
 		m_pTreeData[i].Pos.x	= spreadRadius * sinf(rot)+offPos.x;
 		m_pTreeData[i].Pos.z    = spreadRadius * cosf(rot)+offPos.y;
 		m_pTreeData[i].Pos.y    = yPos; 	//TODO HeightField( xPos, yPos );
 		
 		// Vary the size of the trees a bit randomly
-		 m_pTreeData[i].scale.x  = (width  + 0.3f * (float)(rand()-rand())/RAND_MAX)/width;
-		 m_pTreeData[i].scale.y  = (height + 0.5f * (float)(rand()-rand())/RAND_MAX)/height;
+		 m_pTreeData[i].scale.x  = (width  + 0.3f * (float)(stx_rand()-stx_rand())/RAND_MAX)/width;
+		 m_pTreeData[i].scale.y  = (height + 0.5f * (float)(stx_rand()-stx_rand())/RAND_MAX)/height;
 		
 	}
 

@@ -34,7 +34,7 @@ bool App::init(){
 	showInfo = false;
 
 	// Generate a noise texture
-	srand(1);
+	stx_srand(1);
 	initNoise();
 
 	float *nDest = (float *) noiseImage.create(FORMAT_R32F, NOISE_SIZE, NOISE_SIZE, 1, 1);

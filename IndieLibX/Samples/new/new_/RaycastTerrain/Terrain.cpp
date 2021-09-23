@@ -374,7 +374,7 @@ int CTerrain::CreateTileResources( TERRAIN_TILE* pTile )
 //--------------------------------------------------------------------------------------
 float RPercent()
 {
-    float ret = ( float )( ( rand() % 20000 ) - 10000 );
+    float ret = ( float )( ( stx_rand() % 20000 ) - 10000 );
     return ret / 10000.0f;
 }
 

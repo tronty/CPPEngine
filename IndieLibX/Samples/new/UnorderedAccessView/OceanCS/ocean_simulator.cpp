@@ -31,8 +31,8 @@
 // Generating gaussian random number with mean 0 and standard deviation 1.
 float Gauss()
 {
-	float u1 = rand() / (float)RAND_MAX;
-	float u2 = rand() / (float)RAND_MAX;
+	float u1 = stx_rand() / (float)RAND_MAX;
+	float u2 = stx_rand() / (float)RAND_MAX;
 	if (u1 < 1e-6f)
 		u1 = 1e-6f;
 	return sqrtf(-2 * logf(u1)) * cosf(2*D3DXFROMWINE_PI * u2);
@@ -332,7 +332,7 @@ void OceanSimulator::initHeightMap(OceanParameter& params, D3DXFROMWINEVECTOR2* 
 	float patch_length = params.patch_length;
 
 	// initialize random generator.
-	srand(0);
+	stx_srand(0);
 
 	for (i = 0; i <= height_map_dim; i++)
 	{

@@ -543,8 +543,8 @@ Keskeytetty (luotiin core-tiedosto)
 	R2VB_TEXCOORD_VALUE_FORMAT *lpCUV = uvdest;
 		for (uint i=0; i<maxBatchOnce; i++)
 		{			
-			float OffsetX = (rand()%4)*0.25f;
-			float OffsetY = (rand()%4)*0.25f;
+			float OffsetX = (stx_rand()%4)*0.25f;
+			float OffsetY = (stx_rand()%4)*0.25f;
 			for (uint j=0; j<m->numVertices; j++)
 			{
 				*uvdest++ = R2VB_TEXCOORD_VALUE_FORMAT(lpUVList[j].x+OffsetX);
@@ -560,8 +560,8 @@ Keskeytetty (luotiin core-tiedosto)
 	R2VB_TEXCOORD_VALUE_FORMAT *lpCUV = uvdest;
 		for (uint i=0; i<maxBatchOnce; i++)
 		{			
-			float OffsetX = (rand()%4)*0.25f;
-			float OffsetY = (rand()%4)*0.25f;
+			float OffsetX = (stx_rand()%4)*0.25f;
+			float OffsetY = (stx_rand()%4)*0.25f;
 			for (uint j=0; j<m->numVertices; j++)
 			{
 				uvdest+=4;
@@ -732,23 +732,23 @@ void resetModels()
 	{
 		modelAI[x].bBounce = false;
 		modelAI[x].bInSafeZone = true;
-		modelAI[x].Deg = (float)(rand()%360);
-		modelAI[x].Speed = (1.5f + rand()%50/10.0f)*SCALE;
+		modelAI[x].Deg = (float)(stx_rand()%360);
+		modelAI[x].Speed = (1.5f + stx_rand()%50/10.0f)*SCALE;
 		Quat.x = sinf(modelAI[x].Deg*D2R/2) * 0.0f;
 		Quat.y = sinf(modelAI[x].Deg*D2R/2) * 1.0f;
 		Quat.z = sinf(modelAI[x].Deg*D2R/2) * 0.0f;
 		Quat.w = cosf(modelAI[x].Deg*D2R/2);
 		modelAI[x].Trans = identity4();
 		Quaternion2float4x4(modelAI[x].Trans, Quat);
-		modelAI[x].Trans.m[0][3] = (float)(rand()%3000-1500)*SCALE;
+		modelAI[x].Trans.m[0][3] = (float)(stx_rand()%3000-1500)*SCALE;
 		modelAI[x].Trans.m[1][3] = 0.0f*SCALE;
-		modelAI[x].Trans.m[2][3] = (float)(rand()%3000-1500)*SCALE;
+		modelAI[x].Trans.m[2][3] = (float)(stx_rand()%3000-1500)*SCALE;
 
-		modelAI[x].time = (float)(rand()%((int)RUN_T1))+1.0f;
-		modelAI[x].interpolate = (rand()%10)/10.0f;
+		modelAI[x].time = (float)(stx_rand()%((int)RUN_T1))+1.0f;
+		modelAI[x].interpolate = (stx_rand()%10)/10.0f;
 
 		modelAI[x].bBounceByGround = false;
-		modelAI[x].Scale.y = (rand()%60)/100.0f + 0.8f;
+		modelAI[x].Scale.y = (stx_rand()%60)/100.0f + 0.8f;
 
 		modelAI[x].currentState = RUN;
 	}
@@ -1093,7 +1093,7 @@ void AILoop()
 					modelAI[x].currentState = DYING;
 					modelAI[x].time = DIE_T0;
 					modelAI[x].interpolate = 0.0f;
-					modelAI[x].upSpeed = (8.0f + ((rand()%800)/100.0f))*SCALE;
+					modelAI[x].upSpeed = (8.0f + ((stx_rand()%800)/100.0f))*SCALE;
 					modelAI[x].flyDir = Dist/Len;
 					modelAI[x].bDie = false;
 					modelAI[x].bBounceByGround = false;
@@ -1101,7 +1101,7 @@ void AILoop()
 			}
 			else
 			{
-				if (!(rand()%600)) // Sometimes they want dancing
+				if (!(stx_rand()%600)) // Sometimes they want dancing
 				{
 					if (modelAI[x].currentState == RUN)
 					{
@@ -1110,7 +1110,7 @@ void AILoop()
 						modelAI[x].interpolate = 0.0f;
 					}
 				}
-				else if (!(rand()%600)) // Sometimes they want kicking
+				else if (!(stx_rand()%600)) // Sometimes they want kicking
 				{
 					if (modelAI[x].currentState == RUN)
 					{
@@ -1162,7 +1162,7 @@ void AILoop()
 					else // if the character is inside the boundary
 					{
 						// turn a degree randomly 
-						if (!(rand()%20))
+						if (!(stx_rand()%20))
 						{
 							modelAI[x].Deg += 3.0f;
 							Quat.y = sinf(modelAI[x].Deg*D2R/2.0f);
@@ -1232,7 +1232,7 @@ void AILoop()
 		for (int x=0; x<numModels; x++)
 		{
 			// turn a degree randomly 
-			if (!(rand()%20))
+			if (!(stx_rand()%20))
 			{
 				modelAI[x].Deg += 3.0f*D2R;
 				Quat.y = sinf(modelAI[x].Deg/2) * 1.0f;
@@ -1284,9 +1284,9 @@ void AILoop()
 				modelAI[x].Trans.m[2][3] > 2500.0f*SCALE || modelAI[x].Trans.m[2][3] < -2500.0f*SCALE)
 			{
 				// respawn the character inside the boundary
-				modelAI[x].Trans.m[0][3] = (float)(rand()%3000-1500)*SCALE;
+				modelAI[x].Trans.m[0][3] = (float)(stx_rand()%3000-1500)*SCALE;
 				modelAI[x].Trans.m[1][3] = 0.0f;
-				modelAI[x].Trans.m[2][3] = (float)(rand()%3000-1500)*SCALE;
+				modelAI[x].Trans.m[2][3] = (float)(stx_rand()%3000-1500)*SCALE;
 			}
 		}
 	}	

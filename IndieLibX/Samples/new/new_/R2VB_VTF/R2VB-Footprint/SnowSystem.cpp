@@ -84,7 +84,7 @@ bool SnowSystem::load(__DWORD__ maxtexwidth,__DWORD__ maxtexheight, bool debugru
 	IRenderer::GetRendererInstance()->unlockVertexBuffer(quadCoordVB);
 
 	// RAND_MAX = 32767 in MSVC
-#define rand16() (rand() ^ (rand() << 1))
+#define rand16() (stx_rand() ^ (stx_rand() << 1))
 
 	Image3 img;
 	ushort *pixels = (ushort *) img.create(FORMAT_RGBA16, 128, 128, 1, 1);
@@ -171,7 +171,7 @@ void SnowSystem::draw(const D3DXFROMWINEMATRIX &mvp, D3DXFROMWINEMATRIX &mv, flo
 
 		IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / rtWidth, 0.5f / rtHeight));
 		IRenderer::GetRendererInstance()->setShaderConstant1f("1000.0f*timeGetTime()", ft);
-		IRenderer::GetRendererInstance()->setShaderConstant2f("randValue", D3DXFROMWINEVECTOR2((rand()%137)/100.0f, (rand()%531)/100.0f));
+		IRenderer::GetRendererInstance()->setShaderConstant2f("randValue", D3DXFROMWINEVECTOR2((stx_rand()%137)/100.0f, (stx_rand()%531)/100.0f));
 
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR2));
 

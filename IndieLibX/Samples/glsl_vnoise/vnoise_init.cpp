@@ -9,7 +9,7 @@ extern GLint permGradTableParam;
 
 float sfrand()
 {
-    return (rand() * 2.0f / (float) RAND_MAX) - 1.0f;
+    return (stx_rand() * 2.0f / (float) RAND_MAX) - 1.0f;
 }
 
 // build permuation/gradient table for noise
@@ -31,7 +31,7 @@ void initVertexNoiseConstants(int table_size)
 	// initialize permutation table (random shuffle)
 	for(i=0; i<table_size; i++) {
 		int j, t;
-		j = (rand() >> 4) % table_size;
+		j = (stx_rand() >> 4) % table_size;
 		t = p[i];
 		p[i] = p[j];
 		p[j] = t;

@@ -175,7 +175,7 @@ bool App::load(){
 
 
 	// RAND_MAX = 32767 in MSVC
-#define rand16() (rand() ^ (rand() << 1))
+#define rand16() (stx_rand() ^ (stx_rand() << 1))
 
 	// Create a texture containing random positions within a unit sphere
 	Image img;

@@ -236,20 +236,20 @@ void initNoise(){
 	for (i = 0; i < B; i++) {
 		p[i] = i;
 
-		g1[i] = (float) ((rand() % (B + B)) - B) / B;
+		g1[i] = (float) ((stx_rand() % (B + B)) - B) / B;
 
 		for (j = 0; j < 2; j++)
-			g2[i][j] = (float) ((rand() % (B + B)) - B) / B;
+			g2[i][j] = (float) ((stx_rand() % (B + B)) - B) / B;
 		normalize2(g2[i]);
 
 		for (j = 0; j < 3; j++)
-			g3[i][j] = (float) ((rand() % (B + B)) - B) / B;
+			g3[i][j] = (float) ((stx_rand() % (B + B)) - B) / B;
 		normalize3(g3[i]);
 	}
 
 	while (--i) {
 		k = p[i];
-		p[i] = p[j = rand() % B];
+		p[i] = p[j = stx_rand() % B];
 		p[j] = k;
 	}
 

@@ -109,7 +109,7 @@ int CreateParticleBuffer()
 //--------------------------------------------------------------------------------------
 float RPercent()
 {
-    float ret = ( float )( ( rand() % 10000 ) - 5000 );
+    float ret = ( float )( ( stx_rand() % 10000 ) - 5000 );
     return ret / 5000.0f;
 }
 
@@ -169,7 +169,7 @@ int CreateParticlePosVeloBuffers()
     if( !pData1 )
         return E_OUTOFMEMORY;    
 
-    srand( GetTickCount() );   
+    stx_srand( GetTickCount() );   
 
 #if 1
     // Disk Galaxy Formation

@@ -23,7 +23,7 @@ SceneFrame::SceneFrame()
 
 bool SceneFrame::initialize()
 {
-  srand((unsigned) time( 0));
+  stx_srand((unsigned) time( 0));
 
   setPerspective(0, 0, IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 #ifdef USEGROUPS

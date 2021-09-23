@@ -333,9 +333,9 @@ bool Create()
 		float len;
 		do
 		{
-			v.x = ((float) rand()) / RAND_MAX * 2 - 1;
-			v.y = ((float) rand()) / RAND_MAX * 2 - 1;
-			v.z = ((float) rand()) / RAND_MAX * 2 - 1;
+			v.x = ((float) stx_rand()) / RAND_MAX * 2 - 1;
+			v.y = ((float) stx_rand()) / RAND_MAX * 2 - 1;
+			v.z = ((float) stx_rand()) / RAND_MAX * 2 - 1;
 			len = dot(v, v);
 		}
 		while (len < 0.9f * 0.9f || len > 1.1f * 1.1f);
@@ -747,8 +747,8 @@ bool Load()
 	// Shuffle the probes to avoid a "moving line" as probes are updated over several frames
 	for (int i = 0; i < 16384; i++)
 	{
-		int i0 = rand() % m_probeCount;
-		int i1 = rand() % m_probeCount;
+		int i0 = stx_rand() % m_probeCount;
+		int i1 = stx_rand() % m_probeCount;
 
 		ShVertex temp = coords[i0];
 		coords[i0] = coords[i1];

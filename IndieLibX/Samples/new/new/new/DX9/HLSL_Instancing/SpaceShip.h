@@ -34,30 +34,30 @@ public:
 
 		//D3DXFROMWINEMatrixIdentity(&mOrientation);
 
-		float fscale = 4.75f + 0.25f*(float)rand()/32768.0f;
+		float fscale = 4.75f + 0.25f*(float)stx_rand()/32768.0f;
 		scale = 0.1f*D3DXFROMWINEVECTOR3(fscale,fscale,fscale);
 		currentVelocity = D3DXFROMWINEVECTOR3(0,0,0);
 		idealVelocity = D3DXFROMWINEVECTOR3(0,0,0);
 
-		float cr = 0.25f + 0.5f*(float)rand()/32768.0f;
-		float cg = 0.25f + 0.5f*(float)rand()/32768.0f;
-		float cb = 0.25f + 0.5f*(float)rand()/32768.0f;
+		float cr = 0.25f + 0.5f*(float)stx_rand()/32768.0f;
+		float cg = 0.25f + 0.5f*(float)stx_rand()/32768.0f;
+		float cb = 0.25f + 0.5f*(float)stx_rand()/32768.0f;
 		if(cr > cb && cr > cg) cr = 1.f;
 		else if(cb > cr && cb > cg) cb = 1.f;
 		else cg = 1.f;
 		color = D3DXFROMWINECOLOR(cr,cg,cb,1);	
 
-		speed = 15.f+5.f*(float)rand()/32768.0f;
+		speed = 15.f+5.f*(float)stx_rand()/32768.0f;
 		radius = 1.0f*fscale;
 		radiusSq = radius*radius;
-		targetMS = rand()/(32768/10);
+		targetMS = stx_rand()/(32768/10);
 ;	}
 
 	void MakeRandomPosition(D3DXFROMWINEVECTOR3 &worldMin,D3DXFROMWINEVECTOR3 &worldMax)
 	{
-		float x = (float)rand()/32768.0f;
-		float y = (float)rand()/32768.0f;
-		float z = (float)rand()/32768.0f;
+		float x = (float)stx_rand()/32768.0f;
+		float y = (float)stx_rand()/32768.0f;
+		float z = (float)stx_rand()/32768.0f;
 
 		D3DXFROMWINEVECTOR3 random = worldMax - worldMin;
 		random.x *= x;

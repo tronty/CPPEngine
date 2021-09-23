@@ -289,7 +289,7 @@ int  OnCreateDevice()
     BYTE data[256 * 256];
     for (int i = 0; i < 256 * 256; i++)
     {
-        data[i] = (unsigned char) (rand () % 256);
+        data[i] = (unsigned char) (stx_rand () % 256);
     }
 
     g_pNoiseTexture=IRenderer::GetRendererInstance()->addTexture(256, 256, 1, FORMAT_R8, IRenderer::GetRendererInstance()->Getlinear());
@@ -355,7 +355,7 @@ void  OnFrameRender( double fTime, float fElapsedTime )
 
     g_pmWorldViewProj -> SetMatrix ((float *) & mWorldViewProj );
     
-    float rnd = (float)rand() / RAND_MAX * 0.5f + 0.5f;
+    float rnd = (float)stx_rand() / RAND_MAX * 0.5f + 0.5f;
     float lightPos[] = { 0.25f * (rnd - 0.5f), 5.7f, 1.0f * (rnd - 0.5f), 1.0f };
     
     InitCubeMatrices( lightPos );

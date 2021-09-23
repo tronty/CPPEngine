@@ -797,12 +797,12 @@ void Fluid::ApplyVorticityConfinement( float timestep, RENDER_TARGET dstVel, REN
 
 static float lilrand()
 {
-    return (rand()/float(RAND_MAX) - 0.5f)*5.0f;
+    return (stx_rand()/float(RAND_MAX) - 0.5f)*5.0f;
 }
 
 static float random()
 {
-    return (float(   (double)rand() / ((double)(RAND_MAX)+(double)(1)) ));
+    return (float(   (double)stx_rand() / ((double)(RAND_MAX)+(double)(1)) ));
 }
 
 void Fluid::AddNewMatter( float timestep, RENDER_TARGET dstPhi, RENDER_TARGET srcObst )

@@ -68,7 +68,7 @@ bool App::load(){
 	bool supportsHalf = (caps.DeclTypes & D3DDTCAPS_FLOAT16_4) != 0;
 	bool supportsATI1N = (d3d->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DFMT_X8R8G8B8, 0, D3DRTYPE_SURFACE, (D3DFORMAT) MAKEFOURCC('A', 'T', 'I', '1')) == D3D_OK);
 
-	srand(16);
+	stx_srand(16);
 	initPerlin();
 
 	for (int i = 0; i < 2; i++){
@@ -214,15 +214,15 @@ bool App::load(){
 		float tx, tz;
 
 		do {
-			tx = float(rand()) / RAND_MAX * 2 - 1;
-			tz = float(rand()) / RAND_MAX * 2 - 1;
+			tx = float(stx_rand()) / RAND_MAX * 2 - 1;
+			tz = float(stx_rand()) / RAND_MAX * 2 - 1;
 		} while (tree.hasPointWithin(float2(tx, tz), maxDist));
 		tree.add(float2(tx, tz));
 
 		foliageDest[4 * i + 0] = tx;
 		foliageDest[4 * i + 1] = min(min(min(min(terrainY(tx, tz), terrainY(tx - 0.02f, tz)), terrainY(tx + 0.02f, tz)), terrainY(tx, tz - 0.02f)), terrainY(tx, tz + 0.02f));
 		foliageDest[4 * i + 2] = tz;
-		foliageDest[4 * i + 3] = -float(rand() + 1) / (RAND_MAX + 2);
+		foliageDest[4 * i + 3] = -float(stx_rand() + 1) / (RAND_MAX + 2);
 	}
 
 
@@ -245,13 +245,13 @@ bool App::load(){
 		}
 
 		float tx, tz;
-		tx = px + 0.03f * (float(rand()) / RAND_MAX * 2 - 1);
-		tz = pz + 0.03f * (float(rand()) / RAND_MAX * 2 - 1);
+		tx = px + 0.03f * (float(stx_rand()) / RAND_MAX * 2 - 1);
+		tz = pz + 0.03f * (float(stx_rand()) / RAND_MAX * 2 - 1);
 
 		smokeDest[4 * i + 0] = tx;
 		smokeDest[4 * i + 1] = terrainY(tx, tz);
 		smokeDest[4 * i + 2] = tz;
-		smokeDest[4 * i + 3] = 5.0f * float(rand()) / RAND_MAX;
+		smokeDest[4 * i + 3] = 5.0f * float(stx_rand()) / RAND_MAX;
 	}
 
 	if ((foliageSource = renderer->addTexture(foliageImg, FILTER_POINT, CLAMP)) == TEXTURE_NONE) return false;

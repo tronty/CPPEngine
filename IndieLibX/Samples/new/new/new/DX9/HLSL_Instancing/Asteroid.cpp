@@ -25,16 +25,16 @@ Asteroid::Asteroid()
 
 	float rscale = 1.f;
 	for(int exp=0;exp<3;exp++)
-		rscale *= (float)rand()/32768.0f;
+		rscale *= (float)stx_rand()/32768.0f;
 	float fscale = 3.f +10.f*rscale;
 	scale = D3DXFROMWINEVECTOR3(fscale,fscale,fscale);
 
-	float cg = 0.25f + 0.25f*(float)rand()/32768.0f;
+	float cg = 0.25f + 0.25f*(float)stx_rand()/32768.0f;
 	color = D3DXFROMWINECOLOR(cg,cg,cg,1);	
 
-	float x = 2.f*((float)rand()/32768.0f-0.5f);
-	float y = 2.f*((float)rand()/32768.0f-0.5f);
-	float z = 2.f*((float)rand()/32768.0f-0.5f);
+	float x = 2.f*((float)stx_rand()/32768.0f-0.5f);
+	float y = 2.f*((float)stx_rand()/32768.0f-0.5f);
+	float z = 2.f*((float)stx_rand()/32768.0f-0.5f);
 	rotationAxis = D3DXFROMWINEVECTOR3(x,y,z);
 	D3DXFROMWINEVec3Normalize(&rotationAxis,&rotationAxis);
 
@@ -43,14 +43,14 @@ Asteroid::Asteroid()
 
 	D3DXFROMWINEQuaternionRotationYawPitchRoll(&rotation,0,0,0);
 
-	speed = 0.5f + (float)rand()/32768.0f;;
+	speed = 0.5f + (float)stx_rand()/32768.0f;;
 }
 
 void Asteroid::MakeRandomPosition(D3DXFROMWINEVECTOR3 &worldMin,D3DXFROMWINEVECTOR3 &worldMax)
 {
-	float x = (float)rand()/32768.0f;
-	float y = (float)rand()/32768.0f;
-	float z = (float)rand()/32768.0f;
+	float x = (float)stx_rand()/32768.0f;
+	float y = (float)stx_rand()/32768.0f;
+	float z = (float)stx_rand()/32768.0f;
 
 	D3DXFROMWINEVECTOR3 random = worldMax - worldMin;
 	random.x *= x;

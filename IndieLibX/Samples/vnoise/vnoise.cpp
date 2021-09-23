@@ -37,7 +37,7 @@ int init(const char* aTitle)
     shape3D.CreateSphere(1.0f, eShaderNone);
 
     // initalize constants for noise
-    //srand(42);
+    //stx_srand(42);
     //g=initVertexNoiseConstants(32);
 	return 0;
 }

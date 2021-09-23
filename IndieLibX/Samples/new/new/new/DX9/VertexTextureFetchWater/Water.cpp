@@ -1249,7 +1249,7 @@ void Water::SimulateWaveEquation(void)
 
 
   // Draw a quad to do the simulation; this is where the work gets done
-  srand(10);
+  stx_srand(10);
   drawQuad( 
            D3DXFROMWINEVECTOR3(-1.0f,  1.0f, 0.0f), randomColor(), D3DXFROMWINEVECTOR2(0.0f, 0.0f),
            D3DXFROMWINEVECTOR3( 1.0f,  1.0f, 0.0f), randomColor(), D3DXFROMWINEVECTOR2(1.0f, 0.0f),
@@ -1781,6 +1781,6 @@ int drawQuad( IRenderer::GetRendererInstance(), const D3DXFROMWINEVECTOR3& posit
 //-----------------------------------------------------------------------------
 D3DCOLOR randomColor(void)
 {
-  return(D3DCOLOR_RGBA(rand() & 0xFF, rand() & 0xFF, rand() & 0xFF, rand() & 0xFF));
+  return(D3DCOLOR_RGBA(stx_rand() & 0xFF, stx_rand() & 0xFF, stx_rand() & 0xFF, stx_rand() & 0xFF));
 }
 

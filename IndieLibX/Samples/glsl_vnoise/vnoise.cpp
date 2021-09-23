@@ -136,7 +136,7 @@ void init_opengl()
         cout << "OpenGL error: " << gluErrorString(err) << endl;
 
     // initalize constants for noise
-    srand(42);
+    stx_srand(42);
     initVertexNoiseConstants(32);
 }
 

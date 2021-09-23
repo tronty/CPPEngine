@@ -26,7 +26,7 @@
 
 // Macros
 #define RELEASE(x)		if (x) {(x)->Release(); (x) = 0; }
-#define FRAND(x)		(((float)rand()/RAND_MAX) * (x))
+#define FRAND(x)		(((float)stx_rand()/RAND_MAX) * (x))
 #define RAND(x)			((int)floor(FRAND(x)+0.5f))
 #define MAX(x,y)		( (x) > (y) ? (x) : (y) )
 

@@ -140,11 +140,11 @@ void SpaceShipManager::Update(float deltaTime,AsteroidManager *asteroidManager, 
 		else if(ships[iShip].timeTillChange < 0.f)
 		{
 			// randomly pick a -0.1 to 0.1 range
-			float x = 0.1f*((((float)rand()/32768.f)-0.5f)*2.f);
-			float y = 0.1f*((((float)rand()/32768.f)-0.5f)*2.f);
-			float z = 0.1f*((((float)rand()/32768.f)-0.5f)*2.f);
+			float x = 0.1f*((((float)stx_rand()/32768.f)-0.5f)*2.f);
+			float y = 0.1f*((((float)stx_rand()/32768.f)-0.5f)*2.f);
+			float z = 0.1f*((((float)stx_rand()/32768.f)-0.5f)*2.f);
 
-			ships[iShip].timeTillChange = 0.5f + 0.5f*((float)rand()/32768.f);
+			ships[iShip].timeTillChange = 0.5f + 0.5f*((float)stx_rand()/32768.f);
 
 			// jitter direction based on orientation
 			D3DXFROMWINEVECTOR3 adjust = D3DXFROMWINEVECTOR3(x,y,z);

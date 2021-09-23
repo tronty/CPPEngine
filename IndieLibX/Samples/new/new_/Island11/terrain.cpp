@@ -263,7 +263,7 @@ void CTerrain::CreateTerrain()
 	backterrain[terrain_gridpoints]=0;
 	backterrain[terrain_gridpoints+terrain_gridpoints*terrain_gridpoints]=0;
     currentstep=terrain_gridpoints;
-	srand(12);
+	stx_srand(12);
 	
 	// generating fractal terrain using square-diamond method
 	while (currentstep>1)
@@ -284,7 +284,7 @@ void CTerrain::CreateTerrain()
 				mv+=backterrain[(i+currentstep)+terrain_gridpoints*(j+currentstep)];
 				mv+=backterrain[i+terrain_gridpoints*(j+currentstep)];
 				mv/=4.0;
-				backterrain[i+currentstep/2+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((rand()%1000)/1000.0f-0.5f));
+				backterrain[i+currentstep/2+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((stx_rand()%1000)/1000.0f-0.5f));
 				j+=currentstep;
 			}
 		i+=currentstep;
@@ -306,7 +306,7 @@ void CTerrain::CreateTerrain()
 				mv+=backterrain[(i+currentstep/2)+terrain_gridpoints*(j+currentstep/2)];
 				mv+=backterrain[i+currentstep/2+terrain_gridpoints*gp_wrap(j-currentstep/2)];
 				mv/=4;
-				backterrain[i+currentstep/2+terrain_gridpoints*j]=(float)(mv+rm*((rand()%1000)/1000.0f-0.5f));
+				backterrain[i+currentstep/2+terrain_gridpoints*j]=(float)(mv+rm*((stx_rand()%1000)/1000.0f-0.5f));
 
 				mv=0;
 				mv=backterrain[i+terrain_gridpoints*j];
@@ -314,7 +314,7 @@ void CTerrain::CreateTerrain()
 				mv+=backterrain[(i+currentstep/2)+terrain_gridpoints*(j+currentstep/2)];
 				mv+=backterrain[gp_wrap(i-currentstep/2)+terrain_gridpoints*(j+currentstep/2)];
 				mv/=4;
-				backterrain[i+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((rand()%1000)/1000.0f-0.5f));
+				backterrain[i+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((stx_rand()%1000)/1000.0f-0.5f));
 
 				mv=0;
 				mv=backterrain[i+currentstep+terrain_gridpoints*j];
@@ -322,7 +322,7 @@ void CTerrain::CreateTerrain()
 				mv+=backterrain[(i+currentstep/2)+terrain_gridpoints*(j+currentstep/2)];
 				mv+=backterrain[gp_wrap(i+currentstep/2+currentstep)+terrain_gridpoints*(j+currentstep/2)];
 				mv/=4;
-				backterrain[i+currentstep+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((rand()%1000)/1000.0f-0.5f));
+				backterrain[i+currentstep+terrain_gridpoints*(j+currentstep/2)]=(float)(mv+rm*((stx_rand()%1000)/1000.0f-0.5f));
 
 				mv=0;
 				mv=backterrain[i+currentstep+terrain_gridpoints*(j+currentstep)];
@@ -330,7 +330,7 @@ void CTerrain::CreateTerrain()
 				mv+=backterrain[(i+currentstep/2)+terrain_gridpoints*(j+currentstep/2)];
 				mv+=backterrain[i+currentstep/2+terrain_gridpoints*gp_wrap(j+currentstep/2+currentstep)];
 				mv/=4;
-				backterrain[i+currentstep/2+terrain_gridpoints*(j+currentstep)]=(float)(mv+rm*((rand()%1000)/1000.0f-0.5f));
+				backterrain[i+currentstep/2+terrain_gridpoints*(j+currentstep)]=(float)(mv+rm*((stx_rand()%1000)/1000.0f-0.5f));
 				j+=currentstep;
 			}
 			i+=currentstep;

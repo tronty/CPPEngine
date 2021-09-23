@@ -92,7 +92,7 @@ void Grid::createVertexAndIndexBuffers(IDirect3DDevice9* device, IDirect3DVertex
           position.y *= scale.y;
           position.z *= scale.z;
           position += offset;
-          diffuse = D3DCOLOR_RGBA(0, 0, 128 + rand() % 128, 255);
+          diffuse = D3DCOLOR_RGBA(0, 0, 128 + stx_rand() % 128, 255);
           s = (float)x / (float)_width;
           t = (float)y / (float)_height;
           //dprintf("%3d, %3d:  %8.2f, %8.2f, %8.2f\n", x, y, position.x, position.y, position.z);

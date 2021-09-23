@@ -128,7 +128,7 @@ void HeightMap::createVertexBuffer( device)
           computePosition(x, z, vertices[index].position );
           //TODO compute normal
           //TODO remove random color
-          vertices[index].diffuse = D3DCOLOR_RGBA(rand() & 0xFF, rand() & 0xFF, rand() & 0xFF, 0x80);
+          vertices[index].diffuse = D3DCOLOR_RGBA(stx_rand() & 0xFF, stx_rand() & 0xFF, stx_rand() & 0xFF, 0x80);
           vertices[index].tex0[0] = (float)x / (float)_width;
           vertices[index].tex0[1] = (float)z / (float)_depth;
         }

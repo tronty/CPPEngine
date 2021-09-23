@@ -29,7 +29,7 @@ bool throwDarts(vec2 *samples, const int firstSample, const int nSamples, const 
 		int nFailed = 0;
 		do {
 			do {
-				sample = vec2(2 * float(rand()) / RAND_MAX - 1, 2 * float(rand()) / RAND_MAX - 1);
+				sample = vec2(2 * float(stx_rand()) / RAND_MAX - 1, 2 * float(stx_rand()) / RAND_MAX - 1);
 			} while (dot(sample, sample) > 1);
 
 			failed = false;

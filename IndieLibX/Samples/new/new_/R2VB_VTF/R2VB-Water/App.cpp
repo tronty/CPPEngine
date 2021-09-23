@@ -334,7 +334,7 @@ void updateWater(const D3DXFROMWINEMATRIX &mvp, float f){
 			dr = 0.2f / dr;
 
 			if (t > dr){
-				xy = D3DXFROMWINEVECTOR2(float(rand()) / RAND_MAX * 2 - 1, float(rand()) / RAND_MAX * 2 - 1);
+				xy = D3DXFROMWINEVECTOR2(float(stx_rand()) / RAND_MAX * 2 - 1, float(stx_rand()) / RAND_MAX * 2 - 1);
 				t -= dr;
 				c = 0;
 			}

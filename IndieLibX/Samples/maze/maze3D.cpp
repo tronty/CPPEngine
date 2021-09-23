@@ -12,7 +12,7 @@
 // Simple Maze Generator in C++ by Jakub Debski '2006
 
 #include <stdio.h>      /* STX_PRINT, NULL */
-#include <stdlib.h>     /* srand, rand */
+#include <stdlib.h>     /* stx_srand, stx_rand */
 #include <time.h>       /* time */
 #include <vector>
 #include <list>

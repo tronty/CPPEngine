@@ -22,9 +22,9 @@
 //--------------------------------------------------------------------------------------
 // Macros
 //--------------------------------------------------------------------------------------
-#define DWORD_POSITIVE_RANDOM(x)    ((__DWORD__)(( ((x)*rand()) / RAND_MAX )))
-#define FLOAT_POSITIVE_RANDOM(x)    ( ((x)*rand()) / RAND_MAX )
-#define FLOAT_RANDOM(x)             ((((2.0f*rand())/RAND_MAX) - 1.0f)*(x))
+#define DWORD_POSITIVE_RANDOM(x)    ((__DWORD__)(( ((x)*stx_rand()) / RAND_MAX )))
+#define FLOAT_POSITIVE_RANDOM(x)    ( ((x)*stx_rand()) / RAND_MAX )
+#define FLOAT_RANDOM(x)             ((((2.0f*stx_rand())/RAND_MAX) - 1.0f)*(x))
 
 //--------------------------------------------------------------------------------------
 // Constants

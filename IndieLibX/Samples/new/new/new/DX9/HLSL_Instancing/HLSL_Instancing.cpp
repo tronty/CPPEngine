@@ -256,7 +256,7 @@ int OnResetDevice()
 
 	//---------------------------------------------------------------------------
 	D3DXFROMWINEVECTOR3 v = D3DXFROMWINEVECTOR3(300.f,300.f,300.0f);
-	srand(INSTANCE_INIT_SRAND);
+	stx_srand(INSTANCE_INIT_SRAND);
 	g_shipManager->SetWorldExtents(-v,v);
 	g_asteroidManager->SetWorldExtents(-v,v);
 	g_mothershipManager->SetWorldExtents(-v,v);

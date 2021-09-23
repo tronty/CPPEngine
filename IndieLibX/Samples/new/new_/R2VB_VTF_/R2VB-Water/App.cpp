@@ -273,7 +273,7 @@ void App::updateWater(const float4x4 &mvp, const float frameTime){
 			dr = 0.2f / dr;
 
 			if (t > dr){
-				xy = float2(float(rand()) / RAND_MAX * 2 - 1, float(rand()) / RAND_MAX * 2 - 1);
+				xy = float2(float(stx_rand()) / RAND_MAX * 2 - 1, float(stx_rand()) / RAND_MAX * 2 - 1);
 				t -= dr;
 				c = 0;
 			}

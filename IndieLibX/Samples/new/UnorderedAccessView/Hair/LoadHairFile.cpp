@@ -310,7 +310,7 @@ bool LoadMayaHair( char* directory, bool b_shortHair )
    			if(i==0)
 			{   
 				//note: we could also load here the tangent vector of the root on the scalp rather than a random vector
-				float3 randVec = float3( rand(),rand(),rand() );
+				float3 randVec = float3( stx_rand(),stx_rand(),stx_rand() );
 				D3DXFROMWINEVec3Normalize(&randVec,&randVec);
 				D3DXFROMWINEVec3Cross(&z,&x,&randVec);
 				D3DXFROMWINEVec3Normalize(&z,&z);

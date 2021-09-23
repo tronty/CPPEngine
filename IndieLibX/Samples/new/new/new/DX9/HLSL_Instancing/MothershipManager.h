@@ -38,12 +38,12 @@ public:
 		float fscale = 1.f;
 		scale = D3DXFROMWINEVECTOR3(fscale,fscale,fscale);
 
-		float cg = 0.25f + 0.25f*(float)rand()/32768.0f;
+		float cg = 0.25f + 0.25f*(float)stx_rand()/32768.0f;
 		color = D3DXFROMWINECOLOR(cg,cg,cg,1);	
 
-		float x = 2.f*((float)rand()/32768.0f-0.5f);
-		float y = 2.f*((float)rand()/32768.0f-0.5f);
-		float z = 2.f*((float)rand()/32768.0f-0.5f);
+		float x = 2.f*((float)stx_rand()/32768.0f-0.5f);
+		float y = 2.f*((float)stx_rand()/32768.0f-0.5f);
+		float z = 2.f*((float)stx_rand()/32768.0f-0.5f);
 		rotationAxis = D3DXFROMWINEVECTOR3(0,1+y*0.1f,0);
 		D3DXFROMWINEVec3Normalize(&rotationAxis,&rotationAxis);
 
@@ -52,7 +52,7 @@ public:
 
 		D3DXFROMWINEQuaternionRotationYawPitchRoll(&rotation,0,0,0);
 
-		speed = 0.5f + (float)rand()/32768.0f;;
+		speed = 0.5f + (float)stx_rand()/32768.0f;;
 	}
 };
 

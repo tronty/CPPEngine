@@ -379,7 +379,7 @@ void OnFrameRender( double fTime, float fElapsedTime )
 //--------------------------------------------------------------------------------------
 float RPercent()
 {
-    float ret = ( float )( ( rand() % 10000 ) - 5000 );
+    float ret = ( float )( ( stx_rand() % 10000 ) - 5000 );
     return ret / 5000.0f;
 }
 
@@ -445,7 +445,7 @@ int CreateParticleTextures()
     if( !pData2 )
         return E_OUTOFMEMORY;
 
-    srand( timeGetTime() );
+    stx_srand( timeGetTime() );
 
 #if 1
     // Disk Galaxy Formation
@@ -573,7 +573,7 @@ int CreateParticleBuffer()
    int hr = 0;
    
    int iNumRandValues = 1024;
-   srand( timeGetTime() );
+   stx_srand( timeGetTime() );
    //create the data
    
    InitData.pSysMem = new float[iNumRandValues*4];
@@ -583,7 +583,7 @@ int CreateParticleBuffer()
    InitData.SysMemSlicePitch = iNumRandValues*4*sizeof(float);
    for(int i=0; i<iNumRandValues*4; i++)
    {
-   ((float*)InitData.pSysMem)[i] = float( (rand()%10000) - 5000 );
+   ((float*)InitData.pSysMem)[i] = float( (stx_rand()%10000) - 5000 );
    }
    
    // Create the texture

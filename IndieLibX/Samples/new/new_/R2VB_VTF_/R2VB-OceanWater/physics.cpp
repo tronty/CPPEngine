@@ -58,7 +58,7 @@ static float normalDistTable[][2] = {
 float RandNormal(float mean, float stdev)
 {
     int i = 0;
-    float u = rand() / (float) RAND_MAX;
+    float u = stx_rand() / (float) RAND_MAX;
     float n;
 
     if (u >= 0.5)
@@ -177,7 +177,7 @@ void Physics::FillWaterUtilityBuffers(float windSpeed, float windDirection)
                 fMultiplier = sqrt(Phillips(kx, ky, windSpeed, windDirection));
 
             fAmplitude = RandNormal(0.0f, 1.0f);
-            fTheta = rand() / (float) RAND_MAX * 2 * D3DX_PI;
+            fTheta = stx_rand() / (float) RAND_MAX * 2 * D3DX_PI;
 
             c_re(m_LowAmplitude0[i][j]) = fMultiplier * fAmplitude * sin(fTheta);
             c_im(m_LowAmplitude0[i][j]) = fMultiplier * fAmplitude * sin(fTheta);
@@ -259,7 +259,7 @@ void Physics::FillWaterUtilityBuffers(float windSpeed, float windDirection)
                     fMultiplier = sqrt(Phillips(kx, ky, windSpeed, windDirection));
 
                 fAmplitude = RandNormal(0.0f, 1.0f);
-                fTheta = rand() / (float) RAND_MAX * 2 * D3DX_PI;
+                fTheta = stx_rand() / (float) RAND_MAX * 2 * D3DX_PI;
 
                 c_re(m_HighAmplitude0[i][j]) = fMultiplier * fAmplitude * sin(fTheta);
                 c_im(m_HighAmplitude0[i][j]) = fMultiplier * fAmplitude * sin(fTheta);

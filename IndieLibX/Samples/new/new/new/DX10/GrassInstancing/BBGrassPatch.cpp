@@ -86,10 +86,10 @@ void BBGrassPatch::GeneratePatch( unsigned int bladeCnt, float scale )
 		// Generate each quad at random position, orientation, height
 		D3DXFROMWINEMatrixIdentity( &matRandom);
 	//	float scale = 10.0f;
-		float angle = ((float)rand()/RAND_MAX - 0.5f)*2 * D3DXFROMWINE_PI; // angle = [-pi,pi]
-		float dx = ((float)rand()/RAND_MAX - 0.5f)*2 * scale;
-		float dz = ((float)rand()/RAND_MAX - 0.5f)*2 * scale;
-		float heightScale = ((float)rand()/RAND_MAX - 0.5f) / 2.0f + 1.0f;
+		float angle = ((float)stx_rand()/RAND_MAX - 0.5f)*2 * D3DXFROMWINE_PI; // angle = [-pi,pi]
+		float dx = ((float)stx_rand()/RAND_MAX - 0.5f)*2 * scale;
+		float dz = ((float)stx_rand()/RAND_MAX - 0.5f)*2 * scale;
+		float heightScale = ((float)stx_rand()/RAND_MAX - 0.5f) / 2.0f + 1.0f;
 
 		D3DXFROMWINEMatrixRotationY( &mat, angle);
 		D3DXFROMWINEMatrixMultiply( &matRandom, &matRandom, &mat );

@@ -223,7 +223,7 @@ void  OnFrameMove( double fTime, float fElapsedTime )
             vCenter.y = g_fGroundPlane;
             vCenter.z = RPercent() * g_fWorldBounds;
             float fStartTime = -fabs( RPercent() ) * 4.0f;
-            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ rand() % MAX_FLASH_COLORS ];
+            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ stx_rand() % MAX_FLASH_COLORS ];
 
             g_ppParticleSystem[i]->SetCenter( vCenter );
             g_ppParticleSystem[i]->SetStartTime( fStartTime );
@@ -260,7 +260,7 @@ void  OnFrameMove( double fTime, float fElapsedTime )
             vCenter.y = g_fGroundPlane;
             vCenter.z = RPercent() * g_fWorldBounds;
             float fStartTime = -fabs( RPercent() ) * 4.0f;
-            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ rand() % MAX_FLASH_COLORS ];
+            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ stx_rand() % MAX_FLASH_COLORS ];
 
             float fStartSpeed = g_fGroundBurstStartSpeed + RPercent() * 30.0f;
             g_ppParticleSystem[i]->SetCenter( vCenter );
@@ -294,7 +294,7 @@ void  OnFrameMove( double fTime, float fElapsedTime )
             vCenter.y = g_fGroundPlane;
             vCenter.z = RPercent() * g_fWorldBounds;
             float fStartTime = -fabs( RPercent() ) * 4.0f;
-            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ rand() % MAX_FLASH_COLORS ];
+            D3DXFROMWINEVECTOR4 vFlashColor = g_vFlashColor[ stx_rand() % MAX_FLASH_COLORS ];
 
             float fStartSpeed = g_fLandMineStartSpeed + RPercent() * 100.0f;
             g_ppParticleSystem[i]->SetCenter( vCenter );
@@ -457,9 +457,9 @@ int  OnCreateDevice()
         vCenter.y = 0;
         vCenter.z = RPercent() * fBuildingRange;
 
-        unsigned int x = ( rand() % 2 ) + 2;
-        unsigned int y = ( rand() % 2 ) + 3;
-        unsigned int z = ( rand() % 2 ) + 2;
+        unsigned int x = ( stx_rand() % 2 ) + 2;
+        unsigned int y = ( stx_rand() % 2 ) + 3;
+        unsigned int z = ( stx_rand() % 2 ) + 2;
         g_Building[i].CreateBuilding( vCenter, 2.0f, x * 2, y * 2, z * 2 );
     }
 
@@ -477,7 +477,7 @@ int  OnCreateDevice()
     D3DXFROMWINEVECTOR4 vColor0( 1.0f,1.0f,1.0f,1 );
     D3DXFROMWINEVECTOR4 vColor1( 0.6f,0.6f,0.6f,1 );
 
-    srand( timeGetTime() );
+    stx_srand( timeGetTime() );
     g_ppParticleSystem = new CParticleSystem*[MAX_PARTICLE_SYSTEMS];
     g_NumParticlesToDraw = 0;
     for( unsigned int i = 0; i < MAX_MUSHROOM_CLOUDS; i += 2 )

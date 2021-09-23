@@ -4529,7 +4529,7 @@ int saveHair()
 //(0,1]
 float random()
 {
-	return (float(   (double)rand() / ((double)(RAND_MAX)+(double)(1)) ));
+	return (float(   (double)stx_rand() / ((double)(RAND_MAX)+(double)(1)) ));
 }
 
 

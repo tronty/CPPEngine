@@ -372,7 +372,7 @@ void App::accumulateTerrain(TextureID &accumulatedHeightMap, float speed)
 		renderer->setDepthFunc(DEPTH_NONE);
 		renderer->apply();
 		renderer->changeShaderConstant1f("accumulateSpeed", speed);
-		renderer->changeShaderConstant2f("random", float2((rand()%137)/100.0f, (rand()%531)/100.0f));
+		renderer->changeShaderConstant2f("random", float2((stx_rand()%137)/100.0f, (stx_rand()%531)/100.0f));
 		
 		dev->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, vertices, sizeof(float4));	
 }
@@ -459,9 +459,9 @@ void App::AILoop()
 	}
 	else
 	{
-		if (!(rand()%5) && player.bInSafeZone)
+		if (!(stx_rand()%5) && player.bInSafeZone)
 		{
-			player.Deg -= 1.0f + (2 - rand()%4);
+			player.Deg -= 1.0f + (2 - stx_rand()%4);
 			yawMatrix(player.Trans, player.Deg);	
 		}
 	}

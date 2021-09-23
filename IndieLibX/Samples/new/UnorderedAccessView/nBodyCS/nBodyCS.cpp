@@ -184,9 +184,9 @@ void initializeBodies(unsigned int numBodies)
     while (i < numBodies)
     {
         float x, y, z;
-        x = rand() / (float) RAND_MAX * 2 - 1;
-        y = rand() / (float) RAND_MAX * 2 - 1;
-        z = rand() / (float) RAND_MAX * 2 - 1;
+        x = stx_rand() / (float) RAND_MAX * 2 - 1;
+        y = stx_rand() / (float) RAND_MAX * 2 - 1;
+        z = stx_rand() / (float) RAND_MAX * 2 - 1;
 
         D3DXFROMWINEVECTOR3 point(x, y, z);
         float len = D3DXFROMWINEVec3Length(&point);
@@ -194,14 +194,14 @@ void initializeBodies(unsigned int numBodies)
         if (len > 1)
             continue;
 
-        g_BodyData.position[p++] = point.x * (inner + (outer - inner) * rand() / (float) RAND_MAX);
-        g_BodyData.position[p++] = point.y * (inner + (outer - inner) * rand() / (float) RAND_MAX);
-        g_BodyData.position[p++] = point.z * (inner + (outer - inner) * rand() / (float) RAND_MAX);
+        g_BodyData.position[p++] = point.x * (inner + (outer - inner) * stx_rand() / (float) RAND_MAX);
+        g_BodyData.position[p++] = point.y * (inner + (outer - inner) * stx_rand() / (float) RAND_MAX);
+        g_BodyData.position[p++] = point.z * (inner + (outer - inner) * stx_rand() / (float) RAND_MAX);
         //g_BodyData.position[p++] = 1.0f;
 
-        x = 0.0f; // * (rand() / (float) RAND_MAX * 2 - 1);
-        y = 0.0f; // * (rand() / (float) RAND_MAX * 2 - 1);
-        z = 1.0f; // * (rand() / (float) RAND_MAX * 2 - 1);
+        x = 0.0f; // * (stx_rand() / (float) RAND_MAX * 2 - 1);
+        y = 0.0f; // * (stx_rand() / (float) RAND_MAX * 2 - 1);
+        z = 1.0f; // * (stx_rand() / (float) RAND_MAX * 2 - 1);
         D3DXFROMWINEVECTOR3 axis(x, y, z);
         D3DXFROMWINEVec3Normalize(&axis, &axis);
 

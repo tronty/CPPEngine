@@ -84,7 +84,7 @@ bool SnowSystem::load(LPDIRECT3DDEVICE9 lpdev, Renderer *lprenderer, DWORD maxte
 	renderer->unlockVertexBuffer(quadCoordVB);
 
 	// RAND_MAX = 32767 in MSVC
-#define rand16() (rand() ^ (rand() << 1))
+#define rand16() (stx_rand() ^ (stx_rand() << 1))
 
 	Image img;
 	ushort *pixels = (ushort *) img.create(FORMAT_RGBA16, 128, 128, 1, 1);
@@ -171,7 +171,7 @@ void SnowSystem::draw(const float4x4 &mvp, float4x4 &mv, float frametime){
 
 		renderer->setShaderConstant2f("halfPixel", float2(0.5f / rtWidth, 0.5f / rtHeight));
 		renderer->setShaderConstant1f("frameTime", ft);
-		renderer->setShaderConstant2f("randValue", float2((rand()%137)/100.0f, (rand()%531)/100.0f));
+		renderer->setShaderConstant2f("randValue", float2((stx_rand()%137)/100.0f, (stx_rand()%531)/100.0f));
 		renderer->setVertexFormat(physicsVF);
 		renderer->apply();
 

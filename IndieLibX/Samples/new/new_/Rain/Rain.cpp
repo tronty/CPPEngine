@@ -888,7 +888,7 @@ int loadLUTS(char* fileName, std::string shaderTextureName, int xRes, int yRes)
 
 float random()
 {
-    return (float(   (double)rand() / ((double)(RAND_MAX)+(double)(1)) ));
+    return (float(   (double)stx_rand() / ((double)(RAND_MAX)+(double)(1)) ));
 }
 
 //----------------------------------------------------------------------------------------
