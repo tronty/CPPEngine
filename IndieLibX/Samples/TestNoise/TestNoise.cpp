@@ -24,6 +24,7 @@ const char* filename[] =
 //"/HLSL-noise/HLSL-noise3.shd",
 //"/HLSL-noise/HLSL-noise4.shd"
 #else
+//"/www.shadertoy.com/Commodore_64.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4df3Rn.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4dSXWt.shd",
 "/www.shadertoy.com/www.shadertoy.com_/XdSXWt.shd",
@@ -105,6 +106,13 @@ const char* filename[] =
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72444.0.shd",
 #endif
 #endif
+"/www.shadertoy.com/www.shadertoy.com__/Clouds.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Seacape.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Soccermania.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_1.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_2.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_3.shd",
+"/www.shadertoy.com/www.shadertoy.com__/TDM_Seascape_Sailing.shd"
 };
 
 class _Shape3D

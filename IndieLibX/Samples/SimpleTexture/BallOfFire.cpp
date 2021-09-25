@@ -13,6 +13,7 @@ const char* filename[] =
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 #if 1
+//"/www.shadertoy.com/Commodore_64.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4df3Rn.shd",
 "/www.shadertoy.com/www.shadertoy.com_/4dSXWt.shd",
 "/www.shadertoy.com/www.shadertoy.com_/XdSXWt.shd",
@@ -94,6 +95,13 @@ const char* filename[] =
 "/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com/e#72444.0.shd",
 #endif
 #endif
+"/www.shadertoy.com/www.shadertoy.com__/Clouds.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Seacape.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Soccermania.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_1.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_2.shd",
+"/www.shadertoy.com/www.shadertoy.com__/Ray_Marching_Part_3.shd",
+"/www.shadertoy.com/www.shadertoy.com__/TDM_Seascape_Sailing.shd"
 };
 
 MeshRenderer2 shape3D[3];
@@ -241,6 +249,8 @@ void render()
 	LOG_PRINT("vf[%d]=%d\n", s_i, vf[s_i]);
 	#endif
 
+	//printf("ViewportWidth=%d\n", IRenderer::GetRendererInstance()->GetViewportWidth());
+	//printf("ViewportHeight=%d\n", IRenderer::GetRendererInstance()->GetViewportHeight());
 	D3DXFROMWINEVECTOR2 mouse(1.0f,1.0f);//((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
 	D3DXFROMWINEVECTOR2 resolution(1.0f,1.0f);//(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
