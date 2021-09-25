@@ -242,7 +242,9 @@ float3 getPixel(in float2 coord, float time) {
 }
 
 // main
-float4 main(out float4 fragColor : COLOR0 , in float2 fragCoord : TEXCOORD0 ) {
+float4 main(float2 fragCoord : TEXCOORD0 ) : COLOR0
+{
+	//float4 fragColor;
     float time = iTime * 0.3 + iMouse.x*0.01;
 	
 #ifdef AA
@@ -261,3 +263,4 @@ float4 main(out float4 fragColor : COLOR0 , in float2 fragCoord : TEXCOORD0 ) {
     // post
 	return float4(pow(color,float3(0.65, 0.65, 0.65)), 1.0);
 }
+

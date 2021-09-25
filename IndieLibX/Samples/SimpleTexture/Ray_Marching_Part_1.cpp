@@ -1,67 +1,22 @@
+#include <Framework3/IRenderer.h>
+
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 /*
   Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
 
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
-    float3 Normal	: NORMAL;
-    float3 Binormal	: BINORMAL;
-    float3 Tangent	: TANGENT;
-    float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	#if 1
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	#else
-	Out.uv = In.uv;
-	#endif
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-
-[Fragment shader]
 float iTime=0;
 const float2 iResolution=float2(1,1);//800,600);
 float2 iMouse=float2(1,1);
-sampler2D iChannel0;
+//sampler2D iChannel0;
 float mod(float x, float y)
 {
   return x - y * floor(x / y);
 }
 
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
 /**
  * Part 1 Challenges
  * - Make the circle yellow
@@ -74,7 +29,7 @@ float3 mod(float3 x, float3 y)
 int MAX_MARCHING_STEPS = 255;
 float MIN_DIST = 0.0;
 float MAX_DIST = 100.0;
-float EPSILON = 0.0001;
+float _EPSILON_ = 0.0001;
 
 /**
  * Signed distance function for a sphere centered at the origin with radius 1.0;
@@ -108,14 +63,17 @@ float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float star
     float depth = start;
     for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
         float dist = sceneSDF(eye + depth * marchingDirection);
-        if (dist < EPSILON) {
+        if (dist < _EPSILON_) {
+	STX_FNLN;
 			return depth;
         }
         depth += dist;
         if (depth >= end) {
+	STX_FNLN;
             return end;
         }
     }
+	STX_FNLN;
     return end;
 }
 
@@ -128,22 +86,44 @@ float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float star
  */
 float3 rayDirection(float fieldOfView, float2 size, float2 fragCoord) {
     float2 xy = fragCoord - size / 2.0;
-    float z = size.y / tan(radians(fieldOfView) / 2.0);
+    float z = size.y / tan(fieldOfView / 2.0);
     return normalize(float3(xy, -z));
 }
 
 
-float4 main(in float2 fragCoord : TEXCOORD0 ) : COLOR0
+float4 main_(float2 fragCoord)// : TEXCOORD0 ) : COLOR0
 {
-	float3 dir = rayDirection(45.0, iResolution.xy, fragCoord);
-    float3 eye = float3(0.0, 0.0, -1.0);
+	float3 dir = rayDirection(3.14/4.0, float2(iResolution.x, iResolution.y), fragCoord);
+    float3 eye = float3(0.0, 0.0, 1.0);
     float dist = shortestDistanceToSurface(eye, dir, MIN_DIST, MAX_DIST);
-    if (1)//(dist < (MAX_DIST+EPSILON)){// - ))
-    {
+    STX_PRINT("shortestDistanceToSurface: dist=%f\n", dist);
+    STX_PRINT("MAX_DIST=%f\n, _EPSILON_=%f\n", MAX_DIST, _EPSILON_);
+    STX_PRINT("MAX_DIST - _EPSILON_=%f\n", MAX_DIST - _EPSILON_);
+    if (dist > (MAX_DIST - _EPSILON_)) {
         // Didn't hit anything
+	STX_FNLN;
         return float4(1.0, 0.0, 0.0, 1.0);		
     }
-
+	STX_FNLN;
     return float4(0.0, 1.0, 0.0, 1.0);
+}
+int ApplicationLogic()
+{
+	STX_FNLN;
+	IRenderer* r=IRenderer::GetRendererInstance("SimpleTexture");
+	STX_FNLN;
+	IInput*    i=STX_Service::GetInputInstance();
+	STX_FNLN;
+	float2 fragCoord(0.0,0.0);
+	float4 v4=main_(fragCoord);
+	stx_Dump4f(v4);
+	fragCoord=float2(0.5,0.5);
+	v4=main_(fragCoord);
+	stx_Dump4f(v4);
+	fragCoord=float2(1.0,1.0);
+	v4=main_(fragCoord);
+	stx_Dump4f(v4);
+	STX_FNLN;
+	return 0;
 }
 
