@@ -46,22 +46,6 @@ VsOut main3(VsIn3 In)
 float iTime=0;
 const float2 iResolution=float2(1,1);//800,600);
 float2 iMouse=float2(1,1);
-sampler2D iChannel0;
-float mod(float x, float y)
-{
-  return x - y * floor(x / y);
-}
-
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
 /**
  * Part 1 Challenges
  * - Make the circle yellow
@@ -80,7 +64,7 @@ float EPSILON = 0.0001;
  * Signed distance function for a sphere centered at the origin with radius 1.0;
  */
 float sphereSDF(float3 samplePoint) {
-    return length(samplePoint) - 0.25;
+    return length(samplePoint) - 0.5;
 }
 
 /**
@@ -136,14 +120,10 @@ float3 rayDirection(float fieldOfView, float2 size, float2 fragCoord) {
 float4 main(in float2 fragCoord : TEXCOORD0 ) : COLOR0
 {
 	float3 dir = rayDirection(45.0, iResolution.xy, fragCoord);
-    float3 eye = float3(0.0, 0.0, -1.0);
+    float3 eye = float3(0.0, 0.0, 1.0);
     float dist = shortestDistanceToSurface(eye, dir, MIN_DIST, MAX_DIST);
-    if (1)//(dist < (MAX_DIST+EPSILON)){// - ))
-    {
-        // Didn't hit anything
-        return float4(1.0, 0.0, 0.0, 1.0);		
-    }
-
+    //if (1)//(dist < (MAX_DIST+EPSILON)){// - ))
+    if ( (dist <= EPSILON) || (dist >= MAX_DIST) ){return float4(1.0, 0.0, 0.0, 1.0);		}
     return float4(0.0, 1.0, 0.0, 1.0);
 }
 
