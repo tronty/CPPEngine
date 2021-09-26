@@ -109,7 +109,6 @@ int  OnCreateDevice()
     #else
     g_pEffect10=IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/Skinning10/Skinning10.shd", "main", "main");
     //if(g_pEffect10==-1) printf("g_pEffect10=%x\n", g_pEffect10);
-    g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
     #endif
 
 #if 0
@@ -181,6 +180,9 @@ int  OnCreateDevice()
     #if 0
     g_SkinnedMesh.Load("Soldier/soldier.sdkmesh");
     // ??? g_SkinnedMesh.LoadAnimation( "Soldier/soldier.sdkmesh_anim" );
+	#elif 1
+    g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
+    g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
     #else
     g_SkinnedMesh.Load("/assimp--1.0.412-sdk/test.x");
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/assimp--1.0.412-sdk/test.png", false, IRenderer::GetRendererInstance()->Getlinear());
