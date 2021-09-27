@@ -1,6 +1,18 @@
 copy Dependencies\\SDL2-2.0.14\\lib\\x86\\SDL2.dll bin\\SDL2.dll
 copy Dependencies\\vulkan\\vulkan-1.dll bin\\vulkan-1.dll
 cd bin
+call Road01.exe
+cd ..
+cd bin
+call Road02.exe
+cd ..
+cd bin
+call Road03.exe
+cd ..
+cd bin
+call Road04.exe
+cd ..
+cd bin
 call BallOfFire.exe
 cd ..
 cd bin
@@ -20,16 +32,4 @@ call SimpleTexture.exe
 cd ..
 cd bin
 call RenderMonkey.exe
-cd ..
-cd bin
-call Road01.exe
-cd ..
-cd bin
-call Road02.exe
-cd ..
-cd bin
-call Road03.exe
-cd ..
-cd bin
-call Road04.exe
 cd ..
