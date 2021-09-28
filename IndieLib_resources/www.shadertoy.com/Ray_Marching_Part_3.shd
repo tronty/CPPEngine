@@ -40,24 +40,9 @@ VsOut main3(VsIn3 In)
 
 [Fragment shader]
 float iTime=0;
-const float2 iResolution=float2(1,1);//800,600);
+float2 iResolution=float2(1,1);//800,600);
 float2 iMouse=float2(1,1);
-sampler2D iChannel0;
-float mod(float x, float y)
-{
-  return x - y * floor(x / y);
-}
 
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
 /**
  * Part 3 Challenges
  * - Make the camera move up and down while still pointing at the cube
@@ -93,8 +78,8 @@ float cubeSDF(float3 p) {
 /**
  * Signed distance function for a sphere centered at the origin with radius 1.0;
  */
-float sphereSDF(float3 p) {
-    return length(p) - 0.25;
+float sphereSDF(float3 samplePoint) {
+    return length(samplePoint) - 1.0;
 }
 
 /**
@@ -117,7 +102,7 @@ float sceneSDF(float3 samplePoint) {
  * marchingDirection: the normalized direction to march in
  * start: the starting distance away from the eye
  * end: the max distance away from the ey to march before giving up
- */
+ */ 
 float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float start, float end) {
     float depth = start;
     for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
@@ -132,7 +117,6 @@ float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float star
     }
     return end;
 }
-            
 
 /**
  * Return the normalized direction to march in from the eye point for a single pixel.
@@ -267,7 +251,7 @@ float4 main(in float2 fragCoord : TEXCOORD0 ) : COLOR0
     
     if (dist > MAX_DIST - EPSILON) {
         // Didn't hit anything
-        return float4(1.0, 0.0, 0.0, 0.0);
+        return float4(1.0, 0.0, 0.0, 1.0);
     }
     
     // The closest point on the surface to the eyepoint along the view ray

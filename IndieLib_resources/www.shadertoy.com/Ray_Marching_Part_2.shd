@@ -40,30 +40,16 @@ VsOut main3(VsIn3 In)
 
 [Fragment shader]
 float iTime=0;
-const float2 iResolution=float2(1,1);//800,600);
+float2 iResolution=float2(1,1);//800,600);
 float2 iMouse=float2(1,1);
-sampler2D iChannel0;
-float mod(float x, float y)
-{
-  return x - y * floor(x / y);
-}
 
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
 /**
- * Part 2 Challenges
- * - Change the diffuse color of the sphere to be blue
- * - Change the specual color of the sphere to be green
- * - Make one of the lights pulse by having its intensity vary over time
- * - Add a third light to the scene
+ * Part 1 Challenges
+ * - Make the circle yellow
+ * - Make the circle smaller by decreasing its radius
+ * - Make the circle smaller by moving the camera back
+ * - Make the size of the circle oscillate using the sin() function and the iTime
+ *   uniform provided by shadertoy
  */
 
 int MAX_MARCHING_STEPS = 255;
@@ -75,7 +61,7 @@ float EPSILON = 0.0001;
  * Signed distance function for a sphere centered at the origin with radius 1.0;
  */
 float sphereSDF(float3 samplePoint) {
-    return length(samplePoint) - 0.25;
+    return length(samplePoint) - 1.0;
 }
 
 /**
@@ -98,7 +84,7 @@ float sceneSDF(float3 samplePoint) {
  * marchingDirection: the normalized direction to march in
  * start: the starting distance away from the eye
  * end: the max distance away from the ey to march before giving up
- */
+ */ 
 float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float start, float end) {
     float depth = start;
     for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
@@ -113,7 +99,6 @@ float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float star
     }
     return end;
 }
-            
 
 /**
  * Return the normalized direction to march in from the eye point for a single pixel.
