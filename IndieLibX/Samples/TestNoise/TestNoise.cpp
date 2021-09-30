@@ -29,7 +29,7 @@ const char* filename[] =
 #if 0
 "/www.shadertoy.com/Road01.shd",
 "/www.shadertoy.com/Road02.shd",
-"/glslsandbox.com/e#61428.0.shd",
+"/glslsandbox.com/e#61428.0.shd",s
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 "/www.shadertoy.com/Super_simple_raymarching_example.shd",
@@ -46,12 +46,12 @@ const char* filename[] =
 "/www.shadertoy.com/Desert_biome.shd",
 "/www.shadertoy.com/Sandstone_canyons.shd",
 "/www.shadertoy.com/7dyGWV.shd",
-"/www.shadertoy.com/4df3Rn.shd",
-"/www.shadertoy.com/4dSXWt.shd",
-"/www.shadertoy.com/XdSXWt.shd",
-"/www.shadertoy.com/4sX3Rn.shd",
-"/www.shadertoy.com/4tfBWX.shd",
-"/www.shadertoy.com/MsdBD2.shd",
+"/www.shadertoy.com/Mandelbrot_smooth.shd",
+"/www.shadertoy.com/Logistic_Map_Real_Bifurcation.shd",
+"/www.shadertoy.com/Logistic_Map_Complex.shd",
+"/www.shadertoy.com/Menger_Sponge.shd",
+"/www.shadertoy.com/Chaos_Game_Sierpinsky_Triangle.shd",
+"/www.shadertoy.com/Hashscape.shd",
 "/www.shadertoy.com/video_heightfield2.shd",
 "/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
 "/www.shadertoy.com/TileableNoise.shd",
