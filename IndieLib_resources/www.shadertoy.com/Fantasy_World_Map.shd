@@ -21,11 +21,8 @@ struct VsOut {
     float2 uv		: TEXCOORD0;
 };
 
-//[Vertex shader]
-//ROW_MAJOR 
-float4x4 worldViewProj 
-//MVPSEMANTIC
-;
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 VsOut main2(VsIn2 In)
 {
 	VsOut Out=(VsOut)0;
@@ -41,7 +38,7 @@ VsOut main3(VsIn3 In)
 	return Out;
 }
 
-//[Fragment shader]
+[Fragment shader]
 float mod(float x, float y)
 {
   return x - y * floor(x / y);
