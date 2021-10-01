@@ -5,6 +5,7 @@
 */
 #include <Framework3/IRenderer.h>
 #include "MeshRenderer2.h"
+#include "SDKmesh.h"
 
 #if 1
 #define LOG_FNLN
@@ -898,7 +899,22 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 	if (found != string::npos)
   		m_szPathTex=m_sFileName.substr(0,found);
 
-	LoadThreadProc2(fn);
+	{
+		const char *fileName=fn.c_str();
+		const char *extension = strrchr(fileName, '.');
+		printf("fileName=%s\n", fileName);
+		printf("extension=%s\n", extension);
+#if 1 // ???
+		if (stricmp(extension, ".sdkmesh") == 0)
+		{
+			CDXUTSDKMesh* pM=new CDXUTSDKMesh();
+			int r=pM->CreateFromFile(fn.c_str());
+			delete pM;
+		}
+		else
+#endif
+			LoadThreadProc2(fn);
+	}
 
 	if(!meshes.size())
 		return 0;

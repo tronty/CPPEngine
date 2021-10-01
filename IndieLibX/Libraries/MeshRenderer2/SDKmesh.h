@@ -9,10 +9,11 @@
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
-#pragma once
 #ifndef _SDKMESH_
 #define _SDKMESH_
 typedef uint_least64_t UINT64; // ???
+typedef void* D3DXFROMWINEHANDLE;
+#define CGrowableArray std::vector
 
 //--------------------------------------------------------------------------------------
 // Hard Defines for the various structures
@@ -106,7 +107,7 @@ struct SDKMESH_VERTEX_BUFFER_HEADER
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)
-        VertexBuffer9* pVB9;
+        VertexBufferID pVB9;
     };
 };
 
@@ -118,7 +119,7 @@ struct SDKMESH_INDEX_BUFFER_HEADER
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)
-        IndexBuffer9* pIB9;
+        IndexBufferID pIB9;
     };
 };
 
@@ -220,13 +221,15 @@ struct SDKANIMATION_FRAME_DATA
     };
 };
 
-#ifndef _CONVERTER_APP_
-
 //--------------------------------------------------------------------------------------
 // CDXUTSDKMesh class.  This class reads the sdkmesh file format for use by the samples
 //--------------------------------------------------------------------------------------
 class CDXUTSDKMesh
 {
+public:
+	int CreateFromFile(     const char* szFileName);
+	int CreateFromMemory( BYTE* pData,
+                                        UINT DataBytes );
 private:
     UINT m_NumOutstandingResources;
     bool m_bLoading;
@@ -267,13 +270,11 @@ protected:
 
 protected:
     void                            LoadMaterials( SDKMESH_MATERIAL* pMaterials,
-                                                   UINT NumMaterials,  );
-    HRESULT                         CreateVertexBuffer( 
-                                                        SDKMESH_VERTEX_BUFFER_HEADER* pHeader, void* pVertices,
-                                                         );
-    HRESULT                         CreateIndexBuffer( 
-                                                       SDKMESH_INDEX_BUFFER_HEADER* pHeader, void* pIndices,
-                                                        );
+                                                   UINT NumMaterials );
+    int                         CreateVertexBuffer( 
+                                                        SDKMESH_VERTEX_BUFFER_HEADER* pHeader, void* pVertices);
+    int                         CreateIndexBuffer( 
+                                                       SDKMESH_INDEX_BUFFER_HEADER* pHeader, void* pIndices);
 
     //frame manipulation
     void                            TransformBindPoseFrame( UINT iFrame, D3DXFROMWINEMATRIX* pParentWorld );
@@ -282,52 +283,24 @@ protected:
     
 //--------------------------------------------------------------------------------------
 
-
-    //Direct3D 9 rendering helpers
-    void                            RenderMesh( UINT iMesh,
-                                                
-                                                LPD3DXEFFECT pEffect,
-                                                D3DXHANDLE hTechnique,
-                                                D3DXHANDLE htxDiffuse,
-                                                D3DXHANDLE htxNormal,
-                                                D3DXHANDLE htxSpecular );
-    void                            RenderFrame( UINT iFrame,
-                                                 
-                                                 LPD3DXEFFECT pEffect,
-                                                 D3DXHANDLE hTechnique,
-                                                 D3DXHANDLE htxDiffuse,
-                                                 D3DXHANDLE htxNormal,
-                                                 D3DXHANDLE htxSpecular );
-
 public:
                                     CDXUTSDKMesh();
     virtual                         ~CDXUTSDKMesh();
 
-    virtual HRESULT                 Create( LPCTSTR szFileName, bool bCreateAdjacencyIndices=
-                                            false,  );
-    virtual HRESULT                 Create( BYTE* pData, UINT DataBytes,
-                                            bool bCreateAdjacencyIndices=false, bool bCopyStatic=false,
-                                             );
-    virtual HRESULT                 LoadAnimation( char** szFileName );
+    //virtual int                 Create( const char* szFileName);
+    virtual int                 Create( BYTE* pData, UINT DataBytes);
+    virtual int                 LoadAnimation( const char* szFileName );
     virtual void                    Destroy();
 
     //Frame manipulation
     void                            TransformBindPose( D3DXFROMWINEMATRIX* pWorld );
     void                            TransformMesh( D3DXFROMWINEMATRIX* pWorld, double fTime );
-    
-    //Direct3D 9 Rendering
-    virtual void                    Render( 
-                                            LPD3DXEFFECT pEffect,
-                                            D3DXHANDLE hTechnique,
-                                            D3DXHANDLE htxDiffuse = 0,
-                                            D3DXHANDLE htxNormal = 0,
-                                            D3DXHANDLE htxSpecular = 0 );
 
     //Helpers (D3D9 specific)
-    static D3DPRIMITIVETYPE         GetPrimitiveType9( SDKMESH_PRIMITIVE_TYPE PrimType );
+    static Primitives         GetPrimitiveType9( SDKMESH_PRIMITIVE_TYPE PrimType );
     D3DFORMAT                       GetIBFormat9( UINT iMesh );
-    VertexBuffer9* GetVB9( UINT iMesh, UINT iVB );
-    IndexBuffer9* GetIB9( UINT iMesh );
+    VertexBufferID GetVB9( UINT iMesh, UINT iVB );
+    IndexBufferID GetIB9( UINT iMesh );
 
     //Helpers (general)
     char* GetMeshPathA();
@@ -336,8 +309,8 @@ public:
     UINT                            GetNumMaterials();
     UINT                            GetNumVBs();
     UINT                            GetNumIBs();
-    VertexBuffer9* GetVB9At( UINT iVB );
-    IndexBuffer9* GetIB9At( UINT iIB );
+    VertexBufferID GetVB9At( UINT iVB );
+    IndexBufferID GetIB9At( UINT iIB );
     BYTE* GetRawVerticesAt( UINT iVB );
     BYTE* GetRawIndicesAt( UINT iIB );
     SDKMESH_MATERIAL* GetMaterial( UINT iMaterial );
@@ -362,78 +335,26 @@ public:
     UINT                            GetNumInfluences( UINT iMesh );
     const D3DXFROMWINEMATRIX* GetMeshInfluenceMatrix( UINT iMesh, UINT iInfluence );
     UINT                            GetAnimationKeyFromTime( double fTime );
+	void Render(  ShaderID pEffect=-1,
+				VertexFormatID vf=-1,
+                               //D3DXFROMWINEHANDLE hTechnique,
+                               const char* htxDiffuse=0,
+                               const char* htxNormal=0,
+                               const char* htxSpecular=0 );
+	void RenderMesh( UINT iMesh=0,                    
+                               ShaderID pEffect=-1,
+				VertexFormatID vf=-1,
+                               //D3DXFROMWINEHANDLE hTechnique,
+                               const char* htxDiffuse=0,
+                               const char* htxNormal=0,
+                               const char* htxSpecular=0 );
+	void RenderFrame( UINT iFrame=0,
+                                ShaderID pEffect=-1,
+				VertexFormatID vf=-1,
+                                //D3DXFROMWINEHANDLE hTechnique,
+                                const char* htxDiffuse=0,
+                                const char* htxNormal=0,
+                                const char* htxSpecular=0 );
 };
-
-//-----------------------------------------------------------------------------
-// Name: class CDXUTXFileMesh
-// Desc: Class for loading and rendering file-based meshes
-//-----------------------------------------------------------------------------
-class CDXUTXFileMesh
-{
-public:
-    char*       m_strName[512];
-    LPD3DXMESH m_pMesh;   // Managed mesh
-
-    // Cache of data in m_pMesh for easy access
-    VertexBuffer9* m_pVB;
-    IndexBuffer9* m_pIB;
-    VertexDeclaration9* m_pDecl;
-    DWORD m_dwNumVertices;
-    DWORD m_dwNumFaces;
-    DWORD m_dwBytesPerVertex;
-
-    DWORD m_dwNumMaterials; // Materials for the mesh
-    D3DMATERIAL9* m_pMaterials;
-    CHAR        (*m_strMaterials )[MAX_PATH];
-    BaseTexture9** m_pTextures;
-    bool m_bUseMaterials;
-
-public:
-    // Rendering
-    HRESULT     Render( 
-                        bool bDrawOpaqueSubsets = true,
-                        bool bDrawAlphaSubsets = true );
-    HRESULT     Render( ID3DXEffect* pEffect,
-                        D3DXHANDLE hTexture = NULL,
-                        D3DXHANDLE hDiffuse = NULL,
-                        D3DXHANDLE hAmbient = NULL,
-                        D3DXHANDLE hSpecular = NULL,
-                        D3DXHANDLE hEmissive = NULL,
-                        D3DXHANDLE hPower = NULL,
-                        bool bDrawOpaqueSubsets = true,
-                        bool bDrawAlphaSubsets = true );
-
-    // Mesh access
-    LPD3DXMESH  GetMesh()
-    {
-        return m_pMesh;
-    }
-
-    // Rendering options
-    void        UseMeshMaterials( bool bFlag )
-    {
-        m_bUseMaterials = bFlag;
-    }
-    HRESULT     SetFVF(  DWORD dwFVF );
-    HRESULT     SetVertexDecl(  const D3DVERTEXELEMENT9* pDecl,
-                               bool bAutoComputeNormals = true, bool bAutoComputeTangents = true,
-                               bool bSplitVertexForOptimalTangents = false );
-
-    // Creation/destruction
-    HRESULT     Create(  const char* strFilename );
-    HRESULT     Create(  LPD3DXFILEDATA pFileData );
-    HRESULT     Create(  ID3DXMesh* pInMesh, D3DXMATERIAL* pd3dxMaterials,
-                        DWORD dwMaterials );
-    HRESULT     CreateMaterials( const char* strPath, D3DXMATERIAL* d3dxMtrls,
-                                 DWORD dwNumMaterials );
-    HRESULT     Destroy();
-
-                CDXUTXFileMesh( const char* strName = L"CDXUTXMeshFile_Mesh" );
-    virtual     ~CDXUTXFileMesh();
-};
-
-
-#endif
-
 #endif
 

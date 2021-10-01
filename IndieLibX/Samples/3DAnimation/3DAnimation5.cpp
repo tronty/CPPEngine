@@ -29,6 +29,8 @@ const char* filename[] =
 "/dx9sdk/teapot.x",
 //"/Sparkles/cat.x",
 #if 0
+"/Soldier/soldier.sdkmesh",
+"/MotionBlur/Warrior.sdkmesh",
 "/DXJune2010/Dwarf/dwarf.sdkmesh",
 "/DXJune2010/trees/tree.sdkmesh",
 #endif

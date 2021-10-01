@@ -26,21 +26,21 @@
 #include "SceneAnimator.h"
 using namespace AssimpView;
 
-typedef unsigned int SDKMESH_PRIMITIVE_TYPE;
-struct SDKMESH_SUBSET
+typedef unsigned int SDKMESH_PRIMITIVE_TYPE_;
+struct SDKMESH_SUBSET_
 {
-	SDKMESH_SUBSET(){}
-	virtual ~SDKMESH_SUBSET(){}
+	SDKMESH_SUBSET_(){}
+	virtual ~SDKMESH_SUBSET_(){}
 	unsigned int IndexCount;
 	unsigned int IndexStart;
 	unsigned int VertexStart;
 	unsigned int MaterialID;
-	SDKMESH_PRIMITIVE_TYPE PrimitiveType;
+	SDKMESH_PRIMITIVE_TYPE_ PrimitiveType;
 };
-struct SDKMESH_MATERIAL
+struct SDKMESH_MATERIAL_
 {
-	SDKMESH_MATERIAL(){}
-	virtual ~SDKMESH_MATERIAL(){}
+	SDKMESH_MATERIAL_(){}
+	virtual ~SDKMESH_MATERIAL_(){}
 	TextureID pDiffuseRV10;
 	TextureID pNormalRV10;
 };
@@ -618,12 +618,12 @@ public:
 	IndexBufferID GetIB10( unsigned int m ){return -1;}
 	unsigned int GetIBFormat10( unsigned int m ){return 0;}
 	unsigned int GetNumSubsets( unsigned int m ){return 0;}
-	SDKMESH_SUBSET* GetSubset( unsigned int m, unsigned int subset ){return new SDKMESH_SUBSET();}
-	SDKMESH_MATERIAL* GetMaterial( unsigned int MaterialID ){return new SDKMESH_MATERIAL();}
+	SDKMESH_SUBSET_* GetSubset( unsigned int m, unsigned int subset ){return new SDKMESH_SUBSET_();}
+	SDKMESH_MATERIAL_* GetMaterial( unsigned int MaterialID ){return new SDKMESH_MATERIAL_();}
      	void TransformMesh(D3DXFROMWINEMATRIX* mIdentity, float fTime ){}
 	unsigned int GetNumInfluences( unsigned int aMesh ){return 0;}
 	D3DXFROMWINEMATRIX* GetMeshInfluenceMatrix(D3DXFROMWINEMATRIX* iMesh, unsigned int i){return iMesh;}
-	Primitives GetPrimitiveType(SDKMESH_PRIMITIVE_TYPE a){return PRIM_TRIANGLES;}
+	Primitives GetPrimitiveType(SDKMESH_PRIMITIVE_TYPE_ a){return PRIM_TRIANGLES;}
 
         /// <summary>
         /// The number of vertices making up the shape.
