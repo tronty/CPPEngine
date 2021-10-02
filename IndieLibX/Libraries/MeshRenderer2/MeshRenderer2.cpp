@@ -407,6 +407,7 @@ int MeshRenderer2::InitShader(tShader aShader_)
 LuaScript MeshRenderer2_LuaScript_;
 MeshRenderer2::MeshRenderer2()
 {
+	pM=0;
         m_pAnimator=0;
         g_dCurrent=0;
         g_bPlay=true;
@@ -473,6 +474,7 @@ MeshRenderer2::MeshRenderer2()
 MeshRenderer2::~MeshRenderer2()
 {
 #if 0
+    if(pM) delete pM;
     for (unsigned int i = 0; i < m_pcAsset->pcScene->mNumMeshes;++i)
     {
         delete m_pcAsset->apcMeshes[i];
@@ -909,7 +911,6 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 		{
 			CDXUTSDKMesh* pM=new CDXUTSDKMesh();
 			int r=pM->CreateFromFile(fn.c_str());
-			delete pM;
 		}
 		else
 #endif
@@ -1680,6 +1681,12 @@ void MeshRenderer2::BeginDraw(	const D3DXFROMWINEMATRIX* amat, TextureID id, Sha
 
 	unsigned int MeshRenderer2::EndDraw(const unsigned int flags)
         {
+		if(pM)
+		{
+			pM->Render();
+			return 0;
+		}
+
 		unsigned int ret=0;
 #if 0
 	if(indices.size()){

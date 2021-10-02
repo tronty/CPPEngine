@@ -194,6 +194,7 @@ using namespace Assimp;
 #endif
 //struct stx_Effect;
 //struct stx_Effect::stx_Technique;
+class CDXUTSDKMesh;
 struct MeshRenderer2
 {
 public:
@@ -496,6 +497,7 @@ public:
 		indices.clear();
 	}
 
+	CDXUTSDKMesh* pM;
 	std::vector<stx_Mesh> meshes;
 	std::vector<stx_VertexPositionNormalTexture> vertices;
 	std::vector<__WORD__> indices;
