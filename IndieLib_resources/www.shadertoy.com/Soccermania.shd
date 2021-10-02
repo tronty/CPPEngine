@@ -38,12 +38,17 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
+#if 0
 // https://www.shadertoy.com/view/7sK3WK
 // Soccermania
 float iTime=0;
 float2 iResolution=float2(1,1);
-float2 iMouse=float2(1,1);
+float3 iMouse=float3(1,1,1);
 sampler2D iChannel0;
+sampler2D iChannel1;
+sampler2D iChannel2;
+#define  ivec2 int2
+#define  ivec4 int4
 float mod(float x, float y)
 {
   return x - y * floor(x / y);
@@ -69,12 +74,16 @@ float sdBox( in float2 p, in float2 b )
     float2 d = abs(p)-b;
     return length(max(d,0.0))  + min(max(d.x,d.y),0.0);
 }
+float2 lessThan(float2 v1, float2 v2)
+{
+	return  float2(v1.x<v2.x,v1.y<v2.y );
+}
 
 // from https://www.shadertoy.com/view/3tyfzV
 void drawChar(inout float3 color, in float3 charColor, in float2 p, in float2 pos, in float2 size, in int char) {
     p = (p - pos) / size + 0.5;
     if (all(lessThan(abs(p - 0.5), float2(0.5, 0.5)))) {
-        float val = textureGrad(iChannel2, p / 16.0 + frac(float2(char, 15 - char / 16) / 16.0), dFdx(p / 16.0), dFdy(p / 16.0)).r;
+        float val = tex2D(iChannel2, p / 16.0 + frac(float2(char, 15 - char / 16) / 16.0) /* , dFdx(p / 16.0), dFdy(p / 16.0) */ ).r;
         color = lerp(color, charColor, val);
     }
 }
@@ -91,38 +100,41 @@ float pitch(float2 uv)
     d=min(d,length(uv-float2(.65,0.)));
     return d;
 }
+#endif
 
-float4 main( in float2 U : TEXCOORD0 )
+float4 main( in float2 U : TEXCOORD0 ) :COLOR0
 {
+#if 1
+	float3 col=float3(1,1,1);
+#else
     float2 uv = (U - R.xy*.5) /min(R.y,R.x*.6)*1.05;
     float3 col = float3(0.2,0.5,0.1)*(.9+.1*step(0.1,mod(uv.x,.2)))*(.9+.1*step(0.1,mod(uv.y,.2)));         
-    col=lerp(col,float3(1), smoothstep(tk,.0,pitch(uv)));    
-    col=lerp(col,float3(.7), smoothstep(tk,.0,sdBox(abs(uv)-float2(.92,0),float2(.02,.07))));
+    col=lerp(col,float3(1,1,1), smoothstep(tk,.0,pitch(uv)));    
+    col=lerp(col,float3(.7,.7,.7), smoothstep(tk,.0,sdBox(abs(uv)-float2(.92,0),float2(.02,.07))));
     
-    ivec4 mode= ivec4( texelFetch(iChannel0,ivec2(24,0),0));
-    ivec4 sc= ivec4( texelFetch(iChannel0,ivec2(25,0),0));
-    drawChar(col, float3(0.,.7,0), uv, float2(-0.05,.45), float2(.1), 48+sc.x);
-    drawChar(col, float3(0.,.7,0), uv, float2(0.05,.45), float2(.1), 48+sc.y);
+    ivec4 mode= ivec4( tex2D(iChannel0,ivec2(24,0)));
+    ivec4 sc= ivec4( tex2D(iChannel0,ivec2(25,0)));
+    drawChar(col, float3(0.,.7,0), uv, float2(-0.05,.45), float2(.1,.1), 48+sc.x);
+    drawChar(col, float3(0.,.7,0), uv, float2(0.05,.45), float2(.1,.1), 48+sc.y);
     
     for(int i=0;i<=22;i++)
     {
-        float2 pos=  texelFetch(iChannel0,ivec2(i,0),0).xy;
-        col=lerp(col, (i==0?float3(1):(i%11)==1?float3(0,1,0): (i<12? float3(1,0,0):float3(0,.7,1))), smoothstep(tk,.0,-.01+length(uv-pos)));       
+        float2 pos=  tex2D(iChannel0,ivec2(i,0)).xy;
+        col=lerp(col, (i==0?float3(1,1,1):(i%11)==1?float3(0,1,0): (i<12? float3(1,0,0):float3(0,.7,1))), smoothstep(tk,.0,-.01+length(uv-pos)));       
     }
 
-    float4 d=texelFetch(iChannel1,ivec2(U),0);
+    float4 d=tex2D(iChannel1,ivec2(U));
     int j = int(d.x);
-    float2 pBall=  texelFetch(iChannel0,ivec2(0),0).xy;         
+    float2 pBall=  tex2D(iChannel0,ivec2(0,0)).xy;         
     float2 cBall =pBall*min(R.y,R.x*.6)/1.05 + R.xy*.5 ;
-    float4 zBall=texelFetch(iChannel1,ivec2(cBall),0);
+    float4 zBall=tex2D(iChannel1,ivec2(cBall));
 #ifdef DEBUG    
     col=lerp(col, (int(zBall.x)==j || int(zBall.z)==j?3.:1. )*  ((j%11)==1?float3(1,0,1): (j<12? float3(1,0,0):float3(0,0,1))), smoothstep(0.1,.0,d.w-d.y)*.1);
 #endif
     if(iMouse.z>0.) {
         col=lerp(col, float3(1,1,0), smoothstep(.001,.0,-.005*R.y+length(U-iMouse.xy)));   
-    }
-    
-    
-
+    }    
+#endif
     return float4(col,1.0);    
 }
+
