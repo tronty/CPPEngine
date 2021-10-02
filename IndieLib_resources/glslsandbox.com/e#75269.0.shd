@@ -38,39 +38,19 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
-float     iTime=0;                        // shader playback time (in seconds)
-float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
-sampler2D iChannel0;
-float mod(float x, float y)
-{
-  return x - y * floor(x / y);
-}
-
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
-
-float time;
-float2 mouse;
-float2 resolution;
+float2      iResolution=float2(1,1);                  // viewport iResolution (in pixels)
+float     iTime=0;                        // shader playback iTime (in seconds)
+float2      iMouse=float2(1,1);                       // iMouse pixel coords
 
 float4 main(VsOut IN): COLOR 
 {
 	float4 fragColor;
 	float2 fragCoord=IN.uv;
 	
-	float3 Color = float3(sin(time), 0.3, 0.9999);
+	float3 Color = float3(sin(iTime), 0.3, 0.9999);
 	float col = -0.2333565656563;
-	float2 a = (fragCoord.xy * 2.0 - resolution) / min(resolution, resolution.y);
-	 col += 0.41 / abs(length(a + float2( sin(time), sin(time)*cos(time))) - 0.01888888888888);
+	float2 a = (fragCoord.xy * 2.0 - iResolution) / min(iResolution, iResolution.y);
+	 col += 0.41 / abs(length(a + float2( sin(iTime), sin(iTime)*cos(iTime))) - 0.01888888888888);
 	return float4(float3(Color * col * col), 1.0);
 }
 
