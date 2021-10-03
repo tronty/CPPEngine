@@ -64,7 +64,7 @@ float noise( in float3 x )
 
 float sdf_wave(float3 p)
 {
-    float2x2 m2 = float2x2(1.6,-1.2,1.2,1.6); // 2????? + ????
+    float2x2 m2 = float2x2(1.6,-1.2,1.2,1.6); // 2 + 
     float speed = 3.141592 / 2.0;
     float waveHeight = .5;
 
@@ -101,10 +101,10 @@ float3 getNormal(float3 p)
 
 #define WATER_BASE_COLOR float3(15, 21, 21)
 
-// ??????????
+// 
 void raymarch(float3 cPos, float3 rd, out float isHit, out float3 rp)
 {
-    if (rd.y > 0.0) // Ray??????????????????Raymarch?????
+    if (rd.y > 0.0) // RayRaymarch
     {
         isHit = 0.0;
         return;
@@ -151,22 +151,22 @@ float4 main(VsOut IN): COLOR
 
     float3 rd = normalize(cSide * p.x + cUp * p.y + cDir); // ray direction
     float3 rp; // ray position
-    float isHit; // Ray??????????
+    float isHit; // Ray
     raymarch(cPos, rd, isHit, rp);
 
     // Light vector
-    float3 l = normalize(float3(0, 0.25, 1.0)); // ??????????
+    float3 l = normalize(float3(0, 0.25, 1.0)); // 
 
     // Sky
     float3 skyColor = renderSky(p, rd, l);
 
     // Bling-Phonn Shading
-    float3 n = getNormal(rp); // Ray???????????
-    float3 r = reflect(-l, n);  // ????????
-    float d = 0.5; // ???????
-    float s = 2.0; // ???????
-    float a = 0.1; // ?????????
-    float3 h = normalize(r + rd); // Bling-Phonn???????
+    float3 n = getNormal(rp); // Ray
+    float3 r = reflect(-l, n);  // 
+    float d = 0.5; // 
+    float s = 2.0; // 
+    float a = 0.1; // 
+    float3 h = normalize(r + rd); // Bling-Phonn
     float nDotL = clamp(dot(n, l), 0.0, 1.0);
     float nDotH = clamp(dot(n, h), 0.0, 1.0);
     float nDotV = clamp(dot(rd, n), 0.0, 1.0);

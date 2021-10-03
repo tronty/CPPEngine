@@ -76,7 +76,8 @@ float sdBox( in float2 p, in float2 b )
 }
 float2 lessThan(float2 v1, float2 v2)
 {
-	return  float2(v1.x<v2.x,v1.y<v2.y );
+	return v1;
+	//return  float2(v1.x<v2.x,v1.y<v2.y );
 }
 
 // from https://www.shadertoy.com/view/3tyfzV
@@ -101,11 +102,10 @@ float pitch(float2 uv)
     return d;
 }
 #endif
-
 float4 main( in float2 U : TEXCOORD0 ) :COLOR0
 {
 #if 1
-	float3 col=float3(1,1,1);
+	return float4(0,0,0,1);
 #else
     float2 uv = (U - R.xy*.5) /min(R.y,R.x*.6)*1.05;
     float3 col = float3(0.2,0.5,0.1)*(.9+.1*step(0.1,mod(uv.x,.2)))*(.9+.1*step(0.1,mod(uv.y,.2)));         
@@ -133,8 +133,8 @@ float4 main( in float2 U : TEXCOORD0 ) :COLOR0
 #endif
     if(iMouse.z>0.) {
         col=lerp(col, float3(1,1,0), smoothstep(.001,.0,-.005*R.y+length(U-iMouse.xy)));   
-    }    
+    }
+    return float4(col,1.0);'
 #endif
-    return float4(col,1.0);    
 }
 

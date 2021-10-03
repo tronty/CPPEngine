@@ -14,6 +14,17 @@
 
 #include <Framework3/IRenderer.h>
 
+const char* filename[] =
+{
+"/Soldier/soldier.sdkmesh",
+"/MotionBlur/Warrior.sdkmesh",
+"/DXJune2010/Dwarf/dwarf.sdkmesh",
+"/DXJune2010/trees/tree.sdkmesh",
+0
+};
+const int g_i=0;
+//const int g_i=3;
+
 #define MAX_BONE_MATRICES 255
 #define MAX_SPRITES 500
 #define MAX_INSTANCES 500
@@ -177,10 +188,15 @@ int  OnCreateDevice()
 	#endif
 
     // Load the animated mesh
-    #if 0
-    g_SkinnedMesh.Load("Soldier/soldier.sdkmesh");
-    // ??? g_SkinnedMesh.LoadAnimation( "Soldier/soldier.sdkmesh_anim" );
-	#elif 1
+	#if 0
+    g_SkinnedMesh.Load(filename[g_i]);
+    #elif 0
+    g_SkinnedMesh.Load("/Soldier/soldier.sdkmesh");
+    // ??? g_SkinnedMesh.LoadAnimation( "/Soldier/soldier.sdkmesh_anim" );
+    #elif 0
+    g_SkinnedMesh.Load("/MotionBlur/Warrior.sdkmesh");
+    // ??? g_SkinnedMesh.LoadAnimation( "/MotionBlur/warrior.sdkmesh_anim" );
+	#elif 0
     g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
     #else

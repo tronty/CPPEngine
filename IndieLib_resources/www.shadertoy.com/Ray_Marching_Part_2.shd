@@ -52,10 +52,10 @@ float2 iMouse=float2(1,1);
  *   uniform provided by shadertoy
  */
 
-int MAX_MARCHING_STEPS = 255;
-float MIN_DIST = 0.0;
-float MAX_DIST = 100.0;
-float EPSILON = 0.0001;
+const int MAX_MARCHING_STEPS = 255;
+const float MIN_DIST = 0.0;
+const float MAX_DIST = 100.0;
+const float EPSILON = 0.0001;
 
 /**
  * Signed distance function for a sphere centered at the origin with radius 1.0;
@@ -84,7 +84,7 @@ float sceneSDF(float3 samplePoint) {
  * marchingDirection: the normalized direction to march in
  * start: the starting distance away from the eye
  * end: the max distance away from the ey to march before giving up
- */ 
+ */
 float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float start, float end) {
     float depth = start;
     for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
@@ -99,6 +99,7 @@ float shortestDistanceToSurface(float3 eye, float3 marchingDirection, float star
     }
     return end;
 }
+            
 
 /**
  * Return the normalized direction to march in from the eye point for a single pixel.

@@ -32,6 +32,9 @@ const char* filename[] =
 "/glslsandbox.com/e#61428.0.shd",
 "/glslsandbox.com/e#63847.0.shd",
 #endif
+"/glslsandbox.com/e#75266.0.shd",
+"/glslsandbox.com/e#75266.1.shd",
+"/glslsandbox.com/e#75269.0.shd",
 "/www.shadertoy.com/Super_simple_raymarching_example.shd",
 "/www.shadertoy.com/Ray_Marching_Part_1.shd",
 "/www.shadertoy.com/Ray_Marching_Part_2.shd",

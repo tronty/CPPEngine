@@ -78,10 +78,10 @@ float noise_( in float3 x )
     ivec3 q = ivec3(p);
 	int2 uv = q.xy + int2(37,17)*q.z;
 
-	float2 rg = lerp( lerp( texelFetch( iChannel0, (uv           )&255, 0 ),
-				        texelFetch( iChannel0, (uv+int2(1,0))&255, 0 ), f.x ),
-				   lerp( texelFetch( iChannel0, (uv+int2(0,1))&255, 0 ),
-				        texelFetch( iChannel0, (uv+int2(1,1))&255, 0 ), f.x ), f.y ).yx;
+	float2 rg = lerp( lerp( tex2D( iChannel0, (uv           )&255),
+				        tex2D( iChannel0, (uv+int2(1,0))&255), f.x ),
+				   lerp( tex2D( iChannel0, (uv+int2(0,1))&255),
+				        tex2D( iChannel0, (uv+int2(1,1))&255), f.x ), f.y ).yx;
 #endif    
     
 	return -1.0+2.0*lerp( rg.x, rg.y, f.z );
@@ -148,7 +148,7 @@ float4 raymarch( in float3 ro, in float3 rd, in float3 bgcol, in int2 px )
 {
 	float4 sum = float4(0, 0, 0, 0);
 
-	float t = 0.0;//0.05*texelFetch( iChannel0, px&255, 0 ).x;
+	float t = 0.0;//0.05*tex2D( iChannel0, px&255).x;
 
     MARCH(30,map5);
     MARCH(30,map4);
