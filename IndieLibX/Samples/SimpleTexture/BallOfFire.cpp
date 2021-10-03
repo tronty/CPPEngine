@@ -16,7 +16,7 @@ const char* filename[] =
 "/glslsandbox.com/e#63847.0.shd",
 #endif
 "/glslsandbox.com/e#75266.0.shd",
-"/glslsandbox.com/e#75266.1.shd",
+//"/glslsandbox.com/e#75266.1.shd",
 "/glslsandbox.com/e#75269.0.shd",
 "/www.shadertoy.com/Super_simple_raymarching_example.shd",
 "/www.shadertoy.com/Ray_Marching_Part_1.shd",
@@ -25,7 +25,7 @@ const char* filename[] =
 "/www.shadertoy.com/Ray_Marching_Part_4.shd",
 "/www.shadertoy.com/Ray_Marching_Part_5.shd",
 "/www.shadertoy.com/Ray_Marching_Part_6.shd",
-"/SDF.shd",
+//"/SDF.shd",
 "/www.shadertoy.com/simple_Starfield.shd",
 "/www.shadertoy.com/Skin_peeler.shd",
 "/www.shadertoy.com/The_One_Ring.shd",
