@@ -38,10 +38,12 @@ const char* filename[] =
 "/www.shadertoy.com/Super_simple_raymarching_example.shd",
 "/www.shadertoy.com/Ray_Marching_Part_1.shd",
 "/www.shadertoy.com/Ray_Marching_Part_2.shd",
+#if 0
 "/www.shadertoy.com/Ray_Marching_Part_3.shd",
 "/www.shadertoy.com/Ray_Marching_Part_4.shd",
 "/www.shadertoy.com/Ray_Marching_Part_5.shd",
 "/www.shadertoy.com/Ray_Marching_Part_6.shd",
+#endif
 //"/SDF.shd",
 "/www.shadertoy.com/simple_Starfield.shd",
 "/www.shadertoy.com/Skin_peeler.shd",
