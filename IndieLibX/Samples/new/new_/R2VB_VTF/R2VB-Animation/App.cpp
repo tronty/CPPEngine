@@ -905,7 +905,7 @@ void psBatchDrawModel(int num)
 //-----------------------------------------------------------------------------------------
 void drawPixelShaderAnimation()
 {
-	if (animationMenu && (sameAnimation == animationMenu->getCheckedRadioButton(1)))
+	if (1)//(animationMenu && (sameAnimation == animationMenu->getCheckedRadioButton(1)))
 	{
 		psCalculateAnimation(time, interpolate);
 		psSkinning();			
@@ -926,7 +926,7 @@ void drawPixelShaderAnimation()
 			}
 		}
 	}
-	else if (animationMenu && (differentAnimation == animationMenu->getCheckedRadioButton(1)))
+	else if (0)//(animationMenu && (differentAnimation == animationMenu->getCheckedRadioButton(1)))
 	{
 		static bool bInit = false;
 
@@ -949,6 +949,23 @@ void drawPixelShaderAnimation()
 			}
 
 			// upload the data of each character to the texture
+			#if 0
+			D3DLOCKED_RECT rect;
+			LPDIRECT3DTEXTURE9 lpTex = (LPDIRECT3DTEXTURE9)(((D3D9Renderer *) renderer)->getD3DTexture(batch[currentModel].FrameTime[batch[currentModel].currentFrameTimeTexture]));
+			if (lpTex->LockRect(0, &rect, NULL, D3DLOCK_DISCARD) == D3D_OK)
+			{
+				FRAMETIME_MATRIX_VALUE* lpC = (FRAMETIME_MATRIX_VALUE*)rect.pBits;
+				for (int i=0; i<NumData; i++)
+				{
+					float *lpV = (float*)(&(modelAI[Count+i].Trans.elem[0][0]));
+					for (int j=0; j<16; j++)
+					{
+						*lpC++ = FRAMETIME_MATRIX_VALUE(lpV[j]);
+					}
+				}
+				lpTex->UnlockRect(0);
+			}
+			#elif 0
 			TextureID lpTex = batch[currentModel].FrameTime[batch[currentModel].currentFrameTimeTexture];
             int Pitch;
             FRAMETIME_MATRIX_VALUE* lpC = (FRAMETIME_MATRIX_VALUE*)
@@ -964,6 +981,21 @@ void drawPixelShaderAnimation()
 				}
 				IRenderer::GetRendererInstance()->UnlockTexture(lpTex, 0);
 			}
+			#else
+			Image3 tex;
+			FRAMETIME_MATRIX_VALUE* lpC = (FRAMETIME_MATRIX_VALUE*)tex.create(FRAMETIME_MATRIX_FORMAT, NumData*16, 1, 1, 1);			
+			for (int i=0; i<NumData; i++)
+			{
+				float *lpV = (float*)(&(modelAI[Count+i].Trans.m[0][0]));
+				for (int j=0; j<16; j++)
+				{
+						*lpC++ = FRAMETIME_MATRIX_VALUE(lpV[j]);
+				}
+			}
+			IRenderer::GetRendererInstance()->deleteTexture(batch[currentModel].FrameTime[batch[currentModel].currentFrameTimeTexture]);
+			batch[currentModel].FrameTime[batch[currentModel].currentFrameTimeTexture]=
+			IRenderer::GetRendererInstance()->addTexture(&tex, false, IRenderer::GetRendererInstance()->GetnearestClamp());
+			#endif
 			psBatchCalculateAnimation(Num);
 			psBatchSkinning(Num);
 			IRenderer::GetRendererInstance()->changeToMainFramebuffer();
@@ -1454,13 +1486,14 @@ void drawFrame()
 	AILoop();
 
 	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4(0.5, 0.5, 0.5, 0));
-
+#if 0
 	if (menu && (vsAnimation == menu->getCheckedRadioButton(1)))
 	{
 
 		drawVertexShaderAnimation();
 	}
 	else
+#endif
 	{
 
 		drawPixelShaderAnimation();
