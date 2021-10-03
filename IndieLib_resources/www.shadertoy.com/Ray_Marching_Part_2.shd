@@ -178,7 +178,7 @@ float3 phongContribForLight(float3 k_d, float3 k_s, float alpha, float3 p, float
  * See https://en.wikipedia.org/wiki/Phong_reflection_model#Description
  */
 float3 phongIllumination(float3 k_a, float3 k_d, float3 k_s, float alpha, float3 p, float3 eye) {
-    float3 ambientLight = 0.5 * float3(1.0, 1.0, 1.0);
+    const float3 ambientLight = 0.5 * float3(1.0, 1.0, 1.0);
     float3 color = ambientLight * k_a;
     
     float3 light1Pos = float3(4.0 * sin(iTime),
@@ -205,12 +205,12 @@ float3 phongIllumination(float3 k_a, float3 k_d, float3 k_s, float alpha, float3
 float4 main(in float2 fragCoord : TEXCOORD0 ) : COLOR0
 {
 	float3 dir = rayDirection(45.0, iResolution.xy, fragCoord);
-    float3 eye = float3(0.0, 0.0, 1.0);
+    float3 eye = float3(0.0, 0.0, 5.0);
     float dist = shortestDistanceToSurface(eye, dir, MIN_DIST, MAX_DIST);
     
     if (dist > MAX_DIST - EPSILON) {
         // Didn't hit anything
-        return float4(1.0, 0.0, 0.0, 1.0);
+        return float4(0.0, 0.0, 0.0, 0.0);
     }
     
     // The closest point on the surface to the eyepoint along the view ray
