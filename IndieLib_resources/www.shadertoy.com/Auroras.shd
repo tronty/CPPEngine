@@ -1,0 +1,219 @@
+/*
+  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+
+struct VsIn2 {
+    float2 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+struct VsIn3 {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR 
+float4x4 worldViewProj 
+MVPSEMANTIC
+;
+VsOut main2(VsIn2 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+VsOut main3(VsIn3 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+
+[Fragment shader]
+float2      iResolution=float2(1,1);                  // viewport iResolution (in pixels)
+float     iTime=0;                        // shader playback iTime (in seconds)
+float2      iMouse=float2(1,1);                       // iMouse pixel coords
+
+// Auroras by nimitz 2017 (twitter: @stormoid)
+// License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
+// Contact the author for other licensing options
+
+/*
+	
+	There are two main hurdles I encountered rendering this effect. 
+	First, the nature of the tex2D that needs to be generated to get a believable effect
+	needs to be very specific, with large scale band-like structures, small scale non-smooth variations
+	to create the trail-like effect, a method for animating said tex2D smoothly and finally doing all
+	of this cheaply enough to be able to evaluate it several times per fragment/pixel.
+
+	The second obstacle is the need to render a large volume while keeping the computational cost low.
+	Since the effect requires the trails to extend way up in the atmosphere to look good, this means
+	that the evaluated volume cannot be as constrained as with cloud effects. My solution was to make
+	the sample stride increase polynomially, which works very well as long as the trails are lower opcaity than
+	the rest of the effect. Which is always the case for auroras.
+
+	After that, there were some issues with getting the correct emission curves and removing banding at lowered
+	sample densities, this was fixed by a combination of sample number influenced dithering and slight sample blending.
+
+	N.B. the base setup is from an old shader and ideally the effect would take an arbitrary ray origin and
+	direction. But this was not required for this demo and would be trivial to fix.
+*/
+
+#define time iTime
+
+float2x2 mm2(in float a){float c = cos(a), s = sin(a);return float2x2(c,s,-s,c);}
+float2x2 m2 = float2x2(0.95534, 0.29552, -0.29552, 0.95534);
+float tri(in float x){return clamp(abs(frac(x)-.5),0.01,0.49);}
+float2 tri2(in float2 p){return float2(tri(p.x)+tri(p.y),tri(p.y+tri(p.x)));}
+
+float triNoise2d(in float2 p, float spd)
+{
+    float z=1.8;
+    float z2=2.5;
+	float rz = 0.;
+    p = mul(mm2(p.x*0.06),p);
+    float2 bp = p;
+	for (float i=0.; i<5.; i++ )
+	{
+        float2 dg = tri2(bp*1.85)*.75;
+        dg = mul(mm2(time*spd),dg);
+        p -= dg/z2;
+
+        bp *= 1.3;
+        z2 *= .45;
+        z *= .42;
+		p *= 1.21 + (rz-1.0)*.02;
+        
+        rz += tri(p.x+tri(p.y))*z;
+        p= -mul(m2, p);
+	}
+    return clamp(1./pow(rz*29., 1.3),0.,.55);
+}
+
+float hash21(in float2 n){ return frac(sin(dot(n, float2(12.9898, 4.1414))) * 43758.5453); }
+float4 aurora(float3 ro, float3 rd, float2 fragCoord)
+{
+    float4 col;
+    float4 avgCol;
+    
+    for(float i=0.;i<50.;i++)
+    {
+        float of = 0.006*hash21(fragCoord.xy)*smoothstep(0.,15., i);
+        float pt = ((.8+pow(i,1.4)*.002)-ro.y)/(rd.y*2.+0.4);
+        pt -= of;
+    	float3 bpos = ro + pt*rd;
+        float2 p = bpos.zx;
+        float rzt = triNoise2d(p, 0.06);
+        float4 col2 = float4(0,0,0, rzt);
+        col2.rgb = (sin(1.-float3(2.15,-.5, 1.2)+i*0.043)*0.5+0.5)*rzt;
+        avgCol =  lerp(avgCol, col2, .5);
+        col += avgCol*exp2(-i*0.065 - 2.5)*smoothstep(0.,5., i);
+        
+    }
+    
+    col *= (clamp(rd.y*15.+.4,0.,1.));
+    
+    
+    //return clamp(pow(col,float4(1.3))*1.5,0.,1.);
+    //return clamp(pow(col,float4(1.7))*2.,0.,1.);
+    //return clamp(pow(col,float4(1.5))*2.5,0.,1.);
+    //return clamp(pow(col,float4(1.8))*1.5,0.,1.);
+    
+    //return smoothstep(0.,1.1,pow(col,float4(1.))*1.5);
+    return col*1.8;
+    //return pow(col,float4(1.))*2.
+}
+
+
+//-------------------Background and Stars--------------------
+
+float3 nmzHash33(float3 q)
+{
+    float3 p = float3(abs(int3(q)));
+    p = p*float3(374761393U, 1103515245U, 668265263U) + p.zxy + p.yzx;
+    p = p.yzx*(p.zxy^(p >> 3U)); // ???
+    return float3(p^(p >> 16U))*(1.0/float3(0xffffffffU));
+}
+
+float3 stars(in float3 p)
+{
+    float3 c;
+    float res = iResolution.x*1.;
+    
+	for (float i=0.;i<4.;i++)
+    {
+        float3 q = frac(p*(.15*res))-0.5;
+        float3 id = floor(p*(.15*res));
+        float2 rn = nmzHash33(id).xy;
+        float c2 = 1.-smoothstep(0.,.6,length(q));
+        c2 *= step(rn.x,.0005+i*i*0.001);
+        c += c2*(lerp(float3(1.0,0.49,0.1),float3(0.75,0.9,1.),rn.y)*0.1+0.9);
+        p *= 1.3;
+    }
+    return c*c*.8;
+}
+
+float3 bg(in float3 rd)
+{
+    float sd = dot(normalize(float3(-0.5, -0.6, 0.9)), rd)*0.5+0.5;
+    sd = pow(sd, 5.);
+    float3 col = lerp(float3(0.05,0.1,0.2), float3(0.1,0.05,0.2), sd);
+    return col*.63;
+}
+//-----------------------------------------------------------
+
+
+float4 main(VsOut IN): COLOR
+{
+	float4 fragColor;
+	float2 fragCoord=IN.uv;
+	float2 q = fragCoord.xy / iResolution.xy;
+    float2 p = q - 0.5;
+	p.x*=iResolution.x/iResolution.y;
+    
+    float3 ro = float3(0,0,-6.7);
+    float3 rd = normalize(float3(p,1.3));
+    float2 mo = iMouse.xy / iResolution.xy-.5;
+    mo = (mo==float2(-.5))?mo=float2(-0.1,0.1):mo;
+	mo.x *= iResolution.x/iResolution.y;
+    rd.yz *= mm2(mo.y);
+    rd.xz *= mm2(mo.x + sin(time*0.05)*0.2);
+    
+    float3 col = float3(0.);
+    float3 brd = rd;
+    float fade = smoothstep(0.,0.01,abs(brd.y))*0.1+0.9;
+    
+    col = bg(rd)*fade;
+    
+    if (rd.y > 0.){
+        float4 aur = smoothstep(0.,1.5,aurora(ro,rd,fragCoord))*fade;
+        col += stars(rd);
+        col = col*(1.-aur.a) + aur.rgb;
+    }
+    else //Reflections
+    {
+        rd.y = abs(rd.y);
+        col = bg(rd)*fade*0.6;
+        float4 aur = smoothstep(0.0,2.5,aurora(ro,rd,fragCoord));
+        col += stars(rd)*0.1;
+        col = col*(1.-aur.a) + aur.rgb;
+        float3 pos = ro + ((0.5-ro.y)/rd.y)*rd;
+        float nz2 = triNoise2d(pos.xz*float2(.5,.7), 0.);
+        col += lerp(float3(0.2,0.25,0.5)*0.08,float3(0.3,0.3,0.5)*0.7, nz2*0.4);
+    }
+    
+	return float4(col, 1.);
+}
+

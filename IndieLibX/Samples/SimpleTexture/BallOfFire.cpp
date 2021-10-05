@@ -116,7 +116,16 @@ const char* filename[] =
 "/www.shadertoy.com/XslGRr.shd",
 "/www.shadertoy.com/Soccermania.shd",
 "/www.shadertoy.com/TDM_Seascape_Sailing.shd",
-"/www.shadertoy.com/Fantasy_World_Map.shd"
+"/www.shadertoy.com/Fantasy_World_Map.shd",
+"/www.shadertoy.com/Ocean_waves_ride.shd",
+"/www.shadertoy.com/Auroras.shd",
+"/www.shadertoy.com/Artistic_Black_hole.shd",
+"/www.shadertoy.com/Main_Sequence_Star.shd",
+"/www.shadertoy.com/Planet_shader.shd",
+"/www.shadertoy.com/Protoplanet.shd",
+"/www.shadertoy.com/Mario_World.shd",
+"/www.shadertoy.com/Cheap_Ocean.shd",
+"/www.shadertoy.com/Himalayas.shd",
 #endif
 };
 
