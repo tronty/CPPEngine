@@ -143,6 +143,8 @@ const char* filename[] =
 "/www.shadertoy.com/Mario_World.shd",
 "/www.shadertoy.com/Cheap_Ocean.shd",
 "/www.shadertoy.com/Himalayas.shd",
+"/www.shadertoy.com/buildings_by_night.shd",
+"/www.shadertoy.com/Re-entry.shd",
 };
 
 class _Shape3D
