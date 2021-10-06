@@ -15,6 +15,12 @@ const char* filename[] =
 "/glslsandbox.com/e#61428.0.shd",
 "/glslsandbox.com/e#63847.0.shd",
 #endif
+"/www.shadertoy.com/Badlands.shd",
+"/www.shadertoy.com/Glacial_valleys.shd",
+"/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",
+"/www.shadertoy.com/Islands_in_wavy_shallow_water.shd",
+"/www.shadertoy.com/Fork_Islands_in_Arrangemon_275.shd",
+"/www.shadertoy.com/simple_terrain.shd",
 "/glslsandbox.com/e#75266.0.shd",
 //"/glslsandbox.com/e#75266.1.shd",
 "/glslsandbox.com/e#75269.0.shd",
