@@ -145,6 +145,12 @@ const char* filename[] =
 "/www.shadertoy.com/Himalayas.shd",
 "/www.shadertoy.com/buildings_by_night.shd",
 "/www.shadertoy.com/Re-entry.shd",
+"/www.shadertoy.com/Desert_mountains.shd",
+"/www.shadertoy.com/Desert_mountains_v2.shd",
+"/www.shadertoy.com/Volcanic_planet.shd",
+"/www.shadertoy.com/Ray_Marching_Tutorial_01.shd",
+"/www.shadertoy.com/Lindenmayer_Systems.shd",
+"/www.shadertoy.com/sierpinski_triangle_(default).shd",
 };
 
 class _Shape3D
