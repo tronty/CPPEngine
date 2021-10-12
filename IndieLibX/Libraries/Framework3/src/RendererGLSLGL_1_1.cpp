@@ -893,7 +893,7 @@ LOG_FNLN;
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Hull shader error:\n");
 		}
-		glGetInfoLog(shaderGL1_1.shader[eHullShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetInfoLogARB(shaderGL1_1.shader[eHullShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
@@ -919,7 +919,7 @@ LOG_FNLN;
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Domain shader error:\n");
 		}
-		glGetInfoLog(shaderGL1_1.shader[eDomainShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetInfoLogARB(shaderGL1_1.shader[eDomainShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
@@ -945,7 +945,7 @@ LOG_FNLN;
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Compute shader error:\n");
 		}
-		glGetInfoLog(shaderGL1_1.shader[eComputeShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetInfoLogARB(shaderGL1_1.shader[eComputeShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
@@ -972,7 +972,7 @@ LOG_FNLN;
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Geometry shader error:\n");
 		}
-		glGetInfoLog(shaderGL1_1.shader[eGeometryShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetInfoLogARB(shaderGL1_1.shader[eGeometryShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
@@ -1023,9 +1023,11 @@ LOG_FNLN;
 				}
 				else
 				{
-			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Vertex shader error:\n");
-			}
-				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+					char log[256];
+    					glGetInfoLogARB( shaderGL1_1.shader[eVertexShader], 256, NULL, log);
+					printf("Vertex shader error:\n%s\n", log);
+				}
+				//glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 				//printf("\n%s\n", infoLog);
@@ -1093,10 +1095,11 @@ LOG_FNLN;
 				}
 				else
 				{
-			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Fragment shader error:\n");
-				//printf("\n%s\n", infoLog);
-			}
-			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+					char log[256];
+    					glGetInfoLogARB( shaderGL1_1.shader[ePixelShader], 256, NULL, log);
+					printf("Pixel shader error:\n%s\n", log);
+				}
+				//glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 			}

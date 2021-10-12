@@ -909,7 +909,8 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 #if 1 // ???
 		if (stricmp(extension, ".sdkmesh") == 0)
 		{
-			CDXUTSDKMesh* pM=new CDXUTSDKMesh();
+			if(pM) delete pM; 
+			pM=new CDXUTSDKMesh();
 			int r=pM->CreateFromFile(fn.c_str());
 		}
 		else
