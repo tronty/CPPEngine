@@ -1327,6 +1327,7 @@ LOG_FNLN;
 	if(!rFS)
 		return -1;
 LOG_FNLN;
+
 #if 0
 	{FILE * pFile = fopen ("shd.txt","w");
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());

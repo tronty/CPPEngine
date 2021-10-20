@@ -6214,9 +6214,7 @@ std::string stx_Effect::ParseEffect(const std::string& aFileName, const char* aD
 	LOG_PRINT("\nval1:\n%s\n", m_sFX.c_str());
 	LOG_PRINT("\nval:\n%s\n", m_sXML.c_str());
 
-	{std::ofstream out("./__tmp__.fx");
-	out << m_sFX;
-	out.close();}
+	//{std::ofstream out("./__tmp__.fx");out << m_sFX;out.close();}
 
 #if 0
 	{std::ofstream out("./__tmp__.xml");
