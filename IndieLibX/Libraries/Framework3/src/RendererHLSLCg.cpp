@@ -4956,28 +4956,28 @@ if(stx_strcmp(slash, "/scripting")!=0)
 	//if(Renderer=="GLES2")
 	{
 		IRenderer::s_pRenderer=new RendererGLES2(fullScreen,argc,argv);
-		//if(IRenderer::s_pRenderer->IsOK()) break;
+		if(!IRenderer::s_pRenderer->IsOK()) stx_exit(0);
 	}
 	#else
 	#ifdef  __FrameworkGLSLGL_1_1_H__
 	if(Renderer=="GLSL1_1")
 	{
 		IRenderer::s_pRenderer=new RendererGLSLGL_1_1(fullScreen,argc,argv);
-		//if(IRenderer::s_pRenderer->IsOK()) break;
+		if(!IRenderer::s_pRenderer->IsOK()) stx_exit(0);
 	}
 	#endif
 	#ifdef __FrameworkCgGL_1_1_H__
 	if(Renderer=="GLCG1_1")
 	{
 		IRenderer::s_pRenderer=new RendererCgGL_1_1(fullScreen,argc,argv);
-		//if(IRenderer::s_pRenderer->IsOK()) break;
+		if(!IRenderer::s_pRenderer->IsOK()) stx_exit(0);
 	}
 	#endif
 	#if defined(__Framework3D3D11_H__)
 	if(Renderer=="D3D11")
 	{
 		IRenderer::s_pRenderer=new RendererHLSLD3D11(fullScreen,argc,argv);
-		//if(IRenderer::s_pRenderer->IsOK()) break;
+		if(!IRenderer::s_pRenderer->IsOK()) stx_exit(0);
 	}
 	#endif
 	#endif
