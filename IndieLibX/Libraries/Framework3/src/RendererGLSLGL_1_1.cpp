@@ -30,6 +30,8 @@
 #ifdef __APPLE__
 #define LOG_FNLN_OSX
 #define LOG_PRINT_OSX
+//define glGetShaderiv
+//define glGetShaderInfoLog
 #else
 #define LOG_FNLN_OSX
 #define LOG_PRINT_OSX
@@ -1033,7 +1035,7 @@ LOG_FNLN;
 				//printf("\n%s\n", infoLog);
 			}
 			else vsResult = GL_TRUE;
-			
+			#if 0
 			if(0){
 				GLint blen = 0;	
 				GLsizei slen = 0;
@@ -1055,13 +1057,13 @@ LOG_FNLN;
 					return -1;
 				}
 			}else if(0){
-			GLint length;
+			GLint length=0;
 			glGetShaderiv(shaderGL1_1.shader[eVertexShader],GL_INFO_LOG_LENGTH,&length);
 			std::vector<unsigned char> log(length);
 			glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader],200,&length,&log[0]);log[length]='\0';
 			if(length>1) printf("%s\n",&log[0]);
 			}
-			
+			#endif
 			if (fsText.length())
 			{
 			shaderGL1_1.shader[ePixelShader] = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
@@ -1104,7 +1106,7 @@ LOG_FNLN;
 				infoLogPos += len;
 			}
 			else fsResult = GL_TRUE;
-
+#if 0
 			if(0){
 				GLint blen = 0;	
 				GLsizei slen = 0;
@@ -1126,12 +1128,13 @@ LOG_FNLN;
 					return -1;
 				}
 			}else if(0){
-			GLint length;
+			GLint length=0;
 			glGetShaderiv(shaderGL1_1.shader[ePixelShader],GL_INFO_LOG_LENGTH,&length);
 			std::vector<unsigned char> log(length+1);
 			glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader],200,&length,&log[0]);log[length]='\0';
 			if(length>1) printf("%s\n",&log[0]);
 			}
+#endif
 LOG_FNLN;
 if (vsResult)
     {LOG_PRINT("vsResult=true");}

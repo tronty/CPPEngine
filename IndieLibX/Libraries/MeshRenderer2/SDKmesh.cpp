@@ -1540,6 +1540,12 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
         m_pMeshArray[i].pFrameInfluences = ( UINT* )( m_pStaticMeshData + m_pMeshArray[i].FrameInfluenceOffset );
     }
 
+    // Setup buffer data pointer
+    BYTE* pBufferData = 0;
+
+    // Get the start of the buffer data
+    UINT64 BufferDataStart = 0;
+
     // error condition
     if( m_pMeshHeader->Version != SDKMESH_FILE_VERSION )
     {
@@ -1548,10 +1554,10 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     }
 
     // Setup buffer data pointer
-    BYTE* pBufferData = pData + m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+    pBufferData = pData + m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
 
     // Get the start of the buffer data
-    UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+    BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
     // Create VBs
     m_ppVertices = new BYTE*[m_pMeshHeader->NumVertexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumVertexBuffers; i++ )
