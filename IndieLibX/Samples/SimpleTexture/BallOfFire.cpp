@@ -15,6 +15,8 @@ const char* filename[] =
 "/glslsandbox.com/e#61428.0.shd",
 "/glslsandbox.com/e#63847.0.shd",
 #endif
+//"/www.shadertoy.com/ED-209.shd",
+//"/www.shadertoy.com/Truchet_Kaleidoscope_FTW.shd",
 "/www.shadertoy.com/Badlands.shd",
 "/www.shadertoy.com/Glacial_valleys.shd",
 "/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",
