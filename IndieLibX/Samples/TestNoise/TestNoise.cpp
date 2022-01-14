@@ -34,6 +34,8 @@ const char* filename[] =
 #endif
 //"/www.shadertoy.com/ED-209.shd",
 //"/www.shadertoy.com/Truchet_Kaleidoscope_FTW.shd",
+"/www.shadertoy.com/Voxel_Hall_Colors.shd",
+"/www.shadertoy.com/Voxel_Corridor.shd",
 "/www.shadertoy.com/Badlands.shd",
 "/www.shadertoy.com/Glacial_valleys.shd",
 "/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",

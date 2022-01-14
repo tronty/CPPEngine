@@ -59,7 +59,7 @@ float3 mod(float3 x, float3 y)
 float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
 float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
-#define mix lerp
+
 /*
     Voxel Hall Colors
     
@@ -322,7 +322,7 @@ float calcVoxAO(float3 vp, float3 sp, float3 rd, float3 mask) {
     // to return the interpolated AO value for the surface position.
     sp = frac(sp);
     float2 uv = sp.yz*mask.x + sp.zx*mask.y + sp.xy*mask.z;
-    return mix(mix(vAO.z, vAO.w, uv.x), mix(vAO.y, vAO.x, uv.x), uv.y);
+    return lerp(lerp(vAO.z, vAO.w, uv.x), lerp(vAO.y, vAO.x, uv.x), uv.y);
 
 }
 ///////////
@@ -449,7 +449,7 @@ float4 main(VsOut IN): COLOR
 	}
        
     // Blend in a bit of logic-defying fog for atmospheric effect. :)
-    sceneCol = mix(sceneCol, float3(.08, .16, .34), smoothstep(0., .95, t/FAR)); // exp(-.002*t*t), etc.
+    sceneCol = lerp(sceneCol, float3(.08, .16, .34), smoothstep(0., .95, t/FAR)); // exp(-.002*t*t), etc.
 
     // Clamp and present the badly gamma corrected pixel to the screen.
 	fragColor = float4(sqrt(clamp(sceneCol, 0., 1.)), 1.0);
