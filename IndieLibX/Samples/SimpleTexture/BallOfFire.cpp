@@ -17,6 +17,9 @@ const char* filename[] =
 #endif
 //"/www.shadertoy.com/ED-209.shd",
 //"/www.shadertoy.com/Truchet_Kaleidoscope_FTW.shd",
+//"/www.shadertoy.com/5_0_fbm.shd",
+//"/www.shadertoy.com/Clock_by_Vicking.shd",
+//"/www.shadertoy.com/Voxel_Edges.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
 "/www.shadertoy.com/Badlands.shd",
@@ -297,6 +300,7 @@ void render()
 	D3DXFROMWINEVECTOR2 resolution(1.0f,1.0f);//(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
 	float time=.00025 * (timeGetTime() - start );
+	D3DXFROMWINEVECTOR4 iDate(0.0f, 0.0f, 0.0f, time);
 	D3DXFROMWINEMATRIX I;
 	D3DXFROMWINEMatrixIdentity(&I);
 #if 0
@@ -337,6 +341,7 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);

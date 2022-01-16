@@ -1,12 +1,18 @@
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GL/glu.h>
+#endif
 #if defined(LINUX) || defined(__APPLE__)
 /*
   Copyright (c) 2018 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GL/glu.h>
 
 #include <STX/STX.h>
 #include <STX/STXCPP.h>

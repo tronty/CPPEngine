@@ -34,6 +34,9 @@ const char* filename[] =
 #endif
 //"/www.shadertoy.com/ED-209.shd",
 //"/www.shadertoy.com/Truchet_Kaleidoscope_FTW.shd",
+//"/www.shadertoy.com/5_0_fbm.shd",
+//"/www.shadertoy.com/Clock_by_Vicking.shd",
+//"/www.shadertoy.com/Voxel_Edges.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
 "/www.shadertoy.com/Badlands.shd",
@@ -324,6 +327,7 @@ sampler2D tExplosion;
 	IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
 	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
+	D3DXFROMWINEVECTOR4 iDate(0.0f, 0.0f, 0.0f, time);
 	
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", matRot);
@@ -333,6 +337,7 @@ sampler2D tExplosion;
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", vMouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", vResolution);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", vResolution);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
