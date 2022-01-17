@@ -1,3 +1,4 @@
+#if !defined(__APPLE__)
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
@@ -220,5 +221,6 @@ int ApplicationLogic()
 	}
 	return 0;
 }
+#endif
 #endif
 

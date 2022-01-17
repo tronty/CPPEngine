@@ -1,3 +1,4 @@
+#if !defined(__APPLE__)
 /*
   Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -1571,4 +1572,5 @@ int ApplicationLogic()
 	}
 	return 0;
 }
+#endif
 
