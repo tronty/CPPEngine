@@ -29,19 +29,19 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
             {
                 stx_snprintf( strPath, MAX_PATH, "%s%s", m_strPath, pMaterials[m].DiffuseTexture );
                 pMaterials[m].pDiffuseTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    pMaterials[m].pDiffuseTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+                    //pMaterials[m].pDiffuseTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
             }
             if( pMaterials[m].NormalTexture[0] != 0 )
             {
                 stx_snprintf( strPath, MAX_PATH, "%s%s", m_strPath, pMaterials[m].NormalTexture );
                 pMaterials[m].pNormalTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    pMaterials[m].pNormalTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+                    //pMaterials[m].pNormalTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
             }
             if( pMaterials[m].SpecularTexture[0] != 0 )
             {
                 stx_snprintf( strPath, MAX_PATH, "%s%s", m_strPath, pMaterials[m].SpecularTexture );
                 pMaterials[m].pSpecularTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    pMaterials[m].pSpecularTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+                    //pMaterials[m].pSpecularTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
             }
 
         }
