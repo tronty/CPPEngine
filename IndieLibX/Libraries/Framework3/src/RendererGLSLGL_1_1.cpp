@@ -855,7 +855,7 @@ LOG_FNLN;
 	char line[16];
 	GLint vsResult, fsResult, gsResult, csResult, hsResult, dsResult, linkResult;
 	char infoLog[2048];
-	GLint len, infoLogPos = 0;
+	GLint len=0, infoLogPos = 0;
 	shaderGL1_1.shader[eVertexShader] = 0;
 	shaderGL1_1.shader[ePixelShader] = 0;
 	shaderGL1_1.shader[eGeometryShader] = 0;
