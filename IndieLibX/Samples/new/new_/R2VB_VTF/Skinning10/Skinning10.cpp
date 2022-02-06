@@ -14,6 +14,13 @@
 */
 
 #include <Framework3/IRenderer.h>
+#if 0
+#define LOG_PRINT(...) printf(__VA_ARGS__);
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#else
+#define LOG_PRINT(...)
+#define LOG_FNLN
+#endif
 
 const char* filename[] =
 {
@@ -194,13 +201,13 @@ int  OnCreateDevice()
     #elif 0
     g_SkinnedMesh.Load("/Soldier/soldier.sdkmesh");
     // ??? g_SkinnedMesh.LoadAnimation( "/Soldier/soldier.sdkmesh_anim" );
-    #elif 0
+    #elif 1
     g_SkinnedMesh.Load("/MotionBlur/Warrior.sdkmesh");
     // ??? g_SkinnedMesh.LoadAnimation( "/MotionBlur/warrior.sdkmesh_anim" );
 	#elif 0
     g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
-    #else
+    #elif 0
     g_SkinnedMesh.Load("/assimp--1.0.412-sdk/test.x");
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/assimp--1.0.412-sdk/test.png", false, IRenderer::GetRendererInstance()->Getlinear());
     //if(0) printf("g_ptxDiffuse=%x\n", g_ptxDiffuse);

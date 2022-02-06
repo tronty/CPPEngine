@@ -37,7 +37,7 @@
 #define LOG_PRINT_OSX
 #endif
 
-#if 1
+#if 0
 #define STX_PRINT
 #define STX_FNLN
 #define LOG_PRINT
@@ -46,18 +46,18 @@
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
-#elif 0
-#define STX_PRINT(...) printf(__VA_ARGS__);
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-#define LOG_PRINT(...) printf(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#elif 1
+#define STX_PRINT(...)
+#define STX_FNLN
+#define LOG_PRINT(...)
+#define LOG_FNLN
 #define LOG_FNLN_NONE
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #else
-#define LOG_PRINT(...) printf(__VA_ARGS__);
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_PRINT(...)
+#define LOG_FNLN
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -274,15 +274,15 @@ unsigned int RendererGLSLGL_1_1::DrawPrimitive(Primitives PrimitiveType,UINT Sta
 		return 0;
 	apply();
 
-	if(1){
-	if(m_bDebug)
+	if(0){
+	if(1)//m_bDebug)
 	{
 		LOG_FNLN;
-		LOG_PRINT("glDrawArrays:\n");
-		LOG_PRINT("PrimitiveType=%d\n", PrimitiveType);
-		LOG_PRINT("glPrimRendererGL_1_1[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
-		LOG_PRINT("firstVertex=%d\n", StartVertex);
-		LOG_PRINT("nVertices=%d\n", getVertexCount(PrimitiveType,PrimitiveCount));
+		printf("glDrawArrays:\n");
+		printf("PrimitiveType=%d\n", PrimitiveType);
+		printf("glPrimRendererGL_1_1[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
+		printf("firstVertex=%d\n", StartVertex);
+		printf("nVertices=%d\n", getVertexCount(PrimitiveType,PrimitiveCount));
 	}}
 	glDrawArrays(	glPrimRendererGLSLGL_1_1[PrimitiveType], StartVertex,
 #if 0
@@ -301,20 +301,21 @@ unsigned int RendererGLSLGL_1_1::DrawIndexedPrimitive(Primitives PrimitiveType,I
 	if(!((selectedVertexBuffers[0]>-1)&&(selectedIndexBuffer>-1)))
 		return 0;
 	apply();
+	if(indexBuffers.size()<=selectedIndexBuffer) return 0;
 	unsigned int indexSize=(indexBuffers[selectedIndexBuffer]).indexSize;
 
 
-	if(1){
-	if(m_bDebug)
+	if(0){
+	if(1)//m_bDebug)
 	{
 		LOG_FNLN;
-		LOG_PRINT("glDrawElements:\n");
-		LOG_PRINT("PrimitiveType=%x\n", PrimitiveType);
-		LOG_PRINT("glPrimRendererGL_1_1[PrimitiveType]=%x\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
-		LOG_PRINT("nIndices=%d\n", getIndicesCount(PrimitiveType)*primCount);
-		LOG_PRINT("indexSize=%d\n", indexSize);
-		LOG_PRINT("firstIndex=%d\n", startIndex);
-		LOG_PRINT("BUFFER_OFFSET(indexSize * firstIndex)=%d\n", BUFFER_OFFSET(indexSize * startIndex));
+		printf("glDrawElements:\n");
+		printf("PrimitiveType=%x\n", PrimitiveType);
+		printf("glPrimRendererGL_1_1[PrimitiveType]=%x\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
+		printf("nIndices=%d\n", getIndicesCount(PrimitiveType)*primCount);
+		printf("indexSize=%d\n", indexSize);
+		printf("firstIndex=%d\n", startIndex);
+		printf("BUFFER_OFFSET(indexSize * firstIndex)=%d\n", BUFFER_OFFSET(indexSize * startIndex));
 	}}
 
 	glDrawElements(	glPrimRendererGLSLGL_1_1[PrimitiveType],

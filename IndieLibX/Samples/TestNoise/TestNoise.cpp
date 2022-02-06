@@ -39,6 +39,8 @@ const char* filename[] =
 //"/www.shadertoy.com/Voxel_Edges.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
+//"/www.shadertoy.com/Voxel_Hall_Colors_3D.shd",
+//"/www.shadertoy.com/Voxel_Corridor_3D.shd",
 "/www.shadertoy.com/Badlands.shd",
 "/www.shadertoy.com/Glacial_valleys.shd",
 "/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",

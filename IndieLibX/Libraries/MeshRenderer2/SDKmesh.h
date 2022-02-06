@@ -171,8 +171,19 @@ struct SDKMESH_FRAME
 
 struct SDKMESH_MATERIAL
 {
-    char    Name[MAX_MATERIAL_NAME];
+	SDKMESH_MATERIAL()
+	{
+    		Name[0]=0;
+		MaterialInstancePath[0]=0;
+		DiffuseTexture[0]=0;
+    		NormalTexture[0]=0;
+    		SpecularTexture[0]=0;
+		pDiffuseTexture9=-1;
+   		pNormalTexture9=-1;
+    		pSpecularTexture9=-1;
+	}
 
+    char    Name[MAX_MATERIAL_NAME];
     // Use MaterialInstancePath
     char    MaterialInstancePath[MAX_MATERIAL_PATH];
 
@@ -247,7 +258,7 @@ protected:
     BYTE** m_ppIndices;
 
     //Keep track of the path
-    char*                           m_strPathW[MAX_PATH];
+    //char*                           m_strPathW[MAX_PATH];
     char                            m_strPath[MAX_PATH];
 
     //General mesh info
@@ -304,7 +315,7 @@ public:
 
     //Helpers (general)
     char* GetMeshPathA();
-    char** GetMeshPathW();
+    char* GetMeshPathW();
     UINT                            GetNumMeshes();
     UINT                            GetNumMaterials();
     UINT                            GetNumVBs();

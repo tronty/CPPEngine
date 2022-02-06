@@ -904,8 +904,8 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 	{
 		const char *fileName=fn.c_str();
 		const char *extension = strrchr(fileName, '.');
-		printf("fileName=%s\n", fileName);
-		printf("extension=%s\n", extension);
+		LOG_PRINT("fileName=%s\n", fileName);
+		LOG_PRINT("extension=%s\n", extension);
 #if 1 // ???
 		if (stricmp(extension, ".sdkmesh") == 0)
 		{

@@ -22,13 +22,13 @@ cd bin
 call TestNoise.exe
 cd ..
 cd bin
-call RenderMonkey.exe
-cd ..
-cd bin
 call R2VB-Animation.exe
 cd ..
 cd bin
 call Skinning10.exe
+cd ..
+cd bin
+call RenderMonkey.exe
 cd ..
 cd bin
 call pbr.exe

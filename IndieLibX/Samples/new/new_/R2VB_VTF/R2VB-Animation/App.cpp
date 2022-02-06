@@ -6,7 +6,8 @@
 */
 
 #include <Framework3/IRenderer.h>
-#define LOG_FNLN STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_PRINT(...) printf(__VA_ARGS__);
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 //-----------------------------------------------------------------------------
 // File: App.cpp
 // Copyright (c) 2005 ATI Technologies Inc. All rights reserved.
@@ -270,8 +271,6 @@ void initGUI()
 #endif
 }
 
-#define LOG_PRINT(...) STX_PRINT(__VA_ARGS__);
-#define LOG_FNLN STX_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 //-----------------------------------------------------------------------------------------
 // Load skinning vertex data into texture. It includes vertex position, bone index and 
 // weight value.
@@ -429,6 +428,7 @@ bool loadBoneAnimationMap(Model *m, Batch *b, char* name)
 //-----------------------------------------------------------------------------------------
 bool loadModel(Model *m, Batch *b, char* name)
 {
+	LOG_FNLN;
 	FILE	*fp;
 
 	std::string f=std::string(name);
@@ -436,15 +436,19 @@ bool loadModel(Model *m, Batch *b, char* name)
     
     LOG_PRINT("file=%s\n", file.c_str());
 	fp = fopen(file.c_str(), "rb");
+	LOG_FNLN;
 	if (!fp)
 		return false;
+	LOG_FNLN;
     
 	fread(&m->numVertices, sizeof(unsigned int), 1, fp);
+	LOG_FNLN;
     	
 	if (m->numVertices%2)
 		m->vertexTextureWidth =  m->numVertices+1;
 	else
 		m->vertexTextureWidth =  m->numVertices;		
+	LOG_FNLN;
 	m->vertexTextureHeight = 1;
 	b->vertexTextureWidth = m->vertexTextureWidth;
 	b->vertexTextureHeight = m->vertexTextureHeight * maxBatchOnce;
@@ -455,8 +459,10 @@ bool loadModel(Model *m, Batch *b, char* name)
 		1, TYPE_NORMAL,   R2VB_VERTEX_FORMAT, 4,
 		0, TYPE_TEXCOORD, R2VB_TEXCOORD_FORMAT, 2,
 	};
+	LOG_FNLN;
     	
 	if ((m->vertexFormat = IRenderer::GetRendererInstance()->addVertexFormat(modelVertexAttribs, elementsOf(modelVertexAttribs), modelSH)) == VF_NONE) return false;
+	LOG_FNLN;
     
 	FormatDesc vsModelVertexAttribs[] = {
 		1, TYPE_VERTEX,   FORMAT_FLOAT, 4,		
@@ -467,10 +473,12 @@ bool loadModel(Model *m, Batch *b, char* name)
 	};
     
 	if ((m->vsVertexFormat = IRenderer::GetRendererInstance()->addVertexFormat(vsModelVertexAttribs, elementsOf(vsModelVertexAttribs), vsModelSH)) == VF_NONE) return false;
+	LOG_FNLN;
     	
 	// Create the model vertex buffer for vertex shader animation
 	std::vector<D3DXFROMWINEVECTOR4> vv(m->numVertices * 4);
 	D3DXFROMWINEVECTOR4 *dest = &vv[0];
+	LOG_FNLN;
     	
 	for (unsigned int i=0; i<m->numVertices; i++)
 	{
@@ -480,8 +488,10 @@ bool loadModel(Model *m, Batch *b, char* name)
 		fread(&vv[4*i+2], sizeof(D3DXFROMWINEVECTOR4), 1, fp);
 		fread(&vv[4*i+3], sizeof(D3DXFROMWINEVECTOR4), 1, fp);
 	}
+	LOG_FNLN;
     	
 	m->vsVertexBuffer = IRenderer::GetRendererInstance()->addVertexBuffer(vv.size()*sizeof(D3DXFROMWINEVECTOR4), STATIC, &vv[0]);
+	LOG_FNLN;
     
 	// Create the texture coord of model
 	std::vector<float> uv(m->numVertices * 6);
@@ -492,14 +502,17 @@ bool loadModel(Model *m, Batch *b, char* name)
 		uv[6*j+5] = R2VB_TEXCOORD_VALUE_FORMAT(uv[6*j+1]);
 	}
 	m->UVBuffer = IRenderer::GetRendererInstance()->addVertexBuffer(uv.size()*sizeof(float), STATIC, &uv[0]);
+	LOG_FNLN;
     
 	// Create index buffer of model
 	fread(&m->numTriangles, sizeof(unsigned int), 1, fp);
+	LOG_FNLN;
     
 	// Create the triangle index buffer
 	std::vector<unsigned short int> vi(m->numTriangles*3);
 	fread(&vi[0], sizeof(unsigned short int), m->numTriangles*3, fp);
 	m->indexBuffer = IRenderer::GetRendererInstance()->addIndexBuffer(m->numTriangles*3, 2, STATIC, &vi[0]);
+	LOG_FNLN;
     
 	/*
 		Create render target for the model animation.
@@ -531,8 +544,10 @@ Keskeytetty (luotiin core-tiedosto)
 	fclose(fp);
     
 	// Setup batch data -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	LOG_FNLN;
 	b->numVertices = m->vertexTextureWidth*m->vertexTextureHeight*maxBatchOnce;
 	b->numTriangles = m->numTriangles*maxBatchOnce;
+	LOG_FNLN;
     	
 	if ((b->vertexFormat = IRenderer::GetRendererInstance()->addVertexFormat(modelVertexAttribs, elementsOf(modelVertexAttribs), modelSH)) == VF_NONE) return false;
 
@@ -771,7 +786,7 @@ void psCalculateAnimation(float t, float interp)
 		IRenderer::GetRendererInstance()->setShaderConstant1f("XBias", 0.1f/(model[currentModel].numBones*4.0f));
 		IRenderer::GetRendererInstance()->setShaderConstant1f("iBoneAnimationHeight", 1.0f/model[currentModel].numFrames);
 			
-		
+		LOG_FNLN;
 		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLE_FAN, 0, 2);
 }
 //-----------------------------------------------------------------------------------------
@@ -793,6 +808,7 @@ void psSkinning()
 		IRenderer::GetRendererInstance()->setShaderConstant4f("bias", D3DXFROMWINEVECTOR4(0.1f/(model[currentModel].numBones*4.0f), 1.1f/(model[currentModel].numBones*4.0f), 2.1f/(model[currentModel].numBones*4.0f), 3.1f/(model[currentModel].numBones*4.0f)));
 		
 
+		LOG_FNLN;
 		IRenderer::GetRendererInstance()->DrawPrimitive(PRIM_TRIANGLE_FAN, 0, 2);
 }
 //-----------------------------------------------------------------------------------------
@@ -809,7 +825,8 @@ void psDrawModel(int mi)
 	IRenderer::GetRendererInstance()->setDepthFunc(eLESS);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("mvp", MVP);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("trans", modelAI[mi].Trans);
-	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, model[currentModel].numVertices, 0, model[currentModel].numTriangles);
+	LOG_FNLN;
+		IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, model[currentModel].numVertices, 0, model[currentModel].numTriangles);
 }
 //-----------------------------------------------------------------------------------------
 // Use pixel shader to calculate new bone matrices of multiple models.
@@ -844,6 +861,7 @@ void psBatchCalculateAnimation(int num)
 		batchQuadV[2][5] = bias;
 		batchQuadV[3][5] = bias;
 
+		LOG_FNLN;
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, batchQuadV, batchQuadV, sizeof(float)*6);
 }
 //-----------------------------------------------------------------------------------------
@@ -882,6 +900,7 @@ void psBatchSkinning(int num)
 		batchQuadV[2][5] = bias;
 		batchQuadV[3][5] = bias;
 
+		LOG_FNLN;
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, batchQuadV, batchQuadV, sizeof(float)*6);
 }
 //-----------------------------------------------------------------------------------------
@@ -899,7 +918,8 @@ void psBatchDrawModel(int num)
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("mvp", MVP);
 		
 	// Render multiple models at one time.
-	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, num*model[currentModel].vertexTextureWidth*model[currentModel].vertexTextureHeight, 0, num*model[currentModel].numTriangles);
+	LOG_FNLN;
+		IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, num*model[currentModel].vertexTextureWidth*model[currentModel].vertexTextureHeight, 0, num*model[currentModel].numTriangles);
 }
 //-----------------------------------------------------------------------------------------
 // Pixel shader animation 
@@ -1062,7 +1082,8 @@ void vsDrawModel(int mi)
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("trans", modelAI[mi].Trans);
 	
 
-	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, model[currentModel].numVertices, 0, model[currentModel].numTriangles);
+	LOG_FNLN;
+		IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, model[currentModel].numVertices, 0, model[currentModel].numTriangles);
 }
 //-----------------------------------------------------------------------------------------
 // Vertex shader animation.
@@ -1556,6 +1577,7 @@ void render()
 {
 	app.drawFrame();
 	IRenderer::GetRendererInstance()->Present();
+	stx_exit(0);
 }
 
 int ApplicationLogic()
