@@ -37,6 +37,8 @@ const char* filename[] =
 //"/www.shadertoy.com/5_0_fbm.shd",
 //"/www.shadertoy.com/Clock_by_Vicking.shd",
 //"/www.shadertoy.com/Voxel_Edges.shd",
+//"/www.shadertoy.com/Swirl_planet.shd",
+//"/www.shadertoy.com/Simplicity_Galaxy.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
 //"/www.shadertoy.com/Voxel_Hall_Colors_3D.shd",

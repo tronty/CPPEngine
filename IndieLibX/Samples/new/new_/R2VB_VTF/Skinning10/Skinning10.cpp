@@ -127,7 +127,7 @@ int  OnCreateDevice()
     g_pEffect10=IRenderer::GetRendererInstance()->addEffectFromFile("/SimpleTexture/SimpleTexture.fx");
     #else
     g_pEffect10=IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/Skinning10/Skinning10.shd", "main", "main");
-    //if(g_pEffect10==-1) printf("g_pEffect10=%x\n", g_pEffect10);
+    if(g_pEffect10==-1) {printf("g_pEffect10=%x\n", g_pEffect10);stx_exit(0);}
     #endif
 
 #if 0

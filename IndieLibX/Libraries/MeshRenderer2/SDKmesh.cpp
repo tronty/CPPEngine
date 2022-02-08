@@ -22,51 +22,48 @@
 //--------------------------------------------------------------------------------------
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
+	UINT m=0;
+	if(numMaterials)
+	{
+	pMaterials[m].pDiffuseTexture9=-1;
+	pMaterials[m].pNormalTexture9=-1;   		pMaterials[m].pSpecularTexture9=-1;
+	}
     char strPath[MAX_PATH];
     
     {
-        for( UINT m = 0; m < numMaterials; m++ )
+        for( m = 0; m < numMaterials; m++ )
         {
 		LOG_FNLN;
-		int extension1 = strrchr(m_strPath, '/')-m_strPath;
-                int extension2 = strrchr(m_strPath, '\\')-m_strPath;
-		int extension=std::max(extension1, extension2);
-		m_strPath[extension+1]='\0';
-                LOG_PRINT("extension1=%x\n", extension1);
-                LOG_PRINT("extension2=%x\n", extension2);
-                LOG_PRINT("m_strPath=%s\n", m_strPath);
+		int strLastSlash = int(stx_strrchr( m_strPath, stx_getOsSeparator() )-m_strPath);
+		m_strPath[strLastSlash]='\0';
+                printf("m_strPath=%s\n", m_strPath);
             // load textures
             if( pMaterials[m].DiffuseTexture[0] != 0 )
             {
-                printf("pMaterials[%d].DiffuseTexture=%s\n", m, pMaterials[m].DiffuseTexture);
-		stx_snprintf( strPath, MAX_PATH, "%s%s_Diff.png", m_strPath, pMaterials[m].DiffuseTexture );
-                printf("strPath=%s\n", strPath);
+		stx_snprintf( strPath, MAX_PATH, "%s/%s_Diff.png", m_strPath, pMaterials[m].DiffuseTexture );
 		stx_strlcpy(pMaterials[m].DiffuseTexture, strPath, MAX_TEXTURE_NAME);
-                pMaterials[m].pDiffuseTexture9=-1;//IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    //pMaterials[m].pDiffuseTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+               
+if(stx_fileExists(strPath))  pMaterials[m].pDiffuseTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
             }
             if( pMaterials[m].NormalTexture[0] != 0 )
             {
-                printf("pMaterials[%d].NormalTexture=%s\n", m, pMaterials[m].NormalTexture);
-		stx_snprintf( strPath, MAX_PATH, "%s%s_Diff.png", m_strPath, pMaterials[m].NormalTexture );
-                printf("strPath=%s\n", strPath);
+		stx_snprintf( strPath, MAX_PATH, "%s/%s_Diff.png", m_strPath, pMaterials[m].NormalTexture );
 		stx_strlcpy(pMaterials[m].NormalTexture, strPath, MAX_TEXTURE_NAME);
-                pMaterials[m].pNormalTexture9=-1;//IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    //pMaterials[m].pNormalTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+                if(stx_fileExists(strPath))  pMaterials[m].pNormalTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
             }
             if( pMaterials[m].SpecularTexture[0] != 0 )
             {
-                printf("pMaterials[%d].SpecularTexture=%s\n", m, pMaterials[m].SpecularTexture);
-		stx_snprintf( strPath, MAX_PATH, "%s%s_Diff.png", m_strPath, pMaterials[m].SpecularTexture );
-                printf("strPath=%s\n", strPath);
-		stx_strlcpy(pMaterials[m].SpecularTexture, strPath, MAX_TEXTURE_NAME);
-                pMaterials[m].pSpecularTexture9=-1;//IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
-                    //pMaterials[m].pSpecularTexture9 = ( TextureID* )ERROR_RESOURCE_VALUE;
+		stx_snprintf( strPath, MAX_PATH, "%s/%s_Diff.png", m_strPath, pMaterials[m].SpecularTexture );
+	stx_strlcpy(pMaterials[m].SpecularTexture, strPath, MAX_TEXTURE_NAME);        if(stx_fileExists(strPath))  pMaterials[m].pSpecularTexture9=IRenderer::GetRendererInstance()->addImageLibTexture(strPath, false, IRenderer::GetRendererInstance()->Getlinear());
             }
 
         }
     }
-	stx_exit(0);
+	m=0;
+	printf("pMaterials[%d].DiffuseTexture=%x\n", m, pMaterials[m].pDiffuseTexture9);
+	printf("pMaterials[%d].NormalTexture=%x\n", m, pMaterials[m].pNormalTexture9);   		
+	printf("pMaterials[%d].SpecularTexture=%x\n", m, pMaterials[m].pSpecularTexture9);
+	//stx_exit(0);
 }
 
 //--------------------------------------------------------------------------------------
@@ -276,11 +273,11 @@ void CDXUTSDKMesh::RenderMesh( UINT iMesh,
             if( INVALID_MATERIAL != pSubset->MaterialID && m_pMeshHeader->NumMaterials > 0 )
             {
                 pMat = &m_pMaterialArray[ pSubset->MaterialID ];
-                if( htxDiffuse && !IsErrorResource( pMat->pDiffuseTexture9 ) )
+                if( htxDiffuse && ( pMat->pDiffuseTexture9 > -1 ) )
                     IRenderer::GetRendererInstance()->setTexture( htxDiffuse, pMat->pDiffuseTexture9 );
-                if( htxNormal && !IsErrorResource( pMat->pNormalTexture9 ) )
+                if( htxNormal && ( pMat->pNormalTexture9 > -1 ) )
                     IRenderer::GetRendererInstance()->setTexture( htxNormal, pMat->pNormalTexture9 );
-                if( htxSpecular && !IsErrorResource( pMat->pSpecularTexture9 ) )
+                if( htxSpecular && ( pMat->pSpecularTexture9 > -1 ) )
                     IRenderer::GetRendererInstance()->setTexture( htxSpecular, pMat->pSpecularTexture9 );
             }
 
@@ -989,7 +986,7 @@ int CDXUTXFileMesh::Create(
     }
 
     D3DXFROMWINEMATERIAL* d3dxMtrls = ( D3DXFROMWINEMATERIAL* )pMtrlBuffer->GetBufferPointer();
-    hr = CreateMaterials( L"", d3dxMtrls, m_dwNumMaterials );
+    hr = CreateMaterials( "", d3dxMtrls, m_dwNumMaterials );
 
     SAFE_RELEASE( pAdjacencyBuffer );
     SAFE_RELEASE( pMtrlBuffer );
@@ -1042,7 +1039,7 @@ int CDXUTXFileMesh::Create( MeshRenderer2* pInMesh,
     m_pMesh = pTempMesh;
 
     int hr;
-    hr = CreateMaterials( L"", pd3dxMaterials, dwMaterials );
+    hr = CreateMaterials( "", pd3dxMaterials, dwMaterials );
 
     // Extract data from m_pMesh for easy access
     m_dwNumVertices = m_pMesh->GetNumVertices();
