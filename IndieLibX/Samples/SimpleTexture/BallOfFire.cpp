@@ -26,6 +26,7 @@ const char* filename[] =
 "/www.shadertoy.com/Voxel_Corridor.shd",
 //"/www.shadertoy.com/Voxel_Hall_Colors_3D.shd",
 //"/www.shadertoy.com/Voxel_Corridor_3D.shd",
+"/www.shadertoy.com/The_Cave.shd",
 "/www.shadertoy.com/Badlands.shd",
 "/www.shadertoy.com/Glacial_valleys.shd",
 "/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",
@@ -49,7 +50,6 @@ const char* filename[] =
 "/www.shadertoy.com/Skin_peeler.shd",
 "/www.shadertoy.com/The_One_Ring.shd",
 "/www.shadertoy.com/SimpleStars.shd",
-"/www.shadertoy.com/The_Cave.shd",
 "/www.shadertoy.com/Seascape.shd",
 "/www.shadertoy.com/Desert_biome.shd",
 "/www.shadertoy.com/Sandstone_canyons.shd",
@@ -226,10 +226,13 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/lSystem/brick.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, IRenderer::GetRendererInstance()->Getlinear()));
+	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekBrick002.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekBrick004.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekSeamlessBrick003.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
 	LOG_FNLN;
 	LOG_PRINT("shd.size()=%d\n", shd.size());
@@ -357,6 +360,8 @@ void render()
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel3", tex[3]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[4]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel5", tex[5]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel6", tex[6]);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	#if 1
 	//		           x	 y     tx    ty

@@ -206,11 +206,14 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/lSystem/brick.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/lSystem/brick.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekBrick002.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekBrick004.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekSeamlessBrick003.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));	
+	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/bcga-examples/MarekSeamlessBrick003.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
 
 	for(unsigned int i=0;i<elementsOf(filename);i++)
@@ -351,8 +354,10 @@ sampler2D tExplosion;
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel3", tex[4]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[3]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel3", tex[3]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[4]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel5", tex[5]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel6", tex[6]);
 
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());

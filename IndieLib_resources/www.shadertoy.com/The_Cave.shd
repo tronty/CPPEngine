@@ -54,9 +54,9 @@ float3 mod(float3 x, float3 y)
 float iTime=0.0;
 float2 iMouse=float2(1, 1);
 float2 iResolution=float2(1, 1);
-sampler2D iChannel0;
-sampler2D iChannel1;
-sampler2D iChannel2;
+sampler2D iChannel4;
+sampler2D iChannel5;
+sampler2D iChannel6;
 
 // https://www.shadertoy.com/view/MsX3RH
 // The Cave
@@ -206,9 +206,9 @@ float4 main(float2 fragCoord : TEXCOORD0) : COLOR0
 	
 	//normal mapping
 	float nms=0.19;
-	float3 nmx=nmap(tuv.yz,iChannel0,nms)+nmap(-tuv.yz,iChannel0,nms);
-	float3 nmy=nmap(tuv.xz,iChannel1,nms)+nmap(-tuv.xz,iChannel1,nms);
-	float3 nmz=nmap(tuv.xy,iChannel2,nms)+nmap(-tuv.xy,iChannel2,nms);
+	float3 nmx=nmap(tuv.yz,iChannel4,nms)+nmap(-tuv.yz,iChannel4,nms);
+	float3 nmy=nmap(tuv.xz,iChannel5,nms)+nmap(-tuv.xz,iChannel5,nms);
+	float3 nmz=nmap(tuv.xy,iChannel6,nms)+nmap(-tuv.xy,iChannel6,nms);
 	
 	float3 nn=normalize(nmx*tpn.x+nmy*tpn.y+nmz*tpn.z);
 	
@@ -227,9 +227,9 @@ float4 main(float2 fragCoord : TEXCOORD0) : COLOR0
 
 	//texturing
 	//double sampling to fix seams on tex2D edges
-	float4 tx=tex2D(iChannel0,tuv.yz)+tex2D(iChannel0,-tuv.yz);
-	float4 ty=tex2D(iChannel1,tuv.xz)+tex2D(iChannel1,-tuv.xz);
-	float4 tz=tex2D(iChannel2,tuv.xy)+tex2D(iChannel2,-tuv.xy);
+	float4 tx=tex2D(iChannel4,tuv.yz)+tex2D(iChannel4,-tuv.yz);
+	float4 ty=tex2D(iChannel5,tuv.xz)+tex2D(iChannel5,-tuv.xz);
+	float4 tz=tex2D(iChannel6,tuv.xy)+tex2D(iChannel6,-tuv.xy);
 	
 	float4 col=tx*tpn.x+ty*tpn.y+tz*tpn.z;
 	
