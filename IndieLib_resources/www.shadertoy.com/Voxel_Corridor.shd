@@ -59,7 +59,7 @@ float3 mod(float3 x, float3 y)
 float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
 float     iTime=0;                        // shader playback time (in seconds)
 float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
-sampler2D iChannel0;
+sampler2D iChannel3;
 
 /*
 
@@ -429,7 +429,7 @@ float4 main(VsOut IN): COLOR
         // Texture scale factor.
         const float tSize0 = 1./4.;
         // Texture-based bump mapping.
-	    sn = doBumpMap(iChannel0, sp*tSize0, sn, 0.02);
+	    sn = doBumpMap(iChannel3, sp*tSize0, sn, 0.02);
 
         // Function based bump mapping. Comment it out to see the under layer. It's pretty
         // comparable to regular beveled Voronoi... Close enough, anyway.
@@ -472,7 +472,7 @@ float4 main(VsOut IN): COLOR
 	    float3 texCol = float3(1, .6, .4) + step(abs(snNoBump.y), .5)*float3(0,.4, .6);
 	    
         // Multiplying by the tex2D color.
-	    texCol *= tex3D(iChannel0, sp*tSize0, sn);
+	    texCol *= tex3D(iChannel3, sp*tSize0, sn);
         
         //texCol *= bumpSurf3D( sp, sn)*.25 + .75; // Darken the grout, if you wanted.
 
