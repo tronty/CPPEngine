@@ -1,0 +1,117 @@
+/*
+  Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+struct VsIn2 {
+    float2 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+struct VsIn3 {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main2(VsIn2 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+VsOut main3(VsIn3 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+
+[Fragment shader]
+// https://www.shadertoy.com/view/MdVSDh
+float mod(float x, float y)
+{
+  return x - y * floor(x / y);
+}
+
+
+float2 mod(float2 x, float2 y)
+{
+  return x - y * floor(x / y);
+}
+
+float3 mod(float3 x, float3 y)
+{
+  return x - y * floor(x / y);
+}
+float2      iResolution=float2(1,1);                  // viewport iResolution (in pixels)
+float     iTime=0;                        // shader playback iTime (in seconds)
+float4      iMouse=float4(1,1,1,1);                       // mouse pixel coords
+sampler2D iChannel0;
+
+float count = 15.0;
+float speed = .9;
+
+
+float Hash( float2 p, in float s)
+{
+    float3 p2 = float3(p.xy,1.0 * abs(sin(s)));
+    return frac(sin(dot(p2,float3(1.1,1.7, 1.4)))*273758.5453123);
+}
+
+
+float noise(in float2 p, in float s)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+    f *= f * (24.0-2.0*f);
+    
+    
+    return lerp(lerp(Hash(i + float2(0.,0.), s), Hash(i + float2(1.,0.), s),f.x),
+               lerp(Hash(i + float2(0.,1.), s), Hash(i + float2(1.,1.), s),f.x),
+               f.y) * s;
+}
+
+
+float fbm(float2 p)
+{
+    float v = - noise(p * 02., 0.25);
+    v += noise(p * 01.1, 0.5) - noise(p * 01.1, 0.25);
+    v += noise(p * 02.1, 0.25) - noise(p * 02.1, 0.125);
+    v += noise(p * 04.1, 0.125) - noise(p * 08.1, 0.0625);
+    v += noise(p * 08.1, 0.0625) - noise(p * 16., 0.03125);
+    v += noise(p * 16.1, 0.03125);
+    return v;
+}
+
+float4 main(VsOut IN): COLOR 
+{
+	float4 fragColor;
+	float2 fragCoord=IN.uv;
+    float worktime = (iTime * speed) + 100000.0;
+    
+    float2 uv = ( fragCoord.xy / iResolution.xy ) * 2.0 - 1.0;
+    uv.y *= iResolution.y/iResolution.x;
+    
+    
+    float3 finalColor = float3( 0.0, 0.0, 0.0 );
+    for( float i = 1.0; i < count; i++ )
+    {
+        float t = abs(1.0 / ((uv.y + fbm( uv + worktime / i )) * (i * 100.0)));
+        finalColor +=  t * float3( i * 0.1, 0.9, 1.90 );
+    }
+    
+    return float4( finalColor, 1.0 );   
+}
