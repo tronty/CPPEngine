@@ -1,4 +1,3 @@
-cd ./bin;./BrickWall.bin;cd .. &&
 cd ./bin;./opengl_simple.bin;cd .. &&
 cd ./bin;./Road01.bin;cd .. &&
 cd ./bin;./Road02.bin;cd .. &&

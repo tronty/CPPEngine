@@ -1423,8 +1423,8 @@ else ifeq ("Darwin","$(OS)")
 	CFLAGS += -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOSX_VERSION).sdk
 	LDFLAGS += -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOSX_VERSION).sdk
 
-	CFLAGS += -I/usr/local/include -I/usr/X11R6/include
-	LDFLAGS += -L/usr/local/lib -L/usr/X11R6/lib
+	CFLAGS += -I/usr/local/include -I/usr/X11/include
+	LDFLAGS += -L/usr/local/lib -L/usr/X11/lib
 	export CPLUSPLUS = -D__cplusplus
 	export LibDir="Mac64"
 	export SDL = -lSDL2 -lSDL2_image -lX11
@@ -4709,12 +4709,12 @@ MFLAGS += -fobjc-arc -fobjc-abi-version=2
 MFLAGS += -fobjc-legacy-dispatch
 
 CFLAGS += -I.
-CFLAGS += -I/usr/X11R6/include
+CFLAGS += -I/usr/X11/include
 CFLAGS += -I'''+ccc.getINDIELIBROOT()+'''/Libraries/SDL2-'''+SDL2version+'''/include
 
 CFLAGS += -D__IPHONE_OS_VERSION_MIN_REQUIRED=40100
 CFLAGS += -Wno-comment -Wno-import #-Werror
-LDFLAGS += -L/usr/X11R6/lib
+LDFLAGS += -L/usr/X11/lib
 
 CFLAGS += $(PIC3) '''+aflagsincs+'''
 

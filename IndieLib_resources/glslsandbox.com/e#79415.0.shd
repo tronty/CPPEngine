@@ -1,0 +1,171 @@
+/*
+  Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
+
+struct VsIn2 {
+    float2 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+struct VsIn3 {
+    float3 position	: POSITION;
+    float3 Normal	: NORMAL;
+    float3 Binormal	: BINORMAL;
+    float3 Tangent	: TANGENT;
+    float3 Color	: TEXCOORD0;
+    float2 uv		: TEXCOORD1;
+};
+struct VsOut {
+    float4 position	: POSITION;
+    float2 uv		: TEXCOORD0;
+};
+
+[Vertex shader]
+ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
+VsOut main2(VsIn2 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+VsOut main3(VsIn3 In)
+{
+	VsOut Out=(VsOut)0;
+	Out.position = mul(worldViewProj, float4(In.position, 1.0));
+	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
+	return Out;
+}
+
+[Fragment shader]
+
+// Posted by Trisomie21
+
+uniform float iTime;
+uniform float2 iMouse;
+uniform float2 iResolution;
+
+// from http://glsl.heroku.com/e#5248.0
+#define BLADES 6.0
+#define BIAS 0.1
+#define SHARPNESS 3.0
+float3 star(float2 position) {
+	float blade = clamp(pow(sin(atan(position.y,position.x )*BLADES)+BIAS, SHARPNESS), 0.0, 1.0);
+	float3 color = lerp(float3(-0.34, -0.5, -1.0), float3(0.0, -0.5, -1.0), (position.y + 1.0) * 0.25);
+	color += (float3(0.95, 0.65, 0.30) * 1.0 / distance(float2(0.0), position) * 0.075);
+	color += float3(0.95, 0.45, 0.30) * min(1.0, blade *0.7) * (1.0 / distance(float2(0.0, 0.0), position)*0.075);
+	return color;
+
+}
+
+
+// Tweaked from http://glsl.heroku.com/e#4982.0
+float hash( float n ) { return frac(sin(n)*43758.5453); }
+
+float noise( in float2 x )
+{
+	float2 p = floor(x);
+	float2 f = frac(x);
+    	f = f*f*(3.0-2.0*f);
+    	float n = p.x + p.y*57.0;
+    	float res = lerp(lerp(hash(n+0.0), hash(n+1.0),f.x), lerp(hash(n+57.0), hash(n+58.0),f.x),f.y);
+    	return res;
+}
+
+float3 cloud(float2 p) {
+	float f = 0.0;
+    	f += 0.50000*noise(p*1.0*10.0); 
+    	f += 0.25000*noise(p*2.0*10.0); 
+    	f += 0.12500*noise(p*4.0*10.0); 
+    	f += 0.06250*noise(p*8.0*10.0);	
+	f *= f;
+	return float3(f*.65, f*.45, f)*.6;
+}
+
+const float LAYERS	= 4.0;
+const float SPEED	= 0.005;
+const float SCALE	= 80.0;
+const float DENSITY	= 1.5;
+const float BRIGHTNESS	= 10.0;
+       float2 ORIGIN	= iResolution.xy*.5;
+
+float rand(float2 co){ return frac(sin(dot(co.xy ,float2(12.9898,78.233))) * 43758.5453); }
+
+float4 main(VsOut IN) : COLOR0
+{
+	float2   pos = IN.uv.xy - ORIGIN;
+	float dist = length(pos) / iResolution.y;
+	float2 coord = float2(pow(dist, 0.1), atan(pos.x, pos.y) / (3.1415926*2.0));
+	
+	// Nebulous cloud
+	float3 color = cloud(pos/iResolution);
+	
+	// Background stars
+	float a = pow((1.0-dist),20.0);
+	float t = iTime*-.05;
+	float r = coord.x - (t*SPEED);
+	float c = frac(a+coord.y + 0.0*.543);
+	float2  p = float2(r, c*.5)*4000.0;
+	float2 uv = frac(p)*2.0-1.0;
+	float m = clamp((rand(floor(p))-.9)*BRIGHTNESS, 0.0, 1.0);
+	color +=  clamp((1.0-length(uv*2.0))*m*dist, 0.0, 1.0);
+	
+	// Flying stars into black hole
+	
+	// /original loop manually unrolled)
+	
+	float i = 1.0;
+		a = pow((1.0-dist),20.0);
+		t = i*10.0 - iTime*i*i;
+		r = coord.x - (t*SPEED);
+		c = frac(a+coord.y + i*.543);
+		p = float2(r, c*.5)*SCALE*(LAYERS/(i*i));
+		uv = frac(p)*2.0-1.0;
+		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
+		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
+	
+	i = 2.0;
+		a = pow((1.0-dist),20.0);
+		t = i*10.0 - iTime*i*i;
+		r = coord.x - (t*SPEED);
+		c = frac(a+coord.y + i*.543);
+		p = float2(r, c*.5)*SCALE*(LAYERS/(i*i));
+		uv = frac(p)*2.0-1.0;
+		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
+		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
+	
+	i = 3.0;
+		a = pow((1.0-dist),20.0);
+		t = i*10.0 - iTime*i*i;
+		r = coord.x - (t*SPEED);
+		c = frac(a+coord.y + i*.543);
+		p = float2(r, c*.5)*SCALE*(LAYERS/(i*i));
+		uv = frac(p)*2.0-1.0;
+		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
+		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
+	
+	i = 4.0;
+		a = pow((1.0-dist),20.0);
+		t = i*10.0 - iTime*i*i;
+		r = coord.x - (t*SPEED);
+		c = frac(a+coord.y + i*.543);
+		p = float2(r, c*.5)*SCALE*(LAYERS/(i*i));
+		uv = frac(p)*2.0-1.0;
+		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
+		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
+
+	i = 5.0;
+		a = pow((1.0-dist),20.0);
+		t = i*10.0 - iTime*i*i;
+		r = coord.x - (t*SPEED);
+		c = frac(a+coord.y + i*.543);
+		p = float2(r, c*.5)*SCALE*(LAYERS/(i*i));
+		uv = frac(p)*2.0-1.0;
+		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
+		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
+	
+
+	
+	return float4(color, 1.0);
+}
