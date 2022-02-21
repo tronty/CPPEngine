@@ -1,4 +1,5 @@
 cd ./bin;./opengl_simple.bin;cd .. &&
+cd ./bin;./WaterRender.bin;cd .. &&
 cd ./bin;./Road01.bin;cd .. &&
 cd ./bin;./Road02.bin;cd .. &&
 cd ./bin;./Road03.bin;cd .. &&

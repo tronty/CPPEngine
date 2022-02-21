@@ -38,7 +38,6 @@ VsOut main3(VsIn3 In)
 }
 
 [Fragment shader]
-#define textureLod tex2D
 sampler2D iChannel0;
 sampler2D iChannel1;
 float3      iResolution=float3(1,1,1);                  // viewport resolution (in pixels)
@@ -146,10 +145,10 @@ float noised( in float2 x ){
     float2 u = f*f*(3.0-2.0*f);
   
     float2 p = floor(x);
-	float a = textureLod( iChannel1, (p+float2(0.5,0.5))*0.00390625).x;
-	float b = textureLod( iChannel1, (p+float2(1.5,0.5))*0.00390625).x;
-	float c = textureLod( iChannel1, (p+float2(0.5,1.5))*0.00390625).x;
-	float d = textureLod( iChannel1, (p+float2(1.5,1.5))*0.00390625).x;
+	float a = 0.0;//tex2D( iChannel1, (p+float2(0.5,0.5))*0.00390625).x;
+	float b = 0.0;//tex2D( iChannel1, (p+float2(1.5,0.5))*0.00390625).x;
+	float c = 0.0;//tex2D( iChannel1, (p+float2(0.5,1.5))*0.00390625).x;
+	float d = 0.0;//tex2D( iChannel1, (p+float2(1.5,1.5))*0.00390625).x;
     
 	float res = (a+(b-a)*u.x+(c-a)*u.y+(a-b-c+d)*u.x*u.y);
     res = res - 0.5;
@@ -457,7 +456,7 @@ float4 main(VsOut IN): COLOR
 	float2 fragCoord=IN.uv;
        
     //Camera position is persistent and calculated in BufferA.
-    float3 cameraPos = tex2D(iChannel0, int2(0.5, 1.5)).xyz;
+    float3 cameraPos;// ??? = tex2D(iChannel0, int2(0.5, 1.5)).xyz;
     float3 targetDir = -cameraPos;
     float3 up = float3(0.0, 1.0, 0.0);
     //Get the view matrix from the camera orientation.
