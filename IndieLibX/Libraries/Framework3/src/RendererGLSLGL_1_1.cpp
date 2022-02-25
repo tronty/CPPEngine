@@ -1314,6 +1314,15 @@ LOG_FNLN;
 	std::string vsText__;
 	std::string fsText__;
 #if defined(USE_HLSL_SHADERS)
+#if 0
+	{
+		id=addGLSLShader(   vsText_, gsText, fsText_, csText, hsText, dsText,
+                            vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
+                            flags);
+	}
+	if(id==-1)
+#endif
+	{
 	static bool Hlsl2Glsl_init=true;
 	if(Hlsl2Glsl_init)
 	{
@@ -1340,6 +1349,7 @@ LOG_FNLN;
 		id=addGLSLShader(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
+	}
 LOG_FNLN;
 #else
 LOG_FNLN;

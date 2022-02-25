@@ -4,9 +4,6 @@ cd bin
 call opengl_simple.exe
 cd ..
 cd bin
-call WaterRender.exe
-cd ..
-cd bin
 call Road01.exe
 cd ..
 cd bin

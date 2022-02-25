@@ -22,7 +22,8 @@ const char* filename[] =
 //"/www.shadertoy.com/Voxel_Edges.shd",
 //"/www.shadertoy.com/Swirl_planet.shd",
 //"/www.shadertoy.com/Simplicity_Galaxy.shd",
-"/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
+//"/www.shadertoy.com/Patched_Fibonacci_sphere_mapping,shd",
+//"/www.shadertoy.com/OCEAN_SURFACE_NOISE_FBM.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
 //"/www.shadertoy.com/Voxel_Hall_Colors_3D.shd",
@@ -31,10 +32,14 @@ const char* filename[] =
 //"/glslsandbox.com/e#79313.0.shd",
 "/glslsandbox.com/e#79394.0.shd",
 "/glslsandbox.com/e#79415.0.shd",
+"/www.shadertoy.com/simple_flare.shd",
+"/www.shadertoy.com/Hell.shd",
+"/www.shadertoy.com/Hell_2.shd",
+//"/www.shadertoy.com/2D_Clouds.shd",
 //"/www.shadertoy.com/Clouds.shd",
 //"/www.shadertoy.com/Seascape.shd",
-"/www.shadertoy.com/OceanView.shd",
-"/www.shadertoy.com/Oceanic.shd",
+//"/www.shadertoy.com/OceanView.shd",
+//"/www.shadertoy.com/Oceanic.shd",
 "/www.shadertoy.com/Badlands.shd",
 "/www.shadertoy.com/Glacial_valleys.shd",
 "/www.shadertoy.com/Eroded_mountain_terrain_(v2).shd",
@@ -238,6 +243,7 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
 	LOG_FNLN;
 	LOG_PRINT("shd.size()=%d\n", shd.size());
@@ -367,6 +373,7 @@ void render()
 	IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[4]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel5", tex[5]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel6", tex[6]);
+	IRenderer::GetRendererInstance()->setTexture("iChannel7", tex[7]);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	#if 1
 	//		           x	 y     tx    ty
