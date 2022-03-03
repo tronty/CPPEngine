@@ -229,10 +229,10 @@ float right(vec2 pt)
    return min(d,trunk);
 }
 
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+varying vec2 xlv_TEXCOORD0;
+void main()
 {
-    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv =  xlv_TEXCOORD0.xy / iResolution.xy;
     uv = uv * 2.0 - 1.0;		
     uv.x *= iResolution.x / iResolution.y;
     uv *= 5.;

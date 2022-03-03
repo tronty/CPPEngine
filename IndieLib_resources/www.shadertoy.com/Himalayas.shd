@@ -1,52 +1,4 @@
-/*
-  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
-  Licensed under The GNU Lesser General Public License, version 2.1:
-      http://opensource.org/licenses/LGPL-2.1
-*/
-
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
-    float3 Normal	: NORMAL;
-    float3 Binormal	: BINORMAL;
-    float3 Tangent	: TANGENT;
-    float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-[Vertex shader]
-ROW_MAJOR 
-float4x4 worldViewProj 
-MVPSEMANTIC
-;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-
-[Fragment shader]
-float2      iResolution=float2(1,1);                  // viewport iResolution (in pixels)
-float     iTime=0;                        // shader playback iTime (in seconds)
-float2      iMouse=float2(1,1);                       // iMouse pixel coords
-sampler2D iChannel0;
-sampler2D iChannel1;
-
+#define CAMERA_FL 0.0
 // Himalayas. Created by Reinder Nijhoff 2018
 // Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 // @reindernijhoff
@@ -125,15 +77,15 @@ float RoundMin( float a, float b, float r ) {
     return -RoundMax(-a,-b,r);
 }
 
-float Humanoid( in float2 uv, in float phase ) {
+float Humanoid( in vec2 uv, in float phase ) {
     float n3 = sin((uv.y-uv.x*.7)*11.+phase)*.014; // "pose"
     float n0 = sin((uv.y+uv.x*1.1)*23.+phase*2.)*.007;
     float n1 = sin((uv.y-uv.x*.8)*37.+phase*4.)*.004;
     float n2 = sin((uv.y+uv.x*.9)*71.+phase*8.)*.002;
 
     
-    float head = length((uv-float2(0,1.65))/float2(1,1.2))-.15/1.2;
-    float neck = length(uv-float2(0,1.5))-.05;
+    float head = length((uv-vec2(0,1.65))/vec2(1,1.2))-.15/1.2;
+    float neck = length(uv-vec2(0,1.5))-.05;
     float torso = abs(uv.x)-.25 - uv.x*.3;
 
     torso = RoundMax( torso, uv.y-1.5, .2 );
@@ -164,27 +116,27 @@ float Humanoid( in float2 uv, in float phase ) {
 //
 // https://www.shadertoy.com/view/4sX3Rs
 //
-float lensflare(float2 fragCoord) {
-    float3 ro, ta;
-    float3x3 cam = getCamera( iTime, iMouse/iResolution.xyxy, ro, ta );
-    float3 cpos = SUN_DIR*cam; 
-    float2 pos = CAMERA_FL * cpos.xy / cpos.z;
-    float2 uv = (-iResolution.xy + 2.0*fragCoord)/iResolution.y;
+float lensflare(vec2  xlv_TEXCOORD0) {
+    vec3 ro, ta;
+    mat3 cam = getCamera( iTime, iMouse/iResolution.xyxy, ro, ta );
+    vec3 cpos = SUN_DIR*cam; 
+    vec2 pos = CAMERA_FL * cpos.xy / cpos.z;
+    vec2 uv = (-iResolution.xy + 2.0* xlv_TEXCOORD0)/iResolution.y;
     
-	float2 uvd = uv*(length(uv));
+	vec2 uvd = uv*(length(uv));
 	float f = 0.1/(length(uv-pos)*16.0+1.0);
 	f += max(1.0/(1.0+32.0*pow(length(uvd+0.8*pos),2.0)),.0)*0.25;
-	float2 uvx = lerp(uv,uvd,-0.5);
+	vec2 uvx = mix(uv,uvd,-0.5);
 	f += max(0.01-pow(length(uvx+0.4*pos),2.4),.0)*6.0;
 	f += max(0.01-pow(length(uvx-0.3*pos),1.6),.0)*6.0;
-	uvx = lerp(uv,uvd,-0.4);
+	uvx = mix(uv,uvd,-0.4);
 	f += max(0.01-pow(length(uvx+0.2*pos),5.5),.0)*2.0;
     
 	return f;
 }
 
-bool intersectSphere ( in float3 ro, in float3 rd, in float4 sph ) {
-    float3  ds = ro - sph.xyz;
+bool intersectSphere ( in vec3 ro, in vec3 rd, in vec4 sph ) {
+    vec3  ds = ro - sph.xyz;
     float bs = dot(rd, ds);
     float cs = dot(ds, ds) - sph.w*sph.w;
     float ts = bs*bs - cs;
@@ -198,67 +150,68 @@ bool intersectSphere ( in float3 ro, in float3 rd, in float4 sph ) {
     return false;
 }
 
-bool intersectPlane (in float3 ro, in float3 rd, in float3 n, in float3 p0, inout float dist) {   
+bool intersectPlane (in vec3 ro, in vec3 rd, in vec3 n, in vec3 p0, inout float dist) {   
     dist = dot(p0 - ro, n)/dot(rd,n);
     return dist > 0.;
 }
 
-void mainImage( out float4 fragColor, in float2 fragCoord ) {  
-    if( letterBox(fragCoord, iResolution.xy, 2.35) ) {
-        fragColor = float4( 0., 0., 0., 1. );
+varying vec2 xlv_TEXCOORD0;
+void main( ) {  
+    if( letterBox( xlv_TEXCOORD0, iResolution.xy, 2.35) ) {
+        gl_FragColor = vec4( 0., 0., 0., 1. );
     } else {
-        float4 col = texelFetch(iChannel0, ivec2(fragCoord), 0);
-        float4 clouds = texelFetch(iChannel1, ivec2(fragCoord), 0);
+        vec4 col = texelFetch(iChannel0, ivec2( xlv_TEXCOORD0), 0);
+        vec4 clouds = texelFetch(iChannel1, ivec2( xlv_TEXCOORD0), 0);
     	
         col.rgb = clouds.rgb + col.rgb * clouds.a;
        
-        float3 ro, rd, ta;
-		float3x3 cam = getCamera( iTime, iMouse/iResolution.xyxy, ro, ta );
+        vec3 ro, rd, ta;
+		mat3 cam = getCamera( iTime, iMouse/iResolution.xyxy, ro, ta );
         float dist;
-        float4 tcol = float4(0.);
-        float2 p = (-iResolution.xy + 2.0*(fragCoord))/iResolution.y;
-        rd = cam * normalize(float3(p,CAMERA_FL)); 
+        vec4 tcol = vec4(0.);
+        vec2 p = (-iResolution.xy + 2.0*( xlv_TEXCOORD0))/iResolution.y;
+        rd = cam * normalize(vec3(p,CAMERA_FL)); 
         
-        if (intersectSphere(ro,rd,float4(FLAG_POSITION,HUMANOID_SCALE*INV_SCENE_SCALE*2.))) {
+        if (intersectSphere(ro,rd,vec4(FLAG_POSITION,HUMANOID_SCALE*INV_SCENE_SCALE*2.))) {
             for(int x=0; x<AA; x++) {
                 for(int y=0; y<AA; y++) {
-                    float2 p = (-iResolution.xy + 2.0*(fragCoord + float2(x,y)/float(AA) - .5))/iResolution.y;
-                    rd = cam * normalize(float3(p,CAMERA_FL)); 
+                    vec2 p = (-iResolution.xy + 2.0*( xlv_TEXCOORD0 + vec2(x,y)/float(AA) - .5))/iResolution.y;
+                    rd = cam * normalize(vec3(p,CAMERA_FL)); 
 
-                    if (intersectPlane(ro, rd, float3(0,0,1), FLAG_POSITION, dist) && dist < col.w) {
-                        float3 pos = ro + rd * dist;
-                        float2 uv = (pos.xy - FLAG_POSITION.xy)*(SCENE_SCALE/HUMANOID_SCALE);
+                    if (intersectPlane(ro, rd, vec3(0,0,1), FLAG_POSITION, dist) && dist < col.w) {
+                        vec3 pos = ro + rd * dist;
+                        vec2 uv = (pos.xy - FLAG_POSITION.xy)*(SCENE_SCALE/HUMANOID_SCALE);
                         uv.x = -uv.x + uv.y*0.05;
                         float sdf = Humanoid( uv, 3. );
                         float a = smoothstep(.4,.6,.5-.5*sdf/(abs(sdf)+.002));
-                        float sdf2 = Humanoid( uv+float2(.025,0.05), 3. );
+                        float sdf2 = Humanoid( uv+vec2(.025,0.05), 3. );
                         float a2 = smoothstep(.4,.6,.5-.5*sdf2/(abs(sdf2)+.002));
                         float c = (a-a2)*2.;
                         c = clamp(c+uv.x*.2+.6,0.,1.); c*=c; c*=c;
-                        tcol += float4(lerp(float3(.04,0.05,0.06),SUN_COLOR,c),a);
+                        tcol += vec4(mix(vec3(.04,0.05,0.06),SUN_COLOR,c),a);
                     }
                 }
             }
             tcol /= float(AA*AA);
         }
         
-        col.rgb = lerp(col.rgb, tcol.rgb, tcol.w);    
+        col.rgb = mix(col.rgb, tcol.rgb, tcol.w);    
             
         // lens flare
-        col.rgb += SUN_COLOR*lensflare(fragCoord)*smoothstep(-.3,.5,dot(rd,SUN_DIR));       
-        col.rgb = clamp(col.rgb, float3(0), float3(1));
+        col.rgb += SUN_COLOR*lensflare( xlv_TEXCOORD0)*smoothstep(-.3,.5,dot(rd,SUN_DIR));       
+        col.rgb = clamp(col.rgb, vec3(0), vec3(1));
         
         // gamma and contrast
-        col.rgb = lerp(col.rgb, pow(col.rgb, float3(1./2.2)), .85);
-        col.rgb = lerp( col.rgb, col.bbb, 0.2 ); 
+        col.rgb = mix(col.rgb, pow(col.rgb, vec3(1./2.2)), .85);
+        col.rgb = mix( col.rgb, col.bbb, 0.2 ); 
      
         // vignette
-        float2 uv = fragCoord / iResolution.xy;
-        col.rgb = lerp(col.rgb*col.rgb, col.rgb, pow( 16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y), 0.1 ));
+        vec2 uv =  xlv_TEXCOORD0 / iResolution.xy;
+        col.rgb = mix(col.rgb*col.rgb, col.rgb, pow( 16.0*uv.x*uv.y*(1.0-uv.x)*(1.0-uv.y), 0.1 ));
         
         // noise
-        col.rgb -= hash12(fragCoord)*.025;
+        col.rgb -= hash12( xlv_TEXCOORD0)*.025;
         
-        fragColor = float4( col.rgb, 1. );
+        gl_FragColor = vec4( col.rgb, 1. );
     }
 }
