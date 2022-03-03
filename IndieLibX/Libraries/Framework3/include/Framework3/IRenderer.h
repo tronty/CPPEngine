@@ -1934,7 +1934,10 @@ inline void setViewport(D3DFROMWINEVIEWPORT9* pVP)
 	virtual void apply() = 0;
 
 	virtual stx_Effect* addEffectFromFile(const std::string& aFileName, const char* aDefines=0)=0;
-
+    virtual ShaderID addGLSLShaderVrtl(
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+                                            	const unsigned int flags){return -1;}
     virtual ShaderID addHLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 

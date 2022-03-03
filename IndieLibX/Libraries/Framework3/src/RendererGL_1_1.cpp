@@ -928,6 +928,8 @@ if(1){
 			vertexFormat.maxTexCoord = nTexCoord;
 			vertexFormats.push_back(vertexFormat);
 
+LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
+LOG_PRINT("vertexFormats.size()=%d\n", vertexFormats.size());
 			return vertexFormats.size()-1;
 #else
 
@@ -974,6 +976,8 @@ if(1){
 
 			vertexFormats.push_back(vertexFormat);
 
+LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
+LOG_PRINT("vertexFormats.size()=%d\n", vertexFormats.size());
 			return vertexFormats.size()-1;
 
 #endif
