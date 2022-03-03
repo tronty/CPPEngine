@@ -1412,12 +1412,16 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
+	std::size_t foundGLSL = shaderText.find("[GLSL]");
+	std::size_t foundHLSL = shaderText.find("[HLSL]");
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
 #if 1
 	char* fsMain_="main";
-	if(	(std::string::npos==foundVS)&&
-		(std::string::npos==foundPS))
+	if		(((std::string::npos!=foundGLSL) &&
+		 	  (std::string::npos==foundHLSL)) &&
+			 ((std::string::npos==foundVS) &&
+			  (std::string::npos==foundPS)))
 	{
 		#if 0
 		if(	std::string::npos!=shaderText.find("void mainImage("))
@@ -1480,7 +1484,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"};\n"
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n");
-		fsStr2.append(shaderText);
+		if(std::string::npos!=foundGLSL)
+			fsStr2.append(shaderText.c_str()+6);
+		else
+			fsStr2.append(shaderText);
 #if 0
 		printf("\nvs:\n%s\n", vsStr2.c_str());
 		printf("\nfs:\n%s\n", fsStr2.c_str());
@@ -1523,8 +1530,64 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	}
 	else
 	{
-		fsStr2=shaderText;
-		vsStr2=shaderText;
+		vsStr2.append(	"#define ROW_MAJOR row_major\n"
+				"#define MVPSEMANTIC\n"
+				"#define WSIGN +\n"   
+				"struct VsOut {\n"
+				"    float4 position;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"struct VsIn2 {\n"
+				"    float2 position;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"struct VsIn3 {\n"
+				"    float3 position;\n"
+				"    float3 Normal;\n"
+				"    float3 Binormal;\n"
+				"    float3 Tangent;\n"
+				"    float3 Color;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"float4x4 worldViewProj;\n"
+				"VsOut main2( in VsIn2 In ) {\n"
+				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
+				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
+				"    Out.uv.x = In.uv.x;\n"
+				"    Out.uv.y = In.uv.y;\n"
+				"    return Out;\n"
+				"}\n"
+				"VsOut main() {\n"
+				"    VsOut xl_retval;\n"
+				"    VsIn2 xlt_In;\n"
+				"    xlt_In.position = float2(gl_Vertex);\n"
+				"    xlt_In.uv = float2(gl_MultiTexCoord0);\n"
+				"    return main2( xlt_In);\n"
+				"}\n");
+		fsStr2.append(  "float3      iResolution;\n"
+				"float4      iMouse;\n"
+				"float     iTime;\n"
+				"float3      resolution;\n"
+				"float4      mouse;\n"
+				"float     time;\n"
+				"float     iGlobalTime;\n"
+				"float4      iDate;\n"
+				"float     iSampleRate;\n"
+				"float3      iChannelResolution[4];\n"
+				"float     iChannelTime[4];\n"
+				"float2      ifFragCoordOffsetUniform;\n"
+				"float     iTimeDelta;\n"
+				"int       iFrame;\n"
+				"float     iFrameRate;\n"
+				"struct Channel {\n"
+				"    float3  resolution;\n"
+				"    float   time;\n"
+				"};\n"
+				"#define mainImage main\n");
+		if(std::string::npos!=foundHLSL)
+			fsStr2.append(shaderText.c_str()+6);
+		else
+			fsStr2.append(shaderText);
 	}
     res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         vsMain, 0, fsMain, 0, 0, 0, flags);
