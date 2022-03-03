@@ -74,7 +74,7 @@ void render()
 	IRenderer::GetRendererInstance()->BeginScene();
 
 	anim->render();
-	// ??? STXGUI::update();
+	STXGUI::update();
 
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present( );

@@ -792,14 +792,6 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 					}
 }
 
-ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
-                                            	const unsigned int flags)
-{
-	return addGLSLShader(vsText0, gsText0, fsText0, csText0, hsText0, dsText0, vsName, gsMain, psName, csMain, hsMain, dsMain, flags);
-}
-
 ShaderID RendererGLSLGL_1_1::addGLSLShader(
 const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
@@ -1279,15 +1271,12 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 					}
 LOG_FNLN;
 			shaders.push_back(shaderGL1_1);
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
+LOG_FNLN;
 LOG_PRINT("shaders.size()=%d\n", shaders.size());
-//{__asm__("int $3");}
 //stx_exit(0);
 			return shaders.size()-1;
 				}
 			}
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
-LOG_PRINT("shaders.size()=%d\n", shaders.size());
 			return SHADER_NONE;
 		}
 

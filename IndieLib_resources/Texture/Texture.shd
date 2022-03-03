@@ -1,10 +1,10 @@
+struct VsOut {
+	float4 position: POSITION;
+	float2 texCoord: TEXCOORD0;
+};
 [Vertex shader]
 struct VsIn {
 	float2 position: POSITION;
-	float2 texCoord: TEXCOORD0;
-};
-struct VsOut {
-	float4 position: POSITION;
 	float2 texCoord: TEXCOORD0;
 };
 float4 scaleBias=float4(0.003,-0.003,-1,1);
@@ -16,10 +16,6 @@ VsOut main(VsIn In){
 	return Out;
 }
 [Fragment shader]
-struct VsOut {
-	float4 position: POSITION;
-	float2 texCoord: TEXCOORD0;
-};
 sampler2D Base;
 float4 colorRGBA=float4(1,1,1,1);
 float4 main(VsOut IN): COLOR {

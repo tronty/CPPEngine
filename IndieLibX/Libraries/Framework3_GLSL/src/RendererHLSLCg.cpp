@@ -1181,7 +1181,7 @@ STX_FNLN;
 	if(!stx_fileExists(fileName))
 	{
 		STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("IRenderer::ImageLibTexturee:1181:\n");
+		STX_PRINT("IRenderer::ImageLibTexture:1181:\n");
 		STX_PRINT("\tLoading texture %s failed\n", fileName);
 		DBG_HALT;
 	}
@@ -1342,7 +1342,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
-	LOG_PRINT("Shader file:%s\n", fn.c_str());
+	printf("Shader file:%s\n", fn.c_str());
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
@@ -1403,7 +1403,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 
 ShaderID IRenderer::addShader(  const char* shaderText_, 
                                         const char* vsMain, 
-                                        const char* fsMain,
+                                        const char* fsMain_,
                              	const char *defines, 
                                         const unsigned int flags)
 {
@@ -1412,11 +1412,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
-	std::size_t foundVS = shaderText.find("[Vertex shader]");
-	std::size_t foundPS = shaderText.find("[Fragment shader]");
-#if 1
-	char* fsMain_="main";
-	if((foundVS==std::string::npos)&&(foundPS==std::string::npos))
+	char* fsMain="main";
+	if(0)
+	if(	(std::string::npos==shaderText.find("[Vertex shader]"))&&
+		(std::string::npos==shaderText.find("[Fragment shader]")))
 	{
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain="mainImage";
@@ -1479,12 +1478,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		printf("\nfsMain:\n%s\n", fsMain);
 #endif
 		res=addGLSLShaderVrtl( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain_, 0, 0, 0, flags);
+                        "main", 0, fsMain, 0, 0, 0, flags);
 		//printf("\nIRenderer::addShader:res=%d\n", res);
 		return res;
 	}
-	// ??? fsMain=fsMain_;
-#endif
+	fsMain=fsMain_;
+	std::size_t foundVS = shaderText.find("[Vertex shader]");
+	std::size_t foundPS = shaderText.find("[Fragment shader]");
 	if((foundVS!=std::string::npos)&&(foundPS!=std::string::npos))
 	{
 	std::string stringToBeSplitted=shaderText;
@@ -1759,33 +1759,13 @@ for(int i=0;i<argc;i++)
 
 void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize, D3DXFROMWINEVECTOR2 texposition, D3DXFROMWINEVECTOR2 texsize)
 {
-	static ShaderID shd = -1;
-	if(shd==-1) 
-		shd=IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.shd", "main", "main");
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
-LOG_PRINT("shd=%x\n", shd);
-	if(shd==-1)
-	{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("shd==-1\n");
-		stx_exit(0);
-	}
+	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.shd", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 	};
-	static VertexFormatID vf = -1;
-	if(vf==-1)
-		vf=IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
-LOG_PRINT("vf=%x\n", vf);
-	if(shd!=vf)
-	{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("shd!=vf\n");
-		stx_exit(0);
-	}
+	static VertexFormatID vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 	D3DXFROMWINEVECTOR4 col(1.0f, 1.0f, 1.0f, 1.0f);
 	TexVertex dest[4];
 	float x=aposition.x;

@@ -1414,12 +1414,15 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::string header, vsStr2, fsStr2;
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
-#if 0
+#if 1
 	char* fsMain_="main";
-	if((foundVS==std::string::npos)&&(foundPS==std::string::npos))
+	if(	(std::string::npos==foundVS)&&
+		(std::string::npos==foundPS))
 	{
+		#if 0
 		if(	std::string::npos!=shaderText.find("void mainImage("))
-			fsMain="mainImage";
+			fsMain_="mainImage";
+		#endif
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
@@ -1436,6 +1439,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    vec3 Color;\n"
 				"    vec2 uv;\n"
 				"};\n"
+				"varying vec2 xlv_TEXCOORD0;\n"
 				"uniform mat4 worldViewProj;\n"
 				"//layout(location = 0) in mat4  worldViewProj;\n"
 				"VsOut main2( in VsIn2 In ) {\n"
@@ -1445,7 +1449,6 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    Out.uv.y = In.uv.y;\n"
 				"    return Out;\n"
 				"}\n"
-				"varying vec2 xlv_TEXCOORD0;\n"
 				"//layout(location = 0) out vec2  xlv_TEXCOORD0;\n"
 				"void main() {\n"
 				"    VsOut xl_retval;\n"
@@ -1457,9 +1460,12 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
 				"}\n");
 		fsStr2.append(  "uniform vec3      iResolution;\n"
-				"uniform float     iTime;\n"
-				"uniform float     iGlobalTime;\n"
 				"uniform vec4      iMouse;\n"
+				"uniform float     iTime;\n"
+				"uniform vec3      resolution;\n"
+				"uniform vec4      mouse;\n"
+				"uniform float     time;\n"
+				"uniform float     iGlobalTime;\n"
 				"uniform vec4      iDate;\n"
 				"uniform float     iSampleRate;\n"
 				"uniform vec3      iChannelResolution[4];\n"
@@ -1471,19 +1477,22 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"struct Channel {\n"
 				"    vec3  resolution;\n"
 				"    float   time;\n"
-				"};\n");//"#define mainImage main"
+				"};\n"
+				"varying vec2 xlv_TEXCOORD0;\n"
+				"#define mainImage main\n");
 		fsStr2.append(shaderText);
 #if 0
 		printf("\nvs:\n%s\n", vsStr2.c_str());
 		printf("\nfs:\n%s\n", fsStr2.c_str());
 		printf("\nfsMain:\n%s\n", fsMain);
 #endif
-		res=addGLSLShaderVrtl( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+		res=	//addHLSLShaderVrtl
+			addGLSLShader
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         "main", 0, fsMain_, 0, 0, 0, flags);
 		//printf("\nIRenderer::addShader:res=%d\n", res);
 		return res;
 	}
-	// ??? fsMain=fsMain_;
 #endif
 	if((foundVS!=std::string::npos)&&(foundPS!=std::string::npos))
 	{
@@ -1759,33 +1768,13 @@ for(int i=0;i<argc;i++)
 
 void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize, D3DXFROMWINEVECTOR2 texposition, D3DXFROMWINEVECTOR2 texsize)
 {
-	static ShaderID shd = -1;
-	if(shd==-1) 
-		shd=IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.shd", "main", "main");
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
-LOG_PRINT("shd=%x\n", shd);
-	if(shd==-1)
-	{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("shd==-1\n");
-		stx_exit(0);
-	}
+	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.shd", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 	};
-	static VertexFormatID vf = -1;
-	if(vf==-1)
-		vf=IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
-LOG_PRINT("%s:%d\n", __FUNCTION__, __LINE__);
-LOG_PRINT("vf=%x\n", vf);
-	if(shd!=vf)
-	{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("shd!=vf\n");
-		stx_exit(0);
-	}
+	static VertexFormatID vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 	D3DXFROMWINEVECTOR4 col(1.0f, 1.0f, 1.0f, 1.0f);
 	TexVertex dest[4];
 	float x=aposition.x;
@@ -4878,7 +4867,7 @@ IRenderer* IRenderer::GetRendererInstance(
 	m_title=atitle;
 	LOG_START;
 	#ifdef LINUX
-	printf("\nTitle: %s\n", atitle);
+	printf("Title: %s\n", atitle);
 	#endif
 	char path1[MAX_PATH];
 	stx_getcwd(path1);

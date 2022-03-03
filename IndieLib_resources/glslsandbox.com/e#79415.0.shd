@@ -1,14 +1,8 @@
 // Posted by Trisomie21
-
-uniform float time;
-uniform vec2 mouse;
-uniform vec2 resolution;
-
 // from http://glsl.heroku.com/e#5248.0
 #define BLADES 6.0
 #define BIAS 0.1
 #define SHARPNESS 3.0
-varying vec2  xlv_TEXCOORD0;
 void main() {
 	float blade = clamp(pow(sin(atan( xlv_TEXCOORD0.y, xlv_TEXCOORD0.x )*BLADES)+BIAS, SHARPNESS), 0.0, 1.0);
 	vec3 color = mix(vec3(-0.34, -0.5, -1.0), vec3(0.0, -0.5, -1.0), ( xlv_TEXCOORD0.y + 1.0) * 0.25);
