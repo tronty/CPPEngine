@@ -1940,11 +1940,10 @@ const char *vsText, const char *gsText, const char *fsText, const char *csText, 
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
                                             	const unsigned int flags)=0;
 #if 1
-	//virtual 
     ShaderID addGLSLShader(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
-                                            	const unsigned int flags){return -1;}
+                                            	const unsigned int flags);
 #endif
 
 ShaderID addShaderFromFile(  const char* fileName, 
@@ -1952,12 +1951,13 @@ ShaderID addShaderFromFile(  const char* fileName,
                              const char* fsMain="main",
                              const char *defines = 0,
                              const unsigned int flags = 0);
-
+#if 1
 ShaderID addShader( const char* shaderText, 
                     const char* vsMain="main", 
                     const char* fsMain="main",
                     const char *defines = 0,
                     const unsigned int flags = 0);
+#endif
 inline ShaderID addHLSLShader( const char* shaderText, 
                     const char* vsMain="main", 
                     const char* fsMain="main",

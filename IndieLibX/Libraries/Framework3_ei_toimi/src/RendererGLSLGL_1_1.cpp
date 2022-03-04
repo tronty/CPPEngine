@@ -791,13 +791,13 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 						shaderGL1_1.uniforms[i].dirty = false;
 					}
 }
-
+#if 1
 ShaderID RendererGLSLGL_1_1::addGLSLShader(
 const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
 		{
-LOG_FNLN;
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     const char* header=0;
 	std::string vsText="";
 	std::string fsText="";
@@ -847,10 +847,10 @@ LOG_FNLN;
 	if (csText0) csText.append(csText0);
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
-#if 1
-	LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
-	//LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
-	//stx_exit(0);
+#if 0
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		printf("\nvsText:\n%s\n", vsText.c_str());
+		printf("\nfsText:\n%s\n", fsText.c_str());
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
 	char line[16];
@@ -999,7 +999,7 @@ GL_FRAGMENT_SHADER_ARB
 		const GLcharARB *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = vsText.c_str();
-		LOG_PRINT("shaderStrings[0]:\n%s\n", shaderStrings[0]);
+		//printf("\nvsText:\n%s\n", vsText.c_str());
 #if 0
 	STX_Service::WriteTxtFile("./vsText.txt", vsText.c_str());
 	STX_Service::WriteTxtFile("./mainvs.txt", vsName);
@@ -1078,7 +1078,7 @@ LOG_FNLN;
 			const GLcharARB *shaderStrings[6];
 			int strIndex = 0;
 			shaderStrings[strIndex++] = fsText.c_str();
-			LOG_PRINT("shaderStrings[0]:\n%s\n", shaderStrings[0]);
+			//printf("\nfsText:\n%s\n", fsText.c_str());
 #if 0
 	STX_Service::WriteTxtFile("./fsText.txt", fsText.c_str());
 	STX_Service::WriteTxtFile("./mainps.txt", psName);
@@ -1295,11 +1295,26 @@ LOG_FNLN;
 LOG_FNLN;
 LOG_PRINT("shaders.size()=%d\n", shaders.size());
 //stx_exit(0);
+#if 0
+{
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	printf("\nvsText:\n%s\n", vsText.c_str());
+	printf("\nfsText:\n%s\n", fsText.c_str());
+}
+#endif
 			return shaders.size()-1;
 				}
 			}
+#if 0
+{
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	printf("\nvsText:\n%s\n", vsText.c_str());
+	printf("\nfsText:\n%s\n", fsText.c_str());
+}
+#endif
 			return SHADER_NONE;
 		}
+#endif
 
 ShaderID RendererGLSLGL_1_1::addHLSLShaderVrtl(
 const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText,
@@ -1355,11 +1370,23 @@ LOG_FNLN;
 LOG_FNLN;
 	bool rVS=Hlsl2Glsl_Translate_(true, vsText.c_str(), vsText__, vsMain, parser, version);
 	if(!rVS)
+	{
+		#if 0
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		printf("\nvsText:\n%s\n", vsText__.c_str());
+		#endif
 		return -1;
+	}
 LOG_FNLN;
 	bool rFS=Hlsl2Glsl_Translate_(false, fsText.c_str(), fsText__, fsMain, parser, version);
 	if(!rFS)
+	{
+		#if 0
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		printf("\nfsText:\n%s\n", fsText__.c_str());
+		#endif
 		return -1;
+	}
 LOG_FNLN;
 
 #if 0
@@ -1380,10 +1407,15 @@ LOG_FNLN;
 LOG_FNLN;
 #endif
 
-LOG_FNLN;
-LOG_PRINT("shaders.size()=%d\n", shaders.size());
-LOG_PRINT("id=%x\n", id);
-LOG_FNLN;
+
+#if 0
+if(id==-1)
+{
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	printf("\nvsText:\n%s\n", vsText__.c_str());
+	printf("\nfsText:\n%s\n", fsText__.c_str());
+}
+#endif
 		return id;
 }
 

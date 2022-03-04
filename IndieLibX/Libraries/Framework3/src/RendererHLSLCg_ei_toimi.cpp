@@ -1416,25 +1416,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::size_t foundHLSL = shaderText.find("[HLSL]");
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
-#if 0
-	printf("\nfoundGLSL=%d\n", foundGLSL);
-	printf("foundHLSL=%d\n", foundHLSL);
-	printf("foundVS=%d\n", foundVS);
-	printf("foundPS=%d\n", foundPS);
-	printf("std::string::npos=%d\n", std::string::npos);
-#endif
 #if 1
 	char* fsMain_="main";
-	if		(((std::string::npos==foundGLSL) &&
-		 	  (std::string::npos==foundHLSL) &&
-			  (std::string::npos==foundVS) &&
-			  (std::string::npos==foundPS)) ||
-			 ((std::string::npos!=foundGLSL) &&
-		 	  (std::string::npos==foundHLSL) &&
-			  (std::string::npos==foundVS) &&
+	if		(((std::string::npos!=foundGLSL) &&
+		 	  (std::string::npos==foundHLSL)) &&
+			 ((std::string::npos==foundVS) &&
 			  (std::string::npos==foundPS)))
 	{
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		#if 0
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain_="mainImage";
@@ -1501,7 +1489,6 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		else
 			fsStr2.append(shaderText);
 #if 0
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("\nvs:\n%s\n", vsStr2.c_str());
 		printf("\nfs:\n%s\n", fsStr2.c_str());
 		printf("\nfsMain:\n%s\n", fsMain);
@@ -1516,7 +1503,6 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 	if((foundVS!=std::string::npos)&&(foundPS!=std::string::npos))
 	{
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	std::string stringToBeSplitted=shaderText;
 	std::vector<std::string> delimeters;
 	delimeters.push_back("[Vertex shader]");
@@ -1542,10 +1528,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		fsStr2.append(val);
 	}
 	}
-	else if((std::string::npos==foundGLSL) &&
-		(std::string::npos!=foundHLSL))
+	else
 	{
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
 				"#define WSIGN +\n"   
@@ -1570,7 +1554,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
 				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.uv.x = In.uv.x;\n"
-				"    Out.uv.y = 1.0-In.uv.y;\n"
+				"    Out.uv.y = In.uv.y;\n"
 				"    return Out;\n"
 				"}\n"
 				"VsOut main() {\n"
@@ -1605,9 +1589,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		else
 			fsStr2.append(shaderText);
 	}
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-    	res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        	vsMain, 0, fsMain, 0, 0, 0, flags);
+    res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        vsMain, 0, fsMain, 0, 0, 0, flags);
 	return res;
 }
 int RendererHLSLCg__formatSize[] =

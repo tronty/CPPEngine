@@ -7,11 +7,11 @@
 
 const char* filename[] =
 {
-"/glslsandbox.com/e#79620.0.shd",
-"/glslsandbox.com/e#79629.0.shd",
 "/glslsandbox.com/e#79415.0.shd",
 "/glslsandbox.com/e#79537.0.shd",
 "/www.shadertoy.com/Seascape.shd",
+"/glslsandbox.com/e#79620.0.shd",
+"/glslsandbox.com/e#79629.0.shd",
 "/www.shadertoy.com/Voxel_Hall_Colors.shd",
 "/www.shadertoy.com/Voxel_Corridor.shd",
 "/www.shadertoy.com/The_Cave.shd",
@@ -101,9 +101,6 @@ const char* filename[] =
 "/www.shadertoy.com/buildings_by_night.shd",
 "/www.shadertoy.com/Re-entry.shd",
 #if 0
-"/glslsandbox.com/e#79415.0.shd",
-"/glslsandbox.com/e#79537.0.shd",
-"/www.shadertoy.com/Seascape.shd",
 "/www.shadertoy.com/Islands_in_wavy_shallow_water.shd",
 "/www.shadertoy.com/Fork_Islands_in_Arrangemon_275.shd",
 "/www.shadertoy.com/The_One_Ring.shd",
