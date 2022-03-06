@@ -1022,7 +1022,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: %s\n", s);
+            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
             			delete[] s;
 			}
 				if (vsResult)
@@ -1101,7 +1101,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: %s\n", s);
+            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
             			delete[] s;
 			}
 				if (fsResult)
@@ -1164,7 +1164,7 @@ LOG_FNLN;
 	    			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.program,32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Link Log: %s\n", s);
+            			if(s) if(stx_strlen(s)) printf("Link Log: \nvs:\n%s\nfs:\n%s\n%s\n", vsText.c_str(), fsText.c_str(), s);
             			delete[] s;
 			}
 				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);

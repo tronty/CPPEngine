@@ -1,0 +1,3151 @@
+Title: BallOfFire
+Renderer=GLSL1_1
+
+Shader file:../../../../../IndieLib_resources/glslsandbox.com/e#72317.0.shd
+Compile Log: 
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 202
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 202
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 206
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 210
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 215
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 221
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 225
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 234
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Pixel shader error:
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Link Log: 
+vs:
+
+#line 27
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 15
+struct VsIn2 {
+    vec2 position;
+    vec2 uv;
+};
+#line 19
+struct VsIn3 {
+    vec3 position;
+    vec3 Normal;
+    vec3 Binormal;
+    vec3 Tangent;
+    vec3 Color;
+    vec2 uv;
+};
+#line 32
+uniform mat4 worldViewProj;
+#line 40
+#line 33
+VsOut main2( in VsIn2 In ) {
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    #line 36
+    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);
+    Out.uv.x = In.uv.x;
+    Out.uv.y = (1.0 - In.uv.y);
+    return Out;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    VsOut xl_retval;
+    VsIn2 xlt_In;
+    xlt_In.position = vec2(gl_Vertex);
+    xlt_In.uv = vec2(gl_MultiTexCoord0);
+    xl_retval = main2( xlt_In);
+    gl_Position = vec4(xl_retval.position);
+    xlv_TEXCOORD0 = vec2(xl_retval.uv);
+}
+
+fs:
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 202
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 202
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 206
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 210
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 215
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 221
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 225
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 234
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+WARNING: Output of vertex shader 'xlv_TEXCOORD0' not read by next stage
+
+Shader file:../../../../../IndieLib_resources/glslsandbox.com/e#73092.0.shd
+Compile Log: 
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 201
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 201
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 205
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 209
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 214
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 220
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 224
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 233
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Pixel shader error:
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Link Log: 
+vs:
+
+#line 27
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 15
+struct VsIn2 {
+    vec2 position;
+    vec2 uv;
+};
+#line 19
+struct VsIn3 {
+    vec3 position;
+    vec3 Normal;
+    vec3 Binormal;
+    vec3 Tangent;
+    vec3 Color;
+    vec2 uv;
+};
+#line 32
+uniform mat4 worldViewProj;
+#line 40
+#line 33
+VsOut main2( in VsIn2 In ) {
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    #line 36
+    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);
+    Out.uv.x = In.uv.x;
+    Out.uv.y = (1.0 - In.uv.y);
+    return Out;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    VsOut xl_retval;
+    VsIn2 xlt_In;
+    xlt_In.position = vec2(gl_Vertex);
+    xlt_In.uv = vec2(gl_MultiTexCoord0);
+    xl_retval = main2( xlt_In);
+    gl_Position = vec4(xl_retval.position);
+    xlv_TEXCOORD0 = vec2(xl_retval.uv);
+}
+
+fs:
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 201
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 201
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 205
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 209
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 214
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 220
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 224
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 233
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+WARNING: Output of vertex shader 'xlv_TEXCOORD0' not read by next stage
+
+Shader file:../../../../../IndieLib_resources/www.shadertoy.com/TDM_Seascape_Sailing.shd
+Compile Log: 
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 7
+#line 11
+#line 40
+uniform float iTime;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+uniform sampler2D iChannel0;
+#line 44
+#line 50
+#line 55
+#line 72
+uniform float PI;
+uniform float EPSILON;
+#line 79
+uniform int NUM_STEPS;
+#line 83
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+#line 88
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+#line 92
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 97
+uniform mat2 octave_m;
+uniform float KEY_SP;
+#line 105
+#line 119
+#line 128
+#line 144
+#line 152
+#line 183
+#line 188
+#line 195
+#line 208
+#line 248
+#line 286
+#line 328
+#line 360
+#line 386
+#line 392
+#line 449
+#line 128
+mat3 fromEuler( in vec3 ang ) {
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    #line 132
+    mat3 m;
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    #line 136
+    return m;
+}
+#line 144
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 83758.55));
+}
+#line 152
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    #line 164
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 171
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 208
+float sea_octave( in vec2 uv, in float choppy ) {
+    #line 213
+    uv += noise( uv);
+    #line 222
+    vec2 wv = (1.0 - abs(sin(uv)));
+    #line 226
+    vec2 swv = abs(cos(uv));
+    #line 230
+    wv = mix( wv, swv, wv);
+    #line 243
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 286
+float map_detailed( in vec3 p ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 290
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    #line 298
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        d = sea_octave( ((uv + (iTime * SEA_SPEED)) * freq), choppy);
+        #line 303
+        d += sea_octave( ((uv - (iTime * SEA_SPEED)) * freq), choppy);
+        h += (d * amp);
+        #line 311
+        uv = ((octave_m * uv) / 1.2);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 317
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 360
+vec3 getNormal( in vec3 p, in float eps ) {
+    #line 365
+    vec3 n;
+    n.y = map_detailed( p);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z)) - n.y);
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps))) - n.y);
+    #line 371
+    n.y = eps;
+    return normalize(n);
+}
+#line 183
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 195
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 199
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 188
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 328
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    #line 332
+    fresnel = (pow( fresnel, 3.0) * 0.45);
+    vec3 reflected = (getSkyColor( reflect( eye, n)) * 0.99);
+    #line 338
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.27));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 345
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.15) * atten);
+    #line 349
+    float f = specular( n, l, eye, 90.0);
+    color += (vec3( f, f, f) * 0.5);
+    return color;
+}
+#line 248
+float map( in vec3 p ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 252
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    #line 260
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        d = sea_octave( ((uv + (iTime * SEA_SPEED)) * freq), choppy);
+        #line 267
+        h += (d * amp);
+        #line 273
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 279
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 392
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p ) {
+    float tm = 0.0;
+    float tx = 500.0;
+    #line 398
+    float hx = map( (ori + (dir * tx)));
+    #line 402
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)));
+    #line 412
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 424
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p);
+        #line 429
+        if ((hmid < 0.0)){
+            #line 435
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            #line 439
+            tm = tmid;
+            hm = hmid;
+        }
+    }
+    #line 445
+    return tmid;
+}
+#line 119
+vec3 hsv2rgb( in vec3 c ) {
+    vec4 K = vec4( 1.0, 0.6666667, 0.3333333, 3.0);
+    vec3 p = abs(((fract((c.xxx + K.xyz)) * 6.0) - K.www));
+    #line 123
+    return (c.z * mix( K.xxx, clamp( (p - K.xxx), vec3( 0.0), vec3( 1.0)), vec3( c.y)));
+}
+#line 386
+float isKeyPressed( in float key ) {
+    return 0.0;
+}
+#line 105
+vec3 rgb2hsv( in vec3 c ) {
+    vec4 K = vec4( 0.0, -0.3333333, 0.6666667, -1.0);
+    vec4 p = mix( vec4( c.zy, K.wz), vec4( c.yz, K.xy), vec4( step( c.z, c.y)));
+    #line 109
+    vec4 q = mix( vec4( p.xyw, c.x), vec4( c.x, p.yzx), vec4( step( p.x, c.x)));
+    float d = (q.x - min( q.w, q.y));
+    float e = 1e-10;
+    #line 113
+    return vec3( abs((q.z + ((q.w - q.y) / ((6.0 * d) + e)))), (d / (q.x + e)), q.x);
+}
+#line 449
+vec4 xlat_main( in vec2 fragCoord ) {
+    vec4 fragColor;
+    #line 453
+    vec2 uv = (fragCoord.xy / iResolution.xy);
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (iResolution.x / iResolution.y);
+    #line 457
+    float time = (iTime * 2.7);
+    #line 464
+    float roll = ((PI + (sin(iTime) / 14.0)) + (cos((iTime / 2.0)) / 14.0));
+    float pitch = (((PI * 1.021) + ((sin((iTime / 2.0)) + cos(iTime)) / 40.0)) + ((((iMouse.y / iResolution.y) - 0.8) * PI) / 3.0));
+    float yaw = (((iMouse.x / iResolution.x) * PI) * 4.0);
+    #line 468
+    vec3 ang = vec3( roll, pitch, yaw);
+    #line 473
+    vec3 ori = vec3( 0.0, 3.5, (time * 3.0));
+    #line 479
+    vec3 dir = normalize(vec3( uv.xy, -1.6));
+    #line 488
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 494
+    vec3 p;
+    heightMapTracing( ori, dir, p);
+    vec3 dist = (p - ori);
+    #line 504
+    vec3 n = getNormal( p, (dot( dist, dist) * (0.5 / iResolution.x)));
+    #line 511
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 skyColor = getSkyColor( dir);
+    #line 515
+    vec3 seaColor = getSeaColor( p, n, light, dir, dist);
+    #line 521
+    seaColor /= sqrt(sqrt(length(dist)));
+    #line 525
+    bool night;
+    if ((isKeyPressed( KEY_SP) > 0.0)){
+        #line 529
+        seaColor *= (seaColor * 8.5);
+        skyColor /= 1.69;
+        #line 535
+        night = true;
+    }
+    else{
+        #line 540
+        seaColor *= (sqrt(sqrt(seaColor)) * 4.0);
+        skyColor *= 1.05;
+        skyColor -= 0.03;
+        night = false;
+    }
+    #line 548
+    skyColor *= skyColor;
+    #line 554
+    vec3 seaHsv = rgb2hsv( seaColor);
+    if (((seaHsv.z > 0.75) && (length(dist) < 50.0))){
+        seaHsv.z -= ((0.9 - seaHsv.z) * 1.3);
+    }
+    seaColor = hsv2rgb( seaHsv);
+    #line 563
+    vec3 color = mix( skyColor, seaColor, vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 573
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    #line 577
+    vec3 hsv = rgb2hsv( fragColor.xyz);
+    hsv.y += 0.131;
+    #line 583
+    hsv.z *= (sqrt(hsv.z) * 1.1);
+    if (night){
+        #line 589
+        hsv.z -= 0.045;
+        hsv *= 0.8;
+        hsv.x += (0.12 + (hsv.z / 100.0));
+        #line 594
+        hsv.y *= 2.87;
+    }
+    else{
+        #line 602
+        hsv.z *= 0.9;
+        hsv.x -= (hsv.z / 10.0);
+        #line 606
+        hsv.x += (0.02 + (hsv.z / 50.0));
+        hsv.z *= 1.01;
+        #line 613
+        hsv.y += 0.07;
+    }
+    #line 618
+    fragColor.xyz = hsv2rgb( hsv);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    xl_retval = xlat_main( vec2(xlv_TEXCOORD0));
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// KEY_SP:<none> type 9 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// PI:<none> type 9 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// iMouse:<none> type 10 arrsize 0
+// iResolution:<none> type 10 arrsize 0
+// iTime:<none> type 9 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+
+ERROR: 0:134: Left-hand-side of assignment must be an lvalue
+ERROR: 0:135: Left-hand-side of assignment must be an lvalue
+ERROR: 0:136: Left-hand-side of assignment must be an lvalue
+
+Pixel shader error:
+ERROR: 0:134: Left-hand-side of assignment must be an lvalue
+ERROR: 0:135: Left-hand-side of assignment must be an lvalue
+ERROR: 0:136: Left-hand-side of assignment must be an lvalue
+
+Link Log: 
+vs:
+
+#line 28
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 16
+struct VsIn2 {
+    vec2 position;
+    vec2 uv;
+};
+#line 20
+struct VsIn3 {
+    vec3 position;
+    vec3 Normal;
+    vec3 Binormal;
+    vec3 Tangent;
+    vec3 Color;
+    vec2 uv;
+};
+#line 32
+uniform mat4 worldViewProj;
+#line 40
+#line 33
+VsOut main2( in VsIn2 In ) {
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    #line 36
+    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);
+    Out.uv.x = In.uv.x;
+    Out.uv.y = (1.0 - In.uv.y);
+    return Out;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    VsOut xl_retval;
+    VsIn2 xlt_In;
+    xlt_In.position = vec2(gl_Vertex);
+    xlt_In.uv = vec2(gl_MultiTexCoord0);
+    xl_retval = main2( xlt_In);
+    gl_Position = vec4(xl_retval.position);
+    xlv_TEXCOORD0 = vec2(xl_retval.uv);
+}
+
+fs:
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 7
+#line 11
+#line 40
+uniform float iTime;
+uniform vec2 iResolution;
+uniform vec2 iMouse;
+uniform sampler2D iChannel0;
+#line 44
+#line 50
+#line 55
+#line 72
+uniform float PI;
+uniform float EPSILON;
+#line 79
+uniform int NUM_STEPS;
+#line 83
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+#line 88
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+#line 92
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 97
+uniform mat2 octave_m;
+uniform float KEY_SP;
+#line 105
+#line 119
+#line 128
+#line 144
+#line 152
+#line 183
+#line 188
+#line 195
+#line 208
+#line 248
+#line 286
+#line 328
+#line 360
+#line 386
+#line 392
+#line 449
+#line 128
+mat3 fromEuler( in vec3 ang ) {
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    #line 132
+    mat3 m;
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    #line 136
+    return m;
+}
+#line 144
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 83758.55));
+}
+#line 152
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    #line 164
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 171
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 208
+float sea_octave( in vec2 uv, in float choppy ) {
+    #line 213
+    uv += noise( uv);
+    #line 222
+    vec2 wv = (1.0 - abs(sin(uv)));
+    #line 226
+    vec2 swv = abs(cos(uv));
+    #line 230
+    wv = mix( wv, swv, wv);
+    #line 243
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 286
+float map_detailed( in vec3 p ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 290
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    #line 298
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        d = sea_octave( ((uv + (iTime * SEA_SPEED)) * freq), choppy);
+        #line 303
+        d += sea_octave( ((uv - (iTime * SEA_SPEED)) * freq), choppy);
+        h += (d * amp);
+        #line 311
+        uv = ((octave_m * uv) / 1.2);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 317
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 360
+vec3 getNormal( in vec3 p, in float eps ) {
+    #line 365
+    vec3 n;
+    n.y = map_detailed( p);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z)) - n.y);
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps))) - n.y);
+    #line 371
+    n.y = eps;
+    return normalize(n);
+}
+#line 183
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 195
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 199
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 188
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 328
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    #line 332
+    fresnel = (pow( fresnel, 3.0) * 0.45);
+    vec3 reflected = (getSkyColor( reflect( eye, n)) * 0.99);
+    #line 338
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.27));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 345
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.15) * atten);
+    #line 349
+    float f = specular( n, l, eye, 90.0);
+    color += (vec3( f, f, f) * 0.5);
+    return color;
+}
+#line 248
+float map( in vec3 p ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 252
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    #line 260
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        d = sea_octave( ((uv + (iTime * SEA_SPEED)) * freq), choppy);
+        #line 267
+        h += (d * amp);
+        #line 273
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 279
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 392
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p ) {
+    float tm = 0.0;
+    float tx = 500.0;
+    #line 398
+    float hx = map( (ori + (dir * tx)));
+    #line 402
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)));
+    #line 412
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 424
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p);
+        #line 429
+        if ((hmid < 0.0)){
+            #line 435
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            #line 439
+            tm = tmid;
+            hm = hmid;
+        }
+    }
+    #line 445
+    return tmid;
+}
+#line 119
+vec3 hsv2rgb( in vec3 c ) {
+    vec4 K = vec4( 1.0, 0.6666667, 0.3333333, 3.0);
+    vec3 p = abs(((fract((c.xxx + K.xyz)) * 6.0) - K.www));
+    #line 123
+    return (c.z * mix( K.xxx, clamp( (p - K.xxx), vec3( 0.0), vec3( 1.0)), vec3( c.y)));
+}
+#line 386
+float isKeyPressed( in float key ) {
+    return 0.0;
+}
+#line 105
+vec3 rgb2hsv( in vec3 c ) {
+    vec4 K = vec4( 0.0, -0.3333333, 0.6666667, -1.0);
+    vec4 p = mix( vec4( c.zy, K.wz), vec4( c.yz, K.xy), vec4( step( c.z, c.y)));
+    #line 109
+    vec4 q = mix( vec4( p.xyw, c.x), vec4( c.x, p.yzx), vec4( step( p.x, c.x)));
+    float d = (q.x - min( q.w, q.y));
+    float e = 1e-10;
+    #line 113
+    return vec3( abs((q.z + ((q.w - q.y) / ((6.0 * d) + e)))), (d / (q.x + e)), q.x);
+}
+#line 449
+vec4 xlat_main( in vec2 fragCoord ) {
+    vec4 fragColor;
+    #line 453
+    vec2 uv = (fragCoord.xy / iResolution.xy);
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (iResolution.x / iResolution.y);
+    #line 457
+    float time = (iTime * 2.7);
+    #line 464
+    float roll = ((PI + (sin(iTime) / 14.0)) + (cos((iTime / 2.0)) / 14.0));
+    float pitch = (((PI * 1.021) + ((sin((iTime / 2.0)) + cos(iTime)) / 40.0)) + ((((iMouse.y / iResolution.y) - 0.8) * PI) / 3.0));
+    float yaw = (((iMouse.x / iResolution.x) * PI) * 4.0);
+    #line 468
+    vec3 ang = vec3( roll, pitch, yaw);
+    #line 473
+    vec3 ori = vec3( 0.0, 3.5, (time * 3.0));
+    #line 479
+    vec3 dir = normalize(vec3( uv.xy, -1.6));
+    #line 488
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 494
+    vec3 p;
+    heightMapTracing( ori, dir, p);
+    vec3 dist = (p - ori);
+    #line 504
+    vec3 n = getNormal( p, (dot( dist, dist) * (0.5 / iResolution.x)));
+    #line 511
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 skyColor = getSkyColor( dir);
+    #line 515
+    vec3 seaColor = getSeaColor( p, n, light, dir, dist);
+    #line 521
+    seaColor /= sqrt(sqrt(length(dist)));
+    #line 525
+    bool night;
+    if ((isKeyPressed( KEY_SP) > 0.0)){
+        #line 529
+        seaColor *= (seaColor * 8.5);
+        skyColor /= 1.69;
+        #line 535
+        night = true;
+    }
+    else{
+        #line 540
+        seaColor *= (sqrt(sqrt(seaColor)) * 4.0);
+        skyColor *= 1.05;
+        skyColor -= 0.03;
+        night = false;
+    }
+    #line 548
+    skyColor *= skyColor;
+    #line 554
+    vec3 seaHsv = rgb2hsv( seaColor);
+    if (((seaHsv.z > 0.75) && (length(dist) < 50.0))){
+        seaHsv.z -= ((0.9 - seaHsv.z) * 1.3);
+    }
+    seaColor = hsv2rgb( seaHsv);
+    #line 563
+    vec3 color = mix( skyColor, seaColor, vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 573
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    #line 577
+    vec3 hsv = rgb2hsv( fragColor.xyz);
+    hsv.y += 0.131;
+    #line 583
+    hsv.z *= (sqrt(hsv.z) * 1.1);
+    if (night){
+        #line 589
+        hsv.z -= 0.045;
+        hsv *= 0.8;
+        hsv.x += (0.12 + (hsv.z / 100.0));
+        #line 594
+        hsv.y *= 2.87;
+    }
+    else{
+        #line 602
+        hsv.z *= 0.9;
+        hsv.x -= (hsv.z / 10.0);
+        #line 606
+        hsv.x += (0.02 + (hsv.z / 50.0));
+        hsv.z *= 1.01;
+        #line 613
+        hsv.y += 0.07;
+    }
+    #line 618
+    fragColor.xyz = hsv2rgb( hsv);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    xl_retval = xlat_main( vec2(xlv_TEXCOORD0));
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// KEY_SP:<none> type 9 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// PI:<none> type 9 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// iMouse:<none> type 10 arrsize 0
+// iResolution:<none> type 10 arrsize 0
+// iTime:<none> type 9 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+
+WARNING: Output of vertex shader 'xlv_TEXCOORD0' not read by next stage
+
+Shader file:../../../../../IndieLib_resources/www.shadertoy.com/Re-entry.shd
+objc[3603]: Method cache corrupted. This may be a message to an invalid object, or a memory error somewhere else.
+objc[3603]: receiver 0x7ffb8aea5f70, SEL 0x7fff311b1f2e, isa 0x7fff89169b28, cache 0x7fff89169b38, buckets 0x7ffb8ae43a70, mask 0x3, occupied 0x1
+objc[3603]: receiver 80 bytes, buckets 80 bytes
+objc[3603]: selector 'initWithContainerClassID:key:implementation:selector:extraArguments:count:'
+objc[3603]: isa 'NSKeyValueGetter'
+objc[3603]: Method cache corrupted. This may be a message to an invalid object, or a memory error somewhere else.
+./run.sh: line 126:  3603 Abort trap: 6           ./BallOfFire
+
+Title: TestNoise
+Renderer=GLSL1_1
+
+Shader file:../../../../../IndieLib_resources/glslsandbox.com/e#72317.0.shd
+Compile Log: 
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 202
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 202
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 206
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 210
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 215
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 221
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 225
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 234
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Pixel shader error:
+ERROR: 0:70: Left-hand-side of assignment must be an lvalue
+ERROR: 0:71: Left-hand-side of assignment must be an lvalue
+ERROR: 0:72: Left-hand-side of assignment must be an lvalue
+
+Link Log: 
+vs:
+
+#line 27
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 15
+struct VsIn2 {
+    vec2 position;
+    vec2 uv;
+};
+#line 19
+struct VsIn3 {
+    vec3 position;
+    vec3 Normal;
+    vec3 Binormal;
+    vec3 Tangent;
+    vec3 Color;
+    vec2 uv;
+};
+#line 32
+uniform mat4 worldViewProj;
+#line 40
+#line 33
+VsOut main2( in VsIn2 In ) {
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    #line 36
+    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);
+    Out.uv.x = In.uv.x;
+    Out.uv.y = (1.0 - In.uv.y);
+    return Out;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    VsOut xl_retval;
+    VsIn2 xlt_In;
+    xlt_In.position = vec2(gl_Vertex);
+    xlt_In.uv = vec2(gl_MultiTexCoord0);
+    xl_retval = main2( xlt_In);
+    gl_Position = vec4(xl_retval.position);
+    xlv_TEXCOORD0 = vec2(xl_retval.uv);
+}
+
+fs:
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 32
+struct VsOut {
+    vec4 position;
+    vec2 uv;
+};
+#line 7
+#line 11
+#line 39
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform float time;
+#line 46
+uniform int NUM_STEPS;
+uniform float PI;
+uniform float EPSILON;
+#line 52
+uniform int ITER_GEOMETRY;
+uniform int ITER_FRAGMENT;
+uniform float SEA_HEIGHT;
+uniform float SEA_CHOPPY;
+#line 56
+uniform float SEA_SPEED;
+uniform float SEA_FREQ;
+uniform vec3 SEA_BASE;
+uniform vec3 SEA_WATER_COLOR;
+#line 61
+uniform mat2 octave_m;
+#line 74
+#line 78
+#line 89
+#line 98
+#line 108
+#line 116
+#line 133
+#line 150
+#line 169
+#line 178
+#line 202
+#line 64
+mat3 fromEuler( in vec3 ang ) {
+    #line 65
+    vec2 a1 = vec2( sin(ang.x), cos(ang.x));
+    vec2 a2 = vec2( sin(ang.y), cos(ang.y));
+    vec2 a3 = vec2( sin(ang.z), cos(ang.z));
+    mat3 m;
+    #line 69
+    xll_matrixindex_mf3x3_i (m, 0) = vec3( ((a1.y * a3.y) + ((a1.x * a2.x) * a3.x)), (((a1.y * a2.x) * a3.x) + (a3.y * a1.x)), ((-a2.y) * a3.x));
+    xll_matrixindex_mf3x3_i (m, 1) = vec3( ((-a2.y) * a1.x), (a1.y * a2.y), a2.x);
+    xll_matrixindex_mf3x3_i (m, 2) = vec3( (((a3.y * a1.x) * a2.x) + (a1.y * a3.x)), ((a1.x * a3.x) - ((a1.y * a3.y) * a2.x)), (a2.y * a3.y));
+    return m;
+}
+#line 74
+float hash( in vec2 p ) {
+    float h = dot( p, vec2( 127.1, 311.7));
+    return fract((sin(h) * 43758.55));
+}
+#line 78
+float noise( in vec2 p ) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = ((f * f) * (3.0 - (2.0 * f)));
+    #line 82
+    return (-1.0 + (2.0 * mix( mix( hash( (i + vec2( 0.0, 0.0))), hash( (i + vec2( 1.0, 0.0))), u.x), mix( hash( (i + vec2( 0.0, 1.0))), hash( (i + vec2( 1.0, 1.0))), u.x), u.y)));
+}
+#line 108
+float sea_octave( in vec2 uv, in float choppy ) {
+    uv += noise( uv);
+    vec2 wv = (1.0 - abs(sin(uv)));
+    vec2 swv = abs(cos(uv));
+    #line 112
+    wv = mix( wv, swv, wv);
+    return pow( (1.0 - pow( (wv.x * wv.y), 0.65)), choppy);
+}
+#line 133
+float map_detailed( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 137
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_FRAGMENT); (i++)) {
+        #line 141
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 145
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 169
+vec3 getNormal( in vec3 p, in float eps, in float SEA_TIME ) {
+    vec3 n;
+    n.y = map_detailed( p, SEA_TIME);
+    n.x = (map_detailed( vec3( (p.x + eps), p.y, p.z), SEA_TIME) - n.y);
+    #line 173
+    n.z = (map_detailed( vec3( p.x, p.y, (p.z + eps)), SEA_TIME) - n.y);
+    n.y = eps;
+    return normalize(n);
+}
+#line 89
+float diffuse( in vec3 n, in vec3 l, in float p ) {
+    return pow( ((dot( n, l) * 0.4) + 0.6), p);
+}
+#line 98
+vec3 getSkyColor( in vec3 e ) {
+    e.y = max( e.y, 0.0);
+    vec3 ret;
+    ret.x = pow( (1.0 - e.y), 2.0);
+    #line 102
+    ret.y = (1.0 - e.y);
+    ret.z = (0.6 + ((1.0 - e.y) * 0.4));
+    return ret;
+}
+#line 92
+float specular( in vec3 n, in vec3 l, in vec3 e, in float s ) {
+    #line 93
+    float nrm = ((s + 8.0) / 25.132);
+    return (pow( max( dot( reflect( e, n), l), 0.0), s) * nrm);
+}
+#line 150
+vec3 getSeaColor( in vec3 p, in vec3 n, in vec3 l, in vec3 eye, in vec3 dist ) {
+    float fresnel = (1.0 - max( dot( n, (-eye)), 0.0));
+    fresnel = (pow( fresnel, 3.0) * 0.65);
+    #line 154
+    vec3 reflected = getSkyColor( reflect( eye, n));
+    vec3 refracted = (SEA_BASE + ((diffuse( n, l, 80.0) * SEA_WATER_COLOR) * 0.12));
+    vec3 color = mix( refracted, reflected, vec3( fresnel));
+    #line 159
+    float atten = max( (1.0 - (dot( dist, dist) * 0.001)), 0.0);
+    color += (((SEA_WATER_COLOR * (p.y - SEA_HEIGHT)) * 0.18) * atten);
+    float f = specular( n, l, eye, 60.0);
+    #line 163
+    color += vec3( f, f, f);
+    return color;
+}
+#line 116
+float map( in vec3 p, in float SEA_TIME ) {
+    float freq = SEA_FREQ;
+    float amp = SEA_HEIGHT;
+    float choppy = SEA_CHOPPY;
+    #line 120
+    vec2 uv = p.xz;
+    uv.x *= 0.75;
+    float d;
+    float h = 0.0;
+    int i = 0;
+    for ( ; (i < ITER_GEOMETRY); (i++)) {
+        #line 124
+        d = sea_octave( ((uv + SEA_TIME) * freq), choppy);
+        d += sea_octave( ((uv - SEA_TIME) * freq), choppy);
+        h += (d * amp);
+        uv = (octave_m * uv);
+        freq *= 1.9;
+        amp *= 0.22;
+        #line 128
+        choppy = mix( choppy, 1.0, 0.2);
+    }
+    return (p.y - h);
+}
+#line 178
+float heightMapTracing( in vec3 ori, in vec3 dir, out vec3 p, in float SEA_TIME ) {
+    float tm = 0.0;
+    float tx = 1000.0;
+    float hx = map( (ori + (dir * tx)), SEA_TIME);
+    #line 182
+    if ((hx > 0.0)){
+        return tx;
+    }
+    float hm = map( (ori + (dir * tm)), SEA_TIME);
+    float tmid = 0.0;
+    int i = 0;
+    for ( ; (i < NUM_STEPS); (i++)) {
+        #line 186
+        tmid = mix( tm, tx, (hm / (hm - hx)));
+        p = (ori + (dir * tmid));
+        float hmid = map( p, SEA_TIME);
+        if ((hmid < 0.0)){
+            #line 190
+            tx = tmid;
+            hx = hmid;
+        }
+        else{
+            tm = tmid;
+            #line 194
+            hm = hmid;
+        }
+    }
+    return tmid;
+}
+#line 202
+vec4 xlat_main( in VsOut IN ) {
+    vec4 fragColor;
+    vec2 fragCoord = IN.uv;
+    #line 206
+    float EPSILON_NRM = (0.1 / resolution.x);
+    float SEA_TIME = (time * SEA_SPEED);
+    vec2 uv = (fragCoord.xy / resolution.xy);
+    #line 210
+    uv = ((uv * 2.0) - 1.0);
+    uv.x *= (resolution.x / resolution.y);
+    float time_1 = ((time * 0.3) + (mouse.x * 0.01));
+    #line 215
+    vec3 ang = vec3( (sin((time_1 * 3.0)) * 0.1), ((sin(time_1) * 0.2) + 0.3), time_1);
+    vec3 ori = vec3( 0.0, 3.5, (time_1 * 5.0));
+    vec3 dir = normalize(vec3( uv.xy, -2.0));
+    dir.z += (length(uv) * 0.15);
+    dir = (fromEuler( ang) * normalize(dir));
+    #line 221
+    vec3 p;
+    heightMapTracing( ori, dir, p, SEA_TIME);
+    vec3 dist = (p - ori);
+    vec3 n = getNormal( p, (dot( dist, dist) * EPSILON_NRM), SEA_TIME);
+    #line 225
+    vec3 light = normalize(vec3( 0.0, 1.0, 0.8));
+    vec3 color = mix( getSkyColor( dir), getSeaColor( p, n, light, dir, dist), vec3( pow( smoothstep( 0.0, -0.05, dir.y), 0.3)));
+    #line 234
+    fragColor = vec4( pow( color, vec3( 0.75, 0.75, 0.75)), 1.0);
+    return fragColor;
+}
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    vec4 xl_retval;
+    VsOut xlt_IN;
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.uv = vec2(xlv_TEXCOORD0);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ITER_FRAGMENT:<none> type 5 arrsize 0
+// ITER_GEOMETRY:<none> type 5 arrsize 0
+// NUM_STEPS:<none> type 5 arrsize 0
+// SEA_BASE:<none> type 11 arrsize 0
+// SEA_CHOPPY:<none> type 9 arrsize 0
+// SEA_FREQ:<none> type 9 arrsize 0
+// SEA_HEIGHT:<none> type 9 arrsize 0
+// SEA_SPEED:<none> type 9 arrsize 0
+// SEA_WATER_COLOR:<none> type 11 arrsize 0
+// mouse:<none> type 10 arrsize 0
+// octave_m:<none> type 13 arrsize 0
+// resolution:<none> type 10 arrsize 0
+// time:<none> type 9 arrsize 0
+
+WARNING: Output of vertex shader 'xlv_TEXCOORD0' not read by next stage
+
+
+Shader file:../../../../../IndieLib_resources/glslsandbox.com/e#72645.0.shd
+TestNoise(3604,0x7fff8f495380) malloc: *** mach_vm_map(size=749134021379125248) failed (error code=3)
+*** error: can't allocate region
+*** set a breakpoint in malloc_error_break to debug
+libc++abi.dylib: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+./run.sh: line 126:  3604 Abort trap: 6           ./TestNoise
+
+Shader file:../../../../../IndieLib_resources/Digital_Clock/digital_clock.shd
+Link Log: 
+vs:
+
+#line 25
+struct VS_OUTPUT {
+    vec4 hposition;
+    vec2 tposition;
+    vec2 texcoord0;
+};
+#line 20
+struct VS_INPUT {
+    vec2 position;
+};
+#line 17
+uniform mat4 worldViewProj;
+uniform int bFS;
+#line 32
+#line 32
+VS_OUTPUT xlat_main( in VS_INPUT IN ) {
+    VS_OUTPUT OUT = VS_OUTPUT(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0));
+    #line 36
+    vec4 v = vec4( IN.position.x, IN.position.y, 0.0, 1.0);
+    #line 40
+    if ((bFS == 0)){
+        OUT.hposition = (worldViewProj * v);
+    }
+    else{
+        #line 45
+        v.xy = sign(v.xy);
+        OUT.hposition = v;
+    }
+    #line 49
+    OUT.texcoord0.x = ((v.x + 1.0) / 2.0);
+    OUT.texcoord0.y = ((v.y - 1.0) * -0.5);
+    OUT.tposition = ((sign(v.xy) + 1.0) / 2.0);
+    #line 53
+    OUT.tposition.x *= 3.5;
+    OUT.tposition.y *= 1.2;
+    return OUT;
+}
+varying vec2 xlv_TEXCOORD1;
+varying vec2 xlv_TEXCOORD0;
+void main() {
+    VS_OUTPUT xl_retval;
+    VS_INPUT xlt_IN;
+    xlt_IN.position = vec2(gl_Vertex);
+    xl_retval = xlat_main( xlt_IN);
+    gl_Position = vec4(xl_retval.hposition);
+    xlv_TEXCOORD1 = vec2(xl_retval.tposition);
+    xlv_TEXCOORD0 = vec2(xl_retval.texcoord0);
+}
+
+// uniforms:
+// bFS:<none> type 5 arrsize 0
+// worldViewProj:<none> type 21 arrsize 0
+
+fs:
+
+#line 37
+struct Digit {
+    vec4 bottom;
+    vec4 top;
+};
+#line 22
+struct Plane {
+    vec2 normal;
+    vec2 point;
+};
+#line 28
+struct Segment {
+    Plane p0;
+    Plane p1;
+    Plane p2;
+    Plane p3;
+};
+#line 444
+struct PS_OUTPUT {
+    vec4 color;
+};
+#line 7
+#line 11
+#line 82
+#line 244
+#line 250
+#line 255
+#line 271
+#line 349
+#line 427
+#line 440
+uniform float hour;
+uniform float minute;
+uniform float second;
+#line 449
+#line 82
+Digit getDigit( in float num, const int range ) {
+    Digit d;
+    if ((range == 0)){
+        #line 87
+        if ((num == 0.0)){
+            d.bottom = vec4( 1.0, 1.0, 1.0, 0.0);
+            #line 91
+            d.top = vec4( 0.0, 1.0, 1.0, 1.0);
+        }
+        if ((num == 1.0)){
+            #line 97
+            d.bottom = vec4( 0.0, 0.0, 1.0, 0.0);
+            d.top = vec4( 0.0, 0.0, 1.0, 0.0);
+        }
+        #line 101
+        if ((num == -1.0)){
+            d.bottom = vec4( 0.0, 0.0, 0.0, 0.0);
+            #line 105
+            d.top = vec4( 0.0, 0.0, 0.0, 0.0);
+        }
+    }
+    else{
+        if ((range == 1)){
+            #line 111
+            if ((num == 0.0)){
+                d.bottom = vec4( 1.0, 1.0, 1.0, 0.0);
+                #line 115
+                d.top = vec4( 0.0, 1.0, 1.0, 1.0);
+            }
+            if ((num == 1.0)){
+                #line 121
+                d.bottom = vec4( 0.0, 0.0, 1.0, 0.0);
+                d.top = vec4( 0.0, 0.0, 1.0, 0.0);
+            }
+            #line 125
+            if ((num == 2.0)){
+                d.bottom = vec4( 1.0, 1.0, 0.0, 1.0);
+                #line 129
+                d.top = vec4( 1.0, 0.0, 1.0, 1.0);
+            }
+            if ((num == 3.0)){
+                #line 135
+                d.bottom = vec4( 1.0, 0.0, 1.0, 1.0);
+                d.top = vec4( 1.0, 0.0, 1.0, 1.0);
+            }
+            #line 139
+            if ((num == 4.0)){
+                d.bottom = vec4( 0.0, 0.0, 1.0, 1.0);
+                #line 143
+                d.top = vec4( 1.0, 1.0, 1.0, 0.0);
+            }
+            if ((num == 5.0)){
+                #line 149
+                d.bottom = vec4( 1.0, 0.0, 1.0, 1.0);
+                d.top = vec4( 1.0, 1.0, 0.0, 1.0);
+            }
+        }
+        else{
+            if ((range == 2)){
+                #line 156
+                if ((num == 0.0)){
+                    d.bottom = vec4( 1.0, 1.0, 1.0, 0.0);
+                    #line 160
+                    d.top = vec4( 0.0, 1.0, 1.0, 1.0);
+                }
+                if ((num == 1.0)){
+                    #line 166
+                    d.bottom = vec4( 0.0, 0.0, 1.0, 0.0);
+                    d.top = vec4( 0.0, 0.0, 1.0, 0.0);
+                }
+                #line 170
+                if ((num == 2.0)){
+                    d.bottom = vec4( 1.0, 1.0, 0.0, 1.0);
+                    #line 174
+                    d.top = vec4( 1.0, 0.0, 1.0, 1.0);
+                }
+                if ((num == 3.0)){
+                    #line 180
+                    d.bottom = vec4( 1.0, 0.0, 1.0, 1.0);
+                    d.top = vec4( 1.0, 0.0, 1.0, 1.0);
+                }
+                #line 184
+                if ((num == 4.0)){
+                    d.bottom = vec4( 0.0, 0.0, 1.0, 1.0);
+                    #line 188
+                    d.top = vec4( 1.0, 1.0, 1.0, 0.0);
+                }
+                if ((num == 5.0)){
+                    #line 194
+                    d.bottom = vec4( 1.0, 0.0, 1.0, 1.0);
+                    d.top = vec4( 1.0, 1.0, 0.0, 1.0);
+                }
+                #line 198
+                if ((num == 6.0)){
+                    d.bottom = vec4( 1.0, 1.0, 1.0, 1.0);
+                    #line 202
+                    d.top = vec4( 1.0, 1.0, 0.0, 1.0);
+                }
+                if ((num == 7.0)){
+                    #line 208
+                    d.bottom = vec4( 0.0, 0.0, 1.0, 0.0);
+                    d.top = vec4( 0.0, 0.0, 1.0, 1.0);
+                }
+                #line 212
+                if ((num == 8.0)){
+                    d.bottom = vec4( 1.0, 1.0, 1.0, 1.0);
+                    #line 216
+                    d.top = vec4( 1.0, 1.0, 1.0, 1.0);
+                }
+                if ((num == 9.0)){
+                    #line 222
+                    d.bottom = vec4( 0.0, 0.0, 1.0, 1.0);
+                    d.top = vec4( 1.0, 1.0, 1.0, 1.0);
+                }
+            }
+        }
+    }
+    #line 228
+    return d;
+}
+#line 427
+bool insideCircle( in vec2 curPos, in vec2 circleCenter, in float radius ) {
+    return (distance( curPos, ((circleCenter * 10.0) / 120.0)) <= ((radius * 10.0) / 120.0));
+}
+#line 244
+bool any( in vec4 a, in vec4 b ) {
+    return ((((((((a.x != 0.0) || (a.y != 0.0)) || (a.z != 0.0)) || (a.w != 0.0)) || (b.x != 0.0)) || (b.y != 0.0)) || (b.z != 0.0)) || (b.w != 0.0));
+}
+#line 250
+vec3 calcPlaneEq( in Plane p, in vec2 offset ) {
+    return vec3( p.normal, dot( (-p.normal), (((p.point + offset) * 10.0) / 120.0)));
+}
+#line 255
+float insideSegment( in vec2 pos, in Segment seg, in vec2 offset ) {
+    vec3 p0 = calcPlaneEq( seg.p0, offset);
+    vec3 p1 = calcPlaneEq( seg.p1, offset);
+    #line 259
+    vec3 p2 = calcPlaneEq( seg.p2, offset);
+    vec3 p3 = calcPlaneEq( seg.p3, offset);
+    vec4 tmp = (pos.x * vec4( p0.x, p1.x, p2.x, p3.x));
+    #line 263
+    tmp = ((pos.y * vec4( p0.y, p1.y, p2.y, p3.y)) + tmp);
+    tmp = clamp( (tmp + vec4( p0.z, p1.z, p2.z, p3.z)), vec4( 0.0), vec4( 1.0));
+    tmp.xy = min( tmp.xy, tmp.zw);
+    #line 267
+    return min( tmp.x, tmp.y);
+}
+#line 349
+bool insideDigit( in vec2 point, in float xOffset ) {
+    Segment ledA;
+    #line 356
+    Segment ledB;
+    #line 361
+    Segment ledC;
+    #line 366
+    Segment ledD;
+    #line 372
+    ledA.p0.normal = vec2( 1.0, -1.0);
+    ledA.p0.point = vec2( 0.1, 0.0);
+    ledA.p1.normal = vec2( 0.0, -1.0);
+    ledA.p1.point = vec2( 1.0, 0.9);
+    #line 376
+    ledA.p2.normal = vec2( -1.0, -1.0);
+    ledA.p2.point = vec2( 5.0, 0.9);
+    ledA.p3.normal = vec2( 0.0, 1.0);
+    ledA.p3.point = vec2( 5.9, 0.0);
+    #line 382
+    ledB.p0.normal = vec2( 1.0, 0.0);
+    ledB.p0.point = vec2( 0.0, 0.1);
+    ledB.p1.normal = vec2( -1.0, -1.0);
+    ledB.p1.point = vec2( 0.0, 5.9);
+    #line 386
+    ledB.p2.normal = vec2( -1.0, 0.0);
+    ledB.p2.point = vec2( 0.9, 5.0);
+    ledB.p3.normal = vec2( -1.0, 1.0);
+    ledB.p3.point = vec2( 0.9, 1.0);
+    #line 392
+    ledC.p0.normal = vec2( -1.0, 0.0);
+    ledC.p0.point = vec2( 6.0, 0.1);
+    ledC.p1.normal = vec2( 1.0, -1.0);
+    ledC.p1.point = vec2( 6.0, 5.9);
+    #line 396
+    ledC.p2.normal = vec2( 1.0, 0.0);
+    ledC.p2.point = vec2( 5.1, 5.0);
+    ledC.p3.normal = vec2( 1.0, 1.0);
+    ledC.p3.point = vec2( 5.1, 1.0);
+    #line 402
+    ledD.p0.normal = vec2( 0.0, -1.0);
+    ledD.p0.point = vec2( 0.1, 6.0);
+    ledD.p1.normal = vec2( -1.0, 1.0);
+    ledD.p1.point = vec2( 5.9, 6.0);
+    #line 406
+    ledD.p2.normal = vec2( 0.0, 1.0);
+    ledD.p2.point = vec2( 5.0, 5.1);
+    ledD.p3.normal = vec2( 1.0, 1.0);
+    ledD.p3.point = vec2( 1.0, 5.1);
+    #line 411
+    vec4 bottom;
+    bottom.x = insideSegment( point, ledA, vec2( xOffset, 1.0));
+    bottom.y = insideSegment( point, ledB, vec2( xOffset, 1.0));
+    bottom.z = insideSegment( point, ledC, vec2( xOffset, 1.0));
+    #line 415
+    bottom.w = insideSegment( point, ledD, vec2( xOffset, 1.0));
+    vec4 top;
+    top.x = insideSegment( point, ledA, vec2( xOffset, 7.0));
+    #line 419
+    top.y = insideSegment( point, ledB, vec2( xOffset, 7.0));
+    top.z = insideSegment( point, ledC, vec2( xOffset, 7.0));
+    top.w = insideSegment( point, ledD, vec2( xOffset, 7.0));
+    #line 423
+    return any( bottom, top);
+}
+#line 271
+bool insideDigit( in vec2 point, in float xOffset, in Digit d ) {
+    Segment ledA;
+    #line 278
+    Segment ledB;
+    #line 283
+    Segment ledC;
+    #line 288
+    Segment ledD;
+    #line 294
+    ledA.p0.normal = vec2( 1.0, -1.0);
+    ledA.p0.point = vec2( 0.1, 0.0);
+    ledA.p1.normal = vec2( 0.0, -1.0);
+    ledA.p1.point = vec2( 1.0, 0.9);
+    #line 298
+    ledA.p2.normal = vec2( -1.0, -1.0);
+    ledA.p2.point = vec2( 5.0, 0.9);
+    ledA.p3.normal = vec2( 0.0, 1.0);
+    ledA.p3.point = vec2( 5.9, 0.0);
+    #line 304
+    ledB.p0.normal = vec2( 1.0, 0.0);
+    ledB.p0.point = vec2( 0.0, 0.1);
+    ledB.p1.normal = vec2( -1.0, -1.0);
+    ledB.p1.point = vec2( 0.0, 5.9);
+    #line 308
+    ledB.p2.normal = vec2( -1.0, 0.0);
+    ledB.p2.point = vec2( 0.9, 5.0);
+    ledB.p3.normal = vec2( -1.0, 1.0);
+    ledB.p3.point = vec2( 0.9, 1.0);
+    #line 314
+    ledC.p0.normal = vec2( -1.0, 0.0);
+    ledC.p0.point = vec2( 6.0, 0.1);
+    ledC.p1.normal = vec2( 1.0, -1.0);
+    ledC.p1.point = vec2( 6.0, 5.9);
+    #line 318
+    ledC.p2.normal = vec2( 1.0, 0.0);
+    ledC.p2.point = vec2( 5.1, 5.0);
+    ledC.p3.normal = vec2( 1.0, 1.0);
+    ledC.p3.point = vec2( 5.1, 1.0);
+    #line 324
+    ledD.p0.normal = vec2( 0.0, -1.0);
+    ledD.p0.point = vec2( 0.1, 6.0);
+    ledD.p1.normal = vec2( -1.0, 1.0);
+    ledD.p1.point = vec2( 5.9, 6.0);
+    #line 328
+    ledD.p2.normal = vec2( 0.0, 1.0);
+    ledD.p2.point = vec2( 5.0, 5.1);
+    ledD.p3.normal = vec2( 1.0, 1.0);
+    ledD.p3.point = vec2( 1.0, 5.1);
+    #line 333
+    vec4 bottom;
+    bottom.x = insideSegment( point, ledA, vec2( xOffset, 1.0));
+    bottom.y = insideSegment( point, ledB, vec2( xOffset, 1.0));
+    bottom.z = insideSegment( point, ledC, vec2( xOffset, 1.0));
+    #line 337
+    bottom.w = insideSegment( point, ledD, vec2( xOffset, 1.0));
+    vec4 top;
+    top.x = insideSegment( point, ledA, vec2( xOffset, 7.0));
+    #line 341
+    top.y = insideSegment( point, ledB, vec2( xOffset, 7.0));
+    top.z = insideSegment( point, ledC, vec2( xOffset, 7.0));
+    top.w = insideSegment( point, ledD, vec2( xOffset, 7.0));
+    #line 345
+    return any( (bottom * d.bottom), (top * d.top));
+}
+#line 449
+PS_OUTPUT xlat_main( in vec2 hposition ) {
+    PS_OUTPUT OUT = PS_OUTPUT(vec4(0.0, 0.0, 0.0, 0.0));
+    #line 454
+    float hourHigh = floor((hour / 10.0));
+    float hourLow = (hour - (hourHigh * 10.0));
+    float minuteHigh = floor((minute / 10.0));
+    #line 458
+    float minuteLow = (minute - (minuteHigh * 10.0));
+    float secondHigh = floor((second / 10.0));
+    float secondLow = (second - (secondHigh * 10.0));
+    #line 464
+    if ((hourHigh == 0.0)){
+        hourHigh = -1.0;
+    }
+    Digit hrHigh = getDigit( hourHigh, 0);
+    #line 468
+    Digit hrLow = getDigit( hourLow, 2);
+    Digit minHigh = getDigit( minuteHigh, 1);
+    Digit minLow = getDigit( minuteLow, 2);
+    Digit secHigh = getDigit( secondHigh, 1);
+    #line 472
+    Digit secLow = getDigit( secondLow, 2);
+    if ((((((((((insideDigit( hposition.xy, 1.0, hrHigh) || insideDigit( hposition.xy, 7.1, hrLow)) || insideDigit( hposition.xy, 15.0, minHigh)) || insideDigit( hposition.xy, 21.1, minLow)) || insideDigit( hposition.xy, 29.0, secHigh)) || insideDigit( hposition.xy, 35.1, secLow)) || insideCircle( hposition.xy, vec2( 14.0, 9.0), 0.7)) || insideCircle( hposition.xy, vec2( 14.0, 5.0), 0.7)) || insideCircle( hposition.xy, vec2( 28.0, 9.0), 0.7)) || insideCircle( hposition.xy, vec2( 28.0, 5.0), 0.7))){
+        #line 488
+        OUT.color = vec4( 0.0, 1.0, 0.0, 1.0);
+    }
+    else{
+        if ((((((insideDigit( hposition.xy, 1.0) || insideDigit( hposition.xy, 7.1)) || insideDigit( hposition.xy, 15.0)) || insideDigit( hposition.xy, 21.1)) || insideDigit( hposition.xy, 29.0)) || insideDigit( hposition.xy, 35.1))){
+            #line 498
+            OUT.color = vec4( 0.0, 0.2, 0.0, 1.0);
+        }
+        else{
+            #line 503
+            OUT.color = vec4( 0.0, 0.0, 0.0, 1.0);
+        }
+    }
+    return OUT;
+}
+varying vec2 xlv_TEXCOORD1;
+void main() {
+    PS_OUTPUT xl_retval;
+    xl_retval = xlat_main( vec2(xlv_TEXCOORD1));
+    gl_FragData[0] = vec4(xl_retval.color);
+}
+
+// uniforms:
+// hour:<none> type 9 arrsize 0
+// minute:<none> type 9 arrsize 0
+// second:<none> type 9 arrsize 0
+
+WARNING: Output of vertex shader 'xlv_TEXCOORD0' not read by fragment shader
+
+Title: NormalMapping
+Renderer=GLSL1_1
+
+Shader file:../../../../../IndieLib_resources/NormalMapping/NormalMapping.shd
+Compile Log: 
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 30
+struct VS_OUTPUT {
+    vec4 Pos;
+    vec2 Tex;
+    vec3 Light;
+    vec3 View;
+};
+#line 21
+struct VS_INPUT {
+    vec3 Position;
+    vec3 Normal;
+    vec3 BiNormal;
+    vec3 Tangent;
+    vec3 color;
+    vec2 uv;
+};
+#line 16
+uniform mat4 matWorldViewProj;
+uniform mat4 matWorld;
+uniform vec4 vecLightDir;
+uniform vec4 vecEye;
+#line 37
+#line 37
+VS_OUTPUT xlat_main( in VS_INPUT IN ) {
+    VS_OUTPUT Out = VS_OUTPUT(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+    Out.Pos = (vec4( IN.Position, 1.0) * matWorldViewProj);
+    #line 42
+    mat3 worldToTangentSpace;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 0) = (normalize(vec4( IN.Tangent, 1.0)) * matWorld).xyz;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 1) = (normalize(vec4( IN.BiNormal, 1.0)) * matWorld).xyz;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 2) = (normalize(vec4( IN.Normal, 1.0)) * matWorld).xyz;
+    #line 47
+    Out.Tex = IN.uv;
+    vec4 PosWorld = (vec4( IN.Position, 1.0) * matWorld);
+    Out.Light = normalize((worldToTangentSpace * vecLightDir.xyz));
+    #line 51
+    Out.View = normalize((worldToTangentSpace * (vecEye - PosWorld).xyz));
+    return Out;
+}
+attribute vec3 xlat_attrib_binorm;
+attribute vec3 TANGENT;
+varying vec2 xlv_TEXCOORD0;
+varying vec3 xlv_TEXCOORD1;
+varying vec3 xlv_TEXCOORD2;
+void main() {
+    VS_OUTPUT xl_retval;
+    VS_INPUT xlt_IN;
+    xlt_IN.Position = vec3(gl_Vertex);
+    xlt_IN.Normal = vec3(gl_Normal);
+    xlt_IN.BiNormal = vec3(xlat_attrib_binorm);
+    xlt_IN.Tangent = vec3(TANGENT);
+    xlt_IN.color = vec3(gl_MultiTexCoord0);
+    xlt_IN.uv = vec2(gl_MultiTexCoord1);
+    xl_retval = xlat_main( xlt_IN);
+    gl_Position = vec4(xl_retval.Pos);
+    xlv_TEXCOORD0 = vec2(xl_retval.Tex);
+    xlv_TEXCOORD1 = vec3(xl_retval.Light);
+    xlv_TEXCOORD2 = vec3(xl_retval.View);
+}
+
+// uniforms:
+// matWorld:<none> type 21 arrsize 0
+// matWorldViewProj:<none> type 21 arrsize 0
+// vecEye:<none> type 12 arrsize 0
+// vecLightDir:<none> type 12 arrsize 0
+
+ERROR: 0:44: Left-hand-side of assignment must be an lvalue
+ERROR: 0:45: Left-hand-side of assignment must be an lvalue
+ERROR: 0:46: Left-hand-side of assignment must be an lvalue
+
+Vertex shader error:
+ERROR: 0:44: Left-hand-side of assignment must be an lvalue
+ERROR: 0:45: Left-hand-side of assignment must be an lvalue
+ERROR: 0:46: Left-hand-side of assignment must be an lvalue
+
+Link Log: 
+vs:
+vec2 xll_matrixindex_mf2x2_i (mat2 m, int i) { vec2 v; v.x=m[0][i]; v.y=m[1][i]; return v; }
+vec3 xll_matrixindex_mf3x3_i (mat3 m, int i) { vec3 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; return v; }
+vec4 xll_matrixindex_mf4x4_i (mat4 m, int i) { vec4 v; v.x=m[0][i]; v.y=m[1][i]; v.z=m[2][i]; v.w=m[3][i]; return v; }
+#line 30
+struct VS_OUTPUT {
+    vec4 Pos;
+    vec2 Tex;
+    vec3 Light;
+    vec3 View;
+};
+#line 21
+struct VS_INPUT {
+    vec3 Position;
+    vec3 Normal;
+    vec3 BiNormal;
+    vec3 Tangent;
+    vec3 color;
+    vec2 uv;
+};
+#line 16
+uniform mat4 matWorldViewProj;
+uniform mat4 matWorld;
+uniform vec4 vecLightDir;
+uniform vec4 vecEye;
+#line 37
+#line 37
+VS_OUTPUT xlat_main( in VS_INPUT IN ) {
+    VS_OUTPUT Out = VS_OUTPUT(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0), vec3(0.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+    Out.Pos = (vec4( IN.Position, 1.0) * matWorldViewProj);
+    #line 42
+    mat3 worldToTangentSpace;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 0) = (normalize(vec4( IN.Tangent, 1.0)) * matWorld).xyz;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 1) = (normalize(vec4( IN.BiNormal, 1.0)) * matWorld).xyz;
+    xll_matrixindex_mf3x3_i (worldToTangentSpace, 2) = (normalize(vec4( IN.Normal, 1.0)) * matWorld).xyz;
+    #line 47
+    Out.Tex = IN.uv;
+    vec4 PosWorld = (vec4( IN.Position, 1.0) * matWorld);
+    Out.Light = normalize((worldToTangentSpace * vecLightDir.xyz));
+    #line 51
+    Out.View = normalize((worldToTangentSpace * (vecEye - PosWorld).xyz));
+    return Out;
+}
+attribute vec3 xlat_attrib_binorm;
+attribute vec3 TANGENT;
+varying vec2 xlv_TEXCOORD0;
+varying vec3 xlv_TEXCOORD1;
+varying vec3 xlv_TEXCOORD2;
+void main() {
+    VS_OUTPUT xl_retval;
+    VS_INPUT xlt_IN;
+    xlt_IN.Position = vec3(gl_Vertex);
+    xlt_IN.Normal = vec3(gl_Normal);
+    xlt_IN.BiNormal = vec3(xlat_attrib_binorm);
+    xlt_IN.Tangent = vec3(TANGENT);
+    xlt_IN.color = vec3(gl_MultiTexCoord0);
+    xlt_IN.uv = vec2(gl_MultiTexCoord1);
+    xl_retval = xlat_main( xlt_IN);
+    gl_Position = vec4(xl_retval.Pos);
+    xlv_TEXCOORD0 = vec2(xl_retval.Tex);
+    xlv_TEXCOORD1 = vec3(xl_retval.Light);
+    xlv_TEXCOORD2 = vec3(xl_retval.View);
+}
+
+// uniforms:
+// matWorld:<none> type 21 arrsize 0
+// matWorldViewProj:<none> type 21 arrsize 0
+// vecEye:<none> type 12 arrsize 0
+// vecLightDir:<none> type 12 arrsize 0
+
+fs:
+float xll_saturate_f( float x) {
+  return clamp( x, 0.0, 1.0);
+}
+vec2 xll_saturate_vf2( vec2 x) {
+  return clamp( x, 0.0, 1.0);
+}
+vec3 xll_saturate_vf3( vec3 x) {
+  return clamp( x, 0.0, 1.0);
+}
+vec4 xll_saturate_vf4( vec4 x) {
+  return clamp( x, 0.0, 1.0);
+}
+mat2 xll_saturate_mf2x2(mat2 m) {
+  return mat2( clamp(m[0], 0.0, 1.0), clamp(m[1], 0.0, 1.0));
+}
+mat3 xll_saturate_mf3x3(mat3 m) {
+  return mat3( clamp(m[0], 0.0, 1.0), clamp(m[1], 0.0, 1.0), clamp(m[2], 0.0, 1.0));
+}
+mat4 xll_saturate_mf4x4(mat4 m) {
+  return mat4( clamp(m[0], 0.0, 1.0), clamp(m[1], 0.0, 1.0), clamp(m[2], 0.0, 1.0), clamp(m[3], 0.0, 1.0));
+}
+#line 45
+struct VS_OUTPUT {
+    vec4 Pos;
+    vec2 Tex;
+    vec3 Light;
+    vec3 View;
+};
+#line 7
+#line 11
+#line 23
+uniform sampler2D ColorMapSampler;
+#line 34
+uniform sampler2D NormalMapSampler;
+#line 52
+#line 52
+vec4 xlat_main( in VS_OUTPUT IN ) {
+    vec4 Color = texture2D( ColorMapSampler, IN.Tex);
+    #line 58
+    vec3 N = vec3( ((2.0 * texture2D( NormalMapSampler, IN.Tex)) - 1.0));
+    float D = xll_saturate_f(dot( N, IN.Light));
+    #line 62
+    vec3 R = normalize((((2.0 * D) * N) - IN.Light));
+    float S = pow( xll_saturate_f(dot( R, IN.View)), 2.0);
+    #line 66
+    const vec4 Ambient = vec4( 0.3, 0.3, 0.3, 1.0);
+    return (((Color * Ambient) + (Color * D)) + (Color * S));
+}
+varying vec2 xlv_TEXCOORD0;
+varying vec3 xlv_TEXCOORD1;
+varying vec3 xlv_TEXCOORD2;
+void main() {
+    vec4 xl_retval;
+    VS_OUTPUT xlt_IN;
+    xlt_IN.Pos = vec4(0.0);
+    xlt_IN.Tex = vec2(xlv_TEXCOORD0);
+    xlt_IN.Light = vec3(xlv_TEXCOORD1);
+    xlt_IN.View = vec3(xlv_TEXCOORD2);
+    xl_retval = xlat_main( xlt_IN);
+    gl_FragData[0] = vec4(xl_retval);
+}
+
+// uniforms:
+// ColorMapSampler:<none> type 25 arrsize 0
+// NormalMapSampler:<none> type 25 arrsize 0
+
+ERROR: Input of fragment shader 'xlv_TEXCOORD0' not written by previous stage
+ERROR: Input of fragment shader 'xlv_TEXCOORD1' not written by previous stage
+ERROR: Input of fragment shader 'xlv_TEXCOORD2' not written by previous stage
+
+./run.sh: line 126:  3654 Segmentation fault: 11  ./NormalMapping
+

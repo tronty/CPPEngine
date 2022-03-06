@@ -1342,7 +1342,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
-	LOG_PRINT("Shader file:%s\n", fn.c_str());
+	printf("\nShader file:%s\n", fn.c_str());
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
@@ -4736,8 +4736,8 @@ IRenderer* IRenderer::GetRendererInstance(
 
 	m_title=atitle;
 	LOG_START;
-	#ifdef LINUX
-	printf("Title: %s\n", atitle);
+	#if defined(LINUX) || defined(__APPLE__)
+	printf("\nTitle: %s\n", atitle);
 	#endif
 	char path1[MAX_PATH];
 	stx_getcwd(path1);
