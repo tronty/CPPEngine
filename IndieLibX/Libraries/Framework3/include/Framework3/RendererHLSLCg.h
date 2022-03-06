@@ -1600,7 +1600,13 @@ unsigned int getVertexCount(const Primitives primitives, const int  NumPrim);
 	int WorkDirectory(int argc=0, char *argv[]=0);
 	RendererHLSLCg(int argc=0, char *argv[]=0);
 	virtual ~RendererHLSLCg();
-
+#if 1
+VIRTUAL
+ShaderID addGLSLShaderVrtl(
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+	 const unsigned int flags){return -1;}
+#endif
 	void debug(void);
 	static void OpenILToGIF(Image3& img, const char* gifbuf);
 

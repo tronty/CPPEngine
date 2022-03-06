@@ -6,6 +6,14 @@
 #ifndef _IRenderer_H_
 #define _IRenderer_H_
 
+#if 1
+#define VIRTUAL
+#define VIRTUAL0
+#else
+#define VIRTUAL virtual
+#define VIRTUAL0 =0
+#endif
+
 #if 0
 // assimp include files. These three are usually needed.
 #include <assimp/Importer.hpp>
@@ -1935,17 +1943,22 @@ inline void setViewport(D3DFROMWINEVIEWPORT9* pVP)
 
 	virtual stx_Effect* addEffectFromFile(const std::string& aFileName, const char* aDefines=0)=0;
 
+#if 1
+ShaderID addShader( const char* shaderText, 
+                    const char* vsMain="main", 
+                    const char* fsMain="main",
+                    const char *defines = 0,
+                    const unsigned int flags = 0);
+VIRTUAL
+ShaderID addGLSLShaderVrtl(
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+	 const unsigned int flags) VIRTUAL0 ;
+#endif
     virtual ShaderID addHLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
                                             	const unsigned int flags)=0;
-#if 1
-	//virtual 
-    ShaderID addGLSLShader(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
-                                            	const unsigned int flags){return -1;}
-#endif
 
 ShaderID addShaderFromFile(  const char* fileName, 
                              const char* vsMain="main", 
@@ -1953,11 +1966,6 @@ ShaderID addShaderFromFile(  const char* fileName,
                              const char *defines = 0,
                              const unsigned int flags = 0);
 
-ShaderID addShader( const char* shaderText, 
-                    const char* vsMain="main", 
-                    const char* fsMain="main",
-                    const char *defines = 0,
-                    const unsigned int flags = 0);
 inline ShaderID addHLSLShader( const char* shaderText, 
                     const char* vsMain="main", 
                     const char* fsMain="main",

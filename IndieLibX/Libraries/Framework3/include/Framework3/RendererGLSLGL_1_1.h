@@ -56,11 +56,13 @@ void changeDomainShader(const ShaderID shader);
 void changeComputeShader(const ShaderID shader);
 void setShaderConstantRaw(const char *name, const void *data, const int size);
 
-//virtual 
-ShaderID addGLSLShader(
+#if 1
+VIRTUAL 
+ShaderID addGLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
                                             	const unsigned int flags);
+#endif
 virtual ShaderID addHLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 

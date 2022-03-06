@@ -792,7 +792,7 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 					}
 }
 
-ShaderID RendererGLSLGL_1_1::addGLSLShader(
+ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
 const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
@@ -1337,7 +1337,7 @@ LOG_FNLN;
 #if defined(USE_HLSL_SHADERS)
 #if 0
 	{
-		id=addGLSLShader(   vsText_, gsText, fsText_, csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText_, gsText, fsText_, csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 	}
@@ -1367,14 +1367,14 @@ LOG_FNLN;
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
    	fclose (pFile);}
 #endif
-		id=addGLSLShader(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 	}
 LOG_FNLN;
 #else
 LOG_FNLN;
-		id=addGLSLShader(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 LOG_FNLN;
