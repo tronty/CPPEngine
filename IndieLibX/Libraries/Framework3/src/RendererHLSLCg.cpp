@@ -6566,6 +6566,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			  (std::string::npos==foundPS)))
 	{
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		printf("[GLSL]\n");
 		#if 0
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain_="mainImage";
