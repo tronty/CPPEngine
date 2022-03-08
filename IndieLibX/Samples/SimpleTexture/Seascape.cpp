@@ -21,11 +21,7 @@ int init(const char* aTitle)
 {
 	STX_FNLN;
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile(
-//"/www.shadertoy.com/Seascape.shd", 
-"/glslsandbox.com/e#79415.0.shd",
-//"/glslsandbox.com/e#79537.0.shd",
-//"/glslsandbox.com/e#79620.0.shd",
-//"/glslsandbox.com/e#79629.0.shd",
+"/glslsandbox.com/e#79415.0.glsl",
 "main2", "main");
 	STX_FNLN;
 	FormatDesc format[] =

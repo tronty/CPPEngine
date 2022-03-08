@@ -210,11 +210,11 @@ bool load(){
 
 LOG_FNLN;
 	// Shaders
-	if ((genTerrain = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/generateTerrain.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((genTerrain = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/generateTerrain.hlsl", "main", "main")) == SHADER_NONE) return false;
 LOG_FNLN;
-	if ((tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/tangentSpace.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/tangentSpace.hlsl", "main", "main")) == SHADER_NONE) return false;
 LOG_FNLN;
-	if ((terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/terrain.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/terrain.hlsl", "main", "main")) == SHADER_NONE) return false;
 LOG_FNLN;
 
 	// Samplerstates
@@ -229,7 +229,7 @@ LOG_FNLN;
 	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA32F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 /*
-	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/skybox.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrainII/skybox.hlsl", "main", "main")) == SHADER_NONE) return false;
 
 	// Cubemap
 	const char *files[] = {

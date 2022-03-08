@@ -192,10 +192,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpC
     {
         ID3DBlob* shaderCompileErrorsBlob;
         HRESULT hResult = D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "vs_main", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
-        hResult = D3DCompileFromFile(L"generateTerrain.shd", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
-        hResult = D3DCompileFromFile(L"skybox.shd", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
-        hResult = D3DCompileFromFile(L"tangentSpace.shd", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
-        hResult = D3DCompileFromFile(L"terrain.shd", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        hResult = D3DCompileFromFile(L"generateTerrain.hlsl", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        hResult = D3DCompileFromFile(L"skybox.hlsl", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        hResult = D3DCompileFromFile(L"tangentSpace.hlsl", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
+        hResult = D3DCompileFromFile(L"terrain.hlsl", nullptr, nullptr, "mainVS", "vs_5_0", 0, 0, &vsBlob, &shaderCompileErrorsBlob);
         if(FAILED(hResult))
         {
             const char* errorString = NULL;

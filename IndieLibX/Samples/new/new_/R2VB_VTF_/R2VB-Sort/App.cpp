@@ -292,14 +292,14 @@ bool App::load(){
 		TEX_PATH "Mountains/posz.jpg", TEX_PATH "Mountains/negz.jpg", FILTER_TRILINEAR)) == TEXTURE_NONE) return false;
 
 	// Load all the shaders
-	if ((bitonicSort = renderer->addShader("bitonicSort.shd", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
-	if ((particles   = renderer->addShader("particles.shd", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
-	if ((distance    = renderer->addShader("distance.shd")) == SHADER_NONE) return false;
-	if ((makeQuads   = renderer->addShader("makeQuads.shd")) == SHADER_NONE) return false;
-	if ((terrain     = renderer->addShader("terrain.shd")) == SHADER_NONE) return false;
-	if ((skybox      = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
-	if ((initSmoke   = renderer->addShader("initSmoke.shd")) == SHADER_NONE) return false;
-	if ((smoke       = renderer->addShader("smoke.shd", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
+	if ((bitonicSort = renderer->addShader("bitonicSort.hlsl", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
+	if ((particles   = renderer->addShader("particles.hlsl", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
+	if ((distance    = renderer->addShader("distance.hlsl")) == SHADER_NONE) return false;
+	if ((makeQuads   = renderer->addShader("makeQuads.hlsl")) == SHADER_NONE) return false;
+	if ((terrain     = renderer->addShader("terrain.hlsl")) == SHADER_NONE) return false;
+	if ((skybox      = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
+	if ((initSmoke   = renderer->addShader("initSmoke.hlsl")) == SHADER_NONE) return false;
+	if ((smoke       = renderer->addShader("smoke.hlsl", supportsPS3? "#define SM3\n" : NULL)) == SHADER_NONE) return false;
 
 	// Load the vertex declarations
 	VertexAttribute skyboxAttribs[] = { TYPE_VERTEX, FORMAT_FLOAT, 3 };

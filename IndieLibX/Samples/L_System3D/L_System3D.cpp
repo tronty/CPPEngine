@@ -61,7 +61,7 @@ std::stack<Turtle3D> Turtle3D::_Turtle3Dstack__;
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/plainSHD2.HLSL.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/plainSHD2.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3

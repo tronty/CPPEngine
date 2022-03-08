@@ -72,7 +72,7 @@ VertexFormatID vf=-1;
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/libnoise/rendersample.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/libnoise/rendersample.hlsl", "main", "main");
 
 	FormatDesc format[] =
 	{

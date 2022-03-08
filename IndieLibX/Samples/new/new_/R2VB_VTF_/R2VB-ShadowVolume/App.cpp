@@ -358,12 +358,12 @@ bool App::createPlayer(char *modelname, char *skinname, char *animation)
 	if ((model.diffuseMap = renderer->addTexture(TEX_PATH "boy03.dds", FILTER_TRILINEAR_ANISO)) == TEXTURE_NONE) return false;
 
 	// Load shaders
-	if ((model.animationSH = renderer->addShader("animation.shd")) == SHADER_NONE) return false;
-	if ((model.skinningSH = renderer->addShader("skinning.shd")) == SHADER_NONE) return false;
-	if ((model.modelSH = renderer->addShader("model.shd")) == SHADER_NONE) return false;
-	if ((model.ambientModelSH = renderer->addShader("Model_Ambient.shd")) == SHADER_NONE) return false;
-	if ((model.calculateNormalSH = renderer->addShader("normal.shd")) == SHADER_NONE) return false;
-	if ((model.shadowVolumeSH = renderer->addShader("ShadowVolume.shd")) == SHADER_NONE) return false;
+	if ((model.animationSH = renderer->addShader("animation.hlsl")) == SHADER_NONE) return false;
+	if ((model.skinningSH = renderer->addShader("skinning.hlsl")) == SHADER_NONE) return false;
+	if ((model.modelSH = renderer->addShader("model.hlsl")) == SHADER_NONE) return false;
+	if ((model.ambientModelSH = renderer->addShader("Model_Ambient.hlsl")) == SHADER_NONE) return false;
+	if ((model.calculateNormalSH = renderer->addShader("normal.hlsl")) == SHADER_NONE) return false;
+	if ((model.shadowVolumeSH = renderer->addShader("ShadowVolume.hlsl")) == SHADER_NONE) return false;
 
 	StreamVertexAttribute quadAttribs[] = { 
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 4,
@@ -643,8 +643,8 @@ bool Floor::load(char *name, Renderer* renderer)
 		}
 	renderer->unlockIndexBuffer(IndexBuffer);
 	// load shaders for this model
-	if ((Shader = renderer->addShader("floor.shd")) == SHADER_NONE) return false;
-	if ((ambientShader = renderer->addShader("floor_ambient.shd")) == SHADER_NONE) return false;
+	if ((Shader = renderer->addShader("floor.hlsl")) == SHADER_NONE) return false;
+	if ((ambientShader = renderer->addShader("floor_ambient.hlsl")) == SHADER_NONE) return false;
 	// load diffuse map for this model
 	char FullName[256];
 	sprintf(FullName, "%s%s", TEX_PATH, pMaterial[0].diffuseMap);
@@ -672,7 +672,7 @@ bool App::load()
 	}
 
 	// Load shaders
-	if ((skybox = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
+	if ((skybox = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
 
 	// Load textures
 	if ((env = renderer->addCubemap(

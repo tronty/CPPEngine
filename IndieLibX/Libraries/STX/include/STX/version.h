@@ -153,7 +153,7 @@
 #define  ps "ps_4_0"
 #elif 1
 #define USE_D3D10_1 1
-#if 1//works with Quad10.shd
+#if 1//works with Quad10.hlsl
 #define fl D3D10_FEATURE_LEVEL_10_1
 #define  vs "vs_4_0"
 #define  ps "ps_4_0"
@@ -173,7 +173,7 @@ with an inappropriate target.
 Depending on which feature level you're targeting, you have a choice of shader targets:
 vs_4_0, vs_4_0_level_9_1, vs_4_0_level_9_3, vs_5_0
 */
-#if 1//works with Quad9.shd
+#if 1//works with Quad9.hlsl
 #define fl D3D_FEATURE_LEVEL_9_3
 #define  vs "vs_4_0_level_9_3"
 #define  ps "ps_4_0_level_9_3"

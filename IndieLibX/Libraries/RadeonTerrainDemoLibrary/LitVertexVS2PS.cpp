@@ -28,11 +28,11 @@ void LitVertexVS2PS::init( void )
 /*
 	if(g_pApp->m_renderer==D3D11)
 
-	m_pEffect = IRenderer::GetRendererInstance()->addShaderFromFile("LitVertex11.shd", "mainVS", "mainPS");
+	m_pEffect = IRenderer::GetRendererInstance()->addShaderFromFile("LitVertex11.hlsl", "mainVS", "mainPS");
 
 	else*/
 
-	m_pEffect = IRenderer::GetRendererInstance()->addShaderFromFile("/RadeonTerrainDemo/LitVertex.shd", "mainVS", "mainPS");
+	m_pEffect = IRenderer::GetRendererInstance()->addShaderFromFile("/RadeonTerrainDemo/LitVertex.hlsl", "mainVS", "mainPS");
 
 
 

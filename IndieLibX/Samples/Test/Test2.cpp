@@ -8,7 +8,7 @@
 int ApplicationLogic()
 {
 	LOG_FNLN;
-	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.shd", "main", "main");
+	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.hlsl", "main", "main");
 	LOG_FNLN;
 	
 	return 0;

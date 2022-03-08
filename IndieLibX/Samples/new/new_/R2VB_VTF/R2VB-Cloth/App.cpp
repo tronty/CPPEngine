@@ -160,29 +160,29 @@ bool load(){
 	AttributeFormat attribFormat = supportsHalf? FORMAT_HALF : FORMAT_FLOAT;
 
 	// Initialization shaders for the presets
-	initCloth[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth.shd", "main", "main");
-	initCloth[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth2.shd", "main", "main");
-	initCloth[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth3.shd", "main", "main");
-	initCloth[3] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth4.shd", "main", "main");
-	initCloth[4] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth5.shd", "main", "main");
-	initCloth[5] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth6.shd", "main", "main");
+	initCloth[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth.hlsl", "main", "main");
+	initCloth[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth2.hlsl", "main", "main");
+	initCloth[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth3.hlsl", "main", "main");
+	initCloth[3] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth4.hlsl", "main", "main");
+	initCloth[4] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth5.hlsl", "main", "main");
+	initCloth[5] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/initCloth6.hlsl", "main", "main");
 
     // The physics shaders
 	//if (caps.PS20Caps.NumInstructionSlots >= 512)
 	{
-		physics = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics1.shd", "main", "main");
+		physics = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics1.hlsl", "main", "main");
 	}
 
-	physicsMP[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics2.shd", "main", "main");
-	physicsMP[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics3.shd", "main", "main");
-	physicsMP[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics4.shd", "main", "main");
+	physicsMP[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics2.hlsl", "main", "main");
+	physicsMP[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics3.hlsl", "main", "main");
+	physicsMP[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/physics4.hlsl", "main", "main");
 
     // The rest of the needed shaders
-	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/lighting.shd", "main", "main");
-	tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/tangentSpace.shd", "main", "main");
-	interleave = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/interleave.shd", "main", "main");
-	hit = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/hit.shd", "main", "main");
-	setNode = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/setNode.shd", "main", "main");
+	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/lighting.hlsl", "main", "main");
+	tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/tangentSpace.hlsl", "main", "main");
+	interleave = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/interleave.hlsl", "main", "main");
+	hit = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/hit.hlsl", "main", "main");
+	setNode = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Cloth/setNode.hlsl", "main", "main");
 
     // Load vertex attributes
 	FormatDesc quadAttribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 2 };

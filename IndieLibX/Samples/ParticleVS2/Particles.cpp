@@ -92,7 +92,7 @@ bool cParticleEmitter::Create(D3DXFROMWINEVECTOR3 *vecPosition,
 	#endif
   
 if(-1==m_pShader) {
-	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles.shd", "main", "main");
+	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles.hlsl", "main", "main");
 	#if 0
 {LOG_FNLN;LOG_PRINT("m_pShader=%x\n", m_pShader);}
 	#endif

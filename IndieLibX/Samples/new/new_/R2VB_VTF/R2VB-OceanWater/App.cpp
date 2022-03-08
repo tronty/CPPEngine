@@ -269,10 +269,10 @@ bool load()
     IRenderer::GetRendererInstance()->setViewport(&m_viewport);
 
     // Load shaders
-    m_waterRenderShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/WaterRender.shd", "main", "main");
+    m_waterRenderShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/WaterRender.hlsl", "main", "main");
     FormatDesc waterRenderAttribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 4, 0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 };
     m_waterRenderVertexFormat = IRenderer::GetRendererInstance()->addVertexFormat(waterRenderAttribs, elementsOf(waterRenderAttribs), m_waterRenderShader);
-    //m_skyboxShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/skybox.shd", "main", "main");
+    //m_skyboxShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/skybox.hlsl", "main", "main");
 
     // Load Textures
     m_skyboxTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB/MarlinCube.dds", false, IRenderer::GetRendererInstance()->Gettrilinear());

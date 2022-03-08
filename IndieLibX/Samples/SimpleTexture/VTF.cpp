@@ -14,7 +14,7 @@ TextureID ll=-1;
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/VTF.shd", "mainVS2", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/VTF.hlsl", "mainVS2", "mainPS");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

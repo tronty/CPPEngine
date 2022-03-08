@@ -67,7 +67,7 @@ bool ShaderCG::init(const char* file_v, const char* file_f)
 
   return true;
 #elif 1
-  program = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.shd", "main", "main");
+  program = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

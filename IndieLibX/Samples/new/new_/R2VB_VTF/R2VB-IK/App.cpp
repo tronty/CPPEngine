@@ -262,13 +262,13 @@ bool load()
 {
 	BaseApp::initGUI();
 	// Load shaders
-	quadShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/quad.shd", "main", "main");
-	computeCCDShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/computeCCD.shd", "main", "main");
-	computeTransformMatrixShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/computeTransformMatrix.shd", "main", "main");
-	drawLinkShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/drawLink.shd", "main", "main");
+	quadShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/quad.hlsl", "main", "main");
+	computeCCDShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/computeCCD.hlsl", "main", "main");
+	computeTransformMatrixShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/computeTransformMatrix.hlsl", "main", "main");
+	drawLinkShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/drawLink.hlsl", "main", "main");
 	
-	transformLinkShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/transformLink.shd", "main", "main");
-	generatePivotMatrixShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/generatePivotMatrix.shd", "main", "main");
+	transformLinkShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/transformLink.hlsl", "main", "main");
+	generatePivotMatrixShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/generatePivotMatrix.hlsl", "main", "main");
 
 	{FormatDesc quadAttribs[] = {	0, TYPE_VERTEX, FORMAT_FLOAT, 4,
 	                            	0, TYPE_TEXCOORD, FORMAT_FLOAT, 2};
@@ -665,7 +665,7 @@ int ApplicationLogic()
 //-----------------------------------------------------------------------------------------
 bool Target::load(char *name)
 {
-	Shader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/target.shd", "main", "main");
+	Shader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-IK/target.hlsl", "main", "main");
 
 	ATIModel::load(name);
 	FormatDesc modelVertexAttribs[] = {

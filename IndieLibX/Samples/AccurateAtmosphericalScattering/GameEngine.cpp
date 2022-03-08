@@ -339,27 +339,27 @@ CGameEngine::CGameEngine()
 	m_fRayleighScaleDepth = 0.25f;
 	m_fMieScaleDepth = 0.1f;
 
-	m_shSkyFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromSpace.shd", "main", "main");
+	m_shSkyFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromSpace.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shSkyFromSpace:%x\n", m_shSkyFromSpace);
 
-	m_shSkyFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromAtmosphere.shd", "main", "main");
+	m_shSkyFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromAtmosphere.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shSkyFromAtmosphere:%x\n", m_shSkyFromAtmosphere);
 
-	m_shGroundFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromSpace.shd", "main", "main");
+	m_shGroundFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromSpace.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shGroundFromSpace:%x\n", m_shGroundFromSpace);
 
-	m_shGroundFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromAtmosphere.shd", "main", "main");
+	m_shGroundFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromAtmosphere.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shGroundFromAtmosphere:%x\n", m_shGroundFromAtmosphere);
 
-	m_shSpaceFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromSpace.shd", "main", "main");
+	m_shSpaceFromSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromSpace.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shSpaceFromSpace:%x\n", m_shSpaceFromSpace);
 
-	m_shSpaceFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromAtmosphere.shd", "main", "main");
+	m_shSpaceFromAtmosphere = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromAtmosphere.hlsl", "main", "main");
 	//
 	LOG_PRINT("m_shSpaceFromAtmosphere:%x\n", m_shSpaceFromAtmosphere);
 	FormatDesc format[] =

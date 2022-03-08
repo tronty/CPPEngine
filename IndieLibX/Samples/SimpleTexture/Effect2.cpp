@@ -18,7 +18,7 @@ public:
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/Effect2.shd", "main1", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/Effect2.hlsl", "main1", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

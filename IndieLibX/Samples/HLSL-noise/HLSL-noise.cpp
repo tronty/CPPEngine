@@ -169,11 +169,11 @@ int init(const char* aTitle)
 {
 	HRESULT hr;
 
-	g_pEffect[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise1.shd", "mainVS", "fragmentShaderPNoise");
-	g_pEffect[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise2.shd", "mainVS", "fragmentShaderPNoise");
-	g_pEffect[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise3.shd", "mainVS", "fragmentShaderPNoise");
-	g_pEffect[3] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise4.shd", "mainVS", "fragmentShaderPNoise");
-	g_pEffect[4] = -1;// ??? IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise5.shd", "mainVS", "fragmentShaderPNoise"); // fBm ???
+	g_pEffect[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise1.hlsl", "mainVS", "fragmentShaderPNoise");
+	g_pEffect[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise2.hlsl", "mainVS", "fragmentShaderPNoise");
+	g_pEffect[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise3.hlsl", "mainVS", "fragmentShaderPNoise");
+	g_pEffect[3] = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise4.hlsl", "mainVS", "fragmentShaderPNoise");
+	g_pEffect[4] = -1;// ??? IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise5.hlsl", "mainVS", "fragmentShaderPNoise"); // fBm ???
 
 	g_pEffect_=g_pEffect[2];
 	FormatDesc format[] =

@@ -224,13 +224,13 @@ bool load()
 	//
 	// Load shaders
 	//
-	m_sceneShader				= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Scene.shd", "main", "main");
-	m_scenewireframeShader		= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Scene_wireframe.shd", "main", "main");
-	m_overlayShader			= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Overlay.shd", "main", "main");
-	m_particlesmathShader		= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/ParticlesMath.shd", "main", "main");
-	m_particlesrenderShader	= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/ParticlesRender.shd", "main", "main");
-	m_rayintersectionShader	= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/RayIntersection.shd", "main", "main");
-	//m_skyboxShader				= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/skybox.shd", "main", "main");
+	m_sceneShader				= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Scene.hlsl", "main", "main");
+	m_scenewireframeShader		= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Scene_wireframe.hlsl", "main", "main");
+	m_overlayShader			= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/Overlay.hlsl", "main", "main");
+	m_particlesmathShader		= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/ParticlesMath.hlsl", "main", "main");
+	m_particlesrenderShader	= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/ParticlesRender.hlsl", "main", "main");
+	m_rayintersectionShader	= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/RayIntersection.hlsl", "main", "main");
+	//m_skyboxShader				= IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Collision/skybox.hlsl", "main", "main");
 	
 	m_pPositionVertexShader = m_sceneShader; // ???
 	m_pPositionTexcoordVertexShader = m_sceneShader; // ???

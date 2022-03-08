@@ -225,14 +225,14 @@ void onMenuItemPress( Menu *menu, MenuItemID item )
 bool load(){
 
 	// Load shaders
-	skybox   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/skybox.shd"  );
-	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/lighting.shd");
-	blur     = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/blur.shd"    );
-	convert  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/convert.shd" );
-	average  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/average.shd" );
-	exposure = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/exposure.shd");
-	hdrCPU   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/HDRCPU.shd"     );
-	hdrGPU   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/HDRGPU.shd"     );
+	skybox   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/skybox.hlsl"  );
+	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/lighting.hlsl");
+	blur     = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/blur.hlsl"    );
+	convert  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/convert.hlsl" );
+	average  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/average.hlsl" );
+	exposure = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/exposure.hlsl");
+	hdrCPU   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/HDRCPU.hlsl"     );
+	hdrGPU   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/HDR/HDR/HDRGPU.hlsl"     );
 
 	// Load vertex declarations
 	FormatDesc envAttribs[] = 

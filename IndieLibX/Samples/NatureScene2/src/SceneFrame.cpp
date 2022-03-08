@@ -34,7 +34,7 @@ bool SceneFrame::initialize()
 
   m_pWaterMesh=new WaterMesh();
   if(m_pWaterMesh) m_pWaterMesh->init();
-  waterShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.shd", "main", "main");
+  waterShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.hlsl", "main", "main");
 	{FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -59,7 +59,7 @@ bool SceneFrame::initialize()
   m_pSkyMesh=new SkyMesh();
   if(m_pSkyMesh) m_pSkyMesh->init();
   skyTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, ss);
-  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader.shd", "main", "main");
+  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader.hlsl", "main", "main");
 	{FormatDesc format[] =
 	{
 					0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -427,7 +427,7 @@ void SceneFrame::DrawAtlas()
 	void SkyMesh::init(tShader aShader)
 	{
   skyTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/Sky1.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
-  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader2.shd", "main", "main");
+  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader2.hlsl", "main", "main");
 	{FormatDesc format[] =
 	{
 					0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

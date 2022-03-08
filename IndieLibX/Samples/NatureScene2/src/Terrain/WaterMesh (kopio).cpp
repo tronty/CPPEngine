@@ -63,8 +63,8 @@ indices=indicesvec;
 	//LOG_FNLN;
 	//LOG_PRINT("vertices.size()=%d\n", vertices.size());
 	//LOG_PRINT("indices.size()=%d\n", indices.size());
-	//shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.HLSL.shd", "main", "main");
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.shd", "main", "main");
+	//shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.hlsl", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

@@ -1984,7 +1984,7 @@ unsigned int DrawAtlas(std::vector<TextureID>& av)
 	static VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -2202,7 +2202,7 @@ inline unsigned int DrawIndexedPrimitiveUP(Primitives PrimitiveType,
 	VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -2909,7 +2909,7 @@ inline void STX_DrawTexture(TextureID texture)
 	static VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "main", "main"); 
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "main", "main"); 
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -2977,7 +2977,7 @@ struct stx_SkyBox
 void OnCreateDevice(const unsigned int aN, const TextureID& aEnv, const char* aEffectFileName );
 int init(const char* aName="Olympus", const char* aExt=0)
 {
-	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.shd", "main", "main");
+	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.hlsl", "main", "main");
 	
 	FormatDesc skyboxFmt[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	

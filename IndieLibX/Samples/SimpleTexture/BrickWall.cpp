@@ -7,7 +7,7 @@
 
 const char* filename[] =
 {
-"/www.shadertoy.com/Voxel_Corridor2.shd"
+"/www.shadertoy.com/Voxel_Corridor2.hlsl"
 };
 
 MeshRenderer2 shape3D[3];

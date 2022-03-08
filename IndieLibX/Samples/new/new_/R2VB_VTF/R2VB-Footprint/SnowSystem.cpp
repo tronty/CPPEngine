@@ -26,10 +26,10 @@ bool SnowSystem::load(__DWORD__ maxtexwidth,__DWORD__ maxtexheight, bool debugru
 	r2vbRT = IRenderer::GetRendererInstance()->addRenderTarget(4*rtWidth, rtHeight, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	// Load shaders
-	if ((particleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/particle.shd", "main", "main"   )) == SHADER_NONE) return false;
-	if ((physics        = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/physics.shd", "main", "main"    )) == SHADER_NONE) return false;
-	if ((initPhysics    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/initPhysics.shd", "main", "main")) == SHADER_NONE) return false;
-	if ((makeQuads      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/makeQuads.shd", "main", "main"  )) == SHADER_NONE) return false;
+	if ((particleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/particle.hlsl", "main", "main"   )) == SHADER_NONE) return false;
+	if ((physics        = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/physics.hlsl", "main", "main"    )) == SHADER_NONE) return false;
+	if ((initPhysics    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/initPhysics.hlsl", "main", "main")) == SHADER_NONE) return false;
+	if ((makeQuads      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/makeQuads.hlsl", "main", "main"  )) == SHADER_NONE) return false;
 
 	// Load textures
 	particle = IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB-Footprint/Particle.dds", false, IRenderer::GetRendererInstance()->GetbilinearClamp());

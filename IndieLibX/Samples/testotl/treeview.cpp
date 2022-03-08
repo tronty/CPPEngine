@@ -388,12 +388,12 @@ for( unsigned int a = 0; a < vertexCount;++a)
   camera.translate(0,-5,-20);
   renderer->setPerspective(60.0f, 1.5f, .25f, 1000.0f * .25f);
 #elif 0
-  shdleaves = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/leaves.shd", "main", "main");
-  shdnmap = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/nmap.shd", "main", "main");
-  shdnormals = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/normals.shd", "main", "main");
-  shdparallax = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.shd", "main", "main");
+  shdleaves = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/leaves.hlsl", "main", "main");
+  shdnmap = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/nmap.hlsl", "main", "main");
+  shdnormals = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/normals.hlsl", "main", "main");
+  shdparallax = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.hlsl", "main", "main");
 #elif 1
-  shd = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/shd.shd", "main", "main");
+  shd = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/shd.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -473,7 +473,7 @@ void render()
 	W=R*S;
 	mesh.render(W);
 #else
-	IRenderer::GetRendererInstance()->setShader(tv.shd);
+	IRenderer::GetRendererInstance()->setShader(tv.hlsl);
 	IRenderer::GetRendererInstance()->setVertexFormat(tv.vf);
 	
 	D3DXFROMWINEMATRIX W,R,S,T,P;

@@ -17,7 +17,7 @@ virtual ~App(){}
 int init(const char* aTitle)
 {
 	n_i=0;
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/noise/noise2D.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/noise/noise2D.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

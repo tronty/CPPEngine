@@ -161,7 +161,7 @@ struct IndexedMesh
 		if((m_IndexedMesh.m_vertices.size()==0)&&(g_verticesC_.size()==0))
 			stx_exit(0);
 		{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/plainSHD2C.HLSL.shd", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/plainSHD2C.hlsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,     FORMAT_FLOAT, 3,

@@ -84,11 +84,11 @@ bool App::load(){
 	otherRT = rt1;
 
 	// Load shaders
-	if ((wave   = renderer->addShader("wave.shd"  )) == SHADER_NONE) return false;
-	if ((drop   = renderer->addShader("drop.shd"  )) == SHADER_NONE) return false;
-	if ((skybox = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
-	if ((water  = renderer->addShader("water.shd" )) == SHADER_NONE) return false;
-	if ((pool   = renderer->addShader("pool.shd"  )) == SHADER_NONE) return false;
+	if ((wave   = renderer->addShader("wave.hlsl"  )) == SHADER_NONE) return false;
+	if ((drop   = renderer->addShader("drop.hlsl"  )) == SHADER_NONE) return false;
+	if ((skybox = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
+	if ((water  = renderer->addShader("water.hlsl" )) == SHADER_NONE) return false;
+	if ((pool   = renderer->addShader("pool.hlsl"  )) == SHADER_NONE) return false;
 
 	// Load textures
 	if ((env = renderer->addCubemap(

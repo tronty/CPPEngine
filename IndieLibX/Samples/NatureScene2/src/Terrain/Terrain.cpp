@@ -116,8 +116,8 @@ bool  Terrain::initialize(bool compile)
   tree3=IRenderer::GetRendererInstance()->addImageLibTexture("/dx8sdk/tree35S.png", false, IRenderer::GetRendererInstance()->GetlinearClamp());
   #endif
 
-  terrainShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/TerrainShader.shd", "main", "main");
-  grassShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/GrassShader.shd", "main", "main");
+  terrainShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/TerrainShader.hlsl", "main", "main");
+  grassShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/GrassShader.hlsl", "main", "main");
 	{FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

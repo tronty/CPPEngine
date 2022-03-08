@@ -18,7 +18,7 @@ public:
   //skyTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear());
   skyTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/Sky1.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
 	//skyTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
-  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader2.shd", "main", "main");
+  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader2.hlsl", "main", "main");
 	{FormatDesc format[] =
 	{
 					0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

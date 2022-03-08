@@ -45,21 +45,21 @@ GPU_Physics::GPU_Physics() : Physics()
 
 
     // Load shaders
-    if ((m_HorizontalButterflyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/HorizontalButterfly.shd")) == SHADER_NONE)
+    if ((m_HorizontalButterflyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/HorizontalButterfly.hlsl")) == SHADER_NONE)
         return;
-    if ((m_VerticalButterflyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/VerticalButterfly.shd")) == SHADER_NONE)
+    if ((m_VerticalButterflyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/VerticalButterfly.hlsl")) == SHADER_NONE)
         return;
-    if ((m_HorizontalScrambleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/HorizontalScramble.shd")) == SHADER_NONE)
+    if ((m_HorizontalScrambleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/HorizontalScramble.hlsl")) == SHADER_NONE)
         return;
-    if ((m_VerticalScrambleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/VerticalScramble.shd")) == SHADER_NONE)
+    if ((m_VerticalScrambleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/VerticalScramble.hlsl")) == SHADER_NONE)
         return;
-    if ((m_ExpandShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/Expand.shd")) == SHADER_NONE)
+    if ((m_ExpandShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/Expand.hlsl")) == SHADER_NONE)
         return;
-    if ((m_CopyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/Copy.shd")) == SHADER_NONE)
+    if ((m_CopyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/Copy.hlsl")) == SHADER_NONE)
         return;
-    if ((m_WaterSpectrumShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/WaterSpectrum.shd")) == SHADER_NONE)
+    if ((m_WaterSpectrumShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/WaterSpectrum.hlsl")) == SHADER_NONE)
         return;
-    if ((m_ComputeNormalsShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/ComputeNormals.shd")) == SHADER_NONE)
+    if ((m_ComputeNormalsShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-OceanWater/ComputeNormals.hlsl")) == SHADER_NONE)
         return;
     {FormatDesc attribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 4, 0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 };
     m_HorizontalButterflyVF = IRenderer::GetRendererInstance()->addVertexFormat(attribs, elementsOf(attribs), m_HorizontalButterflyShader);
@@ -931,7 +931,7 @@ IRenderer::GetRendererInstance()->UnlockTexture(m_pHighWTex, 0);
         {
         #if 0 // ???
             // These are in a weird order in memory because of the ABGR ordering of the float texture
-            // See ps_water_spectrum() in WaterNormalMap.shd for the usage of this map
+            // See ps_water_spectrum() in WaterNormalMap.hlsl for the usage of this map
             *amp++ = c_im(m_LowAmplitude0[WATER_GRID_RESOLUTION-i][WATER_GRID_RESOLUTION-j]);
             *amp++ = c_re(m_LowAmplitude0[WATER_GRID_RESOLUTION-i][WATER_GRID_RESOLUTION-j]);
             *amp++ = c_im(m_LowAmplitude0[i][j]);
@@ -951,7 +951,7 @@ pBits=IRenderer::GetRendererInstance()->LockTexture(m_pHighAmplitude0Tex, 0, Pit
         {
        #if 0
             // These are in a weird order in memory because of the ABGR ordering of the float texture
-            // See ps_water_spectrum() in WaterNormalMap.shd for the usage of this map
+            // See ps_water_spectrum() in WaterNormalMap.hlsl for the usage of this map
             *amp++ = c_im(m_HighAmplitude0[HIGH_FREQ_WATER_GRID_RESOLUTION-i][HIGH_FREQ_WATER_GRID_RESOLUTION-j]);
             *amp++ = c_re(m_HighAmplitude0[HIGH_FREQ_WATER_GRID_RESOLUTION-i][HIGH_FREQ_WATER_GRID_RESOLUTION-j]);
             *amp++ = c_im(m_HighAmplitude0[i][j]);

@@ -1567,39 +1567,39 @@ void FW3ShadersFactory::GetShaderTxt(std::string aShaderName, std::string& conte
 	//LOG_PRINT("aShaderName=%s\n", aShaderName);
 #if defined(USE_GLES_SHADERS) && (defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 if(stx_strcmp(aShaderName.c_str(),"AmbientLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.GLES2.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.GLES2.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"DiffuseLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.GLES2.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.GLES2.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting1")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.GLES2.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.GLES2.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting2")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.GLES2.shd", contents);
-else STX_Service::LoadTxtFile("/MeshRenderer2/rest.GLES2.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.GLES2.hlsl", contents);
+else STX_Service::LoadTxtFile("/MeshRenderer2/rest.GLES2.hlsl", contents);
 #elif defined(USE_GLES_SHADERS) && defined(_LINUX)
 if(stx_strcmp(aShaderName.c_str(),"AmbientLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.GLES2.LNX.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.GLES2.LNX.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"DiffuseLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.GLES2.LNX.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.GLES2.LNX.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting1")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.GLES2.LNX.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.GLES2.LNX.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting2")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.GLES2.LNX.shd", contents);
-else STX_Service::LoadTxtFile("/MeshRenderer2/rest.GLES2.LNX.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.GLES2.LNX.hlsl", contents);
+else STX_Service::LoadTxtFile("/MeshRenderer2/rest.GLES2.LNX.hlsl", contents);
 #elif defined(USE_HLSL_SHADERS)
 if(stx_strcmp(aShaderName.c_str(),"AmbientLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.HLSL.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/AmbientLighting.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"DiffuseLighting")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.HLSL.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/DiffuseLighting.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting1")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.HLSL.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting1.hlsl", contents);
 else if(stx_strcmp(aShaderName.c_str(),"PhongLighting2")==0)
-	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.HLSL.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/PhongLighting2.hlsl", contents);
 //else if(stx_strcmp(aShaderName.c_str(),"CelShader"")==0)
-//	STX_Service::LoadTxtFile("/CelShading/outline.shd", contents);
-//	STX_Service::LoadTxtFile("/CelShading/shading.shd", contents);
-else STX_Service::LoadTxtFile("/MeshRenderer2/rest.HLSL.shd", contents);
+//	STX_Service::LoadTxtFile("/CelShading/outline.hlsl", contents);
+//	STX_Service::LoadTxtFile("/CelShading/shading.hlsl", contents);
+else STX_Service::LoadTxtFile("/MeshRenderer2/rest.hlsl", contents);
 #else
-	STX_Service::LoadTxtFile("/MeshRenderer2/all.else.shd", contents);
+	STX_Service::LoadTxtFile("/MeshRenderer2/all.else.hlsl", contents);
 #endif
 }
 

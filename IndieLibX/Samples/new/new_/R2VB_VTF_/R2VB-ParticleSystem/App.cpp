@@ -96,12 +96,12 @@ bool App::load(){
 
 
 	// Load shaders
-	if ((skybox         = renderer->addShader("skybox.shd"     )) == SHADER_NONE) return false;
-	if ((floorShader    = renderer->addShader("floor.shd"      )) == SHADER_NONE) return false;
-	if ((particleShader = renderer->addShader("particle.shd"   )) == SHADER_NONE) return false;
-	if ((physics        = renderer->addShader("physics.shd"    )) == SHADER_NONE) return false;
-	if ((initPhysics    = renderer->addShader("initPhysics.shd")) == SHADER_NONE) return false;
-	if ((makeQuads      = renderer->addShader("makeQuads.shd"  )) == SHADER_NONE) return false;
+	if ((skybox         = renderer->addShader("skybox.hlsl"     )) == SHADER_NONE) return false;
+	if ((floorShader    = renderer->addShader("floor.hlsl"      )) == SHADER_NONE) return false;
+	if ((particleShader = renderer->addShader("particle.hlsl"   )) == SHADER_NONE) return false;
+	if ((physics        = renderer->addShader("physics.hlsl"    )) == SHADER_NONE) return false;
+	if ((initPhysics    = renderer->addShader("initPhysics.hlsl")) == SHADER_NONE) return false;
+	if ((makeQuads      = renderer->addShader("makeQuads.hlsl"  )) == SHADER_NONE) return false;
 
 
 	// Load textures

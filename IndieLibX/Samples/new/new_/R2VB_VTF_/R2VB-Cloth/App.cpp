@@ -209,28 +209,28 @@ bool App::load(){
 
 
 	// Initialization shaders for the presets
-	if ((initCloth[0] = renderer->addShader("initCloth.shd", "#define CURTAIN\n")) == SHADER_NONE) return false;
-	if ((initCloth[1] = renderer->addShader("initCloth.shd", "#define SAIL\n")) == SHADER_NONE) return false;
-	if ((initCloth[2] = renderer->addShader("initCloth.shd", "#define SAFETYNET\n")) == SHADER_NONE) return false;
-	if ((initCloth[3] = renderer->addShader("initCloth.shd", "#define ROUNDTABLE\n")) == SHADER_NONE) return false;
-	if ((initCloth[4] = renderer->addShader("initCloth.shd", "#define SQUARETABLE\n")) == SHADER_NONE) return false;
-	if ((initCloth[5] = renderer->addShader("initCloth.shd", "#define SQUARETABLE2\n")) == SHADER_NONE) return false;
+	if ((initCloth[0] = renderer->addShader("initCloth.hlsl", "#define CURTAIN\n")) == SHADER_NONE) return false;
+	if ((initCloth[1] = renderer->addShader("initCloth.hlsl", "#define SAIL\n")) == SHADER_NONE) return false;
+	if ((initCloth[2] = renderer->addShader("initCloth.hlsl", "#define SAFETYNET\n")) == SHADER_NONE) return false;
+	if ((initCloth[3] = renderer->addShader("initCloth.hlsl", "#define ROUNDTABLE\n")) == SHADER_NONE) return false;
+	if ((initCloth[4] = renderer->addShader("initCloth.hlsl", "#define SQUARETABLE\n")) == SHADER_NONE) return false;
+	if ((initCloth[5] = renderer->addShader("initCloth.hlsl", "#define SQUARETABLE2\n")) == SHADER_NONE) return false;
 
     // The physics shaders
 	if (caps.PS20Caps.NumInstructionSlots >= 512){
-		if ((physics = renderer->addShader("physics.shd", "#define NODE_COUNT 20\n#define FIRST_PASS\n#define LAST_PASS\n")) == SHADER_NONE) return false;
+		if ((physics = renderer->addShader("physics.hlsl", "#define NODE_COUNT 20\n#define FIRST_PASS\n#define LAST_PASS\n")) == SHADER_NONE) return false;
 	}
 
-	if ((physicsMP[0] = renderer->addShader("physics.shd", "#define NODE_COUNT 6\n#define FIRST_PASS\n")) == SHADER_NONE) return false;
-	if ((physicsMP[1] = renderer->addShader("physics.shd", "#define NODE_COUNT 5\n")) == SHADER_NONE) return false;
-	if ((physicsMP[2] = renderer->addShader("physics.shd", "#define NODE_COUNT 4\n#define LAST_PASS\n")) == SHADER_NONE) return false;
+	if ((physicsMP[0] = renderer->addShader("physics.hlsl", "#define NODE_COUNT 6\n#define FIRST_PASS\n")) == SHADER_NONE) return false;
+	if ((physicsMP[1] = renderer->addShader("physics.hlsl", "#define NODE_COUNT 5\n")) == SHADER_NONE) return false;
+	if ((physicsMP[2] = renderer->addShader("physics.hlsl", "#define NODE_COUNT 4\n#define LAST_PASS\n")) == SHADER_NONE) return false;
 
     // The rest of the needed shaders
-	if ((lighting = renderer->addShader("lighting.shd")) == SHADER_NONE) return false;
-	if ((tangentSpace = renderer->addShader("tangentSpace.shd")) == SHADER_NONE) return false;
-	if ((interleave = renderer->addShader("interleave.shd")) == SHADER_NONE) return false;
-	if ((hit = renderer->addShader("hit.shd")) == SHADER_NONE) return false;
-	if ((setNode = renderer->addShader("setNode.shd")) == SHADER_NONE) return false;
+	if ((lighting = renderer->addShader("lighting.hlsl")) == SHADER_NONE) return false;
+	if ((tangentSpace = renderer->addShader("tangentSpace.hlsl")) == SHADER_NONE) return false;
+	if ((interleave = renderer->addShader("interleave.hlsl")) == SHADER_NONE) return false;
+	if ((hit = renderer->addShader("hit.hlsl")) == SHADER_NONE) return false;
+	if ((setNode = renderer->addShader("setNode.hlsl")) == SHADER_NONE) return false;
 
 	// The cloth texture
 	if ((base = renderer->addTexture(TEX_PATH "wallpaper.dds", FILTER_TRILINEAR_ANISO)) == TEXTURE_NONE) return false;

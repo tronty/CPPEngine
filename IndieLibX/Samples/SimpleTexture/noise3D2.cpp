@@ -31,9 +31,9 @@ int init(const char* aTitle)
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 
 	};{
-	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/noise/noise3D2.shd", "main", "main");
+	shaders[0]=IRenderer::GetRendererInstance()->addShaderFromFile("/noise/noise3D2.hlsl", "main", "main");
 	vfs[0] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[0]);}{
-	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.shd", "main", "main");
+	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 	vfs[1] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);}
         shape3D[0].CreateBox(1.0f, 1.0f, 1.0f, eShaderNone);
 	shape3D[1].CreateSphere(1.0f, eShaderNone);

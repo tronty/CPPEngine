@@ -141,14 +141,14 @@ int init(const char* aTitle)
 	initPerlin();
 
 	// Load all the shaders
-	terrain     = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/terrain.shd", "main", "main");
-	smoke       = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/smoke.shd", "main", "main");
-	distance    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/distance.shd", "main", "main");
-	bitonicSort = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/bitonicSort.shd", "main", "main");
-	makeQuads   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/makeQuads.shd", "main", "main");		
-	initSmoke   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/initSmoke.shd", "main", "main");
-	particles   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/particles.shd", "main", "main");
-	skybox      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/skybox.shd", "main", "main");
+	terrain     = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/terrain.hlsl", "main", "main");
+	smoke       = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/smoke.hlsl", "main", "main");
+	distance    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/distance.hlsl", "main", "main");
+	bitonicSort = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/bitonicSort.hlsl", "main", "main");
+	makeQuads   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/makeQuads.hlsl", "main", "main");		
+	initSmoke   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/initSmoke.hlsl", "main", "main");
+	particles   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/particles.hlsl", "main", "main");
+	skybox      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Sort/skybox.hlsl", "main", "main");
 
 	for (int i = 0; i < 2; i++){
 		// Render targets for sorting

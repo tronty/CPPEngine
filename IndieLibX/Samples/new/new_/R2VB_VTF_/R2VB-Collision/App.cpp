@@ -428,13 +428,13 @@ bool SampleApp::load()
 	//
 	// Load shaders
 	//
-	if ((m_sceneShader				= renderer->addShader( "Scene.shd"            ))		== SHADER_NONE) return false;
-	if ((m_scenewireframeShader		= renderer->addShader( "Scene_wireframe.shd"  ))		== SHADER_NONE) return false;
-	if ((m_overlayShader			= renderer->addShader( "Overlay.shd"          ))		== SHADER_NONE) return false;
-	if ((m_particlesmathShader		= renderer->addShader( "ParticlesMath.shd"    ))		== SHADER_NONE) return false;
-	if ((m_particlesrenderShader	= renderer->addShader( "ParticlesRender.shd"  ))		== SHADER_NONE) return false;
-	if ((m_rayintersectionShader	= renderer->addShader( "RayIntersection.shd"  ))		== SHADER_NONE) return false;
-	if ((m_skyboxShader				= renderer->addShader( "skybox.shd"           ))		== SHADER_NONE) return false;
+	if ((m_sceneShader				= renderer->addShader( "Scene.hlsl"            ))		== SHADER_NONE) return false;
+	if ((m_scenewireframeShader		= renderer->addShader( "Scene_wireframe.hlsl"  ))		== SHADER_NONE) return false;
+	if ((m_overlayShader			= renderer->addShader( "Overlay.hlsl"          ))		== SHADER_NONE) return false;
+	if ((m_particlesmathShader		= renderer->addShader( "ParticlesMath.hlsl"    ))		== SHADER_NONE) return false;
+	if ((m_particlesrenderShader	= renderer->addShader( "ParticlesRender.hlsl"  ))		== SHADER_NONE) return false;
+	if ((m_rayintersectionShader	= renderer->addShader( "RayIntersection.hlsl"  ))		== SHADER_NONE) return false;
+	if ((m_skyboxShader				= renderer->addShader( "skybox.hlsl"           ))		== SHADER_NONE) return false;
 
 	return true;
 }

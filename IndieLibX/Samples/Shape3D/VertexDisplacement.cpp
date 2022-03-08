@@ -51,25 +51,25 @@ int init(const char* aTitle)
 	};
 	{
 	unsigned int i=0;
-	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl1.shd", "main", "main");
+	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl1.hlsl", "main", "main");
 	vfs[i] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[i]);
 	}
 	if(1)
 	{
 	unsigned int i=1;
-	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl2.shd", "main", "main");
+	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl2.hlsl", "main", "main");
 	vfs[i] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[i]);
 	}
 	if(1)
 	{
 	unsigned int i=2;
-	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl3.shd", "main", "main");
+	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl3.hlsl", "main", "main");
 	vfs[i] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[i]);
 	}
 	if(1)
 	{
 	unsigned int i=3;
-	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.shd", "main", "main");
+	shaders[i]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 	vfs[i] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[i]);
 	}
 	return 0;

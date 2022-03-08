@@ -69,9 +69,9 @@ int init(const char* aTitle)
 	pv.push_back(D3DXFROMWINEVECTOR3(p_.x, p_.y, 0.0f));
 	angle = 0.0f*D3DXFROMWINE_PI/180.0f;
 #if defined(USE_HLSL_SHADERS)
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture_.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture_.hlsl", "main", "main");
 #else
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.hlsl", "main", "main");
 #endif
 	FormatDesc format[] =
 	{

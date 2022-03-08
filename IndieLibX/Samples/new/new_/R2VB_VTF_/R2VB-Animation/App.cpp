@@ -530,13 +530,13 @@ bool App::load()
 	if ((model[1].diffuse = renderer->addTexture(TEX_PATH "ruby.dds", FILTER_TRILINEAR_ANISO)) == TEXTURE_NONE) return false;
 	
 	// Load shaders
-	if ((animationSH = renderer->addShader("animation.shd")) == SHADER_NONE) return false;
-	if ((skinningSH = renderer->addShader("skinning.shd")) == SHADER_NONE) return false;
-	if ((modelSH = renderer->addShader("model.shd")) == SHADER_NONE) return false;
-	if ((batchAnimationSH = renderer->addShader("batchAnimation.shd")) == SHADER_NONE) return false;
-	if ((batchSkinningSH = renderer->addShader("batchSkinning.shd")) == SHADER_NONE) return false;
-	if ((batchModelSH = renderer->addShader("batchModel.shd")) == SHADER_NONE) return false;
-	if ((vsModelSH = renderer->addShader("vsModel.shd")) == SHADER_NONE) return false;
+	if ((animationSH = renderer->addShader("animation.hlsl")) == SHADER_NONE) return false;
+	if ((skinningSH = renderer->addShader("skinning.hlsl")) == SHADER_NONE) return false;
+	if ((modelSH = renderer->addShader("model.hlsl")) == SHADER_NONE) return false;
+	if ((batchAnimationSH = renderer->addShader("batchAnimation.hlsl")) == SHADER_NONE) return false;
+	if ((batchSkinningSH = renderer->addShader("batchSkinning.hlsl")) == SHADER_NONE) return false;
+	if ((batchModelSH = renderer->addShader("batchModel.hlsl")) == SHADER_NONE) return false;
+	if ((vsModelSH = renderer->addShader("vsModel.hlsl")) == SHADER_NONE) return false;
 	
 	StreamVertexAttribute quadAttribs[] = { 
 		0, TYPE_VERTEX, FORMAT_FLOAT, 4,

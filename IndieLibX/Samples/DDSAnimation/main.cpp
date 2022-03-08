@@ -91,7 +91,7 @@ public:
 	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", true, ss);
 #endif
 #if 0
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.shd", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.hlsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -99,7 +99,7 @@ public:
 		};
 		vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 #endif
-		shd31 = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.shd", "main3", "main1");
+		shd31 = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.hlsl", "main3", "main1");
 		FormatDesc format3[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -111,7 +111,7 @@ public:
 		};
 		vf31 = IRenderer::GetRendererInstance()->addVertexFormat(format3, elementsOf(format3), shd31);
 
-		shd32 = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.shd", "main3", "main2");
+		shd32 = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.hlsl", "main3", "main2");
 		vf32 = IRenderer::GetRendererInstance()->addVertexFormat(format3, elementsOf(format3), shd32);
 		shd=shd32;
 		vf=vf32;

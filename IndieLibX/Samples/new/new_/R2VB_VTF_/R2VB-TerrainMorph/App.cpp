@@ -47,9 +47,9 @@ bool App::load()
 	if ((R2VB_VBO = ((D3D9Renderer *) renderer)->addRenderTarget(d3drt, FILTER_LINEAR, CLAMP)) == TEXTURE_NONE) return false;
 
 	// Load shaders
-	if ((skybox = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
-	if ((terrain = renderer->addShader("terrain.shd")) == SHADER_NONE) return false;
-	if ((terrainGen = renderer->addShader("terrainGen.shd")) == SHADER_NONE) return false;
+	if ((skybox = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
+	if ((terrain = renderer->addShader("terrain.hlsl")) == SHADER_NONE) return false;
+	if ((terrainGen = renderer->addShader("terrainGen.hlsl")) == SHADER_NONE) return false;
 
 	// Load textures
 	if ((env = renderer->addCubemap(

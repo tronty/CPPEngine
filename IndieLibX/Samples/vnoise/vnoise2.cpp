@@ -12,7 +12,7 @@ TextureID texID[5];
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise2.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise2.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 					0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

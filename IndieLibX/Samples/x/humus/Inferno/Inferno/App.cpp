@@ -35,9 +35,9 @@ void App::exit(){
 
 bool App::load(){
 	// Shaders
-	if ((particleShader = renderer->addShader("particles.shd")) == SHADER_NONE) return false;
-	if ((terrainShader = renderer->addShader("terrain.shd")) == SHADER_NONE) return false;
-	if ((skyboxShader = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
+	if ((particleShader = renderer->addShader("particles.hlsl")) == SHADER_NONE) return false;
+	if ((terrainShader = renderer->addShader("terrain.hlsl")) == SHADER_NONE) return false;
+	if ((skyboxShader = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
 
 	// Samplerstates
 	if ((trilinearClamp = renderer->addSamplerState(TRILINEAR, CLAMP, CLAMP, CLAMP)) == SS_NONE) return false;

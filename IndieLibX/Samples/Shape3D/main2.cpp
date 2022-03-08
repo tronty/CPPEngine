@@ -92,7 +92,7 @@ LOG_FNLN;
 	{
 	vfs[0] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[0]);
 	}
-	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.shd", "main", "main");
+	shaders[1]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 	vfs[1] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);
 	#if 0
 LOG_FNLN;
@@ -101,8 +101,8 @@ LOG_FNLN;
 	vfs[5] = vfs[3];
 	}
 
-	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "RenderParticlesVS", "RenderParticlesDeferredPS");
-	shaders[7]=IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "RenderParticlesVS", "RenderParticlesPS");
+	shaders[6]=IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "RenderParticlesVS", "RenderParticlesDeferredPS");
+	shaders[7]=IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "RenderParticlesVS", "RenderParticlesPS");
 	{
 	FormatDesc format_[] =
 	{
@@ -114,7 +114,7 @@ LOG_FNLN;
 	vfs[6] = IRenderer::GetRendererInstance()->addVertexFormat(format_, elementsOf(format_), shaders[6]);
 	vfs[7] = vfs[6];
 	}
-	shaders[8]=-1;// ??? IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "CompositeParticlesVS", "CompositeParticlesPS");
+	shaders[8]=-1;// ??? IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "CompositeParticlesVS", "CompositeParticlesPS");
 	{
 	vfs[8] = -1;// ??? IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[3]);
 	}

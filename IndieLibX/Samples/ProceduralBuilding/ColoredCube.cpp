@@ -137,7 +137,7 @@ int init(const char* aTitle)
 {
 	stx_Mesh m;
 	mesh_.push_back(m);
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.HLSL.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,     FORMAT_FLOAT, 3,

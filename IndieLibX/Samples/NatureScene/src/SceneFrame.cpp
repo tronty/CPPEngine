@@ -96,12 +96,12 @@ bool SceneFrame::initialize()
   waterTextureHeight = 512;//IRenderer::GetRendererInstance()->GetTextureHeight(waterTextureHeight);
 
   //waterShader.loadXMLSettings("WaterShader.xml");
-  waterShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.shd", "main", "main");
+  waterShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.hlsl", "main", "main");
   waterGroup.IOXMLObject::loadXMLSettings("/NatureScene/Water/WaterGroup.xml");
   waterGroup.compile();
 #endif
   //skyShader.loadXMLSettings("Skyshader.xml");
-  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader.shd", "main", "main");
+  skyShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/SkyShader.hlsl", "main", "main");
   grass = IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Terrain/grasslayer.png", false, IRenderer::GetRendererInstance()->Getlinear());
   grassPack = IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Grass/grassPack.png", false, IRenderer::GetRendererInstance()->GetlinearClamp());
 

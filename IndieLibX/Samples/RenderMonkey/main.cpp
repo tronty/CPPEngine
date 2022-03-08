@@ -58,10 +58,10 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
 		#endif
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/BlueSky.hlsl", "main", "main"));
 		if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/BlueSky.shd\n");
+			printf("/RenderMonkey/BlueSky.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
@@ -74,20 +74,20 @@ int init(const char* aTitle)
 	shaders[2]=-1;
 	vfs[2]=-1;
 	#else
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Explosion.hlsl", "main", "main"));
 		if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/Explosion.shd\n");
+			printf("/RenderMonkey/Explosion.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
 	{
 	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Inferno.hlsl", "main", "main"));
 		if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/Inferno.shd\n");
+			printf("/RenderMonkey/Inferno.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
@@ -95,10 +95,10 @@ int init(const char* aTitle)
 	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 	#endif
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Ocean.hlsl", "main", "main"));
 		if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/Ocean.shd\n");
+			printf("/RenderMonkey/Ocean.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
@@ -106,10 +106,10 @@ int init(const char* aTitle)
 	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
 
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/DarkSky.hlsl", "main", "main"));
 		if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/DarkSky.shd\n");
+			printf("/RenderMonkey/DarkSky.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
@@ -123,20 +123,20 @@ int init(const char* aTitle)
 	shaders[6]=-1;
 	vfs[6]=-1;
 	#else
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/FireBall.hlsl", "main", "main"));
 			if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/FireBall.shd\n");
+			printf("/RenderMonkey/FireBall.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else
 	{
 	vfs.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[shaders.size()-1]));
 	}
-	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.shd", "main", "main"));
+	shaders.push_back(IRenderer::GetRendererInstance()->addShaderFromFile("/RenderMonkey/Lava.hlsl", "main", "main"));
 			if(shaders[shaders.size()-1]==-1)
 		{
-			printf("/RenderMonkey/Lava.shd\n");
+			printf("/RenderMonkey/Lava.hlsl\n");
 			vfs.push_back(-1);
 		}
 		else

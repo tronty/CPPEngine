@@ -86,7 +86,7 @@ class nv_D3D9FullScreenQuad
 	public:
 		nv_D3D9FullScreenQuad()
 		{
-			shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "mainVS", "mainPS");
+			shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
 			FormatDesc format[] =
 			{
 				0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

@@ -18,7 +18,7 @@ VertexFormatID vf=-1;
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Digital_Clock/digital_clock.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Digital_Clock/digital_clock.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2

@@ -121,7 +121,7 @@ bool cParticleEmitter::Create(
   // Load the vertex shader if not already done
   if(-1==m_pShader) {
 
-	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles.shd", "main", "main");
+	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles.hlsl", "main", "main");
 	// Vertex declaration
 	FormatDesc g_VSParticleDecl[] = {
 		0, TYPE_VERTEX, FORMAT_FLOAT, 3,

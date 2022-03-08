@@ -130,8 +130,8 @@ n2=stx_convertpath(name);
   LOG_PRINT("addImageLibTexture:/NatureScene/Terrain/fungus.png:%x\n", fungus);
   LOG_PRINT("addImageLibTexture:/NatureScene/Terrain/watermap.png:%x\n", weight);
 
-  terrainShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/TerrainShader.shd", "main", "main");
-  grassShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/GrassShader.shd", "main", "main");
+  terrainShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/TerrainShader.hlsl", "main", "main");
+  grassShader = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/GrassShader.hlsl", "main", "main");
 
 	//
 	//LOG_PRINT("grassShader = %x\n", grassShader);

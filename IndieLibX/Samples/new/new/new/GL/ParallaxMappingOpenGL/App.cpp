@@ -108,9 +108,9 @@ bool App::load(){
 		}
 
 		static const char *attribs[] = { 0, "textureCoord", "tangent", "binormal", "normal", "lightmapCoord" };
-		if ((shaders[i] = renderer->addShader("parallax.shd", attribs, elementsOf(attribs), str)) == SHADER_NONE) return false;
+		if ((shaders[i] = renderer->addShader("parallax.hlsl", attribs, elementsOf(attribs), str)) == SHADER_NONE) return false;
 	}
-	if ((envShader = renderer->addShader("env.shd")) == SHADER_NONE) return false;
+	if ((envShader = renderer->addShader("env.hlsl")) == SHADER_NONE) return false;
 
 	// Load textures
 	if ((stone = renderer->addTexture(TEX_PATH "StoneWall.dds",  FILTER_TRILINEAR_ANISO)) == TEXTURE_NONE) return false;

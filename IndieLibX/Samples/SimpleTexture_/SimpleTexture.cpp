@@ -13,7 +13,7 @@ int init(const char* aTitle)
 {
 	//XFileParser();
 LOG_FNLN;
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
 LOG_FNLN;
 	FormatDesc format[] =
 	{

@@ -140,7 +140,7 @@ int init(const char* aTitle)
 	vvv.push_back(vv[14]);
 	vvv.push_back(vv[15]);
 		
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.HLSL.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

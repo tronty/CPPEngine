@@ -11,7 +11,7 @@
 //define alternativeshader ePhongLighting1
 //define alternativeshader ePhongLighting2
 //define alternativeshader eper_pixel_fragment_shader
-//define alternativeshader eper_pixel_fragment_shader_no_tex.shd
+//define alternativeshader eper_pixel_fragment_shader_no_tex.hlsl
 //define alternativeshader eper_pixel_fragment_shader_tex_and_light
 
 float AngleX = 0.0f;

@@ -94,15 +94,15 @@ bool load(){
 
 	// Load shaders
 	
-	wave   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/wave.shd", "main", "main");
+	wave   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/wave.hlsl", "main", "main");
 	
-	drop   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/drop.shd", "main", "main");
+	drop   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/drop.hlsl", "main", "main");
 	
-	skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/skybox.shd", "main", "main");
+	skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/skybox.hlsl", "main", "main");
 	
-	water  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/water.shd", "main", "main");
+	water  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/water.hlsl", "main", "main");
 	
-	pool   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/pool.shd", "main", "main");
+	pool   = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Water/pool.hlsl", "main", "main");
 	
 
 	/*

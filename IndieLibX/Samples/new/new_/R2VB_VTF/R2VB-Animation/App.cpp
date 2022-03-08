@@ -665,18 +665,18 @@ bool load()
 	
 	numModels = MAX_NUM_MODELS/4;
 	// Load shaders
-	animationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/animation.shd", "main", "main");
+	animationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/animation.hlsl", "main", "main");
     	if(animationSH==-1) printf("animationSH=%x\n", animationSH);
-	skinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/skinning.shd", "main", "main");
+	skinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/skinning.hlsl", "main", "main");
     	if(skinningSH==-1) printf("skinningSH=%x\n", skinningSH);
-	modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/model.shd", "main", "main");
+	modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/model.hlsl", "main", "main");
     	if(modelSH==-1) printf("modelSH=%x\n", modelSH);
 	//stx_exit(0);
 	#if 0
-	vsModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/vsModel.shd", "main", "main");
-	batchAnimationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchAnimation.shd", "main", "main");
-	batchSkinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchSkinning.shd", "main", "main");
-	batchModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchModel.shd", "main", "main");
+	vsModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/vsModel.hlsl", "main", "main");
+	batchAnimationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchAnimation.hlsl", "main", "main");
+	batchSkinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchSkinning.hlsl", "main", "main");
+	batchModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Animation/batchModel.hlsl", "main", "main");
 	#endif
 
 	// The maximum number of models that can be rendered at one time depends on the maximum size of the texture.

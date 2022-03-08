@@ -7,7 +7,7 @@
 
 const char* filename[] =
 {
-"/new/R2VB_VTF/R2VB-OceanWater/WaterRender2.shd"
+"/new/R2VB_VTF/R2VB-OceanWater/WaterRender2.hlsl"
 };
 
 class _Shape3D

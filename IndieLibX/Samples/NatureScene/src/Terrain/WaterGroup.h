@@ -22,7 +22,7 @@ public:
 	VertexFormatID vf;
 	virtual void init(const char* aTitle="")
 	{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.shd", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/NatureScene/WaterShader.hlsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

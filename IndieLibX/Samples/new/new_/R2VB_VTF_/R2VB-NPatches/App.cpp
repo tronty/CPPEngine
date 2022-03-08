@@ -188,10 +188,10 @@ bool App::load(){
 	changeNPatchLevel(2);
 
 	// Load shaders
-	if ((lighting = renderer->addShader("lighting.shd")) == SHADER_NONE) return false;
-	if ((nPatchLighting = renderer->addShader("lighting.shd", "#define N_PATCHES\n")) == SHADER_NONE) return false;
-	if ((wireframe = renderer->addShader("wireframe.shd")) == SHADER_NONE) return false;
-	if ((nPatch = renderer->addShader("NPatch.shd")) == SHADER_NONE) return false;
+	if ((lighting = renderer->addShader("lighting.hlsl")) == SHADER_NONE) return false;
+	if ((nPatchLighting = renderer->addShader("lighting.hlsl", "#define N_PATCHES\n")) == SHADER_NONE) return false;
+	if ((wireframe = renderer->addShader("wireframe.hlsl")) == SHADER_NONE) return false;
+	if ((nPatch = renderer->addShader("NPatch.hlsl")) == SHADER_NONE) return false;
 
 
 

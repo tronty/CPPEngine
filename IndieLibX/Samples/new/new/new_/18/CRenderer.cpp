@@ -169,7 +169,7 @@ void CRenderer::Initialize()
   //fragmentProfile = cgGetProfile("fp40");
   //fragmentProfile = CG_PROFILE_FP40;
 
-  program=IRenderer::GetRendererInstance()->addEffectFromFile("/new/R2VB_VTF/18/Water.shd");
+  program=IRenderer::GetRendererInstance()->addEffectFromFile("/new/R2VB_VTF/18/Water.hlsl");
 
   for(int k = 0; k < 10; k++) {
     char S[4]; stx_snprintf(S, 4, "c%i", k);

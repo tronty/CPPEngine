@@ -203,11 +203,11 @@ bool load(){
 #endif
 
 	// Shaders
-	if ((genTerrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/generateTerrain.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((genTerrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/generateTerrain.hlsl", "main", "main")) == SHADER_NONE) return false;
 
-	if ((tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/tangentSpace.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((tangentSpace = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/tangentSpace.hlsl", "main", "main")) == SHADER_NONE) return false;
 
-	if ((terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/terrain.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/terrain.hlsl", "main", "main")) == SHADER_NONE) return false;
 
 
 	// Samplerstates
@@ -222,7 +222,7 @@ bool load(){
 	terrainRT = IRenderer::GetRendererInstance()->addRenderTarget(TERRAIN_SIZE, TERRAIN_SIZE, FORMAT_RGBA16F, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 /*
-	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/skybox.shd", "main", "main")) == SHADER_NONE) return false;
+	if ((skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/InfiniteTerrainII/skybox.hlsl", "main", "main")) == SHADER_NONE) return false;
 
 	// Cubemap
 	const char *files[] = {

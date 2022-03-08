@@ -16,11 +16,11 @@ int init(const char* aTitle)
 {
 	STX_FNLN;
 	#if 0
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/InfiniteTerrainII.shd", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/InfiniteTerrainII.hlsl", "mainVS", "mainPS");
 	#elif 0
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/InfiniteTerrainII.shd", "mainTerrainVS", "mainTerrainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/InfiniteTerrainII.hlsl", "mainTerrainVS", "mainTerrainPS");
 	#else
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/www.shadertoy.com/Xyptonjtroz2.shd", "main2", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/www.shadertoy.com/Xyptonjtroz2.hlsl", "main2", "main");
 	#endif
 	STX_FNLN;
 	FormatDesc format[] =

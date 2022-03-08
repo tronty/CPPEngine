@@ -445,7 +445,7 @@ int ApplicationLogic()
 	std::string contents;
 	if(1)
 	{
-		contents =STX_Service::LoadTxtFile("/SimpleTexture/SimpleTexture.shd", contents);
+		contents =STX_Service::LoadTxtFile("/SimpleTexture/SimpleTexture.hlsl", contents);
 		run(contents, "mainVS", "mainPS");
 	}
 	else

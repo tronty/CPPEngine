@@ -146,7 +146,7 @@ TextureID addCubemap(const char **fileNames, const bool useMipMaps, const Sample
 #endif
 
 bool MainApp::load(){
-	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrain/InfiniteTerrain.shd", "main", "main");
+	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/InfiniteTerrain/InfiniteTerrain.hlsl", "main", "main");
 	
 	FormatDesc skyboxFmt[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	

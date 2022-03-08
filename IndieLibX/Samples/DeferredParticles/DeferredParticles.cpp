@@ -465,7 +465,7 @@ VertexFormatID                   g_pVertexLayout = NULL; 3 2 2 4
 VertexFormatID                   g_pScreenQuadLayout = NULL; 3
 VertexFormatID                   g_pMeshLayout = NULL; 3 3 1
 */
-    g_pRenderParticlesDeferredSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "RenderParticlesVS", "RenderParticlesDeferredPS");
+    g_pRenderParticlesDeferredSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "RenderParticlesVS", "RenderParticlesDeferredPS");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -475,17 +475,17 @@ VertexFormatID                   g_pMeshLayout = NULL; 3 3 1
 	};
 	g_pRenderParticlesDeferredVF = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), g_pRenderParticlesDeferredSHD);
 
-	    g_pRenderParticlesSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "RenderParticlesVS", "RenderParticlesPS");
+	    g_pRenderParticlesSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "RenderParticlesVS", "RenderParticlesPS");
 	g_pRenderParticlesVF = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), g_pRenderParticlesSHD);
 
-    g_pCompositeParticlesSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "CompositeParticlesVS", "CompositeParticlesPS");
+    g_pCompositeParticlesSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "CompositeParticlesVS", "CompositeParticlesPS");
 #if 0
 	FormatDesc format3[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3
 	};
 	g_pCompositeParticlesVF = IRenderer::GetRendererInstance()->addVertexFormat(format3, elementsOf(format3), g_pCompositeParticlesSHD);
-    g_pRenderMeshSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "MeshVS", "MeshPS");
+    g_pRenderMeshSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "MeshVS", "MeshPS");
 	FormatDesc format4[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -493,7 +493,7 @@ VertexFormatID                   g_pMeshLayout = NULL; 3 3 1
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 1
 	};
 	g_pRenderMeshVF = IRenderer::GetRendererInstance()->addVertexFormat(format4, elementsOf(format4), g_pRenderMeshSHD);
-    g_pRenderMeshInstSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.shd", "MeshInstVS", "MeshPS");
+    g_pRenderMeshInstSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/DeferredParticles/DeferredParticles.hlsl", "MeshInstVS", "MeshPS");
 	FormatDesc format5[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

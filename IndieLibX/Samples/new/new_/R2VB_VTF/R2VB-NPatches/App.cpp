@@ -100,10 +100,10 @@ bool load(){
 	}
 #endif
 	// Load shaders
-	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/lighting.shd", "main", "main");
-	nPatchLighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/lighting.shd", "main", "main");//, "#define N_PATCHES\n");
-	wireframe = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/wireframe.shd", "main", "main");
-	nPatch = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/NPatch.shd", "main", "main");
+	lighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/lighting.hlsl", "main", "main");
+	nPatchLighting = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/lighting.hlsl", "main", "main");//, "#define N_PATCHES\n");
+	wireframe = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/wireframe.hlsl", "main", "main");
+	nPatch = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-NPatches/NPatch.hlsl", "main", "main");
 
 #if 0
 	// Load the source model

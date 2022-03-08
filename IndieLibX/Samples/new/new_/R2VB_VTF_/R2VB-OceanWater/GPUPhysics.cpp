@@ -23,21 +23,21 @@ GPU_Physics::GPU_Physics(IDirect3DDevice9 *d3dDevice, Renderer *renderer) : Phys
     m_renderer = renderer;
 
     // Load shaders
-    if ((m_HorizontalButterflyShader = m_renderer->addShader("HorizontalButterfly.shd")) == SHADER_NONE)
+    if ((m_HorizontalButterflyShader = m_renderer->addShader("HorizontalButterfly.hlsl")) == SHADER_NONE)
         return;
-    if ((m_VerticalButterflyShader = m_renderer->addShader("VerticalButterfly.shd")) == SHADER_NONE)
+    if ((m_VerticalButterflyShader = m_renderer->addShader("VerticalButterfly.hlsl")) == SHADER_NONE)
         return;
-    if ((m_HorizontalScrambleShader = m_renderer->addShader("HorizontalScramble.shd")) == SHADER_NONE)
+    if ((m_HorizontalScrambleShader = m_renderer->addShader("HorizontalScramble.hlsl")) == SHADER_NONE)
         return;
-    if ((m_VerticalScrambleShader = m_renderer->addShader("VerticalScramble.shd")) == SHADER_NONE)
+    if ((m_VerticalScrambleShader = m_renderer->addShader("VerticalScramble.hlsl")) == SHADER_NONE)
         return;
-    if ((m_ExpandShader = m_renderer->addShader("Expand.shd")) == SHADER_NONE)
+    if ((m_ExpandShader = m_renderer->addShader("Expand.hlsl")) == SHADER_NONE)
         return;
-    if ((m_CopyShader = m_renderer->addShader("Copy.shd")) == SHADER_NONE)
+    if ((m_CopyShader = m_renderer->addShader("Copy.hlsl")) == SHADER_NONE)
         return;
-    if ((m_WaterSpectrumShader = m_renderer->addShader("WaterSpectrum.shd")) == SHADER_NONE)
+    if ((m_WaterSpectrumShader = m_renderer->addShader("WaterSpectrum.hlsl")) == SHADER_NONE)
         return;
-    if ((m_ComputeNormalsShader = m_renderer->addShader("ComputeNormals.shd")) == SHADER_NONE)
+    if ((m_ComputeNormalsShader = m_renderer->addShader("ComputeNormals.hlsl")) == SHADER_NONE)
         return;
 
     // Viewports for the image processing steps
@@ -877,7 +877,7 @@ void GPU_Physics::FillWaterUtilityBuffers(float windSpeed, float windDirection)
         for (j = 0; j < WATER_GRID_RESOLUTION; j++)
         {
             // These are in a weird order in memory because of the ABGR ordering of the float texture
-            // See ps_water_spectrum() in WaterNormalMap.shd for the usage of this map
+            // See ps_water_spectrum() in WaterNormalMap.hlsl for the usage of this map
             *amp++ = c_im(m_LowAmplitude0[WATER_GRID_RESOLUTION-i][WATER_GRID_RESOLUTION-j]);
             *amp++ = c_re(m_LowAmplitude0[WATER_GRID_RESOLUTION-i][WATER_GRID_RESOLUTION-j]);
             *amp++ = c_im(m_LowAmplitude0[i][j]);
@@ -896,7 +896,7 @@ void GPU_Physics::FillWaterUtilityBuffers(float windSpeed, float windDirection)
         for (j = 0; j < HIGH_FREQ_WATER_GRID_RESOLUTION; j++)
         {
             // These are in a weird order in memory because of the ABGR ordering of the float texture
-            // See ps_water_spectrum() in WaterNormalMap.shd for the usage of this map
+            // See ps_water_spectrum() in WaterNormalMap.hlsl for the usage of this map
             *amp++ = c_im(m_HighAmplitude0[HIGH_FREQ_WATER_GRID_RESOLUTION-i][HIGH_FREQ_WATER_GRID_RESOLUTION-j]);
             *amp++ = c_re(m_HighAmplitude0[HIGH_FREQ_WATER_GRID_RESOLUTION-i][HIGH_FREQ_WATER_GRID_RESOLUTION-j]);
             *amp++ = c_im(m_HighAmplitude0[i][j]);

@@ -104,10 +104,10 @@ bool App::load(){
 	#endif
 
 	// Shaders
-	if ((terrain = renderer->addShader("terrain.shd", useR2VB? "#define R2VB\n" : "#define VTF\n")) == SHADER_NONE) return false;
-	if ((genTerrain = renderer->addShader("generateTerrain.shd")) == SHADER_NONE) return false;
-	if ((tangentSpace = renderer->addShader("tangentSpace.shd")) == SHADER_NONE) return false;
-	if ((skyBox = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
+	if ((terrain = renderer->addShader("terrain.hlsl", useR2VB? "#define R2VB\n" : "#define VTF\n")) == SHADER_NONE) return false;
+	if ((genTerrain = renderer->addShader("generateTerrain.hlsl")) == SHADER_NONE) return false;
+	if ((tangentSpace = renderer->addShader("tangentSpace.hlsl")) == SHADER_NONE) return false;
+	if ((skyBox = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
 
 	// Cubemap
 	const char *files[] = {

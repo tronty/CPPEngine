@@ -155,9 +155,9 @@ bool MainApp::load(){
 		return false;
 	}
 
-	if ((terrainShader = renderer->addShader("terrain.shd")) == SHADER_NONE) return false;
-	if ((woodShader = renderer->addShader("wood.shd")) == SHADER_NONE) return false;
-	if ((skyShader = renderer->addShader("sky.shd")) == SHADER_NONE) return false;
+	if ((terrainShader = renderer->addShader("terrain.hlsl")) == SHADER_NONE) return false;
+	if ((woodShader = renderer->addShader("wood.hlsl")) == SHADER_NONE) return false;
+	if ((skyShader = renderer->addShader("sky.hlsl")) == SHADER_NONE) return false;
 
 	setDefaultFont("../Textures/Fonts/Future.font", "../Textures/Fonts/Future.dds");
 

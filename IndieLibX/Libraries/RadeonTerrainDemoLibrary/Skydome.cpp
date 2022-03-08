@@ -196,7 +196,7 @@ int CSkyDome::Init()
 	////LOG_PRINT("m_pSkyVB=%x\n", m_pSkyVB);
 	////LOG_PRINT("m_pGroundVB=%x\n", m_pGroundVB);
 #endif
-	dirtshd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.HLSL.shd", "main", "main");
+	dirtshd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -255,7 +255,7 @@ int CSkyDome::Render()
 	static TextureID texture=-1;
 	if(shd==-1)
 	{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.shd", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

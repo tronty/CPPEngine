@@ -145,7 +145,7 @@ int init(const char* aTitle)
 	shape3D[1].CreateBox(1.0f, 1.0f, 1.0f, eShaderNone);
         shape3D[0].CreateSphere(1.0f, eShaderNone);
 
-	shd=IRenderer::GetRendererInstance()->addShaderFromFile("/NormalMapping/NormalMapping.shd", "main", "main");
+	shd=IRenderer::GetRendererInstance()->addShaderFromFile("/NormalMapping/NormalMapping.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

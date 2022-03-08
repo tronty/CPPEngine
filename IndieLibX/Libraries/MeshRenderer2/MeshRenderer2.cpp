@@ -247,33 +247,33 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eColorShader:
 				if(ColorShader==-1)
 				{
-					ColorShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/ColorShader.HLSL.shd", mainVS, mainFS);
+					ColorShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/ColorShader.hlsl", mainVS, mainFS);
 					ColorVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(formatC, elementsOf(formatC), ColorShader);
 				}
 				break;
 			case eSimpleShader:
 				if(SimpleShader==-1)
 				{
-					SimpleShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.HLSL.shd", mainVS, mainFS);
+					SimpleShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.hlsl", mainVS, mainFS);
 					SimpleVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader);
 				}
 				break;
 			case eAmbientLighting:
 				if(AmbientShader==-1)
 				{
-					AmbientShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/AmbientLighting.HLSL.shd", mainVS, mainFS);
+					AmbientShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/AmbientLighting.hlsl", mainVS, mainFS);
 					AmbientVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), AmbientShader);
 				}
 				break;
 			case eDiffuseLighting:
 				if(DiffuseShader==-1)
 				{
-					DiffuseShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DiffuseLighting.HLSL.shd", mainVS, mainFS);
+					DiffuseShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DiffuseLighting.hlsl", mainVS, mainFS);
 					DiffuseVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), DiffuseShader);
 				}
 				break;
             case e_Lighting:
-					Shader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/_Lighting.HLSL.shd", mainVS, mainFS);
+					Shader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/_Lighting.hlsl", mainVS, mainFS);
 					VertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), Shader);
 				break;
 			case ePhongLighting1:
@@ -281,9 +281,9 @@ int MeshRenderer2::InitShader(tShader aShader_)
 				{
 					////{//LOG_FNLN;}
 					#if 0//def LINUX
-					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.GLSL.shd", mainVS, mainFS);
+					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.glsl", mainVS, mainFS);
 					#else
-					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.HLSL.shd", mainVS, mainFS);
+					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.hlsl", mainVS, mainFS);
 					#endif
 					PhongVertexDeclaration1 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhongShader1);
 				}
@@ -293,9 +293,9 @@ int MeshRenderer2::InitShader(tShader aShader_)
 				{
 					////{//LOG_FNLN;}
 					#if 0//def LINUX
-					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.GLSL.shd", mainVS, mainFS);
+					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.glsl", mainVS, mainFS);
 					#else
-					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.HLSL.shd", mainVS, mainFS);
+					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.hlsl", mainVS, mainFS);
 					#endif
 					PhongVertexDeclaration2 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhongShader2);
 				}
@@ -305,9 +305,9 @@ int MeshRenderer2::InitShader(tShader aShader_)
 				{
 					////{//LOG_FNLN;}
 					#if 0//def LINUX
-					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.GLSL.shd", mainVS, mainFS);
+					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.glsl", mainVS, mainFS);
 					#else
-					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.shd", mainVS, mainFS);
+					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.hlsl", mainVS, mainFS);
 					#endif
 					PhysicalBasedVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhysicalBasedShader);
 				}
@@ -315,28 +315,28 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eDirectionalLighting:
 				if(DirectionalShader==-1)
 				{
-					DirectionalShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DirectionalLighting.HLSL.shd", mainVS, mainFS);
+					DirectionalShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DirectionalLighting.hlsl", mainVS, mainFS);
 					DirectionalVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), DirectionalShader);
 				}
 				break;
 			case eSpotLighting:
 				if(SpotShader==-1)
 				{
-					SpotShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/SpotLighting.HLSL.shd", mainVS, mainFS);
+					SpotShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/SpotLighting.hlsl", mainVS, mainFS);
 					SpotVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SpotShader);
 				}
 				break;
 			case eMultiLighting:
 				if(MultiShader==-1)
 				{
-					MultiShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/MultiLighting.HLSL.shd", mainVS, mainFS);
+					MultiShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/MultiLighting.hlsl", mainVS, mainFS);
 					MultiVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), MultiShader);
 				}
 				break;
 			case eSimpleLighting:
 				if(SimpleShader2==-1)
 				{
-					SimpleShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/glsl_simple_lighting/simple_lighting.shd", mainVS, mainFS);
+					SimpleShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/glsl_simple_lighting/simple_lighting.hlsl", mainVS, mainFS);
 					SimpleVertexDeclaration2 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader2);
 				}
 				break;
@@ -344,8 +344,8 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eSnowShader:
 				if(SnowShader==-1)
 				{
-					SnowShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/SnowAccumulation/Snow.shd", "RenderSceneVS_SM30", "RenderScenePS");
-					//SnowShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/SnowAccumulation/Snow.shd", "RenderSceneVS_NoSnow", "RenderScenePS_NoSnow");
+					SnowShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/SnowAccumulation/Snow.hlsl", "RenderSceneVS_SM30", "RenderScenePS");
+					//SnowShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/SnowAccumulation/Snow.hlsl", "RenderSceneVS_NoSnow", "RenderScenePS_NoSnow");
 					SnowVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SnowShader);
 					ExposureDepthMapTexture=-1;//IRenderer::GetRendererInstance()->addImageLibTexture("/", false, IRenderer::GetRendererInstance()->Getlinear());
 				}
@@ -353,9 +353,9 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eCelShader:
 				if(OutlineShader==-1)
 				{
-					OutlineShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/NVIDIA/outline.shd", "main", "main");
+					OutlineShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/NVIDIA/outline.hlsl", "main", "main");
 					OutlineVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(lineformat, elementsOf(lineformat), OutlineShader);
-					ShadingShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/NVIDIA/shading.shd", "main", "main");
+					ShadingShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/NVIDIA/shading.hlsl", "main", "main");
 					ShadingVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(lineformat, elementsOf(lineformat), ShadingShader);
 					ShadingTexture=IRenderer::GetRendererInstance()->addImageLibTexture("/CelShading/NVIDIA/celshade.png", false, IRenderer::GetRendererInstance()->Getlinear());
 				}
@@ -363,14 +363,14 @@ int MeshRenderer2::InitShader(tShader aShader_)
 			case eCelShader1:
 				if(CelShader1==-1)
 				{
-					CelShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/x/CelShader.shd", "main", "main");
+					CelShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/x/CelShader.hlsl", "main", "main");
 					CelVertexDeclaration1 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), CelShader1);
 				}
 				break;
 			case eCelShader2:
 				if(CelShader2==-1)
 				{
-					CelShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/x/CelShader2.shd", "main", "main");
+					CelShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/CelShading/x/CelShader2.hlsl", "main", "main");
 					CelVertexDeclaration2 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), CelShader2);
 				}
 				break;
@@ -396,7 +396,7 @@ int MeshRenderer2::InitShader(tShader aShader_)
 				if(Shader==-1)
 				{
 					////{//LOG_FNLN;}
-					Shader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.HLSL.shd", mainVS, mainFS);
+					Shader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.hlsl", mainVS, mainFS);
 					VertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), Shader);
 				}
 				break;

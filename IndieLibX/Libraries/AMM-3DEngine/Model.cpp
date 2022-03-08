@@ -59,7 +59,7 @@ VertexFormatID Model::m_vf=-1;
 			m_bBinded=false;
 			if(m_shd==-1)
 			{
-			m_shd=IRenderer::GetRendererInstance()->addShaderFromFile("/AMM-3DEngine/BasicColor.shd", "main", "main");
+			m_shd=IRenderer::GetRendererInstance()->addShaderFromFile("/AMM-3DEngine/BasicColor.hlsl", "main", "main");
 			FormatDesc format[] =
 			{
 				0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

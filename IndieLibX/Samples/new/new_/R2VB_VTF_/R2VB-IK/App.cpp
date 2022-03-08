@@ -297,7 +297,7 @@ bool Target::load(char *name, Renderer* renderer)
 		}		
 	renderer->unlockIndexBuffer(IndexBuffer);
 
-	if ((Shader = renderer->addShader("target.shd")) == SHADER_NONE) return false;
+	if ((Shader = renderer->addShader("target.hlsl")) == SHADER_NONE) return false;
 
 	char FullName[256];	
 	sprintf(FullName, "%s%s", TEX_PATH, pMaterial[0].diffuseMap);
@@ -338,12 +338,12 @@ bool App::load()
 	VertexAttribute quadAttribs[] = { TYPE_VERTEX, FORMAT_FLOAT, 2,
 	                                  TYPE_TEXCOORD, FORMAT_FLOAT, 2};
 	// Load shaders
-	if ((quadShd = renderer->addShader("quad.shd")) == SHADER_NONE) return false;
-	if ((computeTransformMatrixShd = renderer->addShader("computeTransformMatrix.shd")) == SHADER_NONE) return false;	
-	if ((computeCCDShd = renderer->addShader("computeCCD.shd")) == SHADER_NONE) return false;	
-	if ((transformLinkShd = renderer->addShader("transformLink.shd")) == SHADER_NONE) return false;
-	if ((drawLinkShd = renderer->addShader("drawLink.shd")) == SHADER_NONE) return false;
-	if ((generatePivotMatrixShd = renderer->addShader("generatePivotMatrix.shd")) == SHADER_NONE) return false;
+	if ((quadShd = renderer->addShader("quad.hlsl")) == SHADER_NONE) return false;
+	if ((computeTransformMatrixShd = renderer->addShader("computeTransformMatrix.hlsl")) == SHADER_NONE) return false;	
+	if ((computeCCDShd = renderer->addShader("computeCCD.hlsl")) == SHADER_NONE) return false;	
+	if ((transformLinkShd = renderer->addShader("transformLink.hlsl")) == SHADER_NONE) return false;
+	if ((drawLinkShd = renderer->addShader("drawLink.hlsl")) == SHADER_NONE) return false;
+	if ((generatePivotMatrixShd = renderer->addShader("generatePivotMatrix.hlsl")) == SHADER_NONE) return false;
 
 	if ((QuadVF = renderer->addVertexFormat(quadAttribs, elementsOf(quadAttribs))) == VF_NONE) return false;
 

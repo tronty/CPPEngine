@@ -27,10 +27,10 @@ bool SnowSystem::load(LPDIRECT3DDEVICE9 lpdev, Renderer *lprenderer, DWORD maxte
 
 
 	// Load shaders
-	if ((particleShader = renderer->addShader("particle.shd"   )) == SHADER_NONE) return false;
-	if ((physics        = renderer->addShader("physics.shd"    )) == SHADER_NONE) return false;
-	if ((initPhysics    = renderer->addShader("initPhysics.shd")) == SHADER_NONE) return false;
-	if ((makeQuads      = renderer->addShader("makeQuads.shd"  )) == SHADER_NONE) return false;
+	if ((particleShader = renderer->addShader("particle.hlsl"   )) == SHADER_NONE) return false;
+	if ((physics        = renderer->addShader("physics.hlsl"    )) == SHADER_NONE) return false;
+	if ((initPhysics    = renderer->addShader("initPhysics.hlsl")) == SHADER_NONE) return false;
+	if ((makeQuads      = renderer->addShader("makeQuads.hlsl"  )) == SHADER_NONE) return false;
 
 
 	// Load textures

@@ -43,7 +43,7 @@ void yawMatrix(mat4& m, float deg)
 bool Player::load(char *modelname, char *diffuse, DWORD maxtexsize, LPDIRECT3DDEVICE9 lpdev, Renderer *lprenderer, bool debugruntime)
 {
 	R2VBAnimation::load(modelname, diffuse, maxtexsize, lpdev, lprenderer, debugruntime);
-	if ((footprintShader = renderer->addShader("footprint.shd")) == SHADER_NONE) return false;	
+	if ((footprintShader = renderer->addShader("footprint.hlsl")) == SHADER_NONE) return false;	
 
 	setRange(51.0f, 76.0f);
 	setTime(51.0f);
@@ -224,10 +224,10 @@ bool App::createTerrain(char *heightmap)
 	                                  TYPE_TEXCOORD, FORMAT_FLOAT, 2};
 	if ((terrain.QuadVF = renderer->addVertexFormat(quadAttribs, elementsOf(quadAttribs))) == VF_NONE) return false;
 	// load shaders
-	if ((terrain.generateHeightShd = renderer->addShader("generateHeight.shd")) == SHADER_NONE) return false;
-	if ((terrain.accumulateHeightShd = renderer->addShader("accumulateHeight.shd")) == SHADER_NONE) return false;
-	if ((terrain.deformShd = renderer->addShader("deformShd.shd")) == SHADER_NONE) return false;
-	if ((terrain.blurShd = renderer->addShader("blur.shd")) == SHADER_NONE) return false;
+	if ((terrain.generateHeightShd = renderer->addShader("generateHeight.hlsl")) == SHADER_NONE) return false;
+	if ((terrain.accumulateHeightShd = renderer->addShader("accumulateHeight.hlsl")) == SHADER_NONE) return false;
+	if ((terrain.deformShd = renderer->addShader("deformShd.hlsl")) == SHADER_NONE) return false;
+	if ((terrain.blurShd = renderer->addShader("blur.hlsl")) == SHADER_NONE) return false;
 
 	return true;
 }
@@ -243,9 +243,9 @@ bool App::load()
 	}
 
 	// Load shaders
-	if ((skybox = renderer->addShader("skybox.shd")) == SHADER_NONE) return false;
-	if ((terrainSH  = renderer->addShader("terrain.shd" )) == SHADER_NONE) return false;
-	if ((dumpShd = renderer->addShader("DumpTexture.shd")) == SHADER_NONE) return false;
+	if ((skybox = renderer->addShader("skybox.hlsl")) == SHADER_NONE) return false;
+	if ((terrainSH  = renderer->addShader("terrain.hlsl" )) == SHADER_NONE) return false;
+	if ((dumpShd = renderer->addShader("DumpTexture.hlsl")) == SHADER_NONE) return false;
 	
 
 	// Load skybox

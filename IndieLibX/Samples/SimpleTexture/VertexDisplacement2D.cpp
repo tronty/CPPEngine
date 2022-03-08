@@ -29,7 +29,7 @@ int init(const char* aTitle)
 	STXGUI::init("/MeshRenderer2/GUILayout4.xml");
 
 	unsigned int i=0;
-	shd=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl2D.shd", "main", "main");
+	shd=IRenderer::GetRendererInstance()->addShaderFromFile("/VertexDisplacement/hlsl2D.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

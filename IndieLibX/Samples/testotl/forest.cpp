@@ -82,12 +82,12 @@ int init(const char* aTitle)
 	}
 
 #if 0
-  shdleaves = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/leaves.shd", "main", "main");
-  shdnmap = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/nmap.shd", "main", "main");
-  shdnormals = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/normals.shd", "main", "main");
-  shdparallax = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.shd", "main", "main");
+  shdleaves = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/leaves.hlsl", "main", "main");
+  shdnmap = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/nmap.hlsl", "main", "main");
+  shdnormals = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/normals.hlsl", "main", "main");
+  shdparallax = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/parallax.hlsl", "main", "main");
 #elif 1
-  shd = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/shd.shd", "main", "main");
+  shd = IRenderer::GetRendererInstance()->addShaderFromFile("/otldata/shaders/shd.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

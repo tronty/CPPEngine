@@ -69,13 +69,13 @@ bool load(){
 	bool supportsHalf = false;// IRenderer::GetRendererInstance()->supportsHalf();
 
 	// Load shaders
-	particleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/particle.shd", "main", "main");
-	physics        = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/physics.shd", "main", "main");
-	initPhysics    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/initPhysics.shd", "main", "main");
-	//skybox         = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/skybox.shd", "main", "main");
+	particleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/particle.hlsl", "main", "main");
+	physics        = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/physics.hlsl", "main", "main");
+	initPhysics    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/initPhysics.hlsl", "main", "main");
+	//skybox         = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/skybox.hlsl", "main", "main");
 	
-	floorShader    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/floor.shd", "main", "main");
-	makeQuads      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/makeQuads.shd", "main", "main");
+	floorShader    = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/floor.hlsl", "main", "main");
+	makeQuads      = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ParticleSystem/makeQuads.hlsl", "main", "main");
 
 	// Load vertex attributes
 	FormatDesc particleAttribs[] = {

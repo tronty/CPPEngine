@@ -199,42 +199,42 @@ bool R2VBAnimation::loadBoneAnimationMap(char* name)
 bool R2VBAnimation::load(char *modelname, char *diffuse, __DWORD__ maxtexsize, bool debugruntime, const char* aPath) 
 {
 /*
-tronty@tronty-OMEN-by-HP-Desktop-PC-880-p1xx:~/IndieLibX_02.11.2020_21.00.00/IndieLib_resources$ find . -name skinning.shd
-./new/R2VB_VTF/R2VB-Footprint/skinning.shd
-./new/R2VB_VTF/R2VB-ShadowVolume/skinning.shd
-./new/R2VB_VTF/R2VB-Animation/skinning.shd
-./new/R2VB_VTF/R2VB-Footprint/model.shd
-./new/R2VB_VTF/R2VB-ShadowVolume/model.shd
-./new/R2VB_VTF/R2VB-Animation/model.shd
-./new/R2VB_VTF/R2VB-Footprint/animation.shd
-./new/R2VB_VTF/R2VB-ShadowVolume/animation.shd
-./new/R2VB_VTF/R2VB-Animation/animation.shd
+tronty@tronty-OMEN-by-HP-Desktop-PC-880-p1xx:~/IndieLibX_02.11.2020_21.00.00/IndieLib_resources$ find . -name skinning.hlsl
+./new/R2VB_VTF/R2VB-Footprint/skinning.hlsl
+./new/R2VB_VTF/R2VB-ShadowVolume/skinning.hlsl
+./new/R2VB_VTF/R2VB-Animation/skinning.hlsl
+./new/R2VB_VTF/R2VB-Footprint/model.hlsl
+./new/R2VB_VTF/R2VB-ShadowVolume/model.hlsl
+./new/R2VB_VTF/R2VB-Animation/model.hlsl
+./new/R2VB_VTF/R2VB-Footprint/animation.hlsl
+./new/R2VB_VTF/R2VB-ShadowVolume/animation.hlsl
+./new/R2VB_VTF/R2VB-Animation/animation.hlsl
 
-File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/animation.shd does not exist!
-File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/skinning.shd does not exist!
-File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/model.shd does not exist!
-File ../../IndieLib_resources/particle.shd does not exist!
-File ../../IndieLib_resources/physics.shd does not exist!
-File ../../IndieLib_resources/initPhysics.shd does not exist!
-File ../../IndieLib_resources/makeQuads.shd does not exist!
+File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/animation.hlsl does not exist!
+File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/skinning.hlsl does not exist!
+File ../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/model.hlsl does not exist!
+File ../../IndieLib_resources/particle.hlsl does not exist!
+File ../../IndieLib_resources/physics.hlsl does not exist!
+File ../../IndieLib_resources/initPhysics.hlsl does not exist!
+File ../../IndieLib_resources/makeQuads.hlsl does not exist!
 File ../../IndieLib_resources/article.dds does not exist!
 File ../../IndieLib_resources/article.dds does not exist!
 
 if (!player.load("/new/R2VB_VTF/R2VB/boy03/boy03", "boy03.dds",
 
-!stx_fileExists(../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/skinning.shd)
-		   ../IndieLib_resources/new/R2VB_VTF/R2VB-Animation/skinning.shd
+!stx_fileExists(../../IndieLib_resources/new/R2VB_VTF/R2VB-/new/R2VB_VTF/R2VB/boy03/boy03/skinning.hlsl)
+		   ../IndieLib_resources/new/R2VB_VTF/R2VB-Animation/skinning.hlsl
 */
 	char buf[256];
-	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/animation.shd", modelname);
+	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/animation.hlsl", modelname);
 STX_PRINT("R2VBAnimation::load:\n");
 STX_PRINT("addShaderFromFile:%s\n", buf);
 	// Load shaders
 	animationSH = IRenderer::GetRendererInstance()->addShaderFromFile(buf, "main", "main");
-	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/skinning.shd", modelname);
+	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/skinning.hlsl", modelname);
 STX_PRINT("addShaderFromFile:%s\n", buf);
 	skinningSH = IRenderer::GetRendererInstance()->addShaderFromFile(buf, "main", "main");
-	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/model.shd", modelname);
+	stx_snprintf(buf, 256, "/new/R2VB_VTF/R2VB-%s/model.hlsl", modelname);
 STX_PRINT("addShaderFromFile:%s\n", buf);
 	modelSH = IRenderer::GetRendererInstance()->addShaderFromFile(buf, "main", "main");
 

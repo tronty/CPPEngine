@@ -302,9 +302,9 @@ bool App::load()
     pD3D->Release();
 
     // Load shaders
-    if ((m_waterRenderShader = renderer->addShader("WaterRender.shd")) == SHADER_NONE) 
+    if ((m_waterRenderShader = renderer->addShader("WaterRender.hlsl")) == SHADER_NONE) 
         return false;
-    if ((m_skyboxShader = renderer->addShader("skybox.shd")) == SHADER_NONE) 
+    if ((m_skyboxShader = renderer->addShader("skybox.hlsl")) == SHADER_NONE) 
         return false;
 
     // Load Textures

@@ -343,7 +343,7 @@ int init(const char* aTitle)
         dwOffset += 4;
     }
 
-	m_pTreeSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/Billboard/billboard.shd", "main", "main");
+	m_pTreeSHD = IRenderer::GetRendererInstance()->addShaderFromFile("/Billboard/billboard.hlsl", "main", "main");
 
 	FormatDesc format[] =
 	{
@@ -369,7 +369,7 @@ int init(const char* aTitle)
          }
     #else
     {
-    shdT = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.HLSL.shd", "main", "main");
+    shdT = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main", "main");
   FormatDesc format[] =
       {
         0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

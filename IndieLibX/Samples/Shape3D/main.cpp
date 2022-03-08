@@ -64,7 +64,7 @@ int init(const char* aTitle)
 	tileTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, ss);
     windowTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
 
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.shd", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 	FormatDesc fmt[] = { 
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,

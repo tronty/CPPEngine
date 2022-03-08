@@ -296,17 +296,17 @@ bool loadBoneAnimationMap(char* name)
 bool createPlayer(char *modelname, char *skinname, char *animation)
 {
 	// Load shaders
-	model.animationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/animation.shd", "main", "main");
+	model.animationSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/animation.hlsl", "main", "main");
 	{FormatDesc modelVertexAttribs[] = {
 		1, TYPE_VERTEX,   R2VB_VERTEX_FORMAT, 4,
 		0, TYPE_TEXCOORD, R2VB_TEXCOORD_FORMAT, 2,
 	};
 	model.animationVF = IRenderer::GetRendererInstance()->addVertexFormat(modelVertexAttribs, elementsOf(modelVertexAttribs), model.animationSH);}	
-	model.skinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/skinning.shd", "main", "main");
-	model.modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/model.shd", "main", "main");
-	model.ambientModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/model_ambient.shd", "main", "main");
-	model.calculateNormalSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/normal.shd", "main", "main");
-	model.shadowVolumeSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/ShadowVolume.shd", "main", "main");
+	model.skinningSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/skinning.hlsl", "main", "main");
+	model.modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/model.hlsl", "main", "main");
+	model.ambientModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/model_ambient.hlsl", "main", "main");
+	model.calculateNormalSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/normal.hlsl", "main", "main");
+	model.shadowVolumeSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/ShadowVolume.hlsl", "main", "main");
 
 	FILE	*fp;
 	D3DXFROMWINEVECTOR2	*lpUVList;
@@ -645,7 +645,7 @@ bool load()
 	// Load textures
 	#if 0
 	// Load shaders
-	if ((skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/skybox.shd")) == SHADER_NONE) return false;
+	if ((skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/skybox.hlsl")) == SHADER_NONE) return false;
 	env = IRenderer::GetRendererInstance()->addCubemap("Mountains", "jpg");
 
 	FormatDesc skyboxAttribs[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
@@ -1096,8 +1096,8 @@ int ApplicationLogic()
 bool Floor::load(char *name)
 {
 	// load shaders for this model
-	if ((modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/floor.shd")) == SHADER_NONE) return false;
-	if ((ambientModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/floor_ambient.shd")) == SHADER_NONE) return false;
+	if ((modelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/floor.hlsl")) == SHADER_NONE) return false;
+	if ((ambientModelSH = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-ShadowVolume/floor_ambient.hlsl")) == SHADER_NONE) return false;
 	ATIModel::load(name);
 	FormatDesc modelVertexAttribs[] = {
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

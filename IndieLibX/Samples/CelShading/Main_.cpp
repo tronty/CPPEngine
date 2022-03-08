@@ -119,8 +119,8 @@ bool MainApp::load(){
 
 	setDefaultFont("../Textures/Fonts/Future.font", "../Textures/Fonts/Future.dds");
 
-	if ((shading = renderer->addShader("shading.shd")) == SHADER_NONE) return false;
-	if ((outline = renderer->addShader("outline.shd")) == SHADER_NONE) return false;
+	if ((shading = renderer->addShader("shading.hlsl")) == SHADER_NONE) return false;
+	if ((outline = renderer->addShader("outline.hlsl")) == SHADER_NONE) return false;
 
 	if ((celShade = renderer->addTexture("../Textures/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
 

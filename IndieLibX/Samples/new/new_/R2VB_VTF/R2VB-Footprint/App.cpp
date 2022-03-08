@@ -68,7 +68,7 @@ typedef struct {
 bool Player::load(char *modelname, char *diffuse, __DWORD__ maxtexsize, bool debugruntime)
 {
 	R2VBAnimation::load(modelname, diffuse, maxtexsize, debugruntime, "/new/R2VB_VTF/R2VB-Footprint");
-	footprintShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/footprint.shd", "main", "main");
+	footprintShader = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/footprint.hlsl", "main", "main");
 	
 	bool supportsHalf = false;// IRenderer::GetRendererInstance()->supportsHalf();
 	const FormatDesc fdesc[] = {
@@ -193,10 +193,10 @@ void resetTerrain()
 bool createTerrain(char *heightmap)
 {
 	// load shaders
-	terrain.generateHeightShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/generateHeight.shd", "main", "main");
-	terrain.accumulateHeightShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/accumulateHeight.shd", "main", "main");
-	terrain.deformShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/deformShd.shd", "main", "main");
-	terrain.blurShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/blur.shd", "main", "main");
+	terrain.generateHeightShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/generateHeight.hlsl", "main", "main");
+	terrain.accumulateHeightShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/accumulateHeight.hlsl", "main", "main");
+	terrain.deformShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/deformShd.hlsl", "main", "main");
+	terrain.blurShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/blur.hlsl", "main", "main");
 
 	{FormatDesc vertexAttribs[] = {
 		0, TYPE_VERTEX,		FORMAT_FLOAT, 2,
@@ -294,9 +294,9 @@ bool createTerrain(char *heightmap)
 bool load()
 {
 	// Load shaders
-	//skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/skybox.shd", "main", "main");
-	terrainSH  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/terrain.shd", "main", "main");
-	dumpShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/DumpTexture.shd", "main", "main");
+	//skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/skybox.hlsl", "main", "main");
+	terrainSH  = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/terrain.hlsl", "main", "main");
+	dumpShd = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-Footprint/DumpTexture.hlsl", "main", "main");
 
 	{FormatDesc vertexAttribs[] = {
 		0, TYPE_VERTEX,		FORMAT_FLOAT, 4,

@@ -32,7 +32,7 @@ public:
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/Effect.shd", "main1", "main1");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/Effect.hlsl", "main1", "main1");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

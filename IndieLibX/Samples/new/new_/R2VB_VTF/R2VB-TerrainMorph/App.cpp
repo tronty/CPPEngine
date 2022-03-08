@@ -60,9 +60,9 @@ bool load()
 {
 
 	// Load shaders
-	skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/skybox.shd", "main", "main");
-	terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/terrain.shd", "main", "main");
-	terrainGen = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/terrainGen.shd", "main", "main");
+	skybox = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/skybox.hlsl", "main", "main");
+	terrain = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/terrain.hlsl", "main", "main");
+	terrainGen = IRenderer::GetRendererInstance()->addShaderFromFile("/new/R2VB_VTF/R2VB-TerrainMorph/terrainGen.hlsl", "main", "main");
 	/*
 		Create render targets for the final terrain.
 		Since this render target will be used as vertex buffers we need to

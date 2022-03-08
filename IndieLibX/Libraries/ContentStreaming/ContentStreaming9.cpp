@@ -136,14 +136,14 @@ HRESULT CALLBACK OnCreateDevice(
 
     // Read the D3DX effect file
     CHAR str[MAX_PATH];
-    ( FindSDKMediaFileCch( str, MAX_PATH, "ContentStreaming.shd" ) );
+    ( FindSDKMediaFileCch( str, MAX_PATH, "ContentStreaming.hlsl" ) );
     //( D3DXCreateEffectFromFile( pd3dDevice, str, NULL, NULL, D3DXFX_NOT_CLONEABLE,// | D3DXFX_LARGEADDRESSAWARE,
 	//				NULL, &g_pEffect9, NULL ) );
 	OutputDebugString("\n");
 	OutputDebugString(str);
 	OutputDebugString("\n");
-	//strcpy(str,"c:\\DX10\\DX10\\FrameworkHLSLCg3\\Samples\\Uusi kansio\\ContentStreaming9\\ContentStreaming.shd");
-	strcpy(str,"ContentStreaming.shd");
+	//strcpy(str,"c:\\DX10\\DX10\\FrameworkHLSLCg3\\Samples\\Uusi kansio\\ContentStreaming9\\ContentStreaming.hlsl");
+	strcpy(str,"ContentStreaming.hlsl");
 	g_hRenderTileDiff = g_pApp->m_pRenderer->addShaderFromFile(str, "VSBasic", "PSTerrain",ASSEMBLY);
     g_hRenderTileBump = g_pApp->m_pRenderer->addShaderFromFile(str, "VSBasic", "PSTerrainBump",ASSEMBLY);
     g_hRenderTileWire = g_pApp->m_pRenderer->addShaderFromFile(str, "VSBasic", "PSTerrain",ASSEMBLY);

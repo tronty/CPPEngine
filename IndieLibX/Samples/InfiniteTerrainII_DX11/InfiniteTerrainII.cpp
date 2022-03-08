@@ -113,10 +113,10 @@ bool load(){
 	#endif
 
 	// Shaders
-	if ((terrain = g_pRenderer11->addShader("terrain.shd", useR2VB? "#define R2VB\n" : "#define VTF\n")) == SHADER_NONE) return false;
-	if ((genTerrain = g_pRenderer11->addShader("generateTerrain.shd")) == SHADER_NONE) return false;
-	if ((tangentSpace = g_pRenderer11->addShader("tangentSpace.shd")) == SHADER_NONE) return false;
-	if ((skyBox = g_pRenderer11->addShader("skybox.shd")) == SHADER_NONE) return false;
+	if ((terrain = g_pRenderer11->addShader("terrain.hlsl", useR2VB? "#define R2VB\n" : "#define VTF\n")) == SHADER_NONE) return false;
+	if ((genTerrain = g_pRenderer11->addShader("generateTerrain.hlsl")) == SHADER_NONE) return false;
+	if ((tangentSpace = g_pRenderer11->addShader("tangentSpace.hlsl")) == SHADER_NONE) return false;
+	if ((skyBox = g_pRenderer11->addShader("skybox.hlsl")) == SHADER_NONE) return false;
 
 	// Cubemap
 	const char *files[] = {

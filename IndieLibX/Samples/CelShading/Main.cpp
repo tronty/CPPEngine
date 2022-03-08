@@ -146,8 +146,8 @@ bool init(){
 
 bool load(){
 
-	if ((shading = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/shading.shd")) == SHADER_NONE) return false;
-	if ((outline = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/outline.shd")) == SHADER_NONE) return false;
+	if ((shading = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/shading.hlsl")) == SHADER_NONE) return false;
+	if ((outline = IRenderer::GetRendererInstance()->addShaderFromFile("/CelShading/NVIDIA/outline.hlsl")) == SHADER_NONE) return false;
 
 	if ((celShade = IRenderer::GetRendererInstance()->addTexture("/CelShading/NVIDIA/celshade.tga", TEX_CLAMP | TEX_1D)) == TEXTURE_NONE) return false;
 

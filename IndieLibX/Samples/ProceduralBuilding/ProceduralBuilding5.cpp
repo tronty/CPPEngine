@@ -40,7 +40,7 @@ int init(const char* aTitle)
 	D3DXFROMWINEMatrixPerspectiveFovLH(&mvp, D3DXFROMWINE_PI / 2.0f, float(IRenderer::GetRendererInstance()->GetViewportWidth())/float(IRenderer::GetRendererInstance()->GetViewportHeight()), 0.001f, 1200000.0f);
 
 	#if 0
-	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.shd", "main", "main");
+	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.hlsl", "main", "main");
 	FormatDesc skyboxFmt[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	skyboxVF = IRenderer::GetRendererInstance()->addVertexFormat(skyboxFmt, elementsOf(skyboxFmt), skyBox);
 	env = IRenderer::GetRendererInstance()->addCubemap("Olympus", "jpg");
