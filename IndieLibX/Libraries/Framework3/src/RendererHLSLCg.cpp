@@ -6639,8 +6639,14 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 
 		printf("\nfsMain:\n%s\n", fsMain);
 #endif
+#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+			RendererGLES2* rendererGLES2=0;
+			rendererGLES2=(RendererGLES2*) this;
+			res=rendererGLES2->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        "main", 0, fsMain_, 0, 0, 0, flags);
+#else
 			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-#if 1
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			res=rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
