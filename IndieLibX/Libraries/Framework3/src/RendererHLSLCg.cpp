@@ -6644,7 +6644,16 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float   time;\n"
 				"};\n"
 				"varying vec2 xlv_TEXCOORD0;\n"
-				"#define mainImage main\n");
+				"#define mainImage main\n"
+				"//uniform sampler2D iChannel0;\n"
+				"//uniform sampler2D iChannel1;\n"
+				"//uniform sampler2D iChannel2;\n"
+				"//uniform sampler2D iChannel3;\n"
+				"//uniform sampler2D iChannel4;\n"
+				"//uniform sampler2D iChannel5;\n"
+				"//uniform sampler2D iChannel6;\n"
+				"//uniform sampler2D iChannel7;\n"
+				);
 		if(std::string::npos!=foundGLSL)
 			fsStr2.append(shaderText.c_str()+6);
 		else
@@ -6761,7 +6770,15 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float3  resolution;\n"
 				"    float   time;\n"
 				"};\n"
-				"#define mainImage main\n");
+				"#define mainImage main\n"
+				"//sampler2D iChannel0;\n"
+				"//sampler2D iChannel1;\n"
+				"//sampler2D iChannel2;\n"
+				"//sampler2D iChannel3;\n"
+				"//sampler2D iChannel4;\n"
+				"//sampler2D iChannel5;\n"
+				"//sampler2D iChannel6;\n"
+				"//sampler2D iChannel7;\n");
 		if(std::string::npos!=foundHLSL)
 			fsStr2.append(shaderText.c_str()+6);
 		else

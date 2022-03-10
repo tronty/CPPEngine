@@ -20,7 +20,7 @@ VertexFormatID vf=-1;
 int init(const char* aTitle)
 {
 	STX_FNLN;
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/www.shadertoy.com/Road01.hlsl", "main2", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/shd/www.shadertoy.com/Road01.hlsl", "main2", "main");
 	STX_FNLN;
 	FormatDesc format[] =
 	{

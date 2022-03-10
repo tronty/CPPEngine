@@ -7,7 +7,7 @@
 
 const char* filename[] =
 {
-"/www.shadertoy.com/Voxel_Corridor2.hlsl"
+"/shd/www.shadertoy.com/Voxel_Corridor2.hlsl"
 };
 
 MeshRenderer2 shape3D[3];
@@ -24,7 +24,7 @@ int init(const char* aTitle)
 {
 	LOG_FNLN;
 	#if 0
-	//stx_InitShape3D("/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
+	//stx_InitShape3D("/shd/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
 	shape3D[0].CreateTexturedQuad(2.0f, 2.0f, eShaderNone);
         shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
         shape3D[2].CreateSphere(1.0f, eShaderNone);
@@ -75,9 +75,9 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB-Sort/FirePalette.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/Spectrum.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#elif 0
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#elif 1
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));

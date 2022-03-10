@@ -21,7 +21,7 @@ int init(const char* aTitle)
 {
 	STX_FNLN;
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile(
-"/glslsandbox.com/e#79415.0.glsl",
+"/shd/glslsandbox.com/e#79415.0.glsl",
 "main2", "main");
 	STX_FNLN;
 	FormatDesc format[] =

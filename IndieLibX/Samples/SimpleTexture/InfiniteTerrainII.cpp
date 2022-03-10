@@ -20,7 +20,7 @@ int init(const char* aTitle)
 	#elif 0
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/InfiniteTerrainII.hlsl", "mainTerrainVS", "mainTerrainPS");
 	#else
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/www.shadertoy.com/Xyptonjtroz2.hlsl", "main2", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/shd/www.shadertoy.com/Xyptonjtroz2.hlsl", "main2", "main");
 	#endif
 	STX_FNLN;
 	FormatDesc format[] =

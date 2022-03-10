@@ -8,78 +8,78 @@
 #if 0
 const char* filename[] =
 {
-"/glslsandbox.com/shd/e#75737.0.glsl",
-"/glslsandbox.com/shd/e#79313.0.glsl",
-"/www.shadertoy.com/shd/2D_Clouds.glsl",
-//"/www.shadertoy.com/shd/2D_noise_on_a_Fibonacci_sphere.shd",
-//"/www.shadertoy.com/shd/5_0_fbm.shd",
-"/www.shadertoy.com/shd/AlienBeacon.glsl",
-//"/www.shadertoy.com/shd/anatomyofanexplosion.glsl",
-//"/www.shadertoy.com/shd/Chaos_Game_Sierpinsky_Triangle.glsl",
-//"/www.shadertoy.com/shd/Clock_by_Vicking.shd",
-//"/www.shadertoy.com/shd/Clouds.shd",
-"/www.shadertoy.com/shd/Commodore_64.glsl",
-"/www.shadertoy.com/shd/Desert_biome.glsl",
-"/www.shadertoy.com/shd/Desert_mountains.glsl",
-"/www.shadertoy.com/shd/Desert_mountains_v2.glsl",
-"/www.shadertoy.com/shd/dustynebula1.glsl",
+"/shd/glslsandbox.com/shd/e#75737.0.glsl",
+"/shd/glslsandbox.com/shd/e#79313.0.glsl",
+"/shd/www.shadertoy.com/shd/2D_Clouds.glsl",
+//"/shd/www.shadertoy.com/shd/2D_noise_on_a_Fibonacci_sphere.shd",
+//"/shd/www.shadertoy.com/shd/5_0_fbm.shd",
+"/shd/www.shadertoy.com/shd/AlienBeacon.glsl",
+//"/shd/www.shadertoy.com/shd/anatomyofanexplosion.glsl",
+//"/shd/www.shadertoy.com/shd/Chaos_Game_Sierpinsky_Triangle.glsl",
+//"/shd/www.shadertoy.com/shd/Clock_by_Vicking.shd",
+//"/shd/www.shadertoy.com/shd/Clouds.shd",
+"/shd/www.shadertoy.com/shd/Commodore_64.glsl",
+"/shd/www.shadertoy.com/shd/Desert_biome.glsl",
+"/shd/www.shadertoy.com/shd/Desert_mountains.glsl",
+"/shd/www.shadertoy.com/shd/Desert_mountains_v2.glsl",
+"/shd/www.shadertoy.com/shd/dustynebula1.glsl",
 #if 0
-"/www.shadertoy.com/shd/ED-209.shd",
-"/www.shadertoy.com/shd/EmissionClouds.shd",
-"/www.shadertoy.com/shd/Even_faster_procedural_ocean.shd",
-"/www.shadertoy.com/shd/explosioneffect.shd",
-"/www.shadertoy.com/shd/explosionno13.shd",
-"/www.shadertoy.com/shd/Flamethrower.shd",
-"/www.shadertoy.com/shd/Fork_Islands_in_Arrangemon_275.shd",
-"/www.shadertoy.com/shd/gasexplosion.shd",
-"/www.shadertoy.com/shd/Hashscape.shd",
-"/www.shadertoy.com/shd/HashwithoutSine.shd",
-"/www.shadertoy.com/shd/Himalayas.shd",
-"/www.shadertoy.com/shd/Islands_in_wavy_shallow_water.shd",
-"/www.shadertoy.com/shd/Lindenmayer_Systems.shd",
-"/www.shadertoy.com/shd/Load_Custom_Textures.shd",
-"/www.shadertoy.com/shd/Logistic_Map_Complex.shd",
-"/www.shadertoy.com/shd/Menger_Sponge.shd",
-"/www.shadertoy.com/shd/Mountains.shd",
-"/www.shadertoy.com/shd/Oceanic.shd",
-"/www.shadertoy.com/shd/OCEAN_SURFACE_NOISE_FBM.shd",
-"/www.shadertoy.com/shd/OceanView.shd",
-"/www.shadertoy.com/shd/Patched_Fibonacci_sphere_mapping.shd",
-"/www.shadertoy.com/shd/Protoplanet.shd",
-"/www.shadertoy.com/shd/Ray_Marching_Part_3.shd",
-"/www.shadertoy.com/shd/Ray_Marching_Part_4.shd",
-"/www.shadertoy.com/shd/Ray_Marching_Part_5.shd",
-"/www.shadertoy.com/shd/Ray_Marching_Part_6.shd",
-"/www.shadertoy.com/shd/Raymarching_Primitives.shd",
-"/www.shadertoy.com/shd/Ray_Marching_Tutorial_01.shd",
-"/www.shadertoy.com/shd/Red_Sun_(flow_noise_demo).shd",
-"/www.shadertoy.com/shd/Sandstone_canyons.shd",
-"/www.shadertoy.com/shd/Seacape_original.shd",
-"/www.shadertoy.com/shd/Seascape_Clubber_VJ_version.shd",
-"/www.shadertoy.com/shd/Seascape_Documented.shd",
-"/www.shadertoy.com/shd/Seascape.shd",
-"/www.shadertoy.com/shd/sierpinski_triangle_(default).shd",
-"/www.shadertoy.com/shd/Simplicity_Galaxy.shd",
-"/www.shadertoy.com/shd/SpaceElevator.shd",
-"/www.shadertoy.com/shd/Stormy_night.shd",
+"/shd/www.shadertoy.com/shd/ED-209.shd",
+"/shd/www.shadertoy.com/shd/EmissionClouds.shd",
+"/shd/www.shadertoy.com/shd/Even_faster_procedural_ocean.shd",
+"/shd/www.shadertoy.com/shd/explosioneffect.shd",
+"/shd/www.shadertoy.com/shd/explosionno13.shd",
+"/shd/www.shadertoy.com/shd/Flamethrower.shd",
+"/shd/www.shadertoy.com/shd/Fork_Islands_in_Arrangemon_275.shd",
+"/shd/www.shadertoy.com/shd/gasexplosion.shd",
+"/shd/www.shadertoy.com/shd/Hashscape.shd",
+"/shd/www.shadertoy.com/shd/HashwithoutSine.shd",
+"/shd/www.shadertoy.com/shd/Himalayas.shd",
+"/shd/www.shadertoy.com/shd/Islands_in_wavy_shallow_water.shd",
+"/shd/www.shadertoy.com/shd/Lindenmayer_Systems.shd",
+"/shd/www.shadertoy.com/shd/Load_Custom_Textures.shd",
+"/shd/www.shadertoy.com/shd/Logistic_Map_Complex.shd",
+"/shd/www.shadertoy.com/shd/Menger_Sponge.shd",
+"/shd/www.shadertoy.com/shd/Mountains.shd",
+"/shd/www.shadertoy.com/shd/Oceanic.shd",
+"/shd/www.shadertoy.com/shd/OCEAN_SURFACE_NOISE_FBM.shd",
+"/shd/www.shadertoy.com/shd/OceanView.shd",
+"/shd/www.shadertoy.com/shd/Patched_Fibonacci_sphere_mapping.shd",
+"/shd/www.shadertoy.com/shd/Protoplanet.shd",
+"/shd/www.shadertoy.com/shd/Ray_Marching_Part_3.shd",
+"/shd/www.shadertoy.com/shd/Ray_Marching_Part_4.shd",
+"/shd/www.shadertoy.com/shd/Ray_Marching_Part_5.shd",
+"/shd/www.shadertoy.com/shd/Ray_Marching_Part_6.shd",
+"/shd/www.shadertoy.com/shd/Raymarching_Primitives.shd",
+"/shd/www.shadertoy.com/shd/Ray_Marching_Tutorial_01.shd",
+"/shd/www.shadertoy.com/shd/Red_Sun_(flow_noise_demo).shd",
+"/shd/www.shadertoy.com/shd/Sandstone_canyons.shd",
+"/shd/www.shadertoy.com/shd/Seacape_original.shd",
+"/shd/www.shadertoy.com/shd/Seascape_Clubber_VJ_version.shd",
+"/shd/www.shadertoy.com/shd/Seascape_Documented.shd",
+"/shd/www.shadertoy.com/shd/Seascape.shd",
+"/shd/www.shadertoy.com/shd/sierpinski_triangle_(default).shd",
+"/shd/www.shadertoy.com/shd/Simplicity_Galaxy.shd",
+"/shd/www.shadertoy.com/shd/SpaceElevator.shd",
+"/shd/www.shadertoy.com/shd/Stormy_night.shd",
 #endif
-"/www.shadertoy.com/shd/StructuredSamplingDiagram.glsl",
+"/shd/www.shadertoy.com/shd/StructuredSamplingDiagram.glsl",
 #if 0
-"/www.shadertoy.com/shd/StructuredVolSampling.shd",
-"/www.shadertoy.com/shd/Swirl_planet.shd",
-"/www.shadertoy.com/shd/TDM_Seascape_Sailing.shd",
-"/www.shadertoy.com/shd/The_One_Ring.shd",
-"/www.shadertoy.com/shd/Tree_in_the_wind.shd",
-"/www.shadertoy.com/shd/Truchet_Kaleidoscope_FTW.shd",
-"/www.shadertoy.com/shd/Urban_Smog.shd",
-"/www.shadertoy.com/shd/Very_fast_procedural_ocean.shd",
-"/www.shadertoy.com/shd/video_heightfield2.shd",
-"/www.shadertoy.com/shd/Volcanic_planet.shd",
-"/www.shadertoy.com/shd/Voxel_Corridor2.shd",
-"/www.shadertoy.com/shd/Voxel_Corridor_3D.shd",
+"/shd/www.shadertoy.com/shd/StructuredVolSampling.shd",
+"/shd/www.shadertoy.com/shd/Swirl_planet.shd",
+"/shd/www.shadertoy.com/shd/TDM_Seascape_Sailing.shd",
+"/shd/www.shadertoy.com/shd/The_One_Ring.shd",
+"/shd/www.shadertoy.com/shd/Tree_in_the_wind.shd",
+"/shd/www.shadertoy.com/shd/Truchet_Kaleidoscope_FTW.shd",
+"/shd/www.shadertoy.com/shd/Urban_Smog.shd",
+"/shd/www.shadertoy.com/shd/Very_fast_procedural_ocean.shd",
+"/shd/www.shadertoy.com/shd/video_heightfield2.shd",
+"/shd/www.shadertoy.com/shd/Volcanic_planet.shd",
+"/shd/www.shadertoy.com/shd/Voxel_Corridor2.shd",
+"/shd/www.shadertoy.com/shd/Voxel_Corridor_3D.shd",
 #endif
-"/www.shadertoy.com/shd/Voxel_Edges.glsl",
-//"/www.shadertoy.com/shd/Voxel_Hall_Colors_3D.shd"
+"/shd/www.shadertoy.com/shd/Voxel_Edges.glsl",
+//"/shd/www.shadertoy.com/shd/Voxel_Hall_Colors_3D.shd"
 };
 #endif
 
@@ -97,7 +97,7 @@ unsigned int m_i=2;
 int init(const char* aTitle)
 {
 	{
-		std::string f=stx_convertpath("/TestNoise.txt");
+		std::string f=stx_convertpath("/shd/TestNoise.txt");
 		std::ifstream file(f.c_str());
 		std::string str; 
 		while (std::getline(file, str))
@@ -109,7 +109,7 @@ int init(const char* aTitle)
 	}
 	LOG_FNLN;
 	#if 0
-	//stx_InitShape3D("/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
+	//stx_InitShape3D("/shd/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
 	shape3D[0].CreateTexturedQuad(2.0f, 2.0f, eShaderNone);
         shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
         shape3D[2].CreateSphere(1.0f, eShaderNone);
@@ -163,9 +163,9 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/new/R2VB_VTF/R2VB-Sort/FirePalette.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/Spectrum.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#elif 0
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
-	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/world1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/cloud1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
+	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/shd/www.shadertoy.com/light1.jpg", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#elif 1
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear()));

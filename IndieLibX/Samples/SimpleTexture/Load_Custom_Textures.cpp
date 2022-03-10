@@ -19,7 +19,7 @@ VertexFormatID vf=-1;
 int init(const char* aTitle)
 {
 	STX_FNLN;
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/www.shadertoy.com/Load_Custom_Textures.hlsl", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/shd/www.shadertoy.com/Load_Custom_Textures.hlsl", "main", "main");
 	STX_FNLN;
 	FormatDesc format[] =
 	{

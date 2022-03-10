@@ -53,7 +53,7 @@ float rand(vec2 co){ return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.
 void main( void ) {
 	
 	vec2   pos = gl_FragCoord.xy - ORIGIN;
-	//vec2 fragCoord=xlv_TEXCOORD0.xy/iResolution.xy-0.5;
+	//vec2 pos=gl_FragCoord.xy/iResolution.xy-0.5;
 	float dist = length(pos) / resolution.y;
 	vec2 coord = vec2(pow(dist, 0.1), atan(pos.x, pos.y) / (3.1415926*2.0));
 	
