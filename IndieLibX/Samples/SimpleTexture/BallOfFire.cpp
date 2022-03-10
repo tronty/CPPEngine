@@ -5,6 +5,7 @@
 */
 #include <Framework3/IRenderer.h>
 
+#if 0
 const char* filename[] =
 {
 "/glslsandbox.com/e#79415.0.glsl",
@@ -162,7 +163,9 @@ const char* filename[] =
 "/www.shadertoy.com/Protoplanet.hlsl",
 #endif
 };
+#endif
 
+std::vector<std::string> g_filenames;
 MeshRenderer2 shape3D[3];
 //std::vector<std::string> ShaderFiles;
 std::vector<ShaderID> shd;
@@ -175,6 +178,17 @@ unsigned int m_i=2;
 
 int init(const char* aTitle)
 {
+	{
+		std::string f=stx_convertpath("/BallOfFire.txt");
+		std::ifstream file(f.c_str());
+		std::string str; 
+		while (std::getline(file, str))
+		{
+			if(str.length())
+				if(str[0]!='#')
+        				g_filenames.push_back(str);
+    		}
+	}
 	LOG_FNLN;
 	#if 0
 	//stx_InitShape3D("/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
@@ -183,13 +197,16 @@ int init(const char* aTitle)
         shape3D[2].CreateSphere(1.0f, eShaderNone);
 	#endif
 	LOG_FNLN;
-	for(unsigned int i=0;i<elementsOf(filename);i++)
+	for(unsigned int i=0;i<g_filenames.size();i++)
 	{
-			//printf("Shader=%s failed!\n", filename[i]);
-		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main2", "main");
+	#if 0
+		printf("%s\n", g_filenames[i].c_str());
+		continue;
+	#endif
+		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(g_filenames[i].c_str(), "main2", "main");
 		if(id==-1)
 		{
-			printf("Shader=%s failed!\n", filename[i]);
+			printf("Shader=%s failed!\n", g_filenames[i]);
 			//stx_exit(0);
 			//continue;
 		}
@@ -413,7 +430,7 @@ void render()
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
 
 		char txt2[512];
-		stx_snprintf(txt2, 512, "s_i=%d: %s\n", s_i, filename[s_i]);
+		stx_snprintf(txt2, 512, "s_i=%d/%d: %s\n", s_i+1, g_filenames.size(), g_filenames[s_i].c_str());
 		IRenderer::GetRendererInstance()->drawText(txt2, 10, 50, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 

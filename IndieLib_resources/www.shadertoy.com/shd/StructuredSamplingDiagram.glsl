@@ -1,64 +1,4 @@
-/*
-  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
-  Licensed under The GNU Lesser General Public License, version 2.1:
-      http://opensource.org/licenses/LGPL-2.1
-*/
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
-    float3 Normal	: NORMAL;
-    float3 Binormal	: BINORMAL;
-    float3 Tangent	: TANGENT;
-    float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-
-[Fragment shader]
-// https://www.shadertoy.com/view/ll3GWs
-// Structured Sampling Diagram
-float mod(float x, float y)
-{
-  return x - y * floor(x / y);
-}
-
-
-float2 mod(float2 x, float2 y)
-{
-  return x - y * floor(x / y);
-}
-
-float3 mod(float3 x, float3 y)
-{
-  return x - y * floor(x / y);
-}
-float iTime=0.0;
-const float2 iMouse=float2(1, 1);
-const float2 iResolution=float2(1, 1);
-sampler2D iChannel0;
+uniform sampler2D iChannel0;
 /*
 The MIT License (MIT)
 
@@ -99,9 +39,9 @@ SOFTWARE.
 #define RESOLUTIONS 1
 #define GRID_CONTRAST 1.5
 #define PI 3.141592654
-int STRATIFIED;
+bool STRATIFIED;
 
-float line_( float2 p, float2 n, int repeat )
+float line( vec2 p, vec2 n, bool repeat )
 {
     //n /= dot(n,n);
     
@@ -127,37 +67,31 @@ float line_( float2 p, float2 n, int repeat )
     return res;
 }
 
-float lines( float2 p )
+float lines( vec2 p )
 {
     float l = 0.;
     
-    l = max( l, line_( p, float2(1.,0.), 1 ) );
+    l = max( l, line( p, vec2(1.,0.), true ) );
     
-    if( int( 10 ) )
+    if( bool( 10 ) )
     {
-        l = max( l, line_( p, float2(1.,1.)/sqrt(2.), 1 ) );
-        l = max( l, line_( p, float2(1.,-1.)/sqrt(2.), 1 ) );
-        l = max( l, line_( p, float2(0.,1.), 1 ) );
+        l = max( l, line( p, vec2(1.,1.)/sqrt(2.), true ) );
+        l = max( l, line( p, vec2(1.,-1.)/sqrt(2.), true ) );
+        l = max( l, line( p, vec2(0.,1.), true ) );
     }
     
     return l;
 }
 
-
-
-float4 main(VsOut IN): COLOR 
+void main( )
 {
-	float4 fragColor;
-	float2 fragCoord=IN.uv;
-	// ??? STRATIFIED = fract(iTime/(4.*PI))<0.5;
+	STRATIFIED = fract(iTime/(4.*PI))<0.5;
     
-    float2 p = fragCoord.xy - iResolution.xy / 2.;
+    vec2 p = gl_FragCoord.xy - iResolution.xy / 2.;
     
     float l = lines( p );
     
-    fragColor = float4(l, l, l, l);
+    gl_FragColor = vec4(l);
 
-    fragColor += tex2D( iChannel0, fragCoord/iResolution.xy );
-	return fragColor;
+    gl_FragColor += texture( iChannel0, gl_FragCoord/iResolution.xy );
 }
-

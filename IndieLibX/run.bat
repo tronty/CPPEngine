@@ -4,6 +4,9 @@ cd bin
 call TestNoise.exe
 cd ..
 cd bin
+call BallOfFire.exe
+cd ..
+cd bin
 call opengl_simple.exe
 cd ..
 cd bin
@@ -17,9 +20,6 @@ call Road03.exe
 cd ..
 cd bin
 call Road04.exe
-cd ..
-cd bin
-call BallOfFire.exe
 cd ..
 cd bin
 call R2VB-Animation.exe

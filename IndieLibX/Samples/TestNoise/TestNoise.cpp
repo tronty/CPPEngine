@@ -5,23 +5,24 @@
 */
 #include <Framework3/IRenderer.h>
 
+#if 0
 const char* filename[] =
 {
 "/glslsandbox.com/shd/e#75737.0.glsl",
 "/glslsandbox.com/shd/e#79313.0.glsl",
-"/www.shadertoy.com/shd/2D_Clouds.shd",
+"/www.shadertoy.com/shd/2D_Clouds.glsl",
 //"/www.shadertoy.com/shd/2D_noise_on_a_Fibonacci_sphere.shd",
 //"/www.shadertoy.com/shd/5_0_fbm.shd",
-"/www.shadertoy.com/shd/AlienBeacon.shd",
-"/www.shadertoy.com/shd/anatomyofanexplosion.shd",
-"/www.shadertoy.com/shd/Chaos_Game_Sierpinsky_Triangle.shd",
+"/www.shadertoy.com/shd/AlienBeacon.glsl",
+//"/www.shadertoy.com/shd/anatomyofanexplosion.glsl",
+//"/www.shadertoy.com/shd/Chaos_Game_Sierpinsky_Triangle.glsl",
 //"/www.shadertoy.com/shd/Clock_by_Vicking.shd",
 //"/www.shadertoy.com/shd/Clouds.shd",
-"/www.shadertoy.com/shd/Commodore_64.shd",
-"/www.shadertoy.com/shd/Desert_biome.shd",
-"/www.shadertoy.com/shd/Desert_mountains.shd",
-"/www.shadertoy.com/shd/Desert_mountains_v2.shd",
-"/www.shadertoy.com/shd/dustynebula1.shd",
+"/www.shadertoy.com/shd/Commodore_64.glsl",
+"/www.shadertoy.com/shd/Desert_biome.glsl",
+"/www.shadertoy.com/shd/Desert_mountains.glsl",
+"/www.shadertoy.com/shd/Desert_mountains_v2.glsl",
+"/www.shadertoy.com/shd/dustynebula1.glsl",
 #if 0
 "/www.shadertoy.com/shd/ED-209.shd",
 "/www.shadertoy.com/shd/EmissionClouds.shd",
@@ -62,7 +63,7 @@ const char* filename[] =
 "/www.shadertoy.com/shd/SpaceElevator.shd",
 "/www.shadertoy.com/shd/Stormy_night.shd",
 #endif
-"/www.shadertoy.com/shd/StructuredSamplingDiagram.shd",
+"/www.shadertoy.com/shd/StructuredSamplingDiagram.glsl",
 #if 0
 "/www.shadertoy.com/shd/StructuredVolSampling.shd",
 "/www.shadertoy.com/shd/Swirl_planet.shd",
@@ -77,10 +78,12 @@ const char* filename[] =
 "/www.shadertoy.com/shd/Voxel_Corridor2.shd",
 "/www.shadertoy.com/shd/Voxel_Corridor_3D.shd",
 #endif
-"/www.shadertoy.com/shd/Voxel_Edges.shd",
+"/www.shadertoy.com/shd/Voxel_Edges.glsl",
 //"/www.shadertoy.com/shd/Voxel_Hall_Colors_3D.shd"
 };
+#endif
 
+std::vector<std::string> g_filenames;
 MeshRenderer2 shape3D[3];
 //std::vector<std::string> ShaderFiles;
 std::vector<ShaderID> shd;
@@ -93,6 +96,17 @@ unsigned int m_i=2;
 
 int init(const char* aTitle)
 {
+	{
+		std::string f=stx_convertpath("/TestNoise.txt");
+		std::ifstream file(f.c_str());
+		std::string str; 
+		while (std::getline(file, str))
+		{
+			if(str.length())
+				if(str[0]!='#')
+        				g_filenames.push_back(str);
+    		}
+	}
 	LOG_FNLN;
 	#if 0
 	//stx_InitShape3D("/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
@@ -101,13 +115,16 @@ int init(const char* aTitle)
         shape3D[2].CreateSphere(1.0f, eShaderNone);
 	#endif
 	LOG_FNLN;
-	for(unsigned int i=0;i<elementsOf(filename);i++)
+	for(unsigned int i=0;i<g_filenames.size();i++)
 	{
-			//printf("Shader=%s failed!\n", filename[i]);
-		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(filename[i], "main2", "main");
+	#if 0
+		printf("%s\n", g_filenames[i].c_str());
+		continue;
+	#endif
+		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(g_filenames[i].c_str(), "main2", "main");
 		if(id==-1)
 		{
-			printf("Shader=%s failed!\n", filename[i]);
+			printf("Shader=%s failed!\n", g_filenames[i]);
 			//stx_exit(0);
 			//continue;
 		}
@@ -331,7 +348,7 @@ void render()
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
 
 		char txt2[512];
-		stx_snprintf(txt2, 512, "s_i=%d: %s\n", s_i, filename[s_i]);
+		stx_snprintf(txt2, 512, "s_i=%d/%d: %s\n", s_i+1, g_filenames.size(), g_filenames[s_i].c_str());
 		IRenderer::GetRendererInstance()->drawText(txt2, 10, 50, 
 			15, 18,
 			IRenderer::GetRendererInstance()->GetdefaultFont(), 
