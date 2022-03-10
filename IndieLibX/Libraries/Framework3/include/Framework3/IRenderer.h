@@ -3164,6 +3164,7 @@ typedef enum _tShader
 	eShaderNone,
 	eHLSL_Shader,
 	eGLSL_Shader,
+	eGLES_Shader,
 	eGLES_Shader_android,
 	eGLES_Shader_Ubuntu,
 		eSimpleShader,

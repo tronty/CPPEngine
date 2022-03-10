@@ -1337,8 +1337,17 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
                                             const char* vsMain, 
                                             const char* fsMain,
                              		    const char *defines,
-                                            const unsigned int flags)
+                                            const unsigned int aflags)
 {
+	unsigned int flags=aflags;
+	tShader shaderType=eGLSL_Shader;
+	const char *extension = strrchr(fileName, '.');
+	if (stricmp(extension, ".hlsl") == 0)
+		shaderType=eHLSL_Shader;
+	else if (stricmp(extension, ".gles") == 0)
+		shaderType=eGLES_Shader;
+	flags=shaderType;
+
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
@@ -6543,10 +6552,18 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
+		if(flags & eHLSL_Shader)
+			printf("\n[HLSL]\n");
+		else if(flags & eGLSL_Shader)
+			printf("\n[GLSL]\n");
+		else if(flags & eGLES_Shader)
+			printf("\n[GLES]\n");
+#if 1
 	std::size_t foundGLSL = shaderText.find("[GLSL]");
 	std::size_t foundHLSL = shaderText.find("[HLSL]");
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
+#endif
 #if 0
 	printf("\nfoundGLSL=%d\n", foundGLSL);
 	printf("foundHLSL=%d\n", foundHLSL);
@@ -6556,17 +6573,17 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 
 	char* fsMain_="main";
-	if		(((std::string::npos==foundGLSL) &&
+	if	       ( // ((flags & eGLSL_Shader) || (flags & eGLES_Shader)) ||
+			(((std::string::npos==foundGLSL) &&
 		 	  (std::string::npos==foundHLSL) &&
 			  (std::string::npos==foundVS) &&
 			  (std::string::npos==foundPS)) ||
 			 ((std::string::npos!=foundGLSL) &&
 		 	  (std::string::npos==foundHLSL) &&
 			  (std::string::npos==foundVS) &&
-			  (std::string::npos==foundPS)))
+			  (std::string::npos==foundPS))))
 	{
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("[GLSL]\n");
 		#if 0
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain_="mainImage";
@@ -6656,8 +6673,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		return res;
 	}
 
-
-	if((foundVS!=std::string::npos)&&(foundPS!=std::string::npos))
+	if( // 	(flags & eHLSL_Shader) && 
+		((foundVS!=std::string::npos)&&(foundPS!=std::string::npos)))
 	{
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	std::string stringToBeSplitted=shaderText;
@@ -6685,8 +6702,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		fsStr2.append(val);
 	}
 	}
-	else if((std::string::npos==foundGLSL) &&
-		(std::string::npos!=foundHLSL))
+	else
+	if     ( // (flags & eHLSL_Shader) ||
+		((std::string::npos==foundGLSL) &&
+		(std::string::npos!=foundHLSL)))
 	{
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
