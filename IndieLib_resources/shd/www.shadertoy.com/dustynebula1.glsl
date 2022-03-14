@@ -1,5 +1,5 @@
-sampler2D iChannel0;
-sampler2D iChannel1;
+uniform sampler2D iChannel0;
+uniform sampler2D iChannel1;
 //Most of the code come from https://www.shadertoy.com/view/Xss3DS
 //noise from here https://www.shadertoy.com/view/MtXSzS
 //License Creative Commons Attribution-NonCommercial-ShareAlike 3.0
@@ -137,14 +137,14 @@ float densityFn( in vec3 p, in float r, out float rawDens, in float rayAlpha )
 	return den;
 }
 
-vec4 raymarch( in vec3 rayo, in vec3 rayd, in float expInter, in vec2 gl_FragCoord )
+vec4 raymarch( in vec3 rayo, in vec3 rayd, in float expInter, in vec2 FragCoord )
 {
     vec4 sum = vec4( 0.0 );
      
     float step = 0.075;
      
     // dither start pos to break up aliasing
-	vec3 pos = rayo + rayd * (expInter + step*texture( iChannel0, gl_FragCoord.xy/iChannelResolution[0].x ).x);
+	vec3 pos = rayo + rayd * (expInter + step*texture( iChannel0, FragCoord.xy/iChannelResolution[0].x ).x);
 	
     for( int i=0; i<48; i++ )
     {

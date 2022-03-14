@@ -1347,7 +1347,20 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	else if (stricmp(extension, ".gles") == 0)
 		shaderType=eGLES_Shader;
 	flags=shaderType;
-
+#if 0
+	switch(shaderType)
+	{
+		case eGLSL_Shader:
+			printf("eGLSL_Shader:\n");
+			break;
+		case eHLSL_Shader:
+			printf("eHLSL_Shader:\n");
+			break;
+		case eGLES_Shader:
+			printf("eGLES_Shader:\n");
+			break;
+	};
+#endif
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
@@ -6545,46 +6558,58 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                                         const char* vsMain, 
                                         const char* fsMain,
                              	const char *defines, 
-                                        const unsigned int flags)
+                                        const unsigned int aFlags)
 {
 	ShaderID res = SHADER_NONE;
+	unsigned int flags=aFlags;
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
-		if(flags & eHLSL_Shader)
-			printf("\n[HLSL]\n");
-		else if(flags & eGLSL_Shader)
-			printf("\n[GLSL]\n");
-		else if(flags & eGLES_Shader)
-			printf("\n[GLES]\n");
 #if 1
-	std::size_t foundGLSL = shaderText.find("[GLSL]");
-	std::size_t foundHLSL = shaderText.find("[HLSL]");
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
+	//printf("foundVS=%d\n", foundVS);
+	//printf("foundPS=%d\n", foundPS);
+	if	((foundPS!=std::string::npos) && (foundVS!=std::string::npos))
+		flags = eHLSL_Shader;
+	else if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) ||
+		 ((foundPS==std::string::npos) && (foundVS==std::string::npos)))
+	{
+		if(flags == eHLSL_Shader)
+			flags = eHLSL_Fragment_Shader;
+		else if(flags == eGLSL_Shader)
+			flags = eGLSL_Fragment_Shader;
+		else if(flags == eGLES_Shader)
+			flags = eGLES_Fragment_Shader;
+	}
 #endif
 #if 0
-	printf("\nfoundGLSL=%d\n", foundGLSL);
-	printf("foundHLSL=%d\n", foundHLSL);
+		if(flags == eHLSL_Fragment_Shader)
+			printf("\n[HLSL_Fragment_Shader]\n");
+		else if(flags == eGLSL_Fragment_Shader)
+			printf("\n[GLSL_Fragment_Shader]\n");
+		else if(flags == eGLES_Fragment_Shader)
+			printf("\n[GLES_Fragment_Shader]\n");
+		else if(flags == eHLSL_Shader)
+			printf("\n[HLSL]\n");
+		else if(flags == eGLSL_Shader)
+			printf("\n[GLSL]\n");
+		else if(flags == eGLES_Shader)
+			printf("\n[GLES]\n");
+#endif
+#if 0
 	printf("foundVS=%d\n", foundVS);
 	printf("foundPS=%d\n", foundPS);
 	printf("std::string::npos=%d\n", std::string::npos);
 #endif
 
 	char* fsMain_="main";
-	if	       ( // ((flags & eGLSL_Shader) || (flags & eGLES_Shader)) ||
-			(((std::string::npos==foundGLSL) &&
-		 	  (std::string::npos==foundHLSL) &&
-			  (std::string::npos==foundVS) &&
-			  (std::string::npos==foundPS)) ||
-			 ((std::string::npos!=foundGLSL) &&
-		 	  (std::string::npos==foundHLSL) &&
-			  (std::string::npos==foundVS) &&
-			  (std::string::npos==foundPS))))
+	if(flags == eGLSL_Fragment_Shader)
 	{
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		#if 0
+		printf("eGLSL_Fragment_Shader:\n");
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain_="mainImage";
 		#endif
@@ -6654,10 +6679,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"//uniform sampler2D iChannel6;\n"
 				"//uniform sampler2D iChannel7;\n"
 				);
-		if(std::string::npos!=foundGLSL)
-			fsStr2.append(shaderText.c_str()+6);
-		else
-			fsStr2.append(shaderText);
+		fsStr2.append(shaderText);
 #if 0
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("\nvs:\n%s\n", vsStr2.c_str());
@@ -6682,9 +6704,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		return res;
 	}
 
-	if( // 	(flags & eHLSL_Shader) && 
-		((foundVS!=std::string::npos)&&(foundPS!=std::string::npos)))
+	
+	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader))
 	{
+		//printf("HLSL_Shader || eGLSL_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	std::string stringToBeSplitted=shaderText;
 	std::vector<std::string> delimeters;
@@ -6710,12 +6733,37 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		std::string val = stringToBeSplitted.substr(endIndex+2+delimeters[0].length());
 		fsStr2.append(val);
 	}
-	}
-	else
-	if     ( // (flags & eHLSL_Shader) ||
-		((std::string::npos==foundGLSL) &&
-		(std::string::npos!=foundHLSL)))
+	if(flags == eHLSL_Shader)
 	{
+		//printf("eHLSL_Shader:\n");
+    		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        	vsMain, 0, fsMain, 0, 0, 0, flags);
+	}
+#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+	else if(flags == eGLES_Shader)
+	{
+		//printf("eGLES_Shader:\n");
+			RendererGLES2* rendererGLES2=0;
+			rendererGLES2=(RendererGLES2*) this;
+			return rendererGLES2->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        vsMain, 0, fsMain, 0, 0, 0, flags);
+	} 
+#else
+	else if(flags == eGLSL_Shader)
+	{
+		//printf("eGLSL_Shader:\n");
+			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
+			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
+			return rendererGLSLGL_1_1->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        vsMain, 0, fsMain, 0, 0, 0, flags);
+	}
+#endif
+	}
+	if(flags == eHLSL_Fragment_Shader)
+	{
+		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
@@ -6779,14 +6827,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"//sampler2D iChannel5;\n"
 				"//sampler2D iChannel6;\n"
 				"//sampler2D iChannel7;\n");
-		if(std::string::npos!=foundHLSL)
-			fsStr2.append(shaderText.c_str()+6);
-		else
-			fsStr2.append(shaderText);
-	}
+		fsStr2.append(shaderText);
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     	res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         	vsMain, 0, fsMain, 0, 0, 0, flags);
-	return res;
+	}
+	return -1;
 }
 

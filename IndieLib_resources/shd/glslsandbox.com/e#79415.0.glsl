@@ -46,7 +46,7 @@ const float SPEED	= 0.005;
 const float SCALE	= 80.0;
 const float DENSITY	= 1.5;
 const float BRIGHTNESS	= 10.0;
-       vec2 ORIGIN	= resolution.xy*.5;
+const vec2 ORIGIN	= vec2(400,300);
 
 float rand(vec2 co){ return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453); }
 
@@ -125,8 +125,7 @@ void main( void ) {
 		uv = fract(p)*2.0-1.0;
 		m = clamp((rand(floor(p))-DENSITY/i)*BRIGHTNESS, 0.0, 1.0);
 		color +=  clamp(star(uv*0.5)*m*dist, 0.0, 1.0);
-	
-
-	
+		
 	gl_FragColor = vec4(color, 1.0);
 }
+

@@ -1,3 +1,8 @@
+uniform sampler2D iChannel0;
+uniform sampler2D iChannel1;
+uniform sampler2D iChannel2;
+// https://www.shadertoy.com/view/XslGRr
+// Clouds
 // Copyright Inigo Quilez, 2013 - https://iquilezles.org/
 // I am the sole copyright owner of this Work.
 // You cannot host, display, distribute or share this Work in any form,
@@ -192,9 +197,9 @@ vec4 render( in vec3 ro, in vec3 rd, in ivec2 px )
     return vec4( col, 1.0 );
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void main( )
 {
-    vec2 p = (2.0*fragCoord-iResolution.xy)/iResolution.y;
+    vec2 p = (2.0*gl_FragCoord-iResolution.xy)/iResolution.y;
     vec2 m =                iMouse.xy      /iResolution.xy;
 
     // camera
@@ -204,10 +209,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     // ray
     vec3 rd = ca * normalize( vec3(p.xy,1.5));
     
-    fragColor = render( ro, rd, ivec2(fragCoord-0.5) );
+    gl_FragColor = render( ro, rd, ivec2(gl_FragCoord-0.5) );
 }
 
-void mainVR( out vec4 fragColor, in vec2 fragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
+void mainVR( out vec4 gl_FragColor, in vec2 gl_FragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
 {
-    fragColor = render( fragRayOri, fragRayDir, ivec2(fragCoord-0.5) );
+    gl_FragColor = render( fragRayOri, fragRayDir, ivec2(gl_FragCoord-0.5) );
 }
+

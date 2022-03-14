@@ -36,10 +36,10 @@ vec2 scale(vec2 coords) {
 }
 
 /**
- * Return whether the `gl_FragCoord` pair is within `RADIUS` of `point`.
+ * Return whether the `FragCoord` pair is within `RADIUS` of `point`.
  */
-bool isPixel(vec2 gl_FragCoord, vec2 point) {
-	return distance(gl_FragCoord, point) < RADIUS;
+bool isPixel(vec2 FragCoord, vec2 point) {
+	return distance(FragCoord, point) < RADIUS;
 }
 
 /**
@@ -64,13 +64,13 @@ vec2 randABC(vec2 seed) {
 }
 
 /**
- * Return whether the `gl_FragCoord` coordinate pair is a valid point in the
+ * Return whether the `FragCoord` coordinate pair is a valid point in the
  * sequence of points derived from the `start` point.
  */
-bool validPoint(vec2 gl_FragCoord, vec2 start) {
+bool validPoint(vec2 FragCoord, vec2 start) {
     int iteration = int(iTime * SPEED); // Add 1 point per second
     
-    if (isPixel(gl_FragCoord, start)) {
+    if (isPixel(FragCoord, start)) {
         return true;
     }
     
@@ -83,7 +83,7 @@ bool validPoint(vec2 gl_FragCoord, vec2 start) {
         vec2 seed = vec2(float(i) * 0.001, float(i) * 0.002 / 3.0);
         vec2 targetPoint = randABC(seed);
         currentPoint = currentPoint + ((targetPoint - currentPoint) / 2.0);
-        if (isPixel(gl_FragCoord, currentPoint)) {
+        if (isPixel(FragCoord, currentPoint)) {
         	return true;
         }
     }

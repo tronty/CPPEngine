@@ -51,9 +51,9 @@ float RayMarch(vec3 ro, vec3 rd){
     return sd;
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void main( )
 {
-    vec2 uv = (fragCoord - iResolution.xy * 0.5)/iResolution.y;
+    vec2 uv = (gl_FragCoord - iResolution.xy * 0.5)/iResolution.y;
 
     vec3 col = vec3(0);
     
@@ -78,5 +78,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         
     }
 
-    fragColor = vec4(col,1.0);
+    gl_FragColor = vec4(col,1.0);
 }
