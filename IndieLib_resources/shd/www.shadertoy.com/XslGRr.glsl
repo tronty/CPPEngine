@@ -199,7 +199,7 @@ vec4 render( in vec3 ro, in vec3 rd, in ivec2 px )
 
 void main( )
 {
-    vec2 p = (2.0*gl_FragCoord-iResolution.xy)/iResolution.y;
+    vec2 p = (2.0*xlv_TEXCOORD0-iResolution.xy)/iResolution.y;
     vec2 m =                iMouse.xy      /iResolution.xy;
 
     // camera
@@ -209,11 +209,11 @@ void main( )
     // ray
     vec3 rd = ca * normalize( vec3(p.xy,1.5));
     
-    gl_FragColor = render( ro, rd, ivec2(gl_FragCoord-0.5) );
+    gl_FragColor = render( ro, rd, ivec2(xlv_TEXCOORD0-0.5) );
 }
 
-void mainVR( out vec4 gl_FragColor, in vec2 gl_FragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
+void mainVR( out vec4 gl_FragColor, in vec2 xlv_TEXCOORD0, in vec3 fragRayOri, in vec3 fragRayDir )
 {
-    gl_FragColor = render( fragRayOri, fragRayDir, ivec2(gl_FragCoord-0.5) );
+    gl_FragColor = render( fragRayOri, fragRayDir, ivec2(xlv_TEXCOORD0-0.5) );
 }
 

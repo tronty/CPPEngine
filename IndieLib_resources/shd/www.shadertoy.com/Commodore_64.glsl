@@ -159,7 +159,7 @@ vec4 colors(int c) {
 
 void main( )
 {    
-	vec2 uv = gl_FragCoord.xy / iResolution.xy;
+	vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
     vec2 sz = vec2(40.0, 20.0);
     vec2 fb_pos = floor(uv * sz) + vec2(0.5, 0.5);
     fb_pos.y = sz.y - fb_pos.y;

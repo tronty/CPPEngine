@@ -96,20 +96,20 @@ void main( )
     vec4 red = vec4(1.0, 0.0, 0.0, 1.0);
     vec4 white = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 black = vec4(0.0, 0.0, 0.0, 1.0);
-    vec4 color = vec4(gl_FragCoord.xy / iResolution.xy * 1.4, 1.0, 1.0); // Nicer colors depending on XY coords
+    vec4 color = vec4(xlv_TEXCOORD0.xy / iResolution.xy * 1.4, 1.0, 1.0); // Nicer colors depending on XY coords
 
     // Random starting point
     vec2 R = scale(rand(SEED));
         
     // Determine whether this is a start point
     bool isStartPoint =
-        isPixel(gl_FragCoord, A) ||
-        isPixel(gl_FragCoord, B) ||
-        isPixel(gl_FragCoord, C);
+        isPixel(xlv_TEXCOORD0, A) ||
+        isPixel(xlv_TEXCOORD0, B) ||
+        isPixel(xlv_TEXCOORD0, C);
     
     // Determine whether this is a valid point (depending on time)
     bool isValidPoint =
-        validPoint(gl_FragCoord, R);
+        validPoint(xlv_TEXCOORD0, R);
     
     if (isStartPoint) {
     	gl_FragColor = red;

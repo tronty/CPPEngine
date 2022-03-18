@@ -234,7 +234,7 @@ vec3 computePixelRay( in vec2 p, out vec3 cameraPos )
 void main( )
 {
 	// get aspect corrected normalized pixel coordinate
-    vec2 q = gl_FragCoord.xy / iResolution.xy;
+    vec2 q = xlv_TEXCOORD0.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0*q;
     p.x *= iResolution.x / iResolution.y;
     
@@ -249,7 +249,7 @@ void main( )
 	if( boundingSphereInter > 0. )
 	{
 		// yes, cast ray
-	    col = raymarch( cameraPos, rayDir, boundingSphereInter,gl_FragCoord );
+	    col = raymarch( cameraPos, rayDir, boundingSphereInter,xlv_TEXCOORD0 );
 	}
 	
     // smoothstep final color to add contrast

@@ -537,12 +537,12 @@ mat4 translate( float x, float y, float z )
 void main( ){
     vec4 oiMouse=clamp(iMouse,vec4(0.),iResolution.xyxy-1.);
     iMouse=vec4(0);
-	vec2 uv = gl_FragCoord / iResolution.xy;
+	vec2 uv = xlv_TEXCOORD0 / iResolution.xy;
     float veProgress = mod(iTime * 0.1, 1.);
     float count = floor(iTime * 0.1);
 	// ro: ray origin
 	// rd: direction of the ray
-	vec3 rd = normalize(vec3((gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y-vec2(0,0.5), 1.));
+	vec3 rd = normalize(vec3((xlv_TEXCOORD0.xy - 0.5 * iResolution.xy) / iResolution.y-vec2(0,0.5), 1.));
 	vec3 ro = vec3(0., 8., -16.);
 	ro = veAddZoom(rd, ro);
     if(iMouse.z>0.) {
@@ -569,7 +569,7 @@ void main( ){
 	float density = 1., t = 0.;
 	const float h = 0.1;
 	vec4 sum = vec4(0.0);
-    //veProgress = fract(veProgress*1.+0.5+0.0*((gl_FragCoord.x>=.5*iResolution.x)?.3:.7));
+    //veProgress = fract(veProgress*1.+0.5+0.0*((xlv_TEXCOORD0.x>=.5*iResolution.x)?.3:.7));
     vec3 so = 0.0*((uv.x>=0.5)?vec3(7.0+2.0*veProgress,-11.+17.*veProgress,5):vec3(-7.0-2.0*veProgress,-12.+18.*veProgress,5))+0.5;
     float maxRadius = 16.0;
     vec4 fix = vec4(39,59,759,420);//oiMouse;

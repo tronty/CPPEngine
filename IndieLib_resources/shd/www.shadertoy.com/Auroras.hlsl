@@ -62,7 +62,7 @@ vec4 aurora(vec3 ro, vec3 rd)
     
     for(float i=0.;i<50.;i++)
     {
-        float of = 0.006*hash21(gl_FragCoord.xy)*smoothstep(0.,15., i);
+        float of = 0.006*hash21(xlv_TEXCOORD0.xy)*smoothstep(0.,15., i);
         float pt = ((.8+pow(i,1.4)*.002)-ro.y)/(rd.y*2.+0.4);
         pt -= of;
     	vec3 bpos = ro + pt*rd;

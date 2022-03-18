@@ -87,11 +87,11 @@ void main( )
 {
 	STRATIFIED = fract(iTime/(4.*PI))<0.5;
     
-    vec2 p = gl_FragCoord.xy - iResolution.xy / 2.;
+    vec2 p = xlv_TEXCOORD0.xy - iResolution.xy / 2.;
     
     float l = lines( p );
     
     gl_FragColor = vec4(l);
 
-    gl_FragColor += texture( iChannel0, gl_FragCoord/iResolution.xy );
+    gl_FragColor += texture( iChannel0, xlv_TEXCOORD0/iResolution.xy );
 }

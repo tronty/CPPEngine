@@ -103,8 +103,8 @@ float fbm21(vec2 p, float g){
     return 0.5 * val + 0.5;
 }
 void main( ){
-    vec2 pos = gl_FragCoord.xy/min(iResolution.x, iResolution.y);
-    channel = int(2.0 * gl_FragCoord.x / iResolution.x);
+    vec2 pos = xlv_TEXCOORD0.xy/min(iResolution.x, iResolution.y);
+    channel = int(2.0 * xlv_TEXCOORD0.x / iResolution.x);
     pos = 10.0 * pos + iTime;
     float g = abs(mod(0.2 * iTime, 2.0) - 1.0);
     gl_FragColor = vec4(vec3(fbm21(pos, g)), 1.0);

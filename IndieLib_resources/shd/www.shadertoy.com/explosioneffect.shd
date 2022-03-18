@@ -671,8 +671,8 @@ float4 raymarch( in float3 rayo, in float3 rayd, in float2 expInter, in float t,
     float step = 1.5 / float(steps);
      
     // start iterating on the ray at the intersection point with the near half of the bounding sphere
-	//float3 pos = rayo + rayd * (expInter.x + step*tex2D( iChannel2, gl_FragCoord.xy/iChannelResolution[0].x ).x);		// dither start pos to break up aliasing
-	//float3 pos = rayo + rayd * (expInter.x + 1.0*step*frac(0.5*(gl_FragCoord.x+gl_FragCoord.y)));	// regular dither
+	//float3 pos = rayo + rayd * (expInter.x + step*tex2D( iChannel2, xlv_TEXCOORD0.xy/iChannelResolution[0].x ).x);		// dither start pos to break up aliasing
+	//float3 pos = rayo + rayd * (expInter.x + 1.0*step*frac(0.5*(xlv_TEXCOORD0.x+xlv_TEXCOORD0.y)));	// regular dither
 	float3 pos = rayo + rayd * (expInter.x);	// no dither
 
     float march_pos = expInter.x;
@@ -883,8 +883,8 @@ float4 main(VsOut IN): COLOR
     float3 cloudcolor = float3(.8,.8,.8);
     
 #ifndef SHADERTOY_APP
-	//float4 back = tex2D( iChannel1, -gl_FragCoord.xy/iChannelResolution[1].xy );
-	//float4 back = tex2D( iChannel1, -gl_FragCoord.xy/iResolution.xy );
+	//float4 back = tex2D( iChannel1, -xlv_TEXCOORD0.xy/iChannelResolution[1].xy );
+	//float4 back = tex2D( iChannel1, -xlv_TEXCOORD0.xy/iResolution.xy );
     float4 back = tex2D( iChannel1, rayDir );
 
  #ifdef WITH_FUN
@@ -943,7 +943,7 @@ float4 main(VsOut IN): COLOR
 #if 0//def SHADERTOY_APP
 void main()
 {
-	mainImage( gl_FragColor, gl_FragCoord.xy );
+	mainImage( gl_FragColor, xlv_TEXCOORD0.xy );
 }
 #endif
 

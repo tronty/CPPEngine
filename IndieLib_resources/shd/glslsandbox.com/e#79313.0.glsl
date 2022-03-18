@@ -48,7 +48,7 @@ void main( void )
 {
     float worktime = (time * speed) + 100000.0;
     
-    vec2 uv = ( gl_FragCoord.xy / resolution.xy ) * 2.0 - 1.0;
+    vec2 uv = ( xlv_TEXCOORD0.xy / resolution.xy ) * 2.0 - 1.0;
     uv.y *= resolution.y/resolution.x;
     
     

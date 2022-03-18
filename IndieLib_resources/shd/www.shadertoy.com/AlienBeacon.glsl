@@ -211,7 +211,7 @@ float DistanceToObject(vec3 p)
 void main( )
 {
 	// ---------------- First, set up the camera rays for ray marching ----------------
-	vec2 uv = gl_FragCoord.xy/iResolution.xy * 2.0 - 1.0;
+	vec2 uv = xlv_TEXCOORD0.xy/iResolution.xy * 2.0 - 1.0;
 
 	// Camera up vector.
 	vec3 camUp=vec3(0,1,0); // vuv

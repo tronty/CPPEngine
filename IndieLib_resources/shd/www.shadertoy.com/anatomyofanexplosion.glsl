@@ -79,14 +79,14 @@ float densityFn( in vec3 p, in float r, out float rawDens, in float rayAlpha )
 	return den;
 }
 
-vec4 raymarch( in vec3 rayo, in vec3 rayd, in float expInter, in vec2 gl_FragCoord )
+vec4 raymarch( in vec3 rayo, in vec3 rayd, in float expInter, in vec2 xlv_TEXCOORD0 )
 {
     vec4 sum = vec4( 0.0 );
      
     float step = 0.075;
      
     // dither start pos to break up aliasing
-	vec3 pos = rayo + rayd * (expInter + step*texture( iChannel0, gl_FragCoord.xy/iChannelResolution[0].x ).x);
+	vec3 pos = rayo + rayd * (expInter + step*texture( iChannel0, xlv_TEXCOORD0.xy/iChannelResolution[0].x ).x);
 	
     for( int i=0; i<25; i++ )
     {
@@ -175,7 +175,7 @@ vec3 computePixelRay( in vec2 p, out vec3 cameraPos )
 void main( )
 {
 	// get aspect corrected normalized pixel coordinate
-    vec2 q = gl_FragCoord.xy / iResolution.xy;
+    vec2 q = xlv_TEXCOORD0.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0*q;
     p.x *= iResolution.x / iResolution.y;
     
@@ -192,7 +192,7 @@ void main( )
 	if( boundingSphereInter > 0. )
 	{
 		// yes, cast ray
-	    col = raymarch( cameraPos, rayDir, boundingSphereInter,gl_FragCoord );
+	    col = raymarch( cameraPos, rayDir, boundingSphereInter,xlv_TEXCOORD0 );
 	}
 	
     // smoothstep final color to add contrast

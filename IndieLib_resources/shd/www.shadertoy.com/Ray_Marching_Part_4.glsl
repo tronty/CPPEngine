@@ -104,10 +104,10 @@ float shortestDistanceToSurface(vec3 eye, vec3 marchingDirection, float start, f
  * 
  * fieldOfView: vertical field of view in degrees
  * size: resolution of the output image
- * gl_FragCoord: the x,y coordinate of the pixel in the output image
+ * xlv_TEXCOORD0: the x,y coordinate of the pixel in the output image
  */
-vec3 rayDirection(float fieldOfView, vec2 size, vec2 gl_FragCoord) {
-    vec2 xy = gl_FragCoord - size / 2.0;
+vec3 rayDirection(float fieldOfView, vec2 size, vec2 xlv_TEXCOORD0) {
+    vec2 xy = xlv_TEXCOORD0 - size / 2.0;
     float z = size.y / tan(radians(fieldOfView) / 2.0);
     return normalize(vec3(xy, -z));
 }
@@ -219,9 +219,9 @@ mat4 viewMatrix(vec3 eye, vec3 center, vec3 up) {
     );
 }
 
-void mainImage( out vec4 gl_FragColor, in vec2 gl_FragCoord )
+void mainImage( out vec4 gl_FragColor, in vec2 xlv_TEXCOORD0 )
 {
-	vec3 viewDir = rayDirection(45.0, iResolution.xy, gl_FragCoord);
+	vec3 viewDir = rayDirection(45.0, iResolution.xy, xlv_TEXCOORD0);
     vec3 eye = vec3(8.0, 5.0, 7.0);
     
     mat4 viewToWorld = viewMatrix(eye, vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0));

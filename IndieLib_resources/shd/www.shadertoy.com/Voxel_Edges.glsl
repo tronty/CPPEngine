@@ -250,7 +250,7 @@ vec3 render( in vec3 ro, in vec3 rd )
 void main( )
 {
     // inputs	
-	vec2 q = gl_FragCoord.xy / iResolution.xy;
+	vec2 q = xlv_TEXCOORD0.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0*q;
     p.x *= iResolution.x/ iResolution.y;
 	
@@ -279,7 +279,7 @@ void main( )
 	gl_FragColor = vec4( col, 1.0 );
 }
 
-void mainVR( out vec4 fragColor, in vec2 gl_FragCoord, in vec3 fragRayOri, in vec3 fragRayDir )
+void mainVR( out vec4 fragColor, in vec2 xlv_TEXCOORD0, in vec3 fragRayOri, in vec3 fragRayDir )
 {
 	float time = 1.0*iTime;
 

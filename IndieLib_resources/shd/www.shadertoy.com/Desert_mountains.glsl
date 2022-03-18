@@ -177,7 +177,7 @@ vec3 render(vec3 ro, vec3 rd) {
 }
 
 void main( ) {
-	vec2 pos = 2.0 * ( gl_FragCoord.xy / iResolution.xy ) - 1.0;
+	vec2 pos = 2.0 * ( xlv_TEXCOORD0.xy / iResolution.xy ) - 1.0;
 	pos.x *= iResolution.x / iResolution.y;
     float t1 = iTime;
 	// Camera

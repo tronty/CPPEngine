@@ -425,7 +425,7 @@ mat3 setCamera( in vec3 ro, in vec3 ta, float cr )
     return mat3( cu, cv, cw );
 }
 
-void mainImage( out vec4 gl_FragColor, in vec2 gl_FragCoord )
+void mainImage( out vec4 gl_FragColor, in vec2 xlv_TEXCOORD0 )
 {
     vec2 mo = iMouse.xy/iResolution.xy;
 	float time = 15.0 + iTime;
@@ -438,9 +438,9 @@ void mainImage( out vec4 gl_FragColor, in vec2 gl_FragCoord )
     {
         // pixel coordinates
         vec2 o = vec2(float(m),float(n)) / float(AA) - 0.5;
-        vec2 p = (-iResolution.xy + 2.0*(gl_FragCoord+o))/iResolution.y;
+        vec2 p = (-iResolution.xy + 2.0*(xlv_TEXCOORD0+o))/iResolution.y;
 #else    
-        vec2 p = (-iResolution.xy + 2.0*gl_FragCoord)/iResolution.y;
+        vec2 p = (-iResolution.xy + 2.0*xlv_TEXCOORD0)/iResolution.y;
 #endif
 
 		// camera (ro = ray origin)	

@@ -53,7 +53,7 @@ float RayMarch(vec3 ro, vec3 rd){
 
 void main( )
 {
-    vec2 uv = (gl_FragCoord - iResolution.xy * 0.5)/iResolution.y;
+    vec2 uv = (xlv_TEXCOORD0 - iResolution.xy * 0.5)/iResolution.y;
 
     vec3 col = vec3(0);
     
