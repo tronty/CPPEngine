@@ -336,14 +336,14 @@ float heightMapTracing(vec3 ori, vec3 dir, out vec3 p) {
 }
 
 // main
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void main( ) {
      float EPSILON_NRM	= 0.1 / iResolution.x;
     float SEA_TIME = iTime * SEA_SPEED;
 
 
     // bteitler: 2D Pixel location passed in as raw pixel, let's divide by resolution
     // to convert to coordinates between 0 and 1
-    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
 
     uv = uv * 2.0 - 1.0; //  bteitler: Shift pixel coordinates from 0 to 1 to between -1 and 1
     uv.x *= iResolution.x / iResolution.y; // bteitler: Aspect ratio correction - if you don't do this your rays will be distorted

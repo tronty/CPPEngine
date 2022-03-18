@@ -219,7 +219,7 @@ mat4 viewMatrix(vec3 eye, vec3 center, vec3 up) {
     );
 }
 
-void mainImage( out vec4 gl_FragColor, in vec2 xlv_TEXCOORD0 )
+void main( )
 {
 	vec3 viewDir = rayDirection(45.0, iResolution.xy, xlv_TEXCOORD0);
     vec3 eye = vec3(8.0, 5.0, 7.0);

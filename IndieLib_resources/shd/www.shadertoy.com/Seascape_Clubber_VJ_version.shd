@@ -170,10 +170,10 @@ float heightMapTracing(vec3 ori, vec3 dir, out vec3 p) {
 }
 
 // main
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void main( ) {
     Clubber = vec4(CLUBBER_R,CLUBBER_G, CLUBBER_B, CLUBBER_A);
     SEA_CHOPPY = mix(4.0,32.0, Clubber.a);
-	vec2 uv = fragCoord.xy / iResolution.xy;
+	vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
     uv = uv * 2.0 - 1.0;
     uv.x *= iResolution.x / iResolution.y;    
     float time = iTime * 0.3 + iMouse.x*0.01;
@@ -198,5 +198,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     	pow(smoothstep(0.0,-0.05,dir.y),0.3));
         
     // post
-	fragColor = vec4(pow(color,vec3(0.75)), 1.0);
+	gl_FragColor = vec4(pow(color,vec3(0.75)), 1.0);
 }

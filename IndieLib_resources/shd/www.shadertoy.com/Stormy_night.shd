@@ -13,9 +13,9 @@ float sn(float2 p){
 	return mix(rt,rb,f.y);
 }
 
-void mainImage( out float4 fragColor, in float2 fragCoord )
+void main( )
 {
-	float2 uv = fragCoord.xy / iResolution.y;
+	float2 uv = xlv_TEXCOORD0.xy / iResolution.y;
 
 	uv+=iMouse.xy/ iResolution.xy;
 	
@@ -109,7 +109,7 @@ void mainImage( out float4 fragColor, in float2 fragCoord )
 	
 	float3 painting = tree*ground*(clouds + rain)+clamp(rain*(strength-0.1),0.,1.);
 	
-	float r=1.-length(max(abs(fragCoord.xy / iResolution.xy*2.-1.)-.5,0.)); 
+	float r=1.-length(max(abs(xlv_TEXCOORD0.xy / iResolution.xy*2.-1.)-.5,0.)); 
 	painting*=r;
 	
 	fragColor = float4(painting, 1.);

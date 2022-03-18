@@ -185,7 +185,7 @@ vec3 getPixel(in vec2 coord, float time) {
 // main
 //layout(location = 0) in vec2  xlv_TEXCOORD0;
 //layout(location = 0) out vec4 fragColor;
-void mainImage( ) {
+void main( ) {
     float time = iTime * 0.3 + iMouse.x*0.01;
 	
 #ifdef AA

@@ -413,7 +413,7 @@ void FlyerPM (float s, float rl, float vu, out vec3 flPos, out mat3 flMat)
           mat3 (ca.y, 0., - sa.y, 0., 1., 0., sa.y, 0., ca.y);
 }
 
-void mainImage (out vec4 fragColor, in vec2 fragCoord)
+void main( )
 {
   mat3 vuMat, flMat;
   vec4 mPtr, dateCur;
@@ -421,7 +421,7 @@ void mainImage (out vec4 fragColor, in vec2 fragCoord)
   vec2 canvas, uv, uvv;
   float spd, el, az, zmFac, asp, sr, tPos;
   canvas = iResolution.xy;
-  uv = 2. * fragCoord.xy / canvas - 1.;
+  uv = 2. * xlv_TEXCOORD0.xy / canvas - 1.;
   uv.x *= canvas.x / canvas.y;
   tCur = iTime;
   dateCur = iDate;
@@ -466,7 +466,7 @@ void mainImage (out vec4 fragColor, in vec2 fragCoord)
     rd = (vuMat * rd) * flMat;
     col += (1. / naa) * ShowScene (ro, rd);
   }
-  fragColor = vec4 (col, 1.);
+  gl_FragColor = vec4 (col, 1.);
 }
 
 float PrBoxDf (vec3 p, vec3 b)

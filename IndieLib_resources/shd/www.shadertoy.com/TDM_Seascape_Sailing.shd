@@ -387,10 +387,10 @@ float heightMapTracing(vec3 ori, vec3 dir, out vec3 p) {
 }
 
 // main
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void main( ) {
     // bteitler: 2D Pixel location passed in as raw pixel, let's divide by resolution
     // to convert to coordinates between 0 and 1
-    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
 
     uv = uv * 2.0 - 1.0; //  bteitler: Shift pixel coordinates from 0 to 1 to between -1 and 1
     uv.x *= iResolution.x / iResolution.y; // bteitler: Aspect ratio correction - if you don't do this your rays will be distorted
@@ -510,11 +510,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     
     // bteitler: Apply an overall image brightness factor as the final color for this pixel.  Can be
     // tweaked artistically.
-    fragColor = vec4(pow(color,vec3(0.75)), 1.0);
+    gl_FragColor = vec4(pow(color,vec3(0.75)), 1.0);
     
     // CaliCoastReplay:  Adjust hue, saturation, and value adjustment for an even more processed look
     // hsv.x is hue, hsv.y is saturation, and hsv.z is value
-    vec3 hsv = rgb2hsv(fragColor.xyz);    
+    vec3 hsv = rgb2hsv(gl_FragColor.xyz);    
     //CaliCoastReplay: Increase saturation slightly
     hsv.y += 0.131;
     //CaliCoastReplay:
@@ -555,5 +555,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     
     //CaliCoastReplay:    
     //Replace the final color with the adjusted, translated HSV values
-    fragColor.xyz = hsv2rgb(hsv);
+    gl_FragColor.xyz = hsv2rgb(hsv);
 }

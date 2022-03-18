@@ -230,14 +230,14 @@ float right(vec2 pt)
 }
 
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord )
+void main( )
 {
-    vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
     uv = uv * 2.0 - 1.0;		
     uv.x *= iResolution.x / iResolution.y;
     uv *= 5.;
     
-    fragColor = vec4(0);
+    gl_FragColor = vec4(0);
     float l = left(uv - vec2(-5.,0.));
     float c = center(uv);
     float r = right(uv - vec2(5.,0.));
@@ -246,5 +246,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float t = clamp(d, 0.0, .04) * 2.*12.5;
     vec4 bg = vec4(0);
     vec4 fg = vec4(.8);
-    fragColor = mix(bg, fg, 1.-t);  
+    gl_FragColor = mix(bg, fg, 1.-t);  
 }

@@ -6636,7 +6636,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));\n"
 				"    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.uv.x = In.uv.x;\n"
-				"    Out.uv.y = In.uv.y;\n"
+				"    Out.uv.y = 1.0-In.uv.y;\n"
 				"    return Out;\n"
 				"}\n"
 				"//layout(location = 0) out vec2  xlv_TEXCOORD0;\n"
@@ -6647,6 +6647,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    xlt_In.uv = vec2(gl_MultiTexCoord0);\n"
 				"    xl_retval = main2( xlt_In);\n"
 				"    gl_Position = vec4(xl_retval.position);\n"
+				"    //gl_FragCoord = vec2(xl_retval.uv);\n"
 				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
 				"}\n");
 		fsStr2.append(  "uniform vec3      iResolution;\n"
