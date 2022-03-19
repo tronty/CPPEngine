@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision lowp float;
+#endif
+
 #define PI 3.14159265358979
 #define N 10
 void main( void ) {

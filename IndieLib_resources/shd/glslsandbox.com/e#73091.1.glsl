@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision highp float;
+#endif
+
 const int NUM_STEPS = 8;
 const float PI      = 3.141592;
 const float EPSILON = 1e-3;

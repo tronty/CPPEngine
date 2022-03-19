@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision lowp float;
+#endif
+
 uniform float zoom;
 
 #define saturate(oo) clamp(oo, 0.0, 1.0)

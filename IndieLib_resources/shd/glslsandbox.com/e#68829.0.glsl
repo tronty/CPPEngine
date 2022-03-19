@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision lowp float;
+#endif
+
 const float pi = 3.141592653589793;
 
 float hash( in vec2 p ) 

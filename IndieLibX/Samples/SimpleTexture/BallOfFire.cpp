@@ -206,7 +206,7 @@ int init(const char* aTitle)
 		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(g_filenames[i].c_str(), "main2", "main");
 		if(id==-1)
 		{
-			printf("Shader=%s failed!\n", g_filenames[i]);
+			printf("Shader=%s failed!\n", g_filenames[i].c_str());
 			//stx_exit(0);
 			//continue;
 		}
