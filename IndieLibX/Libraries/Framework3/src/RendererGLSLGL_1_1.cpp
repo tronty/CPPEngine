@@ -1018,6 +1018,7 @@ GL_FRAGMENT_SHADER_ARB
 				glGetObjectParameterivARB(shaderGL1_1.shader[eVertexShader], GL_OBJECT_COMPILE_STATUS_ARB, &vsResult);
 				checkGlError("");
 LOG_FNLN;
+#ifndef _MSC_VER
 			{
             			char* s=new char(32768);
 				s[0]='\0';
@@ -1025,6 +1026,7 @@ LOG_FNLN;
             			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
             			delete[] s;
 			}
+#endif
 				if (vsResult)
 				{
 LOG_FNLN;
@@ -1097,6 +1099,7 @@ LOG_FNLN;
 				glGetObjectParameterivARB(shaderGL1_1.shader[ePixelShader], GL_OBJECT_COMPILE_STATUS_ARB, &fsResult);
 				checkGlError("");
 LOG_FNLN;
+#ifndef _MSC_VER
 			{
             			char* s=new char(32768);
 				s[0]='\0';
@@ -1104,6 +1107,7 @@ LOG_FNLN;
             			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
             			delete[] s;
 			}
+#endif
 				if (fsResult)
 				{
 LOG_FNLN;
@@ -1160,6 +1164,7 @@ if (fsResult)
 LOG_FNLN;
 			glLinkProgramARB(shaderGL1_1.program);
 				checkGlError("");
+#ifndef _MSC_VER
 			{
 	    			char* s=new char(32768);
 				s[0]='\0';
@@ -1167,6 +1172,7 @@ LOG_FNLN;
             			if(s) if(stx_strlen(s)) printf("Link Log: \nvs:\n%s\nfs:\n%s\n%s\n", vsText.c_str(), fsText.c_str(), s);
             			delete[] s;
 			}
+#endif
 				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
 				checkGlError("");
 				glGetInfoLogARB(shaderGL1_1.program, sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
@@ -1557,10 +1563,10 @@ int argc, char *argv[]
 	//initExtensions(m_dpy);
 	importGLInit();
 
-	LOG_PRINT("GL_VERSION=%s\n", (const char *) glGetString(GL_VERSION));
-	LOG_PRINT("GL_VENDOR=%s\n", (const char *) glGetString(GL_VENDOR));
-	LOG_PRINT("GL_RENDERER=%s\n", (const char *) glGetString(GL_RENDERER));
-	LOG_PRINT("GL_SHADING_LANGUAGE_VERSION=%s\n", (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION));
+	printf("GL_VERSION=%s\n", (const char *) glGetString(GL_VERSION));
+	printf("GL_VENDOR=%s\n", (const char *) glGetString(GL_VENDOR));
+	printf("GL_RENDERER=%s\n", (const char *) glGetString(GL_RENDERER));
+	printf("GL_SHADING_LANGUAGE_VERSION=%s\n", (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	#if 0
     std::ofstream out("./OpenGL.log");

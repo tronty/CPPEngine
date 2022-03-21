@@ -36,10 +36,10 @@ vec2 scale(vec2 coords) {
 }
 
 /**
- * Return whether the `FragCoord` pair is within `RADIUS` of `point`.
+ * Return whether the `xlv_TEXCOORD0` pair is within `RADIUS` of `point`.
  */
-bool isPixel(vec2 FragCoord, vec2 point) {
-	return distance(FragCoord, point) < RADIUS;
+bool isPixel(vec2 xlv_TEXCOORD0, vec2 point) {
+	return distance(xlv_TEXCOORD0, point) < RADIUS;
 }
 
 /**
@@ -64,13 +64,13 @@ vec2 randABC(vec2 seed) {
 }
 
 /**
- * Return whether the `FragCoord` coordinate pair is a valid point in the
+ * Return whether the `xlv_TEXCOORD0` coordinate pair is a valid point in the
  * sequence of points derived from the `start` point.
  */
-bool validPoint(vec2 FragCoord, vec2 start) {
+bool validPoint(vec2 xlv_TEXCOORD0, vec2 start) {
     int iteration = int(iTime * SPEED); // Add 1 point per second
     
-    if (isPixel(FragCoord, start)) {
+    if (isPixel(xlv_TEXCOORD0, start)) {
         return true;
     }
     
@@ -83,7 +83,7 @@ bool validPoint(vec2 FragCoord, vec2 start) {
         vec2 seed = vec2(float(i) * 0.001, float(i) * 0.002 / 3.0);
         vec2 targetPoint = randABC(seed);
         currentPoint = currentPoint + ((targetPoint - currentPoint) / 2.0);
-        if (isPixel(FragCoord, currentPoint)) {
+        if (isPixel(xlv_TEXCOORD0, currentPoint)) {
         	return true;
         }
     }
@@ -91,7 +91,7 @@ bool validPoint(vec2 FragCoord, vec2 start) {
     return false;
 }
 
-void main( )
+void main()
 {
     vec4 red = vec4(1.0, 0.0, 0.0, 1.0);
     vec4 white = vec4(1.0, 1.0, 1.0, 1.0);
