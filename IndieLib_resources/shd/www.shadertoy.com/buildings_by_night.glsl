@@ -1,5 +1,6 @@
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
+uniform sampler2D iChannel2;
 
 #define AA 3  // make this 2 or 3 for antialiasing
 // Derived from IQ raymarcher and is, as such, educational only

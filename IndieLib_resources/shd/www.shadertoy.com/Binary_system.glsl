@@ -35,7 +35,7 @@ float pn( in vec3 p )
     p = fract(p);
     p *= p*(3.0-2.0*p);
     vec2 uv = (ip.xy+vec2(37.0,17.0)*ip.z) + p.xy;
-    uv = texture( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
+    uv = textureLod( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
     return mix( uv.x, uv.y, p.z );
 }
 

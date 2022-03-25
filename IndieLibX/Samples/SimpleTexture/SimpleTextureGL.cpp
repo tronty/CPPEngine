@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -15,7 +15,7 @@ VertexFormatID vf=-1;
 int init(const char* aTitle)
 {
 	STX_FNLN;
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "main", "main");
 	STX_FNLN;
 	FormatDesc format[] =
 	{
@@ -26,38 +26,7 @@ int init(const char* aTitle)
 	vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 	STX_FNLN;
 	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
-#if 0
-	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/bluetexture.png", false, IRenderer::GetRendererInstance()->Getlinear());
-	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/greentexture.png", false, IRenderer::GetRendererInstance()->Getlinear());
-	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/ViewportProjectionContent/redtexture.png", false, IRenderer::GetRendererInstance()->Getlinear());
-	STX_FNLN;
 
-	{Image3 img;ubyte* p;char* fn;
-	fn="/ViewportProjectionContent/bluetexture.png";	
-	img.loadImageLibImage(fn);
-	img.decompress();
-	p=img.getPixels();
-	STX_PRINT("b[0]:%x\n", *(p+0));
-	STX_PRINT("b[1]:%x\n", *(p+1));
-	STX_PRINT("b[2]:%x\n", *(p+2));}
-	{Image3 img;ubyte* p;char* fn;
-	fn="/ViewportProjectionContent/greentexture.png";	
-	img.loadImageLibImage(fn);
-	img.decompress();
-	p=img.getPixels();
-	STX_PRINT("g[0]:%x\n", *(p+0));
-	STX_PRINT("g[1]:%x\n", *(p+1));
-	STX_PRINT("g[2]:%x\n", *(p+2));}
-	{Image3 img;ubyte* p;char* fn;
-	fn="/ViewportProjectionContent/redtexture.png";	
-	img.loadImageLibImage(fn);
-	img.decompress();
-	p=img.getPixels();
-	STX_PRINT("r[0]:%x\n", *(p+0));
-	STX_PRINT("r[1]:%x\n", *(p+1));
-	STX_PRINT("r[2]:%x\n", *(p+2));}
-	STX_FNLN;
-#endif
 	return 0;
 }
 
