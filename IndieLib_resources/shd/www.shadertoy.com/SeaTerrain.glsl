@@ -5,6 +5,54 @@ const int MAX_MARCHING_STEPS = 255;
 const float MIN_DIST = 0.0;
 const float MAX_DIST = 100.0;
 const float PRECISION = 0.001;
+vec3 lightDir = normalize(vec3(-.8, .15, -.3));
+
+#define SC (250.0)
+
+float random(in vec2 uv)
+{
+    return fract(sin(dot(uv.xy, 
+                         vec2(12.9898, 78.233))) * 
+                 43758.5453123);
+}
+
+float noise(in vec2 uv)
+{
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+    
+    float a = random(i + vec2(0., 0.));
+    float b = random(i + vec2(1., 0.));
+    float c = random(i + vec2(0., 1.));
+    float d = random(i + vec2(1., 1.));
+    
+    vec2 u = smoothstep(0., 1., f);
+    
+    return mix(mix(a, b, u.x), 
+               mix(c, d, u.x), u.y);
+}
+
+#define OCTAVES 8
+float fbm(in vec2 uv)
+{
+    float value = 0.;
+    float amplitude = 1.;
+    float freq = 0.8;
+    
+    for (int i = 0; i < OCTAVES; i++)
+    {
+        // value += noise(uv * freq) * amplitude;
+        
+        // From Dave_Hoskins https://www.shadertoy.com/user/Dave_Hoskins
+        value += (.25-abs(noise(uv * freq)-.3) * amplitude);
+        
+        amplitude *= .37;
+        
+        freq *= 2.;
+    }
+    
+    return value;
+}
 
 struct Surface {
   float sd; // signed distance
@@ -111,8 +159,8 @@ void main( )
         vec3 mate = vec3(0.0,0.5,0.8);
         
         col = mate;
-           
-      vec3 lightPosition1 = vec3(8, 2, -20);
+	
+	vec3 lightPosition1 = vec3(8, 2, -20);
       vec3 lightDirection1 = normalize(lightPosition1 - co.sd);
       float lightIntensity1 = 0.85;
       
@@ -124,7 +172,37 @@ void main( )
       col = lightIntensity1 * phong(lightDirection1, nor, rd);
       col += lightIntensity2 * phong(lightDirection2, nor , rd);
        }
-    
+    else
+    {
+#if 0
+        // from iq's shader, https://www.shadertoy.com/view/MdX3Rr
+        float sundot = clamp(dot(rd, lightDir), 0.0, 1.0);
+        col = vec3(0.3,0.5,0.85) - rd.y*rd.y*0.5;
+        col = mix( col, 0.85*vec3(0.7,0.75,0.85), pow( 1.0-max(rd.y,0.0), 4.0 ) );
+        // sun
+		col += 0.25*vec3(1.0,0.7,0.4)*pow( sundot,5.0 );
+		col += 0.25*vec3(1.0,0.8,0.6)*pow( sundot,64.0 );
+		col += 0.2*vec3(1.0,0.8,0.6)*pow( sundot,512.0 );
+        // clouds
+		vec2 sc = ro.xz + rd.xz*(SC*1000.0-ro.y)/rd.y;
+		col = mix( col, vec3(1.0,0.95,1.0), 0.5*smoothstep(0.5,0.8,fbm(0.0005*sc/SC)) );
+        // horizon
+        col = mix( col, 0.68*vec3(0.4,0.65,1.0), pow( 1.0-max(rd.y,0.0), 16.0 ) );
+#else
+	float sundot = clamp(dot(rd,lightDir),0.0,1.0);
+        // sky		
+		col = vec3(0.3,.55,0.8)*(1.0-0.8*rd.y)*0.9;
+        // sun
+		col += 0.25*vec3(1.0,0.7,0.4)*pow( sundot,5.0 );
+		col += 0.25*vec3(1.0,0.8,0.6)*pow( sundot,64.0 );
+		col += 0.2*vec3(1.0,0.8,0.6)*pow( sundot,512.0 );
+        // clouds
+		vec2 sc = ro.xz + rd.xz*(1000.0-ro.y)/rd.y;
+		col = mix( col, vec3(1.0,0.95,1.0), 0.5*smoothstep(0.5,0.8,fbm(0.0005*sc)) );
+        // horizon
+        col = mix( col, vec3(0.7,0.75,0.8), pow( 1.0-max(rd.y,0.0), 8.0 ) );
+#endif
+	}
 	gl_FragColor = vec4( col, 1.0 );
 }
 

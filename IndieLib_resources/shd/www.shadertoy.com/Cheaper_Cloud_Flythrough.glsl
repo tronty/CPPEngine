@@ -1,5 +1,3 @@
-uniform sampler2D iChannel0;
-
 /*
 
 	Cheap Cloud Flythrough 
@@ -41,20 +39,40 @@ uniform sampler2D iChannel0;
 
 */
 
+// random/hash function              
+float hash( float n )
+{
+  return fract(cos(n)*41415.92653);
+}
 
+// 3d noise function
+float pn( in vec3 x )
+{
+  vec3 p  = floor(x);
+  vec3 f  = smoothstep(0.0, 1.0, fract(x));
+  float n = p.x + p.y*57.0 + 113.0*p.z;
+
+  return mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
+    mix( hash(n+ 57.0), hash(n+ 58.0),f.x),f.y),
+    mix(mix( hash(n+113.0), hash(n+114.0),f.x),
+    mix( hash(n+170.0), hash(n+171.0),f.x),f.y),f.z);
+}
+
+#if 0
 // IQ's texture lookup noise... in obfuscated form. There's less writing, so
 // that makes it faster. That's how optimization works, right? :) Seriously,
 // though, refer to IQ's original for the proper function.
 // 
 // By the way, you could replace this with the non-textured version, and the
 // shader should run at almost the same efficiency.
-float pn( in vec3 p ){
+uniform sampler2D iChannel0;
+float pn_original( in vec3 p ){
     
     vec3 i = floor(p); p -= i; p *= p*(3. - 2.*p);
 	p.xy = texture(iChannel0, (p.xy + i.xy + vec2(37, 17)*i.z + .5)/256., -100.).yx;
 	return mix(p.x, p.y, p.z);
 }
-
+#endif
 
 
 // Basic low quality noise consisting of three layers of rotated, mutated 
