@@ -1,5 +1,6 @@
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
+uniform sampler2D iChannel2;
 
 // "Volumetric explosion" by Duke
 // https://www.shadertoy.com/view/lsySzd
@@ -35,7 +36,7 @@ float noise( in vec3 x )
     vec3 f = fract(x);
 	f = f*f*(3.0-2.0*f);
 	vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
-	vec2 rg = textureLod( iChannel0, (uv+ 0.5)/256.0, 0.0 ).yx;
+	vec2 rg = texture2D( iChannel0, (uv+ 0.5)/256.0).yx;
 	return 1. - 0.82*mix( rg.x, rg.y, f.z );
 }
 
@@ -143,9 +144,9 @@ void main( )
 	const float KEY_2 = 50.5/256.0;
 	const float KEY_3 = 51.5/256.0;
     float key = 0.0;
-    key += 0.7*texture(iChannel1, vec2(KEY_1,0.25)).x;
-    key += 0.7*texture(iChannel1, vec2(KEY_2,0.25)).x;
-    key += 0.7*texture(iChannel1, vec2(KEY_3,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_1,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_2,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_3,0.25)).x;
 
     vec2 uv = xlv_TEXCOORD0/iResolution.xy;
     
@@ -250,7 +251,7 @@ void main( )
         vec2 uvd = uv;
         uvd.y*=120.;
         uvd.x*=280.;
-        d=abs(d)*(.8+0.08*texture(iChannel2,vec2(uvd.y,-uvd.x+0.5*sin(4.*iTime+uvd.y*4.0))).r);
+        d=abs(d)*(.8+0.08*texture2D(iChannel2,vec2(uvd.y,-uvd.x+0.5*sin(4.*iTime+uvd.y*4.0))).r);
         #endif 
 		
         // trying to optimize step size

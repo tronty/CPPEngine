@@ -1,3 +1,4 @@
+uniform sampler2D iChannel1;
 // A documented, altered, recolored version of "Seascape".
 // The famous original at:
 // https://www.shadertoy.com/view/Ms2SD1
@@ -326,7 +327,7 @@ vec3 getNormal(vec3 p, float eps) {
 //CaliCoastReplay :  Keyboard checking function from the iChannel representing keyboard input
 float isKeyPressed(float key)
 {
-	return texture( iChannel1, vec2(key, 1.0) ).x;
+	return texture2D( iChannel1, vec2(key, 1.0) ).x;
 }
 
 // bteitler: Find out where a ray intersects the current ocean

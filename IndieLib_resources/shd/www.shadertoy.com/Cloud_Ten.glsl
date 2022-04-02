@@ -7,7 +7,7 @@ uniform sampler2D iChannel0;
 
 #define time iTime
 mat2 mm2(in float a){float c = cos(a), s = sin(a);return mat2(c,s,-s,c);}
-float noise(float t){return textureLod(iChannel0,vec2(t,.0)/iChannelResolution[0].xy,0.0).x;}
+float noise(float t){return texture2D(iChannel0,vec2(t,.0)/iChannelResolution[0].xy).x;}
 float moy = 0.;
 
 float noise(in vec3 p)
@@ -16,7 +16,7 @@ float noise(in vec3 p)
     vec3 fp = fract(p);
 	fp = fp*fp*(3.0-2.0*fp);
 	vec2 tap = (ip.xy+vec2(37.0,17.0)*ip.z) + fp.xy;
-	vec2 rz = textureLod( iChannel0, (tap+0.5)/256.0, 0.0 ).yx;
+	vec2 rz = texture2D( iChannel0, (tap+0.5)/256.0 ).yx;
 	return mix( rz.x, rz.y, fp.z );
 }
 

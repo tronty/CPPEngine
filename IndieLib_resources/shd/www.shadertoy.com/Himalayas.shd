@@ -207,8 +207,8 @@ void mainImage( out float4 fragColor, in float2 fragCoord ) {
     if( letterBox(fragCoord, iResolution.xy, 2.35) ) {
         fragColor = float4( 0., 0., 0., 1. );
     } else {
-        float4 col = texelFetch(iChannel0, ivec2(fragCoord), 0);
-        float4 clouds = texelFetch(iChannel1, ivec2(fragCoord), 0);
+        float4 col = texture2D(iChannel0, ivec2(fragCoord));
+        float4 clouds = texture2D(iChannel1, ivec2(fragCoord));
     	
         col.rgb = clouds.rgb + col.rgb * clouds.a;
        

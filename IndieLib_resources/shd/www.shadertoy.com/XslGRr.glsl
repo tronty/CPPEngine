@@ -29,9 +29,9 @@ uniform sampler2D iChannel2;
 // https://iquilezles.org/www/articles/derivative/derivative.htm
 
 
-// 0: one 3d texture lookup
-// 1: two 2d texture lookups with hardware interpolation
-// 2: two 2d texture lookups with software interpolation
+// 0: one 3d texture2D lookup
+// 1: two 2d texture2D lookups with hardware interpolation
+// 2: two 2d texture2D lookups with software interpolation
 #define NOISE_METHOD 1
 
 // 0: no LOD
@@ -48,11 +48,11 @@ float noise( in vec3 x )
 
 #if NOISE_METHOD==0
     x = p + f;
-    return textureLod(iChannel2,(x+0.5)/32.0,0.0).x*2.0-1.0;
+    return texture2D(iChannel2,(x+0.5)/32.0).x*2.0-1.0;
 #endif
 #if NOISE_METHOD==1
 	vec2 uv = (p.xy+vec2(37.0,239.0)*p.z) + f.xy;
-    vec2 rg = textureLod(iChannel0,(uv+0.5)/256.0,0.0).yx;
+    vec2 rg = texture2D(iChannel0,(uv+0.5)/256.0).yx;
 	return mix( rg.x, rg.y, f.z )*2.0-1.0;
 #endif    
 #if NOISE_METHOD==2

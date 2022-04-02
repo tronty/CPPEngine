@@ -1,3 +1,6 @@
+uniform sampler2D iChannel0;
+uniform sampler2D iChannel1;
+uniform sampler2D iChannel2;
 // Copyright Inigo Quilez, 2013 - https://iquilezles.org/
 // I am the sole copyright owner of this Work.
 // You cannot host, display, distribute or share this Work in any form,
@@ -43,20 +46,20 @@ float noise( in vec3 x )
 
 #if NOISE_METHOD==0
     x = p + f;
-    return textureLod(iChannel2,(x+0.5)/32.0,0.0).x*2.0-1.0;
+    return texture2D(iChannel2,(x+0.5)/32.0).x*2.0-1.0;
 #endif
 #if NOISE_METHOD==1
 	vec2 uv = (p.xy+vec2(37.0,239.0)*p.z) + f.xy;
-    vec2 rg = textureLod(iChannel0,(uv+0.5)/256.0,0.0).yx;
+    vec2 rg = texture2D(iChannel0,(uv+0.5)/256.0).yx;
 	return mix( rg.x, rg.y, f.z )*2.0-1.0;
 #endif    
 #if NOISE_METHOD==2
     ivec3 q = ivec3(p);
 	ivec2 uv = q.xy + ivec2(37,239)*q.z;
-	vec2 rg = mix(mix(texelFetch(iChannel0,(uv           )&255,0),
-				      texelFetch(iChannel0,(uv+ivec2(1,0))&255,0),f.x),
-				  mix(texelFetch(iChannel0,(uv+ivec2(0,1))&255,0),
-				      texelFetch(iChannel0,(uv+ivec2(1,1))&255,0),f.x),f.y).yx;
+	vec2 rg = mix(mix(texture2D(iChannel0,(uv           )&255,0),
+				      texture2D(iChannel0,(uv+ivec2(1,0))&255,0),f.x),
+				  mix(texture2D(iChannel0,(uv+ivec2(0,1))&255,0),
+				      texture2D(iChannel0,(uv+ivec2(1,1))&255,0),f.x),f.y).yx;
 	return mix( rg.x, rg.y, f.z )*2.0-1.0;
 #endif    
 }
@@ -89,7 +92,7 @@ float map( in vec3 p, int oct )
     return 1.5*f - 0.5 - p.y;
 }
 
-const vec3 sundir = normalize( vec3(-1.0,0.0,-1.0) );
+const vec3 sundir = vec3(-1.0,0.0,-1.0);
 const int kDiv = 1; // make bigger for higher quality
 
 vec4 raymarch( in vec3 ro, in vec3 rd, in vec3 bgcol, in ivec2 px )
@@ -119,7 +122,7 @@ vec4 raymarch( in vec3 ro, in vec3 rd, in vec3 bgcol, in ivec2 px )
     }
     
     // dithered near distance
-    float t = tmin + 0.1*texelFetch( iChannel1, px&1023, 0 ).x;
+    float t = tmin + 0.1*texture2D( iChannel1, px&1023).x;
     
     // raymarch loop
 	vec4 sum = vec4(0.0);

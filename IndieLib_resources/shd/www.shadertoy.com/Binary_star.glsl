@@ -28,7 +28,7 @@ float pn( in vec3 p )
     p = fract(p);
     p *= p*(3.0-2.0*p);
     vec2 uv = (ip.xy+vec2(37.0,17.0)*ip.z) + p.xy;
-    uv = texture( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
+    uv = texture2D( iChannel0, (uv+ 0.5)/256.0, -100.0 ).yx;
     return mix( uv.x, uv.y, p.z );
 }
 
@@ -159,9 +159,9 @@ vec3 firePalette(float i){
 void main( )
 {  
    float key = 0.0;
-    key += 0.7*texture(iChannel1, vec2(KEY_1,0.25)).x;
-    key += 0.7*texture(iChannel1, vec2(KEY_2,0.25)).x;
-    key += 0.7*texture(iChannel1, vec2(KEY_3,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_1,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_2,0.25)).x;
+    key += 0.7*texture2D(iChannel1, vec2(KEY_3,0.25)).x;
    
     // p: position on the ray
     // rd: direction of the ray

@@ -3,9 +3,9 @@ uniform sampler2D iChannel0;
 void main( )
 {
 	vec2 uv = xlv_TEXCOORD0.xy / iResolution.xy;
-	gl_FragColor = texture(iChannel0, uv);
+	gl_FragColor = texture2D(iChannel0, uv);
     
-    vec3 rd = texture(iChannel0, vec2(0.5)).rgb;
+    vec3 rd = texture2D(iChannel0, vec2(0.5)).rgb;
     
     float res = .4;
     float steps = 3.14159*2.;
@@ -17,7 +17,7 @@ void main( )
     for (float i = 0.; i < steps; i = i + res)
     {
         vec2 _uv = uv+vec2(cos(i), sin(i))*dist;
-        tcol += texture(iChannel0, _uv).rgb;    
+        tcol += texture2D(iChannel0, _uv).rgb;    
     }
 
     gl_FragColor.rgb = tcol/(steps/res);

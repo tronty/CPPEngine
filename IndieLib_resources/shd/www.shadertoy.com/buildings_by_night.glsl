@@ -160,7 +160,7 @@ vec3 lighting(vec3 ro, vec3 rd, float t, float mat) {
 vec3 background(vec3 ro, vec3 rd, vec2 uv) {
     float f = smoothstep(0.0f, .2f, rd.y);
     uv.y -= iTime / 20.0f;
-    vec3 sky = vec3(0.03,0.03,0.07) + pow( texture(iChannel0, uv/1.0f).x, 10.0f) * .5f;
+    vec3 sky = vec3(0.03,0.03,0.07) + pow( texture2D(iChannel0, uv/1.0f).x, 10.0f) * .5f;
     return mix(vec3(0.05,0.06,0.07), sky, f);
 }
 
@@ -204,7 +204,7 @@ vec4 shadeBuilding(vec3 p, vec3 nor) {
     f = f * .1f + f * .9f * l;
 
     vec2 tuv = mix(p.xy, p.zy, nor.x);
-    vec3 bcol = texture(iChannel1, tuv).xyz / 10.0f;
+    vec3 bcol = texture2D(iChannel1, tuv).xyz / 10.0f;
     vec3 col =  mix(bcol, vec3(1.0f, 1.0f, 3.0f / 5.0f), f);
     return (vec4(col, f));     
 }
@@ -224,7 +224,7 @@ vec3 render( in vec3 ro, in vec3 rd, vec2 uv )
             col = vec3(.1f, .1f, .1f);
             float a =  roadline(ro + rd * t) * .1f;
             
-            col = vec3(a)     +  texture(iChannel2,  (ro+rd*t).xz * 2.0f ).xyz * 0.01f * smoothstep(.5f, 0.51f, abs(pos.x));
+            col = vec3(a)     +  texture2D(iChannel2,  (ro+rd*t).xz * 2.0f ).xyz * 0.01f * smoothstep(.5f, 0.51f, abs(pos.x));
 ;
             }
         else{

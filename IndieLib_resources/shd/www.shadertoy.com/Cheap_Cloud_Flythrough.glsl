@@ -50,7 +50,7 @@ vec3 hash33(vec3 p){
 }
 
 
-// IQ's texture lookup noise... in obfuscated form. There's less writing, so
+// IQ's texture2D lookup noise... in obfuscated form. There's less writing, so
 // that makes it faster. That's how optimization works, right? :) Seriously,
 // though, refer to IQ's original for the proper function.
 // 
@@ -59,7 +59,7 @@ vec3 hash33(vec3 p){
 float pn( in vec3 p ){
     
     vec3 i = floor(p); p -= i; p *= p*(3. - 2.*p);
-	p.xy = texture(iChannel0, (p.xy + i.xy + vec2(37, 17)*i.z + .5)/256., -100.).yx;
+	p.xy = texture2D(iChannel0, (p.xy + i.xy + vec2(37, 17)*i.z + .5)/256., -100.).yx;
 	return mix(p.x, p.y, p.z);
 }
 
@@ -72,7 +72,7 @@ float trigNoise3D(in vec3 p){
     
     float res = 0., sum = 0.;
     
-    // IQ's cheap, texture-lookup noise function. Very efficient, but still 
+    // IQ's cheap, texture2D-lookup noise function. Very efficient, but still 
     // a little too processor intensive for multiple layer usage in a largish 
     // "for loop" setup. Therefore, just one layer is being used here.
     float n = pn(p*8. + iTime*2.);

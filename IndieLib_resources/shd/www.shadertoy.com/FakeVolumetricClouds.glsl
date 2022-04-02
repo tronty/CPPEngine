@@ -45,14 +45,14 @@ float flter(float f, float a)
 
 float fbm(vec2 uv)
 {
-    float f = (texture(iChannel0, uv * 2.0).r - 0.5) * 0.2;
-    f += (texture(iChannel0, uv * 4.0).r - 0.5) * 0.125;
-    f += (texture(iChannel0, uv * 8.0).r - 0.5) * 0.125 * 0.5;
-    f += (texture(iChannel0, uv * 16.0).r - 0.5) * 0.125 * 0.25;
-    f += (texture(iChannel0, uv * 32.0).r - 0.5) * 0.125 * 0.24;
-    f += (texture(iChannel0, uv * 64.0).r - 0.5) * 0.125 * 0.22;
-    f += (texture(iChannel0, uv * 128.0).r - 0.5) * 0.125 * 0.12;
-    f += (texture(iChannel0, uv * 256.0).r - 0.5) * 0.125 * 0.1;
+    float f = (texture2D(iChannel0, uv * 2.0).r - 0.5) * 0.2;
+    f += (texture2D(iChannel0, uv * 4.0).r - 0.5) * 0.125;
+    f += (texture2D(iChannel0, uv * 8.0).r - 0.5) * 0.125 * 0.5;
+    f += (texture2D(iChannel0, uv * 16.0).r - 0.5) * 0.125 * 0.25;
+    f += (texture2D(iChannel0, uv * 32.0).r - 0.5) * 0.125 * 0.24;
+    f += (texture2D(iChannel0, uv * 64.0).r - 0.5) * 0.125 * 0.22;
+    f += (texture2D(iChannel0, uv * 128.0).r - 0.5) * 0.125 * 0.12;
+    f += (texture2D(iChannel0, uv * 256.0).r - 0.5) * 0.125 * 0.1;
     f += 0.5;
     return clamp(f, 0.0, 1.0);
 }
@@ -100,11 +100,11 @@ void clouds (vec2 uv, inout vec4 col, float t, float freq)
 // fbm for reflections
 float wfbm(vec2 uv)
 {
-    float f = (texture(iChannel1, uv * 1.0).r - 0.5) * 0.5;
-    f += (texture(iChannel1, uv * 2.0).r - 0.5) * 0.5 * 0.5;
-    f += (texture(iChannel1, uv * 4.0).r - 0.5) * 0.25 * 0.5;
-    f += (texture(iChannel1, uv * 8.0).r - 0.5) * 0.25 * 0.5 * 0.5;
-    f += (texture(iChannel1, uv * 16.0).r - 0.5) * 0.25 * 0.5 * 0.5 * 0.5;
+    float f = (texture2D(iChannel1, uv * 1.0).r - 0.5) * 0.5;
+    f += (texture2D(iChannel1, uv * 2.0).r - 0.5) * 0.5 * 0.5;
+    f += (texture2D(iChannel1, uv * 4.0).r - 0.5) * 0.25 * 0.5;
+    f += (texture2D(iChannel1, uv * 8.0).r - 0.5) * 0.25 * 0.5 * 0.5;
+    f += (texture2D(iChannel1, uv * 16.0).r - 0.5) * 0.25 * 0.5 * 0.5 * 0.5;
     return f + 0.5;
     
 }

@@ -6,7 +6,7 @@ const float PARALLAX_DEPTH = 2.8;
 const int   PARALLAX_STEPS = 32;
 const float	PI_OVER_180 = 3.14159265359 / 180.0;
 const float CAMERA_VERTICAL_FOV = 60.0;
-const vec3  SUN_DIRECTION = normalize(vec3(1.0,1.0,1.0));
+const vec3  SUN_DIRECTION = vec3(1.0,1.0,1.0);
 const float SEABED_DEPTH = -1.0;
 const vec3  WATER_COLOR = vec3(0.4,0.7,1.0)*0.5;
 
@@ -63,8 +63,8 @@ float get_foam_for_position(in vec2 pos)
     foam_uv.x += cos(fx*2.0 + iTime*1.0)*0.17;
     foam_uv.y += sin(fy*2.0 + iTime*1.0)*0.17;
     
-    // process blob texture to produce foam-like pattern
-    float foam = texture(iChannel0, foam_uv).x;
+    // process blob texture2D to produce foam-like pattern
+    float foam = texture2D(iChannel0, foam_uv.xy).x;
     foam = 1.0 - foam;
     foam = min( foam*1.2, 1.0 );
     foam = pow( foam, 4.0 );
@@ -210,7 +210,7 @@ vec3 get_sea_bottom(in vec3 eye, in vec3 ray)
 {
     vec3 pos = eye + ray * (eye.y - SEABED_DEPTH) / -ray.y;
    
-    vec3 color = texture(iChannel1, pos.xz * 0.2).xyz;
+    vec3 color = texture2D(iChannel1, pos.xz * 0.2).xyz;
     color *= vec3(0.6, 0.25, 0.05);
     color = mix(WATER_COLOR, color, exp(-length(pos - eye)*0.2));
     
@@ -224,7 +224,8 @@ vec3 refract_water(in vec3 ray, in vec3 N)
 
 vec3 get_skybox(in vec3 ray)
 {
-    vec3 cbm = texture(iChannel2, ray.xyz).xyz;
+    //vec3 cbm = texture2D(iChannel2, ray.xyz).xyz;
+      vec3 cbm = texture2D(iChannel2, ray.xy).xyz;
     cbm = mix(WATER_COLOR, cbm, clamp((ray.y - 0.05)*15.0, 0.0, 1.0));
     return cbm;
 }

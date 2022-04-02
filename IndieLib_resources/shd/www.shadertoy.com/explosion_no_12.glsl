@@ -10,7 +10,7 @@ float noise(vec3 x) // iq's 3D noise
     vec3 p = x - f;
     f = f*f*(3.0 - 2.0*f);
     vec2 uv = (p.xy + vec2(37.0, 17.0) * p.z) + f.xy;
-    vec2 rg = texture(iChannel0, (uv + 0.5)/256.0, -100.0).rg;
+    vec2 rg = texture2D(iChannel0, (uv + 0.5)/256.0, -100.0).rg;
     return mix(rg.y, rg.x, f.z);
 }
 
@@ -53,7 +53,7 @@ vec3 render(vec3 eye, vec3 dir, vec2 xlv_TEXCOORD0, float t)
 {
     vec4 color = vec4(0);
     
-    vec3 pos = eye + dir * STEP * texture(iChannel0, xlv_TEXCOORD0.xy/iChannelResolution[0].x).r;
+    vec3 pos = eye + dir * STEP * texture2D(iChannel0, xlv_TEXCOORD0.xy/iChannelResolution[0].x).r;
     
     for (int i=0; i<ITERATIONS; i++)
     {

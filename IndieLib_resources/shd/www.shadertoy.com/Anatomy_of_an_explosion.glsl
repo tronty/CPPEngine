@@ -21,7 +21,7 @@ float noise( in vec3 x )
      
     vec2 uv = (p.xy+vec2(37.0,17.0)*p.z) + f.xy;
     vec2 uv_=(uv+ 0.5)/256.0;
-    vec2 rg = textureLod( iChannel0, uv_, 0.0 ).yx;
+    vec2 rg = texture2D( iChannel0, uv_).yx;
     return mix( rg.x, rg.y, f.z );
 }
 
@@ -88,7 +88,7 @@ vec4 raymarch( in vec3 rayo, in vec3 rayd, in float expInter, in vec2 xlv_TEXCOO
      
     // dither start pos to break up aliasing
 	vec2 uv_=xlv_TEXCOORD0_.xy/iChannelResolution[0].x;
-	float x_=texture( iChannel0, uv_ ).x;
+	float x_=texture2D( iChannel0, uv_ ).x;
 	vec3 pos = rayo + rayd * (expInter + step*x_);
 	
     for( int i=0; i<25; i++ )

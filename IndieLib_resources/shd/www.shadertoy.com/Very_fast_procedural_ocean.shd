@@ -137,7 +137,7 @@ void main( )
         vec3 C = getatm(ray) * 2.0 + sun(ray);
         //tonemapping
     	C = aces_tonemap(C);
-     	fragColor = vec4( C,1.0);   
+     	gl_FragColor = vec4( C,1.0);   
         return;
     }
 	float lohit = intersectPlane(orig, ray, wfloor, vec3(0.0, 1.0, 0.0));
@@ -156,5 +156,5 @@ void main( )
     //tonemapping
     C = aces_tonemap(C);
     
-	fragColor = vec4(C,1.0);
+	gl_FragColor = vec4(C,1.0);
 }

@@ -6,7 +6,7 @@ uniform sampler2D iChannel0;
 //Explanation of techniques: https://www.shadertoy.com/view/fstSRH
 
 //Sample Noise texture
-#define T texture(iChannel0
+#define T texture2D(iChannel0
 //Sample map (approximate SDF)
 #define M (T,a/180.).r+.3-length(a.xy)*.1)
 
