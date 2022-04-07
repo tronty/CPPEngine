@@ -1340,10 +1340,10 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
                                             const unsigned int aflags)
 {
 	unsigned int flags=aflags;
-	tShader shaderType=eGLSL_Shader;
+	tShader shaderType=eHLSL_Shader;
 	const char *extension = strrchr(fileName, '.');
-	if (stricmp(extension, ".hlsl") == 0)
-		shaderType=eHLSL_Shader;
+	if (stricmp(extension, ".glsl") == 0)
+		shaderType=eGLSL_Shader;
 	else if (stricmp(extension, ".gles") == 0)
 		shaderType=eGLES_Shader;
 	flags=shaderType;
@@ -6571,9 +6571,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
 	//printf("foundVS=%d\n", foundVS);
 	//printf("foundPS=%d\n", foundPS);
+#endif
+#if 1
 	if	((foundPS!=std::string::npos) && (foundVS!=std::string::npos))
 		flags = eHLSL_Shader;
-	else if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) ||
+	else 
+#endif
+	if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) ||
 		 ((foundPS==std::string::npos) && (foundVS==std::string::npos)))
 	{
 		if(flags == eHLSL_Shader)
@@ -6583,7 +6587,6 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		else if(flags == eGLES_Shader)
 			flags = eGLES_Fragment_Shader;
 	}
-#endif
 #if 0
 		if(flags == eHLSL_Fragment_Shader)
 			printf("\n[HLSL_Fragment_Shader]\n");
