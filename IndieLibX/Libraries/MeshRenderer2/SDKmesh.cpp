@@ -23,10 +23,11 @@
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
 	UINT m=0;
-	if(numMaterials)
+	for( m = 0; m < numMaterials; m++ )
 	{
 	pMaterials[m].pDiffuseTexture9=-1;
-	pMaterials[m].pNormalTexture9=-1;   		pMaterials[m].pSpecularTexture9=-1;
+	pMaterials[m].pNormalTexture9=-1;
+	pMaterials[m].pSpecularTexture9=-1;
 	}
     char strPath[MAX_PATH];
     
@@ -233,16 +234,16 @@ void CDXUTSDKMesh::RenderMesh( UINT iMesh,
                                const char* htxNormal,
                                const char* htxSpecular )
 {
-    if( 0 < GetOutstandingBufferResources() )
-        return;
-
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+    //if( 0 < GetOutstandingBufferResources() ) return;
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     // Render the scene with this technique 
     //pEffect->SetTechnique( hTechnique );
 		if(pEffect>-1)IRenderer::GetRendererInstance()->setShader(pEffect);
 		if(vf>-1)IRenderer::GetRendererInstance()->setVertexFormat(vf);
 
     SDKMESH_MESH* pMesh = &m_pMeshArray[iMesh];
-
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     // set vb streams
     for( UINT i = 0; i < ( UINT )pMesh->NumVertexBuffers; i++ )
     {
@@ -263,22 +264,28 @@ void CDXUTSDKMesh::RenderMesh( UINT iMesh,
     for( UINT p = 0; p < cPasses; ++p ) */
     {
       //  pEffect->BeginPass( p );
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
         for( UINT subset = 0; subset < pMesh->NumSubsets; subset++ ) 
         {
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		//UINT subset = 0;
             pSubset = &m_pSubsetArray[ pMesh->pSubsets[subset] ];
 
             PrimType = GetPrimitiveType9( ( SDKMESH_PRIMITIVE_TYPE )pSubset->PrimitiveType );
-
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
             if( INVALID_MATERIAL != pSubset->MaterialID && m_pMeshHeader->NumMaterials > 0 )
             {
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
                 pMat = &m_pMaterialArray[ pSubset->MaterialID ];
-                if( htxDiffuse && ( pMat->pDiffuseTexture9 > -1 ) )
-                    IRenderer::GetRendererInstance()->setTexture( htxDiffuse, pMat->pDiffuseTexture9 );
-                if( htxNormal && ( pMat->pNormalTexture9 > -1 ) )
-                    IRenderer::GetRendererInstance()->setTexture( htxNormal, pMat->pNormalTexture9 );
-                if( htxSpecular && ( pMat->pSpecularTexture9 > -1 ) )
-                    IRenderer::GetRendererInstance()->setTexture( htxSpecular, pMat->pSpecularTexture9 );
+                if( htxDiffuse && ( pMat->pDiffuseTexture9 > -1 ) ){
+			printf("%s %x", htxDiffuse, pMat->pDiffuseTexture9 );
+                    IRenderer::GetRendererInstance()->setTexture( htxDiffuse, pMat->pDiffuseTexture9 );}
+                if( htxNormal && ( pMat->pNormalTexture9 > -1 ) ){
+			printf("%s %x", htxNormal, pMat->pNormalTexture9 );
+                    IRenderer::GetRendererInstance()->setTexture( htxNormal, pMat->pNormalTexture9 );}
+                if( htxSpecular && ( pMat->pSpecularTexture9 > -1 ) ){
+			printf("%s %x", htxSpecular, pMat->pSpecularTexture9 );
+                    IRenderer::GetRendererInstance()->setTexture( htxSpecular, pMat->pSpecularTexture9 );}
             }
 
             //pEffect->CommitChanges();
@@ -1578,16 +1585,16 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 #endif
 
 
-    LOG_PRINT("m_pStaticMeshData %x\n", m_pStaticMeshData);
-    LOG_PRINT("m_pMeshHeader->FrameDataOffset %x\n", m_pMeshHeader->FrameDataOffset);
-    LOG_PRINT("m_pMeshHeader->MaterialDataOffset %x\n", m_pMeshHeader->MaterialDataOffset);
-    LOG_PRINT("m_pMaterialArray[0].DiffuseTexture=%s\n", m_pMaterialArray[0].DiffuseTexture);
-    LOG_PRINT("m_pMaterialArray[0].NormalTexture=%s\n", m_pMaterialArray[0].NormalTexture);
-    LOG_PRINT("m_pMaterialArray[0].SpecularTexture=%s\n", m_pMaterialArray[0].SpecularTexture);
+    printf("m_pStaticMeshData %x\n", m_pStaticMeshData);
+    printf("m_pMeshHeader->FrameDataOffset %x\n", m_pMeshHeader->FrameDataOffset);
+    printf("m_pMeshHeader->MaterialDataOffset %x\n", m_pMeshHeader->MaterialDataOffset);
+    printf("m_pMaterialArray[0].DiffuseTexture=%s\n", m_pMaterialArray[0].DiffuseTexture);
+    printf("m_pMaterialArray[0].NormalTexture=%s\n", m_pMaterialArray[0].NormalTexture);
+    printf("m_pMaterialArray[0].SpecularTexture=%s\n", m_pMaterialArray[0].SpecularTexture);
 
 
     // Load Materials
-        LOG_PRINT("NumMaterials: %d\n", m_pMeshHeader->NumMaterials );
+        printf("NumMaterials: %d\n", m_pMeshHeader->NumMaterials );
         LoadMaterials( m_pMaterialArray, m_pMeshHeader->NumMaterials );
 
 

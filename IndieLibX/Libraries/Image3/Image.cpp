@@ -432,7 +432,7 @@ const char *getFormatString(const FORMAT format){
 
 FORMAT getFormatFromString(char *string){
 	for (unsigned int i = 0; i < elementsOf(formatStrings); i++){
-		if (stricmp(string, formatStrings[i].string) == 0) return formatStrings[i].format;
+		if (stx_strcasecmp(string, formatStrings[i].string) == 0) return formatStrings[i].format;
 	}
 	return FORMAT_NONE;
 }
@@ -1839,52 +1839,52 @@ bool Image3::loadImage(const char *aFileName, uint flags){
 	//LOG_FNLN;
 	bool r=true;
 
-	if (stricmp(extension, ".htex") == 0){
+	if (stx_strcasecmp(extension, ".htex") == 0){
 		if (!loadHTEX(fileName)) r=false;
 	} 
 	//LOG_FNLN;
-	if (stricmp(extension, ".dds") == 0){
+	if (stx_strcasecmp(extension, ".dds") == 0){
 		if (!loadDDS(fileName, flags)) r=false;
 	} 
 	//LOG_FNLN;
 #ifndef NO_HDR
-	if (stricmp(extension, ".hdr") == 0){
+	if (stx_strcasecmp(extension, ".hdr") == 0){
 		if (!loadHDR(fileName)) r=false;
 	}
 #endif // NO_HDR
 	//LOG_FNLN;
 #ifndef NO_JPEG
-	if (stricmp(extension, ".jpeg") == 0){
+	if (stx_strcasecmp(extension, ".jpeg") == 0){
 		if (!loadJPEG(fileName)) r=false;
 	}
-	if (stricmp(extension, ".jpg") == 0){
+	if (stx_strcasecmp(extension, ".jpg") == 0){
 		if (!loadJPEG(fileName)) r=false;
 	}
 #endif // NO_JPEG
 	//LOG_FNLN;
 #ifndef NO_PNG
-	if (stricmp(extension, ".png") == 0){
+	if (stx_strcasecmp(extension, ".png") == 0){
 		if (!loadPNG(fileName)) r=false;
 	}
 #endif // NO_PNG
 	//LOG_FNLN;
 #ifndef NO_TIFF
-	if (stricmp(extension, ".tif") == 0 || stricmp(extension, ".tiff") == 0 ){
+	if (stx_strcasecmp(extension, ".tif") == 0 || stx_strcasecmp(extension, ".tiff") == 0 ){
 		if (!loadTIFF(fileName)) r=false;
 	}
-	if (stricmp(extension, ".tif") == 0 || stricmp(extension, ".tif") == 0 ){
+	if (stx_strcasecmp(extension, ".tif") == 0 || stx_strcasecmp(extension, ".tif") == 0 ){
 		if (!loadTIFF(fileName)) r=false;
 	}
 #endif // NO_TIFF
 	//LOG_FNLN;
 #ifndef NO_TGA
-	if (stricmp(extension, ".tga") == 0){
+	if (stx_strcasecmp(extension, ".tga") == 0){
 		if (!loadTGA(fileName)) r=false;
 	}
 #endif // NO_TGA
 	//LOG_FNLN;
 #ifndef NO_BMP
-	if (stricmp(extension, ".bmp") == 0){
+	if (stx_strcasecmp(extension, ".bmp") == 0){
 	//LOG_FNLN;
 		if (!loadBMP(fileName)) r=false;
 	//LOG_FNLN;
@@ -1892,7 +1892,7 @@ bool Image3::loadImage(const char *aFileName, uint flags){
 #endif // NO_BMP
 	//LOG_FNLN;
 #ifndef NO_PCX
-	if (stricmp(extension, ".pcx") == 0){
+	if (stx_strcasecmp(extension, ".pcx") == 0){
 		if (!loadPCX(fileName)) r=false;
 	}
 #endif // NO_PCX
@@ -2576,34 +2576,34 @@ bool Image3::saveImage(const char *aFileName){
 	const char *extension = strrchr(fileName, '.');
 
 	if (extension != NULL){
-		if (stricmp(extension, ".htex") == 0){
+		if (stx_strcasecmp(extension, ".htex") == 0){
 			return saveHTEX(fileName);
-		} else if (stricmp(extension, ".dds") == 0){
+		} else if (stx_strcasecmp(extension, ".dds") == 0){
 			return saveDDS(fileName);
 		}
 #ifndef NO_JPEG
-		else if (stricmp(extension, ".jpg") == 0 || 
-                   stricmp(extension, ".jpeg") == 0){
+		else if (stx_strcasecmp(extension, ".jpg") == 0 || 
+                   stx_strcasecmp(extension, ".jpeg") == 0){
 			return saveJPEG(fileName, 75);
 		}
 #endif // NO_JPEG
 #ifndef NO_PNG
-		else if (stricmp(extension, ".png") == 0){
+		else if (stx_strcasecmp(extension, ".png") == 0){
 			return savePNG(fileName);
 		}
 #endif // NO_PNG
 #ifndef NO_TGA
-		else if (stricmp(extension, ".tga") == 0){
+		else if (stx_strcasecmp(extension, ".tga") == 0){
 			return saveTGA(fileName);
 		}
 #endif // NO_TGA
 #ifndef NO_BMP
-		else if (stricmp(extension, ".bmp") == 0){
+		else if (stx_strcasecmp(extension, ".bmp") == 0){
 			return saveBMP(fileName);
 		}
 #endif // NO_BMP
 #ifndef NO_PCX
-		else if (stricmp(extension, ".pcx") == 0){
+		else if (stx_strcasecmp(extension, ".pcx") == 0){
 			return savePCX(fileName);
 		}
 #endif // NO_PCX

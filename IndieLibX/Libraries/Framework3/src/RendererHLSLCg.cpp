@@ -1342,9 +1342,9 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	unsigned int flags=aflags;
 	tShader shaderType=eHLSL_Shader;
 	const char *extension = strrchr(fileName, '.');
-	if (stricmp(extension, ".glsl") == 0)
+	if (stx_strcasecmp(extension, ".glsl") == 0)
 		shaderType=eGLSL_Shader;
-	else if (stricmp(extension, ".gles") == 0)
+	else if (stx_strcasecmp(extension, ".gles") == 0)
 		shaderType=eGLES_Shader;
 	flags=shaderType;
 #if 0
