@@ -6616,6 +6616,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		if(	std::string::npos!=shaderText.find("void mainImage("))
 			fsMain_="mainImage";
 		#endif
+		std::string fsStr2_=shaderText;
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
@@ -6674,42 +6675,65 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"};\n"
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
-				"//uniform sampler2D iChannel0;\n"
-				"//uniform sampler2D iChannel1;\n"
-				"//uniform sampler2D iChannel2;\n"
-				"//uniform sampler2D iChannel3;\n"
-				"//uniform sampler2D iChannel4;\n"
-				"//uniform sampler2D iChannel5;\n"
-				"//uniform sampler2D iChannel6;\n"
-				"//uniform sampler2D iChannel7;\n"
-				"#if 0\n"
-				"vec4 texture(sampler2D channel, vec2 uv)\n"
-				"{\n"
-				"return texture2D(channel, uv);\n"
-				"}\n"
-				"vec4 textureLod(sampler2D channel, vec2 uv, float level)\n"
-				"{\n"
-				"return texture(channel, uv);\n"
-				"}\n"
-				"vec4 texture(sampler2D channel, vec3 uv)\n"
-				"{\n"
-				"return texture2D(channel, uv.xy);\n"
-				"}\n"
-				"vec4 textureLod(sampler2D channel, vec3 uv, float level)\n"
-				"{\n"
-				"return texture(channel, uv.xy);\n"
-				"}\n"
-				"vec4 texture(sampler2D channel, vec4 uv)\n"
-				"{\n"
-				"return texture2D(channel, uv.xy);\n"
-				"}\n"
-				"vec4 textureLod(sampler2D channel, vec4 uv, float level)\n"
-				"{\n"
-				"return texture(channel, uv.xy);\n"
-				"}\n"
-				"#endif\n"
 				);
+		std::smatch match;
+		{std::regex expression("\\buniform sampler2D iChannel0\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel0;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel1\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel1;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel2\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel2;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel3\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel3;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel4\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel4;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel5\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel5;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel6\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel6;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel7\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel7;\n");
+		}}
 		fsStr2.append(shaderText);
+		{std::regex expression1("\\bmainImage\\b");
+		std::regex expression2("\\bmain\\b");
+		std::string what=fsStr2_;
+		if (regex_search(what, match, expression1))
+		if (!regex_search(what, match, expression2))
+		{
+			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
+		}}
 #if 0
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("\nvs:\n%s\n", vsStr2.c_str());
@@ -6795,6 +6819,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	{
 		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		std::string fsStr2_=shaderText;
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
 				"#define WSIGN +\n"   
@@ -6848,16 +6873,66 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float3  resolution;\n"
 				"    float   time;\n"
 				"};\n"
-				"#define mainImage main\n"
-				"//sampler2D iChannel0;\n"
-				"//sampler2D iChannel1;\n"
-				"//sampler2D iChannel2;\n"
-				"//sampler2D iChannel3;\n"
-				"//sampler2D iChannel4;\n"
-				"//sampler2D iChannel5;\n"
-				"//sampler2D iChannel6;\n"
-				"//sampler2D iChannel7;\n");
+				"#define mainImage main\n");
+		std::smatch match;
+		{std::regex expression("\\buniform sampler2D iChannel0\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel0;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel1\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel1;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel2\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel2;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel3\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel3;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel4\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel4;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel5\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel5;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel6\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel6;\n");
+		}}
+		{std::regex expression("\\buniform sampler2D iChannel7\\b");
+		std::string what=fsStr2_;
+		if (!regex_search(what, match, expression))
+		{
+			fsStr2.append(  "uniform sampler2D iChannel7;\n");
+		}}
 		fsStr2.append(shaderText);
+		{std::regex expression1("\\bmainImage\\b");
+		std::regex expression2("\\bmain\\b");
+		std::string what=fsStr2_;
+		if (regex_search(what, match, expression1))
+		if (!regex_search(what, match, expression2))
+		{
+			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
+		}}
+
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     	res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         	vsMain, 0, fsMain, 0, 0, 0, flags);
