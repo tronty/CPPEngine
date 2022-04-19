@@ -6676,6 +6676,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
+#if 0//ndef __APPLE__
 		std::smatch match;
 		{std::regex expression("\\buniform sampler2D iChannel0\\b");
 		std::string what=fsStr2_;
@@ -6725,7 +6726,9 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{
 			fsStr2.append(  "uniform sampler2D iChannel7;\n");
 		}}
+#endif
 		fsStr2.append(shaderText);
+#if 0//ndef __APPLE__
 		{std::regex expression1("\\bmainImage\\b");
 		std::regex expression2("\\bmain\\b");
 		std::string what=fsStr2_;
@@ -6734,6 +6737,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{
 			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
 		}}
+#endif
+		//printf("%s\n", fsStr2.c_str());
 #if 0
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("\nvs:\n%s\n", vsStr2.c_str());
@@ -6874,6 +6879,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
+#if 0//ndef __APPLE__
 		std::smatch match;
 		{std::regex expression("\\buniform sampler2D iChannel0\\b");
 		std::string what=fsStr2_;
@@ -6923,7 +6929,9 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{
 			fsStr2.append(  "uniform sampler2D iChannel7;\n");
 		}}
+#endif
 		fsStr2.append(shaderText);
+#if 0//ndef __APPLE__
 		{std::regex expression1("\\bmainImage\\b");
 		std::regex expression2("\\bmain\\b");
 		std::string what=fsStr2_;
@@ -6932,7 +6940,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{
 			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
 		}}
-
+#endif
+	//printf("%s\n", fsStr2.c_str());
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     	res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         	vsMain, 0, fsMain, 0, 0, 0, flags);
