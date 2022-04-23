@@ -26,7 +26,11 @@ int init(const char* aTitle)
 		{
 			if(str.length())
 				if(str[0]!='#')
-        				g_filenames.push_back(str);
+				{
+					std::vector<std::string> v=stx_split(str, ' ');
+					printf("v.size()=%d\n", v.size());
+        				g_filenames.push_back(v.at(1));
+				}
     		}
 	}
 	LOG_FNLN;
@@ -101,6 +105,8 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
+	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/Metal_Sphere/iChannel0.png", false, IRenderer::GetRendererInstance()->Getlinear()));
+	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/Metal_Sphere/iChannel1.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
 	LOG_FNLN;
 	LOG_PRINT("shd.size()=%d\n", shd.size());
