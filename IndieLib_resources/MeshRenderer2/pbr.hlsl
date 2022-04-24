@@ -1,9 +1,10 @@
 // https://github.com/SaschaWillems/Vulkan.git
 // pbr.vert 
 // pbr.frag
+#undef ROUGHNESS_PATTERN
 [Vertex shader]
 ROW_MAJOR float4x4 WorldViewProjection MVPSEMANTIC;
-float4x4 World;
+float4x4 World=float4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
 float4 vecLightDir = float4( 0.0f, 1.0f, 0.0f, 1.0f);
 float4 vecEye = float4( 0.0f, 0.0f, 1.0f, 1.0f);
 struct VS_INPUT
@@ -45,10 +46,30 @@ struct VS_OUTPUT
 	float2 uv : TEXCOORD3;
 };
 float3 camPos=float3(0.0, 0.0, -1.0);
-float4 lights[4];
-float roughness;
-float metallic;
-float3 color;
+static float3 lights[4] = {
+		float3( 1, 0, 0),
+		float3( 0, 1, 0),
+		float3( 0, 0, 1),
+		float3( 1, 1, 1)
+	};
+/*
+		// Setup some default materials (source: https://seblagarde.wordpress.com/2011/08/17/feeding-a-physical-based-lighting-mode/)
+		materials.push_back(Material("Gold", glm::vec3(1.0f, 0.765557f, 0.336057f), 0.1f, 1.0f));
+		materials.push_back(Material("Copper", glm::vec3(0.955008f, 0.637427f, 0.538163f), 0.1f, 1.0f));
+		materials.push_back(Material("Chromium", glm::vec3(0.549585f, 0.556114f, 0.554256f), 0.1f, 1.0f));
+		materials.push_back(Material("Nickel", glm::vec3(0.659777f, 0.608679f, 0.525649f), 0.1f, 1.0f));
+		materials.push_back(Material("Titanium", glm::vec3(0.541931f, 0.496791f, 0.449419f), 0.1f, 1.0f));
+		materials.push_back(Material("Cobalt", glm::vec3(0.662124f, 0.654864f, 0.633732f), 0.1f, 1.0f));
+		materials.push_back(Material("Platinum", glm::vec3(0.672411f, 0.637331f, 0.585456f), 0.1f, 1.0f));
+		// Testing materials
+		materials.push_back(Material("White", glm::vec3(1.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Red", glm::vec3(1.0f, 0.0f, 0.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Blue", glm::vec3(0.0f, 0.0f, 1.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Black", glm::vec3(0.0f), 0.1f, 1.0f));
+*/
+float roughness=0.1;
+float metallic=1.0;
+float3 color=float3(1.0, 0.765557, 0.336057);
 const float PI = 3.14159265359;
 //#define ROUGHNESS_PATTERN 1
 
