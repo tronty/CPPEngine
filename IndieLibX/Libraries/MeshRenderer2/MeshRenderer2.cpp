@@ -1524,27 +1524,27 @@ D3DXFROMWINEVECTOR4 mLightPosInWorldSpace4=D3DXFROMWINEVECTOR4(mLightPosInWorldS
 			case ePhysicalBasedLighting:
 				IRenderer::GetRendererInstance()->setShader(PhysicalBasedShader);
 				IRenderer::GetRendererInstance()->setVertexFormat(PhysicalBasedVertexDeclaration);
+				#if 0
 				IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", w);
 				IRenderer::GetRendererInstance()->setShaderConstant4x4f("World", w);
-				#if 0
 				IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", mLightPosInWorldSpace4);
 				IRenderer::GetRendererInstance()->setShaderConstant4f("vecEye", EyeDir);
 				
 				IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", m_v3EyeDir);
 /*
 		// Setup some default materials (source: https://seblagarde.wordpress.com/2011/08/17/feeding-a-physical-based-lighting-mode/)
-		materials.push_back(Material("Gold", glm::vec3(1.0f, 0.765557f, 0.336057f), 0.1f, 1.0f));
-		materials.push_back(Material("Copper", glm::vec3(0.955008f, 0.637427f, 0.538163f), 0.1f, 1.0f));
-		materials.push_back(Material("Chromium", glm::vec3(0.549585f, 0.556114f, 0.554256f), 0.1f, 1.0f));
-		materials.push_back(Material("Nickel", glm::vec3(0.659777f, 0.608679f, 0.525649f), 0.1f, 1.0f));
-		materials.push_back(Material("Titanium", glm::vec3(0.541931f, 0.496791f, 0.449419f), 0.1f, 1.0f));
-		materials.push_back(Material("Cobalt", glm::vec3(0.662124f, 0.654864f, 0.633732f), 0.1f, 1.0f));
-		materials.push_back(Material("Platinum", glm::vec3(0.672411f, 0.637331f, 0.585456f), 0.1f, 1.0f));
+		materials.push_back(Material("Gold", D3DXFROMWINEVECTOR3(1.0f, 0.765557f, 0.336057f), 0.1f, 1.0f));
+		materials.push_back(Material("Copper", D3DXFROMWINEVECTOR3(0.955008f, 0.637427f, 0.538163f), 0.1f, 1.0f));
+		materials.push_back(Material("Chromium", D3DXFROMWINEVECTOR3(0.549585f, 0.556114f, 0.554256f), 0.1f, 1.0f));
+		materials.push_back(Material("Nickel", D3DXFROMWINEVECTOR3(0.659777f, 0.608679f, 0.525649f), 0.1f, 1.0f));
+		materials.push_back(Material("Titanium", D3DXFROMWINEVECTOR3(0.541931f, 0.496791f, 0.449419f), 0.1f, 1.0f));
+		materials.push_back(Material("Cobalt", D3DXFROMWINEVECTOR3(0.662124f, 0.654864f, 0.633732f), 0.1f, 1.0f));
+		materials.push_back(Material("Platinum", D3DXFROMWINEVECTOR3(0.672411f, 0.637331f, 0.585456f), 0.1f, 1.0f));
 		// Testing materials
-		materials.push_back(Material("White", glm::vec3(1.0f), 0.1f, 1.0f));
-		materials.push_back(Material("Red", glm::vec3(1.0f, 0.0f, 0.0f), 0.1f, 1.0f));
-		materials.push_back(Material("Blue", glm::vec3(0.0f, 0.0f, 1.0f), 0.1f, 1.0f));
-		materials.push_back(Material("Black", glm::vec3(0.0f), 0.1f, 1.0f));
+		materials.push_back(Material("White", D3DXFROMWINEVECTOR3(1.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Red", D3DXFROMWINEVECTOR3(1.0f, 0.0f, 0.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Blue", D3DXFROMWINEVECTOR3(0.0f, 0.0f, 1.0f), 0.1f, 1.0f));
+		materials.push_back(Material("Black", D3DXFROMWINEVECTOR3(0.0f), 0.1f, 1.0f));
 */
 				{float roughness=0.1;
 				float metallic=1.0;
@@ -1552,8 +1552,70 @@ D3DXFROMWINEVECTOR4 mLightPosInWorldSpace4=D3DXFROMWINEVECTOR4(mLightPosInWorldS
 				IRenderer::GetRendererInstance()->setShaderConstant1f("roughness", roughness);
 				IRenderer::GetRendererInstance()->setShaderConstant1f("metallic", metallic);
 				IRenderer::GetRendererInstance()->setShaderConstant3f("color", color);}
-				IRenderer::GetRendererInstance()->setShaderConstantArray3f("lights", LightPosition, 4);
 				#endif
+
+	{
+		const float p = 15.0f;
+		lights[0] = D3DXFROMWINEVECTOR4(-p, -p*0.5f, -p, 1.0f);
+		lights[1] = D3DXFROMWINEVECTOR4(-p, -p*0.5f,  p, 1.0f);
+		lights[2] = D3DXFROMWINEVECTOR4( p, -p*0.5f,  p, 1.0f);
+		lights[3] = D3DXFROMWINEVECTOR4( p, -p*0.5f, -p, 1.0f);
+
+		bool paused=false;
+		if (!paused)
+		{
+			__DWORD__ timer=timeGetTime();
+			lights[0].x = sin(D3DXFROMWINEToRadian(timer * 360.0f)) * 20.0f;
+			lights[0].z = cos(D3DXFROMWINEToRadian(timer * 360.0f)) * 20.0f;
+			lights[1].x = cos(D3DXFROMWINEToRadian(timer * 360.0f)) * 20.0f;
+			lights[1].y = sin(D3DXFROMWINEToRadian(timer * 360.0f)) * 20.0f;
+		}
+		IRenderer::GetRendererInstance()->setShaderConstantArray4f("lights", lights, 4);
+}{
+		D3DXFROMWINEMATRIX projection;
+    		FLOAT aspect=1.0f*STX_Service::GetWindowInstance()->GetWidth()/STX_Service::GetWindowInstance()->GetHeight();
+    		D3DXFROMWINEMatrixPerspectiveFovLH(&projection, 60.0f, aspect, 0.1f, 256.0f);
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("projection", projection);
+}{
+		D3DXFROMWINEMATRIX M;
+		int modelObjectIndex = 1;
+		float angle=D3DXFROMWINEToRadian(-90.0f + (modelObjectIndex == 1 ? 45.0f : 0.0f));
+		D3DXFROMWINEMatrixRotationY(&M, angle);
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("model", M);
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("view", I);
+}{
+		D3DXFROMWINEVECTOR3 cameraPosition=D3DXFROMWINEVECTOR3(10.0f, 13.0f, 1.8f);
+		IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", cameraPosition * -1.0f);
+}
+{
+#define GRID_DIM 1
+//define OBJ_DIM 0.05f
+//#define SINGLE_ROW 1
+#ifdef SINGLE_ROW
+
+			unsigned int objcount = 10;
+			for (unsigned int x = 0; x < objcount; x++) {
+				D3DXFROMWINEVECTOR3 objPos = D3DXFROMWINEVECTOR3(float(x - (objcount / 2.0f)) * 2.5f, 0.0f, 0.0f);
+				IRenderer::GetRendererInstance()->setShaderConstant3f("objPos", objPos);
+				float roughness = clamp((float)x / (float)objcount, 0.005f, 1.0f);
+				IRenderer::GetRendererInstance()->setShaderConstant1f("roughness", roughness);
+			}
+#else
+			for (unsigned int y = 0; y < GRID_DIM; y++) {
+				for (unsigned int x = 0; x < GRID_DIM; x++) {
+					D3DXFROMWINEVECTOR3 objPos = D3DXFROMWINEVECTOR3(float(x - (GRID_DIM / 2.0f)) * 2.5f, 0.0f, float(y - (GRID_DIM / 2.0f)) * 2.5f);
+					IRenderer::GetRendererInstance()->setShaderConstant3f("objPos", objPos);
+					float metallic = clamp((float)x / (float)(GRID_DIM - 1), 0.1f, 1.0f);
+					float roughness = clamp((float)y / (float)(GRID_DIM - 1), 0.05f, 1.0f);
+					IRenderer::GetRendererInstance()->setShaderConstant1f("metallic", metallic);
+					IRenderer::GetRendererInstance()->setShaderConstant1f("roughness", roughness);
+				}
+			}
+#endif
+
+
+
+	}
 				break;
 			case eDirectionalLighting:
 				IRenderer::GetRendererInstance()->setShader(DirectionalShader);
