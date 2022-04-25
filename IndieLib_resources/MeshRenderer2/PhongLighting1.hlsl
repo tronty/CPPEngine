@@ -3,7 +3,7 @@
 [Vertex shader]
 ROW_MAJOR float4x4 WorldViewProjection MVPSEMANTIC;
 float4x4 World;
-float4 vecLightDir = float4( 0.0f, 1.0f, 0.0f, 1.0f);
+float4 vecLightDir = float4( 1.0f, 0.0f, 0.0f, 1.0f);
 float4 vecEye = float4( 0.0f, 0.0f, 1.0f, 1.0f);
 
 struct VS_INPUT

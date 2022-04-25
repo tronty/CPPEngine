@@ -82,7 +82,7 @@ float G_SchlicksmithGGX(float dotNL, float dotNV, float aroughness)
 // Fresnel function ----------------------------------------------------
 float3 F_Schlick(float cosTheta, float ametallic)
 {
-	float3 F0 = mix(float3(0.04), materialcolor, ametallic); // * material.specular
+	float3 F0 = mix(float3(0.04), materialcolor(), ametallic); // * material.specular
 	float3 F = F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0); 
 	return F;    
 }
@@ -122,8 +122,7 @@ float3 BRDF(float3 L, float3 V, float3 N, float ametallic, float aroughness)
 }
 
 float4 main(VS_OUTPUT IN) : COLOR
-{
-#if 1
+{		  
 	float3 N = normalize(IN.inNormal);
 	float3 V = normalize(camPos - IN.inWorldPos);
 
@@ -142,17 +141,11 @@ float4 main(VS_OUTPUT IN) : COLOR
 	};
 
 	// Combine with ambient
-	float3 color;// = materialcolor * 0.02;color=GammaCorrect3(color);
-
+	float3 color = materialcolor() * 0.02;
 	color += Lo;
 
 	//color=GammaCorrect3(color);
 
-	//color = float3(1,0,0);
-
 	return float4(color, 1.0);
-#else
-	return float4(1,0,0, 1.0);
-#endif
 }
 
