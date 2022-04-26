@@ -1526,6 +1526,15 @@ D3DXFROMWINEVECTOR4 mLightPosInWorldSpace4=D3DXFROMWINEVECTOR4(mLightPosInWorldS
 				IRenderer::GetRendererInstance()->setVertexFormat(PhysicalBasedVertexDeclaration);
 				IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", w);
 				IRenderer::GetRendererInstance()->setShaderConstant4x4f("World", w);
+#if 0
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", LightDir);
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecEye", EyeDir);
+#else
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", LightDir);
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecEye", EyeDir);
+				//IRenderer::GetRendererInstance()->setShaderConstantArray4f("lights", lights, 4);
+				IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", m_v3EyeDir);
+#endif
 				break;
 			case eDirectionalLighting:
 				IRenderer::GetRendererInstance()->setShader(DirectionalShader);

@@ -32,7 +32,7 @@ public:
   {0.0};
 }
 
-void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR3& color, float roughness, float metallic)
+void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR3& materialcolor, float roughness, float metallic)
 {
   float x=ax-10.0f;
   float y=ay-10.0f;
@@ -79,9 +79,10 @@ void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR
   //D3DXFROMWINEVECTOR3 objPos(x/s-s*0.5f, y/s-s*0.5f, 0.0f);
 	D3DXFROMWINEVECTOR3 objPos(x/s, y/s, 0.0f);
   IRenderer::GetRendererInstance()->setShaderConstant3f("objPos", objPos);
+  IRenderer::GetRendererInstance()->setShaderConstant3f("materialcolor", materialcolor);
   IRenderer::GetRendererInstance()->setShaderConstant1f("roughness", roughness);
   IRenderer::GetRendererInstance()->setShaderConstant1f("metallic", metallic);
-  IRenderer::GetRendererInstance()->setShaderConstant3f("color", color);
+  //IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", mLightPosInWorldSpace);
   teapot.EndDraw();
 #endif
 }

@@ -1,4 +1,3 @@
-#if 1//def _MSC_VER
 /*
   Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
@@ -33,7 +32,7 @@ public:
   {0.0};
 }
 
-void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR3& color, float roughness, float metallic)
+void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR3& materialcolor, float roughness, float metallic)
 {
   float x=ax-10.0f;
   float y=ay-10.0f;
@@ -77,13 +76,16 @@ void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR
   teapot.render(&mvp);
 #else
   teapot.BeginDraw(&mvp);
-#endif
-#if 0
   //D3DXFROMWINEVECTOR3 objPos(x/s-s*0.5f, y/s-s*0.5f, 0.0f);
+  //D3DXFROMWINEVECTOR3 objPos;
 	D3DXFROMWINEVECTOR3 objPos(x/s, y/s, 0.0f);
-  IRenderer::GetRendererInstance()->setShaderConstant3f("color", color);
-#endif
+  IRenderer::GetRendererInstance()->setShaderConstant3f("objPos", objPos);
+  IRenderer::GetRendererInstance()->setShaderConstant3f("materialcolor", materialcolor);
+  IRenderer::GetRendererInstance()->setShaderConstant1f("roughness", roughness);
+  IRenderer::GetRendererInstance()->setShaderConstant1f("metallic", metallic);
+  //IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", mLightPosInWorldSpace);
   teapot.EndDraw();
+#endif
 }
 
 	virtual void render(void)
@@ -107,7 +109,7 @@ void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR
 		renderTeapot("Black", 10.0f, 18.0f, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), 0.1f, 1.0f);
 
   		//STXGUI::update();
-#if 0
+
 		const char* txt = "Use mouse buttons to rotate the model.";
 		IRenderer::GetRendererInstance()->drawText(txt, 10, 10,
 			15, 18,
@@ -141,7 +143,7 @@ void renderTeapot(std::string name, float ax, float ay, const D3DXFROMWINEVECTOR
 			IRenderer::GetRendererInstance()->GetlinearClamp(),
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(),
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
-#endif
+
 		IRenderer::GetRendererInstance()->EndScene();
 		IRenderer::GetRendererInstance()->Present();
 	}
@@ -180,5 +182,4 @@ int ApplicationLogic()
 	}
 	return 0;
 }
-#endif
 

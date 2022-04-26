@@ -128,8 +128,7 @@ float3 BRDF(float3 L, float3 V, float3 N, float ametallic, float aroughness)
 }
 
 float4 main(VS_OUTPUT IN) : COLOR
-{
-#if 1
+{		  
 	float3 N = normalize(IN.inNormal);
 	float3 V = normalize(camPos - IN.inWorldPos);
 
@@ -148,17 +147,11 @@ float4 main(VS_OUTPUT IN) : COLOR
 	};
 
 	// Combine with ambient
-	float3 color = materialcolor * 0.02;//color=GammaCorrect3(color);
-
+	float3 color = materialcolor * 0.02;
 	color += Lo;
 
-	color=GammaCorrect3(color);
-
-	//color = float3(1,0,0);
+	//color=GammaCorrect3(color);
 
 	return float4(color, 1.0);
-#else
-	return float4(1,0,0, 1.0);
-#endif
 }
 

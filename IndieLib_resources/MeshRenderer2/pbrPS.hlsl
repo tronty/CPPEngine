@@ -5,7 +5,6 @@ float3 camPos=float3(10.0f, 13.0f, 1.8f);
 [Vertex shader]
 ROW_MAJOR float4x4 WorldViewProjection MVPSEMANTIC;
 float4x4 World;
-float3 objPos=float3(0,0,0);
 float4 vecLightDir = float4( -camPos.x, -camPos.y, -camPos.z, 1.0f);
 float4 vecEye = float4( camPos.x, camPos.y, camPos.z, 1.0f);
 struct VS_INPUT
@@ -28,14 +27,9 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-	Out.Pos = mul(WorldViewProjection, float4(IN.Pos,1))+float4(objPos,1);
+	Out.Pos = mul(WorldViewProjection, float4(IN.Pos,1));
 #if 1
-#if 0
-    	Out.Light = float3(cosf(iTime*10.0),0,sinf(iTime*10.0))*2.;
-    	Out.Light.y = 1.5;
-#else
 	Out.Light = vecLightDir.xyz;
-#endif
 	float3 PosWorld = normalize(mul(World, float4(IN.Pos,1))).xyz;
 	Out.View = vecEye.xyz - PosWorld;
 	Out.Norm = normalize(mul(World, float4(IN.Normal,1))).xyz;
@@ -59,9 +53,9 @@ static float4 lights[4]=	{
 		                float4( 15.0, -15.0*0.5f,  15.0, 1.0f),
 		                float4( 15.0, -15.0*0.5f, -15.0, 1.0f)
 			};
-float3 materialcolor=float3(1.0, 0.765557, 0.336057);
 float roughness=0.1;
 float metallic=1.0;
+float3 materialcolor=float3(1.0, 0.765557, 0.336057);
 
 const float PI = 3.14159265359;
 #define ROUGHNESS_PATTERN 1
@@ -148,11 +142,11 @@ float4 main(VS_OUTPUT IN) : COLOR
 	};
 
 	// Combine with ambient
-	float3 color = materialcolor * 0.02;//color=GammaCorrect3(color);
+	float3 color;// = materialcolor * 0.02;color=GammaCorrect3(color);
 
 	color += Lo;
 
-	color=GammaCorrect3(color);
+	//color=GammaCorrect3(color);
 
 	//color = float3(1,0,0);
 
