@@ -11,10 +11,6 @@
     
 */
 
-#define R           iResolution
-#define T           iTime
-#define M           iMouse
-
 #define MIN_DIST    .0001
 #define MAX_DIST    75.
 
@@ -27,10 +23,7 @@ vec3 hp=vec3(0),hitPoint=vec3(0);
 vec2 gid=vec2(0), sid=vec2(0);
 float glow;
 float zoom = 10.;
-float maptime=0.0;
-float fractTime=0.0;
-float modTime=0.0;
-float iss=0.0;
+float maptime,fractTime,modTime,iss;
 mat2 crt1,crt2;
 
 //constants
@@ -204,7 +197,7 @@ vec3 hue(float t) {
     return .45+.4*cos( PI2*t*vec3(0.984,0.980,0.914)+d ); 
 }
 
-vec3 render(inout vec3 ro, inout vec3 rd, inout vec3 ref, int bnc, inout float d, vec2 _xlv_TEXCOORD0) {
+vec3 render(inout vec3 ro, inout vec3 rd, inout vec3 ref, int bnc, inout float d, vec2 F) {
         
     vec3 C=vec3(0);
     vec3 p = ro;
@@ -287,28 +280,28 @@ vec3 render(inout vec3 ro, inout vec3 rd, inout vec3 ref, int bnc, inout float d
     return clamp(C,vec3(.0001),vec3(1));
 }
 
-void main() { 
+void main( ) { 
     vec3 col = vec3(.00);
     //precal
-    float _time = iTime*.5; 
+    float fTime = iTime*.5; 
     float ms = 3.;
     float mt = 1./ms;
-    modTime = mod(_time,ms);
+    modTime = mod(fTime,ms);
     float os = floor(modTime);
-    float ios = floor(_time+1.);
+    float ios = floor(fTime+1.);
     iss = floor(ios*mt)-1.;
 
-    fractTime = modTime<2.? (fract(_time) * (space))+(space*os) : fract(_time) * (space);
-    maptime = _time*5.;
+    fractTime = modTime<2.? (fract(fTime) * (space))+(space*os) : fract(fTime) * (space);
+    maptime = fTime*5.;
     //ball rotations
     crt1 = rot(modTime*PI2);
     crt2 = rot(-modTime*PI2);
     
-    vec2 uv = (-R.xy + 2. * (xlv_TEXCOORD0)) / R.x;
+    vec2 uv = (-iResolution.xy + 2. * (xlv_TEXCOORD0)) / iResolution.x;
     
     // mouse //
-    float x = M.xy==vec2(0) ? 0. : -(M.y/R.y*4.-2.)*PI;
-    float y = M.xy==vec2(0) ? 0. : -(M.x/R.x*2.-1.)*PI;
+    float x = iMouse.xy==vec2(0) ? 0. : -(iMouse.y/iResolution.y*4.-2.)*PI;
+    float y = iMouse.xy==vec2(0) ? 0. : -(iMouse.x/iResolution.x*2.-1.)*PI;
     zoom+=x;
     // ro + rd
     vec3 ro = vec3(uv*zoom,-zoom-15.);
