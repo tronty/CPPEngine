@@ -13,15 +13,6 @@ uniform vec2 mouse;
 #define iMouse mouse
 #endif
 
-void mainImage_(out vec4 fragColor, in vec2 fragCoord);
-
-void main(void) {
-    vec4 col;
-    mainImage_(col, xlv_TEXCOORD0.xy);
-    gl_FragColor = col;
-}                                  
-                     
-
 // Emulate a black texture
 #define texture(s, uv) vec4(0.0)         
 
@@ -645,14 +636,14 @@ void BoatPM (float t, float ds)
   bAng = 0.5 * pi - bAz;
 }
 
-void mainImage (out vec4 fragColor, in vec2 fragCoord)
+void main( )
 {
   mat3 vuMat;
   vec3 ro, rd, vd, u, bm;
   vec2 canvas, uv, ori, ca, sa;
   float f, az, el;
   canvas = iResolution.xy;
-  uv = 2. * fragCoord.xy / canvas - 1.;
+  uv = 2. * xlv_TEXCOORD0.xy / canvas - 1.;
   uv.x *= canvas.x / canvas.y;
   tCur = iTime;
   sunDir = normalize (vec3 (0.5, 0.5, -1.));
@@ -682,5 +673,5 @@ void mainImage (out vec4 fragColor, in vec2 fragCoord)
   f = 1. / sqrt (1. - vd.y * vd.y);
   vuMat = mat3 (f * vec3 (vd.z, 0., - vd.x), f * vec3 (u.x, 1. + u.y, u.z), vd);
   rd = vuMat * normalize (vec3 (uv, 1.5));
-  fragColor = vec4 (ShowScene (ro, rd), 1.);
+  gl_FragColor = vec4 (ShowScene (ro, rd), 1.);
 }
