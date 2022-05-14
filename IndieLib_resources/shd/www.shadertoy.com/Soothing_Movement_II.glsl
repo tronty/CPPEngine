@@ -11,6 +11,10 @@
     
 */
 
+#define R           iResolution
+#define T           iTime
+#define M           iMouse
+
 #define MIN_DIST    .0001
 #define MAX_DIST    75.
 
@@ -23,8 +27,12 @@ vec3 hp=vec3(0),hitPoint=vec3(0);
 vec2 gid=vec2(0), sid=vec2(0);
 float glow;
 float zoom = 10.;
-float maptime,fractTime,modTime,iss;
-mat2 crt1,crt2;
+float maptime = 0.0;
+float fractTime = 0.0;
+float modTime = 0.0;
+float iss = 0.0;
+mat2 crt1=mat2(0);
+mat2 crt2=mat2(0);
 
 //constants
 const float space = 9.5;
@@ -193,8 +201,8 @@ vec2 marcher(vec3 ro, vec3 rd, inout vec3 p, inout bool hit, int steps) {
 }
 
 vec3 hue(float t) { 
-    vec3 d = vec3(0.141,0.447,0.941);
-    return .45+.4*cos( PI2*t*vec3(0.984,0.980,0.914)+d ); 
+    vec3 d = vec3(0.929,0.690,0.027);
+    return .45+.4*cos( PI2*t*vec3(0.984,0.914,0.914)+d ); 
 }
 
 vec3 render(inout vec3 ro, inout vec3 rd, inout vec3 ref, int bnc, inout float d, vec2 F) {
@@ -283,25 +291,28 @@ vec3 render(inout vec3 ro, inout vec3 rd, inout vec3 ref, int bnc, inout float d
 void main( ) { 
     vec3 col = vec3(.00);
     //precal
-    float fTime = iTime*.5; 
+    float time_ = T*.5; 
     float ms = 3.;
     float mt = 1./ms;
-    modTime = mod(fTime,ms);
+    modTime = mod(time_,ms);
+    //time for ids
     float os = floor(modTime);
-    float ios = floor(fTime+1.);
+    //weird bug - IOS needs +1 to make work
+    //float ios = floor(time_+1.);
+    float ios = floor(time_);
     iss = floor(ios*mt)-1.;
 
-    fractTime = modTime<2.? (fract(fTime) * (space))+(space*os) : fract(fTime) * (space);
-    maptime = fTime*5.;
+    fractTime = modTime<2.? (fract(time_) * (space))+(space*os) : fract(time_) * (space);
+    maptime = time_*5.;
     //ball rotations
     crt1 = rot(modTime*PI2);
     crt2 = rot(-modTime*PI2);
     
-    vec2 uv = (-iResolution.xy + 2. * (xlv_TEXCOORD0)) / iResolution.x;
+    vec2 uv = (-R.xy + 2. * (xlv_TEXCOORD0)) / R.x;
     
     // mouse //
-    float x = iMouse.xy==vec2(0) ? 0. : -(iMouse.y/iResolution.y*4.-2.)*PI;
-    float y = iMouse.xy==vec2(0) ? 0. : -(iMouse.x/iResolution.x*2.-1.)*PI;
+    float x = M.xy==vec2(0) ? 0. : -(M.y/R.y*4.-2.)*PI;
+    float y = M.xy==vec2(0) ? 0. : -(M.x/R.x*2.-1.)*PI;
     zoom+=x;
     // ro + rd
     vec3 ro = vec3(uv*zoom,-zoom-15.);

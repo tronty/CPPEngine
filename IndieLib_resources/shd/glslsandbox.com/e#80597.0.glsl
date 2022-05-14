@@ -279,6 +279,10 @@ vec3 addSign(vec3 color, vec3 pos, float side, vec2 id) {
 }
 
 void main( ) {
+#if 0
+  iResolution = vec3(resolution, 0.0);
+  iTime = time;
+#endif
     vec2 center = -speed * iTime * cameraDir.xy;
     vec3 eye = vec3(center, 0.0) - cameraDist * cameraDir;
 
@@ -308,16 +312,5 @@ void main( ) {
 
     gl_FragColor = vec4(color, 1.0);
 }
-#if 0
-#undef time
-#undef resolution
 
-void main(void)
-{
-  iResolution = vec3(resolution, 0.0);
-  iTime = time;
-
-  mainImage(gl_FragColor, gl_FragCoord.xy);
-}
-#endif
 

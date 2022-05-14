@@ -266,4 +266,3 @@ void main(void)
     // post
     gl_FragColor = vec4(color, 1.0);
 }
-

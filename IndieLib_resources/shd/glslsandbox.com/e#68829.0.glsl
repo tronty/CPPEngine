@@ -1,7 +1,9 @@
-#ifdef GL_ES
-precision lowp float;
+#if 0
+precision highp float; 
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform float time;
 #endif
-
 const float pi = 3.141592653589793;
 
 float hash( in vec2 p ) 
@@ -118,7 +120,7 @@ float fbm( vec2 p )
 
 void main( void )
 {
-    vec2 xy = -1.0 + 2.0*xlv_TEXCOORD0.xy/resolution.xy;
+    vec2 xy = -1.0 + 2.0*gl_FragCoord.xy/resolution.xy;
 	vec2 s = xy*vec2(resolution.x/resolution.y,1.0);
 
 	vec3 light1 = normalize( vec3(-0.8,0.4,-0.3) );
@@ -218,3 +220,4 @@ void main( void )
 	
 	gl_FragColor=vec4(col,1.0);
 }
+

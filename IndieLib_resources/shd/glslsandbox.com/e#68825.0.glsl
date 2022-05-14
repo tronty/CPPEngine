@@ -1,7 +1,9 @@
-#ifdef GL_ES
-precision lowp float;
+#if 0
+precision highp float; 
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform float time;
 #endif
-
 const float pi = 3.141592653589793;
 
 float hash( in vec2 p ) 

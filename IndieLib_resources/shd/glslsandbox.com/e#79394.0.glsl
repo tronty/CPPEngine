@@ -1,6 +1,3 @@
-// Fireball
-// Awd
-// @AlexWDunn
 #if 0
 #ifdef GL_ES
 precision highp float;
@@ -66,8 +63,8 @@ float snoise(vec3 v)
 	vec3 i1 = min(g.xyz, l.zxy);
 	vec3 i2 = max(g.xyz, l.zxy);
 	vec3 x1 = x0 - i1 + C.xxx;
-	vec3 x2 = x0 - i2 + C.yyy; // 1.0*C.x = 1/3 = C.y
-	vec3 x3 = x0 - D.yyy;      // -5.0+3.0*C.x = -0.5 = -D.y
+	vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
+	vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
 
 	// Permutations
 	i = mod289(i);
@@ -123,11 +120,11 @@ float Turbulence(vec3 position, float minFreq, float maxFreq, float qWidth)
 	float fade;
 	float fOut = minFreq;
 
-	for(int i=NoiseSteps ; i>=0 ; i++)
+	for(int i=NoiseSteps ; i>=0 ; i--)
 	{
 		if(fOut >= 0.5 * cutoff) break;
 
-		fOut *= 2.0;
+		fOut *= 3.0;
 		value += abs(snoise(position * fOut))/fOut;
 	}
 
@@ -199,12 +196,11 @@ bool IntersectSphere(vec3 ro, vec3 rd, vec3 pos, float radius, out vec3 intersec
 void main(void)
 {
 	vec2 p = (xlv_TEXCOORD0.xy / resolution.xy) * 2.0 - 1.0;
-	
 	p.x *= resolution.x/resolution.y;
 
 	float rotx = mouse.y * 4.0;
 	float roty = -mouse.x * 4.0;
-	float zoom = 5.0;
+	float zoom = 10.0;
 
 	// camera
 	vec3 ro = zoom * normalize(vec3(cos(roty), cos(rotx), sin(roty)));

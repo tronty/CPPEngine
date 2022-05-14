@@ -32,7 +32,7 @@ float randomSin(float t) {
     return sin(t*0.2352)*sin(t*1.5843)*sin(t*1.2968)+1.0;
 }
 
-void mainImage( )
+void main( )
 {
     vec2 uv = (xlv_TEXCOORD0-0.5*iResolution.xy)/iResolution.x;
     float radius = length(uv);

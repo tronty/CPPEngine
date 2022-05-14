@@ -1,7 +1,9 @@
-#ifdef GL_ES
-precision lowp float;
+#if 0
+precision highp float; 
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform float time;
 #endif
-
 const float pi = 3.141592653589793;
 
 float hash( in vec2 p ) 
@@ -177,9 +179,9 @@ void main( void )
         
         // rock
         float r = hash(127.0*pos.xz);
-        //col = (r*0.25+0.75)*0.9*mix( vec3(0.08,0.05,0.03), vec3(0.10,0.09,0.08), hash(0.00007*vec2(pos.x,pos.y*48.0)));
-		//col = mix( col, 0.20*vec3(0.45,.30,0.15)*(0.50+0.50*r),smoothstep(0.70,0.9,nor.y) );
-        //col = mix( col, 0.15*vec3(0.30,.30,0.10)*(0.25+0.75*r),smoothstep(0.95,1.0,nor.y) );
+        col = (r*0.25+0.75)*0.9*mix( vec3(0.08,0.05,0.03), vec3(0.10,0.09,0.08), hash(0.00007*vec2(pos.x,pos.y*48.0)));
+		col = mix( col, 0.20*vec3(0.45,.30,0.15)*(0.50+0.50*r),smoothstep(0.70,0.9,nor.y) );
+        col = mix( col, 0.15*vec3(0.30,.30,0.10)*(0.25+0.75*r),smoothstep(0.95,1.0,nor.y) );
 
 		// snow
 		float h = smoothstep(55.0,80.0,pos.y + 25.0*fbm(0.01*pos.xz) );

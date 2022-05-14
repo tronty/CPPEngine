@@ -1,149 +1,111 @@
 /*
-  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
-  Licensed under The GNU Lesser General Public License, version 2.1:
-      http://opensource.org/licenses/LGPL-2.1
-*/
-struct VsIn2 {
-    float2 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-struct VsIn3 {
-    float3 position	: POSITION;
-    float3 Normal	: NORMAL;
-    float3 Binormal	: BINORMAL;
-    float3 Tangent	: TANGENT;
-    float3 Color	: TEXCOORD0;
-    float2 uv		: TEXCOORD1;
-};
-struct VsOut {
-    float4 position	: POSITION;
-    float2 uv		: TEXCOORD0;
-};
-
-[Vertex shader]
-ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-VsOut main2(VsIn2 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = float4(In.position.x, In.position.y, 0.0 , 1.0);
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-VsOut main3(VsIn3 In)
-{
-	VsOut Out=(VsOut)0;
-	Out.position = mul(worldViewProj, float4(In.position, 1.0));
-	Out.uv.x = In.uv.x;Out.uv.y = 1.0-In.uv.y;
-	return Out;
-}
-
-[Fragment shader]
-
-/*
  * Original shader from: https://www.shadertoy.com/view/NdfSzX
  */
+#if 0
+#ifdef GL_ES
+precision mediump float;
+#endif
 
 // glslsandbox uniforms
-
-float2 mouse=float2(1, 1);
-float2 resolution=float2(1, 1);
-float time=0.0;
+uniform float time;
+uniform vec2 resolution;
 
 // shadertoy emulation
 #define iTime time
 #define iResolution resolution
+#endif
 
 // --------[ Original ShaderToy begins here ]---------- //
 #define FAR 500.
 #define CASTTERRIAN 3.
 #define CASTRIVER 4.
 #define HASHSCALE1 .1031
-#define HASHSCALE3 float3(.1031, .1030, .0973)
-#define HASHSCALE4 float4(1031, .1030, .0973, .1099)
-float2x2 rotate2D = float2x2(1.12, 0.1531, -.1131, 1.1623);
-float2x2 rotateCloud = float2x2(1.12, 0.3531, -.2131, 1.4623);
-float2 add = float2(1.0, 0.0);
+#define HASHSCALE3 vec3(.1031, .1030, .0973)
+#define HASHSCALE4 vec4(1031, .1030, .0973, .1099)
+const mat2 rotate2D = mat2(1.12, 0.1531, -.1131, 1.1623);
+const mat2 rotateCloud = mat2(1.12, 0.3531, -.2131, 1.4623);
+vec2 add = vec2(1.0, 0.0);
 
-float Hash12(float2 p)
+float Hash12(vec2 p)
 {
-	float3 p3  = frac(float3(p.xyx) * HASHSCALE1);
+	vec3 p3  = fract(vec3(p.xyx) * HASHSCALE1);
     p3 += dot(p3, p3.yzx + 19.19);
-    return frac((p3.x + p3.y) * p3.z);
+    return fract((p3.x + p3.y) * p3.z);
 }
-float2 Hash22(float2 p)
+vec2 Hash22(vec2 p)
 {
-	float3 p3 = frac(float3(p.xyx) * HASHSCALE3);
+	vec3 p3 = fract(vec3(p.xyx) * HASHSCALE3);
     p3 += dot(p3, p3.yzx+19.19);
-    return frac((p3.xx+p3.yz)*p3.zy);
+    return fract((p3.xx+p3.yz)*p3.zy);
 
 }
 
-float Noise( in float2 x )
+float Noise( in vec2 x )
 {
-    float2 p = floor(x);
-    float2 f = frac(x);
+    vec2 p = floor(x);
+    vec2 f = fract(x);
     f = f*f*(3.0-2.0*f);
     
-    float res = lerp(lerp( Hash12(p),          Hash12(p + add.xy),f.x),
-                    lerp( Hash12(p + add.yx), Hash12(p + add.xx),f.x),f.y);
+    float res = mix(mix( Hash12(p),          Hash12(p + add.xy),f.x),
+                    mix( Hash12(p + add.yx), Hash12(p + add.xx),f.x),f.y);
     return res;
 }
 
-float rand(float2 n) { 
-    return frac(sin(dot(n, float2(12.9898, 4.1414))) * 43758.5453);
+float rand(vec2 n) { 
+    return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
 }
-float noise(float2 p){
-    float2 ip = floor(p);
-    float2 u = frac(p);
+float noise(vec2 p){
+    vec2 ip = floor(p);
+    vec2 u = fract(p);
     u = u*u*(3.0-2.0*u);
  
-    float res = lerp(
-        lerp(rand(ip),rand(ip+float2(1.0,0.0)),u.x),
-        lerp(rand(ip+float2(0.0,1.0)),rand(ip+float2(1.0,1.0)),u.x),u.y);
+    float res = mix(
+        mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),
+        mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);
     return res*res;
 }
 
-float3 mod289(float3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-float2 mod289(float2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-float3 permute(float3 x) { return mod289(((x*34.0)+1.0)*x); }
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
 
 float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-float4 mod289(float4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
-float4 perm(float4 x){return mod289(((x * 34.0) + 1.0) * x);}
+vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
 
-float snoise(float3 p){
-    float3 a = floor(p);
-    float3 d = p - a;
+float snoise(vec3 p){
+    vec3 a = floor(p);
+    vec3 d = p - a;
     d = d * d * (3.0 - 2.0 * d);
  
-    float4 b = a.xxyy + float4(0.0, 1.0, 0.0, 1.0);
-    float4 k1 = perm(b.xyxy);
-    float4 k2 = perm(k1.xyxy + b.zzww);
+    vec4 b = a.xxyy + vec4(0.0, 1.0, 0.0, 1.0);
+    vec4 k1 = perm(b.xyxy);
+    vec4 k2 = perm(k1.xyxy + b.zzww);
  
-    float4 c = k2 + a.zzzz;
-    float4 k3 = perm(c);
-    float4 k4 = perm(c + 1.0);
+    vec4 c = k2 + a.zzzz;
+    vec4 k3 = perm(c);
+    vec4 k4 = perm(c + 1.0);
  
-    float4 o1 = frac(k3 * (1.0 / 41.0));
-    float4 o2 = frac(k4 * (1.0 / 41.0));
+    vec4 o1 = fract(k3 * (1.0 / 41.0));
+    vec4 o2 = fract(k4 * (1.0 / 41.0));
  
-    float4 o3 = o2 * d.z + o1 * (1.0 - d.z);
-    float2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
+    vec4 o3 = o2 * d.z + o1 * (1.0 - d.z);
+    vec2 o4 = o3.yw * d.x + o3.xz * (1.0 - d.x);
  
     return o4.y * d.y + o4.x * (1.0 - d.y);
 }
 
 
 
-float terrain(float2 st){
-    float LOOP=5.;
+float terrain(vec2 st){
+    const float LOOP=5.;
     float atm=2.;
     float f=.3;
     float offset=2.4;
     float h=0.;
     for(float i=0.;i<LOOP;i++){
         h+=atm*Noise(f*st+offset);
-        st=mul(rotate2D,st);
+        st=rotate2D*st;
         atm*=.5;
         f*=2.5;
         offset*=2.;
@@ -153,8 +115,8 @@ float terrain(float2 st){
     return h;
 }
 
-float water(float2 st){
-    float LOOP=5.;
+float water(vec2 st){
+    const float LOOP=5.;
     float atm=.1;
     float f=1.15;
     float offset=2.4;
@@ -168,9 +130,9 @@ float water(float2 st){
     return h;
 }
 
-float cloud(float3 p){
-    float2 st=p.xz;
-    float LOOP=3.;
+float cloud(vec3 p){
+    vec2 st=p.xz;
+    const float LOOP=3.;
     float atm=.15;
     float f=.55;
     float offset=2.4;
@@ -180,14 +142,14 @@ float cloud(float3 p){
         atm*=.5;
         f*=2.;
         offset*=2.;
-        st=mul(rotateCloud,st);
+        st=rotateCloud*st;
     }
     return h;
 }
 
 
 float random(float f){
-    return frac(sin(3212.23*f+5866.56)+4343.232);
+    return fract(sin(3212.23*f+5866.56)+4343.232);
 }
 float curve(float x){
     float frequency=.8;
@@ -212,7 +174,7 @@ float nearestRiver(float low,float high,float x,float width){
     float nearset=FAR;
     for(float i=0.;i<3.;i++){
         float z=low+(high-low)/50.*i;
-        float dist=length(float2(x-curve(z),high-z));
+        float dist=length(vec2(x-curve(z),high-z));
         nearset=min(nearset,dist-width);
         if(nearset<0.){
            return nearset;
@@ -221,7 +183,7 @@ float nearestRiver(float low,float high,float x,float width){
     return nearset;
 }
 
-float intersectRiver(float3 pos){
+float intersectRiver(vec3 pos){
     float z=pos.z;
     float fw=.1*sin(z)+.05*sin(.5*z)+.6;
     float width=fw;
@@ -231,7 +193,7 @@ float intersectRiver(float3 pos){
 
 
 
-float2 map(float3 pos){
+vec2 map(vec3 pos){
     float castRiver=intersectRiver(pos);
     float tH=terrain(pos.xz);
     float type=CASTTERRIAN;
@@ -243,7 +205,7 @@ float2 map(float3 pos){
         tH=water(pos.xz);
     }
    // tH=max(tH,.1);
-    return float2(
+    return vec2(
             //height
             tH,
             //type
@@ -251,21 +213,21 @@ float2 map(float3 pos){
         );
 }
 
-float2 mapT(float3 pos){
+vec2 mapT(vec3 pos){
     float castRiver=intersectRiver(pos);
     float tH=terrain(pos.xz);
     float type=CASTTERRIAN;
     float abX=castRiver;
     tH=smoothstep(0.3,1.5,abX)*tH;
     if(tH<0.001){
-        return float2(
+        return vec2(
             //height
             0.,
             //type
             CASTRIVER
         );
     }
-    return float2(
+    return vec2(
             //height
             tH,
             //type
@@ -273,10 +235,10 @@ float2 mapT(float3 pos){
         );
 }
 
-float3 calcNormal(float3 pos,float type){
-    float3 result=float3(0,0,0);
-    float2 delta=float2(1.,-1.)*0.5773*0.0005;
-    float2 res=float2(FAR, FAR);
+vec3 calcNormal(vec3 pos,float type){
+    vec3 result=vec3(0.);
+    vec2 delta=vec2(1.,-1.)*0.5773*0.0005;
+    vec2 res=vec2(FAR);
     return normalize(
         delta.xyy*map(pos+delta.xyy).x+
         delta.yyx*map(pos+delta.yyx).x+
@@ -285,17 +247,17 @@ float3 calcNormal(float3 pos,float type){
     );
 }
 
-float4 castTerrain(float3 or,float3 rd){
-    float CASTLOOP=50.;
+vec4 castTerrain(vec3 or,vec3 rd){
+    const float CASTLOOP=50.;
     float dist=0.01;
-    float4 result=float4(0,0,0,0);
+    vec4 result=vec4(0.);
     for(float i=0.;i<CASTLOOP;i++){
-        float3 target=or+dist*rd;
-        float2 map=mapT(target);
+        vec3 target=or+dist*rd;
+        vec2 map=mapT(target);
         float h=map.x;
         float delta=target.y-h;
         if(delta<.01){
-            return float4(
+            return vec4(
                 //dist
                 dist,
                 //type
@@ -307,7 +269,7 @@ float4 castTerrain(float3 or,float3 rd){
             );
         };
         if(dist>FAR){
-            result= float4(
+            result= vec4(
                 //dist
                 dist,
                 //type
@@ -324,21 +286,21 @@ float4 castTerrain(float3 or,float3 rd){
 
 }
 
-float4 castObjects(float3 or,float3 rd){
-    float CASTLOOP=150.;
+vec4 castObjects(vec3 or,vec3 rd){
+    const float CASTLOOP=150.;
     float dist=0.;
-    float4 result=float4(0,0,0,0);
+    vec4 result=vec4(0.);
     for(float i=0.;i<CASTLOOP;i++){
-        float3 target=or+dist*rd;
-        float2 map_=map(target);
-        float h=map_.x;
+        vec3 target=or+dist*rd;
+        vec2 map=map(target);
+        float h=map.x;
         float delta=target.y-h;
         if(delta<.02){
-            return float4(
+            return vec4(
                 //dist
                 dist,
                 //type
-                map_.y,
+                map.y,
                 //casted
                 1.,
                 //h
@@ -346,11 +308,11 @@ float4 castObjects(float3 or,float3 rd){
             );
         };
         if(dist>FAR){
-            result= float4(
+            result= vec4(
                 //dist
                 dist,
                 //type
-                map_.y,
+                map.y,
                 //casted
                 0.,
                 0.
@@ -363,18 +325,18 @@ float4 castObjects(float3 or,float3 rd){
 
 }
 
-float3 drawSky(float3 rd){
+vec3 drawSky(vec3 rd){
     float baseN=.45;
     float sm=.1;
-    float3 col= float3(0.4431, 0.6353, 0.9882);
+    vec3 col= vec3(0.4431, 0.6353, 0.9882);
     float cloudV=cloud(rd);
-    col+=float3(1,1,1)*cloudV;
+    col+=vec3(1.)*cloudV;
     return col;
 }
 
-float3 getTerrainCol(float3 p){
-    float3 res=float3(0.4863, 0.451, 0.3765);
-    float3 baseCoord=p.xyz*11.76;
+vec3 getTerrainCol(vec3 p){
+    vec3 res=vec3(0.4863, 0.451, 0.3765);
+    vec3 baseCoord=p.xyz*11.76;
    // float ks=.1;
     // baseCoord=rotate2D*baseCoord;
 
@@ -389,48 +351,48 @@ float3 getTerrainCol(float3 p){
     
     float darkWater=1.-smoothstep(.01+.1*rn,.01+.1*rn+.08,heightFromWater);
     float dark=snoise(p.xyz);
-    res+=darkWater*float3(0.6471, 0.5333, 0.3686);
-    res+=(1.-darkWater)*hasTree*float3(0.0078, 0.2392, 0.0078);
+    res+=darkWater*vec3(0.6471, 0.5333, 0.3686);
+    res+=(1.-darkWater)*hasTree*vec3(0.0078, 0.2392, 0.0078);
     float snow=smoothstep(2.5,2.5+.5,heightFromWater);
-    res+=snow*float3(1,1,1);
+    res+=snow*vec3(1. );
     float nl=(1.-snow)*(1.-darkWater)*smoothstep(.7,.7+.01,rockn);
     return res;
 }
 
 
 
-float3 render(float3 or,float3 rd){
-    float4 castResult=castObjects(or,rd);
-    float3 lin=float3(0,0,0);
-    float3 res=float3(0.4863, 0.451, 0.3765);
-    float3 normal=float3(0.,0.,0.);
+vec3 render(vec3 or,vec3 rd){
+    vec4 castResult=castObjects(or,rd);
+    vec3 lin=vec3(0.);
+    vec3 res=vec3(0.4863, 0.451, 0.3765);
+    vec3 normal=vec3(0.,0.,0.);
     float dist=FAR;
-    float3 speNormal=normal;
+    vec3 speNormal=normal;
     float ks=1.;
     float br=1.;
     float difR=0.4;
     float waterR=0.;
-    float3 p=or+castResult.x*rd;
+    vec3 p=or+castResult.x*rd;
     if(castResult.z>0.){
         normal=calcNormal(p,castResult.y);
         speNormal=normal;
         dist=castResult.x;
     }
     if(abs(castResult.y-CASTRIVER)<0.01){
-        res=float3(0.1608, 0.3804, 0.3569);
+        res=vec3(0.1608, 0.3804, 0.3569);
         br=40.;
         difR=.7;
         waterR=1.;
         ks=2.;
-        speNormal=float3(0.,1.,0.);
-        float3 red=rd+float3(0.,-(rd.y)*2.,0.);
+        speNormal=vec3(0.,1.,0.);
+        vec3 red=rd+vec3(0.,-(rd.y)*2.,0.);
         red=normalize(red);
-        float3 from=p+.1*normal;
-        float4 castRes=castTerrain(from,red);
+        vec3 from=p+.1*normal;
+        vec4 castRes=castTerrain(from,red);
         if(castRes.z>0.){
             if(abs(castRes.y-CASTTERRIAN)<0.01){
-                float3 rP=from+castRes.x*red;
-                float3 reCol=getTerrainCol(rP);
+                vec3 rP=from+castRes.x*red;
+                vec3 reCol=getTerrainCol(rP);
                 res=res*.8+.2*reCol;
             }
         }else{
@@ -439,7 +401,7 @@ float3 render(float3 or,float3 rd){
         }
         float castRiver=intersectRiver(p);
         float width=-castRiver;
-        res-=float3(4,4,4)*smoothstep(0., 0.6,width );
+        res-=vec3(.4)*smoothstep(0., 0.6,width );
         
 
     }
@@ -449,8 +411,8 @@ float3 render(float3 or,float3 rd){
     }
     {
     
-        float3 light=normalize(float3 (-0.02,0.2,0.3));
-        float3 hal=normalize(light-rd);
+        vec3 light=normalize(vec3 (-0.02,0.2,0.3));
+        vec3 hal=normalize(light-rd);
         float dif=clamp(dot(normal,light),0.,1.);
         float spe=pow(
             clamp(dot(speNormal,hal),0.,1.),
@@ -462,16 +424,16 @@ float3 render(float3 or,float3 rd){
             clamp(1.-dot(hal,light),0. ,1. ),
             5.
         );
-        float3 suncol=float3(0.9686, 0.9216, 0.7922);
+        vec3 suncol=vec3(0.9686, 0.9216, 0.7922);
         lin+=difR*res+res*.7*dif*suncol+.7*res*waterR*(1.-dif)*.75*suncol;
         
-        lin+=5.*spe*float3(1.3,1.0,0.7)*ks;
+        lin+=5.*spe*vec3(1.3,1.0,0.7)*ks;
         lin=step(0.1,castResult.z)*lin+(1.-step(0.1,castResult.z))*drawSky(rd);
        
-        //  lin = lerp( lin, float3(0.7,0.7,0.9), 1.0-exp( -0.0001*height*height*height ) );
+        //  lin = mix( lin, vec3(0.7,0.7,0.9), 1.0-exp( -0.0001*height*height*height ) );
 
     }
-    float3 fogCol=float3(0.9529, 0.9804, 0.9804);
+    vec3 fogCol=vec3(0.9529, 0.9804, 0.9804);
     float fogRatio = smoothstep(1.,10. ,dist );
     lin=(1.-fogRatio)*lin+fogRatio*fogCol;
     float skyRatio=smoothstep(.2,1.,abs(rd.y))*(1.-castResult.z);
@@ -479,11 +441,8 @@ float3 render(float3 or,float3 rd){
     return lin;
 }
 
-float4 main(VsOut IN): COLOR 
-{
-	float4 fragColor;
-	float2 fragCoord=IN.uv;
-    float2 st = fragCoord.xy/iResolution.xy;
+void mainImage_( out vec4 fragColor, in vec2 fragCoord ){
+    vec2 st = fragCoord.xy/iResolution.xy;
     
     st.y*=iResolution.y/iResolution.x;
     st-=.5;
@@ -493,21 +452,25 @@ float4 main(VsOut IN): COLOR
     float z=.5*iTime+2.;
     float x=curve(z);
     float dXZ=calcCurveDif(z);
-    float3 cameraPosition=float3(x,.5,z);
-    float3 dP=normalize(float3(dXZ,0.,1.));
-    float3 lookAt=normalize(dP+float3(0.,-.1,0.));
-    float3 rightLook=cross(lookAt,float3(0.,1.,0.));
+    vec3 cameraPosition=vec3(x,.5,z);
+    vec3 dP=normalize(vec3(dXZ,0.,1.));
+    vec3 lookAt=normalize(dP+vec3(0.,-.1,0.));
+    vec3 rightLook=cross(lookAt,vec3(0.,1.,0.));
     rightLook=normalize(rightLook);
-    float3 upLook=cross(rightLook,lookAt);
+    vec3 upLook=cross(rightLook,lookAt);
     upLook=normalize(upLook);
-    float3 direction=lookAt+st.x*rightLook+st.y*upLook;
+    vec3 direction=lookAt+st.x*rightLook+st.y*upLook;
     direction=normalize(direction);
 
-    float3 res=render(cameraPosition,direction);
+    vec3 res=render(cameraPosition,direction);
 
-    fragColor=float4(res,1.);
-	return fragColor;
+    fragColor=vec4(res,1.);
 
 }
 // --------[ Original ShaderToy ends here ]---------- //
+
+void main(void)
+{
+    mainImage_(gl_FragColor, xlv_TEXCOORD0.xy);
+}
 
