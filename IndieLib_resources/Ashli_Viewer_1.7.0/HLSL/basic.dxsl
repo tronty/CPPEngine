@@ -1,0 +1,155 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2003, ATI Technologies, Inc., All rights reserved.
+//
+// Permission to use, copy, modify, and distribute this software and its 
+// documentation for any purpose and without fee is hereby granted,
+// provided that the above copyright notice appear in all copies and derivative
+// works and that both the copyright notice and this permission notice appear in
+// support documentation, and that the name of ATI Technologies, Inc. not be used
+// in advertising or publicity pertaining to distribution of the software without
+// specific, written prior permission.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+ * DX SL basic vertex shader
+ */
+
+uniform matrix mWorldView = 1.;
+uniform matrix mNormal = 1.;
+uniform matrix mWorldViewProjection = 1.;
+uniform matrix mTexture0 = 1.;
+uniform matrix mTexture1 = 1.;
+uniform matrix mTexture2 = 1.;
+uniform matrix mTexture3 = 1.;
+uniform matrix mTexture4 = 1.;
+uniform matrix mTexture5 = 1.;
+uniform matrix mTexture6 = 1.;
+uniform matrix mTexture7 = 1.;
+
+struct VertexInput {
+    float4 position		: POSITION;
+    float3 normal		: NORMAL;
+    float4 color0		: COLOR0;
+    float4 color1		: COLOR1;
+    float4 texcoord0		: TEXCOORD0;
+    float4 texcoord1		: TEXCOORD1;
+    float4 texcoord2		: TEXCOORD2;
+};
+
+struct VertexOutput {
+    float4 position		: POSITION;
+    float4 color0		: COLOR0;
+    float4 color1		: COLOR1;
+    float4 texcoord0		: TEXCOORD0;
+    float4 texcoord1		: TEXCOORD1;
+    float4 texcoord2		: TEXCOORD2;
+    float4 texcoord3		: TEXCOORD3;
+    float3 texcoord4		: TEXCOORD4;
+    float3 texcoord5		: TEXCOORD5;
+    float4 texcoord6		: TEXCOORD6;
+    float4 texcoord7		: TEXCOORD7;
+    float4 Plight0_1_0		: TEXCOORD8;
+    float4 Plight0_2_0		: TEXCOORD9;
+    float4 Plight0_3_0		: TEXCOORD10;
+    float4 Plight0_4_0		: TEXCOORD11;
+    float4 Plight0_5_0		: TEXCOORD12;
+    float4 Plight0_6_0		: TEXCOORD13;
+    float4 Plight0_7_0		: TEXCOORD14;
+    float4 Plight0_8_0		: TEXCOORD15;
+};
+    
+// entry point
+VertexOutput
+vs(VertexInput vi)
+{
+    VertexOutput vo;
+    
+    // position in eye space
+    vo.texcoord1 =  mul(vi.position, mWorldView);
+
+    // position in clip space
+    vo.position = mul(vi.position, mWorldViewProjection);
+
+    // position in normalized device space (0 to 1)
+    vo.texcoord3 = vo.position / vo.position[3];
+#ifdef ASHLI_GL
+    vo.texcoord3 = float4 (.5, .5, 1., 1.) * 
+		     (vo.texcoord3 + float4 (1., 1., .0, .0));
+#else
+    vo.texcoord3 = float4 (.5, -.5, 1., 1.) * 
+		     (vo.texcoord3 + float4 (1., -1., .0, .0));
+#endif
+
+    // normal transform (transposed world-view inverse)
+    float4 iNormal = float4(vi.normal, 0);
+    vo.texcoord4 = mul(iNormal, mNormal);
+
+    // incident vector
+    vo.texcoord5 = vo.texcoord1 - float4 (0,0,0,0);
+
+    // color
+    vo.color0 = vi.color0;
+    vo.color1 = vi.color1;
+
+    // texture
+    vo.texcoord0 = vi.texcoord0;
+
+    // Pobj
+    vo.texcoord6 = vi.position;
+
+    // tangent and binormal
+    vo.texcoord2 = mul(vi.texcoord1, mWorldView );
+    vo.texcoord7 = mul(vi.texcoord2, mWorldView );
+
+    // shadow
+    float4 lgt1 = mul(vi.position, mTexture0);
+    float4 lgt2 = mul(vi.position, mTexture1);
+    float4 lgt3 = mul(vi.position, mTexture2);
+    float4 lgt4 = mul(vi.position, mTexture3);
+    float4 lgt5 = mul(vi.position, mTexture4);
+    float4 lgt6 = mul(vi.position, mTexture5);
+    float4 lgt7 = mul(vi.position, mTexture6);
+    float4 lgt8 = mul(vi.position, mTexture7);
+    
+#ifdef ASHLI_GL
+    vo.Plight0_1_0 = lgt1 * float4 (.5, .5, 1., 1.) + 
+                  lgt1[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_2_0 = lgt2 * float4 (.5, .5, 1., 1.) + 
+                  lgt2[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_3_0 = lgt3 * float4 (.5, .5, 1., 1.) + 
+                  lgt3[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_4_0 = lgt4 * float4 (.5, .5, 1., 1.) + 
+                  lgt4[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_5_0 = lgt5 * float4 (.5, .5, 1., 1.) + 
+                  lgt5[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_6_0 = lgt6 * float4 (.5, .5, 1., 1.) + 
+                  lgt6[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_7_0 = lgt7 * float4 (.5, .5, 1., 1.) + 
+                  lgt7[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_8_0 = lgt8 * float4 (.5, .5, 1., 1.) + 
+                  lgt8[3] * float4 (.5, .5, .0, .0);
+#else
+    vo.Plight0_1_0 = lgt1 * float4 (.5, -.5, 1., 1.) + 
+                  lgt1[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_2_0 = lgt2 * float4 (.5, -.5, 1., 1.) + 
+                  lgt2[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_3_0 = lgt3 * float4 (.5, -.5, 1., 1.) + 
+                  lgt3[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_4_0 = lgt4 * float4 (.5, -.5, 1., 1.) + 
+                  lgt4[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_5_0 = lgt5 * float4 (.5, -.5, 1., 1.) + 
+                  lgt5[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_6_0 = lgt6 * float4 (.5, -.5, 1., 1.) + 
+                  lgt6[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_7_0 = lgt7 * float4 (.5, -.5, 1., 1.) + 
+                  lgt7[3] * float4 (.5, .5, .0, .0);
+    vo.Plight0_8_0 = lgt8 * float4 (.5, -.5, 1., 1.) + 
+                  lgt8[3] * float4 (.5, .5, .0, .0);
+#endif
+
+    return vo;
+}
+
+

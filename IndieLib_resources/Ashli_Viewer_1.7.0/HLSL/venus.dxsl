@@ -1,0 +1,135 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2003, ATI Technologies, Inc., All rights reserved.
+//
+// Permission to use, copy, modify, and distribute this software and its 
+// documentation for any purpose and without fee is hereby granted,
+// provided that the above copyright notice appear in all copies and derivative
+// works and that both the copyright notice and this permission notice appear in
+// support documentation, and that the name of ATI Technologies, Inc. not be used
+// in advertising or publicity pertaining to distribution of the software without
+// specific, written prior permission.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+ * DX SL port of RenderMan(R) venus test shader
+ *
+ */
+
+
+#define PI 3.14159265
+#define TWOPI (2*PI)
+
+#define snoise(x) ((2*noise(x))-1)
+#define octaves 8
+
+
+uniform float Ka = 0;
+uniform float Kd = 0.7;
+uniform float offset = 1.36;
+uniform float scale = 0.31;
+uniform float twist = 0.51;
+uniform float omega = 0.966;
+uniform float texScale = 0.0031;
+
+
+uniform float intensity1 = 1;
+uniform float4 lightcolor1 = {1,1,1,0};
+uniform float4 dir1 = {-0.5,-0.5,-1,0};
+
+
+
+struct PixelInput {
+    float4 c0 		: COLOR0;
+    float4 c1 		: COLOR1;
+    float4 t1		: TEXCOORD1;
+    float3 t4		: TEXCOORD4;
+    float3 t5		: TEXCOORD5;
+    float4 t6		: TEXCOORD6;
+};
+
+struct PixelOutput {
+    float4 c 		: COLOR;
+};
+
+// ambient function
+float4 ambient()
+{
+    float4 C = { 0,0,0,1 };
+    float4 Cl1;
+    Cl1 = intensity1 * lightcolor1;
+    C = C + Cl1;
+    return C;
+}
+
+// diffuse function
+float4 diffuse(float3 Nn)
+{
+    float4 C;
+    float3 L2;
+    float4 Cl2;
+    C = float4 (0,0,0,1);
+    L2 = dir1;
+    Cl2 = lightcolor1 * intensity1;
+    L2 = -L2;
+    C = C + Cl2 * max(0, dot(Nn, normalize(L2)));
+    return C;
+}
+
+
+
+// entry point
+PixelOutput main(PixelInput pi)
+{
+  float4 Ptexture;           /* the shade point in texture space */
+  float3 PtN;                /* normalized version of Ptexture */
+  float3 PP;                 /* Point after rotation by coriolis twist */
+  float rsq;                /* Used in calculation of twist */
+  float angle;              /* Twist angle */
+  float sine, cosine;       /* sin and cos of angle */
+  float l, o, a, i;         /* Loop control for fractal sum */
+  float value;              /* Fractal sum is stored here */
+  float4 baseColor;
+
+  baseColor = float4(0.78125, 0.3515625, 0, 1);
+
+  /* Transform to texture coordinates */
+	Ptexture = pi.t6;
+
+  Ptexture *= texScale;
+
+  /* Calculate Coriolis twist, yielding point PP */
+  PtN = float3(Ptexture.x, Ptexture.y, Ptexture.z);
+  PtN = normalize (PtN);
+  rsq = PtN.x * PtN.x + PtN.y * PtN.y;
+  angle = twist * TWOPI * rsq;
+  sine = sin (angle);
+  cosine = cos (angle);
+  PP = float3(Ptexture.x*cosine - Ptexture.y*sine,
+	      Ptexture.x*sine + Ptexture.y*cosine,
+	      Ptexture.z);
+
+  /* Compute VLfBm */
+  l = 1;  o = 1;  a = 0;
+  for (i = 0;  i < octaves;  i += 1) {
+      a += o * snoise(PP * l);
+      l *= 2;
+      o *= omega;
+    }
+
+  value = abs (offset + scale * a);
+
+  float3 Nf = faceforward(normalize(pi.t4), pi.t5, pi.t4);
+
+  PixelOutput po;
+
+  /* Shade like matte, but with color scaled by cloud color */
+	po.c = pi.c0 * (value * baseColor) * (Ka * ambient() +
+					Kd * diffuse(Nf));
+					
+	return po;
+}
+
+
+
