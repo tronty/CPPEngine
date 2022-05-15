@@ -1,3 +1,4 @@
+cd ./bin;./Jupiter.bin;cd .. &&
 cd ./bin;./Venus.bin;cd .. &&
 cd ./bin;./Road01.bin;cd .. &&
 cd ./bin;./pbr.bin;cd .. &&

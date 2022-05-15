@@ -31,8 +31,8 @@ VERTEX_OUT main(VERTEX_IN IN)
 {
 	VERTEX_OUT OUT = (VERTEX_OUT)0;
     // position and neighbors in object space
-    OUT.Position = float4(IN.Position, 1.0);
-    OUT.Pobj = float4(IN.Position, 1.0);
+    OUT.Position = mul(worldViewProj, float4(IN.Position, 1.0));
+    OUT.Pobj = mul(worldViewProj, float4(IN.Position, 1.0));
 
     float3x3 NormalMatrix =  (float3x3)worldViewProj;
 
