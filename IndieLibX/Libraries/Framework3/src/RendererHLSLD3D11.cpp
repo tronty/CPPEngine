@@ -448,6 +448,101 @@ int argc, char *argv[]
 		if(!FAILED(hr)) mOk=true;
 	}
 
+		void RendererHLSLD3D11::DeleteShader(ShaderID id)
+		{
+			if(id < 0)
+				return;
+			if(id >= shaders.getCount())
+				return;
+			glDeleteObjectARB((shaders[id]).shader[eVertexShader]);
+			checkGlError("");
+			glDeleteObjectARB((shaders[id]).shader[ePixelShader]);
+			checkGlError("");
+		};
+void RendererHLSLD3D11::DeleteShader(ShaderID id)
+{
+			if(id < 0)
+				return;
+			if(id >= shaders.getCount())
+				return;
+	// Delete shaders
+		if (shaders[id].vertexShader  ) shaders[id].vertexShader->Release();
+		if (shaders[id].geometryShader) shaders[id].geometryShader->Release();
+		if (shaders[id].pixelShader   ) shaders[id].pixelShader->Release();
+		if (shaders[id].hullShader  ) shaders[id].hullShader->Release();
+		if (shaders[id].domainShader  ) shaders[id].domainShader->Release();
+		if (shaders[id].computeShader  ) shaders[id].computeShader->Release();
+		if (shaders[id].inputSignature) shaders[id].inputSignature->Release();
+
+		for (unsigned int k = 0; k < shaders[id].nVSCBuffers; k++){
+			shaders[id].vsConstants[k]->Release();
+			delete shaders[id].vsConstMem[k];
+		}
+		for (unsigned int k = 0; k < shaders[id].nGSCBuffers; k++){
+			shaders[id].gsConstants[k]->Release();
+			delete shaders[id].gsConstMem[k];
+		}
+		for (unsigned int k = 0; k < shaders[id].nPSCBuffers; k++){
+			shaders[id].psConstants[k]->Release();
+			delete shaders[id].psConstMem[k];
+		}
+		for (unsigned int k = 0; k < shaders[id].nHSCBuffers; k++){
+			shaders[id].hsConstants[k]->Release();
+			delete shaders[id].hsConstMem[k];
+		}
+		for (unsigned int k = 0; k < shaders[id].nDSCBuffers; k++){
+			shaders[id].dsConstants[k]->Release();
+			delete shaders[id].dsConstMem[k];
+		}
+		for (unsigned int k = 0; k < shaders[id].nCSCBuffers; k++){
+			shaders[id].csConstants[k]->Release();
+			delete shaders[id].csConstMem[k];
+		}
+		delete shaders[id].vsConstants;
+		delete shaders[id].gsConstants;
+		delete shaders[id].psConstants;
+		delete shaders[id].vsConstMem;
+		delete shaders[id].gsConstMem;
+		delete shaders[id].psConstMem;
+		delete shaders[id].hsConstants;
+		delete shaders[id].hsConstMem;
+		delete shaders[id].dsConstants;
+		delete shaders[id].dsConstMem;
+		delete shaders[id].csConstants;
+		delete shaders[id].csConstMem;
+
+		/*
+		for (unsigned int k = 0; k < shaders[id].nConstants; k++){
+			delete shaders[id].constants[k].name;
+		}
+		*/
+		//delete shaders[id].constants;
+
+		/*
+		for (unsigned int k = 0; k < shaders[id].nTextures; k++){
+			delete shaders[id].textures[k].name;
+		}
+		*/
+		//delete shaders[id].textures;
+
+		/*
+		for (unsigned int k = 0; k < shaders[id].nSamplers; k++){
+			delete shaders[id].samplers[k].name;
+		}
+		*/
+		//delete shaders[id].samplers;
+
+		delete shaders[id].vsDirty;
+		delete shaders[id].gsDirty;
+		delete shaders[id].psDirty;
+		delete shaders[id].hsDirty;
+		delete shaders[id].dsDirty;
+		delete shaders[id].csDirty;
+
+    // Delete vertex formats
+		if (vertexFormats[id].inputLayout) vertexFormats[id].inputLayout->Release();
+}
+
 RendererHLSLD3D11::~RendererHLSLD3D11(){
 	RendererHLSLD3D11::GetDeviceContext()->ClearState();
 
@@ -459,86 +554,8 @@ RendererHLSLD3D11::~RendererHLSLD3D11(){
 */
 
 	// Delete shaders
-	for (unsigned int i = 0; i < shaders.getCount(); i++){
-		if (shaders[i].vertexShader  ) shaders[i].vertexShader->Release();
-		if (shaders[i].geometryShader) shaders[i].geometryShader->Release();
-		if (shaders[i].pixelShader   ) shaders[i].pixelShader->Release();
-		if (shaders[i].hullShader  ) shaders[i].hullShader->Release();
-		if (shaders[i].domainShader  ) shaders[i].domainShader->Release();
-		if (shaders[i].computeShader  ) shaders[i].computeShader->Release();
-		if (shaders[i].inputSignature) shaders[i].inputSignature->Release();
-
-		for (unsigned int k = 0; k < shaders[i].nVSCBuffers; k++){
-			shaders[i].vsConstants[k]->Release();
-			delete shaders[i].vsConstMem[k];
-		}
-		for (unsigned int k = 0; k < shaders[i].nGSCBuffers; k++){
-			shaders[i].gsConstants[k]->Release();
-			delete shaders[i].gsConstMem[k];
-		}
-		for (unsigned int k = 0; k < shaders[i].nPSCBuffers; k++){
-			shaders[i].psConstants[k]->Release();
-			delete shaders[i].psConstMem[k];
-		}
-		for (unsigned int k = 0; k < shaders[i].nHSCBuffers; k++){
-			shaders[i].hsConstants[k]->Release();
-			delete shaders[i].hsConstMem[k];
-		}
-		for (unsigned int k = 0; k < shaders[i].nDSCBuffers; k++){
-			shaders[i].dsConstants[k]->Release();
-			delete shaders[i].dsConstMem[k];
-		}
-		for (unsigned int k = 0; k < shaders[i].nCSCBuffers; k++){
-			shaders[i].csConstants[k]->Release();
-			delete shaders[i].csConstMem[k];
-		}
-		delete shaders[i].vsConstants;
-		delete shaders[i].gsConstants;
-		delete shaders[i].psConstants;
-		delete shaders[i].vsConstMem;
-		delete shaders[i].gsConstMem;
-		delete shaders[i].psConstMem;
-		delete shaders[i].hsConstants;
-		delete shaders[i].hsConstMem;
-		delete shaders[i].dsConstants;
-		delete shaders[i].dsConstMem;
-		delete shaders[i].csConstants;
-		delete shaders[i].csConstMem;
-
-		/*
-		for (unsigned int k = 0; k < shaders[i].nConstants; k++){
-			delete shaders[i].constants[k].name;
-		}
-		*/
-		//delete shaders[i].constants;
-
-		/*
-		for (unsigned int k = 0; k < shaders[i].nTextures; k++){
-			delete shaders[i].textures[k].name;
-		}
-		*/
-		//delete shaders[i].textures;
-
-		/*
-		for (unsigned int k = 0; k < shaders[i].nSamplers; k++){
-			delete shaders[i].samplers[k].name;
-		}
-		*/
-		//delete shaders[i].samplers;
-
-		delete shaders[i].vsDirty;
-		delete shaders[i].gsDirty;
-		delete shaders[i].psDirty;
-		delete shaders[i].hsDirty;
-		delete shaders[i].dsDirty;
-		delete shaders[i].csDirty;
-	}
-
-    // Delete vertex formats
-	for (unsigned int i = 0; i < vertexFormats.getCount(); i++){
-		if (vertexFormats[i].inputLayout) vertexFormats[i].inputLayout->Release();
-	}
-
+	for (unsigned int i = 0; i < shaders.getCount(); i++)
+		DeleteShader(i);
     // Delete vertex buffers
 	for (unsigned int i = 0; i < vertexBuffers.getCount(); i++){
 		if (vertexBuffers[i].vertexBuffer) vertexBuffers[i].vertexBuffer->Release();

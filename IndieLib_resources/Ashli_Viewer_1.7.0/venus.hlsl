@@ -119,7 +119,6 @@ float4 ambient()
     return C;
 }
 
-
 // diffuse function
 float4 diffuse(float3 Nn)
 {
@@ -168,7 +167,7 @@ float4 main(VERTEX_OUT IN) : COLOR
   l = 1;  o = 1;  a = 0;
   for (i = 0;  i < octaves;  i += 1) {
   	float3 f1=PP*l;
-  	float f2=noise(f1);
+  	float f2=snoise(f1);
       a += o * f2;//snoise(PP * l);
       l *= 2;
       o *= omega;
@@ -178,7 +177,10 @@ float4 main(VERTEX_OUT IN) : COLOR
 
   float3 Nf = faceforward(normalize(IN.N), IN.I, IN.N);
 	
-	return baseColor;
+	/*
+	return ambient();
+	return diffuse(Nf);
+	return baseColor; */
   /* Shade like matte, but with color scaled by cloud color */
 	return IN.Cs * (value * baseColor) * (Ka * ambient() +
 					Kd * diffuse(Nf));

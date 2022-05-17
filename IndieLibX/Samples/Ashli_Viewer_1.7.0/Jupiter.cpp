@@ -95,7 +95,7 @@ virtual void actionPerformed(GUIEvent &evt)
 };
 int ApplicationLogic()
 {	
-	IRenderer* r=IRenderer::GetRendererInstance("Venus");	
+	IRenderer* r=IRenderer::GetRendererInstance("Jupiter");	
 	IInput*    i=STX_Service::GetInputInstance();
 	_Shape3D shape3D;
 	shape3D.init("");

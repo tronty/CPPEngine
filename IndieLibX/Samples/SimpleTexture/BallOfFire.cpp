@@ -6,43 +6,25 @@
 #include <Framework3/IRenderer.h>
 
 std::vector<std::string> g_filenames;
-MeshRenderer2 shape3D[3];
+//MeshRenderer2 shape3D[3];
 //std::vector<std::string> ShaderFiles;
-std::vector<ShaderID> shd;
-std::vector<VertexFormatID> vf;
+ShaderID shd=-1;
+VertexFormatID vf=-1;
 //std::vector<std::string> TextureFiles;
 std::vector<TextureID> tex;
 unsigned int s_i=0;
 unsigned int t_i=0;
 unsigned int m_i=2;
 
-int init(const char* aTitle)
+void LoadShader(int i =-1)
 {
-	{
-		std::string f=stx_convertpath("/shd/BallOfFire.txt");
-		std::ifstream file(f.c_str());
-		std::string str; 
-		while (std::getline(file, str))
-		{
-			if(str.length())
-				if(str[0]!='#')
-        				g_filenames.push_back(str);
-    		}
-	}
-	LOG_FNLN;
-	#if 0
-	//stx_InitShape3D("/shd/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
-	shape3D[0].CreateTexturedQuad(2.0f, 2.0f, eShaderNone);
-        shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
-        shape3D[2].CreateSphere(1.0f, eShaderNone);
-	#endif
-	LOG_FNLN;
-	for(unsigned int i=0;i<g_filenames.size();i++)
-	{
-	#if 0
-		printf("%s\n", g_filenames[i].c_str());
-		continue;
-	#endif
+	if(i<0)
+		return;
+	if(i>=g_filenames.size())
+		return;
+	shd=-1;
+	vf=-1;
+
 		ShaderID id=IRenderer::GetRendererInstance()->addShaderFromFile(g_filenames[i].c_str(), "main2", "main");
 		if(id==-1)
 		{
@@ -50,8 +32,7 @@ int init(const char* aTitle)
 			//stx_exit(0);
 			//continue;
 		}
-		shd.push_back(id);
-		//ShaderFiles.push_back(filename[i]);
+		shd=id;
 		#if 1
 	FormatDesc format[] =
 	{
@@ -69,11 +50,31 @@ int init(const char* aTitle)
 			0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 		};
 		#endif
-		if(shd[shd.size()-1]!=-1)
-		vf.push_back(IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd[shd.size()-1]));
-		else
-		vf.push_back(-1);
+		if(shd>-1)
+			vf=IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
+}
+
+int init(const char* aTitle)
+{
+	{
+		std::string f=stx_convertpath("/shd/BallOfFire.txt");
+		std::ifstream file(f.c_str());
+		std::string str; 
+		while (std::getline(file, str))
+		{
+			if(str.length())
+				if(str[0]!='#')
+        				g_filenames.push_back(str);
+    		}
+		LoadShader(0);
 	}
+	LOG_FNLN;
+	#if 0
+	//stx_InitShape3D("/shd/www.shadertoy.com/Shaders.xml", ShaderFiles, shd, vf, TextureFiles, tex);
+	shape3D[0].CreateTexturedQuad(2.0f, 2.0f, eShaderNone);
+        shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
+        shape3D[2].CreateSphere(1.0f, eShaderNone);
+	#endif
 	LOG_FNLN;
 	#if 0
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
@@ -102,10 +103,6 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
-	LOG_FNLN;
-	LOG_PRINT("shd.size()=%d\n", shd.size());
-	LOG_PRINT("vf.size()=%d\n", vf.size());
-	LOG_FNLN;
 	return 0;
 }
 
@@ -117,29 +114,37 @@ void render()
 	
 	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F1))
 	{
+		IRenderer::GetRendererInstance()->DeleteShader(s_i);
 		if(!s_i)
-			s_i=shd.size()-1;
+			s_i=g_filenames.size()-1;
 		else
 			s_i--;
-		while((shd[s_i]==-1)||(vf[s_i]==-1))
+		LoadShader(s_i);
+		while((shd==-1)||(vf==-1))
 		{
+			IRenderer::GetRendererInstance()->DeleteShader(s_i);
 			if(!s_i)
-				s_i=shd.size()-1;
+				s_i=g_filenames.size()-1;
 			else
 				s_i--;
+			LoadShader(s_i);
 		}
 	}
 	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F2))
 	{
+		IRenderer::GetRendererInstance()->DeleteShader(s_i);
 		s_i++;
-		if(s_i>shd.size()-1)
-			s_i=0;
-		while((shd[s_i]==-1)||(vf[s_i]==-1))
+		if(s_i>g_filenames.size()-1)
+			s_i=0;		
+		LoadShader(s_i);
+		while((shd==-1)||(vf==-1))
 		{
+			IRenderer::GetRendererInstance()->DeleteShader(s_i);
 			s_i++;
-			if(s_i>shd.size()-1)
+			if(s_i>g_filenames.size()-1)
 				s_i=0;
-		}
+		}	
+		LoadShader(s_i);
 	}
 
 	float mAngleX=0.0f;
@@ -165,14 +170,6 @@ void render()
 	float s=0.25f*4.0f;
 	D3DXFROMWINEMatrixScaling(&S, s, s, s);
 	W=R*S;
-	#if 1
-	LOG_FNLN;
-	LOG_PRINT("s_i=%d\n", s_i);
-	LOG_PRINT("shd.size()=%d\n", shd.size());
-	LOG_PRINT("vf.size()=%d\n", vf.size());
-	LOG_PRINT("shd[%d]=%d\n", s_i, shd[s_i]);
-	LOG_PRINT("vf[%d]=%d\n", s_i, vf[s_i]);
-	#endif
 
 	//printf("ViewportWidth=%d\n", IRenderer::GetRendererInstance()->GetViewportWidth());
 	//printf("ViewportHeight=%d\n", IRenderer::GetRendererInstance()->GetViewportHeight());
@@ -183,12 +180,14 @@ void render()
 	D3DXFROMWINEVECTOR4 iDate(0.0f, 0.0f, 0.0f, time);
 	D3DXFROMWINEMATRIX I;
 	D3DXFROMWINEMatrixIdentity(&I);
+	if(shd==-1) return;
+	if(vf==-1) return;
 #if 0
         shape3D[m_i].BeginDraw(&W, -1, shd[s_i], vf[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", W);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", W);
-	//IRenderer::GetRendererInstance()->setShader(shd[s_i]);
-	//IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
+	//IRenderer::GetRendererInstance()->setShader(shd);
+	//IRenderer::GetRendererInstance()->setVertexFormat(vf);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
@@ -208,8 +207,8 @@ void render()
 	#endif
 	shape3D[m_i].EndDraw();
 #else
-	IRenderer::GetRendererInstance()->setShader(shd[s_i]);
-	IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
+	IRenderer::GetRendererInstance()->setShader(shd);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf);
 	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
 	

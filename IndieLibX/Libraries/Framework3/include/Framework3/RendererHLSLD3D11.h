@@ -592,7 +592,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			virtual void Init0(void){}
 
 			RendererHLSLD3D11(bool fullScreen=false, int argc=0, char *argv[]=0);
-			virtual ~RendererHLSLD3D11();
+			virtual ~RendererHLSLD3D11();	
+	virtual void DeleteShader(ShaderID id);
             virtual stx_Effect* addEffectFromFile(const std::string& aFileName, const char* aDefines=0);
 			virtual int getSamplerIndex(ShaderID shd, const char* aName);
 

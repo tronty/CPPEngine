@@ -1661,6 +1661,17 @@ int argc, char *argv[]
 
 			mOk=true;
 		}
+		void RendererGLSLGL_1_1::DeleteShader(ShaderID id)
+		{
+			if(id < 0)
+				return;
+			if(id >= shaders.getCount())
+				return;
+			glDeleteObjectARB((shaders[id]).shader[eVertexShader]);
+			checkGlError("");
+			glDeleteObjectARB((shaders[id]).shader[ePixelShader]);
+			checkGlError("");
+		};
 		RendererGLSLGL_1_1::~RendererGLSLGL_1_1()
 		{
 			STX_TRY;
@@ -1684,13 +1695,13 @@ int argc, char *argv[]
 				glDeleteObjectARB((shaders[i]).shader[ePixelShader]);
 				checkGlError("");
                 #if 0
-				glDeleteObjectARB((shaders[i]).GeometryShader);
+				glDeleteObjectARB((shaders[i]).shader[eGeometryShader]);
 				checkGlError("");
-				glDeleteObjectARB((shaders[i]).HullShader);
+				glDeleteObjectARB((shaders[i]).shader[eHullShader]);
 				checkGlError("");
-				glDeleteObjectARB((shaders[i]).DomainShader);
+				glDeleteObjectARB((shaders[i]).shader[eDomainShader]);
 				checkGlError("");
-				glDeleteObjectARB((shaders[i]).ComputeShader);
+				glDeleteObjectARB((shaders[i]).shader[eComputeShader]);
 				checkGlError("");
                 #endif
 				glDeleteObjectARB((shaders[i]).program);
@@ -1713,6 +1724,16 @@ int argc, char *argv[]
 			}
 			if (fbo) {glDeleteFramebuffersEXT(1, &fbo);
 				checkGlError("");}
+#if 0
+			glDeleteSamplers (GLsizei count, const GLuint *samplers);
+			glDeleteProgramsARB (GLsizei n, const GLuint *programs);
+			glDeleteObjectARB (GLhandleARB obj);
+			glDeleteRenderbuffersEXT (GLsizei n, const GLuint *renderbuffers);
+			glDeleteFramebuffersEXT (GLsizei n, const GLuint *framebuffers);
+			glDeleteTexturesEXT (GLsizei n, const GLuint *textures);
+			glDeleteProgram (GLuint program);
+			glDeleteShader (GLuint shader);
+#endif
 		shaders.clear();
 		textures.clear();
 		vertexBuffers.clear();

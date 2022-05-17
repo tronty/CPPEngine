@@ -810,7 +810,8 @@ struct RENDERERAPI IRenderer_
     virtual void Present(bool aB=false)=0;
 };
 struct RENDERERAPI IRenderer : public IRenderer_
-{
+{	
+	virtual void DeleteShader(ShaderID id){}
 #if 0
 	virtual void GetResource( ID3D11Resource **ppResource){}
         

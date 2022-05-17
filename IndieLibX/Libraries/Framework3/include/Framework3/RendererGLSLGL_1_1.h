@@ -72,7 +72,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
         RendererGLSLGL_1_1(bool fullScreen=false,
 		int argc=0, char *argv[]=0);
 
-	virtual ~RendererGLSLGL_1_1();
+	virtual ~RendererGLSLGL_1_1();	
+	virtual void DeleteShader(ShaderID id);
 	virtual int getSamplerIndex(ShaderID shd, const char* aName);
 protected:
 	void linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3& shaderGL1_1);
