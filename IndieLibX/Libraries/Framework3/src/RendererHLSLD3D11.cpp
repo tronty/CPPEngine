@@ -447,7 +447,7 @@ int argc, char *argv[]
 		LOG_PRINT("RendererHLSLD3D11\n");
 		if(!FAILED(hr)) mOk=true;
 	}
-
+#if 0
 		void RendererHLSLD3D11::DeleteShader(ShaderID id)
 		{
 			if(id < 0)
@@ -459,6 +459,7 @@ int argc, char *argv[]
 			glDeleteObjectARB((shaders[id]).shader[ePixelShader]);
 			checkGlError("");
 		};
+#endif
 void RendererHLSLD3D11::DeleteShader(ShaderID id)
 {
 			if(id < 0)
