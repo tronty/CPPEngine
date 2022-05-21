@@ -142,9 +142,9 @@ void render()
 			IRenderer::GetRendererInstance()->DeleteShader(s_i);
 			s_i++;
 			if(s_i>g_filenames.size()-1)
-				s_i=0;
-		}	
-		LoadShader(s_i);
+				s_i=0;	
+			LoadShader(s_i);
+		}
 	}
 
 	float mAngleX=0.0f;

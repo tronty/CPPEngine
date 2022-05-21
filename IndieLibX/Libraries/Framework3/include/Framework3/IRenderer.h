@@ -3179,6 +3179,7 @@ typedef enum _tShader
 		ePhongLighting1,
 		ePhongLighting2,
 		ePhysicalBasedLighting,
+		ePhysicalBasedLighting2,
 		ePositionTexture,
 		ePositionNormal,
 		ePositionNormalTexture,

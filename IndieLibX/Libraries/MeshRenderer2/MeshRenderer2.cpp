@@ -306,9 +306,16 @@ int MeshRenderer2::InitShader(tShader aShader_)
 					////{//LOG_FNLN;}
 					#if 0//def LINUX
 					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.glsl", mainVS, mainFS);
-					#else
+					#elif 1
 					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/pbr.hlsl", mainVS, mainFS);
 					#endif
+					PhysicalBasedVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhysicalBasedShader);
+				}
+				break;
+			case ePhysicalBasedLighting2:
+				if(PhysicalBasedShader==-1)
+				{
+					PhysicalBasedShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/shd/glslsandbox.com/e#81257.1.hlsl", "main", "main");
 					PhysicalBasedVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhysicalBasedShader);
 				}
 				break;
@@ -1534,6 +1541,23 @@ D3DXFROMWINEVECTOR4 mLightPosInWorldSpace4=D3DXFROMWINEVECTOR4(mLightPosInWorldS
 				IRenderer::GetRendererInstance()->setShaderConstant4f("vecEye", EyeDir);
 				//IRenderer::GetRendererInstance()->setShaderConstantArray4f("lights", lights, 4);
 				IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", m_v3EyeDir);
+#endif
+				break;
+			case ePhysicalBasedLighting2:
+				IRenderer::GetRendererInstance()->setShader(PhysicalBasedShader);
+				IRenderer::GetRendererInstance()->setVertexFormat(PhysicalBasedVertexDeclaration);
+				IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", w);
+				IRenderer::GetRendererInstance()->setShaderConstant4f("g_vEyePt", EyeDir);
+#if 0
+				IRenderer::GetRendererInstance()->setShaderConstant4x4f("World", w);
+#if 0
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", LightDir);
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecEye", EyeDir);
+#else
+				IRenderer::GetRendererInstance()->setShaderConstant4f("vecLightDir", LightDir);
+				//IRenderer::GetRendererInstance()->setShaderConstantArray4f("lights", lights, 4);
+				IRenderer::GetRendererInstance()->setShaderConstant3f("camPos", m_v3EyeDir);
+#endif
 #endif
 				break;
 			case eDirectionalLighting:

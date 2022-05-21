@@ -13,6 +13,9 @@ cd bin
 call pbr.exe
 cd ..
 cd bin
+call pbr2.exe
+cd ..
+cd bin
 call BallOfFire.exe
 cd ..
 cd bin

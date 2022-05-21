@@ -11,7 +11,7 @@ class _Shape3D: public STXGUI
 {
 	ShaderID shd;
 	VertexFormatID vf;
-	TextureID texture=-1;
+	TextureID texture;
 	MeshRenderer2 shape3D;
 public:
 int init(const char* aTitle)

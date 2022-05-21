@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2018 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -64,11 +64,7 @@ int init(const char* aTitle)
 		{
 			if(str.length())
 				if(str[0]!='#')
-				{
-					std::vector<std::string> v=stx_split(str, ' ');
-					printf("v.size()=%d\n", v.size());
-        				g_filenames.push_back(v.at(1));
-				}
+        				g_filenames.push_back(str);
     		}
 		LoadShader(0);
 	}
@@ -79,7 +75,6 @@ int init(const char* aTitle)
         shape3D[1].CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
         shape3D[2].CreateSphere(1.0f, eShaderNone);
 	#endif
-	LOG_FNLN;
 	LOG_FNLN;
 	#if 0
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
@@ -107,8 +102,6 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/Metal_Sphere/iChannel0.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	//tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/Metal_Sphere/iChannel1.png", false, IRenderer::GetRendererInstance()->Getlinear()));
 	#endif
 	return 0;
 }
@@ -193,8 +186,8 @@ void render()
         shape3D[m_i].BeginDraw(&W, -1, shd[s_i], vf[s_i], AmbientColor, DiffuseColor, LightDir, EyeDir);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", W);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", W);
-	//IRenderer::GetRendererInstance()->setShader(shd[s_i]);
-	//IRenderer::GetRendererInstance()->setVertexFormat(vf[s_i]);
+	//IRenderer::GetRendererInstance()->setShader(shd);
+	//IRenderer::GetRendererInstance()->setVertexFormat(vf);
 	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
 	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
@@ -290,7 +283,7 @@ void render()
 
 int ApplicationLogic()
 {
-	IRenderer* r=IRenderer::GetRendererInstance("TestNoise");	
+	IRenderer* r=IRenderer::GetRendererInstance("BallOfFire");	
 	IInput*    i=STX_Service::GetInputInstance();
 	init("");
 	while (!i->OnKeyPress (STX_KEY_ESCAPE) && !i->Quit())
