@@ -11,6 +11,7 @@
 //--------------------------------------------------------------------------------------
 #ifndef _SDKMESH_
 #define _SDKMESH_
+// int_least64_t, uint_least64_t 	long long, unsigned long long
 typedef uint_least64_t UINT64; // ???
 typedef void* D3DXFROMWINEHANDLE;
 #define CGrowableArray std::vector
@@ -198,9 +199,9 @@ struct SDKMESH_MATERIAL
     D3DXFROMWINEVECTOR4 Emissive;
     FLOAT Power;
 
-    TextureID pDiffuseTexture9;
-    TextureID pNormalTexture9;
-    TextureID pSpecularTexture9;
+    int_least64_t pDiffuseTexture9;
+    int_least64_t pNormalTexture9;
+    int_least64_t pSpecularTexture9;
 };
 
 struct SDKANIMATION_FILE_HEADER

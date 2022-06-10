@@ -1,5 +1,6 @@
-sampler2D iChannel0;
-highp vec4 font2(int c) {
+uniform sampler2D iChannel0;
+//highp
+vec4 font2(int c) {
   vec4 v = vec4(0);
   v=mix(v, vec4(0x3c66, 0x6e6e, 0x6062, 0x3c00), step(-0.500, float(c)));
   v=mix(v, vec4(0x183c, 0x667e, 0x6666, 0x6600), step(0.500, float(c)));
@@ -132,7 +133,8 @@ highp vec4 font2(int c) {
   return v;
 }
 
-highp vec4 font(int c) {
+//highp 
+vec4 font(int c) {
     if (c < 128) return font2(c);
     return vec4(0xffff) - font2(c - 128);
 }
@@ -165,12 +167,15 @@ void main( )
     fb_pos.y = sz.y - fb_pos.y;
     fb_pos /= iResolution.xy;
     
-	vec4 fb = texture(iChannel0, fb_pos);
-    highp vec4 char = font(int(fb.x));
+	vec4 fb = texture2D(iChannel0, fb_pos);
+    //highp 
+    vec4 char = font(int(fb.x));
+//char = font(int(64));
 
     vec2 p = mod(uv * sz * 8.0, 8.0);
 	int line = 7 - int(p.y);
-    highp float pixels = 0.0;
+    //highp 
+    float pixels = 0.0;
     if (line == 0) pixels = char.x / 256.0;
     if (line == 1) pixels = char.x;
     if (line == 2) pixels = char.y / 256.0;

@@ -101,7 +101,7 @@ VertexBufferID*                       g_ppTransformedVBs = 0;
 #endif
 TextureID g_ptxBoneTexture = -1;
 TextureID g_ptxDiffuse = -1;
-TextureID g_ptxNormal = -1;
+//TextureID g_ptxNormal = -1;
 
 D3DXFROMWINEVECTOR3                         g_vLightPos = D3DXFROMWINEVECTOR3( 159.47f, 74.23f, 103.60f );
 FETCH_TYPE                          g_FetchType = FT_TEXTURE;//FT_CONSTANTBUFFER;
@@ -510,7 +510,7 @@ void  OnFrameRender(double fTime, float fElapsedTime)
             IRenderer::GetRendererInstance()->setShaderConstant3f( "g_vEyePt", g_EyePt );
             IRenderer::GetRendererInstance()->setTexture( "g_txTexBoneWorld", g_ptxBoneTexture );
             IRenderer::GetRendererInstance()->setTexture( "g_txDiffuse", g_ptxDiffuse );
-            IRenderer::GetRendererInstance()->setTexture( "g_txNormal", g_ptxNormal );
+            //IRenderer::GetRendererInstance()->setTexture( "g_txNormal", g_ptxNormal );
             g_SkinnedMesh.EndDraw(&I);
   		//STXGUI::update();
 		const char* txt = "Use mouse buttons to rotate the model.";
