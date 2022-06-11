@@ -79,6 +79,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
     int hr = S_OK;
 
     pHeader->DataOffset = 0;
+	printf("CreateVertexBuffer: SizeBytes=%d, pVertices=%x\n", ( UINT )pHeader->SizeBytes, (const void *) pVertices);
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->SizeBytes, STATIC, (const void *) pVertices);
 
     return hr;
@@ -102,7 +103,8 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
             ibFormat = CONSTANT_INDEX4;
             break;
     };
-
+	
+	printf("CreateIndexBuffer: SizeBytes=%d, ibFormat=%d, pIndices=%x\n", ( UINT )pHeader->SizeBytes/ibFormat, ibFormat, (const void *) pIndices);
 	pHeader->pIB9=IRenderer::GetRendererInstance()->addIndexBuffer(( UINT )pHeader->SizeBytes/ibFormat, ibFormat, STATIC, (const void *) pIndices);
 
     return hr;
@@ -241,14 +243,35 @@ void CDXUTSDKMesh::RenderMesh( UINT iMesh,
 {
 	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     //if( 0 < GetOutstandingBufferResources() ) return;
+
+    SDKMESH_MESH* pMesh = &m_pMeshArray[iMesh];
 printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+printf("pEffect=%x\n", pEffect);
+printf("vf=%x\n", vf);
+
+printf("pMesh->Name=%s\n", ( char* )pMesh->Name);
+printf("pMesh->NumVertexBuffers=%d\n", ( UINT )pMesh->NumVertexBuffers);
+//UINT    VertexBuffers[MAX_VERTEX_STREAMS];
+printf("pMesh->IndexBuffer=%d\n", ( UINT )pMesh->IndexBuffer);
+printf("pMesh->NumSubsets=%d\n", ( UINT )pMesh->NumSubsets);
+printf("pMesh->NumFrameInfluences=%d\n", ( UINT )pMesh->NumFrameInfluences);
+printf("pMesh->IndexBuffer=%x\n", pMesh->IndexBuffer);
+printf("m_pIndexBufferArray[%d].pIB9=%x\n", pMesh->IndexBuffer, m_pIndexBufferArray[ pMesh->IndexBuffer ].pIB9);
+
+if(!pMesh->NumVertexBuffers)
+{
+	printf("m_pMeshArray[%d].NumVertexBuffers==0 !\n", iMesh, m_pMeshArray[iMesh].NumVertexBuffers);
+	printf("Skipping rendering !!!\n");
+	//return;
+}
+stx_exit(0);
+
     // Render the scene with this technique 
     //pEffect->SetTechnique( hTechnique );
 		if(pEffect>-1)IRenderer::GetRendererInstance()->setShader(pEffect);
 		if(vf>-1)IRenderer::GetRendererInstance()->setVertexFormat(vf);
 
-    SDKMESH_MESH* pMesh = &m_pMeshArray[iMesh];
-printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+
     // set vb streams
     for( UINT i = 0; i < ( UINT )pMesh->NumVertexBuffers; i++ )
     {
@@ -258,7 +281,7 @@ printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     }
 
     // Set our index buffer as well
-    IRenderer::GetRendererInstance()->setIndexBuffer( m_pIndexBufferArray[ pMesh->IndexBuffer ].pIB9 );
+    IRenderer::GetRendererInstance()->setIndexBuffer(m_pIndexBufferArray[ pMesh->IndexBuffer ].pIB9 );
 
     SDKMESH_SUBSET* pSubset = 0;
     SDKMESH_MATERIAL* pMat = 0;
@@ -307,8 +330,20 @@ printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
                 PrimCount = ( PrimCount - 3 ) + 1;
             if(PRIM_LINE_STRIP == PrimType )
                 PrimCount -= 1;
-
+#if 1
             IRenderer::GetRendererInstance()->DrawIndexedPrimitive( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
+#else
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PrimType,
+		0,
+		NumVertices,
+		NumIndices/3,
+		pIB9,
+		pIB9,
+		?CONSTANT_INDEX2:CONSTANT_INDEX4,
+		pVB9,
+		pVB9
+		StrideBytes);
+#endif
         }
 
         //pEffect->EndPass();
@@ -417,6 +452,10 @@ int CDXUTSDKMesh::LoadAnimation( const char* szFileName )
     // pointer fixup
     m_pAnimationHeader = ( SDKANIMATION_FILE_HEADER* )m_pAnimationData;
     m_pAnimationFrameData = ( SDKANIMATION_FRAME_DATA* )( m_pAnimationData + m_pAnimationHeader->AnimationDataOffset );
+
+	LOG_FNLN;
+	printf("m_pAnimationHeader=%x\n", m_pAnimationHeader);
+	printf("m_pAnimationFrameData=%x\n", m_pAnimationFrameData);
 
     UINT64 BaseOffset = sizeof( SDKANIMATION_FILE_HEADER );
     for( UINT i = 0; i < m_pAnimationHeader->NumFrames; i++ )
@@ -1484,7 +1523,7 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
     // Get the file size
     UINT cBytes = 0;
 	FILE* file = fopen( szFileName, "r" );
-		LOG_PRINT("szFileName=%s\n", szFileName);
+		printf("szFileName=%s\n", szFileName);
 	if ( file )
 	{
 		// Get the file size, so we can pre-allocate the string. HUGE speed impact.
@@ -1501,6 +1540,7 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
 		// The document parser may decide the document ends sooner than the entire file, however.
 
     // Allocate memory
+			printf("cBytes=%d\n", cBytes);
     m_pStaticMeshData = new BYTE[ cBytes ];
     if( !m_pStaticMeshData )
     {
@@ -1511,8 +1551,13 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
 		unsigned int j=0;
 		while( fgets( buf, BUF_SIZE, file ) )
 		{
+			//printf("j=%d\n", j);
 			for(unsigned int i=0;i<BUF_SIZE;i++)
+			{
+				if((j*BUF_SIZE+i)>=cBytes)
+					break;
 				m_pStaticMeshData[j*BUF_SIZE+i]=buf[i];
+			}
 			j++;
 		}
 		fclose( file );
@@ -1572,6 +1617,14 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     m_pSubsetArray = ( SDKMESH_SUBSET* )( m_pStaticMeshData + m_pMeshHeader->SubsetDataOffset );
     m_pFrameArray = ( SDKMESH_FRAME* )( m_pStaticMeshData + m_pMeshHeader->FrameDataOffset );
     m_pMaterialArray = ( SDKMESH_MATERIAL* )( m_pStaticMeshData + m_pMeshHeader->MaterialDataOffset );
+	LOG_FNLN;
+	printf("m_pMeshHeader=%x\n", m_pMeshHeader);
+	printf("m_pVertexBufferArray=%x\n", m_pVertexBufferArray);
+	printf("m_pIndexBufferArray=%x\n", m_pIndexBufferArray);
+	printf("m_pMeshArray=%x\n", m_pMeshArray);
+	printf("m_pSubsetArray=%x\n", m_pSubsetArray);
+	printf("m_pFrameArray=%x\n", m_pFrameArray);
+	printf("m_pMaterialArray=%x\n", m_pMaterialArray);
 
 #if 0
 	LOG_PRINT("m_pMeshArray->Name=%s\n", m_pMeshArray->Name);
@@ -1636,6 +1689,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     // Get the start of the buffer data
     BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
     // Create VBs
+    printf("m_pMeshHeader->NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
     m_ppVertices = new BYTE*[m_pMeshHeader->NumVertexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumVertexBuffers; i++ )
     {
@@ -1648,6 +1702,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     }
 
     // Create IBs
+    printf("m_pMeshHeader->NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
     m_ppIndices = new BYTE*[m_pMeshHeader->NumIndexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumIndexBuffers; i++ )
     {

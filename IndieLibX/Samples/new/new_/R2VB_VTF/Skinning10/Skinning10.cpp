@@ -14,7 +14,7 @@
 */
 
 #include <Framework3/IRenderer.h>
-#if 0
+#if 1
 #define LOG_PRINT(...) printf(__VA_ARGS__);
 #define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #else
@@ -24,10 +24,10 @@
 
 const char* filename[] =
 {
-"/Soldier/soldier.sdkmesh",
-"/MotionBlur/Warrior.sdkmesh",
 "/DXJune2010/Dwarf/dwarf.sdkmesh",
 "/DXJune2010/trees/tree.sdkmesh",
+"/Soldier/soldier.sdkmesh",
+"/MotionBlur/Warrior.sdkmesh",
 0
 };
 const int g_i=0;
@@ -196,22 +196,13 @@ int  OnCreateDevice()
 	#endif
 
     // Load the animated mesh
-	#if 0
-    g_SkinnedMesh.Load(filename[g_i]);
-    #elif 0
-    g_SkinnedMesh.Load("/Soldier/soldier.sdkmesh");
-    // ??? g_SkinnedMesh.LoadAnimation( "/Soldier/soldier.sdkmesh_anim" );
-    #elif 1
-    g_SkinnedMesh.Load("/MotionBlur/Warrior.sdkmesh");
-    // ??? g_SkinnedMesh.LoadAnimation( "/MotionBlur/warrior.sdkmesh_anim" );
-	#elif 0
-    g_SkinnedMesh.CreateSphere(1.0f, eShaderNone);
+    g_SkinnedMesh.Load(	//"/DXJune2010/Dwarf/dwarf.sdkmesh"	// cBytes=586908	j=287	nmat=9 nvb=1 nib=1, texturenames???, indexbufferdata???
+			//"/DXJune2010/trees/tree.sdkmesh"	// cBytes=14485692	j=48032	nmat=1 nvb=1 nib=1, indexbufferdata???
+			//"/Soldier/soldier.sdkmesh"		// cBytes=988568	j=483	nmat=5 nvb=2 nib=2, texturenames???, indexbufferdata???
+			"/MotionBlur/Warrior.sdkmesh"		// cBytes=2698656	j=6106	nmat=1 nvb=1 nib=1, texturenames???
+			);
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
-    #elif 0
-    g_SkinnedMesh.Load("/assimp--1.0.412-sdk/test.x");
-    g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/assimp--1.0.412-sdk/test.png", false, IRenderer::GetRendererInstance()->Getlinear());
-    //if(0) printf("g_ptxDiffuse=%x\n", g_ptxDiffuse);
-    #endif
+
     D3DXFROMWINEMATRIX mIdentity;
     D3DXFROMWINEMatrixIdentity( &mIdentity );
     g_SkinnedMesh.TransformBindPose( &mIdentity );

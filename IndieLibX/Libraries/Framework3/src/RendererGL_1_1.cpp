@@ -986,6 +986,13 @@ GLenum usagesGL_1_1[] =
 			GL_STREAM_DRAW,
 		}
 		;
+const char* usagesGL_1_1_[] =
+		{
+			"GL_STATIC_DRAW",
+			"GL_DYNAMIC_DRAW",
+			"GL_STREAM_DRAW",
+		}
+		;
 		VertexBufferID RendererGL_1_1::addVertexBufferVrtl(const int size, const BufferAccess bufferAccess, const void *data, VertexBufferID aold)//, const IDataProcessor* p)
 		{
 //LOG_FNLN_NONE;
@@ -1206,6 +1213,10 @@ if(aold==-1)
 	if(data) {
 //////
 ib.data=(BYTE*)data;
+printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+printf("size=%d\n", size);
+printf("data=%x\n", data);
+printf("usagesGL_1_1_[%d]=%s\n", bufferAccess, usagesGL_1_1_[bufferAccess]);
 glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, size, data, usagesGL_1_1[bufferAccess]);
 				checkGlError("");
 

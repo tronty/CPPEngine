@@ -28,6 +28,11 @@
 
 #include <STX/STX.h>
 
+typedef int_least64_t INT64;
+typedef uint_least64_t UINT64;
+typedef void* D3DXFROMWINEHANDLE;
+#define CGrowableArray std::vector
+
 #ifdef stx_max
 #undef stx_max
 #endif

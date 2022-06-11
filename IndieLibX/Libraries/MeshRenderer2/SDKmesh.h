@@ -11,10 +11,13 @@
 //--------------------------------------------------------------------------------------
 #ifndef _SDKMESH_
 #define _SDKMESH_
-// int_least64_t, uint_least64_t 	long long, unsigned long long
-typedef uint_least64_t UINT64; // ???
+
+#if 0
+typedef int_least64_t INT64;
+typedef uint_least64_t UINT64;
 typedef void* D3DXFROMWINEHANDLE;
 #define CGrowableArray std::vector
+#endif
 
 //--------------------------------------------------------------------------------------
 // Hard Defines for the various structures
@@ -199,9 +202,24 @@ struct SDKMESH_MATERIAL
     D3DXFROMWINEVECTOR4 Emissive;
     FLOAT Power;
 
-    int_least64_t pDiffuseTexture9;
-    int_least64_t pNormalTexture9;
-    int_least64_t pSpecularTexture9;
+    INT64 pDiffuseTexture9;
+    INT64 pNormalTexture9;
+    INT64 pSpecularTexture9;
+    union
+    {
+        UINT64 Force64_4;
+	int pDiffuseRV10;
+    };
+    union
+    {
+        UINT64 Force64_5;
+	int pNormalRV10;
+    };
+    union
+    {
+        UINT64 Force64_6;
+	int pSpecularRV10;
+    };
 };
 
 struct SDKANIMATION_FILE_HEADER
