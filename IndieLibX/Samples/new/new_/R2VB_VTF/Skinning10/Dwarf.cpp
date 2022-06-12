@@ -22,14 +22,11 @@
 #define LOG_FNLN
 #endif
 
-const char* filename[] =
-{
-"/DXJune2010/Dwarf/dwarf.sdkmesh",
-"/DXJune2010/trees/tree.sdkmesh",
-"/Soldier/soldier.sdkmesh",
-"/MotionBlur/Warrior.sdkmesh",
-0
-};
+const char* m_pFileName = "/DXJune2010/Dwarf/dwarf.sdkmesh";
+//const char* m_pFileName = "/DXJune2010/trees/tree.sdkmesh";
+//const char* m_pFileName = "/Soldier/soldier.sdkmesh";
+//const char* m_pFileName = "/MotionBlur/Warrior.sdkmesh";
+
 const int g_i=0;
 //const int g_i=3;
 
@@ -197,11 +194,7 @@ int  OnCreateDevice()
 	#endif
 
     // Load the animated mesh
-    g_SkinnedMesh.Load(	//"/DXJune2010/Dwarf/dwarf.sdkmesh"	// cBytes=586908	j=287	nmat=9 nvb=1 nib=1, texturenames???, indexbufferdata???
-			//"/DXJune2010/trees/tree.sdkmesh"	// cBytes=14485692	j=48032	nmat=1 nvb=1 nib=1, indexbufferdata???
-			"/Soldier/soldier.sdkmesh"		// cBytes=988568	j=483	nmat=5 nvb=2 nib=2, texturenames???, indexbufferdata???
-			//"/MotionBlur/Warrior.sdkmesh"		// cBytes=2698656	j=6106	nmat=1 nvb=1 nib=1, texturenames???
-			);
+    g_SkinnedMesh.Load(	m_pFileName );
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
 
     D3DXFROMWINEMATRIX mIdentity;
@@ -642,7 +635,7 @@ void render()
 
 int ApplicationLogic()
 {
-	IRenderer* r=IRenderer::GetRendererInstance("Skinning10");
+	IRenderer* r=IRenderer::GetRendererInstance("Dwarf");
 	IInput*    i=STX_Service::GetInputInstance();
 	STX_Service::GetAudioInstance()->Init();
 	init("");

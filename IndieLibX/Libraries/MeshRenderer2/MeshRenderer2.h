@@ -495,9 +495,12 @@ public:
 		meshes.clear();
 		vertices.clear();
 		indices.clear();
+		if(pM) delete pM;
 	}
 
 	CDXUTSDKMesh* pM;
+	ShaderID m_shdid;
+	VertexFormatID m_vfid;
 	std::vector<stx_Mesh> meshes;
 	std::vector<stx_VertexPositionNormalTexture> vertices;
 	std::vector<__WORD__> indices;

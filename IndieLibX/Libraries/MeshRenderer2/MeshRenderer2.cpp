@@ -916,7 +916,7 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 #if 1 // ???
 		if (stricmp(extension, ".sdkmesh") == 0)
 		{
-			if(pM) delete pM; 
+			//if(pM) delete pM; 
 			pM=new CDXUTSDKMesh();
 			int r=pM->CreateFromFile(fn.c_str());
 		}
@@ -1699,6 +1699,12 @@ void MeshRenderer2::BeginDraw(	const D3DXFROMWINEMATRIX* amat, TextureID id, Sha
 			D3DXFROMWINEVECTOR4 LightDir,
 			D3DXFROMWINEVECTOR4 EyeDir)
 {
+		if(pM)
+		{
+			m_shdid=shdid;
+			m_vfid=vfid;
+			return 0;
+		}
 #if 0
 	D3DXFROMWINEMATRIX mat;
 	if(amat)
@@ -1713,10 +1719,9 @@ void MeshRenderer2::BeginDraw(	const D3DXFROMWINEMATRIX* amat, TextureID id, Sha
         {
 		if(pM)
 		{
-			pM->Render();
+			pM->Render(m_shdid, m_vfid);
 			return 0;
 		}
-
 		unsigned int ret=0;
 #if 0
 	if(indices.size()){
