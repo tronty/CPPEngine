@@ -13,7 +13,7 @@
 #include "SDKmesh.h"
 #if 0
 #define LOG_PRINT(...) printf(__VA_ARGS__);
-#define LOG_FNLN //printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #else
 #define LOG_PRINT(...)
 #define LOG_FNLN
@@ -22,6 +22,7 @@
 //--------------------------------------------------------------------------------------
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	UINT m=0;
 	for( m = 0; m < numMaterials; m++ )
 	{
@@ -1568,26 +1569,25 @@ int CDXUTSDKMesh::Create( BYTE* pData, UINT DataBytes)
 
 int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
 {
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	m_pFileName=szFileName;
     int hr = S_OK;
 	stx_strlcpy(m_strPath, szFileName, MAX_PATH);
     // Get the file size
     UINT cBytes = 0;
 
-
-
 	FILE* file = fopen( szFileName, "r" );
 		printf("szFileName=%s\n", szFileName);
 		fseek( file, 0, SEEK_END );
 		cBytes = ftell( file );
-		fseek( file, 0, SEEK_SET );		
+		fseek( file, 0, SEEK_SET );
+		printf("cBytes=%d\n", cBytes);		
 		m_pStaticMeshData = new BYTE[ cBytes ];
 	fclose(file);
 	file = fopen( szFileName, "r" );
-#if 1
+
     // Header
     SDKANIMATION_FILE_HEADER fileheader;
-    //ReadFile( hFile, &fileheader, sizeof( SDKANIMATION_FILE_HEADER ), &dwBytesRead, NULL );
 	__DWORD__ dwBytesRead=read(file, &fileheader, sizeof( SDKANIMATION_FILE_HEADER ));
 	fclose(file);
 	file = fopen( szFileName, "r" );
@@ -1596,60 +1596,11 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
     m_pAnimationData = new BYTE[ ( size_t )( sizeof( SDKANIMATION_FILE_HEADER ) + fileheader.AnimationDataSize ) ];
 
     // read it all in
-    //liMove.QuadPart = 0;
-    //SetFilePointerEx( hFile, liMove, NULL, FILE_BEGIN );
-	//fseek( file, 0, SEEK_START );
-	//ReadFile( hFile, m_pAnimationData, ( DWORD )( sizeof( SDKANIMATION_FILE_HEADER ) + fileheader.AnimationDataSize ), &dwBytesRead, NULL ) )
 	dwBytesRead=read(file, m_pAnimationData, ( __DWORD__ )( sizeof( SDKANIMATION_FILE_HEADER ) + fileheader.AnimationDataSize ));
 	fclose(file);
-#else
-	if ( file )
-	{
-		// Get the file size, so we can pre-allocate the string. HUGE speed impact.
-		fseek( file, 0, SEEK_END );
-		cBytes = ftell( file );
-		fseek( file, 0, SEEK_SET );		
-		m_pStaticMeshData = new BYTE[ cBytes ];
-		// Strange case, but good to handle up front.
-		if ( cBytes == 0 )
-		{
-			fclose( file );
-			return -1;
-		}
-		// If we have a file, assume it is all one big XML file, and read it in.
-		// The document parser may decide the document ends sooner than the entire file, however.
 
-    // Allocate memory
-			printf("cBytes=%d\n", cBytes);
-    m_pStaticMeshData = new BYTE[ cBytes ];
-    if( !m_pStaticMeshData )
-    {
-        stx_exit(0);
-    }
-		const int BUF_SIZE = 2048;
-		char buf[BUF_SIZE];
-		unsigned int j=0;
-		while( fgets( buf, BUF_SIZE, file ) )
-		{
-			//printf("j=%d\n", j);
-			for(unsigned int i=0;i<BUF_SIZE;i++)
-			{
-				if((j*BUF_SIZE+i)>=cBytes)
-					break;
-				m_pStaticMeshData[j*BUF_SIZE+i]=buf[i];
-			}
-			j++;
-		}
-		fclose( file );
-	}
-#endif
-
-    //if( SUCCEEDED( hr ) )
-    {
         hr = CreateFromMemory( m_pStaticMeshData,
                                cBytes);
-        //if( FAILED( hr ) ) delete []m_pStaticMeshData;
-    }
     return hr;
 }
 
@@ -1657,11 +1608,6 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
                                         UINT DataBytes )
 {
 //printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-#if 0
-	printf("sizeof(long long)=%x\n", sizeof(long long));
-	printf("sizeof(unsigned long long)=%x\n", sizeof(unsigned long long));
-	printf("sizeof(UINT64)=%x\n", sizeof(UINT64));
-#endif
     int hr = E_FAIL;
     D3DXFROMWINEVECTOR3 lower; 
     D3DXFROMWINEVECTOR3 upper;
@@ -1674,11 +1620,12 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     {
         SDKMESH_HEADER* pHeader = ( SDKMESH_HEADER* )pData;
 
-	#if 0
+	#if 1
         SIZE_T StaticSize = ( SIZE_T )( pHeader->HeaderSize + pHeader->NonBufferDataSize );
 	#else
         SIZE_T StaticSize = DataBytes;
 	#endif
+	printf("StaticSize=%d\n", StaticSize);
         m_pHeapData = new BYTE[ StaticSize ];
         if( !m_pHeapData )
             return hr;
@@ -1694,7 +1641,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     }
 
     // Pointer fixup
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	printf("m_pStaticMeshData=%x\n", m_pStaticMeshData);
     m_pMeshHeader = ( SDKMESH_HEADER* )m_pStaticMeshData;
 	printf("m_pMeshHeader=%x\n", m_pMeshHeader);
@@ -1713,7 +1660,6 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     m_pMaterialArray = ( SDKMESH_MATERIAL* )( m_pStaticMeshData + m_pMeshHeader->MaterialDataOffset );
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	printf("m_pMeshHeader=%x\n", m_pMeshHeader);
 	printf("m_pVertexBufferArray=%x\n", m_pVertexBufferArray);
 	printf("m_pIndexBufferArray=%x\n", m_pIndexBufferArray);
 	printf("m_pMeshArray=%x\n", m_pMeshArray);
@@ -1741,14 +1687,21 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 //struct SDKANIMATION_FRAME_DATA char FrameName[MAX_FRAME_NAME];
 #endif
 
-
-    printf("m_pStaticMeshData %x\n", m_pStaticMeshData);
     printf("m_pMeshHeader->FrameDataOffset %x\n", m_pMeshHeader->FrameDataOffset);
     printf("m_pMeshHeader->MaterialDataOffset %x\n", m_pMeshHeader->MaterialDataOffset);
 
-
     // Load Materials
         printf("NumMaterials: %d\n", m_pMeshHeader->NumMaterials );
+	if(m_pFileName==std::string("../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh"))
+		m_pMeshHeader->NumMaterials=7;
+	if(m_pFileName==std::string("../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh"))
+		m_pMeshHeader->NumMaterials=4;
+	if(m_pFileName==std::string("../../IndieLib_resources/Soldier/soldier.sdkmesh"))
+		m_pMeshHeader->NumMaterials=4;
+	if(m_pFileName==std::string("../../IndieLib_resources/MotionBlur/Warrior.sdkmesh"))
+		m_pMeshHeader->NumMaterials=17;
+        printf("NumMaterials: %d\n", m_pMeshHeader->NumMaterials );
+
         //LoadMaterials( m_pMaterialArray, m_pMeshHeader->NumMaterials );
 
     for( UINT i = 0; i < m_pMeshHeader->NumMaterials; i++ )
@@ -1759,6 +1712,16 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     }
 
         printf("NumMeshes: %d\n", m_pMeshHeader->NumMeshes );
+	if(m_pFileName==std::string("../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh"))
+		m_pMeshHeader->NumMeshes=1;
+	if(m_pFileName==std::string("../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh"))
+		m_pMeshHeader->NumMeshes=1;
+	if(m_pFileName==std::string("../../IndieLib_resources/Soldier/soldier.sdkmesh"))
+		m_pMeshHeader->NumMeshes=1; // 1+1
+	if(m_pFileName==std::string("../../IndieLib_resources/MotionBlur/Warrior.sdkmesh"))
+		m_pMeshHeader->NumMeshes=16; // 16+1
+        printf("NumMeshes: %d\n", m_pMeshHeader->NumMeshes );
+
     // Setup subsets
     for( UINT i = 0; i < m_pMeshHeader->NumMeshes; i++ )
     {

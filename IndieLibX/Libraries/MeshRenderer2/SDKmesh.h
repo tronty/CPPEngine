@@ -279,6 +279,7 @@ protected:
     //Keep track of the path
     //char*                           m_strPathW[MAX_PATH];
     char                            m_strPath[MAX_PATH];
+	std::string m_pFileName;
 
     //General mesh info
     SDKMESH_HEADER* m_pMeshHeader;
