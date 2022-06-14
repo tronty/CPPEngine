@@ -195,7 +195,7 @@ int  OnCreateDevice()
 
     // Load the animated mesh
     g_SkinnedMesh.Load(	m_pFileName );
-    g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, IRenderer::GetRendererInstance()->Getlinear());
+    g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
 
     D3DXFROMWINEMATRIX mIdentity;
     D3DXFROMWINEMatrixIdentity( &mIdentity );

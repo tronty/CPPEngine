@@ -1,13 +1,13 @@
 copy Dependencies\\SDL2-2.0.14\\lib\\x86\\SDL2.dll bin\\SDL2.dll
 copy Dependencies\\vulkan\\vulkan-1.dll bin\\vulkan-1.dll
 cd bin
-call Soldier.exe
+call Warrior.exe
 cd ..
 cd bin
 call Dwarf.exe
 cd ..
 cd bin
-call Warrior.exe
+call Soldier.exe
 cd ..
 cd bin
 call Tree10.exe

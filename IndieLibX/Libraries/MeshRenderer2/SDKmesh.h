@@ -202,9 +202,21 @@ struct SDKMESH_MATERIAL
     D3DXFROMWINEVECTOR4 Emissive;
     FLOAT Power;
 
-    INT64 pDiffuseTexture9;
-    INT64 pNormalTexture9;
-    INT64 pSpecularTexture9;
+    union
+    {
+        UINT64 Force64_1;
+	int pDiffuseTexture9;
+    };
+    union
+    {
+        UINT64 Force64_2;
+	int pNormalTexture9;
+    };
+    union
+    {
+        UINT64 Force64_3;
+	int pSpecularTexture9;
+    };
     union
     {
         UINT64 Force64_4;
