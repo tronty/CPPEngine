@@ -259,7 +259,7 @@ class CDXUTSDKMesh
 public:
 	int CreateFromFile(     const char* szFileName);
 	int CreateFromMemory( BYTE* pData,
-                                        UINT DataBytes );
+                                        UINT DataBytes, bool bCopyStatic=false );
 private:
     UINT m_NumOutstandingResources;
     bool m_bLoading;
@@ -279,7 +279,7 @@ protected:
     //Keep track of the path
     //char*                           m_strPathW[MAX_PATH];
     char                            m_strPath[MAX_PATH];
-	std::string m_pFileName;
+	std::string m_sFileName;
 
     //General mesh info
     SDKMESH_HEADER* m_pMeshHeader;
