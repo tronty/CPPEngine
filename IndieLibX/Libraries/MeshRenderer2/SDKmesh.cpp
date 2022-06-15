@@ -96,7 +96,44 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 
     pHeader->DataOffset = 0;
 	printf("CreateVertexBuffer: SizeBytes=%d, pVertices=%x\n", ( UINT )pHeader->SizeBytes, (const void *) pVertices);
+#if 0
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->SizeBytes, STATIC, (const void *) pVertices);
+#else /* 
+    UINT64 NumVertices;
+    UINT64 SizeBytes;
+    UINT64 StrideBytes; */
+
+
+struct VS_INPUT
+{
+	float3 Position;
+	float3 Normal;
+	float3 BiNormal;
+	float3 Tangent;
+	float3 color;
+	float2 uv;
+};
+struct VS_INPUT2
+{
+    float3 Position;			//Position
+    float4 Weights;		//Bone weights
+    float4  Bones;//BONES;			//Bone indices
+    float3 Normal;			//Normal
+    float2 uv;		    //Texture coordinate
+    float3 Tangent;		    //Normalized Tangent vector
+};
+
+	VS_INPUT* pVertices_=(VS_INPUT*)pVertices;
+	VS_INPUT2* pVertices2=new VS_INPUT2[( UINT )pHeader->NumVertices];
+	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
+	{
+		pVertices2[i].Position=pVertices_[i].Position;
+		pVertices2[i].Normal=pVertices_[i].Normal;
+		pVertices2[i].Tangent=pVertices_[i].Tangent;
+		pVertices2[i].uv=pVertices_[i].uv;
+	}
+	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->NumVertices*sizeof(VS_INPUT2), STATIC, (const void *) pVertices2);	
+#endif
 	printf("pHeader->pVB9=%x\n", pHeader->pVB9);
 
     return hr;
@@ -404,6 +441,78 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
     if(m_pMeshHeader->NumFrames<=iFrame)
 	return;
     //printf("iFrame=%d\n", iFrame);
+#if 1
+	int iMesh=0;
+#if 0
+	printf("NumVertices=%x\n", m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].NumVertices);
+	printf("SizeBytes=%x\n", m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].SizeBytes);
+	printf("StrideBytes=%x\n", m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].StrideBytes);
+	printf("SizeBytes=%x\n", m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].SizeBytes);
+	printf("pVB9=%x\n", m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].pVB9);
+	printf("SizeBytes=%x\n", m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].SizeBytes);
+	printf("IndexType=%x\n", m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType);
+	printf("pIB9=%x\n", m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].pIB9);
+#endif
+    BYTE* pBufferData = m_pStaticMeshData + m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+    UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+
+        BYTE* pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[0].DataOffset - BufferDataStart ) );
+        BYTE* pIndices = ( BYTE* )( pBufferData + ( m_pIndexBufferArray[0].DataOffset - BufferDataStart ) );
+#if 0
+	printf("pVertices=%x\n", pVertices);
+	printf("pIndices=%x\n", pIndices);
+#endif
+	static ShaderID SimpleShader = -1;
+	static VertexFormatID SimpleVertexDeclaration = -1;
+	if(SimpleShader==-1)
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
+						0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main2", "main");
+		SimpleVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader);
+	}
+
+	D3DXFROMWINEMATRIX I;
+	D3DXFROMWINEMatrixIdentity(&I);
+	static TextureID id=-1;
+	if(id==-1)
+	{
+		id=IRenderer::GetRendererInstance()->addImageLibTexture("/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
+	}
+	IRenderer::GetRendererInstance()->setShader(SimpleShader);
+	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", I);
+	IRenderer::GetRendererInstance()->setTexture("DIFFUSE_SAMPLER", id);
+
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
+		0,
+		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].NumVertices,
+		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].NumIndices/3,
+		pIndices,
+		pIndices,
+		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType?CONSTANT_INDEX2:CONSTANT_INDEX4,
+		pVertices,
+		pVertices,
+		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].StrideBytes);
+	return;
+#if 0
+	printf("NumVertices=%x\n", m_pVertexBufferArray->NumVertices);
+	printf("SizeBytes=%x\n", m_pVertexBufferArray->SizeBytes);
+	printf("StrideBytes=%x\n", m_pVertexBufferArray->StrideBytes);
+	//D3DVERTEXELEMENT9 Decl[MAX_VERTEX_ELEMENTS];
+	printf("pVB9=%x\n", pVB9);
+	printf("NumIndices=%x\n", m_pIndexBufferArray->NumIndices);
+	printf("SizeBytes=%x\n", m_pIndexBufferArray->SizeBytes);
+	printf("IndexType=%x\n", m_pIndexBufferArray->IndexType);
+	printf("pIB9=%x\n", pIB9);
+#endif
+#endif
 
     if( m_pFrameArray[iFrame].Mesh != INVALID_MESH )
     {

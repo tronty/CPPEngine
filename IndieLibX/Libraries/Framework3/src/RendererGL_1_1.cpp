@@ -1213,10 +1213,12 @@ if(aold==-1)
 	if(data) {
 //////
 ib.data=(BYTE*)data;
+#if 0
 printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 printf("size=%d\n", size);
 printf("data=%x\n", data);
 printf("usagesGL_1_1_[%d]=%s\n", bufferAccess, usagesGL_1_1_[bufferAccess]);
+#endif
 glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, size, data, usagesGL_1_1[bufferAccess]);
 				checkGlError("");
 

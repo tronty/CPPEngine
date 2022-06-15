@@ -196,6 +196,7 @@ int  OnCreateDevice()
     // Load the animated mesh
     g_SkinnedMesh.Load(	m_pFileName );
     g_ptxDiffuse=IRenderer::GetRendererInstance()->addImageLibTexture("/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
+	printf("g_ptxDiffuse=%x\n", g_ptxDiffuse);
 
     D3DXFROMWINEMATRIX mIdentity;
     D3DXFROMWINEMatrixIdentity( &mIdentity );
@@ -489,6 +490,9 @@ void  OnFrameRender(double fTime, float fElapsedTime)
     #else
 	D3DXFROMWINEMATRIX I;
 	D3DXFROMWINEMatrixIdentity(&I);
+#if 1
+	g_SkinnedMesh.render(&I);
+#else
 	//IRenderer::GetRendererInstance()->setShader(g_pEffect10);
 	//IRenderer::GetRendererInstance()->setVertexFormat(g_pSkinnedVertexLayout);
             g_SkinnedMesh.BeginDraw(0, -1, g_pEffect10, g_pSkinnedVertexLayout);
@@ -500,6 +504,7 @@ void  OnFrameRender(double fTime, float fElapsedTime)
             IRenderer::GetRendererInstance()->setTexture( "g_txDiffuse", g_ptxDiffuse );
             //IRenderer::GetRendererInstance()->setTexture( "g_txNormal", g_ptxNormal );
             g_SkinnedMesh.EndDraw(&I);
+#endif
   		//STXGUI::update();
 		const char* txt = "Use mouse buttons to rotate the model.";
 		IRenderer::GetRendererInstance()->drawText(txt, 10, 10, 

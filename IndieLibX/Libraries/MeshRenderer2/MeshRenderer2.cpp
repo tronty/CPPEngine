@@ -1874,6 +1874,11 @@ void MeshRenderer2::BeginDraw(	const D3DXFROMWINEMATRIX* amat, TextureID id, Sha
 #endif
 void MeshRenderer2::render(const D3DXFROMWINEMATRIX* aw, const TextureID aTexID)
 {
+		if(pM)
+		{
+			pM->Render();//m_shdid, m_vfid);
+			return 0;
+		}
     // update possible animation
     if( m_pAnimator)
     {
