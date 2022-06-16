@@ -65,16 +65,19 @@ public:
 			TiXmlHandle docHandle(&doc);
 			{
 				TiXmlHandle windowsHandle = docHandle.FirstChild("Body").FirstChild("windows");
-				int i=1;
 				TiXmlHandle windowHandle = windowsHandle.FirstChild("window");
 				TiXmlElement* windowElement = windowHandle.Element();
+				unsigned int i=0;
 				while ( windowElement )
 				{
 					std:string title_=windowHandle.FirstChild("title").Element()->GetText();
 					if(title_=="3DAnimation")
 					{
 						g_i = atoi(windowHandle.FirstChild("g_i").Element()->Attribute("Value"));
+						if(g_i>=elementsOf(filename))
+							g_i=0;
 						printf("g_i=%x\n", g_i);
+						break;
 					}
 					windowHandle = windowsHandle.Child( "window", i++ );
 					windowElement = windowHandle.Element();
