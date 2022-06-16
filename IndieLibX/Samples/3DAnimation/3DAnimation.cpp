@@ -11,8 +11,8 @@ const char* filename[] =
 {
 "/skeleton/skeleton.x",
 "/skeleton/skeleton.bin.x",
-"/Soldier/soldier.sdkmesh",
-"/MotionBlur/Warrior.sdkmesh",
+"/DXJune2010/Soldier/soldier.sdkmesh",
+"/DXJune2010/MotionBlur/Warrior.sdkmesh",
 "/DXJune2010/Dwarf/dwarf.sdkmesh",
 "/DXJune2010/trees/tree.sdkmesh",
 0

@@ -41,7 +41,7 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 		std::string StrPath;
                 printf("m_strPath=%s\n", m_strPath);
             // load textures: Weapons_bumpmap.png ???
-	    if(1) pMaterials[m].pDiffuseTexture9=IRenderer::GetRendererInstance()->addImageLibTexture("/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
+	    if(1) pMaterials[m].pDiffuseTexture9=IRenderer::GetRendererInstance()->addImageLibTexture("/DXJune2010/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
             if( pMaterials[m].DiffuseTexture[0] != 0 )
             {
 		printf("pMaterials[%d].DiffuseTexture=%s\n", m, pMaterials[m].DiffuseTexture );
@@ -473,7 +473,7 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 	static TextureID id=-1;
 	if(id==-1)
 	{
-		id=IRenderer::GetRendererInstance()->addImageLibTexture("/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
+		id=IRenderer::GetRendererInstance()->addImageLibTexture("/DXJune2010/MotionBlur/Warrior_Diff.png", false, IRenderer::GetRendererInstance()->Getlinear());
 	}
 	IRenderer::GetRendererInstance()->setShader(SimpleShader);
 	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration);
