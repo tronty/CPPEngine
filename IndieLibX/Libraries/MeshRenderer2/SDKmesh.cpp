@@ -102,18 +102,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
     UINT64 NumVertices;
     UINT64 SizeBytes;
     UINT64 StrideBytes; */
-
-
 struct VS_INPUT
-{
-	float3 Position;
-	float3 Normal;
-	float3 BiNormal;
-	float3 Tangent;
-	float3 color;
-	float2 uv;
-};
-struct VS_INPUT2
 {
     float3 Position;			//Position
     float4 Weights;		//Bone weights
@@ -124,15 +113,16 @@ struct VS_INPUT2
 };
 
 	VS_INPUT* pVertices_=(VS_INPUT*)pVertices;
-	VS_INPUT2* pVertices2=new VS_INPUT2[( UINT )pHeader->NumVertices];
+	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
 		pVertices2[i].Position=pVertices_[i].Position;
 		pVertices2[i].Normal=pVertices_[i].Normal;
 		pVertices2[i].Tangent=pVertices_[i].Tangent;
-		pVertices2[i].uv=pVertices_[i].uv;
+		pVertices2[i].Tex=pVertices_[i].uv;
 	}
-	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->NumVertices*sizeof(VS_INPUT2), STATIC, (const void *) pVertices2);	
+	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture), STATIC, (const void *) pVertices2);	
 #endif
 	printf("pHeader->pVB9=%x\n", pHeader->pVB9);
 
@@ -474,7 +464,7 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
-		SimpleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main2", "main");
+		SimpleShader = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main", "main");
 		SimpleVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader);
 	}
 
@@ -499,7 +489,7 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType?CONSTANT_INDEX2:CONSTANT_INDEX4,
 		pVertices,
 		pVertices,
-		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[0] ].StrideBytes);
+		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 	return;
 #if 0
 	printf("NumVertices=%x\n", m_pVertexBufferArray->NumVertices);

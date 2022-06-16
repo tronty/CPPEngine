@@ -17,8 +17,7 @@ const char* filename[] =
 "/DXJune2010/trees/tree.sdkmesh",
 0
 };
-const int g_i=0;
-//const int g_i=5;
+unsigned int g_i=0;
 
 class _3DAnimation : public STXGUI {
 public:
@@ -58,7 +57,30 @@ public:
 	{
 
 		STXGUI::init("/skeleton/GUILayout.xml");
-        texID=-1;
+        	texID=-1;
+		std::string fn=stx_convertpath("/Framework3/Framework3.xml");
+    		TiXmlDocument doc(fn.c_str());
+    		if (doc.LoadFile())
+		{
+			TiXmlHandle docHandle(&doc);
+			{
+				TiXmlHandle windowsHandle = docHandle.FirstChild("Body").FirstChild("windows");
+				int i=1;
+				TiXmlHandle windowHandle = windowsHandle.FirstChild("window");
+				TiXmlElement* windowElement = windowHandle.Element();
+				while ( windowElement )
+				{
+					std:string title_=windowHandle.FirstChild("title").Element()->GetText();
+					if(title_=="3DAnimation")
+					{
+						g_i = atoi(windowHandle.FirstChild("g_i").Element()->Attribute("Value"));
+						printf("g_i=%x\n", g_i);
+					}
+					windowHandle = windowsHandle.Child( "window", i++ );
+					windowElement = windowHandle.Element();
+				}
+			}
+		}
 #ifndef DRAWGLOBE
 #if 0
 		FW3::GetInstance()->GetMesh(m_Mesh. filename[g_i], eSimpleShader);
