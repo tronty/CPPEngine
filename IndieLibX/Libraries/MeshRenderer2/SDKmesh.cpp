@@ -443,6 +443,13 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 	printf("IndexType=%x\n", m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType);
 	printf("pIB9=%x\n", m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].pIB9);
 #endif
+	if(!m_pMeshHeader->NumVertexBuffers)
+		return;
+	if(!m_pMeshHeader->NumIndexBuffers)
+		return;
+	if(!m_pMeshHeader->NumMeshes)
+		return;
+
     BYTE* pBufferData = m_pStaticMeshData + m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
     UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
 
