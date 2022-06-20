@@ -452,13 +452,13 @@ if(!pMesh->NumVertexBuffers)
                 pMat = &m_pMaterialArray[ pSubset->MaterialID ];
                 if( htxDiffuse && ( pMat->pDiffuseTexture9 > -1 ) ){
 			printf("%s %x", htxDiffuse, pMat->pDiffuseTexture9 );
-                    IRenderer::GetRendererInstance()->setTexture( htxDiffuse, pMat->pDiffuseTexture9 );}
+                    IRenderer::GetRendererInstance()->setTexture( "txDiffuse", pMat->pDiffuseTexture9 );}
                 if( htxNormal && ( pMat->pNormalTexture9 > -1 ) ){
 			printf("%s %x", htxNormal, pMat->pNormalTexture9 );
-                    IRenderer::GetRendererInstance()->setTexture( htxNormal, pMat->pNormalTexture9 );}
+                    IRenderer::GetRendererInstance()->setTexture( "txNormal", pMat->pNormalTexture9 );}
                 if( htxSpecular && ( pMat->pSpecularTexture9 > -1 ) ){
 			printf("%s %x", htxSpecular, pMat->pSpecularTexture9 );
-                    IRenderer::GetRendererInstance()->setTexture( htxSpecular, pMat->pSpecularTexture9 );}
+                    IRenderer::GetRendererInstance()->setTexture( "txSpecular", pMat->pSpecularTexture9 );}
             }
 
             //pEffect->CommitChanges();
@@ -476,19 +476,36 @@ if(!pMesh->NumVertexBuffers)
             if(PRIM_LINE_STRIP == PrimType )
                 PrimCount -= 1;
 #if 1
-	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-            IRenderer::GetRendererInstance()->DrawIndexedPrimitive( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
-#else
-	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PrimType,
+    BYTE* pBufferData = m_pStaticMeshData + m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+    UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
+
+        BYTE* pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[0].DataOffset - BufferDataStart ) );
+        BYTE* pIndices = 0;
+	if(pIndices>pVertices)
+		pIndices = ( BYTE* )( pBufferData + ( m_pIndexBufferArray[0].DataOffset - BufferDataStart ) );
+
+		UINT NumVertices, NumIndices;
+	if(pIndices>pVertices){
+	for(int iVB=0;iVB<m_pMeshHeader->NumVertexBuffers;iVB++)
+		{
+		NumVertices=   m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].NumVertices;
+	UINT StrideBytes=(UINT)m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].StrideBytes;
+		NumIndices=m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].NumIndices;
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 		0,
-		NumVertices,
-		NumIndices/3,
-		pIB9,
-		pIB9,
-		?CONSTANT_INDEX2:CONSTANT_INDEX4,
-		pVB9,
-		pVB9
-		StrideBytes);
+		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].NumVertices,
+		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].NumIndices,
+		pIndices,
+		pIndices,
+		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType?CONSTANT_INDEX2:CONSTANT_INDEX4,
+		pVertices,
+		pVertices,
+		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));}}
+	else
+	for(int iVB=0;iVB<m_pMeshHeader->NumVertexBuffers;iVB++)
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES, 		
+		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].NumVertices/3,
+		pVertices, pVertices, sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 #endif
         }
 
