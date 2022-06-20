@@ -319,7 +319,7 @@ protected:
     void                            LoadMaterials( SDKMESH_MATERIAL* pMaterials,
                                                    UINT NumMaterials );
     int                         CreateVertexBuffer( 
-                                                        SDKMESH_VERTEX_BUFFER_HEADER* pHeader, void* pVertices);
+                                                        SDKMESH_VERTEX_BUFFER_HEADER* pHeader, void** pVertices);
     int                         CreateIndexBuffer( 
                                                        SDKMESH_INDEX_BUFFER_HEADER* pHeader, void* pIndices);
 

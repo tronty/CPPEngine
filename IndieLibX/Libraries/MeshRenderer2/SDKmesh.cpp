@@ -105,51 +105,101 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 #endif
 	//stx_exit(0);
 }
-
 //--------------------------------------------------------------------------------------
 int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
-                                          void* pVertices )
+                                      void** pVertices )
 {
-    int hr = S_OK;
-
-#if 1
-	if(m_sFileName!="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
-	{
-	pHeader->pVB9=-1;
-	    return hr;
-	}
-#endif
-    pHeader->DataOffset = 0;
-	printf("CreateVertexBuffer: SizeBytes=%d, pVertices=%x\n", ( UINT )pHeader->SizeBytes, (const void *) pVertices);
 #if 0
-	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->SizeBytes, STATIC, (const void *) pVertices);
-#else /* 
-    UINT64 NumVertices;
-    UINT64 SizeBytes;
-    UINT64 StrideBytes; */
-struct VS_INPUT
+struct VSSkinnedIn // Soldier
 {
-    float3 Position;			//Position
-    float4 Weights;		//Bone weights
-    float4  Bones;//BONES;			//Bone indices
-    float3 Normal;			//Normal
-    float2 uv;		    //Texture coordinate
-    float3 Tangent;		    //Normalized Tangent vector
+    float3 Pos	: POSITION;			//Position
+    float4 Weights : WEIGHTS;		//Bone weights
+    uint4  Bones : BONES;			//Bone indices
+    float3 Norm : NORMAL;			//Normal
+    float2 Tex	: TEXCOORD;		    //Texture coordinate
+    float3 Tan : TANGENT;		    //Normalized Tangent vector
 };
+void VertScene( float4 vPos : POSITION, // Dwarf
+                float3 vNormal : NORMAL,
+                float2 vTex0 : TEXCOORD0,
+#endif
+
+    int hr = S_OK;
+    pHeader->DataOffset = 0;
+	printf("CreateVertexBuffer: SizeBytes=%d, pVertices=%x\n", ( UINT )pHeader->SizeBytes, (const void *) *pVertices);
+#if 1
+	if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
+	{
+struct VS_INPUT // Warrior
 {
-	VS_INPUT* pVertices_=(VS_INPUT*)pVertices;
+    D3DXFROMWINEVECTOR3 Pos;
+    D3DXFROMWINEVECTOR3 Normal;
+    D3DXFROMWINEVECTOR2 Tex;
+    D3DXFROMWINEVECTOR3 Tan;
+    unsigned int Bones[4];
+    D3DXFROMWINEVECTOR4 Weights;
+};
+	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
 	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
 		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
-		pVertices2[i].Position=pVertices_[i].Position;
+		pVertices2[i].Position=pVertices_[i].Pos;
 		pVertices2[i].Normal=pVertices_[i].Normal;
-		pVertices2[i].Tangent=pVertices_[i].Tangent;
-		pVertices2[i].Tex=pVertices_[i].uv;
+		pVertices2[i].Tangent=pVertices_[i].Tan;
+		pVertices2[i].Tex=pVertices_[i].Tex;
 	}
-	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(( UINT )pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture), STATIC, (const void *) pVertices2);
-	delete[] pVertices2;
-}
+	// ??? delete[] pVertices_;
+	*pVertices=pVertices2;
+	}
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
+	{
+struct VS_INPUT // Dwarf
+{
+    D3DXFROMWINEVECTOR4 Pos;
+    D3DXFROMWINEVECTOR3 Normal;
+    D3DXFROMWINEVECTOR2 Tex;
+};
+	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
+	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
+	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
+	{
+		pVertices2[i].Position.x=pVertices_[i].Pos.x;
+		pVertices2[i].Position.y=pVertices_[i].Pos.y;
+		pVertices2[i].Position.z=pVertices_[i].Pos.z;
+		pVertices2[i].Normal=pVertices_[i].Normal;
+		pVertices2[i].Tex=pVertices_[i].Tex;
+	}
+	// ??? delete[] pVertices_;
+	*pVertices=pVertices2;
+	}
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Soldier/soldier.sdkmesh")
+	{
+struct VS_INPUT // Soldier
+{
+    D3DXFROMWINEVECTOR3 Pos;			//Position
+    D3DXFROMWINEVECTOR4 Weights;		//Bone weights
+    unsigned int Bones[4];			//Bone indices
+    D3DXFROMWINEVECTOR3 Norm;			//Normal
+    D3DXFROMWINEVECTOR2 Tex;		    //Texture coordinate
+    D3DXFROMWINEVECTOR3 Tan;
+};
+	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
+	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
+	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
+	{
+		pVertices2[i].Position=pVertices_[i].Pos;
+		pVertices2[i].Normal=pVertices_[i].Norm;
+		pVertices2[i].Tangent=pVertices_[i].Tan;
+		pVertices2[i].Tex=pVertices_[i].Tex;
+	}
+	// ??? delete[] pVertices_;
+	*pVertices=pVertices2;
+	}
+	else
+		stx_exit(0);
 #endif
 	printf("pHeader->pVB9=%x\n", pHeader->pVB9);
 
@@ -458,7 +508,7 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
                                const char* htxNormal,
                                const char* htxSpecular )
 {
-#if 1
+#if 0
 	if(m_sFileName!="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
 	    return;
 #endif
@@ -491,7 +541,9 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
     UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
 
         BYTE* pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[0].DataOffset - BufferDataStart ) );
-        BYTE* pIndices = ( BYTE* )( pBufferData + ( m_pIndexBufferArray[0].DataOffset - BufferDataStart ) );
+        BYTE* pIndices = 0;
+	if(pIndices>pVertices)
+		pIndices = ( BYTE* )( pBufferData + ( m_pIndexBufferArray[0].DataOffset - BufferDataStart ) );
 
     SDKMESH_SUBSET* m_pSubsetArray;
 #if 0
@@ -588,7 +640,7 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 	}
 	IRenderer::GetRendererInstance()->setTexture("txDiffuse", id);
 #endif
-	if(pIndices>pVertices)
+	if(pIndices>pVertices){
 	for(int iVB=0;iVB<m_pMeshHeader->NumVertexBuffers;iVB++)
 		{
 		NumVertices=   m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].NumVertices;
@@ -603,8 +655,13 @@ void CDXUTSDKMesh::RenderFrame( UINT iFrame,
 		m_pIndexBufferArray[ m_pMeshArray[ iMesh ].IndexBuffer ].IndexType?CONSTANT_INDEX2:CONSTANT_INDEX4,
 		pVertices,
 		pVertices,
-		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
-	}}
+		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));}}
+	else
+	for(int iVB=0;iVB<m_pMeshHeader->NumVertexBuffers;iVB++)
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES, 		
+		m_pVertexBufferArray[ m_pMeshArray[ iMesh ].VertexBuffers[iVB] ].NumVertices/3,
+		pVertices, pVertices, sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
+	}
 #endif
 
     if( m_pFrameArray[iFrame].Mesh != INVALID_MESH )
@@ -1934,7 +1991,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     {
         pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[i].DataOffset - BufferDataStart ) );
 
-            CreateVertexBuffer( &m_pVertexBufferArray[i], pVertices );
+            CreateVertexBuffer( &m_pVertexBufferArray[i], &pVertices );
 
         m_ppVertices[i] = pVertices;
     }
@@ -1967,7 +2024,12 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 printf("pIndices=%x\n", pIndices);
 	pIndices = pIndices_;
 	if(pVertices_<pIndices_)
-            CreateIndexBuffer( &m_pIndexBufferArray[i], pIndices );
+            printf("// ??? CreateIndexBuffer( &m_pIndexBufferArray[i], pIndices );\n");
+	else
+	{
+		printf("pVertices>=pIndices !\n");
+		printf("CreateIndexBuffer passed !\n");
+	}
 
         m_ppIndices[i] = pIndices;
     }
