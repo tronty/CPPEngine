@@ -107,7 +107,11 @@ struct SDKMESH_VERTEX_BUFFER_HEADER
     UINT64 NumVertices;
     UINT64 SizeBytes;
     UINT64 StrideBytes;
+#if 0
     D3DVERTEXELEMENT9 Decl[MAX_VERTEX_ELEMENTS];
+#else
+	BYTE Decl[8*MAX_VERTEX_ELEMENTS];
+#endif
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)

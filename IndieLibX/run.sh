@@ -1,3 +1,4 @@
+cd ./bin;./TestVC.bin;cd .. &&
 cd ./bin;./2DAnimation.bin;cd .. &&
 cd ./bin;./3DAnimation.bin;cd .. &&
 cd ./bin;./3DAnimation2.bin;cd .. &&
