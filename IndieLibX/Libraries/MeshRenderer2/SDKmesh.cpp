@@ -109,26 +109,14 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
                                       void** pVertices )
 {
-#if 0
-struct VSSkinnedIn // Soldier
-{
-    float3 Pos	: POSITION;			//Position
-    float4 Weights : WEIGHTS;		//Bone weights
-    uint4  Bones : BONES;			//Bone indices
-    float3 Norm : NORMAL;			//Normal
-    float2 Tex	: TEXCOORD;		    //Texture coordinate
-    float3 Tan : TANGENT;		    //Normalized Tangent vector
-};
-void VertScene( float4 vPos : POSITION, // Dwarf
-                float3 vNormal : NORMAL,
-                float2 vTex0 : TEXCOORD0,
-#endif
-
     int hr = S_OK;
     pHeader->DataOffset = 0;
 	printf("CreateVertexBuffer: SizeBytes=%d, pVertices=%x\n", ( UINT )pHeader->SizeBytes, (const void *) *pVertices);
-#if 1
+#ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
+#else
+	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
+#endif
 	{
 struct VS_INPUT // Warrior
 {
@@ -152,7 +140,11 @@ struct VS_INPUT // Warrior
 	// ??? delete[] pVertices_;
 	*pVertices=pVertices2;
 	}
+#ifndef _MSC_VER
 	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Dwarf\\dwarf.sdkmesh")
+#endif
 	{
 struct VS_INPUT // Dwarf
 {
@@ -174,7 +166,11 @@ struct VS_INPUT // Dwarf
 	// ??? delete[] pVertices_;
 	*pVertices=pVertices2;
 	}
+#ifndef _MSC_VER
 	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Soldier/soldier.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
+#endif
 	{
 struct VS_INPUT // Soldier
 {
@@ -200,7 +196,7 @@ struct VS_INPUT // Soldier
 	}
 	else
 		stx_exit(0);
-#endif
+
 	printf("pHeader->pVB9=%x\n", pHeader->pVB9);
 
     return hr;
