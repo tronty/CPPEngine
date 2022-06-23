@@ -274,13 +274,14 @@ unsigned int RendererGLSLGL_1_1::DrawPrimitive(Primitives PrimitiveType,UINT Sta
 		return 0;
 	apply();
 
-	if(0){
+	if(1){
 	if(1)//m_bDebug)
 	{
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("glDrawArrays:\n");
 		printf("PrimitiveType=%d\n", PrimitiveType);
 		printf("glPrimRendererGL_1_1[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
+		printf("glPrimRendererGL_1_1_[PrimitiveType]=%d\n", glPrimRendererGLSLGL_1_1_[PrimitiveType]);
 		printf("firstVertex=%d\n", StartVertex);
 		printf("nVertices=%d\n", getVertexCount(PrimitiveType,PrimitiveCount));
 	}}
@@ -305,13 +306,14 @@ unsigned int RendererGLSLGL_1_1::DrawIndexedPrimitive(Primitives PrimitiveType,I
 	unsigned int indexSize=(indexBuffers[selectedIndexBuffer]).indexSize;
 
 
-	if(0){
+	if(1){
 	if(1)//m_bDebug)
 	{
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("glDrawElements:\n");
 		printf("PrimitiveType=%x\n", PrimitiveType);
 		printf("glPrimRendererGL_1_1[PrimitiveType]=%x\n", glPrimRendererGLSLGL_1_1[PrimitiveType]);
+		printf("glPrimRendererGL_1_1[PrimitiveType]=%s\n", glPrimRendererGLSLGL_1_1_[PrimitiveType]);
 		printf("nIndices=%d\n", getIndicesCount(PrimitiveType)*primCount);
 		printf("indexSize=%d\n", indexSize);
 		printf("firstIndex=%d\n", startIndex);

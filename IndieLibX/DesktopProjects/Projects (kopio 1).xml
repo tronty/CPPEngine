@@ -1140,6 +1140,10 @@ skydome.xml
                         otlutils
 			#concurrent-pacman
 			#BrickWall
+			#WaterRender
+			#Seascape
+					BallOfFire
+					TestNoise
 			opengl_simple
 			#InfiniteTerrainII
 					#15_Ocean_Water
@@ -1208,12 +1212,12 @@ skydome.xml
 					#xx
 						Road01
 						Road02
-						Road03
-						Road04
-					BallOfFire
-					TestNoise
+						#Road03
+						#Road04
 			R2VB-Animation
-			Skinning10
+          		2DAnimation
+			3DAnimation
+			Warrior
 			#SkinAnimation
 					RenderMonkey
 					pbr
@@ -1227,8 +1231,6 @@ skydome.xml
 					DiffuseLighting
 					AmbientLighting
 					12_Explosion_Particle_Effect
-          				2DAnimation
-					3DAnimation
 					3DAnimation2
 					3DAnimation5
 					3DAnimation6
@@ -1608,11 +1610,12 @@ skydome.xml
 			opengl_simple
 						Road01
 						Road02
-						Road03
-						Road04
+						#Road03
+						#Road04
 					RenderMonkey
 			R2VB-Animation
-			Skinning10
+			3DAnimation
+			Warrior
 			#SkinAnimation
 			#GLTest
 			#opengl_simple2
@@ -1642,6 +1645,93 @@ skydome.xml
 			</modules>
                             <mainphoneproject>SimpleTexture</mainphoneproject>
                             <package>com.x.SimpleTexture</package>
+                        </solution>
+        <solution>
+            <name>2DAnimation</name>
+		<modules>android_fopen assimp-5.0.1_x
+				#VulkanBase
+			noise
+                            SDL2
+                            OpenAL SOIL
+                            hlsl2glsl
+				zlib-1.2.11
+				png-1.5.0
+				jpeg-8c tiff
+				Lua_x
+                            tinyxml_x
+                            STX
+				Image3
+                            Effects11 Framework3 Framework
+			MeshRenderer2
+                            spine_x
+                            NSGUI
+				RadeonTerrainDemoLibrary
+				#NatureSceneLibrary
+			    FW3
+                            IndieLib_Static
+				nova
+                        weber
+                        weberarbaro
+                        otlmesher
+                        #otlrenderer
+                        otlutils
+                        opentree
+			c3dbool
+			TestVC
+			2DAnimation
+			3DAnimation
+			3DAnimation2
+			Warrior
+			TestNoise
+			BallOfFire
+			Jupiter
+			Venus
+			#Seascape
+			#SimpleTextureGL
+			Road01
+			#PhongLighting1
+			pbr
+			pbr2
+			R2VB-Animation
+			</modules>
+                            <mainphoneproject>2DAnimation</mainphoneproject>
+                            <package>com.x.2DAnimation</package>
+                        </solution>
+        <solution>
+            <name>SDKMesh</name>
+		<modules>android_fopen assimp-5.0.1_x
+				#VulkanBase
+			noise
+                            SDL2
+                            OpenAL SOIL
+                            hlsl2glsl
+				zlib-1.2.11
+				png-1.5.0
+				jpeg-8c tiff
+				Lua_x
+                            tinyxml_x
+                            STX
+				Image3
+                            Effects11 Framework3 Framework
+			MeshRenderer2
+                            spine_x
+                            NSGUI
+				RadeonTerrainDemoLibrary
+				#NatureSceneLibrary
+			    FW3
+                            IndieLib_Static
+				nova
+                        weber
+                        weberarbaro
+                        otlmesher
+                        #otlrenderer
+                        otlutils
+                        opentree
+			c3dbool
+			SDKMesh
+			</modules>
+                            <mainphoneproject>SDKMesh</mainphoneproject>
+                            <package>com.x.SDKMesh</package>
                         </solution>
         <solution>
             <name>Test</name>
@@ -4913,6 +5003,12 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <src_files>Samples/Test/main3.cpp</src_files>
                         <construct>application</construct>
                     </project>
+                    <project>
+                        <name>TestVC</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/Test/mainVC.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
 			<project>
                         <name>Parabola</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/Parabola</include_directories>
@@ -5174,9 +5270,21 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <construct>application</construct>
                     </project>
                     <project>
+                        <name>SimpleTextureGL</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture</include_directories>
+                        <src_files>Samples/SimpleTexture/SimpleTextureGL.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
                         <name>SimpleMesh</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture</include_directories>
                         <src_files>Samples/SimpleTexture/SimpleMesh.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>Seascape</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture</include_directories>
+                        <src_files>Samples/SimpleTexture/Seascape.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>
@@ -5324,9 +5432,21 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <construct>application</construct>
                     </project>
                     <project>
+                        <name>pbr2</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/TheOpenGLProgrammingGuide-TheRedbook Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TheOpenGLProgrammingGuide-TheRedbook/pbr2.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
                         <name>TestNoise</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
                         <src_files>Samples/TestNoise/TestNoise.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>WaterRender</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TestNoise/WaterRender.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>
@@ -5543,6 +5663,13 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <construct>application</construct>
                     </project>
 		<project>
+                        <name>SDKMesh</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Samples/3DAnimation</include_directories>
+			<src_directory>Samples/3DAnimation</src_directory>
+                        <src_files>SDKMesh.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+		<project>
                         <name>3DAnimation</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Samples/3DAnimation</include_directories>
 			<src_directory>Samples/3DAnimation</src_directory>
@@ -5674,6 +5801,22 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Samples/Shape3D</include_directories>
 			<src_directory>Samples/Platonic3D</src_directory>
                         <src_files>Platonic3D.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+
+		<project>
+                        <name>Venus</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Samples/Ashli_Viewer_1.7.0</include_directories>
+			<src_directory>Samples/Ashli_Viewer_1.7.0</src_directory>
+                        <src_files>Venus.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+
+		<project>
+                        <name>Jupiter</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Samples/Ashli_Viewer_1.7.0</include_directories>
+			<src_directory>Samples/Ashli_Viewer_1.7.0</src_directory>
+                        <src_files>Jupiter.cpp</src_files>
                         <construct>application</construct>
                     </project>
 

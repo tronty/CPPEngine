@@ -300,6 +300,7 @@ protected:
     //General mesh info
     SDKMESH_HEADER* m_pMeshHeader;
     SDKMESH_VERTEX_BUFFER_HEADER* m_pVertexBufferArray;
+    //SDKMESH_VERTEX_BUFFER_HEADER* m_pVertexBufferArray2;
     SDKMESH_INDEX_BUFFER_HEADER* m_pIndexBufferArray;
     SDKMESH_MESH* m_pMeshArray;
     SDKMESH_SUBSET* m_pSubsetArray;
@@ -316,6 +317,8 @@ protected:
     D3DXFROMWINEMATRIX* m_pTransformedFrameMatrices;
 
 protected:
+    void SimpleRender();
+    void SimpleRender2();
     void                            LoadMaterials( SDKMESH_MATERIAL* pMaterials,
                                                    UINT NumMaterials );
     int                         CreateVertexBuffer( 

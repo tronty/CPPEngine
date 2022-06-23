@@ -57,7 +57,7 @@ public:
 	virtual void init(const char* aTitle="")
 	{
 
-		STXGUI::init("/skeleton/GUILayout.xml");
+		//STXGUI::init("/skeleton/GUILayout.xml");
         	texID=-1;
 		std::string fn=stx_convertpath("/Framework3/Framework3.xml");
     		TiXmlDocument doc(fn.c_str());
@@ -72,7 +72,7 @@ public:
 				while ( windowElement )
 				{
 					std:string title_=windowHandle.FirstChild("title").Element()->GetText();
-					if(title_=="3DAnimation")
+					if(title_=="SDKMesh")
 					{
 						g_i = atoi(windowHandle.FirstChild("g_i").Element()->Attribute("Value"));
 						if(g_i>=elementsOf(filename))
@@ -179,6 +179,7 @@ if(m_Mesh.meshes.size())
 	d=silver; */
         m_Mesh.Draw(&mvp, texID, -1, -1, a, d, l, e);
 #endif
+#if 0
 	STXGUI::update();
 
 		const char* txt = "Use mouse buttons to rotate the model.";
@@ -196,6 +197,7 @@ if(m_Mesh.meshes.size())
 			IRenderer::GetRendererInstance()->GetlinearClamp(),
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(),
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
+#endif
 
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present();
@@ -204,7 +206,7 @@ if(m_Mesh.meshes.size())
 int ApplicationLogic()
 {
 	//LOG_PRINT("elementsOf(filename)=%d\n", elementsOf(filename));
-	IRenderer* r=IRenderer::GetRendererInstance("3DAnimation");
+	IRenderer* r=IRenderer::GetRendererInstance("SDKMesh");
 	IInput*    i=STX_Service::GetInputInstance();
 	_3DAnimation app;
 	app.init("");

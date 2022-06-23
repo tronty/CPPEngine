@@ -2724,15 +2724,14 @@ float RendererGL_1_1::getTextWidth(const FontID font, const char *str, int lengt
 
 unsigned int RendererGL_1_1::drawArrays(const Primitives PrimitiveType, const int firstVertex, const int nVertices)
 {
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	if(!(selectedVertexBuffers[0]>-1))
 		return 0;
 	apply();
 
-	if(0){
-	//if(m_bDebug)
+	if(1){
 	{
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("glDrawArrays:\n");
 		printf("PrimitiveType=%x\n", PrimitiveType);
 		printf("glPrimRendererGL_1_1[%d]=%x\n", PrimitiveType, glPrimRendererGL_1_1[PrimitiveType]);
@@ -2750,16 +2749,15 @@ unsigned int RendererGL_1_1::drawArrays(const Primitives PrimitiveType, const in
 
 unsigned int RendererGL_1_1::drawElements(const Primitives PrimitiveType, const int firstIndex, const int nIndices, const int firstVertex, const int nVertices)
 {
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	if(!((selectedVertexBuffers[0]>-1)&&(selectedIndexBuffer>-1)))
 		return 0;
 	apply();
 	unsigned int indexSize = indexBuffers[selectedIndexBuffer].indexSize;
 
-	if(0){
-	//if(m_bDebug)
+	if(1){
 	{
-		LOG_FNLN;
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		printf("glDrawElements:\n");
 		printf("PrimitiveType=%x\n", PrimitiveType);
 		printf("glPrimRendererGL_1_1[PrimitiveType]=%x\n", glPrimRendererGL_1_1[PrimitiveType]);
