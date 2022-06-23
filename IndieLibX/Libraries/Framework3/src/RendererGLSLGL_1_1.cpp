@@ -274,7 +274,7 @@ unsigned int RendererGLSLGL_1_1::DrawPrimitive(Primitives PrimitiveType,UINT Sta
 		return 0;
 	apply();
 
-	if(1){
+	if(0){
 	if(1)//m_bDebug)
 	{
 		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
@@ -306,7 +306,7 @@ unsigned int RendererGLSLGL_1_1::DrawIndexedPrimitive(Primitives PrimitiveType,I
 	unsigned int indexSize=(indexBuffers[selectedIndexBuffer]).indexSize;
 
 
-	if(1){
+	if(0){
 	if(1)//m_bDebug)
 	{
 		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
