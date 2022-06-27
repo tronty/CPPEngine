@@ -106,7 +106,7 @@ struct SDKMESH_VERTEX_BUFFER_HEADER
 {
     UINT64 NumVertices;
     UINT64 SizeBytes;
-    UINT64 StrideBytes;
+    UINT64 StrideBytes; // assert((NumVertices*StrideBytes)==SizeBytes)
 #if 0
     D3DVERTEXELEMENT9 Decl[MAX_VERTEX_ELEMENTS];
 #else
@@ -123,7 +123,7 @@ struct SDKMESH_INDEX_BUFFER_HEADER
 {
     UINT64 NumIndices;
     UINT64 SizeBytes;
-    UINT IndexType;
+    UINT IndexType; // assert((NumIndices*((IndexType==0)?2:4))==SizeBytes)
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)

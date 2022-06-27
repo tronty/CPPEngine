@@ -20,6 +20,7 @@
 #endif
 
 BYTE* pVertices_=0;
+UINT64 StrideBytes_=0;
 BYTE* pIndices_=0;
 UINT indSize_=2;
 //--------------------------------------------------------------------------------------
@@ -29,6 +30,68 @@ void CDXUTSDKMesh::SimpleRender2()
 	static VertexFormatID SimpleVertexDeclaration_ = -1;
 	if(SimpleShader_==-1)
 	{
+#ifndef _MSC_VER
+	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
+#else
+	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Dwarf\\dwarf.sdkmesh")
+#endif
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Dwarf", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Soldier/soldier.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
+#endif
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
+						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
+						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
+						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
+						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2,
+						0, TYPE_TANGENT,  FORMAT_FLOAT, 3
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Soldier", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
+#endif
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Warrior2", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName!="../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\trees\\tree.sdkmesh")
+#endif
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Tree2", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}else{
 		FormatDesc format[] = 	{
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
@@ -39,6 +102,7 @@ void CDXUTSDKMesh::SimpleRender2()
 					};
 		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}
 	}
 
 	D3DXFROMWINEMATRIX mvp;
@@ -75,7 +139,8 @@ void CDXUTSDKMesh::SimpleRender2()
 		(indSize_==2)?CONSTANT_INDEX2:CONSTANT_INDEX4,
 		pVertices_,
 		pVertices_,
-		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
+		StrideBytes_);
+		//sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 #endif
 }
 void CDXUTSDKMesh::SimpleRender()
@@ -150,8 +215,12 @@ void CDXUTSDKMesh::SimpleRender()
     UINT64 BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
     SDKMESH_VERTEX_BUFFER_HEADER* m_pVertexBufferArray = ( SDKMESH_VERTEX_BUFFER_HEADER* )( m_pStaticMeshData +
                                                               m_pMeshHeader->VertexStreamHeadersOffset );
+	{SDKMESH_VERTEX_BUFFER_HEADER* pVB=m_pVertexBufferArray;
+	assert((pVB->NumVertices*pVB->StrideBytes)==pVB->SizeBytes);}
     SDKMESH_INDEX_BUFFER_HEADER* m_pIndexBufferArray = ( SDKMESH_INDEX_BUFFER_HEADER* )( m_pStaticMeshData +
                                                             m_pMeshHeader->IndexStreamHeadersOffset );
+	{SDKMESH_INDEX_BUFFER_HEADER* pIB=m_pIndexBufferArray;
+	assert((pIB->NumIndices*((pIB->IndexType==0)?2:4))==pIB->SizeBytes);}
 
 		//printf("m_sFileName=%s\n", m_sFileName.c_str());
 		//printf("mesh=%d\n", meshi);
@@ -336,6 +405,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	printf("pHeader->SizeBytes=%d\n", pHeader->SizeBytes);
 	printf("pHeader->StrideBytes=%d\n", pHeader->StrideBytes);
 	pVertices_=(BYTE*)pVertices;
+	StrideBytes_=pHeader->StrideBytes;
 	VertexBufferID vbID=-1;
 	if(0)
 		vbID=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, *pVertices);
@@ -346,6 +416,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
 #endif
 	{
+#if 0
 struct VS_INPUT // Warrior
 {
     D3DXFROMWINEVECTOR3 Pos;
@@ -367,6 +438,9 @@ struct VS_INPUT // Warrior
 	}
 	// ??? delete[] pVertices_;
 	vbID=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture), STATIC, pVertices2);
+#else
+	vbID=-1;//IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->NumVertices*pHeader->StrideBytes, STATIC, pVertices);
+#endif
 	}
 	printf("vbID=%d\n", vbID);
 	pHeader->pVB9=vbID;
@@ -481,10 +555,10 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	ibs=pHeader->SizeBytes/pHeader->NumIndices;
 	printf("ibs=%d\n", ibs);
 
-	IndexBufferID ibID=IRenderer::GetRendererInstance()->addIndexBuffer(pHeader->NumIndices, ibs, STATIC, pIndices);
+	IndexBufferID ibID=-1;//IRenderer::GetRendererInstance()->addIndexBuffer(pHeader->NumIndices, ibs, STATIC, pIndices);
 	pHeader->pIB9=ibID;
 	printf("ibID=%d\n", ibID);
-	pIndices_=pIndices;
+	pIndices_=(BYTE*)pIndices;
 	return 0;
     int hr = S_OK;
 #if 1
@@ -508,7 +582,7 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
     };
 	
 	//printf("CreateIndexBuffer: SizeBytes=%d, ibFormat=%d, pIndices=%x\n", ( UINT )pHeader->SizeBytes/ibFormat, ibFormat, (const void *) pIndices);
-	pHeader->pIB9=IRenderer::GetRendererInstance()->addIndexBuffer(( UINT )pHeader->SizeBytes/ibFormat, ibFormat, STATIC, (const void *) pIndices);
+	pHeader->pIB9=-1;//IRenderer::GetRendererInstance()->addIndexBuffer(( UINT )pHeader->SizeBytes/ibFormat, ibFormat, STATIC, (const void *) pIndices);
 	//printf("pHeader->pIB9=%x\n", pHeader->pIB9);
 
     return hr;
@@ -2149,7 +2223,7 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
     cBytes = file.tellg();
     pStaticMeshData = new BYTE[ cBytes ];
     file.seekg (0, ios::beg);
-    file.read (pStaticMeshData, cBytes);
+    file.read ((char*)pStaticMeshData, cBytes);
     file.close();
     cout << "the entire file content is in memory 1\n";
   }
@@ -2282,12 +2356,13 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     {
         pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[i].DataOffset - BufferDataStart ) );
 
-            CreateVertexBuffer( &m_pVertexBufferArray[i], &pVertices );
+            CreateVertexBuffer( &m_pVertexBufferArray[i], (void**)&pVertices );
 
         m_ppVertices[i] = pVertices;
     }
 	pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[0].DataOffset - BufferDataStart ) );
 	pVertices_=pVertices;
+	//StrideBytes_=pHeader->StrideBytes;
 
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     // Create IBs
