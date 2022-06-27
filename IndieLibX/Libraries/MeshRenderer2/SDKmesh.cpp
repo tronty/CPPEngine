@@ -23,6 +23,8 @@ BYTE* pVertices_=0;
 UINT64 StrideBytes_=0;
 BYTE* pIndices_=0;
 UINT indSize_=2;
+UINT NumVertices_=0;
+UINT NumIndices_=0;
 //--------------------------------------------------------------------------------------
 void CDXUTSDKMesh::SimpleRender2()
 {
@@ -119,8 +121,6 @@ void CDXUTSDKMesh::SimpleRender2()
 #endif
 	VertexBufferID pVB9=0;
 	IndexBufferID pIB9=0;
-	UINT NumVertices=33480;
-	UINT NumIndices=33480;
 	IRenderer::GetRendererInstance()->setShader(SimpleShader_);
 	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration_);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", mvp);
@@ -128,12 +128,17 @@ void CDXUTSDKMesh::SimpleRender2()
 #if 0
 	IRenderer::GetRendererInstance()->setVertexBuffer(0, pVB9);
 	IRenderer::GetRendererInstance()->setIndexBuffer(pIB9);
-	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, NumVertices, 0, NumIndices/3, 0);
+	IRenderer::GetRendererInstance()->DrawIndexedPrimitive(PRIM_TRIANGLES, 0, 0, NumVertices_, 0, NumIndices_/3, 0);
 #else
+	NumVertices_=m_pVertexBufferArray[ m_pMeshArray[ 0 ].VertexBuffers[0] ].NumVertices;
+	NumIndices_ =m_pIndexBufferArray[ m_pMeshArray[ 0 ].IndexBuffer ].NumIndices;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("NumVertices_=%d\n", NumVertices_);
+	//printf("NumIndices_=%d\n", NumIndices_);
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 		0,
-		NumVertices,
-		NumIndices,
+		NumVertices_,
+		NumIndices_,
 		pIndices_,
 		pIndices_,
 		(indSize_==2)?CONSTANT_INDEX2:CONSTANT_INDEX4,
@@ -729,12 +734,16 @@ SimpleRender2();return;
 {
 	SDKMESH_HEADER* m_pMeshHeader = ( SDKMESH_HEADER* )m_pStaticMeshData;
 	//printf("m_pMeshHeader=%x\n", m_pMeshHeader);
-	//printf("m_pMeshHeader->NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
-	//printf("m_pMeshHeader->NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
  	//printf("m_pMeshHeader->NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
 	//printf("m_pMeshHeader->NumTotalSubsets=%d\n", m_pMeshHeader->NumTotalSubsets);
 	//printf("m_pMeshHeader->NumFrames=%d\n", m_pMeshHeader->NumFrames);
 	//printf("m_pMeshHeader->NumMaterials=%d\n", m_pMeshHeader->NumMaterials);
+	printf("m_pMeshHeader->NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
+	for(unsigned int i=0;i<m_pMeshHeader->NumVertexBuffers;i++)
+    		printf("RawVerticesAt[%d]=%x\n", i, GetRawVerticesAt( i ));
+	printf("m_pMeshHeader->NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
+	for(unsigned int i=0;i<m_pMeshHeader->NumIndexBuffers;i++)
+    		printf("RawVerticesAt[%d]=%x\n", i, GetRawIndicesAt( i ));
 }
 
 
