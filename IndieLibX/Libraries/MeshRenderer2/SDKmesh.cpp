@@ -106,10 +106,10 @@ void CDXUTSDKMesh::SimpleRender2()
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 	}
-
+#if 0
 	if(pIndices_<=pVertices_)
 		return;
-
+#endif
 	D3DXFROMWINEMATRIX mvp;
 #if 0
 	D3DXFROMWINEMatrixIdentity(&I);
@@ -138,6 +138,13 @@ void CDXUTSDKMesh::SimpleRender2()
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	//printf("NumVertices_=%d\n", NumVertices_);
 	//printf("NumIndices_=%d\n", NumIndices_);
+	if(pIndices_<=pVertices_)
+	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
+		NumIndices_/3,
+		pVertices_,
+		pVertices_,
+		StrideBytes_);
+	else
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 		0,
 		NumVertices_,
@@ -424,43 +431,6 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
 #endif
 	{
-#if 0
-struct VS_INPUT // Warrior
-{
-    D3DXFROMWINEVECTOR3 Pos;
-    D3DXFROMWINEVECTOR3 Normal;
-    D3DXFROMWINEVECTOR2 Tex;
-    D3DXFROMWINEVECTOR3 Tan;
-    unsigned int Bones[4];
-    D3DXFROMWINEVECTOR4 Weights;
-};
-	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
-	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
-		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
-	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
-	{
-		pVertices2[i].Position=pVertices_[i].Pos;
-		pVertices2[i].Normal=pVertices_[i].Normal;
-		pVertices2[i].Tangent=pVertices_[i].Tan;
-		pVertices2[i].Tex=pVertices_[i].Tex;
-	}
-	// ??? delete[] pVertices_;
-	vbID=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture), STATIC, pVertices2);
-#else
-	vbID=-1;//IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->NumVertices*pHeader->StrideBytes, STATIC, pVertices);
-#endif
-	}
-	printf("vbID=%d\n", vbID);
-	pHeader->pVB9=vbID;
-	return 0;
-    int hr = S_OK;
-    pHeader->DataOffset = 0;
-#ifndef _MSC_VER
-	if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
-#else
-	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
-#endif
-	{
 struct VS_INPUT // Warrior
 {
     D3DXFROMWINEVECTOR3 Pos;
@@ -537,10 +507,23 @@ struct VS_INPUT // Soldier
 	// ??? delete[] pVertices_;
 	*pVertices=pVertices2;
 	}
+#ifndef _MSC_VER
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\trees\\tree.sdkmesh")
+#endif
+	{
+		stx_exit(0);
+	}
 	else
 		stx_exit(0);
 
 	//printf("pHeader->pVB9=%x\n", pHeader->pVB9);
+	printf("vbID=%d\n", vbID);
+	pHeader->pVB9=vbID;
+	return 0;
+    int hr = S_OK;
+    pHeader->DataOffset = 0;
 
     return hr;
 }
