@@ -107,6 +107,9 @@ void CDXUTSDKMesh::SimpleRender2()
 	}
 	}
 
+	if(pIndices_<=pVertices_)
+		return;
+
 	D3DXFROMWINEMATRIX mvp;
 #if 0
 	D3DXFROMWINEMatrixIdentity(&I);
@@ -2539,6 +2542,8 @@ Error:
     {
         CheckLoadDone();
     }
+	if(pVertices_>=pIndices_)
+		printf("pVertices_>=pIndices_\n");
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	//stx_exit(0);
     return hr;
