@@ -316,9 +316,10 @@ protected:
     D3DXFROMWINEMATRIX* m_pBindPoseFrameMatrices;
     D3DXFROMWINEMATRIX* m_pTransformedFrameMatrices;
 
-protected:
+public:
     void SimpleRender();
     void SimpleRender2();
+protected:
     void                            LoadMaterials( SDKMESH_MATERIAL* pMaterials,
                                                    UINT NumMaterials );
     int                         CreateVertexBuffer( 

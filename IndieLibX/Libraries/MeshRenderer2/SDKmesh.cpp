@@ -138,13 +138,13 @@ void CDXUTSDKMesh::SimpleRender2()
 	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	//printf("NumVertices_=%d\n", NumVertices_);
 	//printf("NumIndices_=%d\n", NumIndices_);
-	if(pIndices_<=pVertices_)
+	if(!NumIndices_)
 	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
 		NumIndices_/3,
 		pVertices_,
 		pVertices_,
 		StrideBytes_);
-	else
+	else if(pVertices_<pIndices_)
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 		0,
 		NumVertices_,
@@ -158,6 +158,7 @@ void CDXUTSDKMesh::SimpleRender2()
 		//sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 #endif
 }
+#if 0
 void CDXUTSDKMesh::SimpleRender()
 {
 		INT indsize=2;
@@ -319,7 +320,7 @@ void CDXUTSDKMesh::SimpleRender()
 	}}
 	//stx_exit(0);
 }
-
+#endif
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
@@ -421,6 +422,8 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	printf("pHeader->StrideBytes=%d\n", pHeader->StrideBytes);
 	pVertices_=(BYTE*)pVertices;
 	StrideBytes_=pHeader->StrideBytes;
+	NumVertices_=( UINT )pHeader->NumVertices;
+
 	VertexBufferID vbID=-1;
 	if(0)
 		vbID=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, *pVertices);
@@ -513,14 +516,33 @@ struct VS_INPUT // Soldier
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\trees\\tree.sdkmesh")
 #endif
 	{
-		stx_exit(0);
+struct VS_INPUT // Tree
+{
+    D3DXFROMWINEVECTOR3 Pos;
+    D3DXFROMWINEVECTOR3 Normal;
+    D3DXFROMWINEVECTOR2 Tex;
+    D3DXFROMWINEMATRIX mTransform;
+};
+	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
+	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
+	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
+	{
+		pVertices2[i].Position.z=pVertices_[i].Pos.z;
+		pVertices2[i].Normal=pVertices_[i].Normal;
+		pVertices2[i].Tex=pVertices_[i].Tex;
+	}
+	// ??? delete[] pVertices_;
+	*pVertices=pVertices2;
+		//stx_exit(0);
 	}
 	else
 		stx_exit(0);
 
 	//printf("pHeader->pVB9=%x\n", pHeader->pVB9);
 	printf("vbID=%d\n", vbID);
-	pHeader->pVB9=vbID;
+	pHeader->pVB9=vbID;	
+	pVertices_=(BYTE*)pVertices;
 	return 0;
     int hr = S_OK;
     pHeader->DataOffset = 0;
@@ -540,8 +562,12 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	printf("pHeader->IndexType=%d\n", pHeader->IndexType);
 
 	unsigned int ibs=CONSTANT_INDEX2;
+	indSize_=2;
 	if(pHeader->SizeBytes==IT_32BIT)
+	{
 		ibs=CONSTANT_INDEX4;
+		indSize_=4;
+	}
 
 	ibs=pHeader->SizeBytes/pHeader->NumIndices;
 	printf("ibs=%d\n", ibs);
@@ -550,6 +576,7 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	pHeader->pIB9=ibID;
 	printf("ibID=%d\n", ibID);
 	pIndices_=(BYTE*)pIndices;
+	NumIndices_=pHeader->NumIndices;
 	return 0;
     int hr = S_OK;
 #if 1
@@ -579,6 +606,7 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
     return hr;
 }
 
+#if 0
 //--------------------------------------------------------------------------------------
 // transform bind pose frame using a recursive traversal
 //--------------------------------------------------------------------------------------
@@ -1035,7 +1063,7 @@ SimpleRender2();return;
 			vf, htxDiffuse, htxNormal,
                      htxSpecular );
 }
-
+#endif
 
 //--------------------------------------------------------------------------------------
 CDXUTSDKMesh::~CDXUTSDKMesh(){m_MappedPointers.clear();}
@@ -1201,7 +1229,7 @@ void CDXUTSDKMesh::Destroy()
     m_pAnimationFrameData = 0;
 #endif
 }
-
+#if 0
 //--------------------------------------------------------------------------------------
 // transform the bind pose
 //--------------------------------------------------------------------------------------
@@ -2176,7 +2204,7 @@ int CDXUTXFileMesh::Render( ID3DXEffect* pEffect,
     return S_OK;
 }
 #endif
-
+#endif
 int CDXUTSDKMesh::Create( BYTE* pData, UINT DataBytes)
 {
     return CreateFromMemory( pData, DataBytes);
@@ -2342,6 +2370,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
     BufferDataStart = m_pMeshHeader->HeaderSize + m_pMeshHeader->NonBufferDataSize;
 
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#if 1
     // Create VBs
     //printf("m_pMeshHeader->NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
     m_ppVertices = new BYTE*[m_pMeshHeader->NumVertexBuffers];
@@ -2362,6 +2391,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     // Create IBs
     //printf("m_pMeshHeader->NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
+#endif
 #if 0
     m_ppIndices = new BYTE*[m_pMeshHeader->NumIndexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumIndexBuffers; i++ )
@@ -2376,7 +2406,8 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 
         m_ppIndices[i] = pIndices;
     }
-#else
+#endif
+#if 1
     m_ppIndices = new BYTE*[m_pMeshHeader->NumIndexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumIndexBuffers; i++ )
     {
@@ -2523,10 +2554,14 @@ Error:
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
     //if( !pLoaderCallbacks10 && !pLoaderCallbacks9 )
     {
-        CheckLoadDone();
+        //CheckLoadDone();
     }
 	if(pVertices_>=pIndices_)
+	{
 		printf("pVertices_>=pIndices_\n");
+		printf("NumVertices=%d\n", NumVertices_);
+		printf("NumIndices=%d\n", NumIndices_);
+	}
 	////printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	//stx_exit(0);
     return hr;
