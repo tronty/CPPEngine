@@ -77,7 +77,7 @@ public:
 						g_i = atoi(windowHandle.FirstChild("g_i").Element()->Attribute("Value"));
 						if(g_i>=elementsOf(filename))
 							g_i=0;
-						printf("g_i=%x\n", g_i);
+						LOG_PRINT("g_i=%x\n", g_i);
 						break;
 					}
 					windowHandle = windowsHandle.Child( "window", i++ );

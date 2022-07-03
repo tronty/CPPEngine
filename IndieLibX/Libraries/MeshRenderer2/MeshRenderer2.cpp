@@ -8,16 +8,16 @@
 #include "SDKmesh.h"
 
 #if 1
-#define LOG_FNLN
-#define LOG_PRINT
+#define STX_FNLN
+#define STX_PRINT
 #endif
 
 #if 0//def LINUX
-#define STX_PRINT(...) printf(__VA_ARGS__)
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+#define LOG_PRINT(...) printf(__VA_ARGS__)
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 #else
-#define STX_FNLN
-#define STX_PRINT
+#define LOG_FNLN
+#define LOG_PRINT
 #endif
 
 #if 0
@@ -604,14 +604,14 @@ void MeshRenderer2::LoadThreadProc2(std::string& aFileNameMesh)
     m_pcAsset = new AssetHelper();
 
 	{
-	printf("pcScene->mNumMeshes=%d\n", pcScene->mNumMeshes);
-	printf("pcScene->mNumAnimations=%d\n", pcScene->mNumAnimations);
+	LOG_PRINT("pcScene->mNumMeshes=%d\n", pcScene->mNumMeshes);
+	LOG_PRINT("pcScene->mNumAnimations=%d\n", pcScene->mNumAnimations);
 		//if(pcScene->HasAnimations())
 		{
 			unsigned int total=0;
 			for (unsigned int i = 0; i < pcScene->mNumAnimations; ++i)
 				if (pcScene->mAnimations[i]->mName.length)
-					printf("%s\n     \'%s\'", (total++ ? "" : "\nNamed Animations:"), pcScene->mAnimations[i]->mName.data);
+					LOG_PRINT("%s\n     \'%s\'", (total++ ? "" : "\nNamed Animations:"), pcScene->mAnimations[i]->mName.data);
 		}
 
 	//if(pcScene->HasMeshes())
@@ -621,7 +621,7 @@ void MeshRenderer2::LoadThreadProc2(std::string& aFileNameMesh)
 	{
             for (unsigned int p = 0; p < pcScene->mMeshes[i]->mNumBones;++p)
             {
-                printf("Bone[%d]=%s\n", i, pcScene->mMeshes[i]->mBones[p]->mName.data);
+                LOG_PRINT("Bone[%d]=%s\n", i, pcScene->mMeshes[i]->mBones[p]->mName.data);
             }
 
 		//LOG_PRINT("mesh=%d\n", i);
@@ -648,22 +648,22 @@ void MeshRenderer2::LoadThreadProc2(std::string& aFileNameMesh)
         //LOG_PRINT("mNumAnimMeshes=%d\n", mesh->mNumAnimMeshes);
 
         			if (mesh->mNumFaces)
-					printf("mesh->mFaces=%x\n", &mesh->mFaces[0].mIndices[0]);
+					LOG_PRINT("mesh->mFaces=%x\n", &mesh->mFaces[0].mIndices[0]);
 
         			if (mesh->mVertices)
-					printf("mesh->mVertices=%x\n", &mesh->mVertices[0]);
+					LOG_PRINT("mesh->mVertices=%x\n", &mesh->mVertices[0]);
             			if (mesh->mNormals)
-					printf("mesh->mNormals=%x\n", &mesh->mNormals[0]);
+					LOG_PRINT("mesh->mNormals=%x\n", &mesh->mNormals[0]);
             			if (mesh->mTangents)
-					printf("mesh->mTangents=%x\n", &mesh->mTangents[0]);
+					LOG_PRINT("mesh->mTangents=%x\n", &mesh->mTangents[0]);
             			if (mesh->mBitangents)
-					printf("mesh->mBitangents=%x\n", &mesh->mBitangents[0]);
+					LOG_PRINT("mesh->mBitangents=%x\n", &mesh->mBitangents[0]);
             			if (mesh->HasVertexColors( 0))
-					printf("mesh->mColors=%x\n", &mesh->mColors[0][0]);
+					LOG_PRINT("mesh->mColors=%x\n", &mesh->mColors[0][0]);
             			if (mesh->HasTextureCoords( 0))
-					printf("mesh->mTextureCoords[0]=%x\n", &mesh->mTextureCoords[0][0].x);
+					LOG_PRINT("mesh->mTextureCoords[0]=%x\n", &mesh->mTextureCoords[0][0].x);
             			if (mesh->HasTextureCoords( 1))
-					printf("mesh->mTextureCoords[1]=%x\n", &mesh->mTextureCoords[1][0].x);
+					LOG_PRINT("mesh->mTextureCoords[1]=%x\n", &mesh->mTextureCoords[1][0].x);
 			}
 		}
 	}
@@ -679,7 +679,7 @@ void MeshRenderer2::LoadThreadProc2(std::string& aFileNameMesh)
 		{
 			texFound = pcScene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
             const std::string s = path.data;
-			//printf("path[%d].data=%s\n", texIndex-1, s.c_str());
+			//LOG_PRINT("path[%d].data=%s\n", texIndex-1, s.c_str());
             texIndex++;
 		}
 	}
@@ -843,8 +843,8 @@ AssetHelper::MeshHelper* pcMesh=apcMeshes[i_];
 			{
 			#if 0
 			LOG_FNLN;
-			printf("f1:%s\n", f1.c_str());
-			printf("txfn:%s\n", txfn.c_str());
+			LOG_PRINT("f1:%s\n", f1.c_str());
+			LOG_PRINT("txfn:%s\n", txfn.c_str());
 			#endif
 				meshes[meshes.size()-1].textures.push_back(
 			IRenderer::GetRendererInstance()->addImageLibTexture(
@@ -897,7 +897,7 @@ int MeshRenderer2::LoadFile(const char* aFilename_, tShader aShader_, bool scale
 
 	std::string fn=stx_convertpath(aFilename_);
 	const char* aFilename=fn.c_str();
-	printf("Filename=%s\n", aFilename);
+	LOG_PRINT("Filename=%s\n", aFilename);
 
 	if(aShader_!=eShaderNone)
 		InitShader(aShader_);
@@ -1718,7 +1718,8 @@ void MeshRenderer2::BeginDraw(	const D3DXFROMWINEMATRIX* amat, TextureID id, Sha
         {
 		if(pM)
 		{
-			pM->Render(m_shdid, m_vfid);
+			//pM->Render(m_shdid, m_vfid);
+			pM->SimpleRender2();
 			return 0;
 		}
 		unsigned int ret=0;
@@ -1875,7 +1876,7 @@ void MeshRenderer2::render(const D3DXFROMWINEMATRIX* aw, const TextureID aTexID)
 {
 		if(pM)
 		{
-			pM->Render();//m_shdid, m_vfid);
+			pM->SimpleRender2();//Render();//m_shdid, m_vfid);
 			return;
 		}
     // update possible animation

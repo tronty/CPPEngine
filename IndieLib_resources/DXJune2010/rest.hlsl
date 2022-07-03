@@ -63,7 +63,7 @@ VS_OUTPUT main_Soldier(VSSkinnedIn_Soldier IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.Pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.norm;
 	Out.uv=IN.Tex;
 	return Out;
@@ -72,7 +72,7 @@ VS_OUTPUT main_Tree2(VSInstIn_Tree IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.norm;
 	Out.uv=IN.tex;
 	return Out;
@@ -81,7 +81,7 @@ VS_OUTPUT main_Tree(VSSceneIn_Tree IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.norm;
 	Out.uv=IN.tex;
 	return Out;
@@ -90,7 +90,7 @@ VS_OUTPUT main_Dwarf(VSSceneIn_Dwarf IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.norm;
 	Out.uv=IN.tex;
 	return Out;
@@ -99,7 +99,7 @@ VS_OUTPUT main_Warrior(VSMotionBlurIn_Warrior IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.Pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.Normal;
 	Out.uv=IN.Tex;
 	return Out;
@@ -108,7 +108,7 @@ VS_OUTPUT main_Warrior2(VSSkinnedSceneIn_Warrior IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.Pos;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	//Out.Normal=IN.Normal;
 	Out.uv=IN.Tex;
 	return Out;
@@ -117,7 +117,7 @@ VS_OUTPUT main(VS_INPUT IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.Position;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));
 	Out.uv=IN.uv;
 	Out.color=IN.color;
 	//color.uv=color.uv;
