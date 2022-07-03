@@ -19,8 +19,9 @@
 #define LOG_FNLN
 #endif
 
-BYTE* pVertices_=0;
-UINT64 StrideBytes_=0;
+//BYTE* pVertices_=0;
+//UINT64 StrideBytes_=0;
+stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=0;
 BYTE* pIndices_=0;
 UINT indSize_=2;
 UINT NumVertices_=0;
@@ -134,10 +135,11 @@ void CDXUTSDKMesh::SimpleRender2()
 	if(!NumIndices_)
 	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
 		NumIndices_/3,
-		pVertices_,
-		pVertices_,
-		StrideBytes_);
-	else if(pVertices_<pIndices_)
+		pVertices2,
+		pVertices2,
+		//StrideBytes_);
+		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
+	else if(pVertices2<pIndices_)
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 		0,
 		NumVertices_,
@@ -145,10 +147,10 @@ void CDXUTSDKMesh::SimpleRender2()
 		pIndices_,
 		pIndices_,
 		(indSize_==2)?CONSTANT_INDEX2:CONSTANT_INDEX4,
-		pVertices_,
-		pVertices_,
-		StrideBytes_);
-		//sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
+		pVertices2,
+		pVertices2,
+		//StrideBytes_);
+		sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 #endif
 }
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
@@ -233,8 +235,8 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	LOG_PRINT("pHeader->NumVertices=%d\n", pHeader->NumVertices);
 	LOG_PRINT("pHeader->SizeBytes=%d\n", pHeader->SizeBytes);
 	LOG_PRINT("pHeader->StrideBytes=%d\n", pHeader->StrideBytes);
-	pVertices_=(BYTE*)pVertices;
-	StrideBytes_=pHeader->StrideBytes;
+	//pVertices_=(BYTE*)pVertices;
+	//StrideBytes_=pHeader->StrideBytes;
 	NumVertices_=( UINT )pHeader->NumVertices;
 
 	VertexBufferID vbID=-1;
@@ -257,7 +259,7 @@ struct VS_INPUT // Warrior
     D3DXFROMWINEVECTOR4 Weights;
 };
 	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
-	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+	pVertices2=
 		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
@@ -282,7 +284,7 @@ struct VS_INPUT // Dwarf
     D3DXFROMWINEVECTOR2 Tex;
 };
 	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
-	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+	pVertices2=
 		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
@@ -311,7 +313,7 @@ struct VS_INPUT // Soldier
     D3DXFROMWINEVECTOR3 Tan;
 };
 	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
-	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+	pVertices2=
 		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
@@ -337,7 +339,7 @@ struct VS_INPUT // Tree
     D3DXFROMWINEMATRIX mTransform;
 };
 	VS_INPUT* pVertices_=(VS_INPUT*)*pVertices;
-	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=
+	pVertices2=
 		new stx_VertexPositionNormalBiNormalTangentColor3Texture[( UINT )pHeader->NumVertices];
 	for(unsigned int i=0;i<( UINT )pHeader->NumVertices;i++)
 	{
@@ -355,7 +357,7 @@ struct VS_INPUT // Tree
 	//LOG_PRINT("pHeader->pVB9=%x\n", pHeader->pVB9);
 	LOG_PRINT("vbID=%d\n", vbID);
 	pHeader->pVB9=vbID;	
-	pVertices_=(BYTE*)pVertices;
+	//pVertices_=(BYTE*)pVertices;
 	return 0;
     int hr = S_OK;
     pHeader->DataOffset = 0;
@@ -642,7 +644,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
         m_ppVertices[i] = pVertices;
     }
 	pVertices = ( BYTE* )( pBufferData + ( m_pVertexBufferArray[0].DataOffset - BufferDataStart ) );
-	pVertices_=pVertices;
+	//pVertices_=pVertices;
 
     m_ppIndices = new BYTE*[m_pMeshHeader->NumIndexBuffers];
     for( UINT i = 0; i < m_pMeshHeader->NumIndexBuffers; i++ )
@@ -658,9 +660,9 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
         LoadMaterials( m_pMaterialArray, m_pMeshHeader->NumMaterials );
     hr = S_OK;
 
-	if(pVertices_>=pIndices_)
+	if(pVertices2>=pIndices_)
 	{
-		LOG_PRINT("pVertices_>=pIndices_\n");
+		LOG_PRINT("pVertices2>=pIndices_\n");
 		LOG_PRINT("NumVertices=%d\n", NumVertices_);
 		LOG_PRINT("NumIndices=%d\n", NumIndices_);
 	}
