@@ -115,7 +115,7 @@ struct SDKMESH_VERTEX_BUFFER_HEADER
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)
-        VertexBufferID pVB9;
+        BYTE* pVB9;
     };
 };
 
@@ -127,7 +127,7 @@ struct SDKMESH_INDEX_BUFFER_HEADER
     union
     {
         UINT64 DataOffset;				//(This also forces the union to 64bits)
-        IndexBufferID pIB9;
+        BYTE* pIB9;
     };
 };
 
@@ -325,7 +325,7 @@ protected:
     int                         CreateVertexBuffer( 
                                                         SDKMESH_VERTEX_BUFFER_HEADER* pHeader, void** pVertices);
     int                         CreateIndexBuffer( 
-                                                       SDKMESH_INDEX_BUFFER_HEADER* pHeader, void* pIndices);
+                                                       SDKMESH_INDEX_BUFFER_HEADER* pHeader, void** pIndices);
 
     //frame manipulation
     void                            TransformBindPoseFrame( UINT iFrame, D3DXFROMWINEMATRIX* pParentWorld );
@@ -337,7 +337,7 @@ protected:
 public:
                                     CDXUTSDKMesh();
     virtual                         ~CDXUTSDKMesh();
-
+    void Dump();
     //virtual int                 Create( const char* szFileName);
     virtual int                 Create( BYTE* pData, UINT DataBytes);
     virtual int                 LoadAnimation( const char* szFileName );
