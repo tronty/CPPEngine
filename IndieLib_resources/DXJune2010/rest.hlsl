@@ -1,8 +1,8 @@
 struct VS_OUTPUT
 {
 	float4 Position : POSITION;
-	//float3 Color : TEXCOORD0;
-	float2 Tex : TEXCOORD1;
+	//float3 Color : TEXCOORD1;
+	float2 Tex : TEXCOORD0;
 };
 [Vertex shader]
 ROW_MAJOR float4x4 WorldViewProjection MVPSEMANTIC;
@@ -15,19 +15,22 @@ struct VS_INPUT
 	float3 Color : TEXCOORD0;
 	float2 Tex : TEXCOORD1;
 };
-struct VS_Soldier
+struct VS_Soldier52
 {
     float3 Position : POSITION;
-    float4 Weights : TEXCOORD1;
-    uint4 Bones2 : TEXCOORD2;
-    uint4 Bones3 : TEXCOORD3;
-    uint4 Bones4 : TEXCOORD4;
-    uint4 Bones5 : TEXCOORD5;
-    float3 Normal : NORMAL;
     float2 Tex : TEXCOORD0;
-    float3 Tangent : TANGENT;
-
+    uint4 Bones : TEXCOORD1;
+    float4 Weights : TEXCOORD2;
 };
+struct VS_Soldier64
+{
+    float3 Position : POSITION;  
+    float2 Tex : TEXCOORD0;
+    float4 Transform1 : TEXCOORD1;
+    float4 Transform2 : T3EXCOORD2;
+    float3 m3 : TEXCOORD3;
+};
+#define VS_Soldier VS_Soldier52
 struct VS_Warrior
 {
     float3 Position          : POSITION;    
@@ -100,7 +103,14 @@ sampler2D txNormal;
 sampler2D txSpecular;
 float4 main(VS_OUTPUT IN) : COLOR
 {
-	//float4 texcol = tex2D(txDiffuse, IN.Tex);
-	return tex2D(txDiffuse, IN.Tex);
+	float4 diffuse=tex2D(txDiffuse, IN.Tex);
+	float4 normal=float4(0,0,0,1);
+	float4 specular=float4(0,0,0,1);
+	#if 0
+	normal=tex2D(txNormal, IN.Tex);
+	specular=tex2D(txSpecular, IN.Tex);
+	#endif
+	return diffuse+normal+specular;
 }
+
 

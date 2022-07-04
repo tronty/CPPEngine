@@ -26,17 +26,24 @@ struct uint4
 	unsigned int z;
 	unsigned int w;
 };
-struct VS_Soldier
+struct VS_Soldier52
+{
+    float3 Position;
+    float2 Tex;
+    uint4 Bones;
+    float4 Weights;
+};
+struct VS_Soldier64
 {
     float3 Position;  
-    float4 Weights;
-    uint4 Bones2;
-    uint4 Bones3;
-    uint4 Bones4;
-    uint4 Bones5;  
-    float3 Normal;  
     float2 Tex;
-    float3 Tangent;
+    float4 Transform1;
+    float4 Transform2;
+    float3 m3;
+};
+struct VS_Soldier
+{
+    float Tex_[16];
 
 };
 struct VS_Warrior
@@ -308,21 +315,13 @@ SDKMESH_SUBSET
 
         for( UINT subset = 0; subset < pMesh->NumSubsets; subset++ )
         {
-            pSubset = &m_pSubsetArray[ pMesh->pSubsets[subset] ];
-		
-		//printf("pSubset=%x\n", pSubset );
+            pSubset = &m_pSubsetArray[ pMesh->pSubsets[subset] ];		
+	    //printf("pSubset=%x\n", pSubset );
+            IRenderer::GetRendererInstance()->setTexture( "txDiffuse", m_pMaterialArray[subset].pDiffuseTexture9 );
+            IRenderer::GetRendererInstance()->setTexture( "txNormal", m_pMaterialArray[subset].pNormalTexture9 );
+            IRenderer::GetRendererInstance()->setTexture( "txSpecular", m_pMaterialArray[subset].pSpecularTexture9 );
+	    //printf("txDiffuse[%d]=%d\n", subset, m_pMaterialArray[subset].pDiffuseTexture9 );
             PrimType = PT_TRIANGLE_LIST;//( SDKMESH_PRIMITIVE_TYPE )pSubset->PrimitiveType;
-            //if( INVALID_MATERIAL != pSubset->MaterialID && m_pMeshHeader->NumMaterials > 0 )
-            {
-#if 0
-                pMat = &m_pMaterialArray[ pSubset->MaterialID ];
-		printf("pMat=%x\n", pMat );
-		printf("pMat->pDiffuseTexture9=%x\n", pMat->pDiffuseTexture9 );
-                IRenderer::GetRendererInstance()->setTexture( "txDiffuse", pMat->pDiffuseTexture9 );
-#else
-                IRenderer::GetRendererInstance()->setTexture( "txDiffuse", 0 );
-#endif
-            }
             UINT PrimCount = ( UINT )pSubset->IndexCount;
             UINT IndexStart = ( UINT )pSubset->IndexStart;
             UINT VertexStart = ( UINT )pSubset->VertexStart;
@@ -353,6 +352,12 @@ SDKMESH_SUBSET
 			sv);
 	}
 	}
+#if 0
+	printf("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
+	printf("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
+	printf("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
+#endif
+	//stx_exit(0);
 }
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
@@ -452,7 +457,10 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		VS_Dwarf* s=((VS_Dwarf*)*pVertices)+0;
 		VS_Dwarf* v=((VS_Dwarf*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes)
+		{
+			printf("((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes\n");
 			break;
+		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}
@@ -462,10 +470,13 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
 #endif
 	{
-		VS_Soldier* s=((VS_Soldier*)*pVertices)+0;
-		VS_Soldier* v=((VS_Soldier*)*pVertices)+i;
-		if(((v-s)*sizeof(VS_Soldier))>pHeader->SizeBytes)
+		VS_Soldier52* s=((VS_Soldier52*)*pVertices)+0;
+		VS_Soldier52* v=((VS_Soldier52*)*pVertices)+i;
+		if(((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes)
+		{
+			printf("((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes\n");
 			break;
+		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}
@@ -478,7 +489,10 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		VS_Warrior* s=((VS_Warrior*)*pVertices)+0;
 		VS_Warrior* v=((VS_Warrior*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes)
+		{
+			printf("((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes\n");
 			break;
+		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}
@@ -491,13 +505,55 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		VS_Tree* s=((VS_Tree*)*pVertices)+0;
 		VS_Tree* v=((VS_Tree*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Tree))>pHeader->SizeBytes)
+		{
+			printf("((v-s)*sizeof(VS_Tree))>pHeader->SizeBytes\n");
 			break;
+		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}}
+#ifndef _MSC_VER
+	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
+#else
+	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Dwarf\\dwarf.sdkmesh")
+#endif
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Dwarf);
+		pHeader->StrideBytes=sizeof(VS_Dwarf);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Soldier/soldier.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
+#endif
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Soldier52);
+		pHeader->StrideBytes=sizeof(VS_Soldier52);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
+#endif
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Warrior);
+		pHeader->StrideBytes=sizeof(VS_Warrior);
+	}
+#ifndef _MSC_VER
+	else if(m_sFileName!="../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh")
+#else
+	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\trees\\tree.sdkmesh")
+#endif
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Tree);
+		pHeader->StrideBytes=sizeof(VS_Tree);
+	}
+	else
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+		pHeader->StrideBytes=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+	}
 	*pVertices=pVertices2;
-	pHeader->SizeBytes=pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
-	pHeader->StrideBytes=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
 #else
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, pVertices);
 #endif
