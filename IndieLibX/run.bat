@@ -3,3 +3,9 @@ copy Dependencies\\vulkan\\vulkan-1.dll bin\\vulkan-1.dll
 cd bin
 call SDKMesh.exe
 cd ..
+cd bin
+call BallOfFire.exe
+cd ..
+cd bin
+call TestNoise.exe
+cd ..

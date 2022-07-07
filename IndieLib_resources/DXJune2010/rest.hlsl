@@ -15,6 +15,7 @@ struct VS_INPUT
 	float3 Color : TEXCOORD0;
 	float2 Tex : TEXCOORD1;
 };
+#if 0
 struct VS_Soldier52
 {
     float3 Position : POSITION;
@@ -52,11 +53,17 @@ struct VS_Dwarf
     float3 Normal         : NORMAL;  
     float2 Tex          : TEXTURE0;
 };
+#else
+#define VS_Soldier VS_INPUT
+#define VS_Warrior VS_INPUT
+#define VS_Tree VS_INPUT
+#define VS_Dwarf VS_INPUT
+#endif
 VS_OUTPUT main(VS_INPUT IN)
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float3 objPos = IN.Position;
-	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
+	Out.Position = mul( WorldViewProjection, float4( objPos, 1.0));;
 	Out.Tex=IN.Tex;
 	//Out.Color=IN.Color;
 	return Out;
@@ -103,6 +110,7 @@ sampler2D txNormal;
 sampler2D txSpecular;
 float4 main(VS_OUTPUT IN) : COLOR
 {
+	//return float4(1,0,0,1);
 	float4 diffuse=tex2D(txDiffuse, IN.Tex);
 	float4 normal=float4(0,0,0,1);
 	float4 specular=float4(0,0,0,1);

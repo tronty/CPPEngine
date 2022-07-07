@@ -19,6 +19,9 @@
 #define LOG_FNLN
 #endif
 
+UINT g_iMeshVertexBuffers=0;
+UINT g_iMeshIndexBuffers=0;
+
 struct uint4
 {
 	unsigned int x;
@@ -70,12 +73,12 @@ struct VS_Dwarf
 //--------------------------------------------------------------------------------------
 void CDXUTSDKMesh::Dump()
 {
-    printf("NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
-    printf("NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
-    printf("NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
-    printf("NumTotalSubsets=%d\n", m_pMeshHeader->NumTotalSubsets);
-    printf("NumFrames=%d\n", m_pMeshHeader->NumFrames);
-    printf("NumMaterials=%d\n", m_pMeshHeader->NumMaterials);
+    LOG_PRINT("NumVertexBuffers=%d\n", m_pMeshHeader->NumVertexBuffers);
+    LOG_PRINT("NumIndexBuffers=%d\n", m_pMeshHeader->NumIndexBuffers);
+    LOG_PRINT("NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
+    LOG_PRINT("NumTotalSubsets=%d\n", m_pMeshHeader->NumTotalSubsets);
+    LOG_PRINT("NumFrames=%d\n", m_pMeshHeader->NumFrames);
+    LOG_PRINT("NumMaterials=%d\n", m_pMeshHeader->NumMaterials);
 
     SDKMESH_SUBSET* pSubset = NULL;
     SDKMESH_MESH* currentMesh = 0;
@@ -83,9 +86,9 @@ void CDXUTSDKMesh::Dump()
     for (UINT meshi=0; meshi < m_pMeshHeader->NumMeshes; ++meshi)
     {
 	currentMesh = &m_pMeshArray[meshi];
-	printf("meshi=%d\n", meshi);
-    	printf("m_ppVertices[%d]=%x\n", (UINT)currentMesh->VertexBuffers[0], (BYTE*)m_ppVertices[currentMesh->VertexBuffers[0]]);
-    	printf("m_ppIndices[%d]=%x\n", (UINT)currentMesh->IndexBuffer, (BYTE*)m_ppIndices[currentMesh->IndexBuffer]);
+	LOG_PRINT("meshi=%d\n", meshi);
+    	LOG_PRINT("m_ppVertices[%d]=%x\n", (UINT)currentMesh->VertexBuffers[0], (BYTE*)m_ppVertices[currentMesh->VertexBuffers[0]]);
+    	LOG_PRINT("m_ppIndices[%d]=%x\n", (UINT)currentMesh->IndexBuffer, (BYTE*)m_ppIndices[currentMesh->IndexBuffer]);
         //(BYTE*)pVertices=(BYTE*)m_ppVertices[currentMesh->VertexBuffers[0]];
 	//(BYTE*)pIndices=(BYTE*)m_ppIndices[currentMesh->IndexBuffer];
         INT indsize;
@@ -97,24 +100,31 @@ void CDXUTSDKMesh::Dump()
             UINT *ind = ( UINT * )m_ppIndices[currentMesh->IndexBuffer];
             FLOAT *verts =  ( FLOAT* )m_ppVertices[currentMesh->VertexBuffers[0]];
             UINT stride = (UINT)m_pVertexBufferArray[currentMesh->VertexBuffers[0]].StrideBytes;
-	printf("verts=%x\n", verts);
-	printf("ind=%x\n", ind);
-	printf("stride=%d\n", stride);
-	printf("indsize=%d\n", indsize);
+	LOG_PRINT("verts=%x\n", verts);
+	LOG_PRINT("ind=%x\n", ind);
+	LOG_PRINT("stride=%d\n", stride);
+	LOG_PRINT("indsize=%d\n", indsize);
     
         for( UINT subset = 0; subset < currentMesh->NumSubsets; subset++ )
         {
-	printf("subset=%d:\n", subset);
-	printf("m_pMaterialArray[%d]=%s\n", subset, m_pMaterialArray[subset].DiffuseTexture);
+	LOG_PRINT("subset=%d:\n", subset);
+	LOG_PRINT("m_pMaterialArray[%d]=%s\n", subset, m_pMaterialArray[subset].DiffuseTexture);
             pSubset = &m_pSubsetArray[ currentMesh->pSubsets[subset] ];
 #if 0
             UINT IndexCount = 0;if(pSubset) IndexCount = ( UINT )pSubset->IndexCount;
             UINT IndexStart = 0;if(pSubset) IndexStart = ( UINT )pSubset->IndexStart;
-	printf("IndexCount=%d\n", IndexCount);
-	printf("IndexStart=%d\n", IndexStart);
+	LOG_PRINT("IndexCount=%d\n", IndexCount);
+	LOG_PRINT("IndexStart=%d\n", IndexStart);
 #endif
 	}
     }
+	printf("sizeof(VS_Dwarf)=%d\n", sizeof(VS_Dwarf));
+	printf("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
+	printf("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
+	printf("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
+	printf("sizeof(VS_Warrior)=%d\n", sizeof(VS_Warrior));
+	printf("sizeof(VS_Tree)=%d\n", sizeof(VS_Tree));
+	printf("sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture)=%d\n", sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 }
 void CDXUTSDKMesh::SimpleRender2()
 {
@@ -215,9 +225,6 @@ void CDXUTSDKMesh::SimpleRender2()
 		                            D3DXFROMWINEToRadian(mAngleY),
 		                            0.0f );
 #endif
-	IRenderer::GetRendererInstance()->setShader(SimpleShader_);
-	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration_);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", mvp);
 #if 0
 	IRenderer::GetRendererInstance()->setTexture("txDiffuse", 3);
 #if 1
@@ -249,14 +256,14 @@ SDKMESH_SUBSET
         BYTE* pVertices=(BYTE*)*m_ppVertices[m_pMeshArray[ i ].VertexBuffers[0]];
 	BYTE* pIndices=(BYTE*)*m_ppIndices[m_pMeshArray[ i ].IndexBuffer];
 #if 0
-	printf("pVertices=%x\n", pVertices);	
-	printf("pIndices=%x\n", pIndices);
+	LOG_PRINT("pVertices=%x\n", pVertices);	
+	LOG_PRINT("pIndices=%x\n", pIndices);
 #endif
 	//LOG_PRINT("NumVertices_=%d\n", NumVertices_);
 	if(!NumIndices_){
 #if 0
-		printf("NumVertices_=%d\n", NumVertices_);
-		printf("pVertices=%x\n", i, pVertices);
+		LOG_PRINT("NumVertices_=%d\n", NumVertices_);
+		LOG_PRINT("pVertices=%x\n", i, pVertices);
 #endif
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
 			NumVertices_/3,
@@ -266,10 +273,10 @@ SDKMESH_SUBSET
 			sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));}
 	else {
 #if 0
-		printf("NumVertices_=%d\n", NumVertices_);
-		printf("NumIndices_=%d\n", NumIndices_);
-		printf("pVertices=%x\n", i, pVertices);
-		printf("pIndices=%x\n", i, pIndices);
+		LOG_PRINT("NumVertices_=%d\n", NumVertices_);
+		LOG_PRINT("NumIndices_=%d\n", NumIndices_);
+		LOG_PRINT("pVertices=%x\n", i, pVertices);
+		LOG_PRINT("pIndices=%x\n", i, pIndices);
 #endif
 		if(pVertices>0)
 		if(pIndices>0)
@@ -291,7 +298,8 @@ SDKMESH_SUBSET
 #endif
 
 
-    for( UINT iMesh = 0; iMesh < m_pMeshHeader->NumMeshes; iMesh++ )
+    LOG_PRINT("m_pMeshHeader->NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
+        for( UINT iMesh = 0; iMesh < m_pMeshHeader->NumMeshes; iMesh++ )
     {
     SDKMESH_MESH* pMesh = &m_pMeshArray[iMesh];
     // set vb streams
@@ -313,51 +321,78 @@ SDKMESH_SUBSET
     SDKMESH_MATERIAL* pMat = NULL;
     UINT PrimType;
 
+LOG_PRINT("pMesh->NumSubsets=%d\n", pMesh->NumSubsets);
         for( UINT subset = 0; subset < pMesh->NumSubsets; subset++ )
         {
+//LOG_FNLN;
+LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
+	IRenderer::GetRendererInstance()->setShader(SimpleShader_);
+	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration_);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", mvp);
             pSubset = &m_pSubsetArray[ pMesh->pSubsets[subset] ];		
-	    //printf("pSubset=%x\n", pSubset );
-            IRenderer::GetRendererInstance()->setTexture( "txDiffuse", m_pMaterialArray[subset].pDiffuseTexture9 );
-            IRenderer::GetRendererInstance()->setTexture( "txNormal", m_pMaterialArray[subset].pNormalTexture9 );
-            IRenderer::GetRendererInstance()->setTexture( "txSpecular", m_pMaterialArray[subset].pSpecularTexture9 );
-	    //printf("txDiffuse[%d]=%d\n", subset, m_pMaterialArray[subset].pDiffuseTexture9 );
+	    //LOG_PRINT("pSubset=%x\n", pSubset );
+            if(m_pMaterialArray[subset].pDiffuseTexture9>-1) IRenderer::GetRendererInstance()->setTexture( "txDiffuse", m_pMaterialArray[subset].pDiffuseTexture9 );
+            if(m_pMaterialArray[subset].pNormalTexture9>-1) IRenderer::GetRendererInstance()->setTexture( "txNormal", m_pMaterialArray[subset].pNormalTexture9 );
+            if(m_pMaterialArray[subset].pSpecularTexture9>-1) IRenderer::GetRendererInstance()->setTexture( "txSpecular", m_pMaterialArray[subset].pSpecularTexture9 );
+#if 1
+            LOG_PRINT("setShader=%x\n", SimpleShader_);
+            LOG_PRINT("setVertexFormat=%x\n", SimpleVertexDeclaration_);
+            LOG_PRINT("setShaderConstant4x4f=%x\n", &mvp);
+            LOG_PRINT("pDiffuseTexture9=%d\n", m_pMaterialArray[subset].pDiffuseTexture9 );
+            LOG_PRINT("pNormalTexture9=%d\n", m_pMaterialArray[subset].pNormalTexture9 );
+            LOG_PRINT("pSpecularTexture9=%d\n", m_pMaterialArray[subset].pSpecularTexture9 );
+#endif
+	    //LOG_PRINT("txDiffuse[%d]=%d\n", subset, m_pMaterialArray[subset].pDiffuseTexture9 );
             PrimType = PT_TRIANGLE_LIST;//( SDKMESH_PRIMITIVE_TYPE )pSubset->PrimitiveType;
             UINT PrimCount = ( UINT )pSubset->IndexCount;
             UINT IndexStart = ( UINT )pSubset->IndexStart;
             UINT VertexStart = ( UINT )pSubset->VertexStart;
             UINT VertexCount = ( UINT )pSubset->VertexCount;
+
+		PrimCount = ( UINT )m_pIndexBufferArray[iMesh].NumIndices;
+		VertexCount = ( UINT )m_pVertexBufferArray[iMesh].NumVertices;
+
             PrimCount /= 3;
 	    UINT sv=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
 #ifdef __ORIGINAL_BUFFERS__
 	    sv=( UINT )m_pVertexBufferArray[ pMesh->VertexBuffers[iMesh] ].StrideBytes;
 #endif
-		if(pIB>pVB)
+//LOG_FNLN;
+		if(pIB>pVB){
             //IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
+		
+	printf("VertexCount=%d\nPrimCount=%d\n", VertexCount, PrimCount);
+	LOG_PRINT("pIB=%x\n", pIB);
+	LOG_PRINT("pVB=%x\n", pVB);
+	printf("sv=%d\n", sv);
+	LOG_PRINT("it=%d\n", ((m_pIndexBufferArray[ pMesh->IndexBuffer ].IndexType==0)?2:4));
 	    IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 			0,
 			VertexCount,
 			PrimCount,
 			pIB,
 			pIB,
-			((m_pIndexBufferArray[ pMesh->IndexBuffer ].IndexType==0)?2:4),
+			((m_pIndexBufferArray[ pMesh->IndexBuffer ].IndexType==0)?CONSTANT_INDEX2:CONSTANT_INDEX4),
 			pVB,
 			pVB,
 			sv);
-		else
+		}else{
+	printf("PrimCount=%d\n", PrimCount);
+	LOG_PRINT("pVB=%x\n", pVB);
+	printf("sv=%d\n", sv);
 	    IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
-			0,
 			PrimCount,
 			pVB,
 			pVB,
-			sv);
+			sv);}
 	}
 	}
 #if 0
-	printf("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
-	printf("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
-	printf("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
+	LOG_PRINT("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
+	LOG_PRINT("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
+	LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
 #endif
-	//stx_exit(0);
+	stx_exit(0);
 }
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
@@ -446,67 +481,69 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	pHeader->pVB9=*pVertices;
 #ifndef __ORIGINAL_BUFFERS__
 	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=new stx_VertexPositionNormalBiNormalTangentColor3Texture[pHeader->NumVertices]; 
-	for(unsigned int i=0;i<pHeader->NumVertices;i++)
-	{
 #ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
 #else
 	if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Dwarf\\dwarf.sdkmesh")
 #endif
+	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Dwarf* s=((VS_Dwarf*)*pVertices)+0;
 		VS_Dwarf* v=((VS_Dwarf*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes)
 		{
-			printf("((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes\n");
+			LOG_PRINT("((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes\n");
 			break;
 		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
-	}
+	}}
 #ifndef _MSC_VER
 	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/Soldier/soldier.sdkmesh")
 #else
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
 #endif
+	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Soldier52* s=((VS_Soldier52*)*pVertices)+0;
 		VS_Soldier52* v=((VS_Soldier52*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes)
 		{
-			printf("((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes\n");
+			LOG_PRINT("((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes\n");
 			break;
 		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
-	}
+	}}
 #ifndef _MSC_VER
 	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
 #else
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
 #endif
+	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Warrior* s=((VS_Warrior*)*pVertices)+0;
 		VS_Warrior* v=((VS_Warrior*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes)
 		{
-			printf("((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes\n");
+			LOG_PRINT("((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes\n");
 			break;
 		}
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
-	}
+	}}
 #ifndef _MSC_VER
 	else if(m_sFileName!="../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh")
 #else
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\trees\\tree.sdkmesh")
 #endif
+	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Tree* s=((VS_Tree*)*pVertices)+0;
 		VS_Tree* v=((VS_Tree*)*pVertices)+i;
 		if(((v-s)*sizeof(VS_Tree))>pHeader->SizeBytes)
 		{
-			printf("((v-s)*sizeof(VS_Tree))>pHeader->SizeBytes\n");
+			LOG_PRINT("((v-s)*sizeof(VS_Tree))>pHeader->SizeBytes\n");
 			break;
 		}
 		pVertices2[i].Position=v->Position;
@@ -554,9 +591,11 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		pHeader->StrideBytes=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
 	}
 	*pVertices=pVertices2;
+	pHeader->pVB9=(BYTE*)pVertices2;
 #else
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, pVertices);
 #endif
+	m_pVertexBufferArray[g_iMeshVertexBuffers++].NumVertices=pHeader->NumVertices;
 	return 0;
 }
 
@@ -583,6 +622,7 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	pHeader->pIB9=-1;
 	pHeader->pIB9=*pIndices;
 	//pHeader->pIB9=IRenderer::GetRendererInstance()->addIndexBuffer(pHeader->NumIndices, ibs, STATIC, pIndices);
+	m_pIndexBufferArray[g_iMeshIndexBuffers++].NumIndices=pHeader->NumIndices;
 	return 0;
 }
 
@@ -701,7 +741,7 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
     file.seekg (0, ios::beg);
     file.read ((char*)pStaticMeshData, cBytes);
     file.close();
-    cout << "the entire file content is in memory 1\n";
+    LOG_PRINT("the entire file content is in memory 1\n");
   }
   else cout << "Unable to open file 1\n";
 #endif
@@ -784,11 +824,11 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 	//LOG_PRINT("m_pSubsetArray=%x\n", m_pSubsetArray);
 #endif
 	
-	printf("m_pMeshHeader->NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
+	LOG_PRINT("m_pMeshHeader->NumMeshes=%d\n", m_pMeshHeader->NumMeshes);
     // Setup subsets
     for( UINT i = 0; i < m_pMeshHeader->NumMeshes; i++ )
     {
-	printf("m_pMeshArray[%d].NumSubsets=%d\n", i, m_pMeshArray[i].NumSubsets);
+	LOG_PRINT("m_pMeshArray[%d].NumSubsets=%d\n", i, m_pMeshArray[i].NumSubsets);
 	//LOG_PRINT("m_pMeshArray[%d].SubsetOffset=%x\n", i, m_pMeshArray[i].SubsetOffset);
         m_pMeshArray[i].pSubsets = ( UINT* )( m_pStaticMeshData + m_pMeshArray[i].SubsetOffset );
 	//LOG_PRINT("m_pMeshArray[%d].pSubsets=%x\n", i, m_pMeshArray[i].pSubsets);
@@ -855,7 +895,7 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 	if(pVertices>=pIndices)
 	{
 		LOG_PRINT("pVertices>=pIndices\n");
-		stx_exit(0);
+		//stx_exit(0);
 	}
     return hr;
 }
