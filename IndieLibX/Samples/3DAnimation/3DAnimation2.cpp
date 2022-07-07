@@ -38,7 +38,7 @@ const char* filename[] =
 "/dx9sdk/teapot.x",
 "/dx9sdk/tiger.x",
 "/dx9sdk/tiny.x",
-"/DXJune2010/Dwarf/Dwarf.x",
+//"/DXJune2010/Dwarf/Dwarf.x",
 //"/DXJune2010/Dwarf/DwarfWithEffectInstance.x",
 "/Orcs/Bonfire_wOrcs.x",
 //"/GLEssentials/Assets/demon.x",
@@ -70,7 +70,7 @@ defaultshader,
 alternativeshader,
 defaultshader,
 defaultshader,
-defaultshader,
+//defaultshader,
 defaultshader,
 defaultshader,
 defaultshader,
@@ -99,7 +99,7 @@ float angles[] =
 0.0f, 0.0f,
 0.0f, 0.0f,
 180.0f, -90.0f,
-0.0f, 0.0f,
+//0.0f, 0.0f,
 18.37f, 0.0f,
 0.0f, 0.0f,
 0.0f, 0.0f,
@@ -198,29 +198,31 @@ public:
 		{
 			m_i=14;
 		}
+		#if 0
 		else if(callbackString == "Dwarf") 
 		{
 			m_i=15;
 		}
+		#endif
 		else if(callbackString == "Orcs") 
 		{
-			m_i=16;
+			m_i=15;
 		}
 		else if(callbackString == "demon") 
 		{
-			m_i=17;
+			m_i=16;
 		}
 		else if(callbackString == "castle2") 
 		{
-			m_i=18;
+			m_i=17;
 		}
 		else if(callbackString == "watermesh") 
 		{
-			m_i=19;
+			m_i=18;
 		}
 		else if(callbackString == "gargoyle") 
 		{
-			m_i=20;
+			m_i=19;
 		} /*
 		else if(callbackString == "untitled") 
 		{
@@ -232,15 +234,15 @@ public:
 		} */
 		else if(callbackString == "blender_cube") 
 		{
-			m_i=21;
+			m_i=20;
 		}
 		else if(callbackString == "blender_cup") 
 		{
-			m_i=22;
+			m_i=21;
 		}
 		else if(callbackString == "blender_demon") 
 		{
-			m_i=23;
+			m_i=22;
 		}
 	}
 	}
