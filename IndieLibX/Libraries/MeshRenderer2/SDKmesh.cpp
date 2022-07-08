@@ -118,13 +118,13 @@ void CDXUTSDKMesh::Dump()
 #endif
 	}
     }
-	printf("sizeof(VS_Dwarf)=%d\n", sizeof(VS_Dwarf));
-	printf("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
-	printf("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
-	printf("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
-	printf("sizeof(VS_Warrior)=%d\n", sizeof(VS_Warrior));
-	printf("sizeof(VS_Tree)=%d\n", sizeof(VS_Tree));
-	printf("sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture)=%d\n", sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
+	LOG_PRINT("sizeof(VS_Dwarf)=%d\n", sizeof(VS_Dwarf));
+	LOG_PRINT("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
+	LOG_PRINT("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
+	LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
+	LOG_PRINT("sizeof(VS_Warrior)=%d\n", sizeof(VS_Warrior));
+	LOG_PRINT("sizeof(VS_Tree)=%d\n", sizeof(VS_Tree));
+	LOG_PRINT("sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture)=%d\n", sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture));
 }
 void CDXUTSDKMesh::SimpleRender2()
 {
@@ -132,6 +132,18 @@ void CDXUTSDKMesh::SimpleRender2()
 	static VertexFormatID SimpleVertexDeclaration_ = -1;
 	if(SimpleShader_==-1)
 	{
+#ifndef __ORIGINAL_BUFFERS__
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+						0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
+						0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+#else
 #ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
 #else
@@ -199,18 +211,8 @@ void CDXUTSDKMesh::SimpleRender2()
 					};
 		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Tree", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
-	}else{
-		FormatDesc format[] = 	{
-						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
-						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
-						0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
-						0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
-						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
-						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
-					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
-		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
+#endif
 	}
 
 	D3DXFROMWINEMATRIX mvp;
@@ -361,10 +363,10 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 		if(pIB>pVB){
             //IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
 		
-	printf("VertexCount=%d\nPrimCount=%d\n", VertexCount, PrimCount);
+	LOG_PRINT("VertexCount=%d\nPrimCount=%d\n", VertexCount, PrimCount);
 	LOG_PRINT("pIB=%x\n", pIB);
 	LOG_PRINT("pVB=%x\n", pVB);
-	printf("sv=%d\n", sv);
+	LOG_PRINT("sv=%d\n", sv);
 	LOG_PRINT("it=%d\n", ((m_pIndexBufferArray[ pMesh->IndexBuffer ].IndexType==0)?2:4));
 	    IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
 			0,
@@ -377,9 +379,9 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 			pVB,
 			sv);
 		}else{
-	printf("PrimCount=%d\n", PrimCount);
+	LOG_PRINT("PrimCount=%d\n", PrimCount);
 	LOG_PRINT("pVB=%x\n", pVB);
-	printf("sv=%d\n", sv);
+	LOG_PRINT("sv=%d\n", sv);
 	    IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
 			PrimCount,
 			pVB,
@@ -392,7 +394,7 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 	LOG_PRINT("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
 	LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
 #endif
-	stx_exit(0);
+	//stx_exit(0);
 }
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
 {
@@ -549,6 +551,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}}
+#ifdef __ORIGINAL_BUFFERS__
 #ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
 #else
@@ -585,14 +588,16 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Tree);
 		pHeader->StrideBytes=sizeof(VS_Tree);
 	}
-	else
+	*pVertices=pVertices2;
+	pHeader->pVB9=(BYTE*)pVertices2;
+#else
 	{	
 		pHeader->SizeBytes=pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
 		pHeader->StrideBytes=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
 	}
-	*pVertices=pVertices2;
-	pHeader->pVB9=(BYTE*)pVertices2;
-#else
+	pHeader->pVB9=(BYTE*)pVertices;
+#endif
+#elif 0
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, pVertices);
 #endif
 	m_pVertexBufferArray[g_iMeshVertexBuffers++].NumVertices=pHeader->NumVertices;
