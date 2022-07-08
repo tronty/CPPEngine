@@ -15,7 +15,7 @@ struct VS_INPUT
 	float3 Color : TEXCOORD0;
 	float2 Tex : TEXCOORD1;
 };
-#if 0
+#if 1
 struct VS_Soldier52
 {
     float3 Position : POSITION;

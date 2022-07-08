@@ -11,13 +11,15 @@
 #include <Framework3/IRenderer.h>
 //include "DXUT.h"
 #include "SDKmesh.h"
-#if 1
+#if 0
 #define LOG_PRINT(...) printf(__VA_ARGS__);
 #define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #else
 #define LOG_PRINT(...)
 #define LOG_FNLN
 #endif
+
+#define __ORIGINAL_BUFFERS__ 1
 
 UINT g_iMeshVertexBuffers=0;
 UINT g_iMeshIndexBuffers=0;
@@ -44,11 +46,15 @@ struct VS_Soldier64
     float4 Transform2;
     float3 m3;
 };
+#if 0
 struct VS_Soldier
 {
     float Tex_[16];
 
 };
+#else
+typedef VS_Soldier64 VS_Soldier;
+#endif
 struct VS_Warrior
 {
     float3 Position;    
@@ -355,12 +361,15 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 		VertexCount = ( UINT )m_pVertexBufferArray[iMesh].NumVertices;
 
             PrimCount /= 3;
-	    UINT sv=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
-#ifdef __ORIGINAL_BUFFERS__
+	    UINT sv=0;
+#ifndef __ORIGINAL_BUFFERS__
+		sv=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+#else
 	    sv=( UINT )m_pVertexBufferArray[ pMesh->VertexBuffers[iMesh] ].StrideBytes;
 #endif
 //LOG_FNLN;
-		if(pIB>pVB){
+	if(pIB>pVB)
+	{
             //IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
 		
 	LOG_PRINT("VertexCount=%d\nPrimCount=%d\n", VertexCount, PrimCount);
@@ -567,8 +576,8 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\Soldier\\soldier.sdkmesh")
 #endif
 	{	
-		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Soldier52);
-		pHeader->StrideBytes=sizeof(VS_Soldier52);
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Soldier);
+		pHeader->StrideBytes=sizeof(VS_Soldier);
 	}
 #ifndef _MSC_VER
 	else if(m_sFileName=="../../IndieLib_resources/DXJune2010/MotionBlur/Warrior.sdkmesh")
@@ -667,9 +676,9 @@ int CDXUTSDKMesh::LoadAnimation( const char* szFileName )
     file.read(m_pAnimationData, ( size_t )( sizeof( SDKANIMATION_FILE_HEADER ) + fileheader.AnimationDataSize ));
     file.seekg (0, ios::beg);
     file.close();
-    cout << "the entire file content is in memory 2\n";
+    printf("the entire file content is in memory 2\n");
   }
-  else cout << "Unable to open file 2\n";
+  else printf("Unable to open file 2\n");
 }
 #endif
 #if defined(__SDKANIMATION__)
@@ -746,9 +755,9 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
     file.seekg (0, ios::beg);
     file.read ((char*)pStaticMeshData, cBytes);
     file.close();
-    LOG_PRINT("the entire file content is in memory 1\n");
+    printf("the entire file content is in memory 1\n");
   }
-  else cout << "Unable to open file 1\n";
+  else printf("Unable to open file 1\n");
 #endif
         hr = CreateFromMemory( pStaticMeshData,
                                cBytes);
