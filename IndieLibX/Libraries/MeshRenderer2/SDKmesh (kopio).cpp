@@ -1,3 +1,4 @@
+
 //--------------------------------------------------------------------------------------
 // File: SDKMesh.cpp
 //
@@ -77,6 +78,25 @@ struct VS_Dwarf
     float2 Tex;
 };
 //--------------------------------------------------------------------------------------
+int CDXUTSDKMesh::CalculateBounds(D3DXFROMWINEVECTOR3* p_avOut,
+	const D3DXFROMWINEMATRIX& piMatrix)
+{
+	//for (unsigned int i = 0; i < meshes.size();++i)
+	{
+		for( unsigned int a = 0; a < vertices.size();a++)
+		{
+			D3DXFROMWINEVECTOR3 pc =vertices[a].Position;
+			D3DXFROMWINEVECTOR3 pc1=pc;
+			p_avOut[0].x = std::min( p_avOut[0].x, pc1.x);
+			p_avOut[0].y = std::min( p_avOut[0].y, pc1.y);
+			p_avOut[0].z = std::min( p_avOut[0].z, pc1.z);
+			p_avOut[1].x = std::max( p_avOut[1].x, pc1.x);
+			p_avOut[1].y = std::max( p_avOut[1].y, pc1.y);
+			p_avOut[1].z = std::max( p_avOut[1].z, pc1.z);
+		}
+	}
+	return 1;
+}
 D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 {
 	UINT iMesh=0;
@@ -85,9 +105,8 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 	UINT VertexCount = ( UINT )m_pVertexBufferArray[iMesh].NumVertices;
 	VS_Warrior* pVB = (VS_Warrior*)m_pVertexBufferArray[ pMesh->VertexBuffers[0] ].pVB9;
     	BYTE* pIB = m_pIndexBufferArray[ pMesh->IndexBuffer ].pIB9;
-#if 0
-	//indices.clear();
-	//vertices.clear();
+	indices.clear();
+	vertices.clear();
 	printf("pVB=%x\n", pVB);
 	printf("pIB=%x\n", pIB);
 	printf("VertexCount=%d\n", VertexCount);
@@ -97,7 +116,7 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 		indices.push_back(pIB[x]);
 	for (unsigned int x = 0; x < VertexCount;x++)
         {
-		//printf("x=%d\n", x);
+		printf("x=%d\n", x);
 		stx_VertexPositionNormalBiNormalTangentColor3Texture v;
 		v.Position.x=pVB[x].Position.x;
 		v.Position.y=pVB[x].Position.y;
@@ -107,31 +126,19 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
                     				pVB[x].Tex.y);
 		vertices.push_back(v);
 	}
-#endif
 	D3DXFROMWINEVECTOR3 aiVecs[2] = {D3DXFROMWINEVECTOR3( 1e10f, 1e10f, 1e10f),
 		D3DXFROMWINEVECTOR3( -1e10f, -1e10f, -1e10f) };
 
 	{
 		D3DXFROMWINEMATRIX m;
-		//CalculateBounds(aiVecs,m);
-		for( unsigned int a = 0; a < VertexCount;a++)
-		{
-			D3DXFROMWINEVECTOR3 pc =pVB[a].Position;
-			D3DXFROMWINEVECTOR3 pc1=pc;
-			aiVecs[0].x = std::min( aiVecs[0].x, pc1.x);
-			aiVecs[0].y = std::min( aiVecs[0].y, pc1.y);
-			aiVecs[0].z = std::min( aiVecs[0].z, pc1.z);
-			aiVecs[1].x = std::max( aiVecs[1].x, pc1.x);
-			aiVecs[1].y = std::max( aiVecs[1].y, pc1.y);
-			aiVecs[1].z = std::max( aiVecs[1].z, pc1.z);
-		}
+		CalculateBounds(aiVecs,m);
 	}
 
 	D3DXFROMWINEVECTOR3 vDelta = aiVecs[1]-aiVecs[0];
 	D3DXFROMWINEVECTOR3 vHalf =  aiVecs[0] + (vDelta / 2.0f);
 	float fScale = 2.0f / D3DXFROMWINEVec3Length(&vDelta);
 
-	D3DXFROMWINEMATRIX m_mWorld =  D3DXFROMWINEMATRIX(
+	m_mWorld =  D3DXFROMWINEMATRIX(
 		1.0f,0.0f,0.0f,0.0f,
 		0.0f,1.0f,0.0f,0.0f,
 		0.0f,0.0f,1.0f,0.0f,
@@ -146,15 +153,13 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 
 	//for (unsigned int i = 0; i < meshes.size();++i)
 	{
-		for( unsigned int j = 0; j < VertexCount;j++)
+		for( unsigned int j = 0; j < vertices.size();j++)
 		{
-			D3DXFROMWINEVec3TransformCoord(&pVB[j].Position, &pVB[j].Position, &m_mWorld);
+			D3DXFROMWINEVec3TransformCoord(&vertices[j].Position, &vertices[j].Position, &m_mWorld);
 		}
 	}
-#if 0
 	printf("vertices.size()=%d\n", vertices.size());
 	printf("indices.size()=%d\n", indices.size());
-#endif
 	return m_mWorld;
 }
 void CDXUTSDKMesh::Dump()
@@ -414,7 +419,10 @@ LOG_PRINT("pMesh->NumSubsets=%d\n", pMesh->NumSubsets);
 LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 	IRenderer::GetRendererInstance()->setShader(SimpleShader_);
 	IRenderer::GetRendererInstance()->setVertexFormat(SimpleVertexDeclaration_);
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", mvp);
+	if(0)//m_mWorld)
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", m_mWorld);
+	else
+		IRenderer::GetRendererInstance()->setShaderConstant4x4f("WorldViewProjection", mvp);
             pSubset = &m_pSubsetArray[ pMesh->pSubsets[subset] ];		
 	    //LOG_PRINT("pSubset=%x\n", pSubset );
             if(m_pMaterialArray[subset].pDiffuseTexture9>-1) IRenderer::GetRendererInstance()->setTexture( "txDiffuse", m_pMaterialArray[subset].pDiffuseTexture9 );
@@ -446,7 +454,30 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 	    sv=( UINT )m_pVertexBufferArray[ pMesh->VertexBuffers[iMesh] ].StrideBytes;
 #endif
 //LOG_FNLN;
-	if(pIB>pVB)
+	if(0)//m_mWorld)
+	{
+		stx_VertexPositionNormalBiNormalTangentColor3Texture* pVB=(stx_VertexPositionNormalBiNormalTangentColor3Texture*)&vertices[0];
+		__DWORD__* pIB=(__DWORD__*)&indices[0];
+		UINT sv=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+		if(indices.size()){
+	    IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES,
+			0,
+			vertices.size(),
+			indices.size()/3,
+			pIB,
+			pIB,
+			CONSTANT_INDEX4,
+			pVB,
+			pVB,
+			sv);
+		}else{
+	    IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLES,
+			indices.size()/3,
+			pVB,
+			pVB,
+			sv);}
+	}
+	else if(pIB>pVB)
 	{
             //IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP( PrimType, VertexStart, 0, VertexCount, IndexStart, PrimCount );
 		
@@ -568,7 +599,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 
 	pHeader->pVB9=-1;
 	pHeader->pVB9=*pVertices;
-#ifndef __ORIGINAL_BUFFERS__
+#ifdef __ORIGINAL_BUFFERS__
 	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=new stx_VertexPositionNormalBiNormalTangentColor3Texture[pHeader->NumVertices]; 
 #ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
@@ -688,6 +719,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	pHeader->pVB9=IRenderer::GetRendererInstance()->addVertexBuffer(pHeader->SizeBytes, STATIC, pVertices);
 #endif
 	m_pVertexBufferArray[g_iMeshVertexBuffers++].NumVertices=pHeader->NumVertices;
+	//D3DXFROMWINEMATRIX m=ScaleAsset();
 	return 0;
 }
 
@@ -732,7 +764,7 @@ CDXUTSDKMesh::CDXUTSDKMesh() : m_NumOutstandingResources( 0 ),
                                m_ppVertices( 0 ),
                                m_ppIndices( 0 ),
                                m_pBindPoseFrameMatrices( 0 ),
-                               m_pTransformedFrameMatrices( 0 )
+                               m_pTransformedFrameMatrices( 0 ), m_mWorld(0)
 {
 }
 
@@ -979,7 +1011,6 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
         CreateIndexBuffer( &m_pIndexBufferArray[i], (void**)&pIndices );
         m_ppIndices[i] = pIndices;
     }
-	ScaleAsset();
 
     // Load Materials
         LoadMaterials( m_pMaterialArray, m_pMeshHeader->NumMaterials );

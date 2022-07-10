@@ -406,6 +406,14 @@ public:
                                 const char* htxDiffuse=0,
                                 const char* htxNormal=0,
                                 const char* htxSpecular=0 );
+
+	int CalculateBounds(D3DXFROMWINEVECTOR3* p_avOut, const D3DXFROMWINEMATRIX& piMatrix);
+	D3DXFROMWINEMATRIX ScaleAsset();
+#if 0
+	D3DXFROMWINEMATRIX m_mWorld;
+	std::vector<stx_VertexPositionNormalBiNormalTangentColor3Texture> vertices;
+	std::vector<__DWORD__> indices;
+#endif
 };
 #endif
 
