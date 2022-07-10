@@ -172,14 +172,12 @@ void CDXUTSDKMesh::SimpleRender2()
 	{
 		FormatDesc format[] = 	{
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
-						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
-						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
-						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
-						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
-						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2,
-						0, TYPE_TANGENT,  FORMAT_FLOAT, 3
+						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
+						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
+						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
+						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4
 					};
 		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Soldier", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
@@ -534,12 +532,12 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Warrior* s=((VS_Warrior*)*pVertices)+0;
-		VS_Warrior* v=((VS_Warrior*)*pVertices)+i;
+		VS_Warrior* v=((VS_Warrior*)*pVertices)+i; /*
 		if(((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes)
 		{
 			LOG_PRINT("((v-s)*sizeof(VS_Warrior))>pHeader->SizeBytes\n");
 			break;
-		}
+		} */
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}}

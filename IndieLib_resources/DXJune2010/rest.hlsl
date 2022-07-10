@@ -31,7 +31,13 @@ struct VS_Soldier64
     float4 Transform2 : T3EXCOORD2;
     float3 m3 : TEXCOORD3;
 };
-#define VS_Soldier VS_Soldier52
+struct VS_Soldier
+{
+    float3 Position : POSITION;    
+    float3 Normal         : NORMAL;  
+    float2 Tex : TEXCOORD0;
+    float4x4 Bones : TEXCOORD1;
+};
 struct VS_Warrior
 {
     float3 Position          : POSITION;    
