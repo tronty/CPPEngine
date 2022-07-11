@@ -707,11 +707,13 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 			_m_indices2_.push_back(((__WORD__*)pIndices)[i]);
 			_mesh_[0].indices.push_back(((__WORD__*)pIndices)[i]);
 		}
+		#ifdef __WRITEXFILE__
 		else
 		{
 			_m_indices2_.push_back(((__DWORD__*)pIndices)[i]);
 			_mesh_[0].indices.push_back(((__DWORD__*)pIndices)[i]);
 		}
+		#endif
 	}
 
 	return 0;
@@ -989,8 +991,10 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 		LOG_PRINT("pVertices>=pIndices\n");
 		//stx_exit(0);
 	}
+#ifdef __WRITEXFILE__
 	stx_Materials_(_vt_, _m_indices2_, _mesh_);
 	stx_writeXFile("Warrior.x", _mesh_);
+#endif
     return hr;
 }
 
