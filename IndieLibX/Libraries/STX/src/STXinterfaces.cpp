@@ -569,7 +569,6 @@ void stx_readOBJFile(const char* aFileName, std::vector<stx_Mesh>& aMeshes, bool
 	}
    	fclose (pFile);
 }
-
 void stx_writeXFile(	const char* aFileName, 
 			std::vector<stx_VertexPositionNormalTexture>& vertices, 
 			std::vector<__WORD__>& indices, 

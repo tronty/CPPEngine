@@ -85,46 +85,21 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 	UINT VertexCount = ( UINT )m_pVertexBufferArray[iMesh].NumVertices;
 	VS_Warrior* pVB = (VS_Warrior*)m_pVertexBufferArray[ pMesh->VertexBuffers[0] ].pVB9;
     	BYTE* pIB = m_pIndexBufferArray[ pMesh->IndexBuffer ].pIB9;
-#if 0
-	//indices.clear();
-	//vertices.clear();
-	printf("pVB=%x\n", pVB);
-	printf("pIB=%x\n", pIB);
-	printf("VertexCount=%d\n", VertexCount);
-	printf("IndexCount=%d\n", IndexCount);
-	if(pIB)
-	for (unsigned int x = 0; x < IndexCount;x++)
-		indices.push_back(pIB[x]);
-	for (unsigned int x = 0; x < VertexCount;x++)
-        {
-		//printf("x=%d\n", x);
-		stx_VertexPositionNormalBiNormalTangentColor3Texture v;
-		v.Position.x=pVB[x].Position.x;
-		v.Position.y=pVB[x].Position.y;
-		v.Position.z=pVB[x].Position.z;
-                v.Tex = D3DXFROMWINEVECTOR2(
-                    				pVB[x].Tex.x,
-                    				pVB[x].Tex.y);
-		vertices.push_back(v);
-	}
-#endif
-	D3DXFROMWINEVECTOR3 aiVecs[2] = {D3DXFROMWINEVECTOR3( 1e10f, 1e10f, 1e10f),
-		D3DXFROMWINEVECTOR3( -1e10f, -1e10f, -1e10f) };
 
+	D3DXFROMWINEVECTOR3 aiVecs[2] = {	D3DXFROMWINEVECTOR3( 1e10f, 1e10f, 1e10f),
+						D3DXFROMWINEVECTOR3( -1e10f, -1e10f, -1e10f) };
+
+	D3DXFROMWINEMATRIX m;
+	for( unsigned int a = 0; a < VertexCount;a++)
 	{
-		D3DXFROMWINEMATRIX m;
-		//CalculateBounds(aiVecs,m);
-		for( unsigned int a = 0; a < VertexCount;a++)
-		{
-			D3DXFROMWINEVECTOR3 pc =pVB[a].Position;
-			D3DXFROMWINEVECTOR3 pc1=pc;
-			aiVecs[0].x = std::min( aiVecs[0].x, pc1.x);
-			aiVecs[0].y = std::min( aiVecs[0].y, pc1.y);
-			aiVecs[0].z = std::min( aiVecs[0].z, pc1.z);
-			aiVecs[1].x = std::max( aiVecs[1].x, pc1.x);
-			aiVecs[1].y = std::max( aiVecs[1].y, pc1.y);
-			aiVecs[1].z = std::max( aiVecs[1].z, pc1.z);
-		}
+		D3DXFROMWINEVECTOR3 pc =pVB[a].Position;
+		D3DXFROMWINEVECTOR3 pc1=pc;
+		aiVecs[0].x = std::min( aiVecs[0].x, pc1.x);
+		aiVecs[0].y = std::min( aiVecs[0].y, pc1.y);
+		aiVecs[0].z = std::min( aiVecs[0].z, pc1.z);
+		aiVecs[1].x = std::max( aiVecs[1].x, pc1.x);
+		aiVecs[1].y = std::max( aiVecs[1].y, pc1.y);
+		aiVecs[1].z = std::max( aiVecs[1].z, pc1.z);
 	}
 
 	D3DXFROMWINEVECTOR3 vDelta = aiVecs[1]-aiVecs[0];
@@ -141,20 +116,10 @@ D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 		0.0f,fScale,0.0f,0.0f,
 		0.0f,0.0f,fScale,0.0f,
 		0.0f,0.0f,0.0f,1.0f);
-	//m_mWorld = new D3DXFROMWINEMATRIX();
-	//*m_mWorld = world;
 
-	//for (unsigned int i = 0; i < meshes.size();++i)
-	{
-		for( unsigned int j = 0; j < VertexCount;j++)
-		{
-			D3DXFROMWINEVec3TransformCoord(&pVB[j].Position, &pVB[j].Position, &m_mWorld);
-		}
-	}
-#if 0
-	printf("vertices.size()=%d\n", vertices.size());
-	printf("indices.size()=%d\n", indices.size());
-#endif
+	for( unsigned int j = 0; j < VertexCount;j++)
+		D3DXFROMWINEVec3TransformCoord(&pVB[j].Position, &pVB[j].Position, &m_mWorld);
+
 	return m_mWorld;
 }
 void CDXUTSDKMesh::Dump()
@@ -495,7 +460,8 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 	pMaterials[m].pSpecularTexture9=-1;
 }
     char strPath[MAX_PATH];
-    
+	std::vector<std::string> vtex;
+	D3DXFROMWINEVECTOR3 vC(0.0f, 1.0f, 0.0f);
     {
         for( m = 0; m < numMaterials; m++ )
         {
@@ -516,6 +482,8 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 		else {pMaterials[m].pDiffuseTexture9=-1;pMaterials[m].DiffuseTexture[0]=0;}
 		LOG_PRINT("pMaterials[%d].DiffuseTexture=%s\n", m, pMaterials[m].DiffuseTexture);
 		LOG_PRINT("pMaterials[%d].pDiffuseTexture9=%x\n", m, pMaterials[m].pDiffuseTexture9);
+		stx_Material m(StrPath_.c_str()+1, vC);
+		_vt_.push_back(m);
             }
             if( pMaterials[m].NormalTexture[0] != 0 )
             {
@@ -534,6 +502,8 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 		else {pMaterials[m].pNormalTexture9=-1;pMaterials[m].NormalTexture[0]=0;}
 		LOG_PRINT("pMaterials[%d].NormalTexture=%s\n", m, pMaterials[m].NormalTexture);
 		LOG_PRINT("pMaterials[%d].pNormalTexture9=%x\n", m, pMaterials[m].pNormalTexture9);
+		stx_Material m(StrPath_.c_str()+1, vC);
+		_vt_.push_back(m);
             }
             if( pMaterials[m].SpecularTexture[0] != 0 )
             {
@@ -551,6 +521,8 @@ void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterial
 		else {pMaterials[m].pSpecularTexture9=-1;pMaterials[m].SpecularTexture[0]=0;}
 		LOG_PRINT("pMaterials[%d].SpecularTexture=%s\n", m, pMaterials[m].SpecularTexture);
 		LOG_PRINT("pMaterials[%d].pSpecularTexture9=%x\n", m, pMaterials[m].pSpecularTexture9);
+		stx_Material m(StrPath_.c_str()+1, vC);
+		_vt_.push_back(m);
             }
         }
     }
@@ -609,7 +581,10 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 #else
 	else if(m_sFileName=="..\\..\\IndieLib_resources\\DXJune2010\\MotionBlur\\Warrior.sdkmesh")
 #endif
-	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
+	{
+	stx_Mesh m;
+	_mesh_.push_back(m);
+	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
 		VS_Warrior* s=((VS_Warrior*)*pVertices)+0;
 		VS_Warrior* v=((VS_Warrior*)*pVertices)+i; /*
@@ -620,6 +595,11 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		} */
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
+		stx_VertexPositionNormalTexture v_;
+		v_.Position=v->Position;
+		//???v_.Normal=N;
+		v_.Tex=v->Tex;
+		_mesh_[0].vertices.push_back(v_);
 	}}
 #ifndef _MSC_VER
 	else if(m_sFileName!="../../IndieLib_resources/DXJune2010/trees/tree.sdkmesh")
@@ -698,23 +678,42 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	LOG_FNLN
 	LOG_PRINT("pIndices=%x\n", *pIndices);
 	LOG_PRINT("pHeader=%x\n", pHeader);
-	LOG_PRINT("pHeader->NumIndices=%d\n", pHeader->NumIndices);
+	printf("pHeader->NumIndices=%d\n", pHeader->NumIndices);
 	LOG_PRINT("pHeader->SizeBytes=%d\n", pHeader->SizeBytes);
 	LOG_PRINT("pHeader->IndexType=%d\n", pHeader->IndexType);
 
 	unsigned int ibs=CONSTANT_INDEX2;
-	if(pHeader->SizeBytes==IT_32BIT)
+	if(pHeader->IndexType==IT_32BIT)
 	{
 		ibs=CONSTANT_INDEX4;
+		printf("CONSTANT_INDEX4\n");
+		if(pHeader->NumIndices<65536) pHeader->IndexType=IT_16BIT;
 	}
 
 	ibs=pHeader->SizeBytes/pHeader->NumIndices;
-	LOG_PRINT("ibs=%d\n", ibs);
+	printf("ibs=%d\n", ibs);
+	printf("2^16=%f\n", pow (2.0, 16.0));
+	printf("2^32=%f\n", pow (2.0, 32.0));
 
 	pHeader->pIB9=-1;
 	pHeader->pIB9=*pIndices;
 	//pHeader->pIB9=IRenderer::GetRendererInstance()->addIndexBuffer(pHeader->NumIndices, ibs, STATIC, pIndices);
 	m_pIndexBufferArray[g_iMeshIndexBuffers++].NumIndices=pHeader->NumIndices;
+
+	for(unsigned int i=0;i<pHeader->NumIndices;i++)
+	{
+		if(pHeader->IndexType==IT_32BIT)
+		{
+			_m_indices2_.push_back(((__WORD__*)pIndices)[i]);
+			_mesh_[0].indices.push_back(((__WORD__*)pIndices)[i]);
+		}
+		else
+		{
+			_m_indices2_.push_back(((__DWORD__*)pIndices)[i]);
+			_mesh_[0].indices.push_back(((__DWORD__*)pIndices)[i]);
+		}
+	}
+
 	return 0;
 }
 
@@ -820,7 +819,7 @@ int CDXUTSDKMesh::CreateFromFile(const char* szFileName)
 		m_strPath[strLastSlash]='\0';
 		std::string StrPath;
                 //LOG_PRINT("m_strPath=%s\n", m_strPath);
-		//LOG_PRINT("m_sFileName=%s\n", m_sFileName.c_str());
+		printf("m_sFileName=%s\n", m_sFileName.c_str());
     // Get the file size
     UINT cBytes = 0;
 #if 1
@@ -990,6 +989,8 @@ int CDXUTSDKMesh::CreateFromMemory( BYTE* pData,
 		LOG_PRINT("pVertices>=pIndices\n");
 		//stx_exit(0);
 	}
+	stx_Materials_(_vt_, _m_indices2_, _mesh_);
+	stx_writeXFile("Warrior.x", _mesh_);
     return hr;
 }
 

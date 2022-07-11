@@ -15,7 +15,9 @@
 #undef __ANISO__ 
 
 #define USEMESH 1
-std::vector<stx_Mesh> mesh__;
+struct ProceduralBuilding5
+{
+	std::vector<stx_Mesh> mesh__;
 
 enum tTerminal
 {
@@ -23,8 +25,6 @@ enum tTerminal
 	eVertex_Terminal,
 };
 
-struct ProceduralBuilding5
-{
 	ShaderID shdC;
 	VertexFormatID vfC;
 	TiXmlNode* BodyNode;

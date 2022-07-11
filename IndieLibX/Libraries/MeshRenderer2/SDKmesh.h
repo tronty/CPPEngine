@@ -414,6 +414,9 @@ public:
 	std::vector<stx_VertexPositionNormalBiNormalTangentColor3Texture> vertices;
 	std::vector<__DWORD__> indices;
 #endif
+	std::vector<stx_Material> _vt_;
+	std::vector<__WORD__> _m_indices2_;
+	std::vector<stx_Mesh> _mesh_;
 };
 #endif
 

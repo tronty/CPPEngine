@@ -6,9 +6,11 @@
 
 #include <Framework3/IRenderer.h>
 
-unsigned int Niterations=2;
+struct CantorDust3D5
+{
+unsigned int Niterations;
 
-TextureID texID=-1;
+TextureID texID;
 std::vector<stx_Material> vt;
 std::vector<stx_Mesh> mesh_;
 
@@ -20,6 +22,12 @@ std::vector<__WORD__> g_indices2;
 
 MeshRenderer2 g_mesh;
 
+CantorDust3D5()
+{
+	Niterations=2;
+	texID=-1;
+}
+virtual ~CantorDust3D5(){}
 void CantorDust(D3DXFROMWINEVECTOR3 aPosition, D3DXFROMWINEVECTOR3 aSize, D3DXFROMWINEVECTOR3 aAngle, unsigned int NIter)
 {
 
@@ -161,16 +169,17 @@ void render()
 	IRenderer::GetRendererInstance()->EndScene();
 	IRenderer::GetRendererInstance()->Present( );
 }
-
+};
 int ApplicationLogic()
 {
 	IRenderer* r=IRenderer::GetRendererInstance("CantorDust3D5");
 	IInput* in=STX_Service::GetInputInstance();
-	init("");
+	CantorDust3D5 m;
+	m.init("");
 	while (!in->OnKeyPress (STX_KEY_ESCAPE) && !in->Quit())
 	{
 		in->Update();
-		render();
+		m.render();
 	}
 	return 0;
 }
