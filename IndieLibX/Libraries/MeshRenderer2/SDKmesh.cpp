@@ -31,33 +31,22 @@ struct uint4
 	unsigned int z;
 	unsigned int w;
 };
-struct VS_Soldier52
-{
-    float3 Position;
-    float2 Tex;
-    uint4 Bones;
-    float4 Weights;
-};
-struct VS_Soldier64
-{
-    float3 Position;  
-    float2 Tex;
-    float4 Transform1;
-    float4 Transform2;
-    float3 m3;
-};
-#if 0
 struct VS_Soldier
 {
-    float Tex_[16];
-
-};
+#if 0
+    float3 Position;
+    float4 Weights;		//Bone weights
+    uint4  Bones;			//Bone indices
 #else
-typedef VS_Soldier64 VS_Soldier;
+    float4 Position;
 #endif
+    float3 Normal;
+    float2 Tex;		    //Texture coordinate
+    float3 Tan;		    //Normalized Tangent vector
+};
 struct VS_Warrior
 {
-    float3 Position;    
+    float3 Position;
     float3 Normal;  
     float2 Tex;
     float3 Tan;
@@ -72,7 +61,7 @@ struct VS_Tree
 };
 struct VS_Dwarf
 {
-    float3 Position;    
+    float4 Position;    
     float3 Normal;  
     float2 Tex;
 };
@@ -170,8 +159,6 @@ void CDXUTSDKMesh::Dump()
 	}
     }
 	LOG_PRINT("sizeof(VS_Dwarf)=%d\n", sizeof(VS_Dwarf));
-	LOG_PRINT("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
-	LOG_PRINT("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
 	LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
 	LOG_PRINT("sizeof(VS_Warrior)=%d\n", sizeof(VS_Warrior));
 	LOG_PRINT("sizeof(VS_Tree)=%d\n", sizeof(VS_Tree));
@@ -441,11 +428,7 @@ LOG_PRINT("iMesh=%d\nsubset=%d\n", iMesh, subset );
 			sv);}
 	}
 	}
-#if 0
-	LOG_PRINT("sizeof(VS_Soldier52)=%d\n", sizeof(VS_Soldier52));
-	LOG_PRINT("sizeof(VS_Soldier64)=%d\n", sizeof(VS_Soldier64));
-	LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
-#endif
+	//LOG_PRINT("sizeof(VS_Soldier)=%d\n", sizeof(VS_Soldier));
 	//stx_exit(0);
 }
 void CDXUTSDKMesh::LoadMaterials( SDKMESH_MATERIAL* pMaterials, UINT numMaterials)
@@ -556,7 +539,7 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 			LOG_PRINT("((v-s)*sizeof(VS_Dwarf))>pHeader->SizeBytes\n");
 			break;
 		}
-		pVertices2[i].Position=v->Position;
+		pVertices2[i].Position=D3DXFROMWINEVECTOR3(v->Position.x, v->Position.y, v->Position.z);
 		pVertices2[i].Tex=v->Tex;
 	}}
 #ifndef _MSC_VER
@@ -566,11 +549,11 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 #endif
 	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
 	{
-		VS_Soldier52* s=((VS_Soldier52*)*pVertices)+0;
-		VS_Soldier52* v=((VS_Soldier52*)*pVertices)+i;
-		if(((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes)
+		VS_Soldier* s=((VS_Soldier*)*pVertices)+0;
+		VS_Soldier* v=((VS_Soldier*)*pVertices)+i;
+		if(((v-s)*sizeof(VS_Soldier))>pHeader->SizeBytes)
 		{
-			LOG_PRINT("((v-s)*sizeof(VS_Soldier52))>pHeader->SizeBytes\n");
+			LOG_PRINT("((v-s)*sizeof(VS_Soldier))>pHeader->SizeBytes\n");
 			break;
 		}
 		pVertices2[i].Position=v->Position;
