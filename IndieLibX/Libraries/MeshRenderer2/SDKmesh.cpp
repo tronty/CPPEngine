@@ -31,9 +31,23 @@ struct uint4
 	unsigned int z;
 	unsigned int w;
 };
+struct VS_Warrior
+{
+    float3 Position;
+    float3 Normal;  
+    float2 Tex;
+    float3 Tan;
+    uint4 Bones;
+    float4 Weights;
+};
+#if 0
+typedef VS_Warrior VS_Soldier;
+typedef VS_Warrior VS_Tree;
+typedef VS_Warrior VS_Dwarf;
+#else
 struct VS_Soldier
 {
-#if 0
+#if 1
     float3 Position;
     float4 Weights;		//Bone weights
     uint4  Bones;			//Bone indices
@@ -44,15 +58,7 @@ struct VS_Soldier
     float2 Tex;		    //Texture coordinate
     float3 Tan;		    //Normalized Tangent vector
 };
-struct VS_Warrior
-{
-    float3 Position;
-    float3 Normal;  
-    float2 Tex;
-    float3 Tan;
-    uint4 Bones;
-    float4 Weights;
-};
+
 struct VS_Tree
 {
     float3 Position;    
@@ -65,6 +71,7 @@ struct VS_Dwarf
     float3 Normal;  
     float2 Tex;
 };
+#endif
 //--------------------------------------------------------------------------------------
 D3DXFROMWINEMATRIX CDXUTSDKMesh::ScaleAsset()
 {
@@ -246,6 +253,21 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
 		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Tree", "main");
+		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
+	}
+	else
+	{
+		FormatDesc format[] = 	{
+						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
+						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
+#if 0
+						0, TYPE_BINORMAL, FORMAT_FLOAT, 3,
+						0, TYPE_TANGENT,  FORMAT_FLOAT, 3,
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
+#endif
+						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
+					};
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 #endif
@@ -521,8 +543,8 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 	LOG_PRINT("pHeader->SizeBytes=%d\n", pHeader->SizeBytes);
 	LOG_PRINT("pHeader->StrideBytes=%d\n", pHeader->StrideBytes);
 
-	pHeader->pVB9=-1;
-	pHeader->pVB9=*pVertices;
+	pHeader->pVB9=(BYTE*)0;
+	pHeader->pVB9=(BYTE*)pVertices;
 #ifndef __ORIGINAL_BUFFERS__
 	stx_VertexPositionNormalBiNormalTangentColor3Texture* pVertices2=new stx_VertexPositionNormalBiNormalTangentColor3Texture[pHeader->NumVertices]; 
 #ifndef _MSC_VER
@@ -601,6 +623,19 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		pVertices2[i].Position=v->Position;
 		pVertices2[i].Tex=v->Tex;
 	}}
+	else
+	{	for(unsigned int i=0;i<pHeader->NumVertices;i++)
+	{
+		stx_VertexPositionNormalBiNormalTangentColor3Texture* s=((stx_VertexPositionNormalBiNormalTangentColor3Texture*)*pVertices)+0;
+		stx_VertexPositionNormalBiNormalTangentColor3Texture* v=((stx_VertexPositionNormalBiNormalTangentColor3Texture*)*pVertices)+i;
+		if(((v-s)*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture))>pHeader->SizeBytes)
+		{
+			LOG_PRINT("((v-s)*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture)>pHeader->SizeBytes\n");
+			break;
+		}
+		pVertices2[i].Position=v->Position;
+		pVertices2[i].Tex=v->Tex;
+	}}
 #ifdef __ORIGINAL_BUFFERS__
 #ifndef _MSC_VER
 	if(m_sFileName=="../../IndieLib_resources/DXJune2010/Dwarf/dwarf.sdkmesh")
@@ -638,6 +673,11 @@ int CDXUTSDKMesh::CreateVertexBuffer( SDKMESH_VERTEX_BUFFER_HEADER* pHeader,
 		pHeader->SizeBytes=pHeader->NumVertices*sizeof(VS_Tree);
 		pHeader->StrideBytes=sizeof(VS_Tree);
 	}
+	else
+	{	
+		pHeader->SizeBytes=pHeader->NumVertices*sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+		pHeader->StrideBytes=sizeof(stx_VertexPositionNormalBiNormalTangentColor3Texture);
+	}
 	*pVertices=pVertices2;
 	pHeader->pVB9=(BYTE*)pVertices2;
 #else
@@ -665,6 +705,9 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	LOG_PRINT("pHeader->SizeBytes=%d\n", pHeader->SizeBytes);
 	LOG_PRINT("pHeader->IndexType=%d\n", pHeader->IndexType);
 
+	if(!pHeader->NumIndices)
+		return -1;
+
 	unsigned int ibs=CONSTANT_INDEX2;
 	if(pHeader->IndexType==IT_32BIT)
 	{
@@ -678,8 +721,8 @@ int CDXUTSDKMesh::CreateIndexBuffer( SDKMESH_INDEX_BUFFER_HEADER* pHeader,
 	printf("2^16=%f\n", pow (2.0, 16.0));
 	printf("2^32=%f\n", pow (2.0, 32.0));
 
-	pHeader->pIB9=-1;
-	pHeader->pIB9=*pIndices;
+	pHeader->pIB9=(BYTE*)-1;
+	pHeader->pIB9=(BYTE*)*pIndices;
 	//pHeader->pIB9=IRenderer::GetRendererInstance()->addIndexBuffer(pHeader->NumIndices, ibs, STATIC, pIndices);
 	m_pIndexBufferArray[g_iMeshIndexBuffers++].NumIndices=pHeader->NumIndices;
 

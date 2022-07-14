@@ -10,9 +10,11 @@ struct VS_INPUT
 {
 	float3 Position : POSITION;
 	float3 Normal : NORMAL;
+#if 0
 	float3 BiNormal : BINORMAL;
 	float3 Tangent : TANGENT;
 	float3 Color : TEXCOORD0;
+#endif
 	float2 Tex : TEXCOORD1;
 };
 #if 1
