@@ -1,9 +1,5 @@
 sampler2D iChannel0;
 sampler2D iChannel1;
-sampler2D iChannel3;
-// Fork of "City Flight" by athibaul. https://shadertoy.com/view/WstcRf
-// 2022-07-10 08:07:51
-
 // -----------
 // CITY FLIGHT
 // -----------
@@ -34,10 +30,6 @@ sampler2D iChannel3;
 
 
 // Should the windows be flashing?
-
-//Added motion blur with this line, and the "Blue Noise" texture in iChannel3:
-#define iTim (iTime + (iMouse.z>0. ? 0. : texelFetch(iChannel3,ivec2(xlv_TEXCOORD0)%1024,0).r * iTimeDelta))
-
 #define PARTY_MODE 0
 
 
@@ -206,8 +198,8 @@ vec3 computeEmission(vec3 p, vec3 rd, float t, vec3 normal,
                 * step(-0.5,-normal.z);
 
     #if PARTY_MODE
-    float thresh = 0.8 + 0.1*sin(6.28*iTim+6.28*roomHash.r);
-    float thresh2 = 0.85 + 0.05*sin(6.28*iTim+6.28*roomHash.g);
+    float thresh = 0.8 + 0.1*sin(6.28*iTime+6.28*roomHash.r);
+    float thresh2 = 0.85 + 0.05*sin(6.28*iTime+6.28*roomHash.g);
     #else
     float thresh=0.8, thresh2=0.85;
     #endif
@@ -319,10 +311,10 @@ void main( )
 	
     //vec3 ro = vec3(-3.*cos(th),-3.*sin(th),2.0);
     //vec3 target = vec3(0);
-    vec3 ro = path(iTim);
-    vec3 target = path(iTim+3.)+vec3(0.,20.*cos(0.3*iTim),-15.);
+    vec3 ro = path(iTime);
+    vec3 target = path(iTime+3.)+vec3(0.,20.*cos(0.3*iTime),-15.);
     vec3 camFwd = normalize(target - ro);
-    vec3 camRight = normalize(cross(camFwd, vec3(0.3*cos(0.2*iTim),0,1))); // Camera tilts
+    vec3 camRight = normalize(cross(camFwd, vec3(0.3*cos(0.2*iTime),0,1))); // Camera tilts
     vec3 camUp = cross(camRight, camFwd);
     vec3 rd = normalize(camFwd + 0.7*(uv.x*camRight+uv.y*camUp));
     
@@ -338,5 +330,3 @@ void main( )
     
     gl_FragColor = vec4(col,1.0);
 }
-
-	
