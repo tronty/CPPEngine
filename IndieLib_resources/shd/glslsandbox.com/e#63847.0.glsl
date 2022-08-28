@@ -121,10 +121,11 @@ bool intersect_ray_road(vec3 pos_origin, vec3 dir, out vec3 pos_intersect)
 	return false;
 }
 
-void mainImage_(out vec4 fragColor, in vec2 fragCoord)
+void main()
 {
-	const float fov = radians(50.0);
-	const float tan_hfov = tan(fov * 0.5);
+	vec2 fragCoord=xlv_TEXCOORD0;
+	float fov = radians(50.0);
+	float tan_hfov = tan(fov * 0.5);
 	const float near = 0.1;
 	const float far = 1.0;
 
@@ -155,17 +156,18 @@ void mainImage_(out vec4 fragColor, in vec2 fragCoord)
 	vec3 pos_intersect;
 	if (intersect_ray_road(pos_cam, dir_ray, pos_intersect))
 	{
-		fragColor = vec4(col_road_map(pos_intersect), 1.0);
+		gl_FragColor = vec4(col_road_map(pos_intersect), 1.0);
 	}
 	else
 	{
-		fragColor = vec4(col_sky(fragCoord.xy), 1.0);
+		gl_FragColor = vec4(col_sky(fragCoord.xy), 1.0);
 	}
 }
 // --------[ Original ShaderToy ends here ]---------- //
-
-void main(void)
+/*
+void main_(void)
 {
     mainImage_(gl_FragColor, xlv_TEXCOORD0.xy);
 }
+*/
 
