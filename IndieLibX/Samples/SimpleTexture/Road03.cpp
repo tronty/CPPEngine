@@ -53,6 +53,8 @@ void draw()
 	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", iResolution);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", iTime);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", iResolution);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", iTime);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());

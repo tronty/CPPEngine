@@ -53,6 +53,8 @@ void draw()
 	D3DXFROMWINEVECTOR4 color(0.6f, 0.6f, 0.6f, 1.0f);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("color", color);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", iResolution);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", iTime);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", iResolution);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", iTime);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
@@ -76,8 +78,8 @@ void draw()
 	__WORD__ i[6] ={0,1,2,2,1,3};
 	IRenderer::GetRendererInstance()->DrawIndexedPrimitiveUP(PRIM_TRIANGLES, 0, 4, 2, &i[0], &i[0], CONSTANT_INDEX2, &v[0], &v[0], N*sizeof(float));
 #endif
-#endif
 	STX_FNLN;
+#endif
 }
 
 void render()
