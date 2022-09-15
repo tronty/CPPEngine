@@ -7,15 +7,38 @@ uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 #endif
+const float speed = 16.0;
+vec3 pos_road_map(vec3 pos)
+{
+	float z = pos.z;
+
+	float x = pos.x +
+		0.4 * cos(z * 0.1) +
+		1.2 * cos(z * 0.01) +
+		3.0 * sin((z + pos.x) * 0.01);
+
+	float y =
+		1.3 * cos(z * 0.007) * sin(z * 0.08) +
+		0.25 * sin(z * 0.03 + 0.3) +
+		0.1 * cos(x * 0.0348 + 0.24) +
+		0.3 * sin(x * 0.1 + z * 0.2);
+
+	return vec3(x, y, z);
+}
+
 // roadfucks
-vec3 road(vec3 pos)
+vec3 road(vec3 pos_)
 {
 	vec3 c1 = vec3(0.1,0.9,0.1);
 	vec3 c2 = vec3(0.1,0.6,0.1);
+#if 1
+	vec3 pos = pos_;
 	float a=time;
 	float k=sin(.2*a);
 	pos.x *= pos.x-=.05*k*k*k*pos.y*pos.y;
-	
+#else
+	vec3 pos = pos_road_map(vec3(0, 0, speed * iTime));
+#endif
 	
 	if(abs(pos.x) < 1.0)
 	{
