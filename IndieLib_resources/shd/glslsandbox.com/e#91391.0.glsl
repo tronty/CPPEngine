@@ -33,9 +33,11 @@ struct env{
 	vec3  l;
 	float f;
 };
-    
+
+#if 0
 float 	sphere(vec3 rp, vec3 sp, float r);
 float   capsule( vec3 p, vec3 a, vec3 b, float r );
+#endif
 vec4    noise(in vec4 f);
 
 float 	map(vec3 p);
@@ -134,7 +136,7 @@ void main( void ) {
 	r.c *= .95;
 	gl_FragColor = vec4(r.c, 1.);
 }
-
+#if 0
 float sphere(vec3 rp, vec3 sp, float r){
 	return length(rp - sp)-r;		
 }
@@ -147,7 +149,7 @@ float capsule( vec3 p, vec3 a, vec3 b, float r )
 	
 	return length( pa - ba*h ) - r;
 }
-
+#endif
 vec3 foldY(vec3 P, float n)
 {
 	float r = length(P.xz);
