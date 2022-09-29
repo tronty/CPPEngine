@@ -384,7 +384,7 @@ vec4 renderClouds( in vec3 ro, in vec3 rd, float tmin, float tmax, inout float r
     if( th>0.0 ) tmax = min( tmax, th );
 
     float t = tmin;
-    //t += 1.0*hash1(gl_FragCoord.xy);
+    //t += 1.0*hash1(xlv_TEXCOORD0.xy);
     float lastT = -1.0;
     float thickness = 0.0;
     for(int i=ZERO; i<128; i++)
