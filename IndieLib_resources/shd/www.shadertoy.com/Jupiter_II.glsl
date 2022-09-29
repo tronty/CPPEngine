@@ -40,17 +40,17 @@ vec3 makeJupiter(vec2 uv)
 void main( )
  {
 	vec2 resolution = iResolution.xy;
-	vec2 texCoord = gl_FragCoord.xy / resolution.xy;
+	vec2 texCoord = xlv_TEXCOORD0.xy / resolution.xy;
 	texCoord = vec2(texCoord.y,texCoord.x);
-	vec2 position = ( gl_FragCoord.xy / resolution.xy );
+	vec2 position = ( xlv_TEXCOORD0.xy / resolution.xy );
 	
 	vec2 center = resolution.xy / 2.;
-	float dis = distance(center, gl_FragCoord.xy);
+	float dis = distance(center, xlv_TEXCOORD0.xy);
 	float radius = resolution.y / 3.;
 	vec3 atmosphereColor = vec3(.7, .6, .5);
 	if (dis < radius) {
 		// Find planet coordinates
-		vec2 posOnPlanet = (gl_FragCoord.xy - (center - radius));
+		vec2 posOnPlanet = (xlv_TEXCOORD0.xy - (center - radius));
 		vec2 planetCoord = posOnPlanet / (radius * 2.0);
 		
 		// Spherify it
@@ -77,7 +77,7 @@ void main( )
 	}
 	else {
 		// Render stars
-		float starAmount = rand(gl_FragCoord.xy, 0.0);
+		float starAmount = rand(xlv_TEXCOORD0.xy, 0.0);
 		vec3 background = vec3(0, 0, 0);
 		if (starAmount < .01) {
 			float intensity = starAmount * 1000.0 / 4.0;
@@ -86,7 +86,7 @@ void main( )
 		}
 		
 		// Atmosphere on top
-		float outter = distance(center, gl_FragCoord.xy) / resolution.y;
+		float outter = distance(center, xlv_TEXCOORD0.xy) / resolution.y;
 		outter = 1.0 - outter;
 		outter = clamp(outter, 0.5, 0.8);
 		outter = (outter - .5) / .3;
