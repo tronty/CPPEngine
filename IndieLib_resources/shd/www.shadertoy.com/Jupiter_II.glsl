@@ -1,7 +1,3 @@
-#ifdef GL_ES
-precision mediump float;
-#endif
-
 float rand(vec2 co, float seed){
     return fract(sin(dot(co.xy + seed ,vec2(12.9898,78.233))) * 43758.5453);
 }
@@ -37,20 +33,20 @@ vec3 makeJupiter(vec2 uv)
     return col;
 }
 
-void main( )
- {
+vec3 makeJupiter2(vec2 fragCoord)
+{
 	vec2 resolution = iResolution.xy;
-	vec2 texCoord = xlv_TEXCOORD0.xy / resolution.xy;
+	vec2 texCoord = fragCoord.xy / resolution.xy;
 	texCoord = vec2(texCoord.y,texCoord.x);
-	vec2 position = ( xlv_TEXCOORD0.xy / resolution.xy );
+	vec2 position = ( fragCoord.xy / resolution.xy );
 	
 	vec2 center = resolution.xy / 2.;
-	float dis = distance(center, xlv_TEXCOORD0.xy);
+	float dis = distance(center, fragCoord.xy);
 	float radius = resolution.y / 3.;
 	vec3 atmosphereColor = vec3(.7, .6, .5);
 	if (dis < radius) {
 		// Find planet coordinates
-		vec2 posOnPlanet = (xlv_TEXCOORD0.xy - (center - radius));
+		vec2 posOnPlanet = (fragCoord.xy - (center - radius));
 		vec2 planetCoord = posOnPlanet / (radius * 2.0);
 		
 		// Spherify it
@@ -72,12 +68,13 @@ void main( )
 		float fresnelIntensity = pow(dis / radius, 3.);
 		vec3 fresnel = mix(surfaceColor, atmosphereColor, fresnelIntensity * lightAtmosphere);
 		
-		gl_FragColor = vec4(fresnel.rgb, 1);
-        gl_FragColor *= texCoord.x * 2.;
+		vec3 col=fresnel.rgb;
+        	col *= texCoord.x * 2.;
+		return col;
 	}
 	else {
 		// Render stars
-		float starAmount = rand(xlv_TEXCOORD0.xy, 0.0);
+		float starAmount = rand(fragCoord.xy, 0.0);
 		vec3 background = vec3(0, 0, 0);
 		if (starAmount < .01) {
 			float intensity = starAmount * 1000.0 / 4.0;
@@ -86,7 +83,7 @@ void main( )
 		}
 		
 		// Atmosphere on top
-		float outter = distance(center, xlv_TEXCOORD0.xy) / resolution.y;
+		float outter = distance(center, fragCoord.xy) / resolution.y;
 		outter = 1.0 - outter;
 		outter = clamp(outter, 0.5, 0.8);
 		outter = (outter - .5) / .3;
@@ -94,6 +91,13 @@ void main( )
 		//outter *= texCoord.x * 1.5;
 		
 		// Add atmosphere on top
-		gl_FragColor = vec4(background + atmosphereColor * outter, 1);
+		return vec3(background + atmosphereColor * outter);
 	}
 }
+
+void main( ) 
+{
+	vec3 col=makeJupiter2(xlv_TEXCOORD0.xy);
+	gl_FragColor = vec4( col, 1.0 );
+}
+

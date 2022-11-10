@@ -140,7 +140,25 @@ vec2 arrangeCoords(vec2 p)
 #define R(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 void main( )
 {
-    
+#if 1
+	vec2 resolution = iResolution.xy;
+	vec2 texCoord = xlv_TEXCOORD0.xy / resolution.xy;
+	texCoord = vec2(texCoord.y,texCoord.x);
+	vec2 position = ( xlv_TEXCOORD0.xy / resolution.xy );
+	
+	vec2 center = resolution.xy / 2.;
+	float dis = distance(center, xlv_TEXCOORD0.xy);
+	float radius = resolution.y / 3.;
+	vec3 atmosphereColor = vec3(.7, .6, .5);
+	if (dis < radius) {
+		// Find planet coordinates
+		vec2 posOnPlanet = (xlv_TEXCOORD0.xy - (center - radius));
+		vec2 planetCoord = posOnPlanet / (radius * 2.0);
+            	gl_FragColor = vec4(vec3(makeSun(planetCoord)), 1);
+		return;
+	}
+	gl_FragColor = vec4(0,0,0,1);
+#else
     vec2 p = arrangeCoords(xlv_TEXCOORD0);
      
     vec3 lookAt = vec3(0.);
@@ -183,9 +201,8 @@ void main( )
    
     vec3 pos = camPos + rayDistance * rayDirection;
     vec3 nor = calcNormal( pos );
-    
-
-	
+    	
     gl_FragColor = vec4(sphereColor, 1);
+#endif
 }
 

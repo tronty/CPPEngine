@@ -126,9 +126,10 @@ vec2 iSphere( in vec3 ro, in vec3 rd, in vec4 sph )//from iq
 	return vec2(-b-h, -b+h );
 }
 
-void main( ) {
+vec3 makeMoonCraters(vec2 uv)
+{
 	float time = iTime;
-    vec2 q = xlv_TEXCOORD0.xy / iResolution.xy;
+    vec2 q = uv.xy / iResolution.xy;
     vec2 p = -1.0 + 2.0 * q;
     p.x *= iResolution.x/iResolution.y;
     vec2 m = vec2(0.);
@@ -169,6 +170,12 @@ void main( ) {
     
     //col =  1.5 *(log(1.+col));
     col = clamp(col,0.,1.);
-    gl_FragColor = vec4( col, 1.0 );
+    return col;
+}
+
+void main( ) 
+{
+	vec3 col=makeMoonCraters(xlv_TEXCOORD0);
+	gl_FragColor = vec4( col, 1.0 );
 }
 

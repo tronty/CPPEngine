@@ -136,12 +136,12 @@ vec3 makeJupiter(vec2 uv)
     
     return col;
 }
-
+/*
 vec2 seeCoords(vec2 p)
 {
     return p.xy;
 }
-
+*/
 vec2 arrangeCoords(vec2 p)
 {
     vec2 q = p.xy/iResolution.xy;
