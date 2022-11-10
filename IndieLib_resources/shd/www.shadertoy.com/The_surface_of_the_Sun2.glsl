@@ -82,64 +82,46 @@ mat3 setCamera( in vec3 ro, in vec3 ta, float cr )
     return mat3( cu, cv, cw );
 }
 
-/*
-float makeCheker(vec2 p)
+// Created by Alex Kluchikov
+vec2 rot(vec2 p,float a)
 {
-    vec2 checker = p*10.;
-    vec2 cells = floor(checker);
-    float chekerColor = 0.;
-    if(mod(cells.x+cells.y, 2.)== 0.)
-    {
-        chekerColor = 1.;
-    }
-    else
-    {
-     	chekerColor = 0.;   
-    }
-    return chekerColor;
-}
-*/
-
-vec3 makeJupiter(vec2 uv)
-{
-	float time = iTime;
-    vec2 point = uv * zoom + offset;
-    float p_x = float(point.x); 
-    float p_y = float(point.y);
-    
-    float a_x = .2;
-    float a_y = .3;
-    
-    for(int i=1; i<int(iteration); i++){
-        float float_i = float(i); 
-        point.x+=a_x*sin(float_i*point.y+time*timeScale);
-        point.y+=a_y*cos(float_i*point.x);
-    }
-    
-    float r = sin(point.y)*.5+.4;
-    float g = cos(point.y)*.5+.7;
-    float b = cos(point.y)*.5+.8;
-    
-    r+=.3;
-    
-    r = cos(point.x+point.y+1.3)*.5+.5;
-    g = sin(point.x+point.y+2.)*.5+.5;
-    b = (sin(point.x+point.y+1.)+cos(point.x+point.y+1.))*.25+.5;
-      
-     
-    r = pow(r,.8);
-    g = pow(g,.8);
-    b = pow(b,1.);
-    
-    vec3 col = vec3(r,g,b);
-    col += vec3(.1);
-    
-    return col;
+    float c=cos(a*15.83+time*timeScale);
+    float s=sin(a*15.83+time*timeScale);
+    return p*mat2(s,c,c,-s);
 }
 
-vec2 seeCoords(vec2 p)
+vec3 makeSun(vec2 uv_)
 {
-    return p.xy;
+    vec2 uv=uv_/iResolution.xx;
+    uv=vec2(.125,.75)+(uv-vec2(.125,.75))*.015;
+    float T=iTime*.5;
+
+    vec3 c = normalize(.75-.25*vec3(
+        sin(length(uv-vec2(.1,0))*132.+T*3.3),
+        sin(length(uv-vec2(.9,0))*136.-T*2.5),
+        sin(length(uv-vec2(.5,1))*129.+T*4.1)
+        ));
+
+    vec3 c0=vec3(0);
+    float w0=0.;
+    float N=80.;
+    float wb=.012;
+    for(float i=0.;i<N;i++)
+    {
+        float wt=(i*i/N/N-.2)*.3;
+        float wp=0.5+(i+1.)*(i+1.5)*0.001;
+    	c.zx=rot(c.zx,1.6+T*0.65*wt+(uv.x+.7)*23.*wp);
+    	c.xy=rot(c.xy,c.z*c.x*wb+1.7+T*wt+(uv.y+1.1)*15.*wp);
+    	c.yz=rot(c.yz,c.x*c.y*wb+2.4-T*0.79*wt+(uv.x+uv.y*(fract(i/2.)-0.25)*4.)*17.*wp);
+    	c.zx=rot(c.zx,c.y*c.z*wb+1.6-T*0.65*wt+(uv.x+.7)*23.*wp);
+    	c.xy=rot(c.xy,c.z*c.x*wb+1.7-T*wt+(uv.y+1.1)*15.*wp);
+        float w=(1.5-i/N);
+        c0+=c*sqrt(w);
+        w0+=sqrt(w);
+    }
+    c0=c0/w0*3.+.5;
+    
+	return vec3(sqrt(c0.r)*1.2,c0.r*c0.r*.9,c0.r*c0.r*c0.r*.4);
 }
 
 vec2 arrangeCoords(vec2 p)
@@ -150,7 +132,8 @@ vec2 arrangeCoords(vec2 p)
     return r;
 }
 
-//->START
+#define pi 3.14159265
+#define R(p, a) p=cos(a)*p+sin(a)*vec2(p.y, -p.x)
 void main( )
 {
     
@@ -163,6 +146,11 @@ void main( )
     mat3 camera = setCamera(camPos, lookAt, 0.);
     
     vec3 rayDirection = camera * normalize( vec3(p.xy,2.0) );
+	#if 0
+    R(rayDirection.yz, -iMouse.y*0.01*pi*2.);
+    R(rayDirection.xz, iMouse.x*0.01*pi*2.);
+	#endif
+
     vec2 rayResult = rayMarching(camPos, rayDirection);     
     
     float rayDistance = rayResult.x;
@@ -181,9 +169,7 @@ void main( )
         if(rayDistance>1.)
         {
         	chekerUv = getUV(hitPos);
-            //sphereColor = vec3(makeCheker(chekerUv));
-            sphereColor = vec3(makeJupiter(chekerUv));
-            //sphereColor = vec3(seeCoords(chekerUv), 0.);
+            sphereColor = vec3(makeSun(chekerUv));
         }       
     }
     else
