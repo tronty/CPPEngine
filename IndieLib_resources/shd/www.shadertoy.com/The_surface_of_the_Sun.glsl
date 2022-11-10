@@ -21,6 +21,7 @@ void main( )
 
     vec3 c0=vec3(0);
     float w0=0.;
+#if 1
     float N=80.;
     float wb=.012;
     for(float i=0.;i<N;i++)
@@ -37,6 +38,9 @@ void main( )
         w0+=sqrt(w);
     }
     c0=c0/w0*3.+.5;
+#else
+	c0=c;
+#endif
     
 	gl_FragColor=vec4(sqrt(c0.r)*1.2,c0.r*c0.r*.9,c0.r*c0.r*c0.r*.4,1.0);
 }

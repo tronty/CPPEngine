@@ -1,14 +1,3 @@
-#if 0
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-// Posted by Trisomie21 : 2D noise experiment (pan/zoom)
-
-uniform float time;
-uniform vec2 resolution;
-#endif
-
 vec4 textureRND2D(vec2 uv){
 	uv = floor(fract(uv)*1e3);
 	float v = uv.x+uv.y*1e3;
@@ -56,8 +45,9 @@ void main( void ) {
 	d = max(1.-d*d*d, 0.);
 	float t = time*.0002;
 	 
-	c = Planet(0.0, uv, vec3(3.*sin(time)-3.0, .1, .1), vec3(.5, .2, .2), vec3(1., 1., 1.), vec2(3., 2.), vec2(1., 2.), vec2(1.9, 1.2));
-	c += 0.3- Planet(t*2.0, uv, vec3(.7, .1, .1), vec3(.5, .2, .2), vec3(1., 1., 1.), vec2(3., 2.), vec2(1., 2.), vec2(1.9, 1.2));
+	c = 		Planet(0.0, uv, 	vec3(3.*sin(time)-3.0, .1, .1), vec3(.5, .2, .2), vec3(1., 1., 1.), vec2(3., 2.), vec2(1., 2.), vec2(1.9, 1.2));
+	c += 0.3- 	Planet(t*2.0, uv, 	vec3(.7, .1, .1), 		vec3(.5, .2, .2), vec3(1., 1., 1.), vec2(3., 2.), vec2(1., 2.), vec2(1.9, 1.2));
 	 
 	gl_FragColor = vec4(c*d*1.4, 1.);
 }
+
