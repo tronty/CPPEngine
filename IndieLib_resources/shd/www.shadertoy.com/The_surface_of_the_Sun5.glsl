@@ -29,7 +29,7 @@ vec4 traceGround (vec3 o, vec3 r){
     }
     return vec4(p, t);
 }
-void mainImage( )
+void main( )
 {
     vec2 fragCoord=xlv_TEXCOORD0;
     vec2 uv = fragCoord.xy / iResolution.xy;

@@ -93,10 +93,19 @@ vec4 aurora(vec3 ro, vec3 rd)
 
 vec3 nmzHash33(vec3 q)
 {
+#if 1
+    return q;
+#else  
+#if 0
     uvec3 p = uvec3(ivec3(q));
     p = p*uvec3(374761393U, 1103515245U, 668265263U) + p.zxy + p.yzx;
-    p = p.yzx*(p.zxy^(p >> 3U));
-    return vec3(p^(p >> 16U))*(1.0/vec3(0xffffffffU));
+#else
+    vec3 p = vec3(vec3(q));
+    p = p*vec3(374761393U, 1103515245U, 668265263U) + p.zxy + p.yzx;
+#endif
+    p = p.yzx*(p.zxy^(p /* >> 3U */ ));
+    return vec3(p^(p /* >> 16U */ ))*(1.0/vec3(0xffffffffU));
+#endif
 }
 
 vec3 stars(in vec3 p)
@@ -126,7 +135,6 @@ vec3 bg(in vec3 rd)
 }
 //-----------------------------------------------------------
 
-varying vec2 xlv_TEXCOORD0;
 void main( )
 {
 	vec2 q =  xlv_TEXCOORD0.xy / iResolution.xy;
