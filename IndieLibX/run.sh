@@ -4,6 +4,8 @@ cd ./bin;./SDKMesh.bin;cd .. &&
 cd ./bin;./opengl_simple.bin;cd .. &&
 cd ./bin;./Road01.bin;cd .. &&
 cd ./bin;./Road02.bin;cd .. &&
+cd ./bin;./Road03.bin;cd .. &&
+cd ./bin;./Road04.bin;cd .. &&
 cd ./bin;./R2VB-Animation.bin;cd .. &&
 cd ./bin;./2DAnimation.bin;cd .. &&
 cd ./bin;./3DAnimation.bin;cd .. &&

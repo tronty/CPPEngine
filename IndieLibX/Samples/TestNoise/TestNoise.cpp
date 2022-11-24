@@ -222,14 +222,14 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
-	IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel3", tex[3]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[4]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel5", tex[5]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel6", tex[6]);
-	IRenderer::GetRendererInstance()->setTexture("iChannel7", tex[7]);
+	if(tex.size()>0) IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
+	if(tex.size()>1) IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);
+	if(tex.size()>2) IRenderer::GetRendererInstance()->setTexture("iChannel2", tex[2]);
+	if(tex.size()>3) IRenderer::GetRendererInstance()->setTexture("iChannel3", tex[3]);
+	if(tex.size()>4) IRenderer::GetRendererInstance()->setTexture("iChannel4", tex[4]);
+	if(tex.size()>5) IRenderer::GetRendererInstance()->setTexture("iChannel5", tex[5]);
+	if(tex.size()>6) IRenderer::GetRendererInstance()->setTexture("iChannel6", tex[6]);
+	if(tex.size()>7) IRenderer::GetRendererInstance()->setTexture("iChannel7", tex[7]);
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 	#if 1
 	//		           x	 y     tx    ty
