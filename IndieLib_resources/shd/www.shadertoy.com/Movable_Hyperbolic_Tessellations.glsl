@@ -1,3 +1,4 @@
+uniform sampler2D iChannel0;
 // Color schemes:
 // 0 is "wireframe",
 // 1 is alternating colors,
