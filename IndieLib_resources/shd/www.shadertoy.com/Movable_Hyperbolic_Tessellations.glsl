@@ -1,4 +1,23 @@
 uniform sampler2D iChannel0;
+
+float e=2.718281828;
+float sinh(float x)
+{
+	return (pow(e,x)-pow(e,-x))/2.0;
+}
+float cosh(float x)
+{
+	return (pow(e,x)+pow(e,-x))/2.0;
+}
+float acosh(float x)
+{
+	return log(x+sqrt(pow(x,2.0)-1.0));
+}
+float tanh(float x)
+{
+	return sinh(x)/cosh(x);
+}
+
 // Color schemes:
 // 0 is "wireframe",
 // 1 is alternating colors,
@@ -231,7 +250,7 @@ vec4 shader(vec2 uv){
     vec4 color;
     
     if(COLOR_SCHEME == 1){
-        if((iter % 2) == 1){
+        if((mod(float(iter) , 2.0)) == 1.0){
             color = vec4(1.0, 0.0, 0.0, 1.0);
         } else {
             color = vec4(1.0);
@@ -256,7 +275,7 @@ vec4 shader(vec2 uv){
     }
     
     if(COLOR_SCHEME == 3){
-        color = texture(iChannel0,tex_coords);
+        color = texture2D(iChannel0,tex_coords);
     }
     
 #ifdef EDGE_OVERLAY
