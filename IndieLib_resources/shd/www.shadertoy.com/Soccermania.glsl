@@ -46,7 +46,7 @@ void main()
         
         float fl= abs(mod(pl.w*.5,0.04)-0.02);
         if(i>0 && sdBox(uv-pl.xy,vec2(.03))<0. ) {
-            vec3 c=((i%11)==1?vec3(0,1,0): (i<12? vec3(1,0,0):vec3(0,.7,1)));
+            vec3 c=((int(mod(float(i),11.0)))==1?vec3(0,1,0): (i<12? vec3(1,0,0):vec3(0,.7,1)));
             col=mix(col, vec3(0), smoothstep(tk,.0,sdBox(pd +vec2(-fl+.005,.01),vec2(.005,.002))  ));
             col=mix(col, vec3(0), smoothstep(tk,.0,sdBox(pd +vec2(-.015+fl,-.01),vec2(.005,.002))  ));
             col=mix(col, c, smoothstep(tk,.0,sdBox(pd ,vec2(.006,.012))  ));
@@ -82,7 +82,7 @@ void main()
     int j = int(d.x);
     vec4 zBallt=texelFetch(iChannel1,ivec2(coord(ball.xy+ball.zw*1.)),0);
     //team zones
-    col=mix(col, (int(zBall.x)==j || int(zBall.z)==j?3.:1. )*  ((j%11)==1?vec3(1,0,1): (j<12? vec3(1,0,0):vec3(0,0,1))), smoothstep(0.1,.0,d.w-d.y)*.1);
+    col=mix(col, (int(zBall.x)==j || int(zBall.z)==j?3.:1. )*  (int(mod(float(j),11.0))==1?vec3(1,0,1): (j<12? vec3(1,0,0):vec3(0,0,1))), smoothstep(0.1,.0,d.w-d.y)*.1);
     vec4 b=texelFetch(iChannel0,ivec2(0,0),0);
     col=mix(col, vec3(1,1,0),smoothstep(tk,.0,-.01+length(uv-b.xy-b.zw*1.))); //ball target 
     vec4 pl=texelFetch(iChannel0,ivec2(zBall.x,0),0);

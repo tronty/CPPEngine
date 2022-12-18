@@ -97,7 +97,7 @@ void main( ) {
     for (int ray = 0; ray < AA * AA; ray++) {
         vec2 shift = vec2(
         	float(ray / AA) / float(AA),
-            float(ray % AA) / float(AA)
+            float(mod(float(ray) , float(AA))) / float(AA)
         );
         vec3 p1 = vec3((xlv_TEXCOORD0 - iResolution.xy * 0.5 + shift) / screenUnit, 0) + screenCenter;
         vec3 p2 = eye + normalize(p1 - eye) * l;

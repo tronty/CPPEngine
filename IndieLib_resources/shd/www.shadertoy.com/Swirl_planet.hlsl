@@ -140,7 +140,7 @@ float circles( float2 p, float r, uint s)
   float d = 1e9, c, rad;
   for(int k = 0; k < 9; k++)
   {
-    p = float2(k % 3, k / 3) - 1.;
+    p = float2(mod(float(k) , 3.0), k / 3) - 1.;
     rad = hash(i + p, s + 2u) * r;
     h = float2(hash(i + p, s + 89u), hash(i + p, s + 52u));
 
@@ -193,7 +193,7 @@ float2 swirls(float2 p, out float4 O, uint se, float sz, float ro)
   int k;
   for (k = 0; k < 9; k++)
   {
-    D = float2(k % 3, k / 3) - 1.;
+    D = float2(mod(float(k) , 3.0), k / 3) - 1.;
     D += hash(I + D, se + 222u);
     r = length(F - D) * (1. + hash(I + D, se + 72u));
     F = rotation(F - D, y * smoothstep(.5, 0., r)) + D;

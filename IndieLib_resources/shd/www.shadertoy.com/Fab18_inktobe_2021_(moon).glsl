@@ -37,7 +37,7 @@ void main( )
          I = floor(P), F = fract(P);           // coords in 3D grid
 
 #define dist2seed  \
-        D = vec3( k%3, (k/3)%3, k/9 ) -1.;     /* cell offset         */  \
+        D = vec3( mod(k,3.0), mod((k/3),3.0), k/9 ) -1.;     /* cell offset         */  \
         D += H(I+D)-.5;                        /* random seed point   */  \
         A = normalize(I+D);                                               \
         D = 4.*A - I;                          /* project it on sphere ( for even radius ) */ \
