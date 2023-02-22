@@ -71,7 +71,7 @@ mat2 rot, rot2;
 
 // Interpolate pos of articulations
 vec3 getPos(vec3 arr[9], int it, float kt, float z) {
-    it = int(1.0*it,8.0);
+    it = int(mod(1.0*it,8.0));
     vec3 p = mix(arr[it], arr[it+1], kt);
 	return .02*vec3(p.x+floor(gTime/8.)*168., 150.-p.y, p.z*z);
 }
