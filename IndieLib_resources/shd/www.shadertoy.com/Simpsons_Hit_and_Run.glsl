@@ -182,7 +182,7 @@ vec2 map(in vec3 pos, in float time){ // signed distance in m.x and material ID 
         hs.x = min(hs.x, sdBox(q+vec3(5.2, 0., 1.5), vec3(.25, 5.5, .5))); // chimney
         hs.x = min(hs.x, sdBox(q+vec3(5.2, -5.5, 1.5), vec3(.35, .15, .6))); // chimney border
         // roof
-        vec3 r = q-vec3(0., 3.9, -2.2);
+        vec3 r = q-vec3(0., 3.85, -2.2);
         r.z = abs(r.z)-2.;
         r.yz = mat2(35, -12, 12, 35)/37.*r.yz;
         float rf = sdBox(r, vec3(5.5, .1, 2.1));
@@ -294,8 +294,7 @@ vec3 calcNormal(vec3 q, float time){ // gscene3 from https://www.shadertoy.com/v
     float h = 0.001;
 	vec3 n = vec3(0);
 	for (int i = ZERO; i < 4; ++i) {
-		//vec3 e = vec3((ivec3(i+3, i, i+i)&2) - 1);
-		vec3 e = vec3(i+3, i, i+i);//&2) - 1);
+		vec3 e = vec3((ivec3(i+3, i, i+i)&2) - 1);
 		n += map(q + e * h, time).x * e;
 	}
 	return normalize(n);
