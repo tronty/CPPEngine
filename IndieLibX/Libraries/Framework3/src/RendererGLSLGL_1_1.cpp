@@ -809,7 +809,7 @@ LOG_FNLN;
 	std::string dsText="";
 	char versionString[16];
 	
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 	#if 0
 	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
@@ -819,40 +819,33 @@ LOG_FNLN;
 		printf("GL_VERSION: %d.%d\n", major, minor);
 	}
 	version = (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 	if (version)
 	{
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 		int major = atoi(version);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 		int minor = atoi(stx_strchr(version, '.') + 1);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 		printf("GL_SHADING_LANGUAGE_VERSION: %d.%d\n", major, minor);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 		stx_snprintf(versionString, 16, "\n#version %d%d\n", major, minor);
-		//stx_snprintf(versionString, 16, "\n#version 130\n");
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("\nversionString=%s\n", versionString);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		printf(versionString, 16, "\n#version %d%d\n", major, minor);
 	}
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 	#elif 1
 	stx_snprintf(versionString, 16, "\n#version 130\n");
 	#endif
 
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	const char * def="\n#version 130\n";//versionString;
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-
-	def=versionString;
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	const char * def=versionString;
+	
 	if (def) vsText.append(def);
 	if (def) fsText.append(def);
 	if (def) gsText.append(def);
 	if (def) csText.append(def);
 	if (def) hsText.append(def);
 	if (def) dsText.append(def);
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 
 #if defined(_MSC_VER)
 	vsText.append("precision highp float;\n");
