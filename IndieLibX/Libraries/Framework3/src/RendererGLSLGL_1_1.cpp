@@ -833,11 +833,12 @@ LOG_FNLN;
 		printf(versionString, 16, "\n#version %d%d\n", major, minor);
 	}
 	
-	#elif 1
+	#elif 0
 	stx_snprintf(versionString, 16, "\n#version 130\n");
-	#endif
-
 	const char * def=versionString;
+	#elif 1
+	const char * def="\n#version 130\n";
+	#endif
 	
 	if (def) vsText.append(def);
 	if (def) fsText.append(def);

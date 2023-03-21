@@ -1,10 +1,13 @@
 copy Dependencies\\SDL2-2.0.14\\lib\\x86\\SDL2.dll bin\\SDL2.dll
 copy Dependencies\\vulkan\\vulkan-1.dll bin\\vulkan-1.dll
 cd bin
-call BallOfFire.exe
+call testspine2.exe
 cd ..
 cd bin
 call TestNoise.exe
+cd ..
+cd bin
+call BallOfFire.exe
 cd ..
 cd bin
 call SDKMesh.exe
@@ -260,9 +263,6 @@ call noise3D.exe
 cd ..
 cd bin
 call noise3D2.exe
-cd ..
-cd bin
-call testspine2.exe
 cd ..
 cd bin
 call texturegranite.exe

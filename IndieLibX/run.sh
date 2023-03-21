@@ -1,5 +1,6 @@
-cd ./bin;./BallOfFire.bin;cd .. &&
+cd ./bin;./testspine2.bin;cd .. &&
 cd ./bin;./TestNoise.bin;cd .. &&
+cd ./bin;./BallOfFire.bin;cd .. &&
 cd ./bin;./SDKMesh.bin;cd .. &&
 cd ./bin;./opengl_simple.bin;cd .. &&
 cd ./bin;./Road01.bin;cd .. &&
@@ -85,7 +86,6 @@ cd ./bin;./maze3D.bin;cd .. &&
 cd ./bin;./noise2D.bin;cd .. &&
 cd ./bin;./noise3D.bin;cd .. &&
 cd ./bin;./noise3D2.bin;cd .. &&
-cd ./bin;./testspine2.bin;cd .. &&
 cd ./bin;./texturegranite.bin;cd .. &&
 cd ./bin;./texturejade.bin;cd .. &&
 cd ./bin;./texturesky.bin;cd .. &&
