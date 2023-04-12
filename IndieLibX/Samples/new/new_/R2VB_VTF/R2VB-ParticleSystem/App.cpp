@@ -289,7 +289,7 @@ void drawFrame(){
 		IRenderer::GetRendererInstance()->setTexture("Rand", randTex);
 		IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / rtWidth, 0.5f / rtHeight));
 		IRenderer::GetRendererInstance()->setShaderConstant3f("sprinkleDir", sprinkleDir);
-		IRenderer::GetRendererInstance()->setShaderConstant1f("1000.0f*timeGetTime()", ft);
+		IRenderer::GetRendererInstance()->setShaderConstant1f("time", ft);
 		
 
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR2));

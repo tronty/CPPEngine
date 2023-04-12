@@ -170,7 +170,7 @@ void SnowSystem::draw(const D3DXFROMWINEMATRIX &mvp, D3DXFROMWINEMATRIX &mv, flo
 		t += 2.0f * ft;
 
 		IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / rtWidth, 0.5f / rtHeight));
-		IRenderer::GetRendererInstance()->setShaderConstant1f("1000.0f*timeGetTime()", ft);
+		IRenderer::GetRendererInstance()->setShaderConstant1f("time", ft);
 		IRenderer::GetRendererInstance()->setShaderConstant2f("randValue", D3DXFROMWINEVECTOR2((stx_rand()%137)/100.0f, (stx_rand()%531)/100.0f));
 
 		IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(D3DXFROMWINEVECTOR2));

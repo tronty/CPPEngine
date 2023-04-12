@@ -425,7 +425,7 @@ void drawFrame(){
 					IRenderer::GetRendererInstance()->setShader(physicsMP[0]);
 					IRenderer::GetRendererInstance()->setVertexFormat(physicsMPVF[0]);
 					IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / CLOTH_SIZE, 0.5f / CLOTH_SIZE));
-					IRenderer::GetRendererInstance()->setShaderConstant4f("1000.0f*timeGetTime()", frameTimePM);
+					IRenderer::GetRendererInstance()->setShaderConstant4f("time", frameTimePM);
 					IRenderer::GetRendererInstance()->setShaderConstant1f("damp", damp);
 					IRenderer::GetRendererInstance()->setShaderConstantArray3f("springs", springs, 6);
 					IRenderer::GetRendererInstance()->setTexture("Pos", pos[otherRT]);
@@ -442,7 +442,7 @@ void drawFrame(){
 					IRenderer::GetRendererInstance()->setShader(physicsMP[1]);
 					IRenderer::GetRendererInstance()->setVertexFormat(physicsMPVF[1]);
 					IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / CLOTH_SIZE, 0.5f / CLOTH_SIZE));
-					IRenderer::GetRendererInstance()->setShaderConstant4f("1000.0f*timeGetTime()", frameTimePM);
+					IRenderer::GetRendererInstance()->setShaderConstant4f("time", frameTimePM);
 					IRenderer::GetRendererInstance()->setShaderConstantArray3f("springs", springs + 6, 5);
 					IRenderer::GetRendererInstance()->setTexture("Pos", pos[currRT]);
 					IRenderer::GetRendererInstance()->setTexture("Dir", dir[currRT]);
@@ -458,7 +458,7 @@ void drawFrame(){
 					IRenderer::GetRendererInstance()->setShader(physicsMP[1]);
 					IRenderer::GetRendererInstance()->setVertexFormat(physicsMPVF[1]);
 					IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / CLOTH_SIZE, 0.5f / CLOTH_SIZE));
-					IRenderer::GetRendererInstance()->setShaderConstant4f("1000.0f*timeGetTime()", frameTimePM);
+					IRenderer::GetRendererInstance()->setShaderConstant4f("time", frameTimePM);
 					IRenderer::GetRendererInstance()->setShaderConstantArray3f("springs", springs + 11, 5);
 					IRenderer::GetRendererInstance()->setTexture("Pos", pos[otherRT]);
 					IRenderer::GetRendererInstance()->setTexture("Dir", dir[otherRT]);
@@ -475,7 +475,7 @@ void drawFrame(){
 					IRenderer::GetRendererInstance()->setShader(physicsMP[2]);
 					IRenderer::GetRendererInstance()->setVertexFormat(physicsMPVF[2]);
 					IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / CLOTH_SIZE, 0.5f / CLOTH_SIZE));
-					IRenderer::GetRendererInstance()->setShaderConstant4f("1000.0f*timeGetTime()", frameTimePM);
+					IRenderer::GetRendererInstance()->setShaderConstant4f("time", frameTimePM);
 					IRenderer::GetRendererInstance()->setShaderConstant3f("windDir", ftWindDir);
 					IRenderer::GetRendererInstance()->setShaderConstantArray3f("springs", springs + 16, 4);
 					IRenderer::GetRendererInstance()->setTexture("Pos", pos[currRT]);
@@ -496,7 +496,7 @@ void drawFrame(){
 				IRenderer::GetRendererInstance()->setShader(physics);
 				IRenderer::GetRendererInstance()->setVertexFormat(physicsVF);
 				IRenderer::GetRendererInstance()->setShaderConstant2f("halfPixel", D3DXFROMWINEVECTOR2(0.5f / CLOTH_SIZE, 0.5f / CLOTH_SIZE));
-				IRenderer::GetRendererInstance()->setShaderConstant4f("1000.0f*timeGetTime()", frameTimePM);
+				IRenderer::GetRendererInstance()->setShaderConstant4f("time", frameTimePM);
 				IRenderer::GetRendererInstance()->setShaderConstant1f("damp", damp);
 				IRenderer::GetRendererInstance()->setShaderConstant3f("windDir", ftWindDir);
 				IRenderer::GetRendererInstance()->setShaderConstantArray3f("springs", springs, elementsOf(springs));
