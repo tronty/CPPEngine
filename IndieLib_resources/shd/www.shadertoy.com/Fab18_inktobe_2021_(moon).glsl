@@ -1,3 +1,4 @@
+#define texture(a1,a2) texture2D(a1,a2)
 // reuse "swirls on sphere"  https://shadertoy.com/view/ssGSDh
 
 #define H(p)       fract(sin((p)*mat3(127.1,311.7, 74.7,  269.5,183.3,246.1,  113.5,271.9,124.6))*43758.5453123)

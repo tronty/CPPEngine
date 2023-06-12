@@ -1,6 +1,7 @@
 sampler2D iChannel0;
 sampler2D iChannel1;
 sampler2D iChannel3;
+#define texelFetch(a1,a2,a3) texture2D(a1,a2)
 // Fork of "City Flight" by athibaul. https://shadertoy.com/view/WstcRf
 // 2022-07-10 08:07:51
 

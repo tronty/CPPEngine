@@ -1,3 +1,4 @@
+#define texture(a1,a2) texture2D(a1,a2)
 /*
 
 	Cheap Cloud Flythrough 

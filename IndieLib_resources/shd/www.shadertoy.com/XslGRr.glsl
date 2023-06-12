@@ -1,6 +1,7 @@
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
 uniform sampler2D iChannel2;
+#define texelFetch(a1,a2,a3) texture2D(a1,a2)
 // https://www.shadertoy.com/view/XslGRr
 // Clouds
 // Copyright Inigo Quilez, 2013 - https://iquilezles.org/

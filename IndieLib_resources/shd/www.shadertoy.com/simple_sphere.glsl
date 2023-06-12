@@ -1,3 +1,4 @@
+#define texture(a1,a2) texture2D(a1,a2)
 #define PI 3.14159265358979323844
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )

@@ -1,5 +1,6 @@
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
+#define texture(a1,a2) texture2D(a1,a2)
 vec3 cameraPos() {
 float t = iTime + 14.0;
 

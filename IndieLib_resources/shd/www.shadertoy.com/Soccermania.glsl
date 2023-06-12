@@ -1,3 +1,4 @@
+#define texelFetch(a1,a2,a3) texture2D(a1,a2)
 // Soccermania by Kastorp
 //-------------------------------
 // controls:

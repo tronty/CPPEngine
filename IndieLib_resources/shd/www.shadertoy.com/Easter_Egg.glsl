@@ -1,4 +1,5 @@
 uniform sampler3D iChannel1;
+#define texture(a1,a2) texture2D(a1,a2)
 
 #define PI 3.1415926
 #define TAU (2.0 * PI)

@@ -1,4 +1,5 @@
 uniform sampler2D iChannel0;
+#define texture(a1,a2) texture2D(a1,a2)
 /* [Final author]: Twenkid (Todor "Tosh" Arnaudov)
                    Mapping the craters to the sphere + antialiasing and a bug fix (on Intel HD4000/Win).
                    Version: 29.12.2017

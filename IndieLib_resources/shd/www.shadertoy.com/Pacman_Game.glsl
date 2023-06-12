@@ -10,6 +10,7 @@ uniform vec2 txLives;
 uniform vec2 txMode;
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
+#define texelFetch(a1,a2,a3) texture2D(a1,a2)
 /*
 Pacman Game This shader has been Shader of the Week! This shader has been a Featured Shader!
 Created by iq in 2016-04-06

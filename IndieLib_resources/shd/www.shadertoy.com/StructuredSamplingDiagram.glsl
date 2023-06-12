@@ -1,4 +1,5 @@
 uniform sampler2D iChannel0;
+#define texture(a1,a2) texture2D(a1,a2)
 /*
 The MIT License (MIT)
 

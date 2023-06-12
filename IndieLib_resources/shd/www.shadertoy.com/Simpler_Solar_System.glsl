@@ -1,3 +1,4 @@
+#define texture(a1,a2) texture2D(a1,a2)
 const vec3 backgroundColor = vec3(0.0, 0.0, 0.0);
 const vec2 CENTER   = vec2(0.0, 0.0);
 const vec3 RED 	    = vec3(1.0, 0.0, 0.0);

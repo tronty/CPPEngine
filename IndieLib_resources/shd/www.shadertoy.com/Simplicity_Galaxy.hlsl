@@ -1,3 +1,4 @@
+#define texture(a1,a2) tex2D(a1,a2)
 /*
   Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:

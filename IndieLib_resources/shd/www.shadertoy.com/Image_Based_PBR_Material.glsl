@@ -1,3 +1,4 @@
+#define texture(a1,a2) texture2D(a1,a2)
 // Author : SÃ©bastien BÃ©rubÃ©
 // Created : Dec 2015
 // Modified : Jan 2016

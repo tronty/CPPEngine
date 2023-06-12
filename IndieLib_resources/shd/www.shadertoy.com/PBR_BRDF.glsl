@@ -1,4 +1,4 @@
-
+#define texture(a1,a2) texture2D(a1,a2)
 // BRDF approximation sample count (higher is better quality and slower)
 const int BRDF_SAMPLE_COUNT = 64;
 
