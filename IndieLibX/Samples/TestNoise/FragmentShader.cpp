@@ -283,7 +283,7 @@ void render()
 
 int ApplicationLogic()
 {
-	IRenderer* r=IRenderer::GetRendererInstance("TestNoise");	
+	IRenderer* r=IRenderer::GetRendererInstance("FragmentShader");	
 	IInput*    i=STX_Service::GetInputInstance();
 	init("");
 	while (!i->OnKeyPress (STX_KEY_ESCAPE) && !i->Quit())
