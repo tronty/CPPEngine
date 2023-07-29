@@ -2,13 +2,13 @@
 #define min_step .015
 #define epsilon .0034
 
-float sdSphere(vec3 v){
-	return length(v)-.3;
+float sdSphere(vec3 v, float a){
+	return length(v)-a;
 }
 
 float map(vec3 v){
 	// return (sdSphere(v-vec3(-.0))*sdSphere(v-vec3(cos(time))));
-	return sdSphere(v);
+	return sdSphere(v, .3);
 }
 
 // iquilezles.org/articles/normalsSDF
@@ -20,7 +20,6 @@ vec3 normal(vec3 p){
                      k.yxy*map(p + k.yxy*h)+ 
                      k.xxx*map(p + k.xxx*h));
 }
-
 
 vec3 trace(vec3 o, vec3 d){
 	float dist = 0., t = 0.;
