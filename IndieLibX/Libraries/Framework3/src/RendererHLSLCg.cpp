@@ -6560,6 +6560,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
+#if 0
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6572,7 +6573,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				printf("flags=eHLSL_Shader\n");
 				break;
 		}
-
+#endif
 	ShaderID res = SHADER_NONE;
 	std::string shaderText;
 	if(shaderText_)
