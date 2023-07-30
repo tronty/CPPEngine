@@ -6561,61 +6561,53 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                                         const unsigned int aFlags)
 {
 	ShaderID res = SHADER_NONE;
-	unsigned int flags=aFlags;
+	unsigned int flags=0;
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
-#if 1
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
-	//printf("foundVS=%d\n", foundVS);
-	//printf("foundPS=%d\n", foundPS);
-#endif
-#if 1
 	if	((foundPS!=std::string::npos) && (foundVS!=std::string::npos))
-		flags = eHLSL_Shader;
-	else 
-#endif
-	if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) ||
-		 ((foundPS==std::string::npos) && (foundVS==std::string::npos)))
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				flags=eGLSL_Shader;
+			case eGLES_Shader:
+				flags=eGLES_Shader;
+			default:
+				flags=eHLSL_Shader;
+		}
+	else
+	if	((foundPS!=std::string::npos) && (foundVS==std::string::npos))
 	{
-		if(flags == eHLSL_Shader)
-			flags = eHLSL_Fragment_Shader;
-		else if(flags == eGLSL_Shader)
-			flags = eGLSL_Fragment_Shader;
-		else if(flags == eGLES_Shader)
-			flags = eGLES_Fragment_Shader;
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				flags=eGLSL_Fragment_Shader;
+			case eGLES_Shader:
+				flags=eGLES_Fragment_Shader;
+			default:
+				flags=eHLSL_Fragment_Shader;
+		}
 	}
-#if 0
-		if(flags == eHLSL_Fragment_Shader)
-			printf("\n[HLSL_Fragment_Shader]\n");
-		else if(flags == eGLSL_Fragment_Shader)
-			printf("\n[GLSL_Fragment_Shader]\n");
-		else if(flags == eGLES_Fragment_Shader)
-			printf("\n[GLES_Fragment_Shader]\n");
-		else if(flags == eHLSL_Shader)
-			printf("\n[HLSL]\n");
-		else if(flags == eGLSL_Shader)
-			printf("\n[GLSL]\n");
-		else if(flags == eGLES_Shader)
-			printf("\n[GLES]\n");
-#endif
-#if 0
-	printf("foundVS=%d\n", foundVS);
-	printf("foundPS=%d\n", foundPS);
-	printf("std::string::npos=%d\n", std::string::npos);
-#endif
+	else
+	if	((foundPS==std::string::npos) && (foundVS!=std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				flags=eGLSL_Vertex_Shader;
+			case eGLES_Shader:
+				flags=eGLES_Vertex_Shader;
+			default:
+				flags=eHLSL_Vertex_Shader;
+		}
+	}
 
 	char* fsMain_="main";
 	if(flags == eGLSL_Fragment_Shader)
 	{
-		#if 0
-		printf("eGLSL_Fragment_Shader:\n");
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		if(	std::string::npos!=shaderText.find("void mainImage("))
-			fsMain_="mainImage";
-		#endif
 		std::string fsStr2_=shaderText;
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
@@ -6686,77 +6678,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
-#if 0//ndef __APPLE__
-		std::smatch match;
-		{std::regex expression("\\buniform sampler2D iChannel0\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel0;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel1\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel1;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel2\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel2;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel3\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel3;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel4\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel4;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel5\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel5;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel6\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel6;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel7\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel7;\n");
-		}}
-#endif
 		fsStr2.append(shaderText);
-#if 0//ndef __APPLE__
-		{std::regex expression1("\\bmainImage\\b");
-		std::regex expression2("\\bmain\\b");
-		std::string what=fsStr2_;
-		if (regex_search(what, match, expression1))
-		if (!regex_search(what, match, expression2))
-		{
-			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
-		}}
-#endif
-		//printf("%s\n", fsStr2.c_str());
-#if 0
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("\nvs:\n%s\n", vsStr2.c_str());
-		printf("\nfs:\n%s\n", fsStr2.c_str());
-
-		printf("\nfsMain:\n%s\n", fsMain);
-#endif
-#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+#if 0 // defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 			RendererGLES2* rendererGLES2=0;
 			rendererGLES2=(RendererGLES2*) this;
 			res=rendererGLES2->addGLSLShaderVrtl
@@ -6769,15 +6692,12 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         "main", 0, fsMain_, 0, 0, 0, flags);
 #endif
-		//printf("\nIRenderer::addShader:res=%d\n", res);
 		return res;
 	}
 
 	
-	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader))
+	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader)||(flags == eGLES_Shader))
 	{
-		//printf("HLSL_Shader || eGLSL_Shader:\n");
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	std::string stringToBeSplitted=shaderText;
 	std::vector<std::string> delimeters;
 	delimeters.push_back("[Vertex shader]");
@@ -6901,72 +6821,9 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
-#if 0//ndef __APPLE__
-		std::smatch match;
-		{std::regex expression("\\buniform sampler2D iChannel0\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel0;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel1\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel1;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel2\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel2;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel3\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel3;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel4\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel4;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel5\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel5;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel6\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel6;\n");
-		}}
-		{std::regex expression("\\buniform sampler2D iChannel7\\b");
-		std::string what=fsStr2_;
-		if (!regex_search(what, match, expression))
-		{
-			fsStr2.append(  "uniform sampler2D iChannel7;\n");
-		}}
-#endif
 		fsStr2.append(shaderText);
-#if 0//ndef __APPLE__
-		{std::regex expression1("\\bmainImage\\b");
-		std::regex expression2("\\bmain\\b");
-		std::string what=fsStr2_;
-		if (regex_search(what, match, expression1))
-		if (!regex_search(what, match, expression2))
-		{
-			fsStr2.append(  "void main(){mainImage(gl_FragColor, xlv_TEXCOORD0.xy);}\n");
-		}}
-#endif
-	//printf("%s\n", fsStr2.c_str());
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-    	res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        	vsMain, 0, fsMain, 0, 0, 0, flags);
+    		res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        		vsMain, 0, fsMain, 0, 0, 0, flags);
 	}
 	return -1;
 }
