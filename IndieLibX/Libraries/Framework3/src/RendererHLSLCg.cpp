@@ -6632,8 +6632,6 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 
 	if(flags == eGLSL_Fragment_Shader)
 	{
-		char* fsMain="main";
-		std::string fsStr2_=shaderText;
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
@@ -6715,11 +6713,59 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			res=rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain, 0, 0, 0, flags_);
+                        "main", 0, "main", 0, 0, 0, flags_);
 #endif
 		return res;
 	}
+#if 0
+	else 	if(flags == eGLSL_Vertex_Shader)
+	{
+		vsStr2.append(	"varying vec3 xlv_position;\n"
+				"varying vec3 xlv_Color;\n"
+				"varying vec2 xlv_TEXCOORD0;\n"
+				vsStr2.append(shaderText);
+		fsStr2.append(  "uniform vec3      iResolution;\n"
+				"uniform vec4      iMouse;\n"
+				"uniform float     iTime;\n"
+				"uniform vec3      resolution;\n"
+				"uniform vec4      mouse;\n"
+				"uniform float     time;\n"
+				"uniform float     iGlobalTime;\n"
+				"uniform vec4      iDate;\n"
+				"uniform float     iSampleRate;\n"
+				"uniform vec3      iChannelResolution[4];\n"
+				"uniform float     iChannelTime[4];\n"
+				"uniform vec2      ifFragCoordOffsetUniform;\n"
+				"uniform float     iTimeDelta;\n"
+				"uniform int       iFrame;\n"
+				"uniform float     iFrameRate;\n"
+				"struct Channel {\n"
+				"    vec3  resolution;\n"
+				"    float   time;\n"
+				"};\n"
+				"varying vec3 xlv_position;\n"
+				"varying vec3 xlv_Color;\n"
+				"varying vec2 xlv_TEXCOORD0;\n"
+				"vec4 main(){return vec4(xlv_Color, 1.0);}\n"
+				);
+#if 0 // defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 
+			RendererGLES2* rendererGLES2=0;
+			rendererGLES2=(RendererGLES2*) this;
+			res=rendererGLES2->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        "main", 0, fsMain_, 0, 0, 0, flags_);
+
+#else
+			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
+			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
+			res=rendererGLSLGL_1_1->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        "main", 0, "main", 0, 0, 0, flags_);
+#endif
+		return res;
+	}
+#endif
 	
 	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader)||(flags == eGLES_Shader))
 	{
@@ -6777,10 +6823,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	}
 	if(flags == eHLSL_Fragment_Shader)
 	{
-		char* fsMain="main";
 		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		std::string fsStr2_=shaderText;
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
 				"#define WSIGN +\n"   
@@ -6849,8 +6893,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"#define mainImage main\n");
 		fsStr2.append(shaderText);
     		res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        		vsMain, 0, fsMain, 0, 0, 0, flags_);
-	}
+                        		vsMain, 0, "main", 0, 0, 0, flags_);
+	}	
 	return -1;
 }
 
