@@ -6560,35 +6560,56 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				printf("flags=eGLSL_Shader\n");
+				break;
+			case eGLES_Shader:
+				printf("flags=eGLES_Shader\n");
+				break;
+			case eHLSL_Shader:
+				printf("flags=eHLSL_Shader\n");
+				break;
+		}
+
 	ShaderID res = SHADER_NONE;
-	unsigned int flags=0;
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
 	std::string header, vsStr2, fsStr2;
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundPS = shaderText.find("[Fragment shader]");
+	unsigned int flags=0;
+	unsigned int flags_=0;
 	if	((foundPS!=std::string::npos) && (foundVS!=std::string::npos))
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
 				flags=eGLSL_Shader;
+				break;
 			case eGLES_Shader:
 				flags=eGLES_Shader;
+				break;
 			default:
 				flags=eHLSL_Shader;
+				break;
 		}
 	else
-	if	((foundPS!=std::string::npos) && (foundVS==std::string::npos))
+	if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) || 
+	        ((foundPS==std::string::npos) && (foundVS==std::string::npos)))
 	{
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
 				flags=eGLSL_Fragment_Shader;
+				break;
 			case eGLES_Shader:
 				flags=eGLES_Fragment_Shader;
+				break;
 			default:
 				flags=eHLSL_Fragment_Shader;
+				break;
 		}
 	}
 	else
@@ -6598,16 +6619,19 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{
 			case eGLSL_Shader:
 				flags=eGLSL_Vertex_Shader;
+				break;
 			case eGLES_Shader:
 				flags=eGLES_Vertex_Shader;
+				break;
 			default:
 				flags=eHLSL_Vertex_Shader;
+				break;
 		}
 	}
 
-	char* fsMain_="main";
 	if(flags == eGLSL_Fragment_Shader)
 	{
+		char* fsMain="main";
 		std::string fsStr2_=shaderText;
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
@@ -6684,13 +6708,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			rendererGLES2=(RendererGLES2*) this;
 			res=rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain_, 0, 0, 0, flags);
+                        "main", 0, fsMain_, 0, 0, 0, flags_);
 #else
 			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			res=rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain_, 0, 0, 0, flags);
+                        "main", 0, fsMain, 0, 0, 0, flags_);
 #endif
 		return res;
 	}
@@ -6726,7 +6750,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	{
 		//printf("eHLSL_Shader:\n");
     		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        	vsMain, 0, fsMain, 0, 0, 0, flags);
+                        	vsMain, 0, fsMain, 0, 0, 0, flags_);
 	}
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 	else if(flags == eGLES_Shader)
@@ -6736,7 +6760,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			rendererGLES2=(RendererGLES2*) this;
 			return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags);
+                        vsMain, 0, fsMain, 0, 0, 0, flags_);
 	} 
 #else
 	else if(flags == eGLSL_Shader)
@@ -6746,12 +6770,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			return rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags);
+                        vsMain, 0, fsMain, 0, 0, 0, flags_);
 	}
 #endif
 	}
 	if(flags == eHLSL_Fragment_Shader)
 	{
+		char* fsMain="main";
 		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		std::string fsStr2_=shaderText;
@@ -6823,7 +6848,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"#define mainImage main\n");
 		fsStr2.append(shaderText);
     		res=addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        		vsMain, 0, fsMain, 0, 0, 0, flags);
+                        		vsMain, 0, fsMain, 0, 0, 0, flags_);
 	}
 	return -1;
 }
