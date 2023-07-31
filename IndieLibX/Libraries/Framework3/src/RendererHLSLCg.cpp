@@ -6708,7 +6708,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         "main", 0, fsMain, 0, 0, 0, flags_);
-#else // defined(LINUX)
+#else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
@@ -6955,7 +6955,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         vsMain, 0, "main", 0, 0, 0, flags_);
-#elif defined(LINUX)
+#else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
