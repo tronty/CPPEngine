@@ -1,3 +1,8 @@
+uniform vec3      resolution=vec3(0);
+uniform float     time=0;
+
+[Vertex shader]
+
 #define max_steps 50
 #define min_step .015
 #define epsilon .0034
@@ -40,28 +45,31 @@ vec4 color(vec2 auv){
 	return vec4(c, 1.);
 }
 
-[Vertex shader]
-
 struct VsOut {
     vec4 position;
     vec2 texCoord;
     vec4 color;
 };
+
 struct VsIn {
     vec2 position;
     vec2 texCoord;
 };
+
 uniform vec4 scaleBias;
 varying vec2 xlv_TEXCOORD0;
 varying vec4 color_;
+
 VsOut xlat_main( in VsIn In ) {
-    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0), vec4(0.0, 0.0, 0.0, 0.0));
     Out.position.xy = ((In.position.xy * scaleBias.xy) + scaleBias.zw);
     Out.position.w = 1.0;
     Out.texCoord = In.texCoord;
-    Out.color = vec4(color(vec2(xlv_TEXCOORD0)));
+    xlv_TEXCOORD0 = In.texCoord;
+    Out.color=color(xlv_TEXCOORD0);
     return Out;
 }
+
 void main() {
     VsOut xl_retval;
     VsIn xlt_In;
@@ -70,18 +78,15 @@ void main() {
     xl_retval = xlat_main( xlt_In);
     gl_Position = vec4(xl_retval.position);
     xlv_TEXCOORD0 = vec2(xl_retval.texCoord);
-    color_ = vec4(xl_retval.color);
+    color_=color(xlv_TEXCOORD0);
 }
 
 [Fragment shader]
 
 varying vec2 xlv_TEXCOORD0;
 varying vec4 color_;
+
 void main() {
-    #if 1
-    gl_FragData[0] = vec4(color(vec2(xlv_TEXCOORD0)));
-    #else
     gl_FragData[0] = color_;
-    #endif
 }
 
