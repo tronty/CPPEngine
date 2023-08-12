@@ -94,15 +94,17 @@ void main() {
     xl_retval = main2( xlt_In);
     gl_Position = vec4(xl_retval.position);
     xlv_TEXCOORD0 = vec2(xl_retval.uv);	
-	vec2 uv = (2.*xlv_TEXCOORD0.xy-resolution.xy)/resolution.y;
-	vec3 c = trace(vec3(0,.0,-1.),vec3(uv,1));
+	vec2 uv = (2.*gl_MultiTexCoord0.xy // xlv_TEXCOORD0.xy
+-resolution.xy)/resolution.y;
+	vec3 c = trace(vec3(0,.0,-1.),vec3(gl_MultiTexCoord0.xy*1.0 // uv
+, 1));
 	xlv_Color=c;
 }
 
 [Fragment shader]
 
 void main(void){
-#if 1
+#if 0
 	vec2 uv = (2.*xlv_TEXCOORD0.xy-resolution.xy)/resolution.y;
 	vec3 c = trace(vec3(0,.0,-1.),vec3(uv,1));
 	gl_FragColor = vec4(c, 1.);
