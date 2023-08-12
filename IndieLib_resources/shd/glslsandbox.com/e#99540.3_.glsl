@@ -1,6 +1,29 @@
-uniform vec3      resolution=vec3(0);
-uniform float     time=0;
-
+uniform vec3      iResolution;
+uniform vec4      iMouse;
+uniform float     iTime;
+uniform vec3      resolution;
+uniform vec4      mouse;
+uniform float     time;
+uniform float     iGlobalTime;
+uniform vec4      iDate;
+uniform float     iSampleRate;
+uniform vec3      iChannelResolution[4];
+uniform float     iChannelTime[4];
+uniform vec2      ifFragCoordOffsetUniform;
+uniform float     iTimeDelta;
+uniform int       iFrame;
+uniform float     iFrameRate;
+struct Channel {
+    vec3  resolution;
+    float   time;
+};
+varying vec3 xlv_position;
+varying vec3 xlv_Normal;
+varying vec3 xlv_Binormal;
+varying vec3 xlv_Tangent;
+varying vec3 xlv_Color;
+varying vec2 xlv_TEXCOORD0;
+#define mainImage main
 #define max_steps 50
 #define min_step .015
 #define epsilon .0034
@@ -36,57 +59,55 @@ vec3 trace(vec3 o, vec3 d){
 	}
 	return vec3(0);
 }
-varying vec2 xlv_TEXCOORD0;
-varying vec4 color_;
 
 [Vertex shader]
 
 struct VsOut {
     vec4 position;
-    vec2 texCoord;
-    vec4 color;
+    vec2 uv;
 };
-
-struct VsIn {
+struct VsIn2 {
     vec2 position;
-    vec2 texCoord;
+    vec2 uv;
 };
-
-uniform vec4 scaleBias;
-
-VsOut xlat_main( in VsIn In ) {
-    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0), vec4(0.0, 0.0, 0.0, 0.0));
-    Out.position.xy = ((In.position.xy * scaleBias.xy) + scaleBias.zw);
-    Out.position.w = 1.0;
-
-    Out.texCoord = In.position.xy;
-    xlv_TEXCOORD0 = In.position.xy;
-
-    vec3 c = trace(vec3(0,.0,-1.),vec3(In.position.xy,1));
-    Out.color=vec4(c, 1.);
+struct VsIn3 {
+    vec3 position;
+    vec3 Normal;
+    vec3 Binormal;
+    vec3 Tangent;
+    vec3 Color;
+    vec2 uv;
+};
+uniform mat4 worldViewProj;
+VsOut main2( in VsIn2 In ) {
+    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));
+    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);
+    Out.uv.x = In.uv.x;
+    Out.uv.y = 1.0-In.uv.y;
     return Out;
 }
-
 void main() {
     VsOut xl_retval;
-    VsIn xlt_In;
+    VsIn2 xlt_In;
     xlt_In.position = vec2(gl_Vertex);
-    xlt_In.texCoord = vec2(gl_Vertex);
-    xl_retval = xlat_main( xlt_In);
+    xlt_In.uv = vec2(gl_MultiTexCoord0);
+    xl_retval = main2( xlt_In);
     gl_Position = vec4(xl_retval.position);
-    xlv_TEXCOORD0 = vec2(xl_retval.position.xy);
-    color_=vec4(xl_retval.color);
+    xlv_TEXCOORD0 = vec2(xl_retval.uv);	
+	vec2 uv = (2.*xlv_TEXCOORD0.xy-resolution.xy)/resolution.y;
+	vec3 c = trace(vec3(0,.0,-1.),vec3(uv,1));
+	xlv_Color=c;
 }
 
 [Fragment shader]
 
 void main(void){
-	#if 0	
+#if 1
 	vec2 uv = (2.*xlv_TEXCOORD0.xy-resolution.xy)/resolution.y;
 	vec3 c = trace(vec3(0,.0,-1.),vec3(uv,1));
 	gl_FragColor = vec4(c, 1.);
-	#else
-	gl_FragColor = color_;
-	#endif
+#else
+	gl_FragColor = vec4(xlv_Color, 1.);
+#endif
 }
 
