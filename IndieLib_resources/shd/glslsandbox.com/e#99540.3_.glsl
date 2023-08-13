@@ -60,6 +60,33 @@ vec3 trace(vec3 o, vec3 d){
 	return vec3(0);
 }
 
+vec3 map2(vec3 v){
+	return v;
+}
+
+// iquilezles.org/articles/normalsSDF
+vec3 normal2(vec3 p){
+    const float h = 0.0001; 
+    const vec2 k = vec2(1,-1);
+    return normalize(k.xyy*map2(p + k.xyy*h)+ 
+                     k.yyx*map2(p + k.yyx*h)+ 
+                     k.yxy*map2(p + k.yxy*h)+ 
+                     k.xxx*map2(p + k.xxx*h));
+}
+
+vec3 trace2(vec3 o, vec3 d){
+	float dist = 0., t = 0.;
+	for(int i = 0; i < max_steps; i++){
+		dist = length(map2(o+d*t));
+		if(dist < epsilon){
+			float l = .3+.6*pow(max(dot(normalize(vec3(cos(time),.3, -.9)),normal2(o+d*t)),-.1),1.);
+			return vec3(l);
+		}
+		t+= dist;
+	}
+	return vec3(0);
+}
+
 [Vertex shader]
 
 struct VsOut {
@@ -98,6 +125,9 @@ void main() {
 -resolution.xy)/resolution.y;
 	vec3 c = trace(vec3(0,.0,-1.),vec3(gl_MultiTexCoord0.xy*1.0 // uv
 , 1));
+	vec3 p = trace2(vec3(0,.0,-1.),vec3(gl_MultiTexCoord0.xy*1.0 // uv
+, 1));
+    //gl_Position = vec4(p, 1);
 	xlv_Color=c;
 }
 
