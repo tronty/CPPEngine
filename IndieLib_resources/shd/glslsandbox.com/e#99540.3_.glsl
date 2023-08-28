@@ -1,3 +1,57 @@
+#if 0
+struct VSIn
+{
+    uint index : SV_VertexID;
+};
+
+struct PSIn
+{
+    vec4 position : SV_Position;
+    vec2 texCoord : TEXCOORD0;
+    vec3 viewVectorTangent : TEXCOORD1;
+    vec3 lightVectorTangent : TEXCOORD2;
+};
+PSIn VSMain(VSIn input)
+{
+    PSIn output;
+    
+    float meridianPart = ( input.index % ( g_SphereMeridianSlices + 1 ) ) / float( g_SphereMeridianSlices );
+    float parallelPart = ( input.index / ( g_SphereMeridianSlices + 1 ) ) / float( g_SphereParallelSlices );
+    
+    float angle1 = meridianPart * 3.14159265 * 2.0;
+    float angle2 = ( parallelPart - 0.5 ) * 3.14159265;
+    
+    float cos_angle1 = cos( angle1 );
+    float sin_angle1 = sin( angle1 );
+    float cos_angle2 = cos( angle2 );
+    float sin_angle2 = sin( angle2 );
+        
+    vec3 VertexPosition;
+    VertexPosition.z = cos_angle1 * cos_angle2;
+    VertexPosition.x = sin_angle1 * cos_angle2;
+    VertexPosition.y = sin_angle2;
+    
+    output.position = mul( vec4( VertexPosition, 1.0 ), g_ModelViewProj );
+    output.texCoord = vec2( 1.0 - meridianPart, 1.0 - parallelPart );
+    
+    vec3 tangent = vec3( cos_angle1, 0.0, -sin_angle1 );
+    vec3 binormal = vec3( -sin_angle1 * sin_angle2, cos_angle2, -cos_angle1 * sin_angle2 );
+        
+    vec3 viewVector = normalize(g_EyePosition - VertexPosition);
+    
+    output.viewVectorTangent.x = dot( viewVector, tangent );
+    output.viewVectorTangent.y = dot( viewVector, binormal);
+    output.viewVectorTangent.z = dot( viewVector, VertexPosition );
+    
+    vec3 lightVector = normalize( g_LightPosition );
+    
+    output.lightVectorTangent.x = dot( lightVector, tangent );
+    output.lightVectorTangent.y = dot( lightVector, binormal);
+    output.lightVectorTangent.z = dot( lightVector, VertexPosition );
+    
+    return output;
+}
+#endif
 uniform vec3      iResolution;
 uniform vec4      iMouse;
 uniform float     iTime;
@@ -119,15 +173,37 @@ void main() {
     xlt_In.position = vec2(gl_Vertex);
     xlt_In.uv = vec2(gl_MultiTexCoord0);
     xl_retval = main2( xlt_In);
-    gl_Position = vec4(xl_retval.position);
-    xlv_TEXCOORD0 = vec2(xl_retval.uv);	
-	vec2 uv = (2.*gl_MultiTexCoord0.xy // xlv_TEXCOORD0.xy
--resolution.xy)/resolution.y;
-	vec3 c = trace(vec3(0,.0,-1.),vec3(gl_MultiTexCoord0.xy*1.0 // uv
-, 1));
-	vec3 p = trace2(vec3(0,.0,-1.),vec3(gl_MultiTexCoord0.xy*1.0 // uv
-, 1));
-    //gl_Position = vec4(p, 1);
+    vec2 uv_ = vec2(xl_retval.uv);
+#if 0
+	vec2 uv = (2.*uv_-resolution.xy)/resolution.y;
+#else
+	vec2 uv = uv_;
+#endif
+	vec3 c = trace(vec3(0,.0,-1.),vec3(uv, 1));
+	vec3 p = trace2(vec3(0,.0,-1.),vec3(uv, 1));
+#if 1
+	gl_Position = vec4(xl_retval.position);
+#elif 0
+	gl_Position = vec4(p, 1);
+#else
+	float meridianPart = uv.x;
+	float parallelPart = uv.y;
+	float angle1 = meridianPart * 3.14159265 * 2.0;
+	float angle2 = ( parallelPart - 0.5 ) * 3.14159265;
+	float cos_angle1 = cos( angle1 );
+	float sin_angle1 = sin( angle1 );
+	float cos_angle2 = cos( angle2 );
+	float sin_angle2 = sin( angle2 );
+	gl_Position.z = cos_angle1 * cos_angle2;
+	gl_Position.x = sin_angle1 * cos_angle2;
+	gl_Position.y = sin_angle2;
+	gl_Position = worldViewProj*gl_Position;
+#endif
+#if 1
+	xlv_TEXCOORD0 = uv;
+#else
+	xlv_TEXCOORD0 = vec2( 1.0 - meridianPart, 1.0 - parallelPart );
+#endif
 	xlv_Color=c;
 }
 
