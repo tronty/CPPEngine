@@ -141,6 +141,59 @@ vec3 trace2(vec3 o, vec3 d){
 	return vec3(0);
 }
 
+#if 0
+PSIn VSMain(VSIn input)
+{
+    PSIn output;
+    
+    float meridianPart = ( input.index % ( g_SphereMeridianSlices + 1 ) ) / float( g_SphereMeridianSlices );
+    float parallelPart = ( input.index / ( g_SphereMeridianSlices + 1 ) ) / float( g_SphereParallelSlices );
+    
+    float angle1 = meridianPart * 3.14159265 * 2.0;
+    float angle2 = ( parallelPart - 0.5 ) * 3.14159265;
+    
+    float cos_angle1 = cos( angle1 );
+    float sin_angle1 = sin( angle1 );
+    float cos_angle2 = cos( angle2 );
+    float sin_angle2 = sin( angle2 );
+        
+    float3 VertexPosition;
+    VertexPosition.z = cos_angle1 * cos_angle2;
+    VertexPosition.x = sin_angle1 * cos_angle2;
+    VertexPosition.y = sin_angle2;
+    
+    output.position = mul( float4( VertexPosition, 1.0 ), g_ModelViewProj );
+    output.texCoord = float2( 1.0 - meridianPart, 1.0 - parallelPart );
+    
+    float3 tangent = float3( cos_angle1, 0.0, -sin_angle1 );
+    float3 binormal = float3( -sin_angle1 * sin_angle2, cos_angle2, -cos_angle1 * sin_angle2 );
+        
+    float3 viewVector = normalize(g_EyePosition - VertexPosition);
+    
+    output.viewVectorTangent.x = dot( viewVector, tangent );
+    output.viewVectorTangent.y = dot( viewVector, binormal);
+    output.viewVectorTangent.z = dot( viewVector, VertexPosition );
+    
+    float3 lightVector = normalize( g_LightPosition );
+    
+    output.lightVectorTangent.x = dot( lightVector, tangent );
+    output.lightVectorTangent.y = dot( lightVector, binormal);
+    output.lightVectorTangent.z = dot( lightVector, VertexPosition );
+    
+    return output;
+}
+[Geometry shader]
+#version 330 core
+layout (points) in;
+layout (points, max_vertices = 1) out;
+
+void main() {    
+    gl_Position = gl_in[0].gl_Position; 
+    EmitVertex();
+    EndPrimitive();
+} 
+#endif
+
 [Vertex shader]
 
 struct VsOut {
