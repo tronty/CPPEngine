@@ -59,9 +59,9 @@ void setShaderConstantRaw(const char *name, const void *data, const int size);
 #if 1
 VIRTUAL 
 ShaderID addGLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
-                                            	const unsigned int flags);
+const char *vsText=0, const char *gsText=0, const char *fsText=0, const char *csText=0, const char *hsText=0, const char *dsText=0,
+const char *vsMain="main", const char *gsMain="main", const char *fsMain="main", const char *csMain="main", const char *hsMain="main", const char *dsMain="main", 
+                                            	const unsigned int flags=0);
 #endif
 virtual ShaderID addHLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,

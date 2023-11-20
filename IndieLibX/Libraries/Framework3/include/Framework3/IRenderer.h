@@ -3165,7 +3165,10 @@ typedef enum _tShader
 	eShaderNone,
 	eHLSL_Shader,
 	eGLSL_Shader,
-	eGLES_Shader,
+	eGLES_Shader,	/*
+	eHLSL_Geometry_Shader,
+	eGLSL_Geometry_Shader,
+	eGLES_Geometry_Shader,	*/
 	eHLSL_Fragment_Shader,
 	eGLSL_Fragment_Shader,
 	eGLES_Fragment_Shader,
