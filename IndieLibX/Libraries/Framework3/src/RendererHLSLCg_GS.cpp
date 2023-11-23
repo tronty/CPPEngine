@@ -6584,6 +6584,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::size_t foundGS = shaderText.find("[Geometry shader]");
 	unsigned int flags=0;
 	unsigned int flags_=0;
+	if(foundGS==std::string::npos)
+	{
 	if	((foundFS!=std::string::npos) && (foundVS!=std::string::npos))
 		switch(aFlags)
 		{
@@ -6629,6 +6631,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				flags=eHLSL_Vertex_Shader;
 				break;
 		}
+	}
 	}
 
 	if(flags == eGLSL_Fragment_Shader)
@@ -6813,7 +6816,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				fsStr2.append(header);
 				fsStr2.append(val);
 				//printf("\nfs:\n%s\n", val.c_str());
-				}else if(foundFS!=std::string::npos){
+				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
 				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
 				fsStr2.append(header);
 				fsStr2.append(val);

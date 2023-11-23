@@ -1190,6 +1190,8 @@ LOG_FNLN;
 #endif
 				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
 				checkGlError("");
+				printf("addShader:shaderGL1_1.program=%x\n", shaderGL1_1.program);
+
 				glGetInfoLogARB(shaderGL1_1.program, sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
@@ -1316,9 +1318,11 @@ LOG_FNLN;
 LOG_FNLN;
 LOG_PRINT("shaders.size()=%d\n", shaders.size());
 //stx_exit(0);
+			printf("link ok:%x\n", shaders.size()-1);
 			return shaders.size()-1;
 				}
 			}
+			printf("link failed:%x\n", -1);
 			return SHADER_NONE;
 		}
 
