@@ -1,3 +1,7 @@
+[Vertex shader]
+
+#if 0
+
 varying vec2 vUv;
 
 void main() {
@@ -15,6 +19,7 @@ void main() {
   gl_FragColor = vec4( vec3( vUv, 0. ), 1. );
 
 }
+#elif 0
 
 varying vec2 vUv;
 varying float noise;
@@ -61,6 +66,7 @@ void main() {
   gl_FragColor = vec4( color.rgb, 1.0 );
 
 }
+#elif 1
 
 varying vec2 vUv;
 varying float noise;
@@ -93,7 +99,9 @@ vUv = uv;
   gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 
 }
+#endif
 
+[Fragment shader]
 varying vec2 vUv;
 varying float noise;
 uniform sampler2D tExplosion;
