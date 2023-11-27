@@ -6,6 +6,23 @@
 #ifndef _IRenderer_H_
 #define _IRenderer_H_
 
+#if defined(LINUX)
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#if 0
+#define LOG_PRINT(...) printf(__VA_ARGS__)
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#else
+#define LOG_PRINT(...) 
+#define LOG_FNLN 
+#endif
+#else
+#define STX_PRINT(...)
+#define STX_FNLN
+#define LOG_PRINT(...)
+#define LOG_FNLN
+#endif
+
 #if 1
 #define VIRTUAL
 #define VIRTUAL0
@@ -353,6 +370,7 @@ inline const char* GetShaderName(tShader aShader_)
 struct Framework3ShaderFactory
 {
 	static std::string GetShader(const char* aShaderName);
+	static std::string GetShaderFileName(const char* aShaderName);
 };
 
 typedef int TextureID;
@@ -405,8 +423,27 @@ enum RENDERERAPI ConstantType {
 	CONSTANT_MAT2,
 	CONSTANT_MAT3,
 	CONSTANT_MAT4,
+	SAMPLER_1D,
+	SAMPLER_2D,
+	SAMPLER_3D,
+	SAMPLER_CUBE,
     CONSTANT_NONE,
 	CONSTANT_TYPE_COUNT
+};
+enum RENDERERAPI ConstantType_ {
+	CONSTANT_FLOAT_,
+	CONSTANT_VEC2_,
+	CONSTANT_VEC3_,
+	CONSTANT_VEC4_,
+	CONSTANT_INT_,
+	CONSTANT_IVEC2_,
+	CONSTANT_IVEC3_,
+	CONSTANT_IVEC4_,
+	CONSTANT_MAT2_,
+	CONSTANT_MAT3_,
+	CONSTANT_MAT4_,
+    CONSTANT_NONE_,
+	CONSTANT_TYPE_COUNT_
 };
 extern int constantTypeSizes[CONSTANT_TYPE_COUNT];
 enum RENDERERAPI Filter {
@@ -1985,7 +2022,7 @@ unsigned int DrawAtlas(std::vector<TextureID>& av)
 	static VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -2203,7 +2240,7 @@ inline unsigned int DrawIndexedPrimitiveUP(Primitives PrimitiveType,
 	VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "mainPS");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -2840,15 +2877,17 @@ struct XSampler : public Sampler
 	{	name="";
 		location=0;
 		unit=0;
+		type=SAMPLER_2D;
 	}
 	virtual ~XSampler(){}
 	XSampler(const XSampler& rhs)
 	{	name=rhs.name;
 		location=rhs.location;
 		unit=rhs.unit;
+		type=rhs.type;
 	}
 	std::string name;
-	int location, unit;
+	int location, unit, type;
 #ifdef HAS_GLCG
 	CGparameter param;
 	std::string paramname;
@@ -2910,7 +2949,7 @@ inline void STX_DrawTexture(TextureID texture)
 	static VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "main", "main"); 
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "main", "main"); 
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

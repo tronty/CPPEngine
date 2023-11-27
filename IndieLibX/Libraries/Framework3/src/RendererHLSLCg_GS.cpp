@@ -37,18 +37,27 @@ using namespace LuaUtil;
 
 #define USEXML 1
 
-#if 1
-#define STX_FNLN
-#define STX_PRINT
+#if 0
+#define LOG_PRINT
 #define LOG_FNLN
 #define LOG_PRINT
+#define LOG_FNLN
+#define LOG_FNLN_NONE
+#define LOG_PRINT_NONE
+#define LOG_FNLN_X
+#define LOG_PRINT_X
+#elif 1
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#define LOG_PRINT(...)
+#define LOG_FNLN
 #define LOG_FNLN_NONE
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #else
-#define LOG_PRINT(...) LOG_PRINT(__VA_ARGS__);
-#define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_PRINT(...)
+#define LOG_FNLN
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -208,8 +217,8 @@ void RendererHLSLCg::InitTexN(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string texSHD = Framework3ShaderFactory::GetShaderFileName("texSHD0N");
+		s = addShaderFromFile(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -224,8 +233,8 @@ void RendererHLSLCg::InitTex2N(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD2N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string texSHD = Framework3ShaderFactory::GetShaderFileName("texSHD2N");
+		s = addShaderFromFile(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -240,8 +249,8 @@ void RendererHLSLCg::InitTex3N(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD1N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string texSHD = Framework3ShaderFactory::GetShaderFileName("texSHD1N");
+		s = addShaderFromFile(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -256,8 +265,8 @@ void RendererHLSLCg::InitPlainN(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD1N");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string plainSHD = Framework3ShaderFactory::GetShaderFileName("plainSHD1N");
+		s = addShaderFromFile(plainSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -271,8 +280,8 @@ void RendererHLSLCg::InitPlain3N(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD2N");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string plainSHD = Framework3ShaderFactory::GetShaderFileName("plainSHD2N");
+		s = addShaderFromFile(plainSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -286,8 +295,8 @@ void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string texSHD = Framework3ShaderFactory::GetShaderFileName("texSHD0");
+		s = addShaderFromFile(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -301,8 +310,8 @@ void RendererHLSLCg::InitTex3(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD1");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string texSHD = Framework3ShaderFactory::GetShaderFileName("texSHD1");
+		s = addShaderFromFile(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -316,8 +325,8 @@ void RendererHLSLCg::InitPlain(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD1");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string plainSHD = Framework3ShaderFactory::GetShaderFileName("plainSHD1");
+		s = addShaderFromFile(plainSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -330,8 +339,8 @@ void RendererHLSLCg::InitPlain3(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD2");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string plainSHD = Framework3ShaderFactory::GetShaderFileName("plainSHD2");
+		s = addShaderFromFile(plainSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -393,7 +402,7 @@ void IRenderer::OnClear()
 #if 0
 	if(1)
 	{
-		STX_PRINT("IRenderer::OnClear:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
+		LOG_PRINT("IRenderer::OnClear:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
 	}
 #endif
 }
@@ -402,16 +411,16 @@ void IRenderer::OnPresent(IInput* Input)
 #if 0
 	if(1)
 	{
-		STX_PRINT("IRenderer::OnPresent:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
+		LOG_PRINT("IRenderer::OnPresent:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
 		if(m_nBeginScene!=m_nEndScene)
 		{
-			STX_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
-			STX_PRINT("m_nEndScene=%d\n", m_nEndScene);
+			LOG_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
+			LOG_PRINT("m_nEndScene=%d\n", m_nEndScene);
 		}
 		if((m_nBeginScene==0)&&(m_nEndScene==0))
 		{
-			STX_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
-			STX_PRINT("m_nEndScene=%d\n", m_nEndScene);
+			LOG_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
+			LOG_PRINT("m_nEndScene=%d\n", m_nEndScene);
 		}
 		stx_exit(0);
 	}
@@ -1165,13 +1174,13 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 		m_Texture_cache.insert ( std::pair<std::string,TextureID>(fileName, id) );
 }
 
-//define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+//define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps
 										  , const SamplerStateID samplerState, bool bFlipY, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
 {
-STX_FNLN;
+LOG_FNLN;
 	std::string f=fileName0;
 
 	std::string f2=stx_convertpath(f);
@@ -1180,9 +1189,9 @@ STX_FNLN;
     
 	if(!stx_fileExists(fileName))
 	{
-		STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("IRenderer::ImageLibTexturee:1181:\n");
-		STX_PRINT("\tLoading texture %s failed\n", fileName);
+		LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("IRenderer::ImageLibTexturee:1181:\n");
+		LOG_PRINT("\tLoading texture %s failed\n", fileName);
 		DBG_HALT;
 	}
     
@@ -1343,28 +1352,38 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	tShader shaderType=eHLSL_Shader;
 	const char *extension = strrchr(fileName, '.');
 	if (stx_strcasecmp(extension, ".glsl") == 0)
+	{
 		shaderType=eGLSL_Shader;
+		STX_PRINT("GLSL_Shader:fileName=%s\n",fileName);
+	}
 	else if (stx_strcasecmp(extension, ".gles") == 0)
+	{
 		shaderType=eGLES_Shader;
+		STX_PRINT("GLES_Shader:fileName=%s\n",fileName);
+	}
+	else
+	{
+		STX_PRINT("HLSL_Shader:fileName=%s\n",fileName);
+	}
 	flags=shaderType;
 #if 0
 	switch(shaderType)
 	{
 		case eGLSL_Shader:
-			printf("eGLSL_Shader:\n");
+			LOG_PRINT("eGLSL_Shader:\n");
 			break;
 		case eHLSL_Shader:
-			printf("eHLSL_Shader:\n");
+			LOG_PRINT("eHLSL_Shader:\n");
 			break;
 		case eGLES_Shader:
-			printf("eGLES_Shader:\n");
+			LOG_PRINT("eGLES_Shader:\n");
 			break;
 	};
 #endif
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
-	printf("\nShader file:%s\n", fn.c_str());
+	//LOG_PRINT("\nShader file:%s\n", fn.c_str());
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
@@ -1411,13 +1430,24 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	#define TextureSample(T,S,uv) T.Sample(S, uv)
 	#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod(TEX, float4(TEXCOORD.x, TEXCOORD.y, 0.0, 0.0))
 	#define SAMPLER2D sampler2D
-#endif  		
+#endif
+	#if 0
+	{
+		char buf[1024];
+		stx_snprintf(buf, 1024, "%s.glsl", fileName);
+		std::ofstream outfile;
+		LOG_PRINT("writing %s\n", buf);
+		outfile.open(buf);
+		outfile << contents;
+	}
+	#endif
+
 	ShaderID id=addShader(contents.c_str(), vsMain, fsMain, 0, flags);
 	if(!stx_fileExists(fn.c_str()))
 	{
-		STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("IRenderer::addShaderFromFile:1349:\n");
-		STX_PRINT("\tLoading shader %s failed\n", fn.c_str());
+		LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("IRenderer::addShaderFromFile:1349:\n");
+		LOG_PRINT("\tLoading shader %s failed\n", fn.c_str());
 		DBG_HALT;
 	}
 	return id;
@@ -1489,7 +1519,7 @@ static void loadAPK (const char* apkPath) {
     return;
   }
 
-  //Just for debug, print APK contents
+  //Just for debug, LOG_PRINT APK contents
   int numFiles = zip_get_num_files(APKArchive);
   for (int i=0; i<numFiles; i++) {
     const char* name = zip_get_name(APKArchive, i, 0);
@@ -1660,13 +1690,15 @@ for(int i=0;i<argc;i++)
 
 void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize, D3DXFROMWINEVECTOR2 texposition, D3DXFROMWINEVECTOR2 texsize)
 {
-	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.hlsl", "main", "main");
+	static ShaderID shd_ = -1;
+	if(shd_==-1) shd_=IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.glsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 	};
-	static VertexFormatID vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
+	static VertexFormatID vf_ = -1;
+	if(vf_==-1) vf_=IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd_);
 	D3DXFROMWINEVECTOR4 col(1.0f, 1.0f, 1.0f, 1.0f);
 	TexVertex dest[4];
 	float x=aposition.x;
@@ -1679,14 +1711,14 @@ void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, 
 	dest[2].texCoord = D3DXFROMWINEVECTOR2(texposition.x, texposition.y);
 	dest[3].position = D3DXFROMWINEVECTOR2(x, y + asize.y);
 	dest[3].texCoord = D3DXFROMWINEVECTOR2(texposition.x, texposition.y+texsize.y);
-	IRenderer::GetRendererInstance()->setShader(shd);
+	IRenderer::GetRendererInstance()->setShader(shd_);
 	IRenderer::GetRendererInstance()->setup2DMode(0, (float) IRenderer::GetRendererInstance()->GetViewportWidth(), 0, (float) IRenderer::GetRendererInstance()->GetViewportHeight());
 	IRenderer::GetRendererInstance()->setShaderConstant4f("scaleBias", IRenderer::GetRendererInstance()->GetscaleBias2D());
 	IRenderer::GetRendererInstance()->setShaderConstant4f("colorRGBA", col);
 	IRenderer::GetRendererInstance()->setTexture("Base", id);
 	IRenderer::GetRendererInstance()->setBlendState(IRenderer::GetRendererInstance()->GetblendSrcAlpha());
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
-	IRenderer::GetRendererInstance()->setVertexFormat(vf);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf_);
 	IRenderer::GetRendererInstance()->DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 2, &dest[0], &dest[0], sizeof(TexVertex));
 }
 
@@ -2158,11 +2190,11 @@ void RendererHLSLCg::apply()
         _Inited=true;
     }
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
+LOG_FNLN;
+LOG_PRINT("selectedShader:%x\n", selectedShader);
+LOG_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
+LOG_PRINT("_Shader:%x\n", _Shader);
+LOG_PRINT("_VertexFormat:%x\n", _VertexFormat);
 
 	if(selectedShader>-1)
 		_Shader=selectedShader;
@@ -2239,11 +2271,11 @@ STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
             _SamplerStates[i]=-1;
 	}
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
+LOG_FNLN;
+LOG_PRINT("selectedShader:%x\n", selectedShader);
+LOG_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
+LOG_PRINT("_Shader:%x\n", _Shader);
+LOG_PRINT("_VertexFormat:%x\n", _VertexFormat);
 #if 0 // ???
 		_Shader=0; // ???
  		_VertexFormat=0; // ???
@@ -2326,7 +2358,7 @@ LOG_FNLN;
 		//if (_VertexBuffers[i] != DONTCARE)
 		if (_VertexBuffers[i] != -1)
 		{
-STX_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
+LOG_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
 			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
 		}
 #endif
@@ -2619,8 +2651,8 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		flags=0;
 	#endif
 
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);
+	LOG_FNLN;
+	LOG_PRINT("selectedShader:%x\n", selectedShader);
 	//const unsigned int flags=0; // ???#if 0
 	#if 1
 	if (flags & RESET_SHADER)
@@ -2634,8 +2666,8 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		selectedComputeShader = SHADER_NONE;
 	}
 
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);	
+	LOG_FNLN;
+	LOG_PRINT("selectedShader:%x\n", selectedShader);	
 	if (flags & RESET_VF)
 	{
 		selectedVertexFormat = VF_NONE;
@@ -4759,7 +4791,7 @@ IRenderer* IRenderer::GetRendererInstance(
 	m_title=atitle;
 	LOG_START;
 	#if defined(LINUX) || defined(__APPLE__)
-	printf("\nTitle: %s\n", atitle);
+	LOG_PRINT("\nTitle: %s\n", atitle);
 	#endif
 	char path1[MAX_PATH];
 	stx_getcwd(path1);
@@ -4871,7 +4903,7 @@ if(stx_strcmp(slash, "/scripting")!=0)
 		if(Debug=="True")
 			m_bDebug=true;
 	}
-	printf("Renderer=%s\n", Renderer.c_str());
+	LOG_PRINT("Renderer=%s\n", Renderer.c_str());
 #if 0
 	unsigned int c=1;
 	while(c<2)
@@ -6043,10 +6075,10 @@ LOG_FNLN;
 			type=TYPE_BINORMAL;
 
 		LOG_FNLN;
-		STX_PRINT("stream=%d\n", stream); 
-		STX_PRINT("type=%d\n", type);
-		STX_PRINT("format=%d\n", format);
-		STX_PRINT("size=%d\n", size);
+		LOG_PRINT("stream=%d\n", stream); 
+		LOG_PRINT("type=%d\n", type);
+		LOG_PRINT("format=%d\n", format);
+		LOG_PRINT("size=%d\n", size);
 		pass.format_.push_back(stream);
 		pass.format_.push_back(type);
 		pass.format_.push_back(format);
@@ -6156,9 +6188,9 @@ std::string stx_Effect::ParseEffect(const std::string& aFileName, const char* aD
 
 	if(!stx_fileExists(m_sFileName.c_str()))
 	{
-		//STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("stx_Effect::ParseEffect:5962:\n");
-		STX_PRINT("\tLoading effect file  %s failed\n", m_sFileName.c_str());
+		//LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("stx_Effect::ParseEffect:5962:\n");
+		LOG_PRINT("\tLoading effect file  %s failed\n", m_sFileName.c_str());
 		DBG_HALT;
 	}	
 
@@ -6404,22 +6436,22 @@ LOG_FNLN;
     }}
 LOG_FNLN;
 	LOG_FNLN;
-	STX_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
-	STX_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
+	LOG_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
+	LOG_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
 	for(unsigned int i=0;i<m_vTechniques.size();i++){
-		STX_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
 	for(unsigned int j=0;j<m_vTechniques[i].m_vPasses.size();j++)
 	{
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
 	}}
 	for(unsigned int i=0;i<m_vTextures.size();i++)
 	{
-        	STX_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
-        	STX_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
-        	STX_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
+        	LOG_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
+        	LOG_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
+        	LOG_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
 	}
 	//stx_exit(0);
 }
@@ -6496,23 +6528,23 @@ LOG_FNLN;
 }
 void stx_Effect::BeginPass( unsigned int iPass )
 {
-STX_FNLN;
+LOG_FNLN;
 	if(m_iTechnique<0)
 		return;
-STX_FNLN;
+LOG_FNLN;
 	if((iPass+1)>m_vTechniques[m_iTechnique].m_vPasses.size())
 		return;
-STX_FNLN;
+LOG_FNLN;
 	stx_Pass pass=m_vTechniques[m_iTechnique].m_vPasses[iPass];
-STX_FNLN;
-STX_PRINT("pass.Shader=%x\n", pass.Shader);
+LOG_FNLN;
+LOG_PRINT("pass.Shader=%x\n", pass.Shader);
 	if(pass.Shader>-1)
 		IRenderer::GetRendererInstance()->setShader(pass.Shader);
-STX_FNLN;
-STX_PRINT("pass.VertexFormat=%x\n", pass.VertexFormat);
+LOG_FNLN;
+LOG_PRINT("pass.VertexFormat=%x\n", pass.VertexFormat);
 	if(pass.VertexFormat>-1)
 		IRenderer::GetRendererInstance()->setVertexFormat(pass.VertexFormat);
-STX_FNLN;
+LOG_FNLN;
 #if 0
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 #else
@@ -6564,13 +6596,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
-				printf("flags=eGLSL_Shader\n");
+				LOG_PRINT("flags=eGLSL_Shader\n");
 				break;
 			case eGLES_Shader:
-				printf("flags=eGLES_Shader\n");
+				LOG_PRINT("flags=eGLES_Shader\n");
 				break;
 			case eHLSL_Shader:
-				printf("flags=eHLSL_Shader\n");
+				LOG_PRINT("flags=eHLSL_Shader\n");
 				break;
 		}
 #endif
@@ -6582,6 +6614,14 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundFS = shaderText.find("[Fragment shader]");
 	std::size_t foundGS = shaderText.find("[Geometry shader]");
+	std::size_t headerlength=std::string::npos;
+	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
+	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
+	if(foundGS!=std::string::npos) headerlength=std::min(headerlength, foundGS);
+	header = shaderText.substr(0, headerlength);
+	vsStr2.append(header);
+	fsStr2.append(header);
+	gsStr2.append(header);
 	unsigned int flags=0;
 	unsigned int flags_=0;
 	if(foundGS==std::string::npos)
@@ -6803,37 +6843,37 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		std::string 	val;
 				if(foundGS!=std::string::npos){
 				val = shaderText.substr(foundGS+17, endIndex - foundGS - 17);
-				gsStr2.append(header);
+				//gsStr2.append(header);
 				gsStr2.append(val);
-				//printf("\ngs:\n%s\n", val.c_str());
+				//LOG_PRINT("\ngs:\n%s\n", val.c_str());
 				}if((foundVS!=std::string::npos)&&(foundFS!=std::string::npos)){
 				val = shaderText.substr(foundVS+15, foundFS - foundVS - 15);
-				vsStr2.append(header);
+				//vsStr2.append(header);
 				vsStr2.append(val);
-				//printf("\nvs:\n%s\n", val.c_str());
+				//LOG_PRINT("\nvs:\n%s\n", val.c_str());
 				}if((foundFS!=std::string::npos)&&(foundGS!=std::string::npos)){
 				val = shaderText.substr(foundFS+17, foundGS - foundFS - 17);
-				fsStr2.append(header);
+				//fsStr2.append(header);
 				fsStr2.append(val);
-				//printf("\nfs:\n%s\n", val.c_str());
+				//LOG_PRINT("\nfs:\n%s\n", val.c_str());
 				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
 				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
-				fsStr2.append(header);
+				//fsStr2.append(header);
 				fsStr2.append(val);
-				//printf("\nfs:\n%s\n", val.c_str());
+				//LOG_PRINT("\nfs:\n%s\n", val.c_str());
 				}
 	}
 #endif
 	if(flags == eHLSL_Shader)
 	{
-		//printf("eHLSL_Shader:\n");
+		//LOG_PRINT("eHLSL_Shader:\n");
     		return addHLSLShaderVrtl(  	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         			vsMain, 0, fsMain, 0, 0, 0, flags_);
 	}
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 	else if(flags == eGLES_Shader)
 	{
-		//printf("eGLES_Shader:\n");
+		//LOG_PRINT("eGLES_Shader:\n");
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
@@ -6843,7 +6883,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #else
 	else if(flags == eGLSL_Shader)
 	{
-		//printf("eGLSL_Shader:\n");
+		//LOG_PRINT("eGLSL_Shader:\n");
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
@@ -6854,8 +6894,8 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	}
 	if(flags == eHLSL_Fragment_Shader)
 	{
-		//printf("eHLSL_Fragment_Shader:\n");
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//LOG_PRINT("eHLSL_Fragment_Shader:\n");
+		//LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
 				"#define WSIGN +\n" 

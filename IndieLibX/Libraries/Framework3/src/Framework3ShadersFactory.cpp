@@ -14,54 +14,104 @@ std::string Framework3ShaderFactory::GetShader(const char* aShaderName)
 	std::string contents;
 #if 0//defined(USE_GLES_SHADERS) && (defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 	if(stx_strcmp(aShaderName,"texSHD0")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLES.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLES.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLES.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLES.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLES.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLES.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLES.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLES.glsl", contents);
 #elif 0//defined(USE_GLES_SHADERS) && defined(_LINUX)
 	if(stx_strcmp(aShaderName,"texSHD0")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLES.LNX.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLES.LNX.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLES.LNX.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLES.LNX.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLES.LNX.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLES.LNX.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLES.LNX.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLES.LNX.glsl", contents);
 #elif 1//defined(USE_HLSL_SHADERS)
 	if(stx_strcmp(aShaderName,"texSHD0")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD0N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0N.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0N.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD1N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1N.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1N.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD2N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD2N.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD2N.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD1N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1N.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1N.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD2N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2N.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2N.glsl", contents);
 #elif 0
 	if(stx_strcmp(aShaderName,"texSHD0")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLSL.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLSL.glsl", contents);
 	else if(stx_strcmp(aShaderName,"texSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLSL.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1.GLSL.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLSL.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.GLSL.glsl", contents);
 	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLSL.hlsl", contents);
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLSL.glsl", contents);
 #endif
 	char buf[64];
 	stx_snprintf(buf, 64, "[Framework3ShaderFactory::GetShader(%s)]", aShaderName);
 	contents=buf;
 	return contents;
+}
+std::string Framework3ShaderFactory::GetShaderFileName(const char* aShaderName)
+{
+#if 0//defined(USE_GLES_SHADERS) && (defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
+	if(stx_strcmp(aShaderName,"texSHD0")==0)
+		return std::string("/Framework3/texSHD0.GLES.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD1")==0)
+		return std::string("/Framework3/texSHD1.GLES.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
+		return std::string("/Framework3/plainSHD1.GLES.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
+		return std::string("/Framework3/plainSHD2.GLES.glsl");
+#elif 0//defined(USE_GLES_SHADERS) && defined(_LINUX)
+	if(stx_strcmp(aShaderName,"texSHD0")==0)
+		return std::string("/Framework3/texSHD0.GLES.LNX.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD1")==0)
+		return std::string("/Framework3/texSHD1.GLES.LNX.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
+		return std::string("/Framework3/plainSHD1.GLES.LNX.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
+		return std::string("/Framework3/plainSHD2.GLES.LNX.glsl");
+#elif 1//defined(USE_HLSL_SHADERS)
+	if(stx_strcmp(aShaderName,"texSHD0")==0)
+		return std::string("/Framework3/texSHD0.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD1")==0)
+		return std::string("/Framework3/texSHD1.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
+		return std::string("/Framework3/plainSHD1.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
+		return std::string("/Framework3/plainSHD2.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD0N")==0)
+		return std::string("/Framework3/texSHD0N.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD1N")==0)
+		return std::string("/Framework3/texSHD1N.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD2N")==0)
+		return std::string("/Framework3/texSHD2N.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD1N")==0)
+		return std::string("/Framework3/plainSHD1N.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD2N")==0)
+		return std::string("/Framework3/plainSHD2N.glsl");
+#elif 0
+	if(stx_strcmp(aShaderName,"texSHD0")==0)
+		return std::string("/Framework3/texSHD0.GLSL.glsl");
+	else if(stx_strcmp(aShaderName,"texSHD1")==0)
+		return std::string("/Framework3/texSHD1.GLSL.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
+		return std::string("/Framework3/plainSHD1.GLSL.glsl");
+	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
+		return std::string("/Framework3/plainSHD2.GLSL.glsl");
+#endif
 }
 

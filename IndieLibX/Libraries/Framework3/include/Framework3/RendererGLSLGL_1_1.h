@@ -76,8 +76,12 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 	virtual void DeleteShader(ShaderID id);
 	virtual int getSamplerIndex(ShaderID shd, const char* aName);
 protected:
-	void linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3& shaderGL1_1);
-    void reflectGLSLShader(std::vector<std::string>& sText, GLuint aProgram, ShaderGLSLGL3& shaderGL1_1);
+	int ___addGLSLShader___(ShaderType typ, std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1, int& infoLogPos, char* infoLog);
+	int __addGLSLShader__(const std::string& aVertexSource, const std::string& aFragmentSource, const std::string& aGeometrySource);
+	void buildUniformReferences(int mGLHandle, ShaderGLSLGL3* shaderGL1_1);
+	void linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1);
+    	void reflectGLSLShader(std::vector<std::string>& sText, int aProgram, ShaderGLSLGL3* shaderGL1_1);
+	void dumpUniformReferences(ShaderGLSLGL3* shaderGL1_1);
 	VArray <ShaderGLSLGL3> shaders;
         void *uniformFuncs[CONSTANT_TYPE_COUNT];
 };
