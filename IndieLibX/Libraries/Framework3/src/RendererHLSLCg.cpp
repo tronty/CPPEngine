@@ -37,12 +37,9 @@ using namespace LuaUtil;
 
 #define USEXML 1
 
-#if 0
+#if 1
 #define STX_PRINT(...) printf(__VA_ARGS__)
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-#elif 1
-#define STX_PRINT(...)
-#define STX_FNLN
 #define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN_NONE
@@ -290,6 +287,10 @@ void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 	if(vf==-1)
 	{
 		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0");
+#if 0
+		STX_FNLN;
+		STX_PRINT("\ntexSHD0:texSHD:\n%s\n", texSHD.c_str());
+#endif
 		s = addShader(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
@@ -6563,6 +6564,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
+STX_FNLN;
 #if 0
 		switch(aFlags)
 		{
@@ -6578,6 +6580,18 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		}
 #endif
 	ShaderID res = SHADER_NONE;
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				STX_PRINT("GLSL_Shader\n");
+				break;
+			case eGLES_Shader:
+				STX_PRINT("GLES_Shader\n");
+				break;
+			default:
+				STX_PRINT("HLSL_Shader\n");
+				break;
+		}
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
@@ -6705,6 +6719,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"#define mainImage main\n"
 				);
 		fsStr2.append(shaderText);
+STX_FNLN;
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
@@ -6718,6 +6733,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         "main", 0, fsMain, 0, 0, 0, flags_);
 #endif
+STX_FNLN;
 	}
 #if 0
 	else 	if(flags == eGLSL_Vertex_Shader)
@@ -6794,6 +6810,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		std::string val = stringToBeSplitted.substr(endIndex+2+delimeters[0].length());
 		fsStr2.append(val);
 	}
+STX_FNLN;
 	if(flags == eHLSL_Shader)
 	{
 		//printf("eHLSL_Shader:\n");
@@ -6821,6 +6838,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                         vsMain, 0, fsMain, 0, 0, 0, flags_);
 	}
 #endif
+STX_FNLN;
 	}
 	if(flags == eHLSL_Fragment_Shader)
 	{
@@ -6893,6 +6911,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"};\n"
 				"#define mainImage main\n");
 		fsStr2.append(shaderText);
+STX_FNLN;
     		return addHLSLShaderVrtl( 	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         			vsMain, 0, "main", 0, 0, 0, flags_);
 	}
@@ -6919,6 +6938,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"};\n"
 				"#define mainImage main\n");
 		vsStr2.append(shaderText);
+STX_FNLN;
     		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
                         		vsMain, 0, "main", 0, 0, 0, flags_);
 	}
@@ -6952,6 +6972,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"#define mainImage main\n"
 				);
 		vsStr2.append(shaderText);
+STX_FNLN;
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
@@ -6966,6 +6987,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                         vsMain, 0, "main", 0, 0, 0, flags_);
 #endif
 	}
+STX_FNLN;
 	return -1;
 }
 

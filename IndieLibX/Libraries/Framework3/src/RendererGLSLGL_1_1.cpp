@@ -650,8 +650,9 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 	return sResult;
 }
 
-void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3& shaderGL1_1)
+void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1_)
 {
+	ShaderGLSLGL3 shaderGL1_1=*shaderGL1_1_;
 	char infoLog[2048];
 	GLint infoLogPos = 0;
 	GLint fsResult=RendererGLSLGL_1_1__addGLSLShader(ePixelShader, sText, shaderGL1_1, infoLogPos, infoLog);
@@ -696,9 +697,10 @@ void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderG
 		checkGlError("");
 	}
 }
-void RendererGLSLGL_1_1::reflectGLSLShader(std::vector<std::string>& sText, GLuint aProgram, ShaderGLSLGL3& shaderGL1_1)
+void RendererGLSLGL_1_1::reflectGLSLShader(std::vector<std::string>& sText, int aProgram, ShaderGLSLGL3* shaderGL1_1_)
 {
-    linkGLSLShader(sText, shaderGL1_1);
+	ShaderGLSLGL3 shaderGL1_1=*shaderGL1_1_;
+    linkGLSLShader(sText, shaderGL1_1_);
 
 					GLint uniformCount, maxLength;
 			GLint numActiveAttribs,maxAttribNameLength = 0;
@@ -802,7 +804,7 @@ const char *vsText0, const char *gsText0, const char *fsText0, const char *csTex
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
 		{
-LOG_FNLN;
+STX_FNLN;
     const char* header=0;
 	std::string vsText="";
 	std::string fsText="";
@@ -859,15 +861,31 @@ LOG_FNLN;
 	hsText.append("precision highp float;\n");
 	dsText.append("precision highp float;\n");
 #endif
+
+#if 1
+STX_FNLN;
+	//const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
+	//const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+	const char* deffs="vec3 GammaCorrect3(vec3 aColor)\n{\n\treturn aColor;\n}\nvec4 GammaCorrect4(vec4 aColor)\n{\n\treturn aColor;\n}\n#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n";
+	//const char* deffs="#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
+	if (deffs) vsText.append(deffs);
+	if (deffs) fsText.append(deffs);
+	if (deffs) gsText.append(deffs);
+	if (deffs) csText.append(deffs);
+	if (deffs) hsText.append(deffs);
+	if (deffs) dsText.append(deffs);
+STX_FNLN;
+#endif
+
 	if (vsText0) vsText.append(vsText0);
 	if (fsText0) fsText.append(fsText0);
 	if (gsText0) gsText.append(gsText0);
 	if (csText0) csText.append(csText0);
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
-#if 0
-	printf("\nvsText:\n%s\n", vsText.c_str());
-	printf("\nfsText:\n%s\n", fsText.c_str());
+#if 1
+	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
+	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
 	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
