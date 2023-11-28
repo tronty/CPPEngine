@@ -37,9 +37,12 @@ using namespace LuaUtil;
 
 #define USEXML 1
 
-#if 1
+#if 0
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#elif 1
+#define STX_PRINT(...)
 #define STX_FNLN
-#define STX_PRINT
 #define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN_NONE

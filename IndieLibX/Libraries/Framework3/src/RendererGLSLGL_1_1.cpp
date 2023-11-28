@@ -46,6 +46,9 @@
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
+#elif 0
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #elif 1
 #define STX_PRINT(...)
 #define STX_FNLN

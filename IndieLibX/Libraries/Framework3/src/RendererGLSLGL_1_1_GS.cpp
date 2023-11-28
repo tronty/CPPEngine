@@ -406,7 +406,53 @@ void RendererGLSLGL_1_1::changeShader(const ShaderID shader)
 		currentShader = shader;
 	}
 }
+#if 1
+void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data, const int size)
+{
+	//STX_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
+	#if 0
+	LOG_FNLN_NONE;
+	LOG_PRINT_NONE("selectedShader=%x\n", selectedShader);
+	LOG_PRINT_NONE("shaders.size()=%x\n", shaders.size());
+	LOG_PRINT_NONE("shaders[selectedShader].uniforms.size()=%x\n", shaders[selectedShader].uniforms.size());
+	#endif
+	if((selectedShader<0)||(selectedShader>=shaders.size()))
+		return;
+	int minUniform = 0;
+	int maxUniform = shaders[selectedShader].uniforms.size() - 1;
+	while (minUniform <= maxUniform){
+		int currUniform = (minUniform + maxUniform) >> 1;
+		int res = stx_strcmp(name, shaders[selectedShader].uniforms[currUniform].name.c_str());
+		if (res == 0){
+			ConstantShaderGLSLGL3 *uni = (ConstantShaderGLSLGL3*)&(shaders[selectedShader].uniforms[0]) + currUniform;
 
+			if (stx_memcmp(&uni->data[0], data, size)){
+				stx_memcpy(&uni->data[0], data, size);
+				uni->dirty = true;
+			}
+			return;
+
+		} else if (res > 0){
+			minUniform = currUniform + 1;
+		} else {
+			maxUniform = currUniform - 1;
+		}
+	}
+			if(1)
+			{
+			if(minUniform > maxUniform)
+			{
+				LOG_FNLN;
+				LOG_PRINT("%s:selectedShader:%d\nShaderConstant %s not defined!\n", m_title.c_str(), selectedShader, name);
+			}
+			else
+			{
+				LOG_FNLN;
+				LOG_PRINT("%s:setShaderConstantRaw:\nname:%s\ndata:%x\nsize:%x\n", m_title.c_str(), name, data, size);
+			}
+			}
+}
+#else
 void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data, const int size)
 {
 	//LOG_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
@@ -422,26 +468,32 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 	#define STX_FNLN
 	#define STX_PRINT
 	#endif
-#if 1
+#if 0
 	int minUniform = 0;
 	int maxUniform = shaders[selectedShader].uniforms.size() - 1;
+#if 0
 	STX_FNLN;
 	STX_PRINT("minUniform=%d\n", minUniform);
 	STX_PRINT("maxUniform=%d\n", maxUniform);
+#endif
 	while (minUniform <= maxUniform)
 	{
 		int currUniform = (minUniform + maxUniform) >> 1;
 		int res = stx_strcmp(name, shaders[selectedShader].uniforms[currUniform].name.c_str());
+#if 0
 		STX_PRINT("currUniform=%d\n", currUniform);
 		STX_PRINT("name=%s, shaders[%d].uniforms[%d].name.c_str()=%s\n", name, selectedShader, currUniform, shaders[selectedShader].uniforms[currUniform].name.c_str());
+#endif
 		if (res == 0)
 		{
 			ConstantShaderGLSLGL3 *uni = (ConstantShaderGLSLGL3*)&(shaders[selectedShader].uniforms[0]) + currUniform;
 			//GLint location=uni->index;
 			GLint type=uni->type;
 			GLint location=currUniform;
+#if 0
 			STX_PRINT("type=%x\n", type);
 			STX_PRINT("location=%x\n", location);
+#endif
 			if (type >= SAMPLER_1D && type <= SAMPLER_CUBE) // SAMPLER_CUBE ???
 			{
 				/*
@@ -507,17 +559,32 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 		STX_PRINT("%d:%d:%x:%d\n", res, currUniform, data, size);
 		STX_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
 		if (res == 0){
+			STX_PRINT("currUniform=%d\n", currUniform);
+			STX_PRINT("selectedShader)=%d\n", selectedShader);
+			STX_PRINT("shaders.size()=%d\n", shaders.size());
+			STX_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
 			ConstantShaderGLSLGL3 *uni = (ConstantShaderGLSLGL3*)&(shaders[selectedShader].uniforms[0]) + currUniform;
 			
 			STX_PRINT("uni=%x\n", uni);
 			STX_PRINT("&uni->data[0]=%x\n", &uni->data[0]);
+
+			STX_PRINT("uni->name=%s\n", uni->name.c_str());
+			STX_PRINT("uni->data.size()=%d\n", uni->data.size());
+			STX_PRINT("uni->location=%d\n", uni->location);
+			STX_PRINT("uni->type=%d\n", uni->type);
+			STX_PRINT("uni->nElements=%d\n", uni->nElements);
+			STX_PRINT("uni->dirty=%d\n", uni->dirty);
+
 			STX_PRINT("data=%x\n", data);
 			STX_PRINT("size=%d\n", size);
 			uni->data.resize(size);
+			STX_PRINT("uni->data.size()=%d\n", uni->data.size());
+			if(uni->data.size()>0){
 			if (stx_memcmp(&uni->data[0], data, size)){
 				stx_memcpy(&uni->data[0], data, size);
 				uni->dirty = true;
-			}
+			}}
+			else STX_PRINT("uni->data.size()<=0 !\n");
 			return;
 
 		} else if (res > 0){
@@ -541,6 +608,8 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 			}
 			}
 }
+#endif
+
 
 		int samplerCompareGL2(const void *sampler0, const void *sampler1)
 		{
@@ -1175,6 +1244,7 @@ STX_FNLN;
 			// get the number of active uniforms
 			glGetObjectParameterivARB(mGLHandle, GL_OBJECT_ACTIVE_UNIFORMS_ARB,
 					&uniformCount);
+			STX_PRINT("uniformCount=%d\n", uniformCount);
 
 STX_FNLN;
 			// Loop over each of the active uniforms, and add them to the reference container
@@ -1493,8 +1563,8 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 	shaderGL1_1->program=0;
 	shaderGL1_1->program=(int)RendererGLSLGL_1_1::__addGLSLShader__(vsText, fsText, gsText);
 	STX_FNLN;
-	//RendererGLSLGL_1_1::buildUniformReferences(shaderGL1_1->program, shaderGL1_1);
-	GLuint r=GetUniforms(shaderGL1_1->program, shaderGL1_1);
+	RendererGLSLGL_1_1::buildUniformReferences(shaderGL1_1->program, shaderGL1_1);
+	//GLuint r=GetUniforms(shaderGL1_1->program, shaderGL1_1);
 	STX_FNLN;
 	RendererGLSLGL_1_1::dumpUniformReferences(shaderGL1_1);
 

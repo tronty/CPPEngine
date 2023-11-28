@@ -562,7 +562,7 @@ if(b)
 		if(m_bDebugInit)
 			stx_exit(0);
 		}
-		stx_exit(0);
+		//stx_exit(0);
 		}
 
 		void RendererGL_1_1::captureScreenshot(Image3& img)
