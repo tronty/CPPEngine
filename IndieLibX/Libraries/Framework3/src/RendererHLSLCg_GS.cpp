@@ -31,6 +31,8 @@
 #include <STX/LuaUtil.h>
 using namespace LuaUtil;
 
+#ifdef __GS__
+
 #if !defined( _WIN32 ) && !defined(SDL_2_0_5_BUILD) && !defined(DBG_HALT)
 #define DBG_HALT
 #endif
@@ -7038,4 +7040,5 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	}
 	return -1;
 }
+#endif
 

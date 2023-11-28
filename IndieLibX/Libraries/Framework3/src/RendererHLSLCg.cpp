@@ -31,6 +31,8 @@
 #include <STX/LuaUtil.h>
 using namespace LuaUtil;
 
+#ifndef __GS__
+
 #if !defined( _WIN32 ) && !defined(SDL_2_0_5_BUILD) && !defined(DBG_HALT)
 #define DBG_HALT
 #endif
@@ -6990,4 +6992,5 @@ STX_FNLN;
 STX_FNLN;
 	return -1;
 }
+#endif
 

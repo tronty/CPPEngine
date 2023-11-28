@@ -27,6 +27,8 @@
 #include <Framework3/Hlsl2Glsl_Translate.h>
 #include <Framework3/GLShaders.h>
 
+#ifdef __GS__
+
 #ifdef __APPLE__
 #define LOG_FNLN_OSX
 #define LOG_PRINT_OSX
@@ -2041,5 +2043,6 @@ int argc, char *argv[]
 #endif
 		STX_CATCH;
 		}
+#endif
 #endif
 
