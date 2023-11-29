@@ -48,9 +48,12 @@
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
+#elif 0
+#define LOG_PRINT(...) printf(__VA_ARGS__)
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #elif 1
-#define STX_PRINT(...) printf(__VA_ARGS__)
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#define STX_PRINT(...)
+#define STX_FNLN
 #define LOG_PRINT(...)
 #define LOG_FNLN
 #define LOG_FNLN_NONE
@@ -411,7 +414,7 @@ void RendererGLSLGL_1_1::changeShader(const ShaderID shader)
 #if 1
 void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data, const int size)
 {
-	//STX_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
+	//LOG_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
 	#if 0
 	LOG_FNLN_NONE;
 	LOG_PRINT_NONE("selectedShader=%x\n", selectedShader);
@@ -467,24 +470,24 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 	if((selectedShader<0)||(selectedShader>=shaders.size()))
 		return;
 	#if 0
-	#define STX_FNLN
-	#define STX_PRINT
+	#define LOG_FNLN
+	#define LOG_PRINT
 	#endif
 #if 0
 	int minUniform = 0;
 	int maxUniform = shaders[selectedShader].uniforms.size() - 1;
 #if 0
-	STX_FNLN;
-	STX_PRINT("minUniform=%d\n", minUniform);
-	STX_PRINT("maxUniform=%d\n", maxUniform);
+	LOG_FNLN;
+	LOG_PRINT("minUniform=%d\n", minUniform);
+	LOG_PRINT("maxUniform=%d\n", maxUniform);
 #endif
 	while (minUniform <= maxUniform)
 	{
 		int currUniform = (minUniform + maxUniform) >> 1;
 		int res = stx_strcmp(name, shaders[selectedShader].uniforms[currUniform].name.c_str());
 #if 0
-		STX_PRINT("currUniform=%d\n", currUniform);
-		STX_PRINT("name=%s, shaders[%d].uniforms[%d].name.c_str()=%s\n", name, selectedShader, currUniform, shaders[selectedShader].uniforms[currUniform].name.c_str());
+		LOG_PRINT("currUniform=%d\n", currUniform);
+		LOG_PRINT("name=%s, shaders[%d].uniforms[%d].name.c_str()=%s\n", name, selectedShader, currUniform, shaders[selectedShader].uniforms[currUniform].name.c_str());
 #endif
 		if (res == 0)
 		{
@@ -493,8 +496,8 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 			GLint type=uni->type;
 			GLint location=currUniform;
 #if 0
-			STX_PRINT("type=%x\n", type);
-			STX_PRINT("location=%x\n", location);
+			LOG_PRINT("type=%x\n", type);
+			LOG_PRINT("location=%x\n", location);
 #endif
 			if (type >= SAMPLER_1D && type <= SAMPLER_CUBE) // SAMPLER_CUBE ???
 			{
@@ -556,37 +559,37 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 	while (minUniform <= maxUniform){
 		int currUniform = (minUniform + maxUniform) >> 1;
 		int res = stx_strcmp(name, shaders[selectedShader].uniforms[currUniform].name.c_str());
-		STX_FNLN;
-		STX_PRINT("%s:%s\n", name, shaders[selectedShader].uniforms[currUniform].name.c_str());
-		STX_PRINT("%d:%d:%x:%d\n", res, currUniform, data, size);
-		STX_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
+		LOG_FNLN;
+		LOG_PRINT("%s:%s\n", name, shaders[selectedShader].uniforms[currUniform].name.c_str());
+		LOG_PRINT("%d:%d:%x:%d\n", res, currUniform, data, size);
+		LOG_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
 		if (res == 0){
-			STX_PRINT("currUniform=%d\n", currUniform);
-			STX_PRINT("selectedShader)=%d\n", selectedShader);
-			STX_PRINT("shaders.size()=%d\n", shaders.size());
-			STX_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
+			LOG_PRINT("currUniform=%d\n", currUniform);
+			LOG_PRINT("selectedShader)=%d\n", selectedShader);
+			LOG_PRINT("shaders.size()=%d\n", shaders.size());
+			LOG_PRINT("shaders[%d].uniforms.size()=%d\n", selectedShader, shaders[selectedShader].uniforms.size());
 			ConstantShaderGLSLGL3 *uni = (ConstantShaderGLSLGL3*)&(shaders[selectedShader].uniforms[0]) + currUniform;
 			
-			STX_PRINT("uni=%x\n", uni);
-			STX_PRINT("&uni->data[0]=%x\n", &uni->data[0]);
+			LOG_PRINT("uni=%x\n", uni);
+			LOG_PRINT("&uni->data[0]=%x\n", &uni->data[0]);
 
-			STX_PRINT("uni->name=%s\n", uni->name.c_str());
-			STX_PRINT("uni->data.size()=%d\n", uni->data.size());
-			STX_PRINT("uni->location=%d\n", uni->location);
-			STX_PRINT("uni->type=%d\n", uni->type);
-			STX_PRINT("uni->nElements=%d\n", uni->nElements);
-			STX_PRINT("uni->dirty=%d\n", uni->dirty);
+			LOG_PRINT("uni->name=%s\n", uni->name.c_str());
+			LOG_PRINT("uni->data.size()=%d\n", uni->data.size());
+			LOG_PRINT("uni->location=%d\n", uni->location);
+			LOG_PRINT("uni->type=%d\n", uni->type);
+			LOG_PRINT("uni->nElements=%d\n", uni->nElements);
+			LOG_PRINT("uni->dirty=%d\n", uni->dirty);
 
-			STX_PRINT("data=%x\n", data);
-			STX_PRINT("size=%d\n", size);
+			LOG_PRINT("data=%x\n", data);
+			LOG_PRINT("size=%d\n", size);
 			uni->data.resize(size);
-			STX_PRINT("uni->data.size()=%d\n", uni->data.size());
+			LOG_PRINT("uni->data.size()=%d\n", uni->data.size());
 			if(uni->data.size()>0){
 			if (stx_memcmp(&uni->data[0], data, size)){
 				stx_memcpy(&uni->data[0], data, size);
 				uni->dirty = true;
 			}}
-			else STX_PRINT("uni->data.size()<=0 !\n");
+			else LOG_PRINT("uni->data.size()<=0 !\n");
 			return;
 
 		} else if (res > 0){
@@ -600,13 +603,13 @@ void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data
 			{
 			if(minUniform > maxUniform)
 			{
-				STX_FNLN;
-				STX_PRINT("%s:selectedShader:%d\nShaderConstant %s not defined!\n", m_title.c_str(), selectedShader, name);
+				LOG_FNLN;
+				LOG_PRINT("%s:selectedShader:%d\nShaderConstant %s not defined!\n", m_title.c_str(), selectedShader, name);
 			}
 			else
 			{
-				STX_FNLN;
-				STX_PRINT("%s:setShaderConstantRaw:\nname:%s\ndata:%x\nsize:%x\n", m_title.c_str(), name, data, size);
+				LOG_FNLN;
+				LOG_PRINT("%s:setShaderConstantRaw:\nname:%s\ndata:%x\nsize:%x\n", m_title.c_str(), name, data, size);
 			}
 			}
 }
@@ -956,7 +959,7 @@ shaderGL1_1->uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1->pr
 
 int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, const std::string& aFragmentSource, const std::string& aGeometrySource)
 {
-	STX_FNLN;
+	LOG_FNLN;
 	GLint linkResult;
 	ShaderGLSLGL3 shaderGL1_1;
 	std::string vsText="";
@@ -966,7 +969,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	std::string hsText="";
 	std::string dsText="";
 	char versionString[16];
-	STX_FNLN;
+	LOG_FNLN;
 	#if 0
 	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
@@ -994,7 +997,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	}
 	
 	#elif 0
-	STX_FNLN;
+	LOG_FNLN;
 	stx_snprintf(versionString, 16, "\n#version 130\n");
 	const char * def=versionString;
 	#elif 1
@@ -1005,7 +1008,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	//if(hsText.length()) def="\n#version 530\n";
 	//if(dsText.length()) def="\n#version 530\n";
 	
-	STX_FNLN;
+	LOG_FNLN;
 	if (def) vsText.append(def);
 	if (def) fsText.append(def);
 	if (def) gsText.append(def);
@@ -1013,7 +1016,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	if (def) hsText.append(def);
 	if (def) dsText.append(def);
 
-	STX_FNLN;
+	LOG_FNLN;
 #if defined(_MSC_VER)
 	vsText.append("precision highp float;\n");
 	fsText.append("precision highp float;\n");
@@ -1022,7 +1025,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	hsText.append("precision highp float;\n");
 	dsText.append("precision highp float;\n");
 #endif
-	STX_FNLN;
+	LOG_FNLN;
 #if 1
 	//const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 	//const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
@@ -1036,7 +1039,7 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	if (deffs) dsText.append(deffs);
 #endif
 
-	STX_FNLN;
+	LOG_FNLN;
 	vsText.append(aVertexSource);
 	fsText.append(aFragmentSource);
 	gsText.append(aGeometrySource); /*
@@ -1047,18 +1050,18 @@ int RendererGLSLGL_1_1::__addGLSLShader__(const std::string& aVertexSource, cons
 	//csText="";hsText="";dsText="";
 	gsText=""; // ???
 
-	STX_FNLN;
-	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
-	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
-	STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
+	LOG_FNLN;
+	LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
+	LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
+	LOG_PRINT("\ngsText:\n%s\n", gsText.c_str());
 
-	STX_FNLN;
+	LOG_FNLN;
 GLuint vertexShader = 0;
 GLuint fragmentShader = 0;
 GLuint geometryShader = 0;
 if(aVertexSource.length())
 {
-	STX_FNLN;
+	LOG_FNLN;
 // Create an empty vertex shader handle
 vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -1085,13 +1088,13 @@ if(isCompiled == GL_FALSE)
 	glDeleteShader(vertexShader);
 
 	// Use the infoLog as you see fit.
-	STX_PRINT("\nVertexShader error:\n%s\n", infoLog);
+	LOG_PRINT("\nVertexShader error:\n%s\n", infoLog);
 }}
 
-	STX_FNLN;
+	LOG_FNLN;
 if(aFragmentSource.length())
 {
-	STX_FNLN;GLint isCompiled = GL_FALSE;
+	LOG_FNLN;GLint isCompiled = GL_FALSE;
 // Create an empty fragment shader handle
 GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -1119,13 +1122,13 @@ if (isCompiled == GL_FALSE)
 	glDeleteShader(vertexShader);
 
 	// Use the infoLog as you see fit.
-	STX_PRINT("\nFragmentShader error:\n%s\n", infoLog);
+	LOG_PRINT("\nFragmentShader error:\n%s\n", infoLog);
 }}
 
-	STX_FNLN;
+	LOG_FNLN;
 if(aGeometrySource.length())
 {
-	STX_FNLN;GLint isCompiled = GL_FALSE;
+	LOG_FNLN;GLint isCompiled = GL_FALSE;
 // Create an empty geometry shader handle
 geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
@@ -1154,7 +1157,7 @@ if (isCompiled == GL_FALSE)
 	glDeleteShader(geometryShader);
 
 	// Use the infoLog as you see fit.
-	STX_PRINT("\nGeometryShader error:\n%s\n", infoLog);
+	LOG_PRINT("\nGeometryShader error:\n%s\n", infoLog);
 }
 }
 
@@ -1191,7 +1194,7 @@ if (isLinked == GL_FALSE)
 	if(aGeometrySource.length()) glDeleteShader(geometryShader);
 
 	// Use the infoLog as you see fit.
-	STX_PRINT("\nLink error:\n%s\n", infoLog);
+	LOG_PRINT("\nLink error:\n%s\n", infoLog);
 }
 
 // Always detach shaders after a successful link.
@@ -1204,7 +1207,7 @@ return program;
 
 void RendererGLSLGL_1_1::buildUniformReferences(int mGLHandle, ShaderGLSLGL3* shaderGL1_1)
 	{
-STX_FNLN;
+LOG_FNLN;
 			struct UniformReference
 			{
 				std::string mName;
@@ -1236,7 +1239,7 @@ STX_FNLN;
 			std::vector<UniformReference> mUniformReferences;
 			GLint nUniforms=0;
 			GLint nSamplers=0;
-STX_FNLN;
+LOG_FNLN;
 		if (1)
 		{
 			// scan through the active uniforms and add them to the reference list
@@ -1246,9 +1249,9 @@ STX_FNLN;
 			// get the number of active uniforms
 			glGetObjectParameterivARB(mGLHandle, GL_OBJECT_ACTIVE_UNIFORMS_ARB,
 					&uniformCount);
-			STX_PRINT("uniformCount=%d\n", uniformCount);
+			LOG_PRINT("uniformCount=%d\n", uniformCount);
 
-STX_FNLN;
+LOG_FNLN;
 			// Loop over each of the active uniforms, and add them to the reference container
 			// only do this for user defined uniforms, ignore built in gl state uniforms
 			for (int index = 0; index < uniformCount; index++)
@@ -1265,17 +1268,17 @@ STX_FNLN;
 				glGetActiveUniformARB(mGLHandle, index, BUFFERSIZE, NULL, &newUniformReference.mArraySize, &newUniformReference.mType, uniformName);
 				// don't add built in uniforms
 				newUniformReference.mLocation = glGetUniformLocationARB(mGLHandle, uniformName);
-				STX_PRINT("index=%d, uniformCount=%d\n", index, uniformCount );
-				STX_PRINT("(char *)&bbuf[0]=%s\n", (char *)&bbuf[0] );
-				STX_PRINT("uniformName=%s\n", uniformName );
-				STX_PRINT("newUniformReference.mType=%d\n", newUniformReference.mType );
-				STX_PRINT("newUniformReference.mArraySize=%d\n", newUniformReference.mArraySize );
+				LOG_PRINT("index=%d, uniformCount=%d\n", index, uniformCount );
+				LOG_PRINT("(char *)&bbuf[0]=%s\n", (char *)&bbuf[0] );
+				LOG_PRINT("uniformName=%s\n", uniformName );
+				LOG_PRINT("newUniformReference.mType=%d\n", newUniformReference.mType );
+				LOG_PRINT("newUniformReference.mArraySize=%d\n", newUniformReference.mArraySize );
 				if (newUniformReference.mLocation >= 0)
 				{
 					// user defined uniform found, add it to the reference list
 					// ??? if(uniformName) newUniformReference.mName = std::string( uniformName );
-					STX_PRINT("newUniformReference.mLocation=%d\n", newUniformReference.mLocation );
-					STX_PRINT("newUniformReference.mName=%s\n", newUniformReference.mName );
+					LOG_PRINT("newUniformReference.mLocation=%d\n", newUniformReference.mLocation );
+					LOG_PRINT("newUniformReference.mName=%s\n", newUniformReference.mName );
 					// decode uniform size and type
 					switch (newUniformReference.mType)
 					{
@@ -1440,35 +1443,35 @@ STX_FNLN;
 				} // end if
 			} // end for
 
-STX_FNLN;
+LOG_FNLN;
 			//mUniformRefsBuilt = true;
 		}
-STX_FNLN;
+LOG_FNLN;
 		//shaderGL1_1->uniforms.resize(mUniformReferences.size());
 
 			shaderGL1_1->samplers.resize(nSamplers);
 			shaderGL1_1->uniforms.resize(nUniforms);
 			//shaderGL1_1->attribs.resize(nAttribs);
 #if 1
-		STX_PRINT("mUniformReferences.size()=%d\n", mUniformReferences.size());
-		STX_PRINT("shaderGL1_1->uniforms.size()=%d\n", shaderGL1_1->uniforms.size());
-		STX_PRINT("shaderGL1_1->samplers.size()=%d\n", shaderGL1_1->samplers.size());
+		LOG_PRINT("mUniformReferences.size()=%d\n", mUniformReferences.size());
+		LOG_PRINT("shaderGL1_1->uniforms.size()=%d\n", shaderGL1_1->uniforms.size());
+		LOG_PRINT("shaderGL1_1->samplers.size()=%d\n", shaderGL1_1->samplers.size());
 #endif
 			if(shaderGL1_1->samplers.size()>1) std::sort(shaderGL1_1->samplers.begin(), shaderGL1_1->samplers.end(), samplerCompGL2std);
 			if(shaderGL1_1->uniforms.size()>1) std::sort(shaderGL1_1->uniforms.begin(), shaderGL1_1->uniforms.end(), constantCompGL2std);
 			for (int i = 0; i < nUniforms; i++)
 					{
-						STX_PRINT("shaderGL1_1->uniforms[%d].name=%s\n", i, shaderGL1_1->uniforms[i].name.c_str() );
-						STX_PRINT("shaderGL1_1->uniforms[%d].type=%d\n", i, shaderGL1_1->uniforms[i].type );
-						STX_PRINT("shaderGL1_1->uniforms[%d].nElements=%d\n", i, shaderGL1_1->uniforms[i].nElements );
+						LOG_PRINT("shaderGL1_1->uniforms[%d].name=%s\n", i, shaderGL1_1->uniforms[i].name.c_str() );
+						LOG_PRINT("shaderGL1_1->uniforms[%d].type=%d\n", i, shaderGL1_1->uniforms[i].type );
+						LOG_PRINT("shaderGL1_1->uniforms[%d].nElements=%d\n", i, shaderGL1_1->uniforms[i].nElements );
 						int constantSize = constantTypeSizes[shaderGL1_1->uniforms[i].type] * shaderGL1_1->uniforms[i].nElements;
-						STX_PRINT("constantSize=%d\n", constantSize);
+						LOG_PRINT("constantSize=%d\n", constantSize);
 
 						shaderGL1_1->uniforms[i].data.resize(constantSize);
 						stx_memset((void*)&shaderGL1_1->uniforms[i].data[0], 0, constantSize);
 						shaderGL1_1->uniforms[i].dirty = false;
 					}
-STX_FNLN;
+LOG_FNLN;
 		for (int i = 0; i < mUniformReferences.size(); i++)
 		{
 			//shaderGL1_1->uniforms.resize(shaderGL1_1->uniforms.size()+1);
@@ -1478,23 +1481,23 @@ STX_FNLN;
 			shaderGL1_1->uniforms[i].name=std::string(mUniformReferences[i].mName);
 		}
 	//}
-STX_FNLN;
+LOG_FNLN;
 }
 
 void RendererGLSLGL_1_1::dumpUniformReferences(ShaderGLSLGL3* shaderGL1_1)
 {
 	for (int i = 0; i < shaderGL1_1->uniforms.size(); i++)
 	{
-		STX_PRINT("shaderGL1_1->uniforms[%d].name=%s\n", i, shaderGL1_1->uniforms[i].name.c_str());
-		STX_PRINT("shaderGL1_1->uniforms[%d].location=%d\n", i, shaderGL1_1->uniforms[i].location);
-		STX_PRINT("shaderGL1_1->uniforms[%d].type=%d\n", i, shaderGL1_1->uniforms[i].type);
-		STX_PRINT("shaderGL1_1->uniforms[%d].nElements=%d\n", i, shaderGL1_1->uniforms[i].nElements);
+		LOG_PRINT("shaderGL1_1->uniforms[%d].name=%s\n", i, shaderGL1_1->uniforms[i].name.c_str());
+		LOG_PRINT("shaderGL1_1->uniforms[%d].location=%d\n", i, shaderGL1_1->uniforms[i].location);
+		LOG_PRINT("shaderGL1_1->uniforms[%d].type=%d\n", i, shaderGL1_1->uniforms[i].type);
+		LOG_PRINT("shaderGL1_1->uniforms[%d].nElements=%d\n", i, shaderGL1_1->uniforms[i].nElements);
 	}
 	for (int i = 0; i < shaderGL1_1->samplers.size(); i++)
 	{
-		STX_PRINT("shaderGL1_1->samplers[%d].name=%s\n", i, shaderGL1_1->samplers[i].name.c_str());
-		STX_PRINT("shaderGL1_1->samplers[%d].location=%d\n", i, shaderGL1_1->samplers[i].location);
-		STX_PRINT("shaderGL1_1->samplers[%d].unit=%d\n", i, shaderGL1_1->samplers[i].unit);
+		LOG_PRINT("shaderGL1_1->samplers[%d].name=%s\n", i, shaderGL1_1->samplers[i].name.c_str());
+		LOG_PRINT("shaderGL1_1->samplers[%d].location=%d\n", i, shaderGL1_1->samplers[i].location);
+		LOG_PRINT("shaderGL1_1->samplers[%d].unit=%d\n", i, shaderGL1_1->samplers[i].unit);
 	}
 }
 GLuint GetUniforms(GLuint program, ShaderGLSLGL3* shaderGL1_1)
@@ -1551,7 +1554,7 @@ const char *vsText0, const char *gsText0, const char *fsText0, const char *csTex
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
 		{
-	STX_FNLN;
+	LOG_FNLN;
 	GLint linkResult;
 	shaders.resize(shaders.size()+1);
 	ShaderGLSLGL3* shaderGL1_1=&shaders[shaders.size()-1];
@@ -1561,18 +1564,18 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 	if(fsText0) fsText.append(fsText0);
 	if(gsText0) gsText.append(gsText0);
 
-	STX_FNLN;
+	LOG_FNLN;
 	shaderGL1_1->program=0;
 	shaderGL1_1->program=(int)RendererGLSLGL_1_1::__addGLSLShader__(vsText, fsText, gsText);
-	STX_FNLN;
+	LOG_FNLN;
 	RendererGLSLGL_1_1::buildUniformReferences(shaderGL1_1->program, shaderGL1_1);
 	//GLuint r=GetUniforms(shaderGL1_1->program, shaderGL1_1);
-	STX_FNLN;
+	LOG_FNLN;
 	RendererGLSLGL_1_1::dumpUniformReferences(shaderGL1_1);
 
-	STX_FNLN;
+	LOG_FNLN;
 	// ??? shaders.push_back(shaderGL1_1);
-	STX_FNLN;
+	LOG_FNLN;
 	return shaders.size()-1;
 		}
 
@@ -1638,11 +1641,11 @@ LOG_FNLN;
 	vsText="";
 	fsText="";
 #if 0
-	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
-	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
+	LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
+	LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
 #elif 0
-	STX_PRINT("\nvsText__:\n%s\n", vsText__.c_str());
-	STX_PRINT("\nfsText__:\n%s\n", fsText__.c_str());
+	LOG_PRINT("\nvsText__:\n%s\n", vsText__.c_str());
+	LOG_PRINT("\nfsText__:\n%s\n", fsText__.c_str());
 #endif
 
 #if 0
@@ -1678,7 +1681,7 @@ LOG_FNLN;
 
 LOG_FNLN;
 LOG_PRINT("shaders.size()=%d\n", shaders.size());
-//STX_PRINT("id=%x\n", id);
+//LOG_PRINT("id=%x\n", id);
 LOG_FNLN;
 		return id;
 }
@@ -1853,10 +1856,10 @@ int argc, char *argv[]
 	//initExtensions(m_dpy);
 	importGLInit();
 
-	STX_PRINT("GL_VERSION=%s\n", (const char *) glGetString(GL_VERSION));
-	STX_PRINT("GL_VENDOR=%s\n", (const char *) glGetString(GL_VENDOR));
-	STX_PRINT("GL_RENDERER=%s\n", (const char *) glGetString(GL_RENDERER));
-	STX_PRINT("GL_SHADING_LANGUAGE_VERSION=%s\n", (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION));
+	LOG_PRINT("GL_VERSION=%s\n", (const char *) glGetString(GL_VERSION));
+	LOG_PRINT("GL_VENDOR=%s\n", (const char *) glGetString(GL_VENDOR));
+	LOG_PRINT("GL_RENDERER=%s\n", (const char *) glGetString(GL_RENDERER));
+	LOG_PRINT("GL_SHADING_LANGUAGE_VERSION=%s\n", (const char *) glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	#if 0
     std::ofstream out("./OpenGL.log");

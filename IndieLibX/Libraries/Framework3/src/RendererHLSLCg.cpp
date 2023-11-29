@@ -50,7 +50,7 @@ using namespace LuaUtil;
 #define LOG_PRINT_X
 #else
 #define LOG_PRINT(...) LOG_PRINT(__VA_ARGS__);
-#define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+#define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #endif
@@ -290,8 +290,8 @@ void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 	{
 		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0");
 #if 0
-		STX_FNLN;
-		STX_PRINT("\ntexSHD0:texSHD:\n%s\n", texSHD.c_str());
+		LOG_FNLN;
+		LOG_PRINT("\ntexSHD0:texSHD:\n%s\n", texSHD.c_str());
 #endif
 		s = addShader(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
@@ -399,7 +399,7 @@ void IRenderer::OnClear()
 #if 0
 	if(1)
 	{
-		STX_PRINT("IRenderer::OnClear:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
+		LOG_PRINT("IRenderer::OnClear:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
 	}
 #endif
 }
@@ -408,16 +408,16 @@ void IRenderer::OnPresent(IInput* Input)
 #if 0
 	if(1)
 	{
-		STX_PRINT("IRenderer::OnPresent:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
+		LOG_PRINT("IRenderer::OnPresent:Title:%s\n", STX_Service::GetWindowInstance()->GetCaption());
 		if(m_nBeginScene!=m_nEndScene)
 		{
-			STX_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
-			STX_PRINT("m_nEndScene=%d\n", m_nEndScene);
+			LOG_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
+			LOG_PRINT("m_nEndScene=%d\n", m_nEndScene);
 		}
 		if((m_nBeginScene==0)&&(m_nEndScene==0))
 		{
-			STX_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
-			STX_PRINT("m_nEndScene=%d\n", m_nEndScene);
+			LOG_PRINT("m_nBeginScene=%d\n", m_nBeginScene);
+			LOG_PRINT("m_nEndScene=%d\n", m_nEndScene);
 		}
 		stx_exit(0);
 	}
@@ -1171,13 +1171,13 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 		m_Texture_cache.insert ( std::pair<std::string,TextureID>(fileName, id) );
 }
 
-//define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+//define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps
 										  , const SamplerStateID samplerState, bool bFlipY, unsigned int flags, ubyte R, ubyte G, ubyte B_, ubyte A_)
 {
-STX_FNLN;
+LOG_FNLN;
 	std::string f=fileName0;
 
 	std::string f2=stx_convertpath(f);
@@ -1186,9 +1186,9 @@ STX_FNLN;
     
 	if(!stx_fileExists(fileName))
 	{
-		STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("IRenderer::ImageLibTexturee:1181:\n");
-		STX_PRINT("\tLoading texture %s failed\n", fileName);
+		LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("IRenderer::ImageLibTexturee:1181:\n");
+		LOG_PRINT("\tLoading texture %s failed\n", fileName);
 		DBG_HALT;
 	}
     
@@ -1370,7 +1370,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
-	printf("\nShader file:%s\n", fn.c_str());
+	STX_PRINT("\nShader file:%s\n", fn.c_str());
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
@@ -1421,9 +1421,9 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	ShaderID id=addShader(contents.c_str(), vsMain, fsMain, 0, flags);
 	if(!stx_fileExists(fn.c_str()))
 	{
-		STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("IRenderer::addShaderFromFile:1349:\n");
-		STX_PRINT("\tLoading shader %s failed\n", fn.c_str());
+		LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("IRenderer::addShaderFromFile:1349:\n");
+		LOG_PRINT("\tLoading shader %s failed\n", fn.c_str());
 		DBG_HALT;
 	}
 	return id;
@@ -2164,11 +2164,11 @@ void RendererHLSLCg::apply()
         _Inited=true;
     }
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
+LOG_FNLN;
+LOG_PRINT("selectedShader:%x\n", selectedShader);
+LOG_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
+LOG_PRINT("_Shader:%x\n", _Shader);
+LOG_PRINT("_VertexFormat:%x\n", _VertexFormat);
 
 	if(selectedShader>-1)
 		_Shader=selectedShader;
@@ -2245,11 +2245,11 @@ STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
             _SamplerStates[i]=-1;
 	}
 
-STX_FNLN;
-STX_PRINT("selectedShader:%x\n", selectedShader);
-STX_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
-STX_PRINT("_Shader:%x\n", _Shader);
-STX_PRINT("_VertexFormat:%x\n", _VertexFormat);
+LOG_FNLN;
+LOG_PRINT("selectedShader:%x\n", selectedShader);
+LOG_PRINT("selectedVertexFormat:%x\n", selectedVertexFormat);
+LOG_PRINT("_Shader:%x\n", _Shader);
+LOG_PRINT("_VertexFormat:%x\n", _VertexFormat);
 #if 0 // ???
 		_Shader=0; // ???
  		_VertexFormat=0; // ???
@@ -2332,7 +2332,7 @@ LOG_FNLN;
 		//if (_VertexBuffers[i] != DONTCARE)
 		if (_VertexBuffers[i] != -1)
 		{
-STX_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
+LOG_PRINT("%d, _VertexBuffers[%d], _Offsets[%d]\n", i, i, _VertexBuffers[i], i, _Offsets[i]);
 			changeVertexBuffer(i, _VertexBuffers[i], _Offsets[i]);
 		}
 #endif
@@ -2625,8 +2625,10 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		flags=0;
 	#endif
 
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);
+	#if 0
+	LOG_FNLN;
+	LOG_PRINT("selectedShader:%x\n", selectedShader);
+	#endif
 	//const unsigned int flags=0; // ???#if 0
 	#if 1
 	if (flags & RESET_SHADER)
@@ -2640,8 +2642,10 @@ void RendererHLSLCg::reset0(const unsigned int aflags)
 		selectedComputeShader = SHADER_NONE;
 	}
 
-	STX_FNLN;
-	STX_PRINT("selectedShader:%x\n", selectedShader);	
+	#if 0
+	LOG_FNLN;
+	LOG_PRINT("selectedShader:%x\n", selectedShader);
+	#endif
 	if (flags & RESET_VF)
 	{
 		selectedVertexFormat = VF_NONE;
@@ -6049,10 +6053,10 @@ LOG_FNLN;
 			type=TYPE_BINORMAL;
 
 		LOG_FNLN;
-		STX_PRINT("stream=%d\n", stream); 
-		STX_PRINT("type=%d\n", type);
-		STX_PRINT("format=%d\n", format);
-		STX_PRINT("size=%d\n", size);
+		LOG_PRINT("stream=%d\n", stream); 
+		LOG_PRINT("type=%d\n", type);
+		LOG_PRINT("format=%d\n", format);
+		LOG_PRINT("size=%d\n", size);
 		pass.format_.push_back(stream);
 		pass.format_.push_back(type);
 		pass.format_.push_back(format);
@@ -6162,9 +6166,9 @@ std::string stx_Effect::ParseEffect(const std::string& aFileName, const char* aD
 
 	if(!stx_fileExists(m_sFileName.c_str()))
 	{
-		//STX_PRINT("Title: %s\n", m_title.c_str());
-		STX_PRINT("stx_Effect::ParseEffect:5962:\n");
-		STX_PRINT("\tLoading effect file  %s failed\n", m_sFileName.c_str());
+		//LOG_PRINT("Title: %s\n", m_title.c_str());
+		LOG_PRINT("stx_Effect::ParseEffect:5962:\n");
+		LOG_PRINT("\tLoading effect file  %s failed\n", m_sFileName.c_str());
 		DBG_HALT;
 	}	
 
@@ -6410,22 +6414,22 @@ LOG_FNLN;
     }}
 LOG_FNLN;
 	LOG_FNLN;
-	STX_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
-	STX_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
+	LOG_PRINT("m_vTechniques.size()=%d\n", m_vTechniques.size());
+	LOG_PRINT("m_vTextures.size()=%d\n", m_vTextures.size());
 	for(unsigned int i=0;i<m_vTechniques.size();i++){
-		STX_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_sName=%s\n", i, m_vTechniques[i].m_sName.c_str());
 	for(unsigned int j=0;j<m_vTechniques[i].m_vPasses.size();j++)
 	{
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
-		STX_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].m_sName=%s\n", i, j, m_vTechniques[i].m_vPasses[j].m_sName.c_str());
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].VertexFormat=%x\n", i, j, m_vTechniques[i].m_vPasses[j].VertexFormat);
+		LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].DepthStencilState=%x\n", i, j, m_vTechniques[i].m_vPasses[j].DepthStencilState);
 	}}
 	for(unsigned int i=0;i<m_vTextures.size();i++)
 	{
-        	STX_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
-        	STX_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
-        	STX_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
+        	LOG_PRINT("Texture[%d].m_sName=%s\n", i, m_vTextures[i].m_sName.c_str());
+        	LOG_PRINT("Texture[%d].texID=%x\n", i, m_vTextures[i].texID);
+        	LOG_PRINT("Texture[%d].ss=%x\n", i, m_vTextures[i].ss);
 	}
 	//stx_exit(0);
 }
@@ -6502,23 +6506,23 @@ LOG_FNLN;
 }
 void stx_Effect::BeginPass( unsigned int iPass )
 {
-STX_FNLN;
+LOG_FNLN;
 	if(m_iTechnique<0)
 		return;
-STX_FNLN;
+LOG_FNLN;
 	if((iPass+1)>m_vTechniques[m_iTechnique].m_vPasses.size())
 		return;
-STX_FNLN;
+LOG_FNLN;
 	stx_Pass pass=m_vTechniques[m_iTechnique].m_vPasses[iPass];
-STX_FNLN;
-STX_PRINT("pass.Shader=%x\n", pass.Shader);
+LOG_FNLN;
+LOG_PRINT("pass.Shader=%x\n", pass.Shader);
 	if(pass.Shader>-1)
 		IRenderer::GetRendererInstance()->setShader(pass.Shader);
-STX_FNLN;
-STX_PRINT("pass.VertexFormat=%x\n", pass.VertexFormat);
+LOG_FNLN;
+LOG_PRINT("pass.VertexFormat=%x\n", pass.VertexFormat);
 	if(pass.VertexFormat>-1)
 		IRenderer::GetRendererInstance()->setVertexFormat(pass.VertexFormat);
-STX_FNLN;
+LOG_FNLN;
 #if 0
 	IRenderer::GetRendererInstance()->setDepthState(IRenderer::GetRendererInstance()->GetnoDepthTest());
 #else
@@ -6566,43 +6570,34 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
-STX_FNLN;
-#if 0
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				printf("flags=eGLSL_Shader\n");
-				break;
-			case eGLES_Shader:
-				printf("flags=eGLES_Shader\n");
-				break;
-			case eHLSL_Shader:
-				printf("flags=eHLSL_Shader\n");
-				break;
-		}
-#endif
+
 	ShaderID res = SHADER_NONE;
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				STX_PRINT("GLSL_Shader\n");
-				break;
-			case eGLES_Shader:
-				STX_PRINT("GLES_Shader\n");
-				break;
-			default:
-				STX_PRINT("HLSL_Shader\n");
-				break;
-		}
+	const char* gsMain="main";
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
-	std::string header, vsStr2, fsStr2;
+	std::string header, vsStr2, fsStr2, gsStr2, vsStr3, fsStr3, gsStr3;
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
-	std::size_t foundPS = shaderText.find("[Fragment shader]");
+	std::size_t foundFS = shaderText.find("[Fragment shader]");
+	std::size_t foundGS = shaderText.find("[Geometry shader]");
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				LOG_PRINT("GLSL_Shader\n");
+				break;
+			case eGLES_Shader:
+				LOG_PRINT("GLES_Shader\n");
+				break;
+			default:
+				LOG_PRINT("HLSL_Shader\n");
+				break;
+		}
 	unsigned int flags=0;
 	unsigned int flags_=0;
-	if	((foundPS!=std::string::npos) && (foundVS!=std::string::npos))
+	{
+		LOG_FNLN
+	if	((foundFS!=std::string::npos) && (foundVS!=std::string::npos)){
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6615,10 +6610,11 @@ STX_FNLN;
 				flags=eHLSL_Shader;
 				break;
 		}
-	else
-	if	(((foundPS!=std::string::npos) && (foundVS==std::string::npos)) || 
-	        ((foundPS==std::string::npos) && (foundVS==std::string::npos)))
+	}else
+	if	(((foundFS!=std::string::npos) && (foundVS==std::string::npos)) || 
+	        ((foundFS==std::string::npos) && (foundVS==std::string::npos)))
 	{
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6633,8 +6629,9 @@ STX_FNLN;
 		}
 	}
 	else
-	if	((foundPS==std::string::npos) && (foundVS!=std::string::npos))
+	if	((foundFS==std::string::npos) && (foundVS!=std::string::npos))
 	{
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6648,9 +6645,90 @@ STX_FNLN;
 				break;
 		}
 	}
-
+		LOG_FNLN
+	}
+	if(foundGS!=std::string::npos)
+	{
+		
+		LOG_PRINT("Geometry shaders not supported!\n");
+		LOG_PRINT("Exiting!\n");
+		stx_exit(0);
+	}
+	std::size_t headerlength=std::string::npos;
+	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
+	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
+	if(foundGS!=std::string::npos) headerlength=std::min(headerlength, foundGS);
+	int  endIndex = shaderText.length()-1;
+	header = shaderText.substr(0, headerlength);
+	if((headerlength!=std::string::npos)&&headerlength)
+	{
+		vsStr2.append(header);
+		fsStr2.append(header);
+		gsStr2.append(header);
+#if 0
+	if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+	if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+	stx_exit(0);
+#endif
+	}
+{
+		std::string 	val;
+				if(foundGS!=std::string::npos){
+				val = shaderText.substr(foundGS+17, endIndex - foundGS - 17);
+				if(val.length()) gsStr3.append(val);
+				}if((foundVS!=std::string::npos)&&(foundFS!=std::string::npos)){
+				val = shaderText.substr(foundVS+15, foundFS - foundVS - 15);
+				if(val.length()) vsStr3.append(val);
+				}if((foundFS!=std::string::npos)&&(foundGS!=std::string::npos)){
+				val = shaderText.substr(foundFS+17, foundGS - foundFS - 17);
+				if(val.length()) fsStr3.append(val);
+				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
+				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
+				if(val.length()) fsStr3.append(val);
+				}
+}
+	if((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				fsStr3.append(shaderText);
+				break;
+		}
+	}
+	else if	((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS!=std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				vsStr3.append(shaderText);
+				break;
+		}
+	}
+	else if	((foundGS!=std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				gsStr3.append(shaderText);
+				break;
+		}
+	}
+#if 0
+	if(vsStr3.length()) LOG_PRINT("\nvsStr3:\n%s\n", vsStr3.c_str());
+	if(fsStr3.length()) LOG_PRINT("\nfsStr3:\n%s\n", fsStr3.c_str());
+	stx_exit(0);
+#endif
+		LOG_FNLN
 	if(flags == eGLSL_Fragment_Shader)
 	{
+		
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
@@ -6720,30 +6798,41 @@ STX_FNLN;
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
-		fsStr2.append(shaderText);
-STX_FNLN;
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain, 0, 0, 0, flags_);
+                        "main", gsMain, fsMain, 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain, 0, 0, 0, flags_);
+                        "main", gsMain, fsMain, 0, 0, 0, flags_);
 #endif
-STX_FNLN;
-	}
+
+	} else 
 #if 0
-	else 	if(flags == eGLSL_Vertex_Shader)
+	else if(flags == eGLSL_Vertex_Shader)
 	{
 		vsStr2.append(	"varying vec3 xlv_position;\n"
 				"varying vec3 xlv_Color;\n"
 				"varying vec2 xlv_TEXCOORD0;\n"
-				vsStr2.append(shaderText);
+			
 		fsStr2.append(  "uniform vec3      iResolution;\n"
 				"uniform vec4      iMouse;\n"
 				"uniform float     iTime;\n"
@@ -6768,82 +6857,41 @@ STX_FNLN;
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"vec4 main(){return vec4(xlv_Color, 1.0);}\n"
 				);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
 #if 0 // defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 
 			RendererGLES2* rendererGLES2=0;
 			rendererGLES2=(RendererGLES2*) this;
 			return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain_, 0, 0, 0, flags_);
+                        "main", gsMain, fsMain_, 0, 0, 0, flags_);
 
 #else
 			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			return rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, "main", 0, 0, 0, flags_);
+                        "main", gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
 #endif
 	
-	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader)||(flags == eGLES_Shader))
-	{
-	std::string stringToBeSplitted=shaderText;
-	std::vector<std::string> delimeters;
-	delimeters.push_back("[Vertex shader]");
-	delimeters.push_back("[Fragment shader]");
-	int startIndex = 0;
-	int  endIndex = 0;
-	if( (endIndex = stringToBeSplitted.find(delimeters[0], startIndex)) < stringToBeSplitted.size() )
-	{
-		std::string val = stringToBeSplitted.substr(startIndex, endIndex - startIndex);
-		header=val;
-		vsStr2=header;
-		fsStr2=header;
-	}
-	startIndex = endIndex;
-	endIndex = 0;
-	if( (endIndex = stringToBeSplitted.find(delimeters[1], startIndex)) < stringToBeSplitted.size() )
-	{
-		std::string val = stringToBeSplitted.substr(startIndex+delimeters[1].length()-1, endIndex - (startIndex+delimeters[1].length()));
-		vsStr2.append(val);
-	}
-	{
-		std::string val = stringToBeSplitted.substr(endIndex+2+delimeters[0].length());
-		fsStr2.append(val);
-	}
-STX_FNLN;
-	if(flags == eHLSL_Shader)
-	{
-		//printf("eHLSL_Shader:\n");
-    		return addHLSLShaderVrtl(  	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, 0, fsMain, 0, 0, 0, flags_);
-	}
-#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-	else if(flags == eGLES_Shader)
-	{
-		//printf("eGLES_Shader:\n");
-		RendererGLES2* rendererGLES2=0;
-		rendererGLES2=(RendererGLES2*) this;
-		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags_);
-	} 
-#else
-	else if(flags == eGLSL_Shader)
-	{
-		//printf("eGLSL_Shader:\n");
-		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags_);
-	}
-#endif
-STX_FNLN;
-	}
+	
 	if(flags == eHLSL_Fragment_Shader)
 	{
+		
 		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
@@ -6912,13 +6960,26 @@ STX_FNLN;
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
-		fsStr2.append(shaderText);
-STX_FNLN;
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+
     		return addHLSLShaderVrtl( 	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, 0, "main", 0, 0, 0, flags_);
+                        			vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
-	if(flags == eHLSL_Vertex_Shader)
+	else if(flags == eHLSL_Vertex_Shader)
         {
+		
 		vsStr2.append(  "float3      iResolution;\n"
 				"float4      iMouse;\n"
 				"float     iTime;\n"
@@ -6939,13 +7000,26 @@ STX_FNLN;
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
-		vsStr2.append(shaderText);
-STX_FNLN;
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+
     		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        		vsMain, 0, "main", 0, 0, 0, flags_);
+                        		vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
-	if(flags == eGLSL_Vertex_Shader)
+	else if(flags == eGLSL_Vertex_Shader)
         {
+		
 		vsStr2.append(  "uniform vec3      iResolution;\n"
 				"uniform vec4      iMouse;\n"
 				"uniform float     iTime;\n"
@@ -6973,23 +7047,104 @@ STX_FNLN;
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
-		vsStr2.append(shaderText);
-STX_FNLN;
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, "main", 0, 0, 0, flags_);
+                        vsMain, gsMain, "main", 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
 			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, "main", 0, 0, 0, flags_);
+                        vsMain, gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
-STX_FNLN;
+	else if(flags == eHLSL_Shader)
+	{
+		
+		//printf("eHLSL_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+    		return addHLSLShaderVrtl(  	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        			vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	}
+#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+	else if(flags == eGLES_Shader)
+	{
+		
+		//printf("eGLES_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+		RendererGLES2* rendererGLES2=0;
+		rendererGLES2=(RendererGLES2*) this;
+		return rendererGLES2->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	} 
+#else
+	else if(flags == eGLSL_Shader)
+	{
+		
+		//printf("eGLSL_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		stx_exit(0);
+#endif	
+		
+		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
+		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
+		return rendererGLSLGL_1_1->addGLSLShaderVrtl
+			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	}
+#endif
+
 	return -1;
 }
 #endif

@@ -1356,16 +1356,16 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	if (stx_strcasecmp(extension, ".glsl") == 0)
 	{
 		shaderType=eGLSL_Shader;
-		STX_PRINT("GLSL_Shader:fileName=%s\n",fileName);
+		LOG_PRINT("GLSL_Shader:fileName=%s\n",fileName);
 	}
 	else if (stx_strcasecmp(extension, ".gles") == 0)
 	{
 		shaderType=eGLES_Shader;
-		STX_PRINT("GLES_Shader:fileName=%s\n",fileName);
+		LOG_PRINT("GLES_Shader:fileName=%s\n",fileName);
 	}
 	else
 	{
-		STX_PRINT("HLSL_Shader:fileName=%s\n",fileName);
+		LOG_PRINT("HLSL_Shader:fileName=%s\n",fileName);
 	}
 	flags=shaderType;
 #if 0
@@ -1385,7 +1385,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	std::string fn;
     if(fileName)
         fn=stx_convertpath(fileName);
-	//LOG_PRINT("\nShader file:%s\n", fn.c_str());
+	STX_PRINT("\nShader file:%s\n", fn.c_str());
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
@@ -6594,41 +6594,34 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
-#if 0
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				LOG_PRINT("flags=eGLSL_Shader\n");
-				break;
-			case eGLES_Shader:
-				LOG_PRINT("flags=eGLES_Shader\n");
-				break;
-			case eHLSL_Shader:
-				LOG_PRINT("flags=eHLSL_Shader\n");
-				break;
-		}
-#endif
+
 	ShaderID res = SHADER_NONE;
+	const char* gsMain="main";
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
-	std::string header, vsStr2, fsStr2, gsStr2;
+	std::string header, vsStr2, fsStr2, gsStr2, vsStr3, fsStr3, gsStr3;
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundFS = shaderText.find("[Fragment shader]");
 	std::size_t foundGS = shaderText.find("[Geometry shader]");
-	std::size_t headerlength=std::string::npos;
-	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
-	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
-	if(foundGS!=std::string::npos) headerlength=std::min(headerlength, foundGS);
-	header = shaderText.substr(0, headerlength);
-	vsStr2.append(header);
-	fsStr2.append(header);
-	gsStr2.append(header);
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+				LOG_PRINT("GLSL_Shader\n");
+				break;
+			case eGLES_Shader:
+				LOG_PRINT("GLES_Shader\n");
+				break;
+			default:
+				LOG_PRINT("HLSL_Shader\n");
+				break;
+		}
 	unsigned int flags=0;
 	unsigned int flags_=0;
-	if(foundGS==std::string::npos)
 	{
-	if	((foundFS!=std::string::npos) && (foundVS!=std::string::npos))
+		LOG_FNLN
+	if	((foundFS!=std::string::npos) && (foundVS!=std::string::npos)){
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6641,10 +6634,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				flags=eHLSL_Shader;
 				break;
 		}
-	else
+	}else
 	if	(((foundFS!=std::string::npos) && (foundVS==std::string::npos)) || 
 	        ((foundFS==std::string::npos) && (foundVS==std::string::npos)))
 	{
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6661,6 +6655,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	else
 	if	((foundFS==std::string::npos) && (foundVS!=std::string::npos))
 	{
+		LOG_FNLN
 		switch(aFlags)
 		{
 			case eGLSL_Shader:
@@ -6674,10 +6669,85 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				break;
 		}
 	}
+		LOG_FNLN
 	}
-
+	std::size_t headerlength=std::string::npos;
+	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
+	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
+	if(foundGS!=std::string::npos) headerlength=std::min(headerlength, foundGS);
+	int  endIndex = shaderText.length()-1;
+	header = shaderText.substr(0, headerlength);
+	if((headerlength!=std::string::npos)&&headerlength)
+	{
+		vsStr2.append(header);
+		fsStr2.append(header);
+		gsStr2.append(header);
+#if 0
+	if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+	if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+	if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+	stx_exit(0);
+#endif
+	}
+{
+		std::string 	val;
+				if(foundGS!=std::string::npos){
+				val = shaderText.substr(foundGS+17, endIndex - foundGS - 17);
+				if(val.length()) gsStr3.append(val);
+				}if((foundVS!=std::string::npos)&&(foundFS!=std::string::npos)){
+				val = shaderText.substr(foundVS+15, foundFS - foundVS - 15);
+				if(val.length()) vsStr3.append(val);
+				}if((foundFS!=std::string::npos)&&(foundGS!=std::string::npos)){
+				val = shaderText.substr(foundFS+17, foundGS - foundFS - 17);
+				if(val.length()) fsStr3.append(val);
+				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
+				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
+				if(val.length()) fsStr3.append(val);
+				}
+}
+	if((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				fsStr3.append(shaderText);
+				break;
+		}
+	}
+	else if	((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS!=std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				vsStr3.append(shaderText);
+				break;
+		}
+	}
+	else if	((foundGS!=std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
+	{
+		switch(aFlags)
+		{
+			case eGLSL_Shader:
+			case eGLES_Shader:
+			default:
+				gsStr3.append(shaderText);
+				break;
+		}
+	}
+#if 0
+	if(vsStr3.length()) LOG_PRINT("\nvsStr3:\n%s\n", vsStr3.c_str());
+	if(fsStr3.length()) LOG_PRINT("\nfsStr3:\n%s\n", fsStr3.c_str());
+	if(gsStr3.length()) LOG_PRINT("\ngsStr3:\n%s\n", gsStr3.c_str());
+	stx_exit(0);
+#endif
+		LOG_FNLN
 	if(flags == eGLSL_Fragment_Shader)
 	{
+		
 		vsStr2.append(	"struct VsOut {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
@@ -6747,28 +6817,44 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
-		fsStr2.append(shaderText);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain, 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        "main", gsMain, fsMain, 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain, 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        "main", gsMain, fsMain, 0, 0, 0, flags_);
 #endif
-	}
+
+	} else 
 #if 0
 	else 	if(flags == eGLSL_Vertex_Shader)
 	{
 		vsStr2.append(	"varying vec3 xlv_position;\n"
 				"varying vec3 xlv_Color;\n"
 				"varying vec2 xlv_TEXCOORD0;\n"
-				vsStr2.append(shaderText);
+			
 		fsStr2.append(  "uniform vec3      iResolution;\n"
 				"uniform vec4      iMouse;\n"
 				"uniform float     iTime;\n"
@@ -6793,111 +6879,45 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"vec4 main(){return vec4(xlv_Color, 1.0);}\n"
 				);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
 #if 0 // defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 
 			RendererGLES2* rendererGLES2=0;
 			rendererGLES2=(RendererGLES2*) this;
 			return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, fsMain_, 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        "main", gsMain, fsMain_, 0, 0, 0, flags_);
 
 #else
 			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        "main", 0, "main", 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        "main", gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
 #endif
 	
-	if((flags == eHLSL_Shader)||(flags == eGLSL_Shader)||(flags == eGLES_Shader))
-	{
-	std::string stringToBeSplitted=shaderText;
-	std::vector<std::string> delimeters;
-	delimeters.push_back("[Vertex shader]");
-	delimeters.push_back("[Fragment shader]");
-	if(foundGS!=std::string::npos) delimeters.push_back("[Geometry shader]");
-#if 0
-	int startIndex = 0;
-	int  endIndex = 0;
-	if( (endIndex = stringToBeSplitted.find(delimeters[0], startIndex)) < stringToBeSplitted.size() )
-	{
-		std::string val = stringToBeSplitted.substr(startIndex, endIndex - startIndex);
-		header=val;
-		vsStr2=header;
-		fsStr2=header;
-	}
-	startIndex = endIndex;
-	endIndex = 0;
-	if( (endIndex = stringToBeSplitted.find(delimeters[1], startIndex)) < stringToBeSplitted.size() )
-	{
-		std::string val = stringToBeSplitted.substr(startIndex+delimeters[1].length()-1, endIndex - (startIndex+delimeters[1].length()));
-		vsStr2.append(val);
-	}
-	{
-		std::string val = stringToBeSplitted.substr(endIndex+2+delimeters[0].length());
-		fsStr2.append(val);
-	}
-#else
-	{
-	int  endIndex = shaderText.length()-1;
-		std::string 	val;
-				if(foundGS!=std::string::npos){
-				val = shaderText.substr(foundGS+17, endIndex - foundGS - 17);
-				//gsStr2.append(header);
-				gsStr2.append(val);
-				//LOG_PRINT("\ngs:\n%s\n", val.c_str());
-				}if((foundVS!=std::string::npos)&&(foundFS!=std::string::npos)){
-				val = shaderText.substr(foundVS+15, foundFS - foundVS - 15);
-				//vsStr2.append(header);
-				vsStr2.append(val);
-				//LOG_PRINT("\nvs:\n%s\n", val.c_str());
-				}if((foundFS!=std::string::npos)&&(foundGS!=std::string::npos)){
-				val = shaderText.substr(foundFS+17, foundGS - foundFS - 17);
-				//fsStr2.append(header);
-				fsStr2.append(val);
-				//LOG_PRINT("\nfs:\n%s\n", val.c_str());
-				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
-				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
-				//fsStr2.append(header);
-				fsStr2.append(val);
-				//LOG_PRINT("\nfs:\n%s\n", val.c_str());
-				}
-	}
-#endif
-	if(flags == eHLSL_Shader)
-	{
-		//LOG_PRINT("eHLSL_Shader:\n");
-    		return addHLSLShaderVrtl(  	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, 0, fsMain, 0, 0, 0, flags_);
-	}
-#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-	else if(flags == eGLES_Shader)
-	{
-		//LOG_PRINT("eGLES_Shader:\n");
-		RendererGLES2* rendererGLES2=0;
-		rendererGLES2=(RendererGLES2*) this;
-		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags_);
-	} 
-#else
-	else if(flags == eGLSL_Shader)
-	{
-		//LOG_PRINT("eGLSL_Shader:\n");
-		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, fsMain, 0, 0, 0, flags_);
-	}
-#endif
-	}
+	
 	if(flags == eHLSL_Fragment_Shader)
 	{
-		//LOG_PRINT("eHLSL_Fragment_Shader:\n");
-		//LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		
+		//printf("eHLSL_Fragment_Shader:\n");
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		vsStr2.append(	"#define ROW_MAJOR row_major\n"
 				"#define MVPSEMANTIC\n"
 				"#define WSIGN +\n" 
@@ -6926,7 +6946,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float2 uv;\n"
 				"};\n"
 				"float4x4 worldViewProj;\n"
-				"VsOut2 main( in VsIn2 In ) {\n"
+				"VsOut2 main2( in VsIn2 In ) {\n"
 				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
 				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.uv.x = In.uv.x;\n"
@@ -6964,12 +6984,28 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
-		fsStr2.append(shaderText);
-    		return addHLSLShaderVrtl( 	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, 0, "main", 0, 0, 0, flags_);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+
+    		return addHLSLShaderVrtl( 	vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        			vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
-	if(flags == eHLSL_Vertex_Shader)
+	else if(flags == eHLSL_Vertex_Shader)
         {
+		
 		vsStr2.append(  "float3      iResolution;\n"
 				"float4      iMouse;\n"
 				"float     iTime;\n"
@@ -6990,12 +7026,28 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"    float   time;\n"
 				"};\n"
 				"#define mainImage main\n");
-		vsStr2.append(shaderText);
-    		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        		vsMain, 0, "main", 0, 0, 0, flags_);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+
+    		return addHLSLShaderVrtl(  vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        		vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
-	if(flags == eGLSL_Vertex_Shader)
+	else if(flags == eGLSL_Vertex_Shader)
         {
+		
 		vsStr2.append(  "uniform vec3      iResolution;\n"
 				"uniform vec4      iMouse;\n"
 				"uniform float     iTime;\n"
@@ -7023,21 +7075,112 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 				"varying vec2 xlv_TEXCOORD0;\n"
 				"#define mainImage main\n"
 				);
-		vsStr2.append(shaderText);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, "main", 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, "main", 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, 0, "main", 0, 0, 0, flags_);
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
+	else if(flags == eHLSL_Shader)
+	{
+		
+		//printf("eHLSL_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+    		return addHLSLShaderVrtl(  	vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        			vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	}
+#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+	else if(flags == eGLES_Shader)
+	{
+		
+		//printf("eGLES_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		RendererGLES2* rendererGLES2=0;
+		rendererGLES2=(RendererGLES2*) this;
+		return rendererGLES2->addGLSLShaderVrtl
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	} 
+#else
+	else if(flags == eGLSL_Shader)
+	{
+		
+		//printf("eGLSL_Shader:\n");
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		if(vsStr3.length()) vsStr2.append(vsStr3);
+		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#if 0
+		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
+		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+		if(gsStr2.length()) LOG_PRINT("\ngsStr2:\n%s\n", gsStr2.c_str());
+		stx_exit(0);
+#endif
+		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
+		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
+		return rendererGLSLGL_1_1->addGLSLShaderVrtl
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
+                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
+	}
+#endif
+
 	return -1;
 }
 #endif

@@ -40,8 +40,8 @@
 #endif
 
 #if 0
-#define STX_PRINT
-#define STX_FNLN
+#define LOG_PRINT
+#define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN
 #define LOG_FNLN_NONE
@@ -49,11 +49,11 @@
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #elif 0
+#define LOG_PRINT(...) printf(__VA_ARGS__)
+#define LOG_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#elif 1
 #define STX_PRINT(...) printf(__VA_ARGS__)
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-#elif 1
-#define STX_PRINT(...)
-#define STX_FNLN
 #define LOG_PRINT(...)
 #define LOG_FNLN
 #define LOG_FNLN_NONE
@@ -414,7 +414,7 @@ void RendererGLSLGL_1_1::changeShader(const ShaderID shader)
 
 void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data, const int size)
 {
-	//STX_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
+	//LOG_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
 	#if 0
 	LOG_FNLN_NONE;
 	LOG_PRINT_NONE("selectedShader=%x\n", selectedShader);
@@ -619,7 +619,7 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 	}
 	else
 	{
-		infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Vertex shader error:\n");
+		infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Shader error:\n");
 	}
 	glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 	checkGlError("");
@@ -801,19 +801,10 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 					}
 }
 
-ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
-                                            	const unsigned int flags)
-		{
-STX_FNLN;
-    const char* header=0;
-	std::string vsText="";
-	std::string fsText="";
-	std::string gsText="";
-	std::string csText="";
-	std::string hsText="";
-	std::string dsText="";
+
+void XXX(std::string& sText)
+{
+
 	char versionString[16];
 	
 	
@@ -847,37 +838,43 @@ STX_FNLN;
 	const char * def="\n#version 130\n";
 	#endif
 	
-	if (def) vsText.append(def);
-	if (def) fsText.append(def);
-	if (def) gsText.append(def);
-	if (def) csText.append(def);
-	if (def) hsText.append(def);
-	if (def) dsText.append(def);
-	
+	if (def) sText.append(def);
 
 #if defined(_MSC_VER)
-	vsText.append("precision highp float;\n");
-	fsText.append("precision highp float;\n");
-	gsText.append("precision highp float;\n");
-	csText.append("precision highp float;\n");
-	hsText.append("precision highp float;\n");
-	dsText.append("precision highp float;\n");
+	sText.append("precision highp float;\n");
 #endif
 
 #if 1
-STX_FNLN;
+LOG_FNLN;
 	//const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 	//const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
 	const char* deffs="vec3 GammaCorrect3(vec3 aColor)\n{\n\treturn aColor;\n}\nvec4 GammaCorrect4(vec4 aColor)\n{\n\treturn aColor;\n}\n#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n";
 	//const char* deffs="#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
-	if (deffs) vsText.append(deffs);
-	if (deffs) fsText.append(deffs);
-	if (deffs) gsText.append(deffs);
-	if (deffs) csText.append(deffs);
-	if (deffs) hsText.append(deffs);
-	if (deffs) dsText.append(deffs);
-STX_FNLN;
+	if (deffs) sText.append(deffs);
+LOG_FNLN;
 #endif
+}
+
+ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
+const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
+                                            	const unsigned int flags)
+		{
+LOG_FNLN;
+    const char* header=0;
+	std::string vsText="";
+	std::string fsText="";
+	std::string gsText="";
+	std::string csText="";
+	std::string hsText="";
+	std::string dsText="";
+
+	XXX(vsText);
+	XXX(fsText);
+	XXX(gsText);
+	XXX(csText);
+	XXX(hsText);
+	XXX(dsText);
 
 	if (vsText0) vsText.append(vsText0);
 	if (fsText0) fsText.append(fsText0);
@@ -885,9 +882,9 @@ STX_FNLN;
 	if (csText0) csText.append(csText0);
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
-#if 1
-	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
-	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
+#if 0
+	LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
+	LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
 	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
@@ -1061,7 +1058,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
+            			//if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
             			delete[] s;
 			}
 #endif
@@ -1075,7 +1072,9 @@ LOG_FNLN;
 				{
 					char log[256];
     					glGetInfoLogARB( shaderGL1_1.shader[eVertexShader], 256, NULL, log);
-					printf("Vertex shader error:\n%s\n", log);
+					LOG_FNLN;
+					LOG_PRINT("Vertex shader error:\n%s\n", log);
+					LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
 				}
 				//glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
@@ -1142,7 +1141,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
+            			//if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
             			delete[] s;
 			}
 #endif
@@ -1156,7 +1155,9 @@ LOG_FNLN;
 				{
 					char log[256];
     					glGetInfoLogARB( shaderGL1_1.shader[ePixelShader], 256, NULL, log);
-					printf("Pixel shader error:\n%s\n", log);
+					LOG_FNLN;
+					LOG_PRINT("Fragment shader error:\n%s\n", log);
+					LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
 				}
 				//glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
