@@ -31,7 +31,7 @@
 #include <STX/LuaUtil.h>
 using namespace LuaUtil;
 
-#ifndef __GS__
+#if 1
 
 #if !defined( _WIN32 ) && !defined(SDL_2_0_5_BUILD) && !defined(DBG_HALT)
 #define DBG_HALT
@@ -6647,6 +6647,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	}
 		LOG_FNLN
 	}
+#ifndef __GS__
 	if(foundGS!=std::string::npos)
 	{
 		
@@ -6654,6 +6655,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		LOG_PRINT("Exiting!\n");
 		stx_exit(0);
 	}
+#endif
 	std::size_t headerlength=std::string::npos;
 	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
 	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
@@ -6805,6 +6807,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -6815,13 +6822,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         "main", gsMain, fsMain, 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         "main", gsMain, fsMain, 0, 0, 0, flags_);
 #endif
 
@@ -6875,14 +6882,14 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			RendererGLES2* rendererGLES2=0;
 			rendererGLES2=(RendererGLES2*) this;
 			return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         "main", gsMain, fsMain_, 0, 0, 0, flags_);
 
 #else
 			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 			return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         "main", gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
@@ -6967,6 +6974,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -6974,7 +6986,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif	
 		
 
-    		return addHLSLShaderVrtl( 	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+    		return addHLSLShaderVrtl( 	vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         			vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
 	else if(flags == eHLSL_Vertex_Shader)
@@ -7007,6 +7019,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -7014,7 +7031,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif	
 		
 
-    		return addHLSLShaderVrtl(  vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+    		return addHLSLShaderVrtl(  vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         		vsMain, gsMain, "main", 0, 0, 0, flags_);
 	}
 	else if(flags == eGLSL_Vertex_Shader)
@@ -7054,6 +7071,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -7065,13 +7087,13 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         vsMain, gsMain, "main", 0, 0, 0, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         vsMain, gsMain, "main", 0, 0, 0, flags_);
 #endif
 	}
@@ -7086,13 +7108,18 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
 		stx_exit(0);
 #endif	
 		
-    		return addHLSLShaderVrtl(  	vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+    		return addHLSLShaderVrtl(  	vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         			vsMain, gsMain, fsMain, 0, 0, 0, flags_);
 	}
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
@@ -7107,6 +7134,11 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -7116,7 +7148,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
 		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         vsMain, gsMain, fsMain, 0, 0, 0, flags_);
 	} 
 #else
@@ -7131,6 +7163,12 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 		if(vsStr3.length()) vsStr2.append(vsStr3);
 		if(fsStr3.length()) fsStr2.append(fsStr3);
+		if(gsStr3.length()) gsStr2.append(gsStr3);
+#ifndef __GS__
+		gsStr2="";
+		gsStr3="";
+#endif
+
 #if 0
 		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
 		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
@@ -7140,7 +7178,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
 		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), 0, fsStr2.c_str(), 0, 0, 0,
+			( vsStr2.c_str(), gsStr2.c_str(), fsStr2.c_str(), 0, 0, 0,
                         vsMain, gsMain, fsMain, 0, 0, 0, flags_);
 	}
 #endif
