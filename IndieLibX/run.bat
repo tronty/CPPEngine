@@ -10,12 +10,6 @@ cd bin
 call TestGeometryShader.exe
 cd ..
 cd bin
-call Effect.exe
-cd ..
-cd bin
-call Effect2.exe
-cd ..
-cd bin
 call BallOfFire.exe
 cd ..
 cd bin

@@ -6,6 +6,12 @@
 #ifndef _IRenderer_H_
 #define _IRenderer_H_
 
+#if 0//ndef __GS__
+#define LSL_EXT "hlsl"
+#else
+#define LSL_EXT "glsl"
+#endif
+
 #if defined(LINUX)
 #define STX_PRINT(...) printf(__VA_ARGS__)
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
@@ -3017,7 +3023,7 @@ struct stx_SkyBox
 void OnCreateDevice(const unsigned int aN, const TextureID& aEnv, const char* aEffectFileName );
 int init(const char* aName="Olympus", const char* aExt=0)
 {
-	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.hlsl", "main", "main");
+	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox.glsl", "main", "main");
 	
 	FormatDesc skyboxFmt[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	

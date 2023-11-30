@@ -208,7 +208,7 @@ LOG_FNLN;
 		if((m_IndexedMesh.m_vertices3.size()==0)&&(g_verticesC_.size()==0))
 			stx_exit(0);
 		{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.hlsl", "main", "main");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.glsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,     FORMAT_FLOAT, 3,
@@ -216,7 +216,7 @@ LOG_FNLN;
 		};
 		vf = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shd);
 		}{
-		shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.hlsl", "main", "main");
+		shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.glsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,     FORMAT_FLOAT, 3,

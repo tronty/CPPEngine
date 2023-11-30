@@ -208,10 +208,10 @@ D3DXFROMWINEVECTOR4& RendererHLSLCg::GetscaleBias2D()
 #define ADDHLSLSHADER addShader
 void RendererHLSLCg::InitTexN(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("texSHD0N");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -224,10 +224,10 @@ void RendererHLSLCg::InitTexN(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitTex2N(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD2N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("texSHD2N");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -240,10 +240,10 @@ void RendererHLSLCg::InitTex2N(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitTex3N(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD1N");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("texSHD1N");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -256,10 +256,10 @@ void RendererHLSLCg::InitTex3N(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitPlainN(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD1N");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("plainSHD1N");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -271,10 +271,10 @@ void RendererHLSLCg::InitPlainN(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitPlain3N(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD2N");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("plainSHD2N");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -286,14 +286,10 @@ void RendererHLSLCg::InitPlain3N(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD0");
-#if 0
-		LOG_FNLN;
-		LOG_PRINT("\ntexSHD0:texSHD:\n%s\n", texSHD.c_str());
-#endif
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("texSHD0");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -305,10 +301,10 @@ void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitTex3(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string texSHD = Framework3ShaderFactory::GetShader("texSHD1");
-		s = addShader(texSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("texSHD1");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -320,10 +316,10 @@ void RendererHLSLCg::InitTex3(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitPlain(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD1");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("plainSHD1");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -334,10 +330,10 @@ void RendererHLSLCg::InitPlain(ShaderID& s, VertexFormatID& vf)
 }
 void RendererHLSLCg::InitPlain3(ShaderID& s, VertexFormatID& vf)
 {
-	if(vf==-1)
+	LOG_FNLN;if(vf==-1)
 	{
-		std::string plainSHD = Framework3ShaderFactory::GetShader("plainSHD2");
-		s = addShader(plainSHD.c_str(), "main", "main");
+		std::string fn = Framework3ShaderFactory::GetShaderFileName("plainSHD2");
+		s = addShaderFromFile(fn.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -1374,50 +1370,7 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 	std::string contents, contents2;
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
-    		contents=(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
-#if 0//def _MSC_VER
-	#define __HLSL5__ 1
-	#define ROW_MAJOR row_major
-	#define MVPSEMANTIC
-	#define WSIGN +
-	#define int2 ivec2
-	#define int3 ivec3
-	#define int4 ivec4
-	#define uint2 uvec2
-	#define uint3 uvec3
-	#define uint4 uvec4
-	#define float2 vec2
-	#define float3 vec3
-	#define float4 vec4
-	#define float4x4 mat4
-	#define Texture2D texture2D
-	#define SamplerState sampler
-	#define saturate(x) clamp(x, 0.0f, 1.0f)
-	#define TextureSample(T,S,uv) texture(sampler2D(T, S), uv)
-	float4 GetPixelColor_(Texture2D<float4> atex, float2 aTexCoord)
-	{
-		uint width_;
-		uint height_;
-		atex.GetDimensions(width_, height_);
-		float2 dim_;
-		dim_.x=float(width_-1);
-		dim_.y=float(height_-1);
-		return atex.Load(int3(dim_.x*aTexCoord.x, dim_.y*aTexCoord.y, 0));
-	}
-	#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)
-	#define SAMPLER2D Texture2D<float4>
-#elif 0
-	#define __GLSL__ 1
-	#define WSIGN +
-	#define ROW_MAJOR
-	#define MVPSEMANTIC
-	#define fract frac
-	#define mix lerp
-	#define atan(x,y) atan2(y,x)
-	#define TextureSample(T,S,uv) T.Sample(S, uv)
-	#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod(TEX, float4(TEXCOORD.x, TEXCOORD.y, 0.0, 0.0))
-	#define SAMPLER2D sampler2D
-#endif  		
+    		contents=(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));		
 	ShaderID id=addShader(contents.c_str(), vsMain, fsMain, 0, flags);
 	if(!stx_fileExists(fn.c_str()))
 	{
@@ -1666,7 +1619,7 @@ for(int i=0;i<argc;i++)
 
 void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize, D3DXFROMWINEVECTOR2 texposition, D3DXFROMWINEVECTOR2 texsize)
 {
-	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.hlsl", "main", "main");
+	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.glsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -4769,7 +4722,7 @@ IRenderer* IRenderer::GetRendererInstance(
 	m_title=atitle;
 	LOG_START;
 	#if defined(LINUX) || defined(__APPLE__)
-	printf("\nTitle: %s\n", atitle);
+	STX_PRINT("\nTitle: %s\n", atitle);
 	#endif
 	char path1[MAX_PATH];
 	stx_getcwd(path1);
@@ -6902,10 +6855,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		
 		//printf("eHLSL_Fragment_Shader:\n");
 		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		vsStr2.append(	"#define ROW_MAJOR row_major\n"
-				"#define MVPSEMANTIC\n"
-				"#define WSIGN +\n" 
-				"struct VsOut2 {\n"
+		vsStr2.append(	"struct VsOut2 {\n"
 				"    float4 position;\n"
 				"    float2 uv;\n"
 				"};\n"

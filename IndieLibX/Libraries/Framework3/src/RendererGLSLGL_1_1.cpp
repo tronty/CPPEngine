@@ -846,8 +846,6 @@ void XXX(std::string& sText)
 
 #if 1
 LOG_FNLN;
-	//const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
-	//const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
 	const char* deffs="vec3 GammaCorrect3(vec3 aColor)\n{\n\treturn aColor;\n}\nvec4 GammaCorrect4(vec4 aColor)\n{\n\treturn aColor;\n}\n#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n";
 	//const char* deffs="#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 	if (deffs) sText.append(deffs);
@@ -860,7 +858,7 @@ const char *vsText0, const char *gsText0, const char *fsText0, const char *csTex
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
 		{
-LOG_FNLN;
+	LOG_FNLN;
     const char* header=0;
 	std::string vsText="";
 	std::string fsText="";
@@ -882,7 +880,8 @@ LOG_FNLN;
 	if (csText0) csText.append(csText0);
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
-#if 1
+#if 0
+	STX_FNLN;
 	if (vsText0) STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
 	if (fsText0) STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
 	if (gsText0) STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
@@ -1354,30 +1353,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 {
 LOG_FNLN;
 	ShaderID id=-1;
-/*
-	#if 1
-	// Gamma correct
-	OUT.color.rgb = pow(OUT.color.rgb, float3(0.4545));
-	#elif 0
-	// Gamma from 9.99 to 0.1
-	float gamma=1.5;
-	OUT.color.rgb=pow(abs(OUT.color.rgb), 1.0 / gamma);
-	#endif
-	OUT.color.a=1.0;
-*/
-	const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
-#if 0
-	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
-#elif 0
-	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
-#else
-	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
-#endif
-	const char* deffs="float3 GammaCorrect3(float3 aColor)\n{\n\treturn aColor;\n}\nfloat4 GammaCorrect4(float4 aColor)\n{\n\treturn aColor;\n}\n";
-	std::string vsText=def;
-	std::string fsText=def;
-    vsText.append(defvs);
-    fsText.append(deffs);
+	std::string vsText;
+	std::string fsText;
 	if(vsText_) vsText.append(vsText_);
 	if(fsText_) fsText.append(fsText_);
 	std::string vsText__;

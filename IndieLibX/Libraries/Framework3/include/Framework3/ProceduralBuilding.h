@@ -92,7 +92,7 @@ struct ProceduralBuilding
 
 		init_(afn, afiletosave);
 		
-		shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.hlsl", "main", "main");
+		shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.glsl", "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,     FORMAT_FLOAT, 3,
@@ -915,7 +915,7 @@ int init_(std::string afn, std::string afiletosave)
 	m_sfn=afn;
 	m_sfiletosave=afiletosave;
 
-	shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.hlsl", "main", "main");
+	shdC = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD3N.glsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,     FORMAT_FLOAT, 3,
