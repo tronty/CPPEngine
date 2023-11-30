@@ -128,7 +128,7 @@ public:
 				if(AmbientShader==-1)
 				{
 				//LOG_PRINT("eAmbientLighting:\n");
-					AmbientShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/AmbientLighting.hlsl", "main", "main");
+					AmbientShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/AmbientLighting.glsl", "main", "main");
 					AmbientVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), AmbientShader);
 				}
 				//break;
@@ -136,7 +136,7 @@ public:
 				if(DiffuseShader==-1)
 				{
 				//LOG_PRINT("eDiffuseLighting:\n");
-					DiffuseShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DiffuseLighting.hlsl", "main", "main");
+					DiffuseShader = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/DiffuseLighting.glsl", "main", "main");
 					DiffuseVertexDeclaration = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), DiffuseShader);
 				}
 				//break;
@@ -146,9 +146,9 @@ public:
 				//LOG_PRINT("ePhongLighting1:\n");
 					////{////LOG_FNLN;}
 					#if 0//def LINUX
-					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.GLSL.hlsl", "main", "main");
+					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.GLSL.glsl", "main", "main");
 					#else
-					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.hlsl", "main", "main");
+					PhongShader1 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting1.glsl", "main", "main");
 					#endif
 					PhongVertexDeclaration1 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhongShader1);
 				}
@@ -159,9 +159,9 @@ public:
 				//LOG_PRINT("ePhongLighting2:\n");
 					////{////LOG_FNLN;}
 					#if 0//def LINUX
-					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.GLSL.hlsl", "main", "main");
+					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.GLSL.glsl", "main", "main");
 					#else
-					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.hlsl", "main", "main");
+					PhongShader2 = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/PhongLighting2.glsl", "main", "main");
 					#endif
 					PhongVertexDeclaration2 = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), PhongShader2);
 				}

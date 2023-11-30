@@ -90,7 +90,7 @@ const char* filename[] =
 	{
 	vfs[2] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[2]);
 	}
-	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
+	shaders[3]=IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.glsl", "main", "main");
 	vfs[3] = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), shaders[1]);
 
 	return 0;
@@ -307,7 +307,7 @@ void DrawAtlas()
 	static VertexFormatID vf=-1;
 	if(shd==-1)
 	{
-		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
+		shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "mainPS");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

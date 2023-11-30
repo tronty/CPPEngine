@@ -45,9 +45,9 @@ int init(const char* aTitle)
 	Image3 img3D=stx_Create3DNoiseTexture(64, 64, 64);
 	textures[8]=IRenderer::GetRendererInstance()->addTexture(&img3D, false, ss);
 
-	shaders[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "main1D");
-	shaders[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "main2D");
-	shaders[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "main3D");
+	shaders[0] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "main1D");
+	shaders[1] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "main2D");
+	shaders[2] = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "main3D");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

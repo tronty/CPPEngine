@@ -70,7 +70,7 @@ int ApplicationLogic()
 
 bool DoInit()
 {
-	dirtshd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.hlsl", "main", "main");
+	dirtshd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD1.glsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

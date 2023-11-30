@@ -414,7 +414,7 @@ int init(const char* aTitle)
 	SamplerStateID ss=IRenderer::GetRendererInstance()->Getlinear();
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
 
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.hlsl", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile(	"/MeshRenderer2/rest.glsl", "main", "main");
 	FormatDesc fmt[] = { 
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,

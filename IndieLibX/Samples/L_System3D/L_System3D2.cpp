@@ -130,7 +130,7 @@ int init(const char* aTitle)
 {
 	SamplerStateID ss=IRenderer::GetRendererInstance()->Getlinear();
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
-	g_shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD2N.hlsl", "main", "main");
+	g_shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Framework3/texSHD2N.glsl", "main", "main");
 
 	FormatDesc format[] =
 	{
