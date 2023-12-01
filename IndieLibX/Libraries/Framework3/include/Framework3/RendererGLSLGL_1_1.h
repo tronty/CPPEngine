@@ -59,9 +59,9 @@ void setShaderConstantRaw(const char *name, const void *data, const int size);
 #if 1
 VIRTUAL 
 ShaderID addGLSLShaderVrtl(
-const char *vsText=0, const char *gsText=0, const char *fsText=0, const char *csText=0, const char *hsText=0, const char *dsText=0,
-const char *vsMain="main", const char *gsMain="main", const char *fsMain="main", const char *csMain="main", const char *hsMain="main", const char *dsMain="main", 
-                                            	const unsigned int flags=0);
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+                                            	const unsigned int flags);
 #endif
 virtual ShaderID addHLSLShaderVrtl(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
@@ -76,14 +76,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 	virtual void DeleteShader(ShaderID id);
 	virtual int getSamplerIndex(ShaderID shd, const char* aName);
 protected:
-#if 0
-	int ___addGLSLShader___(ShaderType typ, std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1, int& infoLogPos, char* infoLog);
-	int __addGLSLShader__(const std::string& aVertexSource, const std::string& aFragmentSource, const std::string& aGeometrySource);
-	void buildUniformReferences(int mGLHandle, ShaderGLSLGL3* shaderGL1_1);
-#endif
-	void linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1);
-    	void reflectGLSLShader(std::vector<std::string>& sText, int aProgram, ShaderGLSLGL3* shaderGL1_1);
-	void dumpUniformReferences(ShaderGLSLGL3* shaderGL1_1);
+	void linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3& shaderGL1_1);
+    void reflectGLSLShader(std::vector<std::string>& sText, GLuint aProgram, ShaderGLSLGL3& shaderGL1_1);
 	VArray <ShaderGLSLGL3> shaders;
         void *uniformFuncs[CONSTANT_TYPE_COUNT];
 };

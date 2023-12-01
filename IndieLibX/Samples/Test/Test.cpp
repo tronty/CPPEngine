@@ -53,24 +53,24 @@ int ApplicationLogic()
 	LOG_FNLN;
 	TextureID texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
 	LOG_FNLN;
-	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/RadeonTerrainDemo/LitVertex.glsl", "mainVS", "mainPS");
+	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/RadeonTerrainDemo/LitVertex.hlsl", "mainVS", "mainPS");
 	LOG_FNLN;
-	//ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.glsl", "main", "main");
+	//ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.hlsl", "main", "main");
 	LOG_FNLN;
 	stx_exit(0);
-	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.glsl", "main", "main");
+	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/DDSAnimation/DDSAnimation.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromSpace.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromSpace.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromAtmosphere.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SkyFromAtmosphere.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromSpace.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromSpace.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromAtmosphere.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/GroundFromAtmosphere.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromSpace.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromSpace.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromAtmosphere.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/AccurateAtmosphericalScattering/SpaceFromAtmosphere.hlsl", "main", "main");
 	LOG_FNLN;
 	
 	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/cg_explosion/cg_disc_shock.cg", "main", "main");  
@@ -90,32 +90,32 @@ int ApplicationLogic()
 
 	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/vbomb.fx", "mainVS", "hotPS");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise1.glsl", "mainVS", "fragmentShaderPNoise");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise1.hlsl", "mainVS", "fragmentShaderPNoise");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise2.glsl", "mainVS", "fragmentShaderPNoise");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise2.hlsl", "mainVS", "fragmentShaderPNoise");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise3.glsl", "mainVS", "fragmentShaderPNoise");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise3.hlsl", "mainVS", "fragmentShaderPNoise");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise4.glsl", "mainVS", "fragmentShaderPNoise");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise4.hlsl", "mainVS", "fragmentShaderPNoise");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise5.glsl", "mainVS", "fragmentShaderPNoise"); // fBm ???
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/HLSL-noise/HLSL-noise5.hlsl", "mainVS", "fragmentShaderPNoise"); // fBm ???
 	#endif
 	LOG_FNLN;
-	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/SimpleShader.glsl", "main", "main");
+	ShaderID sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/SimpleShader.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/DiffuseLighting.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/DiffuseLighting.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/AmbientLighting.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/AmbientLighting.hlsl", "main", "main");
 	LOG_FNLN;
 /*
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/PhongLighting1.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/PhongLighting1.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/PhongLighting2.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/PhongLighting2.hlsl", "main", "main");
 	LOG_FNLN;
 */
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main", "main");
 	LOG_FNLN;
-	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/all.else.glsl", "main", "main");
+	sha = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/all.else.hlsl", "main", "main");
 	LOG_FNLN;
 
 	return 0;

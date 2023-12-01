@@ -74,9 +74,9 @@ SamplerStateID GetSS(unsigned int i)
 int init(const char* aTitle)
 {
 #if defined(USE_HLSL_SHADERS)
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "main3");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "main3");
 #else
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.glsl", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.GLSL.hlsl", "main", "main");
 #endif
 	FormatDesc format[] =
 	{

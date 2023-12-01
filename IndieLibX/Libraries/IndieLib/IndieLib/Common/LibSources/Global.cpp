@@ -31,8 +31,8 @@ void InitPixel(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = IndieLibShadersFactory::GetShaderFileName("texSHD1");
-		s = IRenderer::GetRendererInstance()->addShaderFromFile(texSHD.c_str(), "main", "main");
+		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD1");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -47,8 +47,8 @@ void InitCUSTOMVERTEX2D(ShaderID& s, VertexFormatID& vf)
 
 	if(vf==-1)
 	{
-		std::string texSHD = IndieLibShadersFactory::GetShaderFileName("texSHD2");
-		s = IRenderer::GetRendererInstance()->addShaderFromFile(texSHD.c_str(), "main", "main");
+		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD2");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -67,8 +67,8 @@ void InitCUSTOMVERTEX2DW(ShaderID& s, VertexFormatID& vf)
 {
 	if(vf==-1)
 	{
-		std::string texSHD = IndieLibShadersFactory::GetShaderFileName("texSHD3");
-		s = IRenderer::GetRendererInstance()->addShaderFromFile(texSHD.c_str(), "main", "main");
+		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD3");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

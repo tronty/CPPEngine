@@ -186,7 +186,7 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 3,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 #else
 #ifndef _MSC_VER
@@ -200,7 +200,7 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main_Dwarf", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Dwarf", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 #ifndef _MSC_VER
@@ -218,7 +218,7 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4,
 						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main_Soldier", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Soldier", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 #ifndef _MSC_VER
@@ -238,7 +238,7 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_TEXCOORD,  FORMAT_UBYTE, 4,
 						0, TYPE_TEXCOORD,  FORMAT_FLOAT, 4
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main_Warrior", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Warrior", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 #ifndef _MSC_VER
@@ -252,7 +252,7 @@ void CDXUTSDKMesh::SimpleRender2()
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main_Tree", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main_Tree", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 	else
@@ -267,7 +267,7 @@ void CDXUTSDKMesh::SimpleRender2()
 #endif
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2
 					};
-		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest."LSL_EXT, "main", "main");
+		SimpleShader_ = IRenderer::GetRendererInstance()->addShaderFromFile("/DXJune2010/rest.hlsl", "main", "main");
 		SimpleVertexDeclaration_ = IRenderer::GetRendererInstance()->addVertexFormat(format, elementsOf(format), SimpleShader_);
 	}
 #endif

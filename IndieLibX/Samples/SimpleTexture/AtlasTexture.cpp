@@ -42,7 +42,7 @@ VertexFormatID vf=-1;
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.glsl", "mainVS", "mainPS");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -72,7 +72,7 @@ int init(const char* aTitle)
 
 	//Image3 img2D=stx_Create2DNoiseTexture(64, 64);
 
-	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles3.glsl", "main", "main");
+	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles3.hlsl", "main", "main");
 	FormatDesc g_VSParticleDecl[] = {
 		0, TYPE_VERTEX, FORMAT_FLOAT, 3,
 		0, TYPE_TEXCOORD, FORMAT_FLOAT, 2,

@@ -38,7 +38,7 @@ void RenderTex(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 
 
 int init(const char* aTitle)
 {
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.glsl", "main", "main");
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.hlsl", "main", "main");
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,

@@ -4241,7 +4241,6 @@ std::string STX_Service::LoadTxtFile_(const std::string aFileName, std::string& 
 	std::string fn=stx_convertpath(f);
   std::string line;
   file.clear();
-  STX_PRINT("\nFile:%s\n", fn.c_str());
   std::ifstream infile (fn.c_str(), std::ios_base::in);
   while (getline(infile, line, '\n'))
   {
@@ -4258,7 +4257,6 @@ void STX_Service::LoadTxtFile(const std::string aFileName, std::vector<std::stri
 	std::string fn=stx_convertpath(f);
   std::string line;
   file.clear();
-  STX_PRINT("\nFile:%s\n", fn.c_str());
   std::ifstream infile (fn.c_str(), std::ios_base::in);
   while (getline(infile, line, '\n'))
   {
@@ -4269,7 +4267,6 @@ void STX_Service::LoadTxtFile(const std::string aFileName, std::vector<std::stri
 std::string STX_Service::LoadTxtFile(const std::string aFileName, std::string& contents)
 {
 	std::string fn=stx_convertpath(aFileName);
-  	STX_PRINT("\nFile:%s\n", fn.c_str());
 	std::ifstream in(fn.c_str(), std::ios::in | std::ios::binary);
   	if (in)
   	{
@@ -4292,7 +4289,6 @@ std::vector<BYTE> STX_Service::ReadFile(const char* fn_)
 {
 	std::string fn=stx_convertpath(fn_);
     // open the file:
-  	STX_PRINT("\nFile:%s\n", fn.c_str());
     std::ifstream file(fn.c_str(), std::ios::binary);
 
     // Stop eating new lines in binary mode!!!

@@ -348,7 +348,7 @@ int init(const char* aTitle)
     } */
 
 if(-1==m_pShader) {
-	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles3.glsl", "main", "main");
+	m_pShader=IRenderer::GetRendererInstance()->addShaderFromFile("/ParticleVS/Particles3.hlsl", "main", "main");
 	}
 if(-1==m_pDecl) {
 	// Vertex declaration
@@ -428,7 +428,7 @@ if(-1==m_pDecl) {
          }
     #else
     {
-    shdT = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.glsl", "main", "main");
+    shdT = IRenderer::GetRendererInstance()->addShaderFromFile("/MeshRenderer2/rest.hlsl", "main", "main");
   FormatDesc format[] =
       {
         0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

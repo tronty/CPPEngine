@@ -27,8 +27,6 @@
 #include <Framework3/Hlsl2Glsl_Translate.h>
 #include <Framework3/GLShaders.h>
 
-#if 1
-
 #ifdef __APPLE__
 #define LOG_FNLN_OSX
 #define LOG_PRINT_OSX
@@ -40,20 +38,17 @@
 #endif
 
 #if 0
-#define LOG_PRINT
-#define LOG_FNLN
+#define STX_PRINT
+#define STX_FNLN
 #define LOG_PRINT
 #define LOG_FNLN
 #define LOG_FNLN_NONE
 #define LOG_PRINT_NONE
 #define LOG_FNLN_X
 #define LOG_PRINT_X
-#elif 0
-#define LOG_PRINT(...) printf(__VA_ARGS__)
-#define LOG_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #elif 1
-#define STX_PRINT(...) printf(__VA_ARGS__)
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#define STX_PRINT(...)
+#define STX_FNLN
 #define LOG_PRINT(...)
 #define LOG_FNLN
 #define LOG_FNLN_NONE
@@ -414,7 +409,7 @@ void RendererGLSLGL_1_1::changeShader(const ShaderID shader)
 
 void RendererGLSLGL_1_1::setShaderConstantRaw(const char *name, const void *data, const int size)
 {
-	//LOG_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
+	//STX_PRINT("RendererGLSLGL_1_1::setShaderConstantRaw:name=%s\n", name);
 	#if 0
 	LOG_FNLN_NONE;
 	LOG_PRINT_NONE("selectedShader=%x\n", selectedShader);
@@ -619,7 +614,7 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 	}
 	else
 	{
-		infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Shader error:\n");
+		infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Vertex shader error:\n");
 	}
 	glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 	checkGlError("");
@@ -652,9 +647,8 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 	return sResult;
 }
 
-void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3* shaderGL1_1_)
+void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderGLSLGL3& shaderGL1_1)
 {
-	ShaderGLSLGL3 shaderGL1_1=*shaderGL1_1_;
 	char infoLog[2048];
 	GLint infoLogPos = 0;
 	GLint fsResult=RendererGLSLGL_1_1__addGLSLShader(ePixelShader, sText, shaderGL1_1, infoLogPos, infoLog);
@@ -699,10 +693,9 @@ void RendererGLSLGL_1_1::linkGLSLShader(std::vector<std::string>& sText, ShaderG
 		checkGlError("");
 	}
 }
-void RendererGLSLGL_1_1::reflectGLSLShader(std::vector<std::string>& sText, int aProgram, ShaderGLSLGL3* shaderGL1_1_)
+void RendererGLSLGL_1_1::reflectGLSLShader(std::vector<std::string>& sText, GLuint aProgram, ShaderGLSLGL3& shaderGL1_1)
 {
-	ShaderGLSLGL3 shaderGL1_1=*shaderGL1_1_;
-    linkGLSLShader(sText, shaderGL1_1_);
+    linkGLSLShader(sText, shaderGL1_1);
 
 					GLint uniformCount, maxLength;
 			GLint numActiveAttribs,maxAttribNameLength = 0;
@@ -801,10 +794,19 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 					}
 }
 
-
-void XXX(std::string& sText)
-{
-
+ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
+const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
+                                            	const unsigned int flags)
+		{
+LOG_FNLN;
+    const char* header=0;
+	std::string vsText="";
+	std::string fsText="";
+	std::string gsText="";
+	std::string csText="";
+	std::string hsText="";
+	std::string dsText="";
 	char versionString[16];
 	
 	
@@ -838,42 +840,22 @@ void XXX(std::string& sText)
 	const char * def="\n#version 130\n";
 	#endif
 	
-	if (def) sText.append(def);
+	if (def) vsText.append(def);
+	if (def) fsText.append(def);
+	if (def) gsText.append(def);
+	if (def) csText.append(def);
+	if (def) hsText.append(def);
+	if (def) dsText.append(def);
+	
 
 #if defined(_MSC_VER)
-	sText.append("precision highp float;\n");
+	vsText.append("precision highp float;\n");
+	fsText.append("precision highp float;\n");
+	gsText.append("precision highp float;\n");
+	csText.append("precision highp float;\n");
+	hsText.append("precision highp float;\n");
+	dsText.append("precision highp float;\n");
 #endif
-
-#if 1
-LOG_FNLN;
-	const char* deffs="vec3 GammaCorrect3(vec3 aColor)\n{\n\treturn aColor;\n}\nvec4 GammaCorrect4(vec4 aColor)\n{\n\treturn aColor;\n}\n#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n";
-	//const char* deffs="#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
-	if (deffs) sText.append(deffs);
-LOG_FNLN;
-#endif
-}
-
-ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
-                                            	const unsigned int flags)
-		{
-	LOG_FNLN;
-    const char* header=0;
-	std::string vsText="";
-	std::string fsText="";
-	std::string gsText="";
-	std::string csText="";
-	std::string hsText="";
-	std::string dsText="";
-
-	if (vsText0) XXX(vsText);
-	if (fsText0) XXX(fsText);
-	if (gsText0) XXX(gsText);
-	if (csText0) XXX(csText);
-	if (hsText0) XXX(hsText);
-	if (dsText0) XXX(dsText);
-
 	if (vsText0) vsText.append(vsText0);
 	if (fsText0) fsText.append(fsText0);
 	if (gsText0) gsText.append(gsText0);
@@ -881,10 +863,8 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
 #if 0
-	STX_FNLN;
-	if (vsText0) STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
-	if (fsText0) STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
-	if (gsText0) STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
+	printf("\nvsText:\n%s\n", vsText.c_str());
+	printf("\nfsText:\n%s\n", fsText.c_str());
 	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
@@ -920,7 +900,7 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eHullShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS_ARB, &hsResult);
+		glGetObjectParameteriv(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS, &hsResult);
 		checkGlError("");
 		if (hsResult)
 		{
@@ -946,7 +926,7 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eDomainShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS_ARB, &dsResult);
+		glGetObjectParameteriv(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS, &dsResult);
 		checkGlError("");
 		if (dsResult)
 		{
@@ -972,7 +952,7 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eComputeShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS_ARB, &csResult);
+		glGetObjectParameteriv(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS, &csResult);
 		checkGlError("");
 		if (csResult)
 		{
@@ -988,10 +968,9 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		infoLogPos += len;
 	}
 	else csResult = GL_TRUE;
-#endif
-	if (gsText0)
+	if (gsText.length())
 	{
-		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObjectARB(GL_GEOMETRY_SHADER_ARB);
+		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObject(GL_GEOMETRY_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -1000,11 +979,11 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eGeometryShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS_ARB, &gsResult);
+		glGetObjectParameteriv(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS, &gsResult);
 		checkGlError("");
 		if (gsResult)
 		{
-		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
+		    glAttachObject(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
 			checkGlError("");
 		}
 		else
@@ -1016,7 +995,8 @@ const char *vsName, const char *gsMain, const char *psName, const char *csMain, 
 		infoLogPos += len;
 	}
 	else gsResult = GL_TRUE;
-	if (vsText0)
+#endif
+	if (vsText.length())
 	{
 #if 0
 GL_COMPUTE_SHADER
@@ -1058,7 +1038,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
-            			//if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
+            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
             			delete[] s;
 			}
 #endif
@@ -1072,9 +1052,7 @@ LOG_FNLN;
 				{
 					char log[256];
     					glGetInfoLogARB( shaderGL1_1.shader[eVertexShader], 256, NULL, log);
-					LOG_FNLN;
-					LOG_PRINT("Vertex shader error:\n%s\n", log);
-					LOG_PRINT("\nvsText:\n%s\n", vsText.c_str());
+					printf("Vertex shader error:\n%s\n", log);
 				}
 				//glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
@@ -1111,7 +1089,7 @@ LOG_FNLN;
 			if(length>1) printf("%s\n",&log[0]);
 			}
 			#endif
-			if (fsText0)
+			if (fsText.length())
 			{
 			shaderGL1_1.shader[ePixelShader] = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 			const GLcharARB *shaderStrings[6];
@@ -1141,7 +1119,7 @@ LOG_FNLN;
             			char* s=new char(32768);
 				s[0]='\0';
             			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
-            			//if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
+            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
             			delete[] s;
 			}
 #endif
@@ -1155,9 +1133,7 @@ LOG_FNLN;
 				{
 					char log[256];
     					glGetInfoLogARB( shaderGL1_1.shader[ePixelShader], 256, NULL, log);
-					LOG_FNLN;
-					LOG_PRINT("Fragment shader error:\n%s\n", log);
-					LOG_PRINT("\nfsText:\n%s\n", fsText.c_str());
+					printf("Pixel shader error:\n%s\n", log);
 				}
 				//glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
@@ -1353,8 +1329,30 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 {
 LOG_FNLN;
 	ShaderID id=-1;
-	std::string vsText;
-	std::string fsText;
+/*
+	#if 1
+	// Gamma correct
+	OUT.color.rgb = pow(OUT.color.rgb, float3(0.4545));
+	#elif 0
+	// Gamma from 9.99 to 0.1
+	float gamma=1.5;
+	OUT.color.rgb=pow(abs(OUT.color.rgb), 1.0 / gamma);
+	#endif
+	OUT.color.a=1.0;
+*/
+	const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
+#if 0
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#elif 0
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#else
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#endif
+	const char* deffs="float3 GammaCorrect3(float3 aColor)\n{\n\treturn aColor;\n}\nfloat4 GammaCorrect4(float4 aColor)\n{\n\treturn aColor;\n}\n";
+	std::string vsText=def;
+	std::string fsText=def;
+    vsText.append(defvs);
+    fsText.append(deffs);
 	if(vsText_) vsText.append(vsText_);
 	if(fsText_) fsText.append(fsText_);
 	std::string vsText__;
@@ -1362,7 +1360,7 @@ LOG_FNLN;
 #if defined(USE_HLSL_SHADERS)
 #if 0
 	{
-		id=addGLSLShaderVrtl(   vsText_, 0, fsText_, csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText_, gsText, fsText_, csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 	}
@@ -1392,14 +1390,14 @@ LOG_FNLN;
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
    	fclose (pFile);}
 #endif
-		id=addGLSLShaderVrtl(   vsText__.c_str(), 0, fsText__.c_str(), csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 	}
 LOG_FNLN;
 #else
 LOG_FNLN;
-		id=addGLSLShaderVrtl(   vsText.c_str(), 0, fsText.c_str(), csText, hsText, dsText,
+		id=addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 LOG_FNLN;
@@ -1772,6 +1770,5 @@ int argc, char *argv[]
 #endif
 		STX_CATCH;
 		}
-#endif
 #endif
 

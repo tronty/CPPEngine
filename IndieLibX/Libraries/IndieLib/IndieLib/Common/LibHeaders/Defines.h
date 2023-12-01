@@ -332,7 +332,6 @@ typedef int SamplerStateID;
 struct IndieLibShadersFactory
 {
 	static std::string GetShader(const char* aShaderName);
-	static std::string GetShaderFileName(const char* aShaderName);
 };
 
 // --------------------------------------------------------------------------------

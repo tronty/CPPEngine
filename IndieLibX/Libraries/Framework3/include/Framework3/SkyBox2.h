@@ -127,7 +127,7 @@ int init(const char* aTitle)
 	}
 
 #endif	
-	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox2.glsl", "main", "main");
+	skyBox = IRenderer::GetRendererInstance()->addShaderFromFile("/SkyBox/skybox2.hlsl", "main", "main");
 	
 	FormatDesc skyboxFmt[] = { 0, TYPE_VERTEX, FORMAT_FLOAT, 3 };
 	
