@@ -1138,12 +1138,15 @@ skydome.xml
                         otlmesher
                         #otlrenderer
                         otlutils
+			testspine2
+			FragmentShader
+			TestNoise
+			BallOfFire
 			#concurrent-pacman
 			#BrickWall
 			#WaterRender
 			#Seascape
-					BallOfFire
-					TestNoise
+			SDKMesh
 			opengl_simple
 			#InfiniteTerrainII
 					#15_Ocean_Water
@@ -1212,8 +1215,8 @@ skydome.xml
 					#xx
 						Road01
 						Road02
-						#Road03
-						#Road04
+						Road03
+						Road04
 			R2VB-Animation
           		2DAnimation
 			3DAnimation
@@ -1296,7 +1299,6 @@ skydome.xml
 					noise2D
 					noise3D
 					noise3D2
-					testspine2
 					texturegranite
 					texturejade
 					texturesky
@@ -1365,6 +1367,44 @@ skydome.xml
 					</modules>
                     <mainphoneproject>TestApps</mainphoneproject>
                     <package>com.x.TestApps</package>
+                </solution>
+	<solution>
+                <name>TestSpine</name>
+                <modules>android_fopen assimp-5.0.1_x SOIL
+				#VulkanBase
+
+			#MeshFromOBJ10
+			noise
+                            SDL2
+                            OpenAL
+                            hlsl2glsl
+				zlib-1.2.11
+				png-1.5.0
+				jpeg-8c tiff
+				Lua_x
+                            tinyxml_x
+                            STX
+				Image3
+                            Effects11 Framework3 Framework
+                            MeshRenderer2
+                            spine_x
+                            spine_c
+                            spine_cpp
+                            NSGUI
+				RadeonTerrainDemoLibrary
+				NatureSceneLibrary
+			    FW3
+                            IndieLib_Static
+				nova
+                        weber
+                        weberarbaro
+                        otlmesher
+                        #otlrenderer
+                        otlutils
+			testspine3
+			</modules>
+                    <mainphoneproject>TestSpine</mainphoneproject>
+                    <package>com.x.TestSpine</package>
                 </solution>
 	<solution>
                 <name>Mesh3D</name>
@@ -1728,10 +1768,53 @@ skydome.xml
                         otlutils
                         opentree
 			c3dbool
+			#3DAnimation2
 			SDKMesh
+			BallOfFire
+			TestNoise
+			Road01
+			Road02
+			Road03
+			Road04
 			</modules>
                             <mainphoneproject>SDKMesh</mainphoneproject>
                             <package>com.x.SDKMesh</package>
+                        </solution>
+                    <solution>
+                        <name>FragmentShader</name>
+		<modules>android_fopen assimp-5.0.1_x
+				#VulkanBase
+			noise
+                            SDL2
+                            OpenAL SOIL
+                            hlsl2glsl
+				zlib-1.2.11
+				png-1.5.0
+				jpeg-8c tiff
+				Lua_x
+                            tinyxml_x
+                            STX
+				Image3
+                            Effects11 Framework3 Framework
+			MeshRenderer2
+                            spine_x
+                            NSGUI
+				RadeonTerrainDemoLibrary
+				#NatureSceneLibrary
+			    FW3
+                            IndieLib_Static
+				nova
+                        weber
+                        weberarbaro
+                        otlmesher
+                        #otlrenderer
+                        otlutils
+                        opentree
+			c3dbool
+			FragmentShader
+			</modules>
+                            <mainphoneproject>FragmentShader</mainphoneproject>
+                            <package>com.x.FragmentShader</package>
                         </solution>
         <solution>
             <name>Test</name>
@@ -1764,6 +1847,7 @@ skydome.xml
                         otlutils
                         opentree
 			c3dbool
+			FragmentShader
 			BallOfFire
 			TestNoise
 			opengl_simple
@@ -1771,8 +1855,8 @@ skydome.xml
 			3DAnimation
 			testspine2
 			</modules>
-                            <mainphoneproject>SimpleTexture</mainphoneproject>
-                            <package>com.x.SimpleTexture</package>
+                            <mainphoneproject>FragmentShader</mainphoneproject>
+                            <package>com.x.FragmentShader</package>
                         </solution>
         <solution>
             <name>SimpleEffect</name>
@@ -4466,9 +4550,7 @@ hlslang/MachineIndependent/SymbolTable.cpp
                     			RendererHLSLD3D12.cpp
 					importgl.cpp
 					Framework3ShadersFactory.cpp
-                    			RendererGL_1_1.cpp
                     			RendererCgGL_1_1.cpp
-                    			RendererGLSLGL_1_1.cpp
                     			RendererGLSLGL_4_5.cpp
                      			RendererGLES.cpp
                      			RendererGLES2.cpp
@@ -4478,7 +4560,6 @@ hlslang/MachineIndependent/SymbolTable.cpp
                                 #RendererHLSLD3D11_Original.cpp
                     			RendererHLSLD3D10.cpp
                     			RendererHLSLD3D11.cpp
-                    			RendererHLSLCg.cpp
 					rend_device_state.cpp
 					GUI.cpp
 					Camera2.cpp
@@ -4486,15 +4567,134 @@ hlslang/MachineIndependent/SymbolTable.cpp
 					Turtle.cpp
 					tinydx.cpp
 					tinyvk.cpp
+                    			RendererGL_1_1.cpp
+                    			RendererGLSLGL_1_1.cpp
+                    			RendererHLSLCg.cpp
+                    			#RendererGLSLGL_1_1_GS.cpp
+                    			#RendererHLSLCg_GS.cpp
 					</src_files>
                     <flags>_LIB</flags>
+                    <construct>static_library</construct>
+                </project>
+                <project>
+                    <name>spine_cpp</name>
+                    <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine/spine-cpp/include Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include</include_directories>
+                    <src_directory>Libraries/spine/spine-cpp/src</src_directory>
+                    <src_files> SkeletonJson.cpp
+				TextureLoader.cpp
+				MathUtil.cpp
+				PathConstraintSpacingTimeline.cpp
+				PathConstraintMixTimeline.cpp
+				Animation.cpp
+				DrawOrderTimeline.cpp
+				SkeletonClipping.cpp
+				ConstraintData.cpp
+				Triangulator.cpp
+				LinkedMesh.cpp
+				BoundingBoxAttachment.cpp
+				CurveTimeline.cpp
+				RTTI.cpp
+				SlotData.cpp
+				Attachment.cpp
+				ShearTimeline.cpp
+				MeshAttachment.cpp
+				VertexAttachment.cpp
+				PathAttachment.cpp
+				DeformTimeline.cpp
+				TranslateTimeline.cpp
+				Sequence.cpp
+				Skin.cpp
+				Bone.cpp
+				RotateTimeline.cpp
+				Event.cpp
+				SpineObject.cpp
+				Extension.cpp
+				Timeline.cpp
+				Atlas.cpp
+				TransformConstraintData.cpp
+				PointAttachment.cpp
+				AnimationState.cpp
+				Json.cpp
+				SkeletonData.cpp
+				ClippingAttachment.cpp
+				ScaleTimeline.cpp
+				PathConstraint.cpp
+				TransformConstraint.cpp
+				EventData.cpp
+				IkConstraintData.cpp
+				AnimationStateData.cpp
+				AttachmentTimeline.cpp
+				Slot.cpp
+				SkeletonBounds.cpp
+				AtlasAttachmentLoader.cpp
+				RegionAttachment.cpp
+				SkeletonBinary.cpp
+				TransformConstraintTimeline.cpp
+				PathConstraintData.cpp
+				PathConstraintPositionTimeline.cpp
+				SequenceTimeline.cpp
+				IkConstraintTimeline.cpp
+				Updatable.cpp
+				Log.cpp
+				ColorTimeline.cpp
+				EventTimeline.cpp
+				AttachmentLoader.cpp
+				Skeleton.cpp
+				BoneData.cpp
+				IkConstraint.cpp</src_files>
+                    <construct>static_library</construct>
+                </project>
+                <project>
+                    <name>spine_c</name>
+                    <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine/spine-c/include Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include</include_directories>
+                    <src_directory>Libraries/spine/spine-c/src</src_directory>
+                    <src_files>	AnimationStateData.c
+				SkeletonData.c
+				Event.c
+				SkeletonBinary.c
+			        Bone.c
+				Attachment.c
+				SkeletonJson.c
+				RegionAttachment.c
+				Sequence.c
+				EventData.c
+				ClippingAttachment.c
+				Json.c
+				SkeletonBounds.c
+				IkConstraint.c
+				AttachmentLoader.c
+				TransformConstraintData.c
+				AtlasAttachmentLoader.c
+				Debug.c
+				PointAttachment.c
+				Skin.c
+				AnimationState.c
+				SkeletonClipping.c
+				VertexAttachment.c
+				PathConstraintData.c
+				extension.c
+				Color.c
+				MeshAttachment.c
+				SlotData.c
+				Slot.c
+				BoneData.c
+				PathAttachment.c
+				Animation.c
+				BoundingBoxAttachment.c
+				Skeleton.c
+				Atlas.c
+				IkConstraintData.c
+				Triangulator.c
+				Array.c
+				PathConstraint.c
+				TransformConstraint.c</src_files>
                     <construct>static_library</construct>
                 </project>
                 <project>
                     <name>spine_x</name>
                     <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine-2.3/spine-c/include Libraries/spine-2.3/spine-sfml/src Libraries/spine-2.3/spine-sfml/example Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include</include_directories>
                     <src_directory>Libraries/spine-2.3</src_directory>
-                    <src_files>	spine-c/src/spine/SkeletonBounds.c
+                    <src_files>		spine-c/src/spine/SkeletonBounds.c
                     			spine-c/src/spine/AnimationStateData.c
                     			spine-c/src/spine/IkConstraintData.c
                     			spine-c/src/spine/Event.c
@@ -4854,6 +5054,14 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <name>testspine2</name>
                         <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine-2.3/spine-c/include Libraries/spine-2.3/spine-sfml/src Libraries/spine-2.3/spine-sfml/example Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include Samples/testspine Libraries/tinyxml/include</include_directories>
                         <src_files>Samples/testspine/testspine2.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>testspine3</name>
+                        <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine-2.3/spine-c/include Libraries/spine-2.3/spine-sfml/src Libraries/spine-2.3/spine-sfml/example Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include Samples/testspine Libraries/tinyxml/include</include_directories>
+                        <src_files>	Samples/testspine/mainc.cpp
+					#Samples/testspine/maincpp.cpp
+			</src_files>
                         <construct>application</construct>
                     </project>
                     <project>
@@ -5441,6 +5649,12 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <name>TestNoise</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
                         <src_files>Samples/TestNoise/TestNoise.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>FragmentShader</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TestNoise/FragmentShader.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>

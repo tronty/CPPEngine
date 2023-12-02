@@ -1140,6 +1140,7 @@ skydome.xml
                         otlutils
 			testspine2
 			FragmentShader
+			TestGeometryShader
 			TestNoise
 			BallOfFire
 			#concurrent-pacman
@@ -1812,6 +1813,7 @@ skydome.xml
                         opentree
 			c3dbool
 			FragmentShader
+			TestGeometryShader
 			</modules>
                             <mainphoneproject>FragmentShader</mainphoneproject>
                             <package>com.x.FragmentShader</package>
@@ -1848,6 +1850,7 @@ skydome.xml
                         opentree
 			c3dbool
 			FragmentShader
+			TestGeometryShader
 			BallOfFire
 			TestNoise
 			opengl_simple
@@ -4550,9 +4553,7 @@ hlslang/MachineIndependent/SymbolTable.cpp
                     			RendererHLSLD3D12.cpp
 					importgl.cpp
 					Framework3ShadersFactory.cpp
-                    			RendererGL_1_1.cpp
                     			RendererCgGL_1_1.cpp
-                    			RendererGLSLGL_1_1.cpp
                     			RendererGLSLGL_4_5.cpp
                      			RendererGLES.cpp
                      			RendererGLES2.cpp
@@ -4569,9 +4570,11 @@ hlslang/MachineIndependent/SymbolTable.cpp
 					Turtle.cpp
 					tinydx.cpp
 					tinyvk.cpp
-                    			#RendererHLSLCg__.cpp
-                    			#RendererHLSLCg_.cpp
+                    			RendererGL_1_1.cpp
+                    			RendererGLSLGL_1_1.cpp
                     			RendererHLSLCg.cpp
+                    			#RendererGLSLGL_1_1_GS.cpp
+                    			#RendererHLSLCg_GS.cpp
 					</src_files>
                     <flags>_LIB</flags>
                     <construct>static_library</construct>
@@ -5655,6 +5658,12 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <name>FragmentShader</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
                         <src_files>Samples/TestNoise/FragmentShader.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>TestGeometryShader</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TestNoise/TestGeometryShader.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>
