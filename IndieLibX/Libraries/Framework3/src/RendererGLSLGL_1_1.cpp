@@ -890,7 +890,7 @@ LOG_FNLN;
 	return shaders.size()-1;
 #endif
 #if 0
-	if (hsText.length())
+	if (hsText0)
 	{
 		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
 		checkGlError("");
@@ -916,7 +916,7 @@ LOG_FNLN;
 		checkGlError("");
 		infoLogPos += len;
 	}
-	if (dsText.length())
+	if (dsText0)
 	{
 		shaderGL1_1.shader[eDomainShader] = glCreateShaderObjectARB(GL_TESS_EVALUATION_SHADER);
 		checkGlError("");
@@ -942,7 +942,7 @@ LOG_FNLN;
 		checkGlError("");
 		infoLogPos += len;
 	}
-	if (csText.length())
+	if (csText0)
 	{
 		shaderGL1_1.shader[eComputeShader] = glCreateShaderObjectARB(GL_COMPUTE_SHADER);
 		checkGlError("");
@@ -997,7 +997,7 @@ LOG_FNLN;
 		infoLogPos += len;
 	}
 	else gsResult = GL_TRUE;
-	if (vsText.length())
+	if (vsText0)
 	{
 #if 0
 GL_COMPUTE_SHADER
@@ -1090,7 +1090,7 @@ LOG_FNLN;
 			if(length>1) printf("%s\n",&log[0]);
 			}
 			#endif
-			if (fsText.length())
+			if (fsText0)
 			{
 			shaderGL1_1.shader[ePixelShader] = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 			const GLcharARB *shaderStrings[6];
@@ -1361,7 +1361,7 @@ LOG_FNLN;
 #if defined(USE_HLSL_SHADERS)
 #if 0
 	{
-		id=addGLSLShaderVrtl(   vsText_, gsText, fsText_, csText, hsText, dsText,
+		id=addGLSLShader /* Vrtl */(   vsText_, gsText, fsText_, csText, hsText, dsText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
                             flags);
 	}

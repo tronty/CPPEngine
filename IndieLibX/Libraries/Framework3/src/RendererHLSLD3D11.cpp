@@ -1375,7 +1375,7 @@ int RendererHLSLD3D11::removeTexture(const TextureID texture){
 ID3D11ShaderReflection* RendererHLSLD3D11::CompileShader(ShaderType shaderType, ShaderD3D11& shader, const char* vsText, const char* vsMain, const char* target){return 0;}
 
 ShaderID RendererHLSLD3D11::addHLSLShaderVrtl(
-const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText,
+const char *vsText_, const char *gsText_, const char *fsText_, const char *csText_, const char *hsText_, const char *dsText_,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain,
                                             	const unsigned int flags)
 		{
@@ -1399,16 +1399,16 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 #endif
 	std::string vsText=def;
 	std::string fsText=def;
-	//std::string gsText = "";
+	std::string gsText=def;
 	vsText.append(defvs);
 	fsText.append(deffs);
-	//gsText.append(defgs);
+	gsText.append(defgs);
 	if(vsText_)
 		vsText.append(vsText_);
 	if (fsText_)
-		fsText.append(fsText_); /*
+		fsText.append(fsText_);
 	if (gsText_)
-		gsText.append(gsText_); */
+		gsText.append(gsText_);
 
 		ShaderD3D11  shader;
 		stx_memset(&shader, 0, sizeof(ShaderD3D11));
@@ -1433,7 +1433,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 		#endif
 		#endif
 
-	if (vsMain)
+	if (vsText_)
 	{
 		#if 0
     		std::ofstream out("./vsText.txt");
@@ -1477,7 +1477,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			return SHADER_NONE;
 	}
 
-	if (gsMain)
+	if (gsText_)
 	{
 		const char *target = (feature_level == D3D_FEATURE_LEVEL_11_0)? "gs_5_0" : (feature_level == D3D_FEATURE_LEVEL_10_1)? "gs_4_1" : "gs_4_0";
 
@@ -1512,7 +1512,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			return SHADER_NONE;
 	}
 
-	if (fsMain)
+	if (fsText_)
 	{
 		#if 0
     		std::ofstream out("./fsText.txt");
@@ -1554,7 +1554,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			return SHADER_NONE;
 	}
 
-	if (csMain)
+	if (csText_)
 	{
 		const char *target = "cs_5_0";
 
@@ -1587,7 +1587,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			return SHADER_NONE;
 	}
 
-	if (hsMain)
+	if (hsText_)
 	{
 		const char *target = "hs_5_0";
 
@@ -1620,7 +1620,7 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 			return SHADER_NONE;
 	}
 
-	if (dsMain)
+	if (dsText_)
 	{
 		const char *target = "ds_5_0";
 
