@@ -576,13 +576,13 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 		#endif
 		#if 0
 		case eHullShader:
-			shd = glCreateShaderObject(GL_TESS_CONTROL_SHADER);
+			shd = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
 			break;
 		case eDomainShader:
-			shd = glCreateShaderObject(GL_TESS_EVALUATION_SHADER);
+			shd = glCreateShaderObjectARB(GL_TESS_EVALUATION_SHADER);
 			break;
 		case eComputeShader:
-			shd = glCreateShaderObject(GL_COMPUTE_SHADER);
+			shd = glCreateShaderObjectARB(GL_COMPUTE_SHADER);
 			break;
 		#endif
 	};
@@ -865,6 +865,7 @@ LOG_FNLN;
 #if 0
 	printf("\nvsText:\n%s\n", vsText.c_str());
 	printf("\nfsText:\n%s\n", fsText.c_str());
+	printf("\ngsText:\n%s\n", gsText.c_str());
 	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
@@ -891,7 +892,7 @@ LOG_FNLN;
 #if 0
 	if (hsText.length())
 	{
-		shaderGL1_1.shader[eHullShader] = glCreateShaderObject(GL_TESS_CONTROL_SHADER);
+		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -900,11 +901,11 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eHullShader]);
 		checkGlError("");
-		glGetObjectParameteriv(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS, &hsResult);
+		glGetObjectParameterivARB(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS_ARB, &hsResult);
 		checkGlError("");
 		if (hsResult)
 		{
-		    glAttachObject(shaderGL1_1.program, shaderGL1_1.shader[eHullShader]);
+		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eHullShader]);
 			checkGlError("");
 		}
 		else
@@ -917,7 +918,7 @@ LOG_FNLN;
 	}
 	if (dsText.length())
 	{
-		shaderGL1_1.shader[eDomainShader] = glCreateShaderObject(GL_TESS_EVALUATION_SHADER);
+		shaderGL1_1.shader[eDomainShader] = glCreateShaderObjectARB(GL_TESS_EVALUATION_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -926,11 +927,11 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eDomainShader]);
 		checkGlError("");
-		glGetObjectParameteriv(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS, &dsResult);
+		glGetObjectParameterivARB(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS_ARB, &dsResult);
 		checkGlError("");
 		if (dsResult)
 		{
-		    glAttachObject(shaderGL1_1.program, shaderGL1_1.shader[eDomainShader]);
+		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eDomainShader]);
 			checkGlError("");
 		}
 		else
@@ -943,7 +944,7 @@ LOG_FNLN;
 	}
 	if (csText.length())
 	{
-		shaderGL1_1.shader[eComputeShader] = glCreateShaderObject(GL_COMPUTE_SHADER);
+		shaderGL1_1.shader[eComputeShader] = glCreateShaderObjectARB(GL_COMPUTE_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -952,11 +953,11 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eComputeShader]);
 		checkGlError("");
-		glGetObjectParameteriv(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS, &csResult);
+		glGetObjectParameterivARB(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS_ARB, &csResult);
 		checkGlError("");
 		if (csResult)
 		{
-		    glAttachObject(shaderGL1_1.program, shaderGL1_1.shader[eComputeShader]);
+		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eComputeShader]);
 			checkGlError("");
 		}
 		else
@@ -968,9 +969,10 @@ LOG_FNLN;
 		infoLogPos += len;
 	}
 	else csResult = GL_TRUE;
-	if (gsText.length())
+#endif
+	if (gsText0)
 	{
-		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObject(GL_GEOMETRY_SHADER);
+		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -979,11 +981,11 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eGeometryShader]);
 		checkGlError("");
-		glGetObjectParameteriv(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS, &gsResult);
+		glGetObjectParameterivARB(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS_ARB, &gsResult);
 		checkGlError("");
 		if (gsResult)
 		{
-		    glAttachObject(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
+		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
 			checkGlError("");
 		}
 		else
@@ -995,7 +997,6 @@ LOG_FNLN;
 		infoLogPos += len;
 	}
 	else gsResult = GL_TRUE;
-#endif
 	if (vsText.length())
 	{
 #if 0
