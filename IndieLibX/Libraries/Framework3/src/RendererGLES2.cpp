@@ -35,6 +35,26 @@ typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboo
 
 #define LOG_FNLN_X
 #define LOG_PRINT_X
+		bool samplerCompGL2std(const XSampler & s0, const XSampler &s1)
+		{
+       if(!(s0.name.c_str()&& s1.name.c_str()))return false;
+       int i=strcmp(s0.name.c_str(), s1.name.c_str());
+       if(i>0)
+	      return false;
+       if(i<0)
+	      return true;
+       return false;
+		}
+		bool constantCompGL2std(const ConstantShaderGLSLGL3 & s0, const ConstantShaderGLSLGL3 &s1)
+		{
+       if(!(s0.name.c_str()&& s1.name.c_str()))return false;
+       int i=strcmp(s0.name.c_str(), s1.name.c_str());
+       if(i>0)
+	      return false;
+       if(i<0)
+	      return true;
+       return false;
+		}
 
 		void RendererGLES2::changeVertexBufferVrtl(const int stream, const VertexBufferID vertexBuffer, const intptr offset)
 		{
@@ -327,7 +347,7 @@ LOG_PRINT_X("shaders[%d].nUniforms:%d\n", selectedShader, shaders[selectedShader
 	      return true;
        return false;
 		}
-
+#if 0
 		ShaderID RendererGLES2::addGLSLShader(
 const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
 const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
@@ -370,6 +390,7 @@ SDL_GL_MakeCurrent(STX_Service::GetSDLWindow(), STX_Service::GetSDLContext());
 	shaders.push_back(shaderGLES2);
 	return shaders.size()-1;
 }
+#endif
 
 		ShaderID RendererGLES2::addHLSLShaderVrtl(
 const char *vsText0, const char *gsText0, const char *fsText0, const char *csText, const char *hsText, const char *dsText,
@@ -533,7 +554,7 @@ int argc, char *argv[]
 			nImageUnits = units;
 			stx_memset(&textureLod, 0, sizeof(textureLod));
 #if !defined(USE_GLES_SHADERS) && !defined(SDL_2_0_5_BUILD)
-			if (GL_ARB_draw_buffers_supported)
+			if (GL_draw_buffers_supported)
 			{
 				GLint mrt = 1;
 				LOG_PRINT_X("glGetIntegerv:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
@@ -725,7 +746,7 @@ void	RendererGLES2::BeginPointSpriteRendering()
     // This is how will our point sprite's size will be modified by
     // distance from the viewer
     float quadratic[] =  { 1.0f, 0.0f, 0.01f };
-    LOG_PRINT_X("glPointParameterfvARB:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+    LOG_PRINT_X("glPointParameterfv:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 	glPointParameterfv( GL_POINT_DISTANCE_ATTENUATION, quadratic );
    checkGlError("");
 
@@ -747,16 +768,16 @@ void	RendererGLES2::BeginPointSpriteRendering()
 
     // The alpha of a point is calculated to allow the fading of points
     // instead of shrinking them past a defined threshold size. The threshold
-    // is defined by GL_POINT_FADE_THRESHOLD_SIZE_ARB and is not clamped to
+    // is defined by GL_POINT_FADE_THRESHOLD_SIZE and is not clamped to
     // the minimum and maximum point sizes.
-    LOG_PRINT_X("glPointParameterfARB:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+    LOG_PRINT_X("glPointParameterf:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 	glPointParameterf( GL_POINT_FADE_THRESHOLD_SIZE, 60.0f );
    checkGlError("");
 
-    LOG_PRINT_X("glPointParameterfARB:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+    LOG_PRINT_X("glPointParameterf:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 	glPointParameterf( GL_POINT_SIZE_MIN, 1.0f );
    checkGlError("");
-    LOG_PRINT_X("glPointParameterfARB:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
+    LOG_PRINT_X("glPointParameterf:%s:%s:%d\n",__FILE__,__FUNCTION__,__LINE__);
 	glPointParameterf( GL_POINT_SIZE_MAX, maxSize );
    checkGlError("");
 
@@ -888,7 +909,7 @@ LOG_FNLN;
 	shaderGL1_1.shader[eComputeShader] = 0;
 	shaderGL1_1.shader[eHullShader] = 0;
 	shaderGL1_1.shader[eDomainShader] = 0;
-	shaderGL1_1.program = glCreateProgramObjectARB();
+	shaderGL1_1.program = glCreateProgram();
 	checkGlError("");
 #if 0 // ???
     std::vector<std::string> sText;
@@ -901,7 +922,7 @@ LOG_FNLN;
 #if 0
 	if (hsText0)
 	{
-		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
+		shaderGL1_1.shader[eHullShader] = glCreateShader(GL_TESS_CONTROL_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -910,24 +931,24 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eHullShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS_ARB, &hsResult);
+		glGetShaderiv(shaderGL1_1.shader[eHullShader], GL_COMPILE_STATUS, &hsResult);
 		checkGlError("");
 		if (hsResult)
 		{
-		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eHullShader]);
+		    glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[eHullShader]);
 			checkGlError("");
 		}
 		else
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Hull shader error:\n");
 		}
-		glGetInfoLogARB(shaderGL1_1.shader[eHullShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetShaderInfoLog(shaderGL1_1.shader[eHullShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
 	if (dsText0)
 	{
-		shaderGL1_1.shader[eDomainShader] = glCreateShaderObjectARB(GL_TESS_EVALUATION_SHADER);
+		shaderGL1_1.shader[eDomainShader] = glCreateShader(GL_TESS_EVALUATION_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -936,24 +957,24 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eDomainShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS_ARB, &dsResult);
+		glGetShaderiv(shaderGL1_1.shader[eDomainShader], GL_COMPILE_STATUS, &dsResult);
 		checkGlError("");
 		if (dsResult)
 		{
-		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eDomainShader]);
+		    glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[eDomainShader]);
 			checkGlError("");
 		}
 		else
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Domain shader error:\n");
 		}
-		glGetInfoLogARB(shaderGL1_1.shader[eDomainShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetShaderInfoLog(shaderGL1_1.shader[eDomainShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
 	if (csText0)
 	{
-		shaderGL1_1.shader[eComputeShader] = glCreateShaderObjectARB(GL_COMPUTE_SHADER);
+		shaderGL1_1.shader[eComputeShader] = glCreateShader(GL_COMPUTE_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -962,26 +983,25 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eComputeShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS_ARB, &csResult);
+		glGetShaderiv(shaderGL1_1.shader[eComputeShader], GL_COMPILE_STATUS, &csResult);
 		checkGlError("");
 		if (csResult)
 		{
-		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eComputeShader]);
+		    glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[eComputeShader]);
 			checkGlError("");
 		}
 		else
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Compute shader error:\n");
 		}
-		glGetInfoLogARB(shaderGL1_1.shader[eComputeShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetShaderInfoLog(shaderGL1_1.shader[eComputeShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
 	else csResult = GL_TRUE;
-#endif
 	if (gsText0)
 	{
-		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
+		shaderGL1_1.shader[eGeometryShader] = glCreateShader(GL_GEOMETRY_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
@@ -990,22 +1010,23 @@ LOG_FNLN;
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eGeometryShader]);
 		checkGlError("");
-		glGetObjectParameterivARB(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS_ARB, &gsResult);
+		glGetShaderiv(shaderGL1_1.shader[eGeometryShader], GL_COMPILE_STATUS, &gsResult);
 		checkGlError("");
 		if (gsResult)
 		{
-		    glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
+		    glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[eGeometryShader]);
 			checkGlError("");
 		}
 		else
 		{
 			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Geometry shader error:\n");
 		}
-		glGetInfoLogARB(shaderGL1_1.shader[eGeometryShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+		glGetShaderInfoLog(shaderGL1_1.shader[eGeometryShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
 	else gsResult = GL_TRUE;
+#endif
 	if (vsText0)
 	{
 #if 0
@@ -1015,13 +1036,13 @@ GL_TESS_CONTROL_SHADER
 GL_GEOMETRY_SHADER
 GL_VERTEX_SHADER
 GL_FRAGMENT_SHADER
-GL_GEOMETRY_SHADER_ARB
-GL_VERTEX_SHADER_ARB
-GL_FRAGMENT_SHADER_ARB
+GL_GEOMETRY_SHADER
+GL_VERTEX_SHADER
+GL_FRAGMENT_SHADER
 #endif
-		shaderGL1_1.shader[eVertexShader] = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+		shaderGL1_1.shader[eVertexShader] = glCreateShader(GL_VERTEX_SHADER);
 		checkGlError("");
-		const GLcharARB *shaderStrings[6];
+		const GLchar *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = vsText.c_str();
 		LOG_PRINT("shaderStrings[0]:\n%s\n", shaderStrings[0]);
@@ -1036,18 +1057,18 @@ GL_FRAGMENT_SHADER_ARB
     out << vsName;
     out.close();
 #endif
-		glShaderSourceARB(shaderGL1_1.shader[eVertexShader], strIndex, shaderStrings, 0);
+		glShaderSource(shaderGL1_1.shader[eVertexShader], strIndex, shaderStrings, 0);
 				checkGlError("");
-				glCompileShaderARB(shaderGL1_1.shader[eVertexShader]);
+				glCompileShader(shaderGL1_1.shader[eVertexShader]);
 				checkGlError("");
-				glGetObjectParameterivARB(shaderGL1_1.shader[eVertexShader], GL_OBJECT_COMPILE_STATUS_ARB, &vsResult);
+				glGetShaderiv(shaderGL1_1.shader[eVertexShader], GL_COMPILE_STATUS, &vsResult);
 				checkGlError("");
 LOG_FNLN;
 #ifndef _MSC_VER
 			{
             			char* s=new char(32768);
 				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
+            			glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
             			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
             			delete[] s;
 			}
@@ -1055,16 +1076,16 @@ LOG_FNLN;
 				if (vsResult)
 				{
 LOG_FNLN;
-			glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[eVertexShader]);
+			glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[eVertexShader]);
 				checkGlError("");
 				}
 				else
 				{
 					char log[256];
-    					glGetInfoLogARB( shaderGL1_1.shader[eVertexShader], 256, NULL, log);
+    					glGetShaderInfoLog( shaderGL1_1.shader[eVertexShader], 256, NULL, log);
 					printf("Vertex shader error:\n%s\n", log);
 				}
-				//glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+				//glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 				//printf("\n%s\n", infoLog);
@@ -1078,14 +1099,14 @@ LOG_FNLN;
 				if (blen > 1)
 				{
  					GLchar* compiler_log = (GLchar*)malloc(blen);
- 					glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], blen, &slen, compiler_log);
+ 					glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader], blen, &slen, compiler_log);
  					printf("\n%s\n", compiler_log);
  					free (compiler_log);
 				}
 			}else if(0){
 				char infobuffer[1000];
 				GLsizei infobufferlen = 0;
-				glGetInfoLogARB(shaderGL1_1.shader[eVertexShader], 999, &infobufferlen, infobuffer);
+				glGetShaderInfoLog(shaderGL1_1.shader[eVertexShader], 999, &infobufferlen, infobuffer);
 				if (infobufferlen != 0) {
 					infobuffer[infobufferlen] = 0;
 					printf("vertexShader reports: %s \n", infobuffer);
@@ -1101,8 +1122,8 @@ LOG_FNLN;
 			#endif
 			if (fsText0)
 			{
-			shaderGL1_1.shader[ePixelShader] = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-			const GLcharARB *shaderStrings[6];
+			shaderGL1_1.shader[ePixelShader] = glCreateShader(GL_FRAGMENT_SHADER);
+			const GLchar *shaderStrings[6];
 			int strIndex = 0;
 			shaderStrings[strIndex++] = fsText.c_str();
 			LOG_PRINT("shaderStrings[0]:\n%s\n", shaderStrings[0]);
@@ -1117,18 +1138,18 @@ LOG_FNLN;
     out << psName;
     out.close();
 #endif
-			glShaderSourceARB(shaderGL1_1.shader[ePixelShader], strIndex, shaderStrings, 0);
+			glShaderSource(shaderGL1_1.shader[ePixelShader], strIndex, shaderStrings, 0);
 				checkGlError("");
-				glCompileShaderARB(shaderGL1_1.shader[ePixelShader]);
+				glCompileShader(shaderGL1_1.shader[ePixelShader]);
 				checkGlError("");
-				glGetObjectParameterivARB(shaderGL1_1.shader[ePixelShader], GL_OBJECT_COMPILE_STATUS_ARB, &fsResult);
+				glGetShaderiv(shaderGL1_1.shader[ePixelShader], GL_COMPILE_STATUS, &fsResult);
 				checkGlError("");
 LOG_FNLN;
 #ifndef _MSC_VER
 			{
             			char* s=new char(32768);
 				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
+            			glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
             			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
             			delete[] s;
 			}
@@ -1136,16 +1157,16 @@ LOG_FNLN;
 				if (fsResult)
 				{
 LOG_FNLN;
-					glAttachObjectARB(shaderGL1_1.program, shaderGL1_1.shader[ePixelShader]);
+					glAttachShader(shaderGL1_1.program, shaderGL1_1.shader[ePixelShader]);
 				checkGlError("");
 				}
 				else
 				{
 					char log[256];
-    					glGetInfoLogARB( shaderGL1_1.shader[ePixelShader], 256, NULL, log);
+    					glGetShaderInfoLog( shaderGL1_1.shader[ePixelShader], 256, NULL, log);
 					printf("Pixel shader error:\n%s\n", log);
 				}
-				//glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+				//glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 			}
@@ -1158,14 +1179,14 @@ LOG_FNLN;
 				if (blen > 1)
 				{
  					GLchar* compiler_log = (GLchar*)malloc(blen);
- 					glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], blen, &slen, compiler_log);
+ 					glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader], blen, &slen, compiler_log);
  					printf("\n%s\n", compiler_log);
  					free (compiler_log);
 				}
 			}else if(0){
 				char infobuffer[1000];
 				GLsizei infobufferlen = 0;
-				glGetInfoLogARB(shaderGL1_1.shader[ePixelShader], 999, &infobufferlen, infobuffer);
+				glGetShaderInfoLog(shaderGL1_1.shader[ePixelShader], 999, &infobufferlen, infobuffer);
 				if (infobufferlen != 0) {
 					infobuffer[infobufferlen] = 0;
 					printf("vertexShader reports: %s \n", infobuffer);
@@ -1187,20 +1208,20 @@ if (fsResult)
 			if (1)//(vsResult && fsResult)
 			{
 LOG_FNLN;
-			glLinkProgramARB(shaderGL1_1.program);
+			glLinkProgram(shaderGL1_1.program);
 				checkGlError("");
 #ifndef _MSC_VER
 			{
 	    			char* s=new char(32768);
 				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.program,32768,NULL,s);
+            			glGetShaderInfoLog(shaderGL1_1.program,32768,NULL,s);
             			if(s) if(stx_strlen(s)) printf("Link Log: \nvs:\n%s\nfs:\n%s\n%s\n", vsText.c_str(), fsText.c_str(), s);
             			delete[] s;
 			}
 #endif
-				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
+				glGetShaderiv(shaderGL1_1.program, GL_LINK_STATUS, &linkResult);
 				checkGlError("");
-				glGetInfoLogARB(shaderGL1_1.program, sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
+				glGetShaderInfoLog(shaderGL1_1.program, sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 				checkGlError("");
 				infoLogPos += len;
 LOG_FNLN;
@@ -1222,9 +1243,9 @@ glUseProgram(shaderGL1_1.program);
 				checkGlError("");
 					GLint uniformCount, maxLength;
 			GLint numActiveAttribs,maxAttribNameLength = 0;
-			glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &uniformCount);
+			glGetShaderiv(shaderGL1_1.program, GL_ACTIVE_UNIFORMS, &uniformCount);
 				checkGlError("");
-					glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_ACTIVE_UNIFORM_MAX_LENGTH_ARB, &maxLength);
+					glGetShaderiv(shaderGL1_1.program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
 				checkGlError("");
 			shaderGL1_1.samplers.resize(uniformCount);
 			shaderGL1_1.uniforms.resize(uniformCount);
@@ -1244,7 +1265,7 @@ glGetActiveUniform(handle_to_uint(shaderGL1_1.program), i, maxLength, &length, &
 glGetActiveUniform(shaderGL1_1.program, i, maxLength, &length, &size, &type, name);
 #endif
 				checkGlError("");
-						if (type >= GL_SAMPLER_1D && type <= GL_SAMPLER_2D_RECT_SHADOW_ARB)
+						if (type == GL_SAMPLER_2D)
 						{
 #ifdef __APPLE__
 GLint location = glGetUniformLocation(handle_to_uint(shaderGL1_1.program), name);
@@ -1278,9 +1299,9 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(handle_to_uint(s
 shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.program, name);
 #endif
 				checkGlError("");
-									shaderGL1_1.uniforms[nUniforms].type = getConstantType(type);
+									shaderGL1_1.uniforms[nUniforms].type = getConstantType_GL(type);
 									shaderGL1_1.uniforms[nUniforms].nElements = size;
-									shaderGL1_1.uniforms[nUniforms].name=std::string(name);									stx_Variables::AddUniform(shaders.size(), name, size, getConstantType(type)); // ???
+									shaderGL1_1.uniforms[nUniforms].name=std::string(name);									stx_Variables::AddUniform(shaders.size(), name, size, getConstantType_GL(type)); // ???
 									nUniforms++;
 								}
 								else if (bracket != 0 && bracket[1] > '0')
@@ -1333,4 +1354,7 @@ LOG_PRINT("shaders.size()=%d\n", shaders.size());
 #endif
 }
 #endif
+/*
+1302:69: error: 'getConstantType_GL' was not declared in this scope
+*/
 
