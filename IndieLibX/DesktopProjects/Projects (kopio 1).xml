@@ -1140,6 +1140,7 @@ skydome.xml
                         otlutils
 			testspine2
 			FragmentShader
+			TestGeometryShader
 			TestNoise
 			BallOfFire
 			#concurrent-pacman
@@ -1519,7 +1520,7 @@ skydome.xml
                             tinyxml_x
                             STX
 				Image3
-                            Effects11 Framework3 Framework
+                            Effects11 Framework Framework3 
 			MeshRenderer2
                             spine_x
                             NSGUI
@@ -1812,6 +1813,7 @@ skydome.xml
                         opentree
 			c3dbool
 			FragmentShader
+			TestGeometryShader
 			</modules>
                             <mainphoneproject>FragmentShader</mainphoneproject>
                             <package>com.x.FragmentShader</package>
@@ -1848,6 +1850,7 @@ skydome.xml
                         opentree
 			c3dbool
 			FragmentShader
+			TestGeometryShader
 			BallOfFire
 			TestNoise
 			opengl_simple
@@ -4540,7 +4543,10 @@ hlslang/MachineIndependent/SymbolTable.cpp
 						Libraries/Framework3/include
 						Libraries/otl/include</include_directories>
                     <src_directory>Libraries/Framework3/src</src_directory>
-                    <src_files>		RendererVulkan.cpp
+                    <src_files>	        RendererGLES_3_2.cpp
+					RendererGLES.cpp
+                     			RendererGLES2.cpp
+					RendererVulkan.cpp
 					#fft_512x512_c2c.cpp
                                     ProceduralBuilding5.cpp
 					camera3.cpp
@@ -4552,9 +4558,6 @@ hlslang/MachineIndependent/SymbolTable.cpp
 					Framework3ShadersFactory.cpp
                     			RendererCgGL_1_1.cpp
                     			RendererGLSLGL_4_5.cpp
-                     			RendererGLES.cpp
-                     			RendererGLES2.cpp
-                     			RendererGLES_3_2.cpp
                     			RendererHLSLD3D9.cpp
                                 #RendererHLSLD3D10_Original.cpp
                                 #RendererHLSLD3D11_Original.cpp
@@ -5655,6 +5658,12 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <name>FragmentShader</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
                         <src_files>Samples/TestNoise/FragmentShader.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>TestGeometryShader</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TestNoise/TestGeometryShader.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>
