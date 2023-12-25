@@ -6640,19 +6640,33 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
-#if 0
+	std::string header, vsStr2, fsStr2, gsStr2, vsStr3, fsStr3, gsStr3;
+	std::string csStr, hsStr, dsStr, tcsStr, tesStr;
+#if 1
 	std::string str;std::string key="[Vertex shader]";
 	std::vector<std::string> delimeters;
 	std::vector<int> positions;
 	str=IRenderer__GetShaderText(shaderText, key, delimeters, positions);
 	STX_PRINT("\n%s\n", str.c_str());
-
-	for (unsigned int i = 0; i < delimeters.size(); i++) 
-        	cout << "RES2: " << positions[i] << " " << delimeters[i] << endl; 
-
+	unsigned int i = 0;
+	for (i = 0; i < delimeters.size(); i++)
+	{
+		if(positions[i]==-1)
+			continue;
+        	cout << "RES2: " << positions[i] << " " << delimeters[i] << endl;
+			continue;
+		std::size_t p2=shaderText.length();
+		std::size_t p1=positions[i];
+		if(i<positions.size()-1)
+			p2=positions[i+1];
+		if(delimeters[i]=="[Compute shader]") csStr=shaderText.substr(p1+16, p2);
+		if(delimeters[i]=="[Hull shader]") hsStr=shaderText.substr(p1+13, p2);
+		if(delimeters[i]=="[Domain shader]") dsStr=shaderText.substr(p1+15, p2);
+		if(delimeters[i]=="[TessControl shader]") tcsStr=shaderText.substr(p1+20, p2);
+		if(delimeters[i]=="[TessEval shader]") tesStr=shaderText.substr(p1+17, p2);
+	}
 	//stx_exit(0);
 #endif
-	std::string header, vsStr2, fsStr2, gsStr2, vsStr3, fsStr3, gsStr3;
 
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundFS = shaderText.find("[Fragment shader]");
