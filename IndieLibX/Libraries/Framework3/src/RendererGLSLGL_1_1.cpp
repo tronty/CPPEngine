@@ -889,7 +889,7 @@ LOG_FNLN;
 	shaders.push_back(shaderGL1_1);
 	return shaders.size()-1;
 #endif
-#if 0
+#if 1
 	if (hsText0)
 	{
 		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
