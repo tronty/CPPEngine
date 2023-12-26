@@ -484,8 +484,8 @@ class RendererHLSLD3D11 : public RendererHLSLCg
 	ID3D11ShaderReflection* CompileShader(ShaderType shaderType, ShaderD3D11& shader, const char* vsText=0, const char* vsMain=0, const char* target=0);
 
 virtual ShaderID addHLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain,
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags);
 
 	BlendStateID addBlendState(const int srcFactorRGB, const int destFactorRGB, const int srcFactorAlpha, const int destFactorAlpha, const int blendModeRGB, const int blendModeAlpha, const int mask = ALL, const bool alphaToCoverage = false);

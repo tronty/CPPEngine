@@ -795,8 +795,8 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 }
 
 ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0, const char *tcsText, const char *tesText,
+const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)
 		{
 LOG_FNLN;
@@ -1324,8 +1324,8 @@ LOG_PRINT("shaders.size()=%d\n", shaders.size());
 		}
 
 ShaderID RendererGLSLGL_1_1::addHLSLShaderVrtl(
-const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain,
+const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)
 {
 LOG_FNLN;
@@ -1341,19 +1341,16 @@ LOG_FNLN;
 	#endif
 	OUT.color.a=1.0;
 */
-	const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
+	const char* def="#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 #if 0
 	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
 #elif 0
 	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
-#else
+#elif 0
 	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
 #endif
-	const char* deffs="float3 GammaCorrect3(float3 aColor)\n{\n\treturn aColor;\n}\nfloat4 GammaCorrect4(float4 aColor)\n{\n\treturn aColor;\n}\n";
 	std::string vsText=def;
 	std::string fsText=def;
-    vsText.append(defvs);
-    fsText.append(deffs);
 	if(vsText_) vsText.append(vsText_);
 	if(fsText_) fsText.append(fsText_);
 	std::string vsText__;
@@ -1391,15 +1388,15 @@ LOG_FNLN;
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
    	fclose (pFile);}
 #endif
-		id=addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText,
-                            vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
+		id=addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText, tcsText, tesText,
+                            vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain,
                             flags);
 	}
 LOG_FNLN;
 #else
 LOG_FNLN;
-		id=addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText,
-                            vsMain, gsMain, fsMain, csMain, hsMain, dsMain,
+		id=addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText, tcsText, tesText,
+                            vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain,
                             flags);
 LOG_FNLN;
 #endif

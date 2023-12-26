@@ -211,7 +211,7 @@ void RendererHLSLCg::InitTexN(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("texSHD0N");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -227,7 +227,7 @@ void RendererHLSLCg::InitTex2N(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("texSHD2N");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -243,7 +243,7 @@ void RendererHLSLCg::InitTex3N(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("texSHD1N");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -259,7 +259,7 @@ void RendererHLSLCg::InitPlainN(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("plainSHD1N");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -274,7 +274,7 @@ void RendererHLSLCg::InitPlain3N(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("plainSHD2N");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -289,7 +289,7 @@ void RendererHLSLCg::InitTex(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("texSHD0");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -304,7 +304,7 @@ void RendererHLSLCg::InitTex3(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("texSHD1");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -319,7 +319,7 @@ void RendererHLSLCg::InitPlain(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("plainSHD1");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -333,7 +333,7 @@ void RendererHLSLCg::InitPlain3(ShaderID& s, VertexFormatID& vf)
 	LOG_FNLN;if(vf==-1)
 	{
 		std::string fn = Framework3ShaderFactory::GetShader("plainSHD2");
-		s = addShader(fn.c_str(), "main", "main");
+		s = addShader(fn.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -1619,7 +1619,7 @@ for(int i=0;i<argc;i++)
 
 void RendererHLSLCg::RenderTexVrtl(TextureID id, D3DXFROMWINEVECTOR2 aposition, D3DXFROMWINEVECTOR2 asize, D3DXFROMWINEVECTOR2 texposition, D3DXFROMWINEVECTOR2 texsize)
 {
-	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.hlsl", "main", "main");
+	static ShaderID shd = IRenderer::GetRendererInstance()->addShaderFromFile("/Texture/Texture.hlsl", "main", "main", 0, eHLSL_Shader);
 	FormatDesc format[] =
 	{
 		0, TYPE_VERTEX,   FORMAT_FLOAT, 2,
@@ -6357,8 +6357,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 												const unsigned int flags)
 */
     m_vTechniques[i].m_vPasses[j].Shader = IRenderer::GetRendererInstance()->addHLSLShaderVrtl(
-val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(),
-mainVS.c_str(), mainGS.c_str(), mainPS.c_str(), mainCS.c_str(), mainHS.c_str(), mainDS.c_str(), 0);
+val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(), val1.c_str(),
+mainVS.c_str(), mainGS.c_str(), mainPS.c_str(), mainCS.c_str(), mainHS.c_str(), mainDS.c_str(), mainHS.c_str(), mainDS.c_str(), 0);
 #endif
  	LOG_PRINT("m_vTechniques[%d].m_vPasses[%d].Shader=%x\n", i, j, m_vTechniques[i].m_vPasses[j].Shader);
 LOG_FNLN;
@@ -6516,6 +6516,141 @@ void stx_Effect::End()
 {
 }
 
+
+
+	const char* def="#define WSIGN +\n#define ROW_MAJOR\n#define MVPSEMANTIC\n#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
+	const char* deffs="float3 GammaCorrect3(float3 aColor)\n{\n\treturn aColor;\n}\nfloat4 GammaCorrect4(float4 aColor)\n{\n\treturn aColor;\n}\n";
+
+
+
+
+	const char* glslh      ="#define WSIGN +\n"
+				"#define ROW_MAJOR\n"
+				"#define MVPSEMANTIC\n"
+				"vec3 GammaCorrect3(vec3 aColor){return aColor;}\n"
+				"vec4 GammaCorrect4(vec4 aColor){return aColor;}\n"
+				"uniform vec3      iResolution;\n"
+				"uniform vec4      iMouse;\n"
+				"uniform float     iTime;\n"
+				"uniform vec3      resolution;\n"
+				"uniform vec4      mouse;\n"
+				"uniform float     time;\n"
+				"uniform float     iGlobalTime;\n"
+				"uniform vec4      iDate;\n"
+				"uniform float     iSampleRate;\n"
+				"uniform vec3      iChannelResolution[4];\n"
+				"uniform float     iChannelTime[4];\n"
+				"uniform vec2      ifFragCoordOffsetUniform;\n"
+				"uniform float     iTimeDelta;\n"
+				"uniform int       iFrame;\n"
+				"uniform float     iFrameRate;\n"
+				"struct Channel {\n"
+				"    vec3  resolution;\n"
+				"    float   time;\n"
+				"};\n";
+	const char* hlslh      ="#define WSIGN +\n"
+				"#define ROW_MAJOR row_major\n"
+				"#define MVPSEMANTIC\n"
+				"float3 GammaCorrect3(float3 aColor){return aColor;}\n"
+				"float4 GammaCorrect4(float4 aColor){return aColor;}\n"
+				"float3      iResolution;\n"
+				"float4      iMouse;\n"
+				"float     iTime;\n"
+				"float3      resolution;\n"
+				"float4      mouse;\n"
+				"float     time;\n"
+				"float     iGlobalTime;\n"
+				"float4      iDate;\n"
+				"float     iSampleRate;\n"
+				"float3      iChannelResolution[4];\n"
+				"float     iChannelTime[4];\n"
+				"float2      ifFragCoordOffsetUniform;\n"
+				"float     iTimeDelta;\n"
+				"int       iFrame;\n"
+				"float     iFrameRate;\n"
+				"struct Channel {\n"
+				"    float3  resolution;\n"
+				"    float   time;\n"
+				"};\n";
+	const char* vsStrGLSL=	"struct VsOut {\n"
+				"    vec4 position;\n"
+				"    vec2 uv;\n"
+				"};\n"
+				"struct VsIn2 {\n"
+				"    vec2 position;\n"
+				"    vec2 uv;\n"
+				"};\n"
+				"struct VsIn3 {\n"
+				"    vec3 position;\n"
+				"    vec3 Normal;\n"
+				"    vec3 Binormal;\n"
+				"    vec3 Tangent;\n"
+				"    vec3 Color;\n"
+				"    vec2 uv;\n"
+				"};\n"
+				"uniform mat4 worldViewProj;\n"
+				"//layout(location = 0) in mat4  worldViewProj;\n"
+				"VsOut main2( in VsIn2 In ) {\n"
+				"    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));\n"
+				"    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);\n"
+				"    Out.uv.x = In.uv.x;\n"
+				"    Out.uv.y = 1.0-In.uv.y;\n"
+				"    return Out;\n"
+				"}\n"
+				"//layout(location = 0) out vec2  xlv_TEXCOORD0;\n"
+				"void main() {\n"
+				"    VsOut xl_retval;\n"
+				"    VsIn2 xlt_In;\n"
+				"    xlt_In.position = vec2(gl_Vertex);\n"
+				"    xlt_In.uv = vec2(gl_MultiTexCoord0);\n"
+				"    xl_retval = main2( xlt_In);\n"
+				"    gl_Position = vec4(xl_retval.position);\n"
+				"    //gl_FragCoord = vec2(xl_retval.uv);\n"
+				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
+				"}\n";
+	const char* vsStrHLSL=	"struct VsOut2 {\n"
+				"    float4 position;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"struct VsOut3 {\n"
+				"    float4 position;\n"
+				"    float3 Normal;\n"
+				"    float3 Binormal;\n"
+				"    float3 Tangent;\n"
+				"    float3 Color;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"struct VsIn2 {\n"
+				"    float2 position;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"struct VsIn3 {\n"
+				"    float3 position;\n"
+				"    float3 Normal;\n"
+				"    float3 Binormal;\n"
+				"    float3 Tangent;\n"
+				"    float3 Color;\n"
+				"    float2 uv;\n"
+				"};\n"
+				"float4x4 worldViewProj;\n"
+				"VsOut2 main2( in VsIn2 In ) {\n"
+				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
+				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
+				"    Out.uv.x = In.uv.x;\n"
+				"    Out.uv.y = 1.0-In.uv.y;\n"
+				"    return Out;\n"
+				"}\n"
+				"VsOut3 main3( in VsIn3 In ) {\n"
+				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
+				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
+				"    Out.Normal=In.Normal;\n"
+				"    Out.Binormal=In.Binormal;\n"
+				"    Out.Tangent=In.Tangent;\n"
+				"    Out.Color=In.Color;\n"
+				"    Out.uv.x = In.uv.x;\n"
+				"    Out.uv.y = 1.0-In.uv.y;\n"
+				"    return Out;\n"
+				"}\n";
 struct ShaderInfo
 {
 	std::string delimeter;
@@ -6627,46 +6762,50 @@ std::string IRenderer__GetShaderText(std::string& aShaders, std::string& aDelime
 
 #include <Framework3/RendererGLSLGL_1_1.h>
 ShaderID IRenderer::addShader(  const char* shaderText_, 
-                                        const char* vsMain, 
-                                        const char* fsMain,
+                                        const char* vsMain_, 
+                                        const char* fsMain_,
                              	const char *defines, 
                                         const unsigned int aFlags)
 {
 
 	ShaderID res = SHADER_NONE;
-
+	const char* vsMain=vsMain_;
 	const char* gsMain="main";
-	const char* gsStr4=0;
+	const char* fsMain=fsMain_;
+	const char* csMain="main";
+	const char* hsMain="main";
+	const char* dsMain="main";
+	const char* tcsMain="main";
+	const char* tesMain="main";
+
 	std::string shaderText;
 	if(shaderText_)
 		shaderText=shaderText_;
-	std::string header, vsStr2, fsStr2, gsStr2, vsStr3, fsStr3, gsStr3;
-	std::string csStr, hsStr, dsStr, tcsStr, tesStr;
-#if 1
-	std::string str;std::string key="[Vertex shader]";
-	std::vector<std::string> delimeters;
-	std::vector<int> positions;
-	str=IRenderer__GetShaderText(shaderText, key, delimeters, positions);
-	STX_PRINT("\n%s\n", str.c_str());
-	unsigned int i = 0;
-	for (i = 0; i < delimeters.size(); i++)
+	const char* lslh=0;
+	const char* vsStrLSL=0;
+	unsigned int flags_=0;
+
+	switch(aFlags)
 	{
-		if(positions[i]==-1)
-			continue;
-        	cout << "RES2: " << positions[i] << " " << delimeters[i] << endl;
-			continue;
-		std::size_t p2=shaderText.length();
-		std::size_t p1=positions[i];
-		if(i<positions.size()-1)
-			p2=positions[i+1];
-		if(delimeters[i]=="[Compute shader]") csStr=shaderText.substr(p1+16, p2);
-		if(delimeters[i]=="[Hull shader]") hsStr=shaderText.substr(p1+13, p2);
-		if(delimeters[i]=="[Domain shader]") dsStr=shaderText.substr(p1+15, p2);
-		if(delimeters[i]=="[TessControl shader]") tcsStr=shaderText.substr(p1+20, p2);
-		if(delimeters[i]=="[TessEval shader]") tesStr=shaderText.substr(p1+17, p2);
+		case eGLSL_Shader:
+			LOG_PRINT("GLSL_Shader\n");
+			lslh=glslh;
+			vsStrLSL=vsStrGLSL;
+			flags_=eGLSL_Shader;
+			break;
+		case eGLES_Shader:
+			LOG_PRINT("GLES_Shader\n");
+			lslh=glslh;
+			vsStrLSL=vsStrGLSL;
+			flags_=eGLES_Shader;
+			break;
+		default:
+			LOG_PRINT("HLSL_Shader\n");
+			lslh=hlslh;
+			vsStrLSL=vsStrHLSL;
+			flags_=eHLSL_Shader;
+			break;
 	}
-	//stx_exit(0);
-#endif
 
 	std::size_t foundVS = shaderText.find("[Vertex shader]");
 	std::size_t foundFS = shaderText.find("[Fragment shader]");
@@ -6679,534 +6818,86 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::size_t foundTCS = shaderText.find("[TessControl shader]");
 	std::size_t foundTES = shaderText.find("[TessEval shader]");
 
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				LOG_PRINT("GLSL_Shader\n");
-				break;
-			case eGLES_Shader:
-				LOG_PRINT("GLES_Shader\n");
-				break;
-			default:
-				LOG_PRINT("HLSL_Shader\n");
-				break;
-		}
-	const char* glslh      ="uniform vec3      iResolution;\n"
-				"uniform vec4      iMouse;\n"
-				"uniform float     iTime;\n"
-				"uniform vec3      resolution;\n"
-				"uniform vec4      mouse;\n"
-				"uniform float     time;\n"
-				"uniform float     iGlobalTime;\n"
-				"uniform vec4      iDate;\n"
-				"uniform float     iSampleRate;\n"
-				"uniform vec3      iChannelResolution[4];\n"
-				"uniform float     iChannelTime[4];\n"
-				"uniform vec2      ifFragCoordOffsetUniform;\n"
-				"uniform float     iTimeDelta;\n"
-				"uniform int       iFrame;\n"
-				"uniform float     iFrameRate;\n"
-				"struct Channel {\n"
-				"    vec3  resolution;\n"
-				"    float   time;\n"
-				"};\n"
-				"varying vec2 xlv_TEXCOORD0;\n";
-	const char* hlslh      ="float3      iResolution;\n"
-				"float4      iMouse;\n"
-				"float     iTime;\n"
-				"float3      resolution;\n"
-				"float4      mouse;\n"
-				"float     time;\n"
-				"float     iGlobalTime;\n"
-				"float4      iDate;\n"
-				"float     iSampleRate;\n"
-				"float3      iChannelResolution[4];\n"
-				"float     iChannelTime[4];\n"
-				"float2      ifFragCoordOffsetUniform;\n"
-				"float     iTimeDelta;\n"
-				"int       iFrame;\n"
-				"float     iFrameRate;\n"
-				"struct Channel {\n"
-				"    float3  resolution;\n"
-				"    float   time;\n"
-				"};\n";
-	unsigned int flags=0;
-	unsigned int flags_=0;
-	{
-		LOG_FNLN
-	if	((foundFS!=std::string::npos) && (foundVS!=std::string::npos)){
-		LOG_FNLN
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				flags=eGLSL_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			case eGLES_Shader:
-				flags=eGLES_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			default:
-				flags=eHLSL_Shader;vsStr2.append(hlslh);fsStr2.append(hlslh);
-				break;
-		}
-	}else
-	if	(((foundFS!=std::string::npos) && (foundVS==std::string::npos)) || 
-	        ((foundFS==std::string::npos) && (foundVS==std::string::npos)))
-	{
-		LOG_FNLN
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				flags=eGLSL_Fragment_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			case eGLES_Shader:
-				flags=eGLES_Fragment_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			default:
-				flags=eHLSL_Fragment_Shader;vsStr2.append(hlslh);fsStr2.append(hlslh);
-				break;
-		}
-	}
-	else
-	if	((foundFS==std::string::npos) && (foundVS!=std::string::npos))
-	{
-		LOG_FNLN
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-				flags=eGLSL_Vertex_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			case eGLES_Shader:
-				flags=eGLES_Vertex_Shader;vsStr2.append(glslh);fsStr2.append(glslh);
-				break;
-			default:
-				flags=eHLSL_Vertex_Shader;vsStr2.append(hlslh);fsStr2.append(hlslh);
-				break;
-		}
-	}
-		LOG_FNLN
-	}
-#if 0//ndef __GS__
-	if(foundGS!=std::string::npos)
-	{
-		
-		STX_PRINT("Geometry shaders not supported!\n");
-		STX_PRINT("Exiting!\n");
-		stx_exit(0);
-	}
-#endif
+	std::size_t found=foundVS+foundFS+foundGS+foundCS+foundHS+foundDS+foundTCS+foundTES;
+
+	std::string vsStr, fsStr, gsStr, csStr, hsStr, dsStr, tcsStr, tesStr;
 	std::size_t headerlength=std::string::npos;
 	if(foundVS!=std::string::npos) headerlength=std::min(headerlength, foundVS);
 	if(foundFS!=std::string::npos) headerlength=std::min(headerlength, foundFS);
 	if(foundGS!=std::string::npos) headerlength=std::min(headerlength, foundGS);
 	int  endIndex = shaderText.length()-1;
-	header = shaderText.substr(0, headerlength);
-	if((headerlength!=std::string::npos)&&headerlength)
+	std::string header = shaderText.substr(0, headerlength);
+	if((headerlength==std::string::npos)||(headerlength==0)) header="";
+#if 1
+	std::string str;std::string key="[Vertex shader]";
+	std::vector<std::string> delimeters;
+	std::vector<int> positions;
+	str=IRenderer__GetShaderText(shaderText, key, delimeters, positions);
+	//STX_PRINT("\nfound:\n%d\n", found);
+	if(found==-8)
 	{
-		vsStr2.append(header);
-		fsStr2.append(header);
-		gsStr2.append(header);
+		std::string varying="";
+		if(aFlags!=eHLSL_Shader)
+			varying="varying vec2 xlv_TEXCOORD0;\n";
+		vsStr=varying+vsStrLSL;
+		fsStr=varying+lslh+shaderText;
+	}
+	else
+	{
+	unsigned int i = 0;
+	for (i = 0; i < delimeters.size(); i++)
+	{
+		if((positions[i]>-1)&&(positions[i]!=std::string::npos))
+		{
+			std::size_t l2=shaderText.length();
+			std::size_t p1=positions[i]+delimeters[i].length();
+			if(i<(positions.size()-1))
+				l2=positions[i+1]-positions[i]-delimeters[i].length();
+	        	//cout << "position: " << positions[i] << ", delimeter:" << delimeters[i] << ", shaderText[" << p1 <<", " << l2 << "]" << endl;
+
+			if(delimeters[i]=="[Vertex shader]") vsStr=lslh+header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[Fragment shader]") fsStr=lslh+header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[Geometry shader]") gsStr=header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[Compute shader]") csStr=header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[Hull shader]") hsStr=header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[Domain shader]") dsStr=header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[TessControl shader]") tcsStr=header+shaderText.substr(p1, l2);
+			else if(delimeters[i]=="[TessEval shader]") tesStr=header+shaderText.substr(p1, l2);
+		}
+	}}
 #if 0
-	if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-	if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
+	STX_PRINT("\nVS:\n%s\n", vsStr.c_str());
+	STX_PRINT("\nFS:\n%s\n", fsStr.c_str());
+	STX_PRINT("\nGS:\n%s\n", gsStr.c_str());
+	STX_PRINT("\nCS:\n%s\n", csStr.c_str());
+	STX_PRINT("\nHS:\n%s\n", hsStr.c_str());
+	STX_PRINT("\nDS:\n%s\n", dsStr.c_str());
+	STX_PRINT("\nTCS:\n%s\n", tcsStr.c_str());
+	STX_PRINT("\nTES:\n%s\n", tesStr.c_str());
+#elif 0
+	STX_PRINT("\neHLSL_Shader=%x\n", eHLSL_Shader);
+	STX_PRINT("\naFlags=%x\n", aFlags);
 	stx_exit(0);
 #endif
-	}
-{
-		std::string 	val;
-				if(foundGS!=std::string::npos){
-				val = shaderText.substr(foundGS+17, endIndex - foundGS - 17);
-				if(val.length()) gsStr3.append(val);
-				}if((foundVS!=std::string::npos)&&(foundFS!=std::string::npos)){
-				val = shaderText.substr(foundVS+15, foundFS - foundVS - 15);
-				if(val.length()) vsStr3.append(val);
-				}if((foundFS!=std::string::npos)&&(foundGS!=std::string::npos)){
-				val = shaderText.substr(foundFS+17, foundGS - foundFS - 17);
-				if(val.length()) fsStr3.append(val);
-				}else if((foundFS!=std::string::npos)&&(foundGS==std::string::npos)){
-				val = shaderText.substr(foundFS+17, endIndex - foundFS - 17);
-				if(val.length()) fsStr3.append(val);
-				}
-}
-	if((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
-	{
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-			case eGLES_Shader:
-			default:
-				fsStr3.append(shaderText);
-				break;
-		}
-	}
-	else if	((foundGS==std::string::npos) && (foundFS==std::string::npos) && (foundVS!=std::string::npos))
-	{
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-			case eGLES_Shader:
-			default:
-				vsStr3.append(shaderText);
-				break;
-		}
-	}
-	else if	((foundGS!=std::string::npos) && (foundFS==std::string::npos) && (foundVS==std::string::npos))
-	{
-		switch(aFlags)
-		{
-			case eGLSL_Shader:
-			case eGLES_Shader:
-			default:
-				gsStr3.append(shaderText);
-				break;
-		}
-	}
-#if 0
-	if(vsStr3.length()) LOG_PRINT("\nvsStr3:\n%s\n", vsStr3.c_str());
-	if(fsStr3.length()) LOG_PRINT("\nfsStr3:\n%s\n", fsStr3.c_str());
-	stx_exit(0);
 #endif
-		LOG_FNLN
-	if(flags == eGLSL_Fragment_Shader)
-	{
-		vsStr2.append(	"struct VsOut {\n"
-				"    vec4 position;\n"
-				"    vec2 uv;\n"
-				"};\n"
-				"struct VsIn2 {\n"
-				"    vec2 position;\n"
-				"    vec2 uv;\n"
-				"};\n"
-				"struct VsIn3 {\n"
-				"    vec3 position;\n"
-				"    vec3 Normal;\n"
-				"    vec3 Binormal;\n"
-				"    vec3 Tangent;\n"
-				"    vec3 Color;\n"
-				"    vec2 uv;\n"
-				"};\n"
-				"uniform mat4 worldViewProj;\n"
-				"//layout(location = 0) in mat4  worldViewProj;\n"
-				"VsOut main2( in VsIn2 In ) {\n"
-				"    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));\n"
-				"    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);\n"
-				"    Out.uv.x = In.uv.x;\n"
-				"    Out.uv.y = 1.0-In.uv.y;\n"
-				"    return Out;\n"
-				"}\n"
-				"//layout(location = 0) out vec2  xlv_TEXCOORD0;\n"
-				"void main() {\n"
-				"    VsOut xl_retval;\n"
-				"    VsIn2 xlt_In;\n"
-				"    xlt_In.position = vec2(gl_Vertex);\n"
-				"    xlt_In.uv = vec2(gl_MultiTexCoord0);\n"
-				"    xl_retval = main2( xlt_In);\n"
-				"    gl_Position = vec4(xl_retval.position);\n"
-				"    //gl_FragCoord = vec2(xl_retval.uv);\n"
-				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
-				"}\n");
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) vsStr2.append(vsStr3);
-		if(fsStr3.length()) fsStr2.append(fsStr3);
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
 
+	if(aFlags==eHLSL_Shader)
+		return addHLSLShaderVrtl( 	vsStr.c_str(), gsStr.c_str(), fsStr.c_str(), csStr.c_str(), hsStr.c_str(), dsStr.c_str(), tcsStr.c_str(), tesStr.c_str(),
+                        			vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain, flags_);
+	else
+	{
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 		RendererGLES2* rendererGLES2=0;
 		rendererGLES2=(RendererGLES2*) this;
-		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        "main", gsMain, fsMain, 0, 0, 0, flags_);
+		return rendererGLES2->addGLSLShaderVrtl( 	vsStr.c_str(), gsStr.c_str(), fsStr.c_str(), csStr.c_str(), hsStr.c_str(), dsStr.c_str(), tcsStr.c_str(), tesStr.c_str(),
+                        			vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain, flags_);
 #else
 		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
 		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        "main", gsMain, fsMain, 0, 0, 0, flags_);
+		return rendererGLSLGL_1_1->addGLSLShaderVrtl( 	vsStr.c_str(), gsStr.c_str(), fsStr.c_str(), csStr.c_str(), hsStr.c_str(), dsStr.c_str(), tcsStr.c_str(), tesStr.c_str(),
+                        			vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain, flags_);
 #endif
-
-	} else 
-#if 0
-	else if(flags == eGLSL_Vertex_Shader)
-	{
-		vsStr2.append(	"attribute vec3 xlv_position;\n"
-				"attribute vec3 xlv_Color;\n"
-				"attribute vec2 xlv_TEXCOORD0;\n"
-				"varying vec3 xlv__position;\n"
-				"varying vec3 xlv__Color;\n"
-				"varying vec2 xlv__TEXCOORD0;\n");
-		fsStr2.append(  "varying vec3 xlv__position;\n"
-				"varying vec3 xlv__Color;\n"
-				"varying vec2 xlv__TEXCOORD0;\n"
-				"vec4 main(){return vec4(xlv__Color, 1.0);}\n"
-				);
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) vsStr2.append(vsStr3);
-		if(fsStr3.length()) fsStr2.append(fsStr3);
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-#if 0 // defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-
-			RendererGLES2* rendererGLES2=0;
-			rendererGLES2=(RendererGLES2*) this;
-			return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        "main", gsMain, fsMain_, 0, 0, 0, flags_);
-
-#else
-			RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-			rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-			return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        "main", gsMain, "main", 0, 0, 0, flags_);
-#endif
-	}
-#endif
-	
-	
-	if(flags == eHLSL_Fragment_Shader)
-	{
-		
-		//printf("eHLSL_Fragment_Shader:\n");
-		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		vsStr2.append(	"struct VsOut2 {\n"
-				"    float4 position;\n"
-				"    float2 uv;\n"
-				"};\n"
-				"struct VsOut3 {\n"
-				"    float4 position;\n"
-				"    float3 Normal;\n"
-				"    float3 Binormal;\n"
-				"    float3 Tangent;\n"
-				"    float3 Color;\n"
-				"    float2 uv;\n"
-				"};\n"
-				"struct VsIn2 {\n"
-				"    float2 position;\n"
-				"    float2 uv;\n"
-				"};\n"
-				"struct VsIn3 {\n"
-				"    float3 position;\n"
-				"    float3 Normal;\n"
-				"    float3 Binormal;\n"
-				"    float3 Tangent;\n"
-				"    float3 Color;\n"
-				"    float2 uv;\n"
-				"};\n"
-				"float4x4 worldViewProj;\n"
-				"VsOut2 main2( in VsIn2 In ) {\n"
-				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
-				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
-				"    Out.uv.x = In.uv.x;\n"
-				"    Out.uv.y = 1.0-In.uv.y;\n"
-				"    return Out;\n"
-				"}\n"
-				"VsOut3 main3( in VsIn3 In ) {\n"
-				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
-				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
-				"    Out.Normal=In.Normal;\n"
-				"    Out.Binormal=In.Binormal;\n"
-				"    Out.Tangent=In.Tangent;\n"
-				"    Out.Color=In.Color;\n"
-				"    Out.uv.x = In.uv.x;\n"
-				"    Out.uv.y = 1.0-In.uv.y;\n"
-				"    return Out;\n"
-				"}\n");
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) {vsStr2.append(vsStr3);}
-		if(fsStr3.length()) {fsStr2.append(fsStr3);}
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-
-    		return addHLSLShaderVrtl( 	vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, gsMain, "main", 0, 0, 0, flags_);
-	}
-	else if(flags == eHLSL_Vertex_Shader)
-        {
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) vsStr2.append(vsStr3);
-		if(fsStr3.length()) fsStr2.append(fsStr3);
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-
-    		return addHLSLShaderVrtl(  vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        		vsMain, gsMain, "main", 0, 0, 0, flags_);
-	}
-	else if(flags == eGLSL_Vertex_Shader)
-        {
-		vsStr2.append(  "attribute vec3 xla_position;\n"
-				"attribute vec3 xla_Normal;\n"
-				"attribute vec3 xla_Binormal;\n"
-				"attribute vec3 xla_Tangent;\n"
-				"attribute vec3 xla_Color;\n"
-				"attribute vec2 xla_TEXCOORD0;\n"
-				"varying vec2 xlv_TEXCOORD0;\n"
-				"#define mainImage main\n"
-				);
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) vsStr2.append(vsStr3);
-		if(fsStr3.length()) fsStr2.append(fsStr3);
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-
-#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-		RendererGLES2* rendererGLES2=0;
-		rendererGLES2=(RendererGLES2*) this;
-		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, gsMain, "main", 0, 0, 0, flags_);
-#else
-		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, gsMain, "main", 0, 0, 0, flags_);
-#endif
-	}
-	else if(flags == eHLSL_Shader)
-	{
-		
-		//printf("eHLSL_Shader:\n");
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) {vsStr2.append(vsStr3);}
-		if(fsStr3.length()) {fsStr2.append(fsStr3);}
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-    		return addHLSLShaderVrtl(  	vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        			vsMain, gsMain, fsMain, 0, 0, 0, flags_);
-	}
-#if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-	else if(flags == eGLES_Shader)
-	{
-		
-		//printf("eGLES_Shader:\n");
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) {vsStr2.append(vsStr3);}
-		if(fsStr3.length()) {fsStr2.append(fsStr3);}
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-		RendererGLES2* rendererGLES2=0;
-		rendererGLES2=(RendererGLES2*) this;
-		return rendererGLES2->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
-	} 
-#else
-	else if(flags == eGLSL_Shader)
-	{
-		
-		//printf("eGLSL_Shader:\n");
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif
-		if(vsStr3.length()) {vsStr2.append(vsStr3);}
-		if(fsStr3.length()) {fsStr2.append(fsStr3);}
-		if(gsStr3.length()) {gsStr2.append(gsStr3);gsStr4=gsStr2.c_str();}
-#ifndef __GS__
-		gsStr2="";
-		gsStr3="";gsStr4=0;
-#endif
-
-#if 0
-		if(vsStr2.length()) LOG_PRINT("\nvsStr2:\n%s\n", vsStr2.c_str());
-		if(fsStr2.length()) LOG_PRINT("\nfsStr2:\n%s\n", fsStr2.c_str());
-		stx_exit(0);
-#endif	
-		
-		RendererGLSLGL_1_1* rendererGLSLGL_1_1=0;
-		rendererGLSLGL_1_1=dynamic_cast<RendererGLSLGL_1_1*>(this);
-		return rendererGLSLGL_1_1->addGLSLShaderVrtl
-			( vsStr2.c_str(), gsStr4, fsStr2.c_str(), 0, 0, 0,
-                        vsMain, gsMain, fsMain, 0, 0, 0, flags_);
-	}
-#endif
-
+    	}
 	return -1;
 }
 #endif

@@ -208,8 +208,8 @@ virtual stx_Effect* addEffectFromFile(const std::string& aFileName, const char* 
 void setShaderConstantRaw(const char *name, const void *data, const int size);
 
 virtual ShaderID addHLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain, 
                                             	const unsigned int flags);
 	VArray <ShaderCgGL3*> shaders;
 	void changeVertexBufferVrtl(const int stream, const VertexBufferID vertexBuffer, const intptr offset);

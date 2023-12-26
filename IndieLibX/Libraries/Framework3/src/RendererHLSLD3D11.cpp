@@ -1383,9 +1383,9 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
 	unsigned int feature_level = D3D_FEATURE_LEVEL_11_0;
 	//unsigned int feature_level = D3D_FEATURE_LEVEL_10_1;
 
-    const char* def="#define __HLSL5__ 1\n#define ROW_MAJOR row_major\n#define MVPSEMANTIC\n#define WSIGN +\n";   
+    const char* def="#define __HLSL5__ 1\n";   
     const char* defvs="#undef TEX2D\nfloat4 GetPixelColor_(Texture2D<float4> atex, float2 aTexCoord)\n{\n\tuint width_;\n\tuint height_;\n\tatex.GetDimensions(width_, height_);\n\tfloat2 dim_;\n\tdim_.x=float(width_-1);\n\tdim_.y=float(height_-1);\n\treturn atex.Load(int3(dim_.x*aTexCoord.x, dim_.y*aTexCoord.y, 0));\n}\n#define SAMPLE2D(TEX, TEXCOORD) GetPixelColor_(TEX, TEXCOORD)\n#define SAMPLER2D Texture2D<float4>\n";
-    const char* deffs="float3 GammaCorrect3(float3 aColor)\n{\n\treturn aColor;\n}\nfloat4 GammaCorrect4(float4 aColor)\n{\n\treturn aColor;\n}\n";
+    const char* deffs="";
 #if 0
 	#if 1
 	// Gamma correct

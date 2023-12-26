@@ -698,8 +698,8 @@ void RendererCgGL_1_1::setShaderConstantRaw(const char *name, const void *data, 
 		}
 static void registerLatestProfiles(void);
 ShaderID RendererCgGL_1_1::addHLSLShaderVrtl( 	
-const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText_, const char *gsText, const char *fsText_, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain, 
                                             	const unsigned int flags)
 		{
 	const char* def = "#define __HLSLCG__ 1\n#define ROW_MAJOR row_major\n#define MVPSEMANTIC\n#define WSIGN +\n";

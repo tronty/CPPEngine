@@ -1952,13 +1952,13 @@ ShaderID addShader( const char* shaderText,
                     const unsigned int flags = 0);
 VIRTUAL
 ShaderID addGLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
 	 const unsigned int flags) VIRTUAL0 ;
 #endif
     virtual ShaderID addHLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)=0;
 
 ShaderID addShaderFromFile(  const char* fileName, 

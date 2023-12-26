@@ -393,8 +393,8 @@ SDL_GL_MakeCurrent(STX_Service::GetSDLWindow(), STX_Service::GetSDLContext());
 #endif
 
 		ShaderID RendererGLES2::addHLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain, 
                                             	const unsigned int flags)
 		{
     const char* header=0;
@@ -817,14 +817,14 @@ void	RendererGLES2::EndPointSpriteRendering()
 }
 
 ShaderID RendererGLES2::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain,
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0, const char *tcsText, const char *tesText,
+const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)
 {
 #if 0
 	ShaderID id=-1;
-	id=addGLSLShader(const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-	const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+	id=addGLSLShader(const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+	const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags);
 			return SHADER_NONE;
 #else

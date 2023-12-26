@@ -1603,8 +1603,8 @@ unsigned int getVertexCount(const Primitives primitives, const int  NumPrim);
 #if 1
 VIRTUAL
 ShaderID addGLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
 	 const unsigned int flags){return -1;}
 #endif
 	void debug(void);

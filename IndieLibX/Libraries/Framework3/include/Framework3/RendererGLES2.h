@@ -61,12 +61,12 @@ void changeShader(const ShaderID shader);
 void setShaderConstantRaw(const char *name, const void *data, const int size);
 
 ShaderID addGLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain, 
                                             	const unsigned int flags);
 virtual ShaderID addHLSLShaderVrtl(
-const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText,
-const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, 
+const char *vsText, const char *gsText, const char *fsText, const char *csText, const char *hsText, const char *dsText, const char *tcsText, const char *tesText,
+const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags);
 VArray <ShaderGLSLGL3> shaders;
 
