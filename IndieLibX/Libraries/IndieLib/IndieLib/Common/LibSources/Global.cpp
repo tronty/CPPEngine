@@ -32,7 +32,9 @@ void InitPixel(ShaderID& s, VertexFormatID& vf)
 	if(vf==-1)
 	{
 		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD1");
-		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main", 0, eHLSL_Shader);
+
+
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -48,7 +50,7 @@ void InitCUSTOMVERTEX2D(ShaderID& s, VertexFormatID& vf)
 	if(vf==-1)
 	{
 		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD2");
-		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
@@ -68,7 +70,7 @@ void InitCUSTOMVERTEX2DW(ShaderID& s, VertexFormatID& vf)
 	if(vf==-1)
 	{
 		std::string texSHD = IndieLibShadersFactory::GetShader("texSHD3");
-		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main");
+		s = IRenderer::GetRendererInstance()->addShader(texSHD.c_str(), "main", "main", 0, eHLSL_Shader);
 		FormatDesc format[] =
 		{
 			0, TYPE_VERTEX,   FORMAT_FLOAT, 3,

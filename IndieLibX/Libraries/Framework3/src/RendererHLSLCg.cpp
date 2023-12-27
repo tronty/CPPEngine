@@ -6501,9 +6501,9 @@ void stx_Effect::End()
 {
 }
 
-	const char* glsld      ="#define WSIGN +\n"
-				"#define ROW_MAJOR\n"
-				"#define MVPSEMANTIC\n"
+	const char* glsld      ="//define WSIGN +\n"
+				"//define ROW_MAJOR\n"
+				"//define MVPSEMANTIC\n"
 				"vec3 GammaCorrect3(vec3 aColor){return aColor;}\n"
 				"vec4 GammaCorrect4(vec4 aColor){return aColor;}\n";
 	const char* glslh      ="uniform vec3      iResolution;\n"
@@ -6525,14 +6525,11 @@ void stx_Effect::End()
 				"    vec3  resolution;\n"
 				"    float   time;\n"
 				"};\n";
-	const char* hlsld      ="#define WSIGN +\n"
-				"#define ROW_MAJOR\n"
-				"#define MVPSEMANTIC\n"
+	const char* hlsld      ="//define WSIGN +\n"
+				"//define ROW_MAJOR\n"
+				"//define MVPSEMANTIC\n"
 				"float3 GammaCorrect3(float3 aColor){return aColor;}\n"
-				"float4 GammaCorrect4(float4 aColor){return aColor;}\n"
-				"#define mix lerp\n"
-				"#define fract frac\n"
-				"#define atan(x,y) atan2(y,x)\n";
+				"float4 GammaCorrect4(float4 aColor){return aColor;}\n";
 /*
 ddx 	dFdx
 ddx_coarse 	dFdxCoarse
@@ -6919,12 +6916,46 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 }
 #endif
 	STX_PRINT("Renderer=%s\n", Renderer.c_str());
+	if(Renderer=="D3D11"){
+		STX_PRINT("0:D3D11\n");}
+	else{
+		STX_PRINT("0:!D3D11\n");}
+	if(aFlags&eHLSL_Shader){
+		STX_PRINT("0:aFlags&eHLSL_Shader\n");}
+	else{
+		STX_PRINT("0:!aFlags&eHLSL_Shader\n");}
 	if((Renderer!="D3D11")&&(aFlags&eHLSL_Shader))
 	{
 		STX_PRINT("1:Shadertype = eHLSL_Shader\n");
 		std::string vsText=vsStr;
 		std::string fsText=fsStr;
 		std::string vstmp, fstmp;
+
+		{std::regex e("\\bWSIGN\\b");
+		vsText = std::regex_replace(vsText, e, "+");}
+		{std::regex e("\\bWSIGN\\b");
+		fsText = std::regex_replace(fsText, e, "+");}
+
+		{std::regex e("\\bROW_MAJOR\\b");
+		vsText = std::regex_replace(vsText, e, "");}
+		{std::regex e("\\bROW_MAJOR\\b");
+		fsText = std::regex_replace(fsText, e, "");}
+
+		{std::regex e("\\bMVPSEMANTIC\\b");
+		vsText = std::regex_replace(vsText, e, "");}
+		{std::regex e("\\bMVPSEMANTIC\\b");
+		fsText = std::regex_replace(fsText, e, "");}
+
+		{std::regex e("\\blerp\\b");
+		vsText = std::regex_replace(vsText, e, "mix");}
+		{std::regex e("\\blerp\\b");
+		fsText = std::regex_replace(fsText, e, "mix");}
+
+		{std::regex e("\\bfrac\\b");
+		vsText = std::regex_replace(vsText, e, "fract");}
+		{std::regex e("\\bfrac\\b");
+		fsText = std::regex_replace(fsText, e, "fract");}
+
 		static bool Hlsl2Glsl_init=true;
 		if(Hlsl2Glsl_init)
 		{
@@ -6944,6 +6975,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		vsStr=vstmp;
 		fsStr=fstmp;
     	}
+	//DBG_HALT;
 	
 	{
 #if defined(ANDROID) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)

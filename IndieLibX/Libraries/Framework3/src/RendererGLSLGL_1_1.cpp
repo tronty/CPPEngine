@@ -866,7 +866,7 @@ LOG_FNLN;
 	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
 	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
 	//STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
-	//stx_exit(0);
+	stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
 	char line[16];
