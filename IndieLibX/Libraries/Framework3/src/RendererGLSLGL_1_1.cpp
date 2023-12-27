@@ -47,8 +47,8 @@
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #elif 1
-#define STX_PRINT(...)
-#define STX_FNLN
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #define LOG_PRINT(...)
 #define LOG_FNLN
 #define LOG_FNLN_NONE
@@ -863,9 +863,9 @@ LOG_FNLN;
 	if (hsText0) hsText.append(hsText0);
 	if (dsText0) dsText.append(dsText0);
 #if 0
-	printf("\nvsText:\n%s\n", vsText.c_str());
-	printf("\nfsText:\n%s\n", fsText.c_str());
-	printf("\ngsText:\n%s\n", gsText.c_str());
+	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
+	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
+	//STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
 	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
@@ -1388,16 +1388,16 @@ LOG_FNLN;
 	fprintf (pFile, "%s\n\%s\n", vsText__.c_str(), fsText__.c_str());
    	fclose (pFile);}
 #endif
-		id=addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText, tcsText, tesText,
+		id=RendererGLSLGL_1_1::addGLSLShaderVrtl(   vsText__.c_str(), gsText, fsText__.c_str(), csText, hsText, dsText, tcsText, tesText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain,
-                            flags);
+                            eGLSL_Shader);
 	}
 LOG_FNLN;
 #else
 LOG_FNLN;
-		id=addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText, tcsText, tesText,
+		id=RendererGLSLGL_1_1::addGLSLShaderVrtl(   vsText.c_str(), gsText, fsText.c_str(), csText, hsText, dsText, tcsText, tesText,
                             vsMain, gsMain, fsMain, csMain, hsMain, dsMain, tcsMain, tesMain,
-                            flags);
+                            eGLSL_Shader);
 LOG_FNLN;
 #endif
 

@@ -31,24 +31,24 @@ std::string Framework3ShaderFactory::GetShader(const char* aShaderName)
 	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
 		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.GLES.LNX.hlsl", contents);
 #elif 1//defined(USE_HLSL_SHADERS)
-	if(stx_strcmp(aShaderName,"texSHD0")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"texSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"plainSHD1")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"plainSHD2")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"texSHD0N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD0N.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"texSHD1N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD1N.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"texSHD2N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/texSHD2N.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"plainSHD1N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD1N.hlsl", contents);
-	else if(stx_strcmp(aShaderName,"plainSHD2N")==0)
-		return STX_Service::LoadTxtFile("/Framework3/plainSHD2N.hlsl", contents);
+	if(stx_strcmp(aShaderName,"texSHD0")==0){STX_PRINT("Shader file:%s\n", "/Framework3/texSHD0.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"texSHD1")==0){STX_PRINT("Shader file:%s\n", "/Framework3/texSHD1.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"plainSHD1")==0){STX_PRINT("Shader file:%s\n", "/Framework3/plainSHD1.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"plainSHD2")==0){STX_PRINT("Shader file:%s\n", "/Framework3/plainSHD2.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"texSHD0N")==0){STX_PRINT("Shader file:%s\n", "/Framework3/texSHD0N.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/texSHD0N.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"texSHD1N")==0){STX_PRINT("Shader file:%s\n", "/Framework3/texSHD1N.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/texSHD1N.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"texSHD2N")==0){STX_PRINT("Shader file:%s\n", "/Framework3/texSHD2N.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/texSHD2N.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"plainSHD1N")==0){STX_PRINT("Shader file:%s\n", "/Framework3/plainSHD1N.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD1N.hlsl", contents);}
+	else if(stx_strcmp(aShaderName,"plainSHD2N")==0){STX_PRINT("Shader file:%s\n", "/Framework3/plainSHD2N.hlsl");
+		return STX_Service::LoadTxtFile("/Framework3/plainSHD2N.hlsl", contents);}
 #elif 0
 	if(stx_strcmp(aShaderName,"texSHD0")==0)
 		return STX_Service::LoadTxtFile("/Framework3/texSHD0.GLSL.hlsl", contents);
