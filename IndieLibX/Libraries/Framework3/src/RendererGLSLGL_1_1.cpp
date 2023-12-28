@@ -795,8 +795,8 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 }
 
 ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0, const char *tcsText, const char *tesText,
-const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0_, const char *dsText0_, const char *tcsText0, const char *tesText0,
+const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain_, const char *dsMain_, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)
 		{
 LOG_FNLN;
@@ -805,8 +805,8 @@ LOG_FNLN;
 	std::string fsText="";
 	std::string gsText="";
 	std::string csText="";
-	std::string hsText="";
-	std::string dsText="";
+	std::string tcsText="";
+	std::string tesText="";
 	char versionString[16];
 	
 	
@@ -844,8 +844,8 @@ LOG_FNLN;
 	if (def) fsText.append(def);
 	if (def) gsText.append(def);
 	if (def) csText.append(def);
-	if (def) hsText.append(def);
-	if (def) dsText.append(def);
+	if (def) tcsText.append(def);
+	if (def) tesText.append(def);
 	
 
 #if defined(_MSC_VER)
@@ -853,15 +853,28 @@ LOG_FNLN;
 	fsText.append("precision highp float;\n");
 	gsText.append("precision highp float;\n");
 	csText.append("precision highp float;\n");
-	hsText.append("precision highp float;\n");
-	dsText.append("precision highp float;\n");
+	tcsText.append("precision highp float;\n");
+	tesText.append("precision highp float;\n");
 #endif
 	if (vsText0) vsText.append(vsText0);
 	if (fsText0) fsText.append(fsText0);
 	if (gsText0) gsText.append(gsText0);
 	if (csText0) csText.append(csText0);
-	if (hsText0) hsText.append(hsText0);
-	if (dsText0) dsText.append(dsText0);
+	if (tcsText0) tcsText.append(tcsText0);
+	if (tesText0) tesText.append(tesText0);
+
+	#if 1
+	{std::regex e("\\blerp\\b");
+	vsText = std::regex_replace(vsText, e, "mix");}
+	{std::regex e("\\blerp\\b");
+	fsText = std::regex_replace(fsText, e, "mix");}
+
+	{std::regex e("\\bfrac\\b");
+	vsText = std::regex_replace(vsText, e, "fract");}
+	{std::regex e("\\bfrac\\b");
+	fsText = std::regex_replace(fsText, e, "fract");}
+	#endif
+
 #if 0
 	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
 	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
@@ -890,13 +903,13 @@ LOG_FNLN;
 	return shaders.size()-1;
 #endif
 #if 1
-	if (hsText0)
+	if (tcsText0)
 	{
 		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
-		shaderStrings[strIndex++] = hsText.c_str();
+		shaderStrings[strIndex++] = tcsText.c_str();
 		glShaderSource(shaderGL1_1.shader[eHullShader], strIndex, shaderStrings, 0);
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eHullShader]);
@@ -910,19 +923,19 @@ LOG_FNLN;
 		}
 		else
 		{
-			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Hull shader error:\n");
+			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "TESS_CONTROL shader error:\n");
 		}
 		glGetInfoLogARB(shaderGL1_1.shader[eHullShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");
 		infoLogPos += len;
 	}
-	if (dsText0)
+	if (tesText0)
 	{
 		shaderGL1_1.shader[eDomainShader] = glCreateShaderObjectARB(GL_TESS_EVALUATION_SHADER);
 		checkGlError("");
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
-		shaderStrings[strIndex++] = dsText.c_str();
+		shaderStrings[strIndex++] = tesText.c_str();
 		glShaderSource(shaderGL1_1.shader[eDomainShader], strIndex, shaderStrings, 0);
 		checkGlError("");
 		glCompileShader(shaderGL1_1.shader[eDomainShader]);
@@ -936,7 +949,7 @@ LOG_FNLN;
 		}
 		else
 		{
-			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "Domain shader error:\n");
+			infoLogPos += stx_snprintf(infoLog + infoLogPos,2048, "TESS_EVALUATION shader error:\n");
 		}
 		glGetInfoLogARB(shaderGL1_1.shader[eDomainShader], sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);
 		checkGlError("");

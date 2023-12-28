@@ -6924,37 +6924,25 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		STX_PRINT("0:aFlags&eHLSL_Shader\n");}
 	else{
 		STX_PRINT("0:!aFlags&eHLSL_Shader\n");}
+	{
+		{std::regex e("\\bWSIGN\\b");
+		vsStr = std::regex_replace(vsStr, e, "+");}
+		{std::regex e("\\bWSIGN\\b");
+		fsStr = std::regex_replace(fsStr, e, "+");}
+
+		{std::regex e("\\bMVPSEMANTIC\\b");
+		vsStr = std::regex_replace(vsStr, e, "");}
+		{std::regex e("\\bMVPSEMANTIC\\b");
+		fsStr = std::regex_replace(fsStr, e, "");}
 	if((Renderer!="D3D11")&&(aFlags&eHLSL_Shader))
 	{
 		STX_PRINT("1:Shadertype = eHLSL_Shader\n");
-		std::string vsText=vsStr;
-		std::string fsText=fsStr;
 		std::string vstmp, fstmp;
 
-		{std::regex e("\\bWSIGN\\b");
-		vsText = std::regex_replace(vsText, e, "+");}
-		{std::regex e("\\bWSIGN\\b");
-		fsText = std::regex_replace(fsText, e, "+");}
-
 		{std::regex e("\\bROW_MAJOR\\b");
-		vsText = std::regex_replace(vsText, e, "");}
+		vsStr = std::regex_replace(vsStr, e, "");}
 		{std::regex e("\\bROW_MAJOR\\b");
-		fsText = std::regex_replace(fsText, e, "");}
-
-		{std::regex e("\\bMVPSEMANTIC\\b");
-		vsText = std::regex_replace(vsText, e, "");}
-		{std::regex e("\\bMVPSEMANTIC\\b");
-		fsText = std::regex_replace(fsText, e, "");}
-
-		{std::regex e("\\blerp\\b");
-		vsText = std::regex_replace(vsText, e, "mix");}
-		{std::regex e("\\blerp\\b");
-		fsText = std::regex_replace(fsText, e, "mix");}
-
-		{std::regex e("\\bfrac\\b");
-		vsText = std::regex_replace(vsText, e, "fract");}
-		{std::regex e("\\bfrac\\b");
-		fsText = std::regex_replace(fsText, e, "fract");}
+		fsStr = std::regex_replace(fsStr, e, "");}
 
 		static bool Hlsl2Glsl_init=true;
 		if(Hlsl2Glsl_init)
@@ -6965,16 +6953,23 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		const ETargetVersion version=ETargetGLSL_110;
 		ShHandle parser;
 
-		bool rVS=Hlsl2Glsl_Translate_(true, vsText.c_str(), vstmp, vsMain, parser, version);
-		if(!rVS){STX_PRINT("Hlsl2Glsl_Translate(VS) failed\n%s\n", vsText.c_str());
+		bool rVS=Hlsl2Glsl_Translate_(true, vsStr.c_str(), vstmp, vsMain, parser, version);
+		if(!rVS){STX_PRINT("Hlsl2Glsl_Translate(VS) failed\n%s\n", vsStr.c_str());
 			return -1;}
 
-		bool rFS=Hlsl2Glsl_Translate_(false, fsText.c_str(), fstmp, fsMain, parser, version);
-		if(!rFS){STX_PRINT("Hlsl2Glsl_Translate(FS) failed\n%s\n", fsText.c_str());
+		bool rFS=Hlsl2Glsl_Translate_(false, fsStr.c_str(), fstmp, fsMain, parser, version);
+		if(!rFS){STX_PRINT("Hlsl2Glsl_Translate(FS) failed\n%s\n", fsStr.c_str());
 			return -1;}
 		vsStr=vstmp;
 		fsStr=fstmp;
     	}
+	else
+	{
+		{std::regex e("\\bROW_MAJOR\\b");
+		vsStr = std::regex_replace(vsStr, e, "");}
+		{std::regex e("\\bROW_MAJOR\\b");
+		fsStr = std::regex_replace(fsStr, e, "");}
+	}}
 	//DBG_HALT;
 	
 	{
