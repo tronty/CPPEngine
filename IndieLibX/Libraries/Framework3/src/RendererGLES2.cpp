@@ -817,7 +817,7 @@ void	RendererGLES2::EndPointSpriteRendering()
 }
 
 ShaderID RendererGLES2::addGLSLShaderVrtl(
-const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0_, const char *dsText0_, const char *tcsText, const char *tesText,
+const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0, const char *dsText0, const char *tcsText0, const char *tesText0,
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain, const char *dsMain, const char *tcsMain, const char *tesMain,
                                             	const unsigned int flags)
 {
@@ -890,10 +890,10 @@ LOG_FNLN;
 	if (fsText0) fsText.append(fsText0);
 	if (gsText0) gsText.append(gsText0);
 	if (csText0) csText.append(csText0);
-	if (tcsText0) hsText.append(tcsText0);
-	if (tesText0) dsText.append(tesText0);
+	if (tcsText0) tcsText.append(tcsText0);
+	if (tesText0) tesText.append(tesText0);
 
-	#if 1
+	#if 0
 	{std::regex e("\\blerp\\b");
 	vsText = std::regex_replace(vsText, e, "mix");}
 	{std::regex e("\\blerp\\b");
@@ -932,7 +932,7 @@ LOG_FNLN;
 	shaders.push_back(shaderGL1_1);
 	return shaders.size()-1;
 #endif
-#if 1
+#if 0
 	if (tcsText0)
 	{
 		shaderGL1_1.shader[eHullShader] = glCreateShader(GL_TESS_CONTROL_SHADER);
