@@ -8,7 +8,7 @@ precision mediump float;
 
 uniform vec2 resolution;
 uniform vec2 mouse;
-uniform float time;
+//uniform float time;
 #endif
 
 float smoothedge(float v) {

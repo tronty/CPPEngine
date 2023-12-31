@@ -2,7 +2,7 @@
 precision highp float; 
 uniform vec2 resolution;
 uniform vec4 mouse;
-uniform float time;
+//uniform float time;
 #endif
 const float pi = 3.141592653589793;
 

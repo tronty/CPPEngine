@@ -175,7 +175,7 @@ around the top of the big columns and near the stairs. Pure luck.
 	//precision mediump float;
 	
 	// time in ms
-	uniform float time;
+	//uniform float time;
 	
 	// touch position in pixels
 	//uniform float2 touch;

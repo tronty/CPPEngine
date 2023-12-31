@@ -1,6 +1,7 @@
+// https://www.shadertoy.com/view/MlBBWm
+// Road02
+
 const float speed = 16.0;
-
-
 
 // Maps a position in the world to a position on the road
 

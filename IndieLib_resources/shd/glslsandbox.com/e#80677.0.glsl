@@ -16,7 +16,7 @@ uniform vec2 u_resolution;
 uniform vec2 u_mouse;
 uniform float u_time;
 
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 */

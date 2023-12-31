@@ -6501,10 +6501,7 @@ void stx_Effect::End()
 {
 }
 
-	const char* glsld      ="//define WSIGN +\n"
-				"//define ROW_MAJOR\n"
-				"//define MVPSEMANTIC\n"
-				"vec3 GammaCorrect3(vec3 aColor){return aColor;}\n"
+	const char* glsld      ="vec3 GammaCorrect3(vec3 aColor){return aColor;}\n"
 				"vec4 GammaCorrect4(vec4 aColor){return aColor;}\n";
 	const char* glslh      ="uniform vec3      iResolution;\n"
 				"uniform vec4      iMouse;\n"
@@ -6525,10 +6522,7 @@ void stx_Effect::End()
 				"    vec3  resolution;\n"
 				"    float   time;\n"
 				"};\n";
-	const char* hlsld      ="//define WSIGN +\n"
-				"//define ROW_MAJOR\n"
-				"//define MVPSEMANTIC\n"
-				"float3 GammaCorrect3(float3 aColor){return aColor;}\n"
+	const char* hlsld      ="float3 GammaCorrect3(float3 aColor){return aColor;}\n"
 				"float4 GammaCorrect4(float4 aColor){return aColor;}\n";
 /*
 ddx 	dFdx
@@ -6925,6 +6919,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	else{
 		STX_PRINT("0:!aFlags&eHLSL_Shader\n");}
 	{
+#ifndef ANDROID
 		{std::regex e("\\bWSIGN\\b");
 		vsStr = std::regex_replace(vsStr, e, "+");}
 		{std::regex e("\\bWSIGN\\b");
@@ -6934,8 +6929,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		vsStr = std::regex_replace(vsStr, e, "");}
 		{std::regex e("\\bMVPSEMANTIC\\b");
 		fsStr = std::regex_replace(fsStr, e, "");}
+#endif
 	if((Renderer!="D3D11")&&(aFlags&eHLSL_Shader))
 	{
+#ifndef ANDROID
 		STX_PRINT("1:Shadertype = eHLSL_Shader\n");
 		std::string vstmp, fstmp;
 
@@ -6944,6 +6941,14 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		{std::regex e("\\bROW_MAJOR\\b");
 		fsStr = std::regex_replace(fsStr, e, "");}
 
+		vsStr=std::string("#define mix lerp\n")+vsStr;
+		fsStr=std::string("#define mix lerp\n")+fsStr;
+		vsStr=std::string("#define fract frac\n")+vsStr;
+		fsStr=std::string("#define fract frac\n")+fsStr;
+		vsStr=std::string("#define atan(x,y) atan2(y,x)\n")+vsStr;
+		fsStr=std::string("#define atan(x,y) atan2(y,x)\n")+fsStr;
+#endif
+#ifndef ANDROID
 		static bool Hlsl2Glsl_init=true;
 		if(Hlsl2Glsl_init)
 		{
@@ -6962,13 +6967,16 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 			return -1;}
 		vsStr=vstmp;
 		fsStr=fstmp;
+#endif
     	}
 	else
 	{
+#ifndef ANDROID
 		{std::regex e("\\bROW_MAJOR\\b");
 		vsStr = std::regex_replace(vsStr, e, "");}
 		{std::regex e("\\bROW_MAJOR\\b");
 		fsStr = std::regex_replace(fsStr, e, "");}
+#endif
 	}}
 	//DBG_HALT;
 	

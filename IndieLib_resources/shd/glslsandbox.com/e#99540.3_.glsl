@@ -57,7 +57,7 @@ uniform vec4      iMouse;
 uniform float     iTime;
 uniform vec3      resolution;
 uniform vec4      mouse;
-uniform float     time;
+//uniform float time;
 uniform float     iGlobalTime;
 uniform vec4      iDate;
 uniform float     iSampleRate;
@@ -69,7 +69,7 @@ uniform int       iFrame;
 uniform float     iFrameRate;
 struct Channel {
     vec3  resolution;
-    float   time;
+    //float time;
 };
 varying vec3 xlv_position;
 varying vec3 xlv_Normal;

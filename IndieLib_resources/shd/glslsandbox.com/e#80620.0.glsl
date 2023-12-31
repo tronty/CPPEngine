@@ -4,7 +4,7 @@
 precision mediump float;
 #endif
 
-uniform float time;
+//uniform float time;
 uniform vec2 resolution;
 */
 #define PI 3.14159265358979

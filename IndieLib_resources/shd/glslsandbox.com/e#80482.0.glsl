@@ -2,7 +2,7 @@
 precision highp float;
 
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 uniform sampler2D backbuffer;
 #endif

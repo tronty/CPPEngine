@@ -7,7 +7,7 @@ precision mediump float;
 
 #define NUM_OCTAVES 10
 
-//uniform float time;
+////uniform float time;
 //uniform vec2 resolution;
 
 float random(vec2 pos) {

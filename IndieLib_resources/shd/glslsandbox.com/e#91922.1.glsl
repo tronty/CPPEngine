@@ -4,7 +4,7 @@
 #endif
 
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 #endif
 
 float sdRect(vec2 uv, vec4 rect, float r) {

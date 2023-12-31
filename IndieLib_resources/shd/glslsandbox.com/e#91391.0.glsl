@@ -10,7 +10,7 @@ precision highp float;
 #define sin45deg sqrt(2.)/2.
 
 #if 0
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 #endif

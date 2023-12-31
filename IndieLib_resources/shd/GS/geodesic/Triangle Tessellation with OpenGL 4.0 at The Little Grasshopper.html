@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head profile="http://gmpg.org/xfn/11"><script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/core.js"></script>
+<title>   Triangle Tessellation with OpenGL 4.0 at The Little Grasshopper</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="Tips and Tricks from a Graphics Programmer">
+<meta name="generator" content="WordPress 4.9.8"> <!-- leave this for stats please -->
+<link href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/style.css" rel="stylesheet" type="text/css" media="screen">
+<link rel="alternate" type="application/rss+xml" title="The Little Grasshopper RSS Feed" href="https://prideout.net/blog/old/blog/index.html@feed=rss2">
+<link rel="shortcut icon" type="image/x-png" href="https://prideout.net/blog/old/favicon.ico">
+<link rel="pingback" href="https://prideout.net/blog/xmlrpc.php">
+<link rel="dns-prefetch" href="http://s.w.org/">
+		<script type="text/javascript" async="" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/prideout.net\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.8"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/wp-emoji-release.min.html" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+
+
+<link rel="stylesheet" id="floatbox-css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/floatbox.css@ver=1.2.20.css" type="text/css" media="screen">
+<link rel="stylesheet" id="floatbox-play-css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/floatbox-play.css@ver=1.2.20.css" type="text/css" media="screen">
+<link rel="stylesheet" id="contact-form-7-css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/styles.css@ver=2.2.css" type="text/css" media="all">
+<link rel="stylesheet" id="sexy-bookmarks-css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/style.css@ver=3.1.3.css" type="text/css" media="all">
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/jquery.js@ver=1.12.4"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/jquery-migrate.min.js@ver=1.4.1"></script>
+<link rel="https://api.w.org/" href="https://prideout.net/blog/old/blog/index.php@rest_route=%252F">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://prideout.net/blog/old/blog/xmlrpc.php@rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://prideout.net/blog/old/blog/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Patch Surfaces and Vertex Welding" href="https://prideout.net/blog/old/blog/index.html@p=46.html">
+<link rel="next" title="Quad Tessellation with OpenGL 4.0" href="https://prideout.net/blog/old/blog/index.html@p=49.html">
+<meta name="generator" content="WordPress 4.9.8">
+<link rel="canonical" href="https://prideout.net/blog/old/blog/index.html@p=48.html">
+<link rel="shortlink" href="https://prideout.net/blog/old/blog/index.html@p=48.html">
+<link rel="alternate" type="application/json+oembed" href="https://prideout.net/blog/old/blog/index.php@rest_route=%252Foembed%252F1.0%252Fembed&amp;url=http%253A%252F%252Fprideout.net%252Fblog%252F%253Fp=48">
+<link rel="alternate" type="text/xml+oembed" href="https://prideout.net/blog/old/blog/index.php@rest_route=%252Foembed%252F1.0%252Fembed&amp;url=http%253A%252F%252Fprideout.net%252Fblog%252F%253Fp=48&amp;format=xml">
+
+<!-- Floatbox Plus Plugin 1.2.20 -->
+<script type="text/javascript">
+fbPageOptions = {
+theme: 'auto',
+doAnimations: false,
+preloadAll: false,
+resizeDuration: 3.5,
+imageFadeDuration: 3.5,
+overlayFadeDuration: 4,
+splitResize: 'no',
+startAtClick: true,
+zoomImageStart: true,
+liveImageResize: false
+};
+</script>
+<!-- FloatBox Plus Plugin 1.2.20 -->
+
+<link rel="stylesheet" type="text/css" media="screen" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/wp_easy_contents.css">
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-19914519-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/shCore.html"><link rel="stylesheet" type="text/css" href="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/shThemeDefault.html"></head>
+
+<body>
+<div id="container" class="group">
+
+<h1><a href="https://prideout.net/blog/old/blog.html"><img alt="The Little Grasshopper" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/LittleGrasshopper.png" style="border:0"></a></h1>
+
+<div id="content" class="group">
+
+<h2 id="post-48"><a href="https://prideout.net/blog/old/blog/index.html@p=48.html" rel="bookmark">Triangle Tessellation with OpenGL 4.0</a></h2>
+<p class="comments"></p>
+
+<div class="main">
+	<div id="easy_contents" class="easysmallcontents">
+<ol>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#review">Reviewing Geometry Shaders</a></li>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#stages">The New OpenGL 4.0+ Pipeline</a></li>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#levels">Inner and Outer Tess Levels</a></li>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#shaders">Show Me The Code</a></li>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#gs">Geometry Shaders Are Still Fun!</a></li>
+<li><a href="https://prideout.net/blog/old/blog/index.html@p=48.html#downloads">Downloads</a></li>
+</ol>
+</div>
+<p>This is the first of a two-part article on tessellation shaders with 
+OpenGL 4.0+.  This entry gives an overview of tessellation and walks 
+through an example of simple triangle subdivision; in the <a href="https://prideout.net/blog/old/blog/index.html@p=49.html">next entry</a>, we’ll focus on quad subdivision.</p>
+<h2 id="review">Reviewing Geometry Shaders</h2>
+<p>When Geometry Shaders (GS) first came out, we were all excited 
+because we could finally write a shader that could “see” all the verts 
+in a triangle at once.  And finally, the GPU could produce more 
+primitives than it consumed.</p>
+<p><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Geodesic.gif" alt="Sphere Tessellation" class="alignright size-medium wp-image-12"></p>
+<p>The GS unit turned out to be convenient for certain effects, but 
+overall it was somewhat disappointing.  It was not designed for 
+large-scale amplification of vertex data.  The GS processing for a 
+single primitive was initially limited to a single processing unit.  
+Most GS programs had a serial loop that simply pushed out the verts of 
+the new primitive(s), one vertex after another.  They didn’t do a great 
+job of leveraging the massive parallelism in GPUs.  Nowadays you can do a
+ bit better by specifying an <b>invocations</b> count at the top of your GS, like so:</p>
+<div id="highlighter_189744" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_189744_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_189744" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">layout(triangles, invocations = 3) </code><code class="keyword">in</code><code class="plain">;</code></td></tr></tbody></table></div></div></div>
+<p>This tells the GPU that your GS should run three times on a single 
+primitive.  You can figure out which vert you’re on by looking at the 
+built-in <b>gl_InvocationID</b> variable.</p>
+<h2 id="stages">The New OpenGL 4.0+ Pipeline</h2>
+<p>Although adding multiple GS invocations was helpful, performing 
+highly-efficient subdivision demanded brand new stages in the pipeline. 
+ Now is the time for the obligatory diagram: (I used a red pen for the 
+stages that are new to OpenGL 4.0)</p>
+<p><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/ShaderStages.png" alt="Shader Stages"></p>
+<p>So, we now have two additional programmable stages at our disposal: <b>Tessellation Control</b> and <b>Tessellation Evaluation</b>.
+  They both execute on a per-vertex basis, so their programs typically 
+don’t have serial loops like the old-fashioned geometry programs did.  
+However, much like geometry shaders, they can “see” all the verts in a 
+single primitive.</p>
+<p>To work with tessellation shaders, OpenGL now has a new primitive type: <b>GL_PATCHES</b>.  Unlike <b>GL_TRIANGLES</b> (where every 3 verts spawns a triangle) or <b>GL_TRIANGLE_STRIP</b> (where every 1 vert spawns a new triangle), the number of verts in a patch is configurable:</p>
+<div id="highlighter_262292" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_262292_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_262292" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">glPatchParameteri(GL_PATCH_VERTICES, 16);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code><code class="comments">// tell OpenGL that every patch has 16 verts</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">glDrawArrays(GL_PATCHES, firstVert, vertCount); </code><code class="comments">// draw a bunch of patches</code></td></tr></tbody></table></div></div></div>
+<p>The Tessellation Control (TC) shader is kinda like a Vertex Shader 
+(VS) with super-vision.  Much like a VS program, each TC program 
+transforms only one vertex, and the number of execution instances is the
+ same as the number of verts in your OpenGL draw call.  The Tessellation
+ Evaluation (TE) shader, however, usually processes <i>more</i> verts 
+than you sent down in your draw call.  That’s because the “Tessellator” 
+(the stage between the two new shaders) generates brand new verts by 
+interpolating between the existing verts.</p>
+<p>As the name implies, the TC shader has some control over how the Tessellator generates new verts.  This is done through the <b>gl_TessLevelInner</b> and <b>gl_TessLevelOuter</b> output variables.  More on these later.</p>
+<p>Another way of controlling how the Tessellator generates verts is through the <b>layout</b> qualifier on the TE shader’s inputs.  You’ll often see a TE shader with something like this at the top:</p>
+<div id="highlighter_557877" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_557877_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_557877" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="plain">layout(triangles, equal_spacing, cw) </code><code class="keyword">in</code><code class="plain">;</code></td></tr></tbody></table></div></div></div>
+<p>This specifies three things: a <b>primitive mode</b>, a <b>vertex spacing</b>, and an <b>ordering</b>.
+  The latter two are optional and they have reasonable defaults — I 
+won’t go into detail about them here.  As for the primitive mode, there 
+are three choices: <b>triangles</b>, <b>quads</b>, and <b>isolines</b>.  As mentioned earlier, in this article I’ll focus on triangles; for more on quads, see <a href="https://prideout.net/blog/old/blog/index.html@p=49.html">my next article</a>.</p>
+<h2 id="levels">Inner and Outer Tess Levels</h2>
+<p>Simply put, the inner tessellation level controls the number of 
+“nested” primitives, and the outer tessellation level controls the 
+number of times to subdivide each edge.  The <b>gl_TessLevelInner</b> and <b>gl_TessLevelOuter</b>
+ variable are both arrays-of-float, but with triangle subdivision, 
+there’s only one element in the inner array.  The outer array has three 
+elements, one for each side of the triangle.  In both arrays, a value of
+ 1 indicates no subdivision whatsoever.  For the inner tess level, a 
+value of 2 means that there’s only one nested triangle, but it’s 
+degenerate; it’s just a single point.  It’s not till tess level 3 that 
+you see a miniatured of the original triangle inside the original 
+triangle.</p>
+<p>Since the tess levels are controlled at the shader level (as opposed 
+to the OpenGL API level), you can do awesome things with dynamic 
+level-of-detail.  However, for demonstration purposes, we’ll limit 
+ourselves to the simple case here.  We’ll set the inner tess level to a 
+hardcoded value, regardless of distance-from-camera.  For the outer tess
+ level, we’ll set all three edges to the same value.  Here’s a little 
+diagram that shows how triangle-to-triangle subdivision can be 
+configured with our demo program, which sends an icosahedron to OpenGL:</p>
+<table>
+<tbody><tr>
+<td></td>
+<td>Inner = 1</td>
+<td>Inner = 2</td>
+<td>Inner = 3</td>
+<td>Inner = 4</td>
+</tr>
+<tr>
+<td>Outer = 1</td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner1-Outer1.png" class="floatbox" rev="group:48" title="Inner=1, Outer=1"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner1-Outer1-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner2-Outer1.png" class="floatbox" rev="group:48" title="Inner=2, Outer=1"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner2-Outer1-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner3-Outer1.png" class="floatbox" rev="group:48" title="Inner=3, Outer=1"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner3-Outer1-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner4-Outer1.png" class="floatbox" rev="group:48" title="Inner=4, Outer=1"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner4-Outer1-Thumb.png" alt=""></a></td>
+</tr>
+<tr>
+<td>Outer = 2</td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner1-Outer2.png" class="floatbox" rev="group:48" title="Inner=1, Outer=2"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner1-Outer2-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner2-Outer2.png" class="floatbox" rev="group:48" title="Inner=2, Outer=2"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner2-Outer2-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner3-Outer2.png" class="floatbox" rev="group:48" title="Inner=3, Outer=2"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner3-Outer2-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner4-Outer2.png" class="floatbox" rev="group:48" title="Inner=4, Outer=2"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner4-Outer2-Thumb.png" alt=""></a></td>
+</tr>
+<tr>
+<td>Outer = 3</td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner1-Outer3.png" class="floatbox" rev="group:48" title="Inner=1, Outer=3"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner1-Outer3-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner2-Outer3.png" class="floatbox" rev="group:48" title="Inner=2, Outer=3"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner2-Outer3-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner3-Outer3.png" class="floatbox" rev="group:48" title="Inner=3, Outer=3"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner3-Outer3-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner4-Outer3.png" class="floatbox" rev="group:48" title="Inner=4, Outer=3"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner4-Outer3-Thumb.png" alt=""></a></td>
+</tr>
+<tr>
+<td>Outer = 4</td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner1-Outer4.png" class="floatbox" rev="group:48" title="Inner=1, Outer=4"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner1-Outer4-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner2-Outer4.png" class="floatbox" rev="group:48" title="Inner=2, Outer=4"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner2-Outer4-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner3-Outer4.png" class="floatbox" rev="group:48" title="Inner=3, Outer=4"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner3-Outer4-Thumb.png" alt=""></a></td>
+<td><a href="https://prideout.net/blog/old/blog/p48/Inner4-Outer4.png" class="floatbox" rev="group:48" title="Inner=4, Outer=4"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/Inner4-Outer4-Thumb.png" alt=""></a></td>
+</tr>
+</tbody></table>
+<p></p>
+<h2 id="shaders">Show Me The Code</h2>
+<p>Building the VAO for the icosahedron isn’t the subject of this article, but for completeness here’s the C code for doing so:</p>
+<div id="highlighter_508963" class="syntaxhighlighter  "><div class="bar     "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_508963_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_508963" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword bold">static</code> <code class="keyword bold">void</code> <code class="plain">CreateIcosahedron()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">const</code> <code class="color1 bold">int</code> <code class="plain">Faces[] = {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">2, 1, 0,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">3, 2, 0,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">4, 3, 0,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">5, 4, 0,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">1, 5, 0,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">11, 6,&nbsp; 7,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">11, 7,&nbsp; 8,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">11, 8,&nbsp; 9,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">11, 9,&nbsp; 10,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">11, 10, 6,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">1, 2, 6,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">2, 3, 7,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">3, 4, 8,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">4, 5, 9,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">5, 1, 10,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">2,&nbsp; 7, 6,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">3,&nbsp; 8, 7,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">4,&nbsp; 9, 8,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">5, 10, 9,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">1, 6, 10 };</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>24</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>25</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">const</code> <code class="color1 bold">float</code> <code class="plain">Verts[] = {</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>26</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.000f,&nbsp; 0.000f,&nbsp; 1.000f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>27</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.894f,&nbsp; 0.000f,&nbsp; 0.447f,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>28</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.276f,&nbsp; 0.851f,&nbsp; 0.447f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>29</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-0.724f,&nbsp; 0.526f,&nbsp; 0.447f,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>30</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-0.724f, -0.526f,&nbsp; 0.447f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>31</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.276f, -0.851f,&nbsp; 0.447f,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>32</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.724f,&nbsp; 0.526f, -0.447f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>33</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-0.276f,&nbsp; 0.851f, -0.447f,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>34</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-0.894f,&nbsp; 0.000f, -0.447f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>35</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">-0.276f, -0.851f, -0.447f,</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>36</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.724f, -0.526f, -0.447f,</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>37</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">0.000f,&nbsp; 0.000f, -1.000f };</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>38</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>39</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">IndexCount = </code><code class="keyword bold">sizeof</code><code class="plain">(Faces) / </code><code class="keyword bold">sizeof</code><code class="plain">(Faces[0]);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>40</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>41</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Create the VAO:</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>42</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">GLuint vao;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>43</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glGenVertexArrays(1, &amp;vao);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>44</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glBindVertexArray(vao);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>45</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>46</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Create the VBO for positions:</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>47</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">GLuint positions;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>48</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">GLsizei stride = 3 * </code><code class="keyword bold">sizeof</code><code class="plain">(</code><code class="color1 bold">float</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>49</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glGenBuffers(1, &amp;positions);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>50</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glBindBuffer(GL_ARRAY_BUFFER, positions);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>51</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glBufferData(GL_ARRAY_BUFFER, </code><code class="keyword bold">sizeof</code><code class="plain">(Verts), Verts, GL_STATIC_DRAW);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>52</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glEnableVertexAttribArray(PositionSlot);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>53</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glVertexAttribPointer(PositionSlot, 3, GL_FLOAT, GL_FALSE, stride, 0);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>54</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>55</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="comments">// Create the VBO for indices:</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>56</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">GLuint indices;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>57</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glGenBuffers(1, &amp;indices);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>58</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>59</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">glBufferData(GL_ELEMENT_ARRAY_BUFFER, </code><code class="keyword bold">sizeof</code><code class="plain">(Faces), Faces, GL_STATIC_DRAW);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>60</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>Our vertex shader is even more boring:</p>
+<div id="highlighter_323871" class="syntaxhighlighter  "><div class="bar  "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_323871_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_323871" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="preprocessor italic bold">-- Vertex</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec4</code> <code class="plain">Position;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">vPosition;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="keyword">void</code> <code class="functions">main</code><code class="plain">()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>7</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>8</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">vPosition = Position.xyz;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>9</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>We use a special naming convention for in/out variables.  If we need to trickle <b>Foo</b> through the entire pipeline, here’s how we avoid naming collisions:</p>
+<ul>
+<li><b>Foo</b> is the original vertex attribute (sent from the CPU)</li>
+<li><b>vFoo</b> is the output of the VS and the input to the TC shader</li>
+<li><b>tcFoo</b> is the output of the TC shader and the input to the TE shader</li>
+<li><b>teFoo</b> is the output of the TE shader and the input to the GS</li>
+<li><b>gFoo</b> is the output of the GS and the input to the FS</li>
+</ul>
+<p>Now, without further ado, we’re ready to show off our tessellation control shader:</p>
+<div id="highlighter_507523" class="syntaxhighlighter  "><div class="bar   "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_507523_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_507523" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="preprocessor italic bold">-- TessControl</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">layout(vertices = 3) </code><code class="keyword">out</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">vPosition[];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">tcPosition[];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">float</code> <code class="plain">TessLevelInner;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">float</code> <code class="plain">TessLevelOuter;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="preprocessor">#define ID gl_InvocationID</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="keyword">void</code> <code class="functions">main</code><code class="plain">()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">tcPosition[ID] = vPosition[ID];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">(ID == 0) {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_TessLevelInner[0] = TessLevelInner;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_TessLevelOuter[0] = TessLevelOuter;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_TessLevelOuter[1] = TessLevelOuter;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_TessLevelOuter[2] = TessLevelOuter;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>That’s almost as boring as our vertex shader!  Note that per-patch outputs (such as <b>gl_TessLevelInner</b>) only need to be written once.  We enclose them in an <b>if</b>
+ so that we only bother writing to them from a single execution thread. 
+ Incidentally, you can create custom per-patch variables if you’d like; 
+simply use the <b>patch out</b> qualifier when declaring them.</p>
+<p>Here’s the tessellation control shader that we use for our icosahedron demo:</p>
+<div id="highlighter_278770" class="syntaxhighlighter  "><div class="bar "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_278770_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_278770" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="preprocessor italic bold">-- TessEval</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">layout(triangles, equal_spacing, cw) </code><code class="keyword">in</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">tcPosition[];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">tePosition;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">tePatchDistance;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">mat4</code> <code class="plain">Projection;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">mat4</code> <code class="plain">Modelview;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="keyword">void</code> <code class="functions">main</code><code class="plain">()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">p0 = gl_TessCoord.x * tcPosition[0];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">p1 = gl_TessCoord.y * tcPosition[1];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">p2 = gl_TessCoord.z * tcPosition[2];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">tePatchDistance = gl_TessCoord;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">tePosition = </code><code class="functions">normalize</code><code class="plain">(p0 + p1 + p2);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_Position = Projection * Modelview * </code><code class="keyword">vec4</code><code class="plain">(tePosition, 1);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>The built-in <b>gl_TessCoord</b> variable lets us know where we are within the patch.  In this case, the primitive mode is <b>triangles</b>, so <b>gl_TessCoord</b>
+ is a barycentric coordinate.  If we were performing quad subdivision, 
+then it would be a UV coordinate and we’d ignore the Z component.</p>
+<p>Our demo subdivides the icosahedron in such a way that it approaches a perfect unit sphere, so we use <b>normalize</b> to push the new verts onto the sphere’s surface.</p>
+<p>The <b>tePatchDistance</b> output variable will be used by the fragment shader to visualize the edges of the patch; this brings us to the next section.</p>
+<h2 id="gs">Geometry Shaders Are Still Fun!</h2>
+<p>Geometry shaders are now considered the runt of the litter, but 
+sometimes they’re useful for certain techniques, like computing facet 
+normals on the fly, or creating a nice single-pass wireframe.  In this 
+demo, we’ll do both.  We’re intentionally using non-smooth normals (in 
+other words, the lighting is the same across the triangle) because it 
+helps visualize the tessellation.</p>
+<p>For a brief overview on rendering nice wireframes with geometry shaders, check out <a href="http://portal.acm.org/citation.cfm?id=1180035">this SIGGRAPH sketch</a>.
+  To summarize, the GS needs to send out a vec3 “edge distance” at each 
+corner; these automatically get interpolated by the rasterizer, which 
+gives the fragment shader a way to determine how far the current pixel 
+is from the nearest edge.</p>
+<p>We’ll extend the wireframe technique here because we wish the pixel 
+shader to highlight two types of edges differently.  The edge of the 
+final triangle is drawn with a thin line, and the edge of the original 
+patch is drawn with a thick line.</p>
+<div id="highlighter_715620" class="syntaxhighlighter  "><div class="bar         "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_715620_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_715620" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="preprocessor italic bold">-- Geometry</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">mat4</code> <code class="plain">Modelview;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">mat3</code> <code class="plain">NormalMatrix;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="plain">layout(triangles) </code><code class="keyword">in</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="plain">layout(triangle_strip, max_vertices = 3) </code><code class="keyword">out</code><code class="plain">;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">tePosition[3];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">tePatchDistance[3];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">gFacetNormal;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">gPatchDistance;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec3</code> <code class="plain">gTriDistance;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="keyword">void</code> <code class="functions">main</code><code class="plain">()</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">A = tePosition[2] - tePosition[0];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">B = tePosition[1] - tePosition[0];</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gFacetNormal = NormalMatrix * </code><code class="functions">normalize</code><code class="plain">(</code><code class="functions">cross</code><code class="plain">(A, B));</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gPatchDistance = tePatchDistance[0];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gTriDistance = </code><code class="keyword">vec3</code><code class="plain">(1, 0, 0);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_Position = gl_in[0].gl_Position; EmitVertex();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gPatchDistance = tePatchDistance[1];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>24</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gTriDistance = </code><code class="keyword">vec3</code><code class="plain">(0, 1, 0);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>25</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_Position = gl_in[1].gl_Position; EmitVertex();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>26</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>27</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gPatchDistance = tePatchDistance[2];</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>28</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gTriDistance = </code><code class="keyword">vec3</code><code class="plain">(0, 0, 1);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>29</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">gl_Position = gl_in[2].gl_Position; EmitVertex();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>30</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>31</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">EndPrimitive();</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>32</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>As you can see, we used the classic one-at-a-time method in our GS, rather than specifying an <b>invocations</b> count other than 1.  This is fine for demo purposes.</p>
+<p>Our fragment shader does some per-pixel lighting (which is admittedly
+ silly; the normal is the same across the triangle, so we should’ve 
+performed lighting much earlier) and takes the minimum of all incoming 
+distances to see if the current pixel lies near an edge.</p>
+<div id="highlighter_817467" class="syntaxhighlighter  "><div class="bar  "><div class="toolbar"><a href="#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_817467_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_817467" menu="false" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/clipboard.swf" width="16" height="16"></div><a href="#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword">out</code> <code class="keyword">vec4</code> <code class="plain">FragColor;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">gFacetNormal;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">gTriDistance;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">vec3</code> <code class="plain">gPatchDistance;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="keyword">in</code> <code class="keyword">float</code> <code class="plain">gPrimitive;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">vec3</code> <code class="plain">LightPosition;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">vec3</code> <code class="plain">DiffuseMaterial;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="keyword">uniform</code> <code class="keyword">vec3</code> <code class="plain">AmbientMaterial;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="keyword">float</code> <code class="plain">amplify(</code><code class="keyword">float</code> <code class="plain">d, </code><code class="keyword">float</code> <code class="plain">scale, </code><code class="keyword">float</code> <code class="plain">offset)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">d = scale * d + offset;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">d = clamp(d, 0, 1);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">d = 1 - exp2(-2*d*d);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">d;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="keyword">void</code> <code class="functions">main</code><code class="plain">()</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">N = </code><code class="functions">normalize</code><code class="plain">(gFacetNormal);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">L = LightPosition;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">float</code> <code class="plain">df = abs(</code><code class="functions">dot</code><code class="plain">(N, L));</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">vec3</code> <code class="plain">color = AmbientMaterial + df * DiffuseMaterial;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>24</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>25</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">float</code> <code class="plain">d1 = min(min(gTriDistance.x, gTriDistance.y), gTriDistance.z);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>26</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">float</code> <code class="plain">d2 = min(min(gPatchDistance.x, gPatchDistance.y), gPatchDistance.z);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>27</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">color = amplify(d1, 40, -0.5) * amplify(d2, 60, -0.5) * color;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>28</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>29</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">FragColor = </code><code class="keyword">vec4</code><code class="plain">(color, 1.0);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>30</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div>
+<p>That completes the shader code for the demo, and we managed to 
+specify code for all of the five shader stages in the modern GPU 
+pipeline.  Here’s the final output using a tessellation level of 4 for 
+both inner and outer:</p>
+<p><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/FinalImage.png" alt="Sphere Tessellation"></p>
+<h2 id="downloads">Downloads</h2>
+<p>The demo code uses a subset of the <a href="https://prideout.net/blog/old/blog/index.html@p=36.html">Pez ecosystem</a>,
+ which is included in the zip below. (The Pez ecosystem is a handful of 
+tiny libraries whose source is included directly in the project).</p>
+<ul>
+<li><a href="https://prideout.net/blog/old/blog/p48/TriangleTess.zip">TriangleTess.zip</a></li>
+<li><a href="https://prideout.net/blog/old/blog/p48/Geodesic.c">Geodesic.c</a></li>
+<li><a href="https://prideout.net/blog/old/blog/p48/Geodesic.glsl">Geodesic.glsl</a></li>
+</ul>
+<p>I consider this code to be on the public domain.  To run it, you’ll need <a href="http://www.cmake.org/cmake/resources/software.html">CMake</a>, a very up-to-date graphics driver, and a very modern graphics card.  Good luck!</p>
+
+
+<!-- Begin SexyBookmarks Menu Code -->
+<div class="sexy-bookmarks" style="">
+<ul class="socials">
+		<li class="sexy-delicious">
+			<a href="http://delicious.com/post?url=https://prideout.net/blog/?p=48&amp;title=Triangle+Tessellation+with+OpenGL+4.0" rel="nofollow" title="Share this on del.icio.us">&nbsp;</a>
+		</li>
+		<li class="sexy-digg">
+			<a href="http://digg.com/submit?phase=2&amp;url=https://prideout.net/blog/?p=48&amp;title=Triangle+Tessellation+with+OpenGL+4.0" rel="nofollow" title="Digg this!">&nbsp;</a>
+		</li>
+		<li class="sexy-twitter">
+			<a href="http://twitter.com/home?status=Triangle+Tessellation+with+OpenGL+4.0+-+http://b2l.me/appxab+(via+@prideout)&amp;source=shareaholic" rel="nofollow" title="Tweet This!">&nbsp;</a>
+		</li>
+		<li class="sexy-googlebuzz">
+			<a href="http://www.google.com/buzz/post?url=https://prideout.net/blog/?p=48&amp;imageurl=" rel="nofollow" title="Post on Google Buzz">&nbsp;</a>
+		</li>
+		<li class="sexy-facebook">
+			<a href="http://www.facebook.com/share.php?v=4&amp;src=bm&amp;u=https://prideout.net/blog/?p=48&amp;t=Triangle+Tessellation+with+OpenGL+4.0" rel="nofollow" title="Share this on Facebook">&nbsp;</a>
+		</li>
+		<li class="sexy-googlebookmarks">
+			<a href="http://www.google.com/bookmarks/mark?op=add&amp;bkmk=https://prideout.net/blog/?p=48&amp;title=Triangle+Tessellation+with+OpenGL+4.0" rel="nofollow" title="Add this to Google Bookmarks">&nbsp;</a>
+		</li>
+		<li class="sexy-googlereader">
+			<a href="http://www.google.com/reader/link?url=https://prideout.net/blog/?p=48&amp;title=Triangle+Tessellation+with+OpenGL+4.0&amp;srcUrl=https://prideout.net/blog/?p=48&amp;srcTitle=Triangle+Tessellation+with+OpenGL+4.0&amp;snippet=POST_SUMMARY" rel="nofollow" title="Add this to Google Reader">&nbsp;</a>
+		</li>
+		<li class="sexy-orkut">
+			<a href="http://promote.orkut.com/preview?nt=orkut.com&amp;tt=Triangle+Tessellation+with+OpenGL+4.0&amp;du=https://prideout.net/blog/?p=48&amp;cn=%0A%0AReviewing%20Geometry%20Shaders%0AThe%20New%20OpenGL%204.0%2B%20Pipeline%0AInner%20and%20Outer%20Tess%20Levels%0AShow%20Me%20The%20Code%0AGeometry%20Shaders%20Are%20Still%20Fun%21%0ADownloads%0A%0A%0A%0AThis%20is%20the%20first%20of%20a%20two-part%20article%20on%20tessellation%20shaders%20with%20OpenGL%204.0%2B.%20%20This%20entry%20gives%20an%20overview%20of%20tessellation%20and%20walks%20through%20an%20exa" rel="nofollow" title="Promote this on Orkut">&nbsp;</a>
+		</li>
+		<li class="sexy-reddit">
+			<a href="http://reddit.com/submit?url=https://prideout.net/blog/?p=48&amp;title=Triangle+Tessellation+with+OpenGL+4.0" rel="nofollow" title="Share this on Reddit">&nbsp;</a>
+		</li>
+</ul>
+<div style="clear:both;"></div>
+</div>
+<!-- End SexyBookmarks Menu Code -->
+
+</div>
+
+<div class="meta group">
+<div class="signature">
+    <p>Written by Philip Rideout <span class="edit"></span></p>
+    <p>September 6th, 2010 at 4:37 am</p>
+</div>	
+<div class="tags">
+    <p>Posted in <a href="https://prideout.net/blog/old/blog/index.html@cat=3.html" rel="category">OpenGL</a></p>
+    <p>Tagged with <a href="https://prideout.net/blog/old/blog/index.html@tag=tessellation.html" rel="tag">tessellation</a>, <a href="https://prideout.net/blog/old/blog/index.html@tag=tessellation-shaders.html" rel="tag">tessellation shaders</a></p></div>
+</div>
+
+<div class="navigation group">
+    <div class="alignleft">« <a href="https://prideout.net/blog/old/blog/index.html@p=46.html" rel="prev">Patch Surfaces and Vertex Welding</a></div>
+    <div class="alignright"><a href="https://prideout.net/blog/old/blog/index.html@p=49.html" rel="next">Quad Tessellation with OpenGL 4.0</a> »</div>
+</div>
+
+
+
+</div> 
+
+<div id="sidebar">
+<h3>Blog</h3>			<div class="textwidget"><p><a href="https://prideout.net/blog/old/index.html">Home</a><br>
+<a href="https://prideout.net/blog/old/blog/index.html@p=8.html">Contact</a><br>
+<a href="https://prideout.net/blog/old/blog/wp-admin/index.html">Admin</a></p>
+</div>
+		<h3>Links</h3>
+	<ul class="xoxo blogroll">
+<li><a href="https://prideout.net/blog/old/projects.html" rel="me">Old Stuff</a></li>
+<li><a href="http://vimeo.com/user5152196/videos">Videos</a></li>
+
+	</ul>
+
+<h3>Publications</h3>			<div class="textwidget"><a href="http://amzn.to/do1nHZ">iPhone 3D</a>
+<br>
+<a href="http://amzn.to/fYd5Bq">GPU Pro 2</a></div>
+		<h3>Code</h3>			<div class="textwidget"><a href="http://examples.oreilly.com/9780596804831/">iPhone 3D</a>
+<br>
+<a href="https://github.com/prideout">GitHub</a></div>
+					<div class="textwidget"><br>
+
+<a href="http://www.twitter.com/prideout"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/bw-twitter.png" style="border:none" alt="Follow prideout on Twitter"></a>
+
+<a href="http://www.linkedin.com/in/prideout"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/bw-linkedin.png" style="border:none" alt="View Philip Rideout's profile on LinkedIn"></a>
+
+<a href="https://prideout.net/blog/old/blog/index.html@feed=rss2"><img src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/bw-rss.png" style="border:none" alt="RSS"></a></div>
+		
+
+</div>
+
+</div>
+
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/shCore.js@ver=2.1.364b"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/shBrushGlsl.js@ver=1.2.3"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/shBrushCpp.js@ver=2.1.364b"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://prideout.net/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/styles/shCore.css?ver=2.1.364b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].appendChild(corecss);
+		var themecssurl = "https://prideout.net/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/styles/shThemeDefault.css?ver=2.1.364b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		document.getElementsByTagName("head")[0].appendChild(themecss);
+	})();
+	SyntaxHighlighter.config.clipboardSwf = 'https://prideout.net/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter/scripts/clipboard.swf';
+	SyntaxHighlighter.config.strings.expandSource = 'show source';
+	SyntaxHighlighter.config.strings.viewSource = 'view source';
+	SyntaxHighlighter.config.strings.copyToClipboard = 'copy to clipboard';
+	SyntaxHighlighter.config.strings.copyToClipboardConfirmation = 'The code is in your clipboard now';
+	SyntaxHighlighter.config.strings.print = 'print';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/floatbox.js@ver=1.2.20"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/options.js@ver=1.2.20"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/jquery.form.min.js@ver=4.2.1"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/scripts.js@ver=2.2"></script>
+<script type="text/javascript" src="Triangle%20Tessellation%20with%20OpenGL%204.0%20at%20The%20Little%20Grasshopper_tiedostot/wp-embed.min.js@ver=4.9.8"></script>
+
+
+</body></html>

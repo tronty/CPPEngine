@@ -3,7 +3,7 @@ float4      iMouse;
 float     iTime;
 float3      resolution;
 float4      mouse;
-float     time;
+//float time;
 float     iGlobalTime;
 float4      iDate;
 float     iSampleRate;
@@ -15,7 +15,7 @@ int       iFrame;
 float     iFrameRate;
 struct Channel {
     float3  resolution;
-    float   time;
+    //float time;
 };
 #define mainImage main
 #define max_steps 50

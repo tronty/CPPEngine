@@ -4,7 +4,7 @@ precision mediump float;
 #endif
 
 // glslsandbox uniforms
-uniform float time;
+//uniform float time;
 uniform vec2 resolution;
 
 uniform vec4 iMouse;

@@ -11,7 +11,7 @@
 #define iTime time
 #define iDate date
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 uniform vec4 date;
 #endif
 #endif

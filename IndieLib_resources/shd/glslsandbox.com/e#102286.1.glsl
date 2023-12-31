@@ -5,7 +5,7 @@ precision highp float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 uniform vec2 resolution;
 #endif

@@ -15,6 +15,6 @@ float     iFrameRate;
 
 struct Channel {
     float3  resolution;
-    float   time;
+    //float time;
 };
 

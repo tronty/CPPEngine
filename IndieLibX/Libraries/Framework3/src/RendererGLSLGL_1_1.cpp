@@ -834,11 +834,19 @@ LOG_FNLN;
 	}
 	
 	#elif 0
-	stx_snprintf(versionString, 16, "\n#version 130\n");
+	stx_snprintf(versionString, 16, "\n#version 130\n";//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n");
 	const char * def=versionString;
 	#elif 1
-	const char * def="\n#version 130\n";
+	const char * def="\n#version 130\n";//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 	#endif
+
+#if 0
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#elif 0
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#elif 0
+	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) tex2Dlod\(TEX\, float4\(TEXCOORD\.x\, TEXCOORD\.y\, 0.0\, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
+#endif
 	
 	if (def) vsText.append(def);
 	if (def) fsText.append(def);
@@ -863,7 +871,7 @@ LOG_FNLN;
 	if (tcsText0) tcsText.append(tcsText0);
 	if (tesText0) tesText.append(tesText0);
 
-	#if 1
+	#if 0
 	{std::regex e("\\blerp\\b");
 	vsText = std::regex_replace(vsText, e, "mix");}
 	{std::regex e("\\blerp\\b");

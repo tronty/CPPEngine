@@ -74,7 +74,7 @@ float     iFrameRate=1;
 
 struct Channel {
     float3  resolution;
-    float   time;
+    //float time;
 };
 
 // ray marching

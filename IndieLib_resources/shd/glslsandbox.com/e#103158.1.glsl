@@ -4,7 +4,7 @@ extension GL_OES_standard_derivatives : enable
 precision highp float;
 
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 #endif
 
 const float EPSILON = 0.001;

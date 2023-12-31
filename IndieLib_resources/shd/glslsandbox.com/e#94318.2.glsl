@@ -60,7 +60,7 @@ precision highp float;
 vec3 Planeta_Posicion = vec3(0.0);
 float Planeta_Radio = 6371000.0;
 float Atmosfera_Radio = 6471000.0;
-uniform float time;
+//uniform float time;
 uniform vec2 resolution;
 int Primary_Steps;
 int Light_Steps;

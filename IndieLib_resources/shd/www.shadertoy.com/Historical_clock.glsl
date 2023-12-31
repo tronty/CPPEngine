@@ -15,7 +15,7 @@ precision mediump float;
 
 #ifndef SHADERTOY
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 uniform vec4 date;
 #define iResolution resolution
 #define iTime time

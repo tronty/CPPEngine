@@ -16,7 +16,7 @@
 #define PI 3.141592653
 
 vec3 camPos;
-float time;
+//float time;
 vec3 surf;
 vec3 skyColour;
 const vec3 sunDir = normalize(vec3(4,8,18));

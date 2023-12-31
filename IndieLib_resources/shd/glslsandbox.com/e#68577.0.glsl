@@ -6,7 +6,7 @@ precision mediump float;
 #extension GL_OES_standard_derivatives : enable
 
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 #endif
 
 // random/hash function              

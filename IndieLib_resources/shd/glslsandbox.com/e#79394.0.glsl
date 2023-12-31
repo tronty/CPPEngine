@@ -4,7 +4,7 @@ precision highp float;
 #endif
 
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 #endif
 uniform float zoom;

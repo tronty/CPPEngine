@@ -77,7 +77,7 @@ float snoise(vec2 v)
 
 #if 0
 uniform vec2 resolution;
-uniform float time;
+//uniform float time;
 uniform vec2 mouse;
 #endif
 //Simple raymarching sandbox with camera

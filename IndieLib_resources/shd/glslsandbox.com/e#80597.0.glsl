@@ -6,7 +6,7 @@ precision mediump float;
 
 #extension GL_OES_standard_derivatives : enable
 
-uniform float time;
+//uniform float time;
 uniform vec2 resolution;
 vec3  iResolution;
 float iTime;

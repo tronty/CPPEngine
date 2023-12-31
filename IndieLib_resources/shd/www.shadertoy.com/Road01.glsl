@@ -1,8 +1,7 @@
+// https://www.shadertoy.com/view/4lBBWw
+// Road01
 
 const float speed = 7.0;
-
-
-
 
 float map_z(float z)
 {

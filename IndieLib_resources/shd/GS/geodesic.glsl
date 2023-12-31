@@ -8,6 +8,72 @@ void main()
     vPosition = Position.xyz;
 }
 
+[Fragment shader]
+
+out vec4 FragColor;
+in vec3 gFacetNormal;
+in vec3 gTriDistance;
+in vec3 gPatchDistance;
+in float gPrimitive;
+uniform vec3 LightPosition;
+uniform vec3 DiffuseMaterial;
+uniform vec3 AmbientMaterial;
+
+float amplify(float d, float scale, float offset)
+{
+    d = scale * d + offset;
+    d = clamp(d, 0, 1);
+    d = 1 - exp2(-2*d*d);
+    return d;
+}
+
+void main()
+{
+    vec3 N = normalize(gFacetNormal);
+    vec3 L = LightPosition;
+    float df = abs(dot(N, L));
+    vec3 color = AmbientMaterial + df * DiffuseMaterial;
+
+    float d1 = min(min(gTriDistance.x, gTriDistance.y), gTriDistance.z);
+    float d2 = min(min(gPatchDistance.x, gPatchDistance.y), gPatchDistance.z);
+    color = amplify(d1, 40, -0.5) * amplify(d2, 60, -0.5) * color;
+
+    FragColor = vec4(color, 1.0);
+}
+
+[Geometry shader]
+
+uniform mat4 Modelview;
+uniform mat3 NormalMatrix;
+layout(triangles) in;
+layout(triangle_strip, max_vertices = 3) out;
+in vec3 tePosition[3];
+in vec3 tePatchDistance[3];
+out vec3 gFacetNormal;
+out vec3 gPatchDistance;
+out vec3 gTriDistance;
+
+void main()
+{
+    vec3 A = tePosition[2] - tePosition[0];
+    vec3 B = tePosition[1] - tePosition[0];
+    gFacetNormal = NormalMatrix * normalize(cross(A, B));
+    
+    gPatchDistance = tePatchDistance[0];
+    gTriDistance = vec3(1, 0, 0);
+    gl_Position = gl_in[0].gl_Position; EmitVertex();
+
+    gPatchDistance = tePatchDistance[1];
+    gTriDistance = vec3(0, 1, 0);
+    gl_Position = gl_in[1].gl_Position; EmitVertex();
+
+    gPatchDistance = tePatchDistance[2];
+    gTriDistance = vec3(0, 0, 1);
+    gl_Position = gl_in[2].gl_Position; EmitVertex();
+
+    EndPrimitive();
+}
+
 [TessControl shader]
 
 layout(vertices = 3) out;
@@ -46,71 +112,5 @@ void main()
     tePatchDistance = gl_TessCoord;
     tePosition = normalize(p0 + p1 + p2);
     gl_Position = Projection * Modelview * vec4(tePosition, 1);
-}
-
-[Geometry shader]
-
-uniform mat4 Modelview;
-uniform mat3 NormalMatrix;
-layout(triangles) in;
-layout(triangle_strip, max_vertices = 3) out;
-in vec3 tePosition[3];
-in vec3 tePatchDistance[3];
-out vec3 gFacetNormal;
-out vec3 gPatchDistance;
-out vec3 gTriDistance;
-
-void main()
-{
-    vec3 A = tePosition[2] - tePosition[0];
-    vec3 B = tePosition[1] - tePosition[0];
-    gFacetNormal = NormalMatrix * normalize(cross(A, B));
-    
-    gPatchDistance = tePatchDistance[0];
-    gTriDistance = vec3(1, 0, 0);
-    gl_Position = gl_in[0].gl_Position; EmitVertex();
-
-    gPatchDistance = tePatchDistance[1];
-    gTriDistance = vec3(0, 1, 0);
-    gl_Position = gl_in[1].gl_Position; EmitVertex();
-
-    gPatchDistance = tePatchDistance[2];
-    gTriDistance = vec3(0, 0, 1);
-    gl_Position = gl_in[2].gl_Position; EmitVertex();
-
-    EndPrimitive();
-}
-
-[Fragment shader]
-
-out vec4 FragColor;
-in vec3 gFacetNormal;
-in vec3 gTriDistance;
-in vec3 gPatchDistance;
-in float gPrimitive;
-uniform vec3 LightPosition;
-uniform vec3 DiffuseMaterial;
-uniform vec3 AmbientMaterial;
-
-float amplify(float d, float scale, float offset)
-{
-    d = scale * d + offset;
-    d = clamp(d, 0, 1);
-    d = 1 - exp2(-2*d*d);
-    return d;
-}
-
-void main()
-{
-    vec3 N = normalize(gFacetNormal);
-    vec3 L = LightPosition;
-    float df = abs(dot(N, L));
-    vec3 color = AmbientMaterial + df * DiffuseMaterial;
-
-    float d1 = min(min(gTriDistance.x, gTriDistance.y), gTriDistance.z);
-    float d2 = min(min(gPatchDistance.x, gPatchDistance.y), gPatchDistance.z);
-    color = amplify(d1, 40, -0.5) * amplify(d2, 60, -0.5) * color;
-
-    FragColor = vec4(color, 1.0);
 }
 
