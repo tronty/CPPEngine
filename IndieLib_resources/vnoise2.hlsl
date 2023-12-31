@@ -306,7 +306,7 @@ void main() {
 
 varying float2 vUv;
 varying float noise;
-uniform float time;
+//uniform float time;
 
 float turbulence( float3 p ) {
 

@@ -147,7 +147,7 @@ struct VsOut {
 };
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-float time;
+//float time;
 float4 scaleBias=float4(0.003,-0.003,-1,1);
 VsOut main(VsIn In)
 {

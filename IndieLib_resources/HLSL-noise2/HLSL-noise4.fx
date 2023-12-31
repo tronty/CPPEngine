@@ -200,7 +200,7 @@ struct PS_OUTPUT
 };
 
 ROW_MAJOR float4x4 modelViewProjection MVPSEMANTIC;
-float time;
+//float time;
 
 /*
  * Both 2D and 3D texture coordinates are defined, for testing purposes.

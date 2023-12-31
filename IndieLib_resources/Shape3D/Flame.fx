@@ -275,7 +275,7 @@ struct vertexOutput {
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 float4x4 World;
-float time;		
+//float time;		
 
 // Vertex shader
 vertexOutput flameVS(VsIn IN)

@@ -179,7 +179,7 @@ VS_OUTPUT VertexShaderFunction(VS_INPUT input)
     return OUT;
 }
 [Fragment shader]
-float time;
+//float time;
 float4 mainPS( VS_OUTPUT IN ) : COLOR
 {
     

@@ -253,7 +253,7 @@ float2 viewport;// : VIEWPORTPIXELSIZE;
 float3 boxMin = float3( -1.0, -1.0, -1.0 );
 float3 boxMax = float3( 1.0, 1.0, 1.0 );
 
-float time;// : TIME;
+//float time;// : TIME;
 
 int steps = 3;
 

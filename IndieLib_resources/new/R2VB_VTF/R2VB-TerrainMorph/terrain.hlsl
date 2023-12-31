@@ -45,7 +45,7 @@ VsOut main(float4 pos_: POSITION, float4 dmap_: TEXCOORD0){
 
 sampler2D base;
 sampler2D base2;
-float time;
+//float time;
 
 float4 main(float2 texcoord:TEXCOORD0, float4 color : COLOR) : COLOR {
 	float4 tex = lerp(tex2D(base, texcoord), tex2D(base2, texcoord), time);

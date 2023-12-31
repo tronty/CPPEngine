@@ -146,7 +146,7 @@ struct VsOut {
 };
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-float time;
+//float time;
 VsOut main(VsIn In)
 {
   VsOut Out=(VsOut)0;

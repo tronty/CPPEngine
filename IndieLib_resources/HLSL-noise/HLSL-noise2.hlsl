@@ -147,7 +147,7 @@ VS_OUTPUT mainVS( const VS_INPUT IN)
 }
 
 [Fragment shader]
-float time;
+//float time;
 float4 mainPS( VS_OUTPUT IN ) : COLOR
 {
     

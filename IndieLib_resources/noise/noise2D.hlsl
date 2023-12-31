@@ -4,7 +4,7 @@
       http://opensource.org/licenses/LGPL-2.1
 */
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
-float time;
+//float time;
 int iI=0;
 sampler2D tExplosion;
 

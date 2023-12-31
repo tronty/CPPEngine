@@ -146,7 +146,7 @@ VS_OUTPUT mainVS( const VS_INPUT IN)
 }
 
 [Fragment shader]
-float time;
+//float time;
 float4 mainPS( VS_OUTPUT IN ) : COLOR
 {
   /* These lines test, in order, 2D classic noise, 2D simplex noise,

@@ -17,7 +17,7 @@
 
 float4x4 mvp;
 float3 dx, dy;
-float time;
+//float time;
 
 struct VsOut {
 	float4 pos         : POSITION;

@@ -65,7 +65,7 @@ void main() {
 
 varying vec2 vUv;
 varying float noise;
-uniform float time;
+//uniform float time;
 
 float turbulence( vec3 p ) {
 

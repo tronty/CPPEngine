@@ -24,7 +24,7 @@ VsOut main(float2 pos: POSITION){
 
 sampler2D Tex;
 sampler2D Tex2;
-float time;
+//float time;
 
 float4 main(float2 t0: TEXCOORD0) : COLOR {
 	return lerp(tex2D(Tex, t0), tex2D(Tex2, t0), time);

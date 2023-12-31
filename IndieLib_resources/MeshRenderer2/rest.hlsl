@@ -40,7 +40,7 @@ VS_OUTPUT main2(VS_INPUT2 IN)
 	float3 objPos = IN.Position;
 	Out.Position = mul( float4( objPos, 1.0), WorldViewProjection);
 	Out.uv=IN.uv;
-	Out.color=IN.color;
+	Out.color=IN.color.xyz;
 	//color.uv=color.uv;
 	return Out;
 }
