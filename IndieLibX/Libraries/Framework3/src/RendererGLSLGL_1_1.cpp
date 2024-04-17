@@ -595,13 +595,13 @@ GLint RendererGLSLGL_1_1__addGLSLShader(ShaderType typ, std::vector<std::string>
 #ifdef __APPLE__
 	glShaderSourceARB(shd, strIndex, shaderStrings, 0);
 #else
-	glShaderSource(shd, strIndex, shaderStrings, 0);
+	glShaderSourceARB(shd, strIndex, shaderStrings, 0);
 #endif
 	checkGlError("");
 #ifdef __APPLE__
 	glCompileShaderARB(shd);
 #else
-	glCompileShader(shd);
+	glCompileShaderARB(shd);
 #endif
 	checkGlError("");
 	GLint sResult=0;
@@ -910,7 +910,7 @@ LOG_FNLN;
 	shaders.push_back(shaderGL1_1);
 	return shaders.size()-1;
 #endif
-#if 1
+#if !defined(__APPLE__)
 	if (tcsText0)
 	{
 		shaderGL1_1.shader[eHullShader] = glCreateShaderObjectARB(GL_TESS_CONTROL_SHADER);
@@ -918,9 +918,9 @@ LOG_FNLN;
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = tcsText.c_str();
-		glShaderSource(shaderGL1_1.shader[eHullShader], strIndex, shaderStrings, 0);
+		glShaderSourceARB(shaderGL1_1.shader[eHullShader], strIndex, shaderStrings, 0);
 		checkGlError("");
-		glCompileShader(shaderGL1_1.shader[eHullShader]);
+		glCompileShaderARB(shaderGL1_1.shader[eHullShader]);
 		checkGlError("");
 		glGetObjectParameterivARB(shaderGL1_1.shader[eHullShader], GL_OBJECT_COMPILE_STATUS_ARB, &hsResult);
 		checkGlError("");
@@ -944,9 +944,9 @@ LOG_FNLN;
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = tesText.c_str();
-		glShaderSource(shaderGL1_1.shader[eDomainShader], strIndex, shaderStrings, 0);
+		glShaderSourceARB(shaderGL1_1.shader[eDomainShader], strIndex, shaderStrings, 0);
 		checkGlError("");
-		glCompileShader(shaderGL1_1.shader[eDomainShader]);
+		glCompileShaderARB(shaderGL1_1.shader[eDomainShader]);
 		checkGlError("");
 		glGetObjectParameterivARB(shaderGL1_1.shader[eDomainShader], GL_OBJECT_COMPILE_STATUS_ARB, &dsResult);
 		checkGlError("");
@@ -970,9 +970,9 @@ LOG_FNLN;
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = csText.c_str();
-		glShaderSource(shaderGL1_1.shader[eComputeShader], strIndex, shaderStrings, 0);
+		glShaderSourceARB(shaderGL1_1.shader[eComputeShader], strIndex, shaderStrings, 0);
 		checkGlError("");
-		glCompileShader(shaderGL1_1.shader[eComputeShader]);
+		glCompileShaderARB(shaderGL1_1.shader[eComputeShader]);
 		checkGlError("");
 		glGetObjectParameterivARB(shaderGL1_1.shader[eComputeShader], GL_OBJECT_COMPILE_STATUS_ARB, &csResult);
 		checkGlError("");
@@ -991,6 +991,7 @@ LOG_FNLN;
 	}
 	else csResult = GL_TRUE;
 #endif
+#if !defined(__APPLE__)
 	if (gsText0)
 	{
 		shaderGL1_1.shader[eGeometryShader] = glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
@@ -998,9 +999,9 @@ LOG_FNLN;
 		const GLchar *shaderStrings[6];
 		int strIndex = 0;
 		shaderStrings[strIndex++] = gsText.c_str();
-		glShaderSource(shaderGL1_1.shader[eGeometryShader], strIndex, shaderStrings, 0);
+		glShaderSourceARB(shaderGL1_1.shader[eGeometryShader], strIndex, shaderStrings, 0);
 		checkGlError("");
-		glCompileShader(shaderGL1_1.shader[eGeometryShader]);
+		glCompileShaderARB(shaderGL1_1.shader[eGeometryShader]);
 		checkGlError("");
 		glGetObjectParameterivARB(shaderGL1_1.shader[eGeometryShader], GL_OBJECT_COMPILE_STATUS_ARB, &gsResult);
 		checkGlError("");
@@ -1018,6 +1019,7 @@ LOG_FNLN;
 		infoLogPos += len;
 	}
 	else gsResult = GL_TRUE;
+#endif
 	if (vsText0)
 	{
 #if 0

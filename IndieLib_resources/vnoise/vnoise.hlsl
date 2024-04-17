@@ -253,7 +253,7 @@ struct VsOut {
 [Vertex shader]
 ROW_MAJOR float4x4 worldViewProj MVPSEMANTIC;
 float Displacement = 1.0;
-float time = 0.0;
+//float time = 0.0;
 
 VsOut main(VsIn In)
 {

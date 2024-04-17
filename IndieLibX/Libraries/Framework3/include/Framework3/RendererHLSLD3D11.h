@@ -1,5 +1,5 @@
 //if defined(D3D11)
-#if defined(_MSC_VER)
+#if 0//defined(_MSC_VER)
 /* * * * * * * * * * * * * Author's note * * * * * * * * * * * *\
 *   _       _   _       _   _       _   _       _     _ _ _ _   *
 *  |_|     |_| |_|     |_| |_|_   _|_| |_|     |_|  _|_|_|_|_|  *

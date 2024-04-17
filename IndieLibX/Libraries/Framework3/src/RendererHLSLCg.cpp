@@ -1364,6 +1364,13 @@ ShaderID IRenderer::addShaderFromFile(	const char* fileName,
 		LOG_PRINT("\tLoading shader %s failed\n", fn.c_str());
 		DBG_HALT;
 	}
+	if(id==-1)
+	{
+    		fstream f;
+		f.open("shader.err", ios::out | ios::app);
+		f << std::string(m_title) << "\t" << std::string(fileName) << "\t" << std::string(vsMain) << "\t" << std::string(fsMain) << "\n";
+		f.close();
+	}
 	return id;
 }
 int RendererHLSLCg__formatSize[] =
@@ -6557,15 +6564,15 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    float3  resolution;\n"
 				"    float   time;\n"
 				"};\n";
-	const char* vsStrGLSL=	"struct VsOut {\n"
+	const char* vsStrGLSL=	"struct _x_VsOut_x_ {\n"
 				"    vec4 position;\n"
 				"    vec2 uv;\n"
 				"};\n"
-				"struct VsIn2 {\n"
+				"struct _x_VsIn2_x_ {\n"
 				"    vec2 position;\n"
 				"    vec2 uv;\n"
 				"};\n"
-				"struct VsIn3 {\n"
+				"struct _x_VsIn3_x_ {\n"
 				"    vec3 position;\n"
 				"    vec3 Normal;\n"
 				"    vec3 Binormal;\n"
@@ -6573,10 +6580,10 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    vec3 Color;\n"
 				"    vec2 uv;\n"
 				"};\n"
-				"uniform mat4 worldViewProj;\n"
-				"//layout(location = 0) in mat4  worldViewProj;\n"
-				"VsOut main2( in VsIn2 In ) {\n"
-				"    VsOut Out = VsOut(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));\n"
+				"uniform mat4 _x_worldViewProj_x_;\n"
+				"//layout(location = 0) in mat4 _x_worldViewProj_x_;\n"
+				"_x_VsOut_x_ main2( in _x_VsIn2_x_ In ) {\n"
+				"    _x_VsOut_x_ Out = _x_VsOut_x_(vec4(0.0, 0.0, 0.0, 0.0), vec2(0.0, 0.0));\n"
 				"    Out.position = vec4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.uv.x = In.uv.x;\n"
 				"    Out.uv.y = 1.0-In.uv.y;\n"
@@ -6584,8 +6591,8 @@ saturate 	clamp(x, 0.0, 1.0)
 				"}\n"
 				"//layout(location = 0) out vec2  xlv_TEXCOORD0;\n"
 				"void main() {\n"
-				"    VsOut xl_retval;\n"
-				"    VsIn2 xlt_In;\n"
+				"    _x_VsOut_x_ xl_retval;\n"
+				"    _x_VsIn2_x_ xlt_In;\n"
 				"    xlt_In.position = vec2(gl_Vertex);\n"
 				"    xlt_In.uv = vec2(gl_MultiTexCoord0);\n"
 				"    xl_retval = main2( xlt_In);\n"
@@ -6593,11 +6600,11 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    //gl_FragCoord = vec2(xl_retval.uv);\n"
 				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
 				"}\n";
-	const char* vsStrHLSL=	"struct VsOut2 {\n"
+	const char* vsStrHLSL=	"struct _x_VsOut2_x_ {\n"
 				"    float4 position;\n"
 				"    float2 uv;\n"
 				"};\n"
-				"struct VsOut3 {\n"
+				"struct _x_VsOut3_x_ {\n"
 				"    float4 position;\n"
 				"    float3 Normal;\n"
 				"    float3 Binormal;\n"
@@ -6605,11 +6612,11 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    float3 Color;\n"
 				"    float2 uv;\n"
 				"};\n"
-				"struct VsIn2 {\n"
+				"struct _x_VsIn2_x_ {\n"
 				"    float2 position;\n"
 				"    float2 uv;\n"
 				"};\n"
-				"struct VsIn3 {\n"
+				"struct _x_VsIn3_x_ {\n"
 				"    float3 position;\n"
 				"    float3 Normal;\n"
 				"    float3 Binormal;\n"
@@ -6617,16 +6624,16 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    float3 Color;\n"
 				"    float2 uv;\n"
 				"};\n"
-				"float4x4 worldViewProj;\n"
-				"VsOut2 main2( in VsIn2 In ) {\n"
-				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
+				"float4x4 _x_worldViewProj_x_;\n"
+				"_x_VsOut2_x_ main2( in _x_VsIn2_x_ In ) {\n"
+				"    _x_VsOut_x_ Out = _x_VsOut_x_(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
 				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.uv.x = In.uv.x;\n"
 				"    Out.uv.y = 1.0-In.uv.y;\n"
 				"    return Out;\n"
 				"}\n"
-				"VsOut3 main3( in VsIn3 In ) {\n"
-				"    VsOut Out = VsOut(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
+				"_x_VsOut3_x_ main3( in _x_VsIn3_x_ In ) {\n"
+				"    _x_VsOut_x_ Out = _x_VsOut_x_(float4(0.0, 0.0, 0.0, 0.0), float2(0.0, 0.0));\n"
 				"    Out.position = float4( In.position.x, In.position.y, 0.0, 1.0);\n"
 				"    Out.Normal=In.Normal;\n"
 				"    Out.Binormal=In.Binormal;\n"
@@ -6919,7 +6926,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	else{
 		STX_PRINT("0:!aFlags&eHLSL_Shader\n");}
 	{
-#ifndef ANDROID
+#if !defined(__APPLE__) && !defined(ANDROID)
 		{std::regex e("\\bWSIGN\\b");
 		vsStr = std::regex_replace(vsStr, e, "+");}
 		{std::regex e("\\bWSIGN\\b");
@@ -6932,9 +6939,9 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 #endif
 	if((Renderer!="D3D11")&&(aFlags&eHLSL_Shader))
 	{
-#ifndef ANDROID
-		STX_PRINT("1:Shadertype = eHLSL_Shader\n");
 		std::string vstmp, fstmp;
+#if !defined(__APPLE__) && !defined(ANDROID)
+		STX_PRINT("1:Shadertype = eHLSL_Shader\n");
 
 		{std::regex e("\\bROW_MAJOR\\b");
 		vsStr = std::regex_replace(vsStr, e, "");}
@@ -6948,7 +6955,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		vsStr=std::string("#define atan(x,y) atan2(y,x)\n")+vsStr;
 		fsStr=std::string("#define atan(x,y) atan2(y,x)\n")+fsStr;
 #endif
-#ifndef ANDROID
+#if !defined(IPHONE_SIMULATOR) && !defined(ANDROID) // &&!defined(OS_IPHONE)
 		static bool Hlsl2Glsl_init=true;
 		if(Hlsl2Glsl_init)
 		{
@@ -6971,7 +6978,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
     	}
 	else
 	{
-#ifndef ANDROID
+#if !defined(__APPLE__) && !defined(ANDROID)
 		{std::regex e("\\bROW_MAJOR\\b");
 		vsStr = std::regex_replace(vsStr, e, "");}
 		{std::regex e("\\bROW_MAJOR\\b");

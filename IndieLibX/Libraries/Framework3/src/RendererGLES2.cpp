@@ -245,9 +245,7 @@ void RendererGLES2::changeShader(const ShaderID shader)
 					LOG_PRINT_X("glUseProgram(%d):%s:%d\n",(shaders[shader]).program,__FUNCTION__,__LINE__);
 
 
-#if defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
-glUseProgram(handle_to_uint(&shaders[shader].program));
-#elif defined(__APPLE__)
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 glUseProgram(handle_to_uint(&shaders[shader].program));
 #else
 glUseProgram((shaders[shader]).program);
@@ -1242,13 +1240,13 @@ LOG_FNLN;
 				{
 LOG_FNLN;
 			GLuint currProgram =
-#ifdef __APPLE__
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 handle_to_uint((currentShader == SHADER_NONE)? 0 : shaders[currentShader].program);
 #else
 (currentShader == SHADER_NONE)? 0 : (shaders[currentShader]).program;
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 glUseProgram(handle_to_uint(shaderGL1_1.program));
 #else
 glUseProgram(shaderGL1_1.program);
@@ -1272,7 +1270,7 @@ glUseProgram(shaderGL1_1.program);
 					{
 						GLenum type;
 						GLint length, size;
-#ifdef __APPLE__
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 glGetActiveUniform(handle_to_uint(shaderGL1_1.program), i, maxLength, &length, &size, &type, name);
 #else
 glGetActiveUniform(shaderGL1_1.program, i, maxLength, &length, &size, &type, name);
@@ -1280,7 +1278,7 @@ glGetActiveUniform(shaderGL1_1.program, i, maxLength, &length, &size, &type, nam
 				checkGlError("");
 						if (type == GL_SAMPLER_2D)
 						{
-#ifdef __APPLE__
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 GLint location = glGetUniformLocation(handle_to_uint(shaderGL1_1.program), name);
 #else
 GLint location = glGetUniformLocation(shaderGL1_1.program, name);
@@ -1306,7 +1304,7 @@ GLint location = glGetUniformLocation(shaderGL1_1.program, name);
 										*bracket = '\0';
 										length = (GLint) (bracket - name);
 									}
-#ifdef __APPLE__
+#if defined(__APPLE__) && !(defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
 shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(handle_to_uint(shaderGL1_1.program), name);
 #else
 shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.program, name);

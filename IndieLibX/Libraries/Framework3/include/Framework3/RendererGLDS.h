@@ -131,7 +131,7 @@ typedef void* GLhandleARB;
 typedef unsigned int GLhandleARB;
 #endif
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
 /** Convert a GLhandleARB to GLuint */
 inline GLuint handle_to_uint(GLhandleARB handle)
 {
