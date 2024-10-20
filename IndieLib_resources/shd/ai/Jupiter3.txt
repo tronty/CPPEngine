@@ -1,0 +1,72 @@
+Tässä on GLSL fragmenttishader, joka simuloi **Jupiterin** kaltaista planeettaa, jossa on ohuita pilvivöitä ja turbulenssia. Tämä shader luo väripohjaisen tekstuurin ja käyttää perlin-kaltaista kohinaa turbulenssin lisäämiseksi pilvikerroksiin.
+
+Shaderiin lisätään myös kaavamainen Jupiterin pilvivyöhykkeiden rakenne ja liike.
+
+### Jupiter-planeetan GLSL fragmenttishader:
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_time;       // Aika muuttuja
+uniform vec2 u_resolution;  // Ikkunan resoluutio
+
+// Perlin-kohinan kaltaisen funktion avulla luodaan turbulenssia
+float noise(vec2 p) {
+    return sin(p.x) * sin(p.y);
+}
+
+// Turbulenssiefekti pilvien "pyörteille"
+float turbulence(vec2 p) {
+    float w = 100.0;
+    float t = 0.0;
+    for (float i = 1.0; i <= 10.0; i++) {
+        t += abs(noise(p * i)) / i;
+        w *= 0.5;
+    }
+    return t;
+}
+
+void main() {
+    // Normalisoidaan koordinaatit [0, 1] välille
+    vec2 uv = gl_FragCoord.xy / u_resolution;
+    uv = uv * 2.0 - 1.0;  // Normaalisoidaan koordinaatit [-1, 1] alueelle
+    
+    // Korjataan leveys-korkeussuhde
+    uv.x *= u_resolution.x / u_resolution.y;
+    
+    // Jupiterin pilvivyöt: Taajuus ja määrä pilvikerroksia
+    float cloudBands = sin(uv.y * 20.0 + turbulence(uv * 3.0 + u_time * 0.2)) * 0.3;
+    
+    // Pilvien värin määrittäminen (pohjavärit, turbulenssi ja sekoitus)
+    vec3 baseColor = vec3(1.0, 0.5, 0.3);   // Oranssin värinen Jupiterin pinta
+    vec3 cloudColor = vec3(0.9, 0.9, 0.9);  // Vaaleammat pilvet
+    
+    // Turbulenssia ja pilvikerroksia lisätään
+    float t = turbulence(uv * 3.0 + u_time * 0.1) * 0.2;  // Turbulenssin vaikutus
+    float bandMix = smoothstep(0.4, 0.6, cloudBands + t); // Sekoitetaan pilvikerrokset
+    
+    // Lopullinen väri: sekoitus pilviä ja taustaa
+    vec3 color = mix(baseColor, cloudColor, bandMix);
+
+    gl_FragColor = vec4(color, 1.0);  // Viedään lopullinen väri ulos
+}
+```
+
+### Selitys:
+
+1. **Perlin-kohinan kaltainen `noise`-funktio**: Käytetään luomaan tekstuuriin satunnaisuutta ja liikettä.
+2. **Turbulenssiefekti (`turbulence`)**: Luo pilvivöiden turbulenssia ja dynaamisuutta. Pilvivyöhykkeiden välillä näkyy pyörremaisia liikkeitä ja värimuutoksia.
+3. **Pilvivyöt**: Sinimuotoiset pilvivyöt lisätään `sin(uv.y * 20.0 + turbulence(uv * 3.0 + u_time * 0.2))` funktiolla, joka tuottaa Jupiterin ominaiset ohuet pilvivyöt.
+4. **Värimaailma**: Taustaväri on oranssin ja punertavan sävyinen, ja pilvikerrokset ovat vaaleampia (valkoinen tai harmaa). Värit on sekoitettu turbulenssin perusteella.
+5. **Ajan vaikutus**: `u_time`-muuttuja tekee pilvivöistä ja turbulenssista dynaamisia, jolloin ne liikkuvat ajassa.
+
+### Miten shader toimii:
+
+- **`u_time`**: Päivitetään jatkuvasti, jotta pilvivyöhykkeet liikkuvat ajassa.
+- **`turbulence`-funktio**: Luo pyörremäisiä liikkeitä pilvivöihin.
+- **`smoothstep`**: Pehmentää siirtymät pilvivyöhykkeiden välillä.
+  
+Tämä shader tuottaa Jupiterin pinnan kaltaisen efektin, jossa on liikkuvia ja turbulenttisia pilvivyöitä. Voit säätää parametreja, kuten **pilvivöiden tiheyttä** (esim. muuttamalla `uv.y * 20.0`) tai **turbulenssin voimakkuutta**, saadaksesi erilaisia Jupiterin variaatioita.
+

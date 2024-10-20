@@ -1,0 +1,57 @@
+Tässä fragment-shaderissa luodaan tähtitaivas- ja tähtivirta-efekti, joka simuloi tähtien liikkumista ja valon välkkymistä. Shader tekee tämän laskemalla jokaisen pikselin intensiteetin ja värin perustuen sijaintiin ja aikaan. Analysoin shaderin seuraavasti:
+
+### Yleinen tarkoitus
+Shader simuloidaan tähtivirta-efekti, jossa tähdet näyttävät liikkuvan ja välkkyvän perspektiivissä, ja siihen liittyy myös eräänlainen avaruuden sumuefekti (nebula). Aika-arvoa käytetään liikkeen simuloimiseen, ja tähtien kirkkaus ja väri riippuvat muun muassa niiden etäisyydestä, kulmasta ja liikeradasta.
+
+### Vaiheittainen selitys
+
+1. **Muuttujien esittelyt:**
+   - `speed = 5.2`: Nopeus, jolla tähdet liikkuvat.
+   - `k2PI`: Kaksi kertaa pi, eli `2 * π` käytetään kulmien laskemiseen.
+   - `kStarDensity = 0.4`: Tähtien tiheys, joka vaikuttaa niiden jakautumiseen avaruudessa.
+   - `kMotionBlur = 0.2`: Liike-epäterävyysarvo, joka luo liike-epäterävyyden vaikutelman tähtiin.
+   - `kNumAngles = 200`: Kulmien lukumäärä tähtien sijoittelua varten.
+
+2. **Sijainnin määrittäminen:**
+   ```glsl
+   vec2 position = (xlv_TEXCOORD0.xy - resolution.xy * .5) / resolution.x;
+   ```
+   - Pikselin sijainti normalisoidaan resoluution perusteella, jotta se sijoitetaan keskelle ruutua.
+   - `xlv_TEXCOORD0.xy` edustaa tekstuurikoordinaatteja, ja ne muunnetaan niin, että `(0,0)` on keskellä näyttöä.
+
+3. **Kulman ja etäisyyden laskeminen:**
+   - `A = atan(position.y, position.x);`: Laskee kulman pikselin sijainnista keskipisteeseen (polar-koordinaatit).
+   - `angle0` ja `angle`: Laskevat kulman normaalisoituna `2π` -välille ja fraktiokomponentin, jota käytetään tähtien järjestämiseen.
+   - `rad = .3 * length(position);`: Laskee etäisyyden keskeltä (tähtien radiaalinen etäisyys keskipisteestä).
+
+4. **Tähtien sijoittelu ja satunnaisuus:**
+   - `angleStep` ja `angleToRandZ`: Luovat tähtien satunnaisuuden kulmien ja etäisyyden perusteella.
+   - Tässä käytetään fraktaalilaskelmia, kuten `fract(angleStep * fract(angleStep *.7535) * 45.1)`, mikä lisää tähtien jakautumisen satunnaisuutta ja etäisyyden mittausta.
+
+5. **Kirkkauden laskeminen:**
+   - `white1` ja `white2`: Lasketaan tähtien kirkkauden ja intensiteetin perustella niiden kulmasta ja etäisyydestä. Tähtien intensiteetti vähenee, kun ne liikkuvat etäämmälle, ja kirkkaus himmenee liikkeen vaikutuksesta (liike-epäterävyys).
+   - `white`: Lopullinen kirkkausarvo perustuu näiden kahden komponentin tuloon.
+
+6. **Värin määrittäminen:**
+   ```glsl
+   vec3 color;
+   color.r = .03 * white1 + white * (0.3 + 5.0 * angleDist);
+   color.b = white * (0.1 + .5 * angleToRandZ);
+   color.g = 1.5 * white;
+   ```
+   - Värin komponenteille (punainen, sininen ja vihreä) annetaan arvot tähtien kirkkauden ja satunnaisuuden perusteella. Tässä käytetään useita satunnaislaskelmia eri värikanavien intensiteetin määrittämiseksi.
+
+7. **Nebula-efekti:**
+   ```glsl
+   float nebD1 = 1.0 / rad + 4.5 * (1.0 + sin(1.1 + 3.0 * A + 0.71 * cos(2.0 * A)));
+   float nebD2 = 1.0 / rad + 3.7 * (1.0 + sin(3.7 + 2.0 * A + 0.46 * sin(3.0 * A)));
+   ```
+   - Lasketaan myös sumuinen alue (nebula), joka lisätään tähdistöön. Tämä on eräänlainen satunnaisesti vaihtuva tekstuuri, joka perustuu kulman ja ajan perusteella lasketuille sinikäyrille.
+   - Näitä arvoja käytetään värin komponenttien lisämuokkaukseen, jolloin syntyy vaikuttava tähtisumu-efekti.
+
+8. **Värin yhdistäminen ja tulostaminen:**
+   - Lopullinen väri saadaan yhdistämällä tähdistön ja sumun kirkkausarvot.
+   - `gl_FragColor = vec4(color, 1.0);`: Väriksi asetetaan RGB-väri, jossa kirkkausarvot on laskettu edellä kuvattujen laskelmien perusteella, ja läpinäkymättömyys (`alpha`) on asetettu arvoon 1.0.
+
+### Yhteenveto
+Shader luo tähtien virtaavan liikkeen ja tähtisumu-efektin, joka on sekä dynaaminen että satunnaisesti vaihteleva. Siinä käytetään polar-koordinaatteja, satunnaisuuteen perustuvia fraktaaleja ja liike-epäterävyysefektejä. Tähtiä visualisoidaan kirkkauden ja satunnaisuuden avulla, ja ne liikkuvat ajan funktiona, jolloin syntyy jatkuvasti muuttuvasimulaatio.

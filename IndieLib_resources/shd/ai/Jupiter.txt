@@ -1,0 +1,84 @@
+Voisitko luoda Jupiterin  fragmenttishaderin (GLSL) turbulenssilla without uniform shader variables?
+
+ChatGPT sanoi:
+
+Tässä on esimerkki GLSL-fragmenttishaderista, joka simuloisi Jupiterin ilmakehän kaltaista turbulenssia käyttäen Perlin-melua ja väriasteikkoa, joka jäljittelee Jupiterin kuuluisia oransseja, punaisia ja ruskeita sävyjä.
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_time;     // Käytetään animoimaan turbulenssia ajan mukaan
+uniform vec2 u_resolution; // Näytön resoluutio
+
+// Perlin noise -funktio
+float noise(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float smoothNoise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(mix(noise(i + vec2(0.0, 0.0)), noise(i + vec2(1.0, 0.0)), u.x),
+               mix(noise(i + vec2(0.0, 1.0)), noise(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+float fbm(vec2 p) {
+    float value = 0.0;
+    float amplitude = 0.5;
+    float frequency = 1.0;
+    
+    for (int i = 0; i < 6; i++) {
+        value += amplitude * smoothNoise(p * frequency);
+        frequency *= 2.0;
+        amplitude *= 0.5;
+    }
+    
+    return value;
+}
+
+vec3 getJupiterColor(float noiseValue) {
+    // Jupiterin väriasteikkoa, joka vaihtelee kohinatasosta riippuen
+    vec3 color1 = vec3(1.0, 0.7, 0.3); // Oranssin sävyt
+    vec3 color2 = vec3(0.8, 0.5, 0.2); // Tumma oranssi/ruskea
+    vec3 color3 = vec3(1.0, 1.0, 0.85); // Valkoinen/pale
+    
+    if (noiseValue < 0.4) {
+        return mix(color2, color1, smoothstep(0.0, 0.4, noiseValue));
+    } else {
+        return mix(color1, color3, smoothstep(0.4, 1.0, noiseValue));
+    }
+}
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    uv.x *= u_resolution.x / u_resolution.y;
+    
+    // Sovitetaan tekstuuri pyörivään Jupiterin ilmakehään
+    float time = u_time * 0.05;
+    float scale = 3.0; // Suurentaa kohinaa
+    vec2 p = uv * scale + vec2(0.0, time);
+    
+    // Turbulenssin luominen
+    float noiseValue = fbm(p);
+    
+    // Väri Jupiterin kaltaiseksi
+    vec3 color = getJupiterColor(noiseValue);
+    
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+### Shaderin avainkohdat:
+- **Perlin-kohina** (`noise`) luo pehmeästi muuttuvia kohinakerroksia.
+- **Fraktaalikohina (FBM)** yhdistää useita kohinatasoja monimutkaisemman kuvion luomiseksi. Tämä antaa shaderille Jupiterin turbulenssimaisen ilmeen.
+- **Värit** on valittu jäljittelemään Jupiterin kuuluisaa väripalettia, joka sisältää oransseja, ruskeita ja valkoisia sävyjä.
+- **Aika** (`u_time`) mahdollistaa tekstuurin animoimisen, joka muistuttaa Jupiterin jatkuvaa pyörimistä ja liikkumista.
+
+### Kuinka käyttää:
+Shaderiä voidaan käyttää OpenGL:ssä tai WebGL:ssä fragmenttishaderina, ja voit säätää `u_time`-arvoa luodaksesi animaatiota ja simulointia Jupiterin pyörivästä ilmakehästä.
+
+Jos sinulla on jo ympäristö, jossa voit ajaa GLSL-shadereita, voit kopioida ja liittää tämän shaderin fragmenttiosaan ja kytkeä siihen ajan ja resoluution yhtäläisyyksiä animaation luomiseksi.
+

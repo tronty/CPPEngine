@@ -1,0 +1,135 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+</head>
+<body>
+<pre>
+Creating a textureless procedural building model in GLSL using only a fragment shader is a complex task but can be simplified by breaking it down into steps. In a fragment shader, you don't have access to vertex data directly, so the "model" needs to be constructed using mathematical patterns and distance fields (Signed Distance Functions, SDFs). Here’s how you can approach it:
+
+### Steps to Create a Textureless Procedural Building in GLSL
+
+1. **Basic Setup**: 
+   You need a fragment shader that defines a viewport where the building will be drawn. Use raymarching to define the structure of the building. The building's geometry can be represented using simple primitives like boxes or planes.
+
+2. **Define Signed Distance Functions (SDFs)**: 
+   Use SDFs to define the shapes of the building. An SDF is a mathematical function that describes the distance from any point in space to the nearest surface of an object. For a building, you can use simple boxes and repetitions to create floors, windows, etc.
+
+3. **Raymarching**: 
+   Implement raymarching to render the building based on the SDFs. Raymarching involves shooting rays from the camera and finding where they intersect with the building by minimizing the SDF values.
+
+4. **Lighting**: 
+   Even though you're not using textures, you can give the building depth by implementing basic lighting models (like Lambertian reflection) based on surface normals, which can be derived from the gradient of the SDF.
+
+Here’s a basic GLSL fragment shader structure that follows these principles:
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+uniform vec3 u_cameraPos;  // Camera position
+uniform vec3 u_lightPos;   // Light position
+
+// Helper functions
+float sdBox(vec3 p, vec3 b) {
+    vec3 d = abs(p) - b;
+    return min(max(d.x,max(d.y,d.z)), 0.0) + length(max(d, 0.0));
+}
+
+// Union of two SDFs
+float unionSDF(float d1, float d2) {
+    return min(d1, d2);
+}
+
+// Building SDF
+float buildingSDF(vec3 p) {
+    // Repeat the building blocks in space to create floors
+    float floorHeight = 3.0;  // Height of each floor
+    vec3 buildingSize = vec3(1.0, floorHeight, 1.0);
+    vec3 q = p;
+    
+    // Create multiple floors by repeating the Y axis
+    q.y = mod(p.y, floorHeight * 2.0) - floorHeight;
+    
+    // Main building block (a single floor)
+    float building = sdBox(q, buildingSize);
+    
+    // Create some windows on the front of the building using more boxes
+    vec3 windowSize = vec3(0.2, 0.2, 0.1);
+    vec3 windowPos = vec3(0.5, 0.5, 0.95); // Position of the window in front
+    float window = sdBox(q - windowPos, windowSize);
+
+    // Subtract the window from the building (carve out the window)
+    return unionSDF(building, -window);
+}
+
+// Normal calculation
+vec3 calculateNormal(vec3 p) {
+    vec2 e = vec2(0.001, 0.0);
+    return normalize(vec3(
+        buildingSDF(p + e.xyy) - buildingSDF(p - e.xyy),
+        buildingSDF(p + e.yxy) - buildingSDF(p - e.yxy),
+        buildingSDF(p + e.yyx) - buildingSDF(p - e.yyx)
+    ));
+}
+
+// Simple lighting function (Lambertian reflection)
+float lighting(vec3 p, vec3 normal, vec3 lightPos) {
+    vec3 lightDir = normalize(lightPos - p);
+    return clamp(dot(normal, lightDir), 0.0, 1.0);
+}
+
+// Raymarching
+float raymarch(vec3 ro, vec3 rd) {
+    float depth = 0.0;
+    for (int i = 0; i < 100; i++) {
+        vec3 p = ro + depth * rd;
+        float d = buildingSDF(p);
+        if (d < 0.001) break;
+        depth += d;
+        if (depth > 50.0) break;  // Max render distance
+    }
+    return depth;
+}
+
+void main() {
+    vec2 uv = (gl_FragCoord.xy - u_resolution * 0.5) / u_resolution.y;
+
+    // Camera and ray direction
+    vec3 ro = u_cameraPos;  // Camera position
+    vec3 rd = normalize(vec3(uv, -1.0));  // Ray direction
+
+    // Raymarching to find intersection with the building
+    float depth = raymarch(ro, rd);
+    vec3 p = ro + depth * rd;
+    
+    // Compute the normal and lighting
+    vec3 normal = calculateNormal(p);
+    float lightIntensity = lighting(p, normal, u_lightPos);
+
+    // Output color
+    vec3 color = vec3(0.2, 0.5, 0.7) * lightIntensity;  // Simple color
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+### Explanation:
+
+1. **SDF Function (`sdBox`)**: This function defines a box by calculating the distance from a point `p` to the closest surface of the box defined by `b`. This forms the basis of our building.
+
+2. **Raymarching**: The `raymarch` function moves a ray forward step by step until it intersects with the building's SDF. If the ray gets close enough to a surface (distance `< 0.001`), it stops and considers that an intersection.
+
+3. **Building Structure**: The `buildingSDF` function defines the basic structure of the building, using repetition (`mod`) to create multiple floors. It also carves out windows using another box SDF (`sdBox`), which is subtracted from the main building block.
+
+4. **Normal Calculation**: The `calculateNormal` function approximates the surface normal at a given point by taking small steps around the point and calculating the gradient of the SDF. This is used to compute lighting.
+
+5. **Lighting**: A simple Lambertian reflection model is used to simulate basic lighting, where the light intensity depends on the angle between the light direction and the surface normal.
+
+### Potential Enhancements:
+- **More Detailed Windows**: You can add more intricate window patterns by repeating smaller boxes for windows.
+- **Different Floor Structures**: You could have different types of floors by varying the repetition rate or size of blocks.
+- **Improved Lighting**: Add shadows, reflections, or ambient occlusion to increase realism.
+
+This basic setup should give you a procedural, textureless building entirely defined by mathematical functions in GLSL. It can be expanded by adding more geometric features or varying the parameters to create more complex building designs.
+</table></body></html>
+

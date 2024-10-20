@@ -1,0 +1,125 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+</head>
+<body>
+<pre>
+Creating a textureless 3D bone animation in a GLSL fragment shader requires simulating the skeleton and its deformation without the use of external textures. In this setup, we will need to compute the transformation matrices for each bone in the skeleton and apply those transformations to vertices directly in the fragment shader. Typically, this kind of task would be handled in the vertex shader, but we'll aim to simulate it purely within a fragment shader for demonstration.
+
+Here's a high-level breakdown of how we can approach this task:
+
+### Key Concepts:
+1. **Bone Transformation**: Each bone in a skeleton is represented by a transformation matrix (rotation, translation, and possibly scaling). These transformations are applied to the vertex positions to simulate skeletal movement.
+2. **Skinning**: Each vertex is influenced by one or more bones. The position of each vertex is interpolated based on the bone weights.
+3. **Animation**: By animating the bone transformation matrices (usually by modifying angles over time), we create the effect of movement.
+
+Since this shader is "textureless," all vertex positions, bone weights, and bone transformations will be computed procedurally in the shader, and we'll use implicit surface techniques like Signed Distance Fields (SDFs) to visualize the deformed shapes.
+
+### Example of Simple Bone Animation in GLSL Fragment Shader
+
+In this example, we'll simulate a 3D arm consisting of two segments (like an upper and lower arm) that move based on simple 2D rotations of the bones.
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float time;        // Time variable to animate the bones
+uniform vec2 resolution;   // Screen resolution
+
+// Function to create a 3D rotation matrix about the Z-axis
+mat3 rotateZ(float angle) {
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat3(c, -s, 0.0,
+                s,  c, 0.0,
+                0.0, 0.0, 1.0);
+}
+
+// Function to create a signed distance field for a capsule
+// A capsule is a line segment with a radius, useful for bones
+float capsuleSDF(vec3 p, vec3 a, vec3 b, float r) {
+    vec3 pa = p - a;
+    vec3 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba * h) - r;
+}
+
+void main() {
+    vec2 uv = (gl_FragCoord.xy - 0.5 * resolution.xy) / resolution.y;
+    vec3 ro = vec3(0.0, 0.0, 2.0); // Camera position
+    vec3 rd = normalize(vec3(uv, -1.0)); // Ray direction
+
+    // Bone positions (2-segment arm)
+    vec3 bone1Start = vec3(0.0, 0.0, 0.0);
+    vec3 bone1End = vec3(0.5, 0.0, 0.0); // This will be rotated later
+    
+    vec3 bone2Start = bone1End;
+    vec3 bone2End = vec3(1.0, 0.0, 0.0); // This will be rotated and moved
+
+    // Animate bones using a simple time-based rotation
+    float bone1Angle = sin(time) * 1.0; // Rotate bone 1
+    float bone2Angle = cos(time * 2.0) * 0.8; // Rotate bone 2 faster
+
+    // Apply the rotation to the first bone
+    mat3 bone1Rotation = rotateZ(bone1Angle);
+    bone1End = bone1Rotation * bone1End;
+
+    // The second bone is affected by the first bone's transformation
+    bone2Start = bone1End; // Start of the second bone follows the first bone's end
+    bone2End = bone1Rotation * (rotateZ(bone2Angle) * vec3(0.5, 0.0, 0.0) + bone2Start);
+
+    // Ray-march to find the closest distance to the capsules
+    float d1 = capsuleSDF(ro, bone1Start, bone1End, 0.05); // First bone (upper arm)
+    float d2 = capsuleSDF(ro, bone2Start, bone2End, 0.05); // Second bone (forearm)
+    
+    // Combine both bone distances using min to determine the closest distance
+    float d = min(d1, d2);
+
+    // Basic rendering based on the distance (0.0 threshold defines the surface)
+    vec3 color = vec3(1.0); // Default background color
+    if (d < 0.01) {
+        color = vec3(0.2, 0.8, 0.2); // Bone color (green)
+    }
+
+    // Output the color
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+### Explanation:
+
+1. **3D Bone Rotation**: 
+   - The `rotateZ` function creates a 3D rotation matrix for rotating around the Z-axis. This is used to animate the bones in the 2D plane, but you can extend it for full 3D rotations by adding rotation matrices for the X and Y axes as well.
+   
+2. **Capsule Signed Distance Function**: 
+   - The `capsuleSDF` function generates a signed distance field for a capsule, which is essentially a line segment with a constant radius. This is useful for simulating bones, as bones are often represented as cylinders or capsules in skeletal animation systems.
+
+3. **Bone Animation**:
+   - The positions of the bones are updated over time using sine and cosine functions, creating a simple arm animation. The `bone1Angle` and `bone2Angle` control the rotation of each segment.
+   
+4. **Bone Transformation**:
+   - The second bone's position depends on the transformation of the first bone (since it is connected to it). This is simulated by first rotating the second bone's local position and then applying the first bone's rotation.
+
+5. **Ray Marching**:
+   - The fragment shader uses ray marching to determine the minimum distance to the capsule surface. The `min(d1, d2)` combines the distances for both bones, and the closest distance is used for rendering.
+
+6. **Basic Rendering**:
+   - Based on the distance to the bones, the shader decides whether the current fragment is part of the bone (`d < 0.01`) or part of the background.
+
+### Extending the Animation:
+
+You can extend this basic example by adding more bones to create a more complex skeleton (e.g., adding a hand, fingers, or even a full-body skeleton). The key steps would involve:
+1. Adding additional bone segments.
+2. Updating the transformations for each bone based on the parent bone's transformations (hierarchical skeletal animation).
+3. Animating the bones by modifying their rotation angles over time.
+
+### Future Enhancements:
+- **IK (Inverse Kinematics)**: You could implement a basic IK system by adjusting the bone angles based on a target position.
+- **3D Shading**: Add lighting to give the bones more volume and depth.
+- **Multiple Limbs**: Extend the system to animate multiple arms, legs, or a complete body skeleton.
+
+### Conclusion:
+
+This fragment shader example demonstrates a basic form of textureless 3D bone animation using capsules and ray marching. The bone transformation and animation are computed directly in the shader without relying on textures or external data, making it a purely procedural approach. For more complex animations, such as characters with many bones, you'd typically handle the skinning and bone transformations in the vertex shader, but this example showcases the principles involved.
+</table></body></html>
+

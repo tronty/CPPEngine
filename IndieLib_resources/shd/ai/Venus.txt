@@ -1,0 +1,120 @@
+Voisitko luoda Venuksen  fragmenttishaderin (GLSL) turbulenssilla?
+
+ChatGPT sanoi:
+
+Tottakai! Tässä on GLSL-fragmenttishader, joka simuloituu **Venuksen** ulkoasua. Venus on tunnettu paksusta, tiheästä ilmakehästään, jossa on paljon pyörteistä pilviä ja sumuisia yksityiskohtia. Käytämme tässä turbulenssia luomaan samankaltaisen ilmeen. Käytämme Fractal Brownian Motion (FBM) -kohinaa, joka tuo tarvittavaa pyörteistä liikettä ja monimutkaisuutta Venuksen pinnan simuloimiseen.
+
+### GLSL-fragmenttishader Venuksen pinnan simuloimiseksi
+
+```glsl
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform float u_time;       // Aika muuttuja
+uniform vec2 u_resolution;  // Resoluutio
+
+// Satunnaisluku-funktio UV-koordinaateille
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+// Lineaarinen interpolaatio
+float lerp(float a, float b, float t) {
+    return a + t * (b - a);
+}
+
+// Perlin noise -tyyppinen funktio
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+    vec2 u = f * f * (3.0 - 2.0 * f);
+
+    return lerp(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+}
+
+// Fraktaalinen Brownian Motion (FBM) kohinan luomiseksi
+float fbm(vec2 st) {
+    float value = 0.0;
+    float amplitude = 0.5;
+    float frequency = 0.0;
+
+    for (int i = 0; i < 5; i++) {
+        value += amplitude * noise(st);
+        st *= 2.0;
+        amplitude *= 0.5;
+    }
+
+    return value;
+}
+
+// Venuksen pintatekstuurin ja turbulenssin luominen
+vec3 generateVenusTexture(vec2 uv) {
+    // Lisää turbulenssia Fractal Brownian Motionilla
+    float turbulence = fbm(uv * 5.0 + u_time * 0.1);
+
+    // Venuksen pintaväriä
+    vec3 baseColor = vec3(0.9, 0.7, 0.3); // Venuksen kellertävä sävy
+
+    // Pehmeitä pilvimuodostelmia ja pyörteitä
+    vec3 color = baseColor * (0.8 + 0.3 * turbulence);
+
+    return color;
+}
+
+void main() {
+    // Normalisoidut UV-koordinaatit [-1, 1] alueelle
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy * 2.0 - 1.0;
+
+    // Venuksen ympyrä
+    float radius = 0.8;
+    float dist = length(uv);
+    if (dist > radius) {
+        discard;  // Vain ympyränmuotoinen alue näkyy
+    }
+
+    // Pyörimisliike (Venuksen hidas pyöriminen)
+    float rotationSpeed = 0.05;  // Venuksen pyörimisnopeus on hitaampi
+    float angle = u_time * rotationSpeed;
+    uv = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * uv;
+
+    // Venuksen pinnan värit ja tekstuurit
+    vec3 color = generateVenusTexture(uv);
+
+    // Vignette-efekti (tummennetaan reunaa)
+    float vignette = smoothstep(radius, radius - 0.1, dist);
+    color *= vignette;
+
+    // Lopputulos
+    gl_FragColor = vec4(color, 1.0);
+}
+```
+
+### Selitys shaderistä:
+
+1. **Turbulenssi ja kohina (FBM)**: Käytämme fraktaalista Brownian Motion (FBM) -kohinaa luomaan pyörteisiä pilvimuodostelmia ja monimutkaisia yksityiskohtia Venuksen pinnalle. FBM tuottaa monitasoisia kohinakerroksia, jolloin saadaan realistisia, satunnaisia ja pyörteisiä pilvikuvioita.
+   
+2. **Venuksen väri**: Valitsin Venuksen pintaväriksi lämpimän kellertävän sävyn (`vec3(0.9, 0.7, 0.3)`), joka muistuttaa Venuksen sameaa, rikin täyttämää ilmakehää.
+
+3. **Pyörimisliike**: Vaikka Venus pyörii hyvin hitaasti, lisäsin pienen pyörimisliikkeen, jotta planeetan ulkonäkö muuttuu ajan myötä. Pyörimisnopeutta voi säätää **`rotationSpeed`**-muuttujalla.
+
+4. **Vignette**: Tummennan planeetan reunoja lisäämällä "vignette"-efektin, joka luo pallomaisemman vaikutelman ja tekee reunat pehmeämmiksi.
+
+5. **Turbulenssi ja liike**: Lisäämme turbulenssia ja liikkeen efektiä ajan perusteella, jotta Venuksen kaasukehä näyttää pyörteisemmältä ja elävämmältä.
+
+### Parametrien muokkaus:
+
+- **Turbulenssin voimakkuus**: Voit muuttaa turbulenssin voimakkuutta muuttamalla FBM-funktion painotuksia, esimerkiksi:
+  - Muuta arvoa `uv * 5.0` lisätäksesi tai vähentääksesi pyörteiden tiheyttä.
+  - Voit myös säätää **amplitudea** ja **frequencyä** FBM:n for-silmukassa, jos haluat enemmän tai vähemmän kohinaa.
+  
+- **Pyörimisnopeus**: Voit muuttaa planeetan pyörimisnopeutta muuttamalla `rotationSpeed`-arvoa, jos haluat nopeamman tai hitaamman pyörimisen.
+
+Tämä shader antaa Venuksen kaasukehälle realistisen pyörteisen ja samean ulkoasun, joka muistuttaa Venuksen paksua pilvikerrosta, samalla simuloiden sen hidasta pyörimisliikettä.
+
