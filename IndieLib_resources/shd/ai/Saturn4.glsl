@@ -1,6 +1,9 @@
 const float PI = 3.14159265359;
 
-
+// Funktio perus noise-tehosteen luomiseen
+float noise(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
 
 float smoothNoise(vec2 p) {
     vec2 i = floor(p);
@@ -18,7 +21,9 @@ vec3 rings(vec2 uv, float radius) {
 }
 
 void main() {
-
+    vec2 uv = vec2(xlv_TEXCOORD0);
+    vec3 color = vec3(0);
+    float radius=1.0;
 
     // Add rings
     color += rings(uv, radius);
