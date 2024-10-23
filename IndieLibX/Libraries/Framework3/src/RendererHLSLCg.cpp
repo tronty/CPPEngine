@@ -6752,8 +6752,27 @@ std::string IRenderer__GetShaderText(std::string& aShaders, std::string& aDelime
 	return shaderText;
 }
 
-#include <Framework3/RendererGLSLGL_1_1.h>
+//include <Framework3/RendererGLSLGL_1_1.h>
 #include <Framework3/Hlsl2Glsl_Translate.h>
+
+#if 0 // defined(IPHONE_SIMULATOR) // ???
+	#define SH_IMPORT_EXPORT
+	#define C_DECL
+	SH_IMPORT_EXPORT int C_DECL Hlsl2Glsl_Initialize();
+/// Target language version
+enum ETargetVersion
+{
+	// NOTE: keep ordering roughly in increasing capability set
+	ETargetGLSL_ES_100,
+	ETargetGLSL_110,
+	ETargetGLSL_120,
+	ETargetGLSL_140,
+	ETargetGLSL_ES_300,
+	// ETargetGLSL_330,
+	ETargetVersionCount
+};
+#endif
+
 ShaderID IRenderer::addShader(  const char* shaderText_, 
                                         const char* vsMain_, 
                                         const char* fsMain_,
@@ -6836,6 +6855,10 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	std::vector<int> positions;
 	str=IRenderer__GetShaderText(shaderText, key, delimeters, positions);
 	//STX_PRINT("\nfound:\n%d\n", found);
+	/*
+	vec2 uv = gl_FragCoord.xy / vec2(resolution.x, resolution.y);
+	float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 3.0) * 5.0, 360.0) * 0.001;
+	*/
 	if(found==-8)
 	{
 		std::string varying="varying vec2 xlv_TEXCOORD0;\n";
