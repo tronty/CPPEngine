@@ -1,91 +1,54 @@
-// o1-preview: Voisitko luoda Jupiterin  fragmenttishaderin (GLSL) turbulenssilla ilman uniform shader muuttujia?
+//Certainly! Below is a GLSL 1.3 fragment shader that renders a **tilted spherical Jupiter planet with horizontal turbulent cloud belts**. This shader does not use any `uniform` or `varying` variables, adhering to your requirements.
 
-#ifdef GL_ES
-precision mediump float;
-#endif
+void main()
+{
+    // Fixed screen resolution
+    const vec2 resolution = vec2(800.0, 600.0);
 
-// Perlin noise -tyylinen funktion osatekijä
-float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
-}
+    // Normalize coordinates to range [-1, 1]
+    vec2 uv = (gl_FragCoord.xy / resolution) * 2.0 - 1.0;
+    uv.x *= resolution.x / resolution.y; // Correct aspect ratio
 
-// Lineaarinen interpolaatio
-float lerp(float a, float b, float t) {
-    return a + t * (b - a);
-}
+    // Compute distance from the center
+    float radius = length(uv);
 
-// Smooth noise -toiminto
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
+    // Discard fragments outside the circle (sphere projection)
+    if (radius > 1.0)
+    {
+        discard;
+    }
 
-    float a = random(i);
-    float b = random(i + vec2(1.0, 0.0));
-    float c = random(i + vec2(0.0, 1.0));
-    float d = random(i + vec2(1.0, 1.0));
+    // Compute the z-coordinate of the sphere's surface (before rotation)
+    float z = sqrt(1.0 - radius * radius);
 
-    vec2 u = f * f * (3.0 - 2.0 * f);
+    // Sphere position before rotation
+    vec3 spherePos = vec3(uv.x, uv.y, z);
 
-    return lerp(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
+    // Apply tilt rotation to the sphere around the x-axis
+    float angle = radians(25.0); // Tilt angle in degrees
+    mat3 rotation = mat3(
+        1.0,        0.0,         0.0,
+        0.0, cos(angle), -sin(angle),
+        0.0, sin(angle),  cos(angle)
+    );
+    spherePos = rotation * spherePos;
 
-// Turbulenssin luominen käyttämällä fraktaalista kohinaa
-float fbm(vec2 st) {
-    float value = 0.0;
-    float amplitude = 0.5;
-    float frequency = 0.0;
+    // Compute spherical coordinates from the rotated position
+    float phi = asin(spherePos.y);                // Latitude
+    float theta = atan(spherePos.x, spherePos.z); // Longitude
+
+    // Generate horizontal turbulent cloud belts using phi (latitude)
+    float bands = sin(phi * 20.0);
+    float turbulence = sin(theta * 40.0 + sin(phi * 60.0));
+    float pattern = bands + turbulence * 0.2;
+
+    // Map the pattern to Jupiter-like colors
+    vec3 planetColor = mix(vec3(1.0, 0.8, 0.6), vec3(0.8, 0.5, 0.2), pattern * 0.5 + 0.5);	// JupiterColor
     
-    for (int i = 0; i < 5; i++) {
-        value += amplitude * noise(st);
-        st *= 2.0;
-        amplitude *= 0.5;
-    }
-    return value;
-}
-
-// Jupiterin vöiden generaattori, johon lisätään turbulenssia
-vec3 generateBands(vec2 uv) {
-    float bandFactor = sin(uv.y * 10.0);  // Jupiterin pilvivyö
-    vec3 color = vec3(1.0, 0.8, 0.6);     // Perusväri
-
-    // Lisää FBM (Fractal Brownian Motion) turbulenssia
-    float turbulence = fbm(uv * 5.0 + time * 0.1);
-    bandFactor += turbulence * 0.2;
-
-    // Väritetään turbulenssin ja vyömäisyyden mukaan
-    if (bandFactor > 0.2) {
-        color = vec3(0.8, 0.5, 0.3);  // Tummemmat vyöt
-    } else if (bandFactor < -0.2) {
-        color = vec3(0.6, 0.3, 0.1);  // Tummemmat alueet
-    }
-
-    return color;
-}
-
-void main() {
-    // Normalisoidaan UV-koordinaatit [-1, 1] alueelle
-    vec2 uv = xlv_TEXCOORD0.xy / resolution.xy * 2.0 - 1.0;
-
-    // Jupiterin ympyrä
-    float radius = 0.8;
-    float dist = length(uv);
-    if (dist > radius) {
-        discard;  // Vain ympyrä näytetään
-    }
-
-    // Pyöritetään planeettaa ajan funktiona
-    float rotationSpeed = 0.2;
-    float angle = time * rotationSpeed;
-    uv = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * uv;
-
-    // Luodaan Jupiterin pilvivyöt, joihin on lisätty turbulenssia
-    vec3 color = generateBands(uv);
-
-    // Vignette-efekti (tummennetaan reunaa)
-    float vignette = smoothstep(radius, radius - 0.1, dist);
-    color *= vignette;
-
-    // Lopputulos
-    gl_FragColor = vec4(color, 1.0);
+    //vec3 planetColor = mix(vec3(0.9, 0.85, 0.7), vec3(0.8, 0.75, 0.6), pattern * 0.5 + 0.5);	// SaturnColor
+    //vec3 planetColor = mix(vec3(0.4, 0.7, 0.9), vec3(0.6, 0.8, 1.0), pattern * 0.5 + 0.5);	// UranusColor
+    //vec3 planetColor = mix(vec3(0.1, 0.2, 0.7), vec3(0.2, 0.3, 0.9), pattern * 0.5 + 0.5);	// NeptunusColor
+    
+    gl_FragColor = vec4(planetColor, 1.0);
 }
 
