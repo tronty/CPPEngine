@@ -1,76 +1,60 @@
-/*
-o1-preview: Voisitko luoda pallomaisen pyörivän Mars planeetan fragmenttishaderin (GLSL versio 1.3) kraatereineen ilman uniform shader muuttujia?
-Tässä on GLSL-versiolla 1.3 kirjoitettu fragmenttishader, joka luo pyörivän Marsin planeetan kraatereineen. Shaderissä ei käytetä `uniform`-muuttujia, vaan kaikki liike, kraaterit ja tekstuurit määritellään suoraan shaderissa.
-*/
+void main()
+{
+    // Fixed screen resolution
+    const vec2 resolution = vec2(800.0, 600.0);
 
-// Funktio Perlin-kohinaan
-float hash(vec2 p) {
-    return fract(sin(dot(p ,vec2(12.9898,78.233))) * 43758.5453);
+    // Normalize coordinates to range [-1, 1]
+    vec2 uv = (gl_FragCoord.xy / resolution) * 2.0 - 1.0;
+    uv.x *= resolution.x / resolution.y; // Correct aspect ratio
+
+    // Compute distance from the center
+    float radius = length(uv);
+
+    // Initialize the fragment color
+    vec4 color = vec4(0.0);
+
+    // Determine if the fragment is within the sphere
+    if (radius <= 1.0)
+    {
+        // Compute the z-coordinate of the sphere's surface
+        float z = sqrt(1.0 - radius * radius);
+
+        // Sphere position
+        vec3 spherePos = vec3(uv.x, uv.y, z);
+
+        // Compute spherical coordinates
+        float phi = asin(spherePos.y);                // Latitude
+        float theta = atan(spherePos.x, spherePos.z); // Longitude
+
+        // Simulate craters and terrain features using noise functions
+        float terrainPattern = 0.0;
+        float frequency = 10.0;
+        float amplitude = 0.2;
+
+        for (int i = 1; i <= 8; i++)
+        {
+            float f = frequency * pow(2.0, float(i));
+            float a = amplitude / pow(1.5, float(i));
+            terrainPattern += a * sin(f * theta + f * phi);
+        }
+
+        // Normalize terrain pattern
+        terrainPattern = clamp(terrainPattern, -1.0, 1.0);
+
+        // Simulate color variations for Mars
+        vec3 baseColor = vec3(0.8, 0.4, 0.3); // Reddish base color
+        vec3 darkColor = vec3(0.5, 0.25, 0.2); // Darker color for craters and valleys
+
+        // Map the terrain pattern to Mars-like colors
+        vec3 marsColor = mix(baseColor, darkColor, terrainPattern * 0.5 + 0.5);
+
+        // Optional: Add polar caps
+        float polarCaps = smoothstep(1.0, 0.8, abs(spherePos.y));
+        marsColor = mix(vec3(1.0, 1.0, 1.0), marsColor, polarCaps);
+
+        color = vec4(marsColor, 1.0);
+    }
+
+    gl_FragColor = color;
 }
-
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    f = f*f*(3.0-2.0*f);
-    return mix(mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), f.x),
-               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
-}
-
-// Kraatterien simulointi
-float craterEffect(vec2 p) {
-    float radius = length(p);
-    float crater = exp(-radius * 20.0) * 0.7;  // Kraatterien syvyys ja koko
-    return crater;
-}
-
-void main() {
-    // Muutetaan UV-koordinaatit sopiviksi 800x600 resoluutiolle
-    vec2 uv = gl_FragCoord.xy / vec2(800.0, 600.0);
-    uv = uv * 2.0 - 1.0; // Muutetaan UV koordinaatit -1.0 - 1.0 alueelle
-
-    // Pallokoordinaatit
-    float r = length(uv);
-    if (r > 1.0) discard; // Hylätään pikselit, jotka eivät kuulu palloon
-
-    // Spherical mapping
-    float theta = atan(uv.y, uv.x); // Kulma x- ja y-akselin suhteen
-    float phi = acos(uv.y / r);     // Kulma y-akselin suhteen
-
-    // Pyörimisnopeuden simulointi ajan kanssa
-    float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 3.0) * 5.0, 360.0) * 0.001;
-
-    // Kraatterien sijoittelu kohinan avulla
-    vec2 noiseCoord = vec2(theta * 5.0 + time, phi * 3.0);
-    float noiseValue = noise(noiseCoord);
-
-    // Kraatterin vaikutus
-    vec2 craterPos = fract(noiseCoord * 10.0) - 0.5;
-    float craterDepth = craterEffect(craterPos); 
-    float craterInfluence = max(craterDepth, 0.0);
-
-    // Marsin perusväritys
-    vec3 marsBaseColor = vec3(0.8, 0.4, 0.3); // Marsin punaruskea sävy
-    vec3 craterColor = vec3(0.5, 0.3, 0.2);   // Kraatterien tummempi väri
-
-    // Lopullinen väri kraatterien vaikutuksen perusteella
-    vec3 finalColor = mix(marsBaseColor, craterColor, craterInfluence);
-
-    gl_FragColor = vec4(finalColor, 1.0);
-}
-
-/*
-### Shaderin selitys:
-
-1. **Perlin-kohina**: Shader käyttää Perlin-kohinaa kraatterien sijoittamiseen satunnaisesti ympäri planeetan pintaa. `noise`-funktiolla simuloidaan pintarakennetta ja kraatterien sijaintia.
-
-2. **Pallokoordinaattien laskeminen**: UV-koordinaatit muunnetaan -1.0 ja 1.0 välille, ja niistä lasketaan pallomaiset koordinaatit (theta ja phi), jotka kuvaavat Marsin pallomaista pintaa.
-
-3. **Kraatterit**: Kraatterit simuloidaan `craterEffect`-funktiolla, joka luo syviä painaumia Marsin pinnalle. Kraatterien koko ja syvyys lasketaan `exp`-funktion avulla, mikä luo realistisia painaumia.
-
-4. **Marsin pyöriminen**: Marsin pyöriminen simuloidaan lisäämällä ajallisesti muuttuva termi `theta`-koordinaattiin, joka saa planeetan pyörimään ympäri.
-
-5. **Väritys**: Marsin perusväri on punaruskea, kun taas kraatterit ovat hieman tummempia, mikä tekee niistä erottuvia. Lopullinen väri määritetään sekoittamalla perusväriä ja kraatterien väriä kraatterisyvyyden perusteella.
-
-Tämä shader tuottaa pyörivän Marsin planeetan, jolla on satunnaisesti sijoitettuja kraattereita ja Marsille ominainen punertava väritys.
-*/
 
