@@ -51,7 +51,7 @@ void main() {
     if (dist > 1.0) discard;
 
     // Pyörivä tekstuuri
-    float time = mod(gl_FragCoord.x * 0.001 + gl_FragCoord.y * 0.001, PI * 2.0);
+    //float time = mod(gl_FragCoord.x * 0.001 + gl_FragCoord.y * 0.001, PI * 2.0);
     vec2 rotatedUV = rotate(uv, time);
 
     // Pilkut ja flare: FBM-kohinaa eri asteikoilla

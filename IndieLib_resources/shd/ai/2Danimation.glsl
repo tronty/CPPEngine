@@ -17,8 +17,8 @@ void main() {
     uv.y *= resolution.y / resolution.x;
 
     // Animation parameters: make the circle move horizontally over time
-    float time = time * 0.5;
-    vec2 circleCenter = vec2(0.5 + 0.4 * sin(time), 0.5); // Circle's center moves horizontally
+    //float time = time * 0.5;
+    vec2 circleCenter = vec2(0.5 + 0.4 * sin(time * 0.5), 0.5); // Circle's center moves horizontally
 
     // Draw the circle using the `drawCircle` function
     float circle = drawCircle(uv, circleCenter, 0.2); // Circle with a radius of 0.2

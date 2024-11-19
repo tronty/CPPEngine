@@ -5,24 +5,24 @@ Jos käytämme `uniform vec4 iMouse` -muuttujaa kuution asennon määrittämisee
 - `iMouse.z` ja `iMouse.w` ovat lisäparametreja, joita voitaisiin käyttää esimerkiksi zoomaukseen tai tarkentamiseen, mutta tässä keskitymme perusasentoon ja kiertoon.
 
 Käytämme `iMouse`-muuttujan ensimmäistä kahta komponenttia kääntämään kuutiota fragment shaderissa.
-
 */
 
 // Kiinteä valon suunta
 vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
 
+// Kuution keskipiste
+vec3 cubeCenter = vec3(200.0, 150.0, 0.0);  // Kuvitteellinen keskipiste
+
 // Kuution koko
-vec3 cubeSize = vec3(100.0, 100.0, 100.0);
+vec3 cubeSize = vec3(50.0, 50.0, 50.0);
 
 // Kuution perusväri
 vec3 baseColor = vec3(1.0, 0.5, 0.3);
 
 void main() {
-    // Kuution keskipiste
-    vec3 cubeCenter = vec3(400.0, 300.0, 0.0);  // Kuvitteellinen keskipiste
     
     // Hiiren koordinaateista lasketaan kulmat (esim. välillä -1.0 - 1.0)
-    float angleX = iMouse.x;// / 800.0) * 3.14159;  // Skaalataan näytön koon mukaan
+    float angleX = iMouse.x+time;// / 800.0) * 3.14159;  // Skaalataan näytön koon mukaan
     float angleY = iMouse.y;// / 600.0) * 3.14159;
     
     // Lasketaan kierron mukaan normaali suuntaamalla x- ja y-kiertoja

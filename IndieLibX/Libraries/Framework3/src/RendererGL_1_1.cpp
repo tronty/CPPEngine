@@ -587,6 +587,7 @@ if(b)
 
 		void RendererGL_1_1::SaveScreenShotVrtl(const char* fn)
 		{
+		//printf("RendererGL_1_1::SaveScreenShotVrtl1:\n");
 		if(fn==0)return;
 
 		{
@@ -604,12 +605,14 @@ if(b)
                 stx_snprintf(buf,256,"../%s","ScreenShot.jpg");
                 stx_snprintf(gifbuf,256,"../%s","ScreenShot.gif");
 			}
+		//printf("RendererGL_1_1::SaveScreenShotVrtl2:\n");
 			captureScreenshot(img);
 			img.flipX();
 			LOG_FNLN_NONE;
 			LOG_PRINT_NONE("img.saveImageLibImage:%s\n", buf);
 			img.saveImageLibImage(buf,false);
 			RendererHLSLCg::OpenILToGIF(img,gifbuf);
+		//printf("RendererGL_1_1::SaveScreenShotVrtl3:\n");
 		}
 		}
 

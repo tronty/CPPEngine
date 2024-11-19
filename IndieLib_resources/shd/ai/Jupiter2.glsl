@@ -51,7 +51,7 @@ void main() {
     float latitude = (uv.y - 0.5) * 3.141592;            // Latitude   (-π/2 to π/2)
     
     // Simuloidaan pyörivää Jupiterin ilmakehää
-    float time = time * 0.1;
+    //float time = time * 0.1;
     float noiseScale = 3.0;
     vec2 p = vec2(longitude + time, latitude);
     

@@ -35,7 +35,7 @@ void main()
 
     // Compute spherical coordinates from the rotated position
     float phi = asin(spherePos.y);                // Latitude
-    float theta = atan(spherePos.x, spherePos.z); // Longitude
+    float theta = atan(spherePos.x, spherePos.z)+time; // Longitude
 
     // Generate horizontal turbulent cloud belts using phi (latitude)
     float bands = sin(phi * 20.0);

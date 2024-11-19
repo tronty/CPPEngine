@@ -401,6 +401,7 @@ void IRenderer::OnClear()
 }
 void IRenderer::OnPresent(IInput* Input)
 {
+	//printf("IRenderer::OnPresent0:\n");
 #if 0
 	if(1)
 	{
@@ -464,8 +465,21 @@ while(!done)
     framestarttime = timeGetTime();
 #ifndef _MSC_VER
 	//LOG_FNLN_NONE;
-		if(STX_Service::GetInputInstance()->IsKeyPressed(STX_KEY_x))
-	{		
+		//printf("IRenderer::OnPresent11:\n");
+		bool bIsKeyPressed=true;
+		#if 1
+		bIsKeyPressed=STX_Service::GetInputInstance()->IsKeyPressed(STX_KEY_x);
+		#else
+		{
+			char ch;
+			//ch = getch();
+			if(ch == 'x')
+				bIsKeyPressed=true;
+		}
+		#endif
+		if(bIsKeyPressed)
+	{
+		//printf("IRenderer::OnPresent1:\n");
 		char buffer [256];
 		buffer [0]='\0';
 #if !defined(__MINGW32__) && !defined(__MINGW64__)
@@ -502,7 +516,9 @@ while(!done)
     SDL_FreeSurface(surface);
 }
 #elif 1
+		//printf("IRenderer::OnPresent2:\n");
 		IRenderer::GetRendererInstance()->SaveScreenShot(buf);
+		//printf("IRenderer::OnPresent3:\n");
 #endif
 	}
 #endif
@@ -6510,13 +6526,13 @@ void stx_Effect::End()
 
 	const char* glsld      ="vec3 GammaCorrect3(vec3 aColor){return aColor;}\n"
 				"vec4 GammaCorrect4(vec4 aColor){return aColor;}\n";
-	const char* glslh      ="uniform vec3      iResolution;\n"
-				"uniform vec4      iMouse;\n"
-				"uniform float     iTime;\n"
-				"uniform vec3      resolution;\n"
-				"uniform vec4      mouse;\n"
+	const char* glslh      ="uniform float     iTime;\n"
 				"uniform float     time;\n"
 				"uniform float     iGlobalTime;\n"
+				"uniform vec3      iResolution;\n"
+				"uniform vec4      iMouse;\n"
+				"uniform vec3      resolution;\n"
+				"uniform vec4      mouse;\n"
 				"uniform vec4      iDate;\n"
 				"uniform float     iSampleRate;\n"
 				"uniform vec3      iChannelResolution[4];\n"
@@ -6545,13 +6561,13 @@ mad 	fma
 saturate 	clamp(x, 0.0, 1.0)
 */
 
-	const char* hlslh      ="float3      iResolution;\n"
-				"float4      iMouse;\n"
-				"float     iTime;\n"
-				"float3      resolution;\n"
-				"float4      mouse;\n"
+	const char* hlslh      ="float     iTime;\n"
 				"float     time;\n"
 				"float     iGlobalTime;\n"
+				"float3      iResolution;\n"
+				"float4      iMouse;\n"
+				"float3      resolution;\n"
+				"float4      mouse;\n"
 				"float4      iDate;\n"
 				"float     iSampleRate;\n"
 				"float3      iChannelResolution[4];\n"

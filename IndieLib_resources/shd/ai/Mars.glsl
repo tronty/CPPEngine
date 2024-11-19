@@ -24,7 +24,7 @@ void main()
 
         // Compute spherical coordinates
         float phi = asin(spherePos.y);                // Latitude
-        float theta = atan(spherePos.x, spherePos.z); // Longitude
+        float theta = atan(spherePos.x, spherePos.z) + time; // Longitude
 
         // Simulate craters and terrain features using noise functions
         float terrainPattern = 0.0;

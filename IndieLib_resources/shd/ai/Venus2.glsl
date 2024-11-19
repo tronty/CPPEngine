@@ -40,7 +40,7 @@ void main() {
     if (r > 1.0) discard; // Hylkää pikselit, jotka eivät ole pallon sisällä
 
     // Spherical mapping
-    float theta = atan(uv.y, uv.x); // Kulma x- ja y-akselin suhteen
+    float theta = atan(uv.y, uv.x) + time; // Kulma x- ja y-akselin suhteen
     float phi = acos(uv.y / r); // Kulma y-akselin suhteen
 
     // Pyörivä tekstuuri: käytetään aikaa simuloimaan Venuksen pyörimistä

@@ -41,7 +41,7 @@ void main() {
     float phi = acos(uv.y / r); // y-akselin suhteen kulma
 
     // Pyörimisnopeuden simulointi ajan kanssa
-    float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
+    //float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
 
     // Jupiterin pilvivyöt
     float latitudeEffect = sin(phi * 8.0); // Vyöt symmetrisesti leveysasteiden mukaan

@@ -49,7 +49,7 @@ void main() {
     float phi = acos(uv.y / r);     // Kulma y-akselin suhteen
 
     // Pyörimisnopeuden simulointi ajan kanssa
-    float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
+    //float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
 
     // Saturnuksen pilvivyöt (sinusfunktiolla)
     float latitudeEffect = sin(phi * 12.0); // Vyöt symmetrisesti leveysasteiden mukaan

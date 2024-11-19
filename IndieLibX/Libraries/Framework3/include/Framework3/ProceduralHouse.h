@@ -542,7 +542,7 @@ else
 }
 n
 tmp i
-ratios =(tmp 0 ∗ unit %,..., tmp n-1 ∗ unit %)
+ratios =(tmp 0 multiply unit %,..., tmp n-1 multiply unit %)
 ratios =(
 100
 100

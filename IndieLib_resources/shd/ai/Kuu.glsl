@@ -37,7 +37,7 @@ void main() {
     float phi = acos(uv.y / r);     // Kulma y-akselin suhteen
 
     // Pyörimisnopeuden simulointi ajan kanssa
-    float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
+    //float time = mod(gl_FragCoord.x + gl_FragCoord.y + sin(uv.x * 5.0) * 10.0, 360.0) * 0.001;
 
     // Kraatterien tekstuurit (Perlin-kohinan avulla)
     vec2 noiseCoord = vec2(theta * 5.0 + time, phi * 2.0);

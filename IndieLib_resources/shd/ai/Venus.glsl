@@ -33,7 +33,7 @@ void main()
 
     // Compute spherical coordinates from the rotated position
     float phi = asin(spherePos.y);                // Latitude
-    float theta = atan(spherePos.x, spherePos.z); // Longitude
+    float theta = atan(spherePos.x, spherePos.z)+time; // Longitude
 
     // Generate turbulent cloud patterns
     float noise = sin(theta * 30.0) * sin(phi * 30.0);
