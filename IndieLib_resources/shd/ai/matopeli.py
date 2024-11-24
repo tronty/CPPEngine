@@ -1,4 +1,4 @@
-// o1-preview: voisitko luoda matopelin python kielellä?
+// ChatGPT-o1-preview: voisitko luoda matopelin python kielellä?
 
 import pygame
 import time

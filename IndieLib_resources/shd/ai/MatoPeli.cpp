@@ -1,4 +1,4 @@
-// o1-preview: Tekisitkö C++ matopelin käyttäen SDL2 kirjastoa?
+// ChatGPT-o1-preview: Tekisitkö C++ matopelin käyttäen SDL2 kirjastoa?
 
 #include <SDL2/SDL.h>
 #include <iostream>

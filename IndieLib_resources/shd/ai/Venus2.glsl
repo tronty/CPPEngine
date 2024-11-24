@@ -1,5 +1,5 @@
 /*
-o1-preview:
+ChatGPT-o1-preview:
 Voisitko luoda pallomaisen pyörivän Venuksen fragmenttishaderin (GLSL versio 1.3) turbulenssilla ilman uniform shader muuttujia?
 ChatGPT sanoi:
 GPT

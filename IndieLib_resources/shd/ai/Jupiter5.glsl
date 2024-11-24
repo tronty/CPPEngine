@@ -1,5 +1,5 @@
 /*
-o1-preview: Voisitko luoda pallomaisen pyörivän Jupiter planeetan fragmenttishaderin (GLSL versio 1.3) pilvivöineen turbulenssilla ilman uniform shader muuttujia?
+ChatGPT-o1-preview: Voisitko luoda pallomaisen pyörivän Jupiter planeetan fragmenttishaderin (GLSL versio 1.3) pilvivöineen turbulenssilla ilman uniform shader muuttujia?
 Tässä on GLSL-versiolla 1.3 kirjoitettu fragmenttishader, joka luo pyörivän Jupiterin kaltaisen planeetan pilvivöineen ja turbulenttisuudella ilman `uniform`-muuttujia. Shader sisältää Perlin-kohinaan perustuvan turbulenttisuuden, joka simuloi Jupiterin ilmakehän kaasuvirtauksia ja pilvivöitä.
 */
 

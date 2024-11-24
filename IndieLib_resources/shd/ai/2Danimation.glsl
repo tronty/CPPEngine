@@ -1,4 +1,4 @@
-// o1-preview: 2D textureless, vector-based, bufferless color filled animation in a GLSL 1.3 fragment shader without uniform shader variables?
+// ChatGPT-o1-preview: 2D textureless, vector-based, bufferless color filled animation in a GLSL 1.3 fragment shader without uniform shader variables?
 
 #ifdef GL_ES
 precision mediump float;

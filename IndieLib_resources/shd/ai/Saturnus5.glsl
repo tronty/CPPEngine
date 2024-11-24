@@ -1,5 +1,5 @@
 /*
-o1-preview: Voisitko luoda pallomaisen pyörivän Saturnus planeetan kallistuneine renkaineen fragmenttishaderin (GLSL versio 1.3) pilvivöineen turbulenssilla ilman uniform shader muuttujia?
+ChatGPT-o1-preview: Voisitko luoda pallomaisen pyörivän Saturnus planeetan kallistuneine renkaineen fragmenttishaderin (GLSL versio 1.3) pilvivöineen turbulenssilla ilman uniform shader muuttujia?
 Tässä on GLSL-versiolla 1.3 kirjoitettu fragmenttishader, joka luo pyörivän Saturnuksen planeetan, jossa on kallistuneet renkaat ja pilvivyöt sekä turbulenssia. Shader ei käytä `uniform`-muuttujia, vaan kaikki liike, tekstuurit ja renkaiden kallistuminen on määritelty suoraan shaderissa.
 */
 

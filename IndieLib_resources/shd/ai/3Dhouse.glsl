@@ -1,4 +1,4 @@
-// o1-preview: 3D textureless, vector-based, bufferless house with chimney in a GLSL 1.3 fragment shader without uniform shader variables?
+// ChatGPT-o1-preview: 3D textureless, vector-based, bufferless house with chimney in a GLSL 1.3 fragment shader without uniform shader variables?
 
 // Function to draw a simple box
 float boxSDF(vec3 p, vec3 b) {

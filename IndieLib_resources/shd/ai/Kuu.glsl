@@ -1,5 +1,5 @@
 /*
-o1-preview: Voisitko luoda pallomaisen pyörivän Maa planeetan kraatterisen kiertolaisen Kuun fragmenttishaderin (GLSL versio 1.3) ilman uniform shader muuttujia?
+ChatGPT-o1-preview: Voisitko luoda pallomaisen pyörivän Maa planeetan kraatterisen kiertolaisen Kuun fragmenttishaderin (GLSL versio 1.3) ilman uniform shader muuttujia?
 Tässä on GLSL-versiolla 1.3 kirjoitettu fragmenttishader, joka luo pallomaisen, pyörivän Kuun pinnan, jossa näkyy kraattereita ja Maata kiertävän kuun tekstuuri. Shaderissä ei käytetä `uniform`-muuttujia, vaan kaikki on määritelty suoraan shaderissa. Kraattereita ja pyörimistä simuloidaan kohinan ja matematiikan avulla.
 */
 

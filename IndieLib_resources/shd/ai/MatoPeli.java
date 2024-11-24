@@ -1,4 +1,4 @@
-// o1-preview: voisitko luoda matopelin java kielellä?
+// ChatGPT-o1-preview: voisitko luoda matopelin java kielellä?
 
 import javax.swing.*;
 import java.awt.*;
