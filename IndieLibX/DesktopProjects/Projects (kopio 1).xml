@@ -1520,7 +1520,7 @@ skydome.xml
                             tinyxml_x
                             STX
 				Image3
-                            Effects11 Framework Framework3 
+                            Effects11 Framework Framework3
 			MeshRenderer2
                             spine_x
                             NSGUI
@@ -1782,6 +1782,42 @@ skydome.xml
                             <package>com.x.SDKMesh</package>
                         </solution>
                     <solution>
+                        <name>ai</name>
+		<modules>android_fopen assimp-5.0.1_x
+				#VulkanBase
+			noise
+                            SDL2
+                            OpenAL SOIL
+                            hlsl2glsl
+				zlib-1.2.11
+				png-1.5.0
+				jpeg-8c tiff
+				Lua_x
+                            tinyxml_x
+                            STX
+				Image3
+                            Effects11 Framework3 Framework
+			MeshRenderer2
+                            spine_x
+                            NSGUI
+				RadeonTerrainDemoLibrary
+				#NatureSceneLibrary
+			    FW3
+                            IndieLib_Static
+				nova
+                        weber
+                        weberarbaro
+                        otlmesher
+                        #otlrenderer
+                        otlutils
+                        opentree
+			c3dbool
+			ai
+			</modules>
+                            <mainphoneproject>ai</mainphoneproject>
+                            <package>com.x.ai</package>
+                        </solution>
+                    <solution>
                         <name>FragmentShader</name>
 		<modules>android_fopen assimp-5.0.1_x
 				#VulkanBase
@@ -1849,6 +1885,11 @@ skydome.xml
                         otlutils
                         opentree
 			c3dbool
+			noise2D
+			#noise3D
+			#noise3D2
+			#vnoise
+			#a_03_IND_Image
 			FragmentShader
 			TestGeometryShader
 			BallOfFire
@@ -1856,7 +1897,8 @@ skydome.xml
 			opengl_simple
 			2DAnimation
 			3DAnimation
-			testspine2
+			testspine2 
+			testspine3
 			</modules>
                             <mainphoneproject>FragmentShader</mainphoneproject>
                             <package>com.x.FragmentShader</package>
@@ -2143,7 +2185,7 @@ skydome.xml
                         </solution>
                     <solution>
                         <name>AllLibs</name>
-                        <modules>android_fopen assimp-5.0.1_x
+                        <modules>Framework3 android_fopen assimp-5.0.1_x
 				#VulkanBase
 
 			#MeshFromOBJ10
@@ -2158,7 +2200,7 @@ skydome.xml
                             tinyxml_x
                             STX
 				Image3
-                            Effects11 Framework3 Framework
+                            Effects11 Framework
 			MeshRenderer2
                             spine_x
                             NSGUI
@@ -4543,7 +4585,8 @@ hlslang/MachineIndependent/SymbolTable.cpp
 						Libraries/Framework3/include
 						Libraries/otl/include</include_directories>
                     <src_directory>Libraries/Framework3/src</src_directory>
-                    <src_files>	        RendererGLES_3_2.cpp
+                    <src_files>	        RendererHLSLCg.cpp
+					RendererGLES_3_2.cpp
 					RendererGLES.cpp
                      			RendererGLES2.cpp
 					RendererVulkan.cpp
@@ -4572,7 +4615,6 @@ hlslang/MachineIndependent/SymbolTable.cpp
 					tinyvk.cpp
                     			RendererGL_1_1.cpp
                     			RendererGLSLGL_1_1.cpp
-                    			RendererHLSLCg.cpp
                     			#RendererGLSLGL_1_1_GS.cpp
                     			#RendererHLSLCg_GS.cpp
 					</src_files>
@@ -5062,8 +5104,9 @@ hlslang/MachineIndependent/SymbolTable.cpp
                     <project>
                         <name>testspine3</name>
                         <include_directories>Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/spine-2.3/spine-c/include Libraries/spine-2.3/spine-sfml/src Libraries/spine-2.3/spine-sfml/example Libraries/Image3 Libraries/STX/include Libraries/Framework/include Libraries/Framework3/include Samples/testspine Libraries/tinyxml/include</include_directories>
-                        <src_files>	Samples/testspine/mainc.cpp
+                        <src_files>	#Samples/testspine/mainc.cpp
 					#Samples/testspine/maincpp.cpp
+					Samples/testspine/testspine3.cpp
 			</src_files>
                         <construct>application</construct>
                     </project>
@@ -5658,6 +5701,12 @@ hlslang/MachineIndependent/SymbolTable.cpp
                         <name>FragmentShader</name>
                         <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
                         <src_files>Samples/TestNoise/FragmentShader.cpp</src_files>
+                        <construct>application</construct>
+                    </project>
+                    <project>
+                        <name>ai</name>
+                        <include_directories>Libraries/STX/include Libraries/Image3 Libraries/Framework/include Libraries/Framework3/include Libraries/NSGUI Libraries/MeshRenderer2 Libraries/tinyxml/include Libraries/lua-5.3.4/src Libraries/FW3/include Libraries/IndieLib/IndieLib/Common Libraries/hlsl2glslfork/include Libraries/otl/include Samples/SimpleTexture Libraries/STX/include Libraries/Framework3/include</include_directories>
+                        <src_files>Samples/TestNoise/ai.cpp</src_files>
                         <construct>application</construct>
                     </project>
                     <project>

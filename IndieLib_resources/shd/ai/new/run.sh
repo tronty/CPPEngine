@@ -1,0 +1,17 @@
+cat ChatGPT-JWST-and-HST.html >ChatGPT.html
+cat ChatGPT-o1-preview-JWST-and-HST-2.html >>ChatGPT.html
+cat ChatGPT-o1-preview-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-4o-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-4o-with-canvas-JWST-and-HST-2.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-4o-with-canvas-JWST-and-HST-3.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-4o-with-canvas-JWST-and-HST-4.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-4o-with-canvas-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST/ChatGPT-o1-preview-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST-2/ChatGPT-4o-with-canvas-JWST-and-HST-4.html >>ChatGPT.html
+cat JWST-and-HST-2/ChatGPT-o1-preview-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-4o-JWST-and-HST-2.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-4o-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-4o-with-canvas-JWST-and-HST.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-o1-preview-JWST-and-HST-2.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-o1-preview-JWST-and-HST-3.html >>ChatGPT.html
+cat JWST-and-HST_/ChatGPT-o1-preview-JWST-and-HST.html >>ChatGPT.html

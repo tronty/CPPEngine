@@ -1,6 +1,15 @@
 import os, sys, re
 
 def replaceString(outtext):
+    outtext=re.sub(r'\bChatGPT-ChatGPT-o1-preview\b', 'ChatGPT-o1-preview', outtext)
+    '''
+    outtext=re.sub(r"ä", "\&auml;", outtext)
+    outtext=re.sub(r'ö', '\&ouml;', outtext)
+    outtext=re.sub(r'Ä', '\&Auml;', outtext)
+    outtext=re.sub(r'Ö', '\&Ouml;', outtext)
+    exit(0)
+    '''
+    return outtext
     outtext=re.sub(r'\bsrand\b', 'stx_srand', outtext)
     outtext=re.sub(r'\brand\b', 'stx_rand', outtext)
     return outtext
@@ -647,6 +656,9 @@ def myfunGL(dummy, dirr, filess):
 
 def myfun(dummy, dirr, filess):
 	for child in filess:
+		#os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
+		replaceStringInFile(dirr+'/'+child)
+		'''
 		if '.cpp' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInFile(dirr+'/'+child)
 		if '.cxx' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
@@ -661,6 +673,7 @@ def myfun(dummy, dirr, filess):
 			replaceStringInFile(dirr+'/'+child)
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInFile(dirr+'/'+child)
+		'''
 
 def myfun_(dummy, dirr, filess):
 	for child in filess:
@@ -686,6 +699,8 @@ def myfunmem(dummy, dirr, filess):
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
 
+os.path.walk('../../IndieLib_resources/shd/ai/', myfun, 13)
+exit(0)
 os.path.walk('../Samples', myfun, 13)
 #os.path.walk('../../IndieLib_resources/www.shadertoy.com/www.shadertoy.com/www.shadertoy.com', myfunshd, 13)
 #os.path.walk('../Samples/new/new/new/javagames/src/Pacman', myfun, 13)

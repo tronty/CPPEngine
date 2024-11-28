@@ -408,7 +408,7 @@ public:
 
 	bool toRGBD16();
 	bool toRGBE16(float &scale, float &bias);
-	bool toE16(float *scale, float *bias, const bool useAllSameRange = false, const float minValue = std::numeric_limits<float>::min(), const float maxValue = std::numeric_limits<float>::max());
+	bool toE16(float *scale, float *bias, const bool useAllSameRange = false, const float minValue = FLT_MIN, const float maxValue = FLT_MAX);
 	bool toFixedPointHDR(float *maxValue, const int finalRgbBits, const int finalRangeBits);
 	bool toNormalMap(FORMAT destFormat, float sZ = 1.0f, float mipMapScaleZ = 2.0f);
 	bool toGrayScale();

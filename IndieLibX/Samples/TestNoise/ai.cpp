@@ -16,6 +16,9 @@ unsigned int s_i=0;
 unsigned int t_i=0;
 unsigned int m_i=2;
 
+D3DXFROMWINEVECTOR3 lightDir = D3DXFROMWINEVECTOR3(1.0, 1.0, 1.0);
+D3DXFROMWINEVECTOR3 cubeCenter = D3DXFROMWINEVECTOR3(200.0, 150.0, 0.0);
+
 void LoadShader(int i =-1)
 {
 	if(i<0)
@@ -173,8 +176,8 @@ void render()
 
 	//printf("ViewportWidth=%d\n", IRenderer::GetRendererInstance()->GetViewportWidth());
 	//printf("ViewportHeight=%d\n", IRenderer::GetRendererInstance()->GetViewportHeight());
-	D3DXFROMWINEVECTOR2 mouse(1.0f,1.0f);//((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
-	D3DXFROMWINEVECTOR2 resolution(1.0f,1.0f);//(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
+	D3DXFROMWINEVECTOR2 mouse((float)STX_Service::GetInputInstance()->GetMouseX(), (float)STX_Service::GetInputInstance()->GetMouseY());
+	D3DXFROMWINEVECTOR2 resolution(400.0f,300.0f);//(IRenderer::GetRendererInstance()->GetViewportWidth(), IRenderer::GetRendererInstance()->GetViewportHeight());
 	static float start=timeGetTime();
 	float time=.00025 * (timeGetTime() - start );
 	D3DXFROMWINEVECTOR4 iDate(0.0f, 0.0f, 0.0f, time);
@@ -216,11 +219,18 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", I);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
-	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
-	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
+
+	//time=timeGetTime()/1000.0f;
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iGlobalTime", time);
+
+	IRenderer::GetRendererInstance()->setShaderConstant3f("lightDir", lightDir);
+	IRenderer::GetRendererInstance()->setShaderConstant3f("cubeCenter", cubeCenter);
+
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
 	if(tex.size()>0) IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);
 	if(tex.size()>1) IRenderer::GetRendererInstance()->setTexture("iChannel1", tex[1]);

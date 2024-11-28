@@ -103,7 +103,6 @@ int init(const char* aTitle)
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock2.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/HardRock3.bmp", false, IRenderer::GetRendererInstance()->Getlinear()));
 	tex.push_back(IRenderer::GetRendererInstance()->addImageLibTexture("/NatureScene/Sky/clouds.png", false, IRenderer::GetRendererInstance()->Getlinear()));
-	#endif
 	return 0;
 }
 
@@ -217,10 +216,14 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", I);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
-	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
+	time=timeGetTime()/1000.0f;
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("iGlobalTime", time);
+	#endif
+
 	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iChannelResolution", resolution);
 	if(tex.size()>0) IRenderer::GetRendererInstance()->setTexture("iChannel0", tex[0]);

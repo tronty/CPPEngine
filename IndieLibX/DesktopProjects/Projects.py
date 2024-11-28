@@ -20,7 +20,7 @@ import platform
 g_renderer=os.getenv("g_renderer", "GLSL1_1")
 if False:
 	cl="g_renderer=%s" % g_renderer
-	print cl
+	print(cl)
 	exit(0)
 
 ccc=0
@@ -44,7 +44,7 @@ def osmakedirs(fn):
 		os.makedirs(fn)
 
 def ossystem(cmd):
-	print cmd
+	print(cmd)
 	os.system(cmd)
 
 def ossystem2(cmd):
@@ -108,12 +108,12 @@ def copy_(src, dst):
 	ossystem('cp -fr '+src+' '+dst)
 
 def load(file):
-    xml_file = os.path.abspath(file)
-    f=open(xml_file,'r')
-    lines=f.readlines()
-    f.close()
-    lXmlAsString=string.join(lines,'')
-    return lXmlAsString
+	xml_file = os.path.abspath(file)
+	f=open(xml_file,'r')
+	lines=f.readlines()
+	f.close()
+	lXmlAsString=string.join(lines,'')
+	return lXmlAsString
 
 def cnf():
 	txt=''
@@ -619,8 +619,8 @@ class Configuration:
 
 
     def usage(self):
-	print "usage: python Projects.py --solution <solution> --buildtool <buildtool> --platform <LNX|MW|OSX|WIN|NDK|iOS> --renderer <GLCG1_1|GLSL1_1|GLSL4_5|GLES2|GLES3_2|D3D9|D3D10|D3D11|D3D12|VULKAN|METAL>"
-	#print "usage: python Projects.py --buildproject <buildproject> --mainphoneproject <string> --package <string> --WindowsPhone <True|False> --iOS <True|False> --OpenAL <True|False> --SDL2 <True|False> --GLES2 <True|False> --apps <True|False> --iPhoneSimulator <True|False> --MVC <True|False> --TargetDirectory <string> --NDKPlatform <string>"
+	print("usage: python(Projects.py --solution <solution> --buildtool <buildtool> --platform <LNX|MW|OSX|WIN|NDK|iOS> --renderer <GLCG1_1|GLSL1_1|GLSL4_5|GLES2|GLES3_2|D3D9|D3D10|D3D11|D3D12|VULKAN|METAL>(")
+	#print("usage: python(Projects.py --buildproject <buildproject> --mainphoneproject <string> --package <string> --WindowsPhone <True|False> --iOS <True|False> --OpenAL <True|False> --SDL2 <True|False> --GLES2 <True|False> --apps <True|False> --iPhoneSimulator <True|False> --MVC <True|False> --TargetDirectory <string> --NDKPlatform <string>)")
 
     def settextfromxml(self,node):
 	self.text=''
@@ -4585,6 +4585,10 @@ SRCS='''+ccc.getINDIELIBROOT()+'''/'''+string.join(a.getsrcs(),''' \\\n\t'''+ccc
 		v.append('-Wno-c++11-narrowing')
 		#v.append('-Wno-address-of-packed-member')
 
+		if False:
+			v.append('-DOS_IPHONE')
+		else:
+			v.append('-DIPHONE_SIMULATOR')
 	        if ccc.getrenderer()=='VULKAN':
 			v.append('-DVK_USE_PLATFORM_IOS_MVK')
 			v.append('-DVULKAN')
@@ -4682,11 +4686,11 @@ FRAMEWORKS = -framework CoreMotion -framework GameController -framework OpenGLES
 ifneq ("'''+arch+'''", "i386")
 	iPhone=iPhoneOS
 	iphone=iphoneos
-	CFLAGS += -DOS_IPHONE
+	#CFLAGS += -DOS_IPHONE
 else
 	iPhone=iPhoneSimulator
 	iphone=iphonesimulator
-	CFLAGS += -DIPHONE_SIMULATOR
+	#CFLAGS += -DIPHONE_SIMULATOR
 endif
 
 export DEV := $(DEVELOPER_DIR)/Platforms/$(iPhone).platform/Developer

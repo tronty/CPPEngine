@@ -2102,6 +2102,7 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
 	return m_mWorld;
 }
 
+/*
 #if 0
 	void MeshRenderer2::RemoveHiddenTriangles2()
 	{
@@ -2136,6 +2137,7 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
 		indices=indicestmp;
 	}
 #endif
+*/
 	void MeshRenderer2::RemoveHiddenTriangles(const std::vector<D3DXFROMWINEVECTOR3>& minmax)
 	{
 		for (unsigned int k=0;k<minmax.size()/2;k++)

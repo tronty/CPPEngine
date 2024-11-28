@@ -14,6 +14,9 @@
 //define alternativeshader ePhongLighting2
 #define alternativeshader defaultshader
 
+    D3DXFROMWINEMATRIX lightSpaceMatrix;
+	TextureID depthMapFBO;
+const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 class _Shape3D: public STXGUI
 {
 	ShaderID shd;
@@ -63,8 +66,11 @@ int init(const char* aTitle)
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
 	tileTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, ss);
     windowTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
-
+#if 0
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
+#else
+	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SDL2ProceduralArchitecture/SDL2ProceduralArchitecture.glsl", "main", "main");
+#endif
 	FormatDesc fmt[] = { 
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
@@ -74,10 +80,65 @@ int init(const char* aTitle)
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 };
 	vf = IRenderer::GetRendererInstance()->addVertexFormat(fmt, elementsOf(fmt), shd);
 
+#if 0
+	// Samplerstates
+	if ((linear = renderer->addSamplerState(LINEAR, WRAP, WRAP, WRAP)) == SS_NONE) return false;
+	if ((nearestClamp = renderer->addSamplerState(NEAREST, CLAMP, CLAMP, CLAMP)) == SS_NONE) return false;
+	if ((bilinearClamp = renderer->addSamplerState(BILINEAR, CLAMP, CLAMP, CLAMP)) == SS_NONE) return false;
+	if ((trilinearAniso = renderer->addSamplerState(TRILINEAR, WRAP, WRAP, WRAP)) == SS_NONE) return false;
+#endif
+	// Height render target
+	depthMapFBO = IRenderer::GetRendererInstance()->addRenderTarget(SHADOW_WIDTH, SHADOW_HEIGHT, FORMAT_R32F, IRenderer::GetRendererInstance()->GetnearestClamp());
+
 	return 0;
 }
+void SetParam()
+{
+	D3DXFROMWINEVECTOR3 lightPos(1.2f, 1.0f, 2.0f);
+	D3DXFROMWINEVECTOR3 lightColor(1.0f, 1.0f, 1.0f);
+	D3DXFROMWINEVECTOR3 viewPos(0.0f, 0.0f, 3.0f);
+	D3DXFROMWINEVECTOR3 ambientColor(0.2f, 0.2f, 0.2f);
+    
+	IRenderer::GetRendererInstance()->setShaderConstant3f("lightPos", lightPos);
+	IRenderer::GetRendererInstance()->setShaderConstant3f("lightColor", lightColor);
+	IRenderer::GetRendererInstance()->setShaderConstant3f("viewPos", viewPos);
+	IRenderer::GetRendererInstance()->setShaderConstant3f("ambientColor", ambientColor);
 
+    // Configure matrices
+    D3DXFROMWINEMATRIX lightProjection, lightView;
+    float near_plane = 1.0f, far_plane = 7.5f;
+    D3DXFROMWINEMatrixOrthoOffCenterLH(&lightProjection, -10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    {
+    	D3DXFROMWINEVECTOR3 eye(1.2f, 1.0f, 2.0f);
+    	D3DXFROMWINEVECTOR3 at(0.0f, 0.0f, 0.0f);
+    	D3DXFROMWINEVECTOR3 up(0.0f, 1.0f, 0.0f);
+	D3DXFROMWINEMatrixLookAtLH(&lightView, &eye, &at, &up);
+	}
+    lightSpaceMatrix = lightProjection * lightView;
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
+
+}
 void render( )
+{
+	{
+        // Render to depth map
+        IRenderer::GetRendererInstance()->changeRenderTarget(depthMapFBO);        
+        IRenderer::GetRendererInstance()->viewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	IRenderer::GetRendererInstance()->Clear(false, true,
+		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
+		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+        // Render scene from light's perspective (depth-only)
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
+        
+        renderScene( );
+
+	IRenderer::GetRendererInstance()->changeToMainFramebuffer();
+        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO);
+        // Render scene
+        renderScene( );
+	}
+}
+void renderScene( )
 {
 	float f=128.0f/256.0f;
 	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
@@ -107,6 +168,7 @@ void render( )
 
 	if(m_s==0)
 	{
+		SetParam();
 	if(m_i==2)
         	shape3D[m_i].Draw(&matRot, tileTexID, -1, -1, a, d, l, e);
         	//shape3D[m_i].Draw(&matRot, windowTexID, -1, -1, a, d, l, e);
@@ -121,6 +183,7 @@ void render( )
     IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
 	float displacement=1.0; 
     IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
+    	SetParam();
 	shape3D[m_i].EndDraw();
 	}
 	

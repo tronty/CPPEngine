@@ -4585,6 +4585,10 @@ SRCS='''+ccc.getINDIELIBROOT()+'''/'''+string.join(a.getsrcs(),''' \\\n\t'''+ccc
 		v.append('-Wno-c++11-narrowing')
 		#v.append('-Wno-address-of-packed-member')
 
+		if False:
+			v.append('-DOS_IPHONE')
+		else:
+			v.append('-DIPHONE_SIMULATOR')
 	        if ccc.getrenderer()=='VULKAN':
 			v.append('-DVK_USE_PLATFORM_IOS_MVK')
 			v.append('-DVULKAN')
@@ -4682,11 +4686,11 @@ FRAMEWORKS = -framework CoreMotion -framework GameController -framework OpenGLES
 ifneq ("'''+arch+'''", "i386")
 	iPhone=iPhoneOS
 	iphone=iphoneos
-	CFLAGS += -DOS_IPHONE
+	#CFLAGS += -DOS_IPHONE
 else
 	iPhone=iPhoneSimulator
 	iphone=iphonesimulator
-	CFLAGS += -DIPHONE_SIMULATOR
+	#CFLAGS += -DIPHONE_SIMULATOR
 endif
 
 export DEV := $(DEVELOPER_DIR)/Platforms/$(iPhone).platform/Developer
