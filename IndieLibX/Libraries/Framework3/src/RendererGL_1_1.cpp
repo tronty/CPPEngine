@@ -309,6 +309,10 @@ void RendererGL_1_1::setGLdefaults()
 	CULL_FRONT = GL_FRONT;
 	SOLID = GL_FILL;
 	WIREFRAME = GL_LINE;
+		
+        fbo=0;
+        currentVBO=0;
+
 	glEnable(GL_DEPTH_TEST);
 				checkGlError("");
 	glDepthFunc(GL_LEQUAL);
@@ -319,6 +323,10 @@ void RendererGL_1_1::setGLdefaults()
 				checkGlError("");
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 				checkGlError("");
+				
+				
+				
+				
 /*
 	SetVersion((const char *) glGetString(GL_VERSION));
 	SetVendor((const char *) glGetString(GL_VENDOR));
@@ -1948,10 +1956,11 @@ if(!m_bTexImage)
 		void RendererGL_1_1::changeRenderTargetsVrtl(const TextureID *colorRTs, const unsigned int nRenderTargets, const TextureID depthRT, const int depthSlice, const int *slices)
 		{
 			//return; // ???
-			apply();
+			//apply(); // ???
 			if (fbo == 0) glGenFramebuffersEXT(1, &fbo);
 			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 				checkGlError("");
+			return; // ???
 			for (unsigned int i = 0; i < nRenderTargets; i++)
 			{
 				TextureID colorRT = colorRTs[i];
@@ -2068,6 +2077,7 @@ if(!m_bTexImage)
 		{
 			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 				checkGlError("");
+			return; // ???
 			glViewport(m_viewport.X,m_viewport.Y, m_viewport.Width, m_viewport.Height);
 				checkGlError("");
 			changeFrontFace(GL_CW);

@@ -65,7 +65,8 @@ int init(const char* aTitle)
 	SamplerStateID ss=IRenderer::GetRendererInstance()->Getlinear();
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
 	tileTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, ss);
-    windowTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
+	texID=tileTexID;
+    windowTexID=tileTexID;//IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
 #if 0
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 #else
@@ -124,68 +125,31 @@ void render( )
         // Render to depth map
         IRenderer::GetRendererInstance()->changeRenderTarget(depthMapFBO);        
         IRenderer::GetRendererInstance()->viewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	IRenderer::GetRendererInstance()->Clear(false, true,
+	IRenderer::GetRendererInstance()->BeginScene();
+	//IRenderer::GetRendererInstance()->Clear(false, true,
+	IRenderer::GetRendererInstance()->Clear(true, true,
 		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
 		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
         // Render scene from light's perspective (depth-only)
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
         
         renderScene( );
+        IRenderer::GetRendererInstance()->EndScene();
+        //IRenderer::GetRendererInstance()->Present( );
 
 	IRenderer::GetRendererInstance()->changeToMainFramebuffer();
-        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO);
+	IRenderer::GetRendererInstance()->BeginScene();
+	{
+		int w=STX_Service::GetWindowInstance()->Getwidth();
+		int h=STX_Service::GetWindowInstance()->GetHeight();
+        	IRenderer::GetRendererInstance()->viewport(0, 0, w, h);
+        }
+        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO, IRenderer::GetRendererInstance()->GetnearestClamp());
+	IRenderer::GetRendererInstance()->Clear(true, true,
+		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
+		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
         // Render scene
         renderScene( );
-	}
-}
-void renderScene( )
-{
-	float f=128.0f/256.0f;
-	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
-	IRenderer::GetRendererInstance()->BeginScene();
-
-	float mAngleX=45.0f;
-	float mAngleY=45.0f;
-	stx_GetAngles(mAngleX, mAngleY);
-
-	if((m_i==2)||(m_i==3)||(m_i==4))
-		mAngleY+=180.0f;
-
-		D3DXFROMWINEMATRIX matRot;
-		D3DXFROMWINEMatrixRotationYawPitchRoll( &matRot,
-		                            D3DXFROMWINEToRadian(mAngleX),
-		                            D3DXFROMWINEToRadian(mAngleY),
-		                            0.0f );
-
-					D3DXFROMWINEVECTOR4 a(0.1f, 0.0f, 0.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 d(1.0f, 0.0f, 0.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 l(0.0f, 1.0f, -1.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 e(0.0f, 0.0f, -1.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 gold=stx_GetRGBA(eGold);
-					D3DXFROMWINEVECTOR4 silver=stx_GetRGBA(eSilver);
-					a=silver;
-					d=silver;
-
-	if(m_s==0)
-	{
-		SetParam();
-	if(m_i==2)
-        	shape3D[m_i].Draw(&matRot, tileTexID, -1, -1, a, d, l, e);
-        	//shape3D[m_i].Draw(&matRot, windowTexID, -1, -1, a, d, l, e);
-	else
-        	shape3D[m_i].Draw(&matRot, texID, -1, -1, a, d, l, e);
-	}
-	else
-	{
-	shape3D[m_i].BeginDraw(0);
-	IRenderer::GetRendererInstance()->setShader(shd);
-	IRenderer::GetRendererInstance()->setVertexFormat(vf);
-    IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
-	float displacement=1.0; 
-    IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
-    	SetParam();
-	shape3D[m_i].EndDraw();
-	}
 	
 	STXGUI::update();
 
@@ -213,9 +177,65 @@ void renderScene( )
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
+			
+        IRenderer::GetRendererInstance()->EndScene();
+        IRenderer::GetRendererInstance()->Present( );
+	}
+}
+void renderScene( )
+{
+	float mAngleX=45.0f;
+	float mAngleY=45.0f;
+	stx_GetAngles(mAngleX, mAngleY);
 
-	IRenderer::GetRendererInstance()->EndScene();
-	IRenderer::GetRendererInstance()->Present( );
+	if((m_i==2)||(m_i==3)||(m_i==4))
+		mAngleY+=180.0f;
+
+		D3DXFROMWINEMATRIX matRot;
+		D3DXFROMWINEMatrixRotationYawPitchRoll( &matRot,
+		                            D3DXFROMWINEToRadian(mAngleX),
+		                            D3DXFROMWINEToRadian(mAngleY),
+		                            0.0f );
+
+					D3DXFROMWINEVECTOR4 a(0.1f, 0.0f, 0.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 d(1.0f, 0.0f, 0.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 l(0.0f, 1.0f, -1.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 e(0.0f, 0.0f, -1.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 gold=stx_GetRGBA(eGold);
+					D3DXFROMWINEVECTOR4 silver=stx_GetRGBA(eSilver);
+					a=silver;
+					d=silver;
+/*
+	if(m_s==0)
+	{
+	printf("0\n");
+		SetParam();
+	if(m_i==2)
+	{
+	printf("1\n");
+        	shape3D[m_i].Draw(&matRot, tileTexID, -1, -1, a, d, l, e);
+        	//shape3D[m_i].Draw(&matRot, windowTexID, -1, -1, a, d, l, e);
+	}
+	else{
+	printf("2\n");
+        	shape3D[m_i].Draw(&matRot, texID, -1, -1, a, d, l, e);
+	}}
+	else */
+	{
+	//printf("3\n");
+	#if 0
+	shape3D[m_i].BeginDraw(0,-1,shd,vf);
+	#else
+	IRenderer::GetRendererInstance()->setShader(shd);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf);
+	#endif
+    IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
+	float displacement=1.0; 
+    IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
+    	SetParam();
+	shape3D[m_i].EndDraw();
+	}
+
 }
 virtual void actionPerformed(GUIEvent &evt)
 {
