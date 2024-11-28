@@ -1,3 +1,5 @@
+cd ./bin;./SDL2ProceduralArchitecture.bin;cd .. &&
+cd ./bin;./SDL2ProceduralArchitecture.bin;cd .. &&
 cd ./bin;./Shape3D.bin;cd .. &&
 cd ./bin;./ai.bin;cd .. &&
 cd ./bin;./ai2.bin;cd .. &&

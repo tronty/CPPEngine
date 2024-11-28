@@ -12,10 +12,14 @@ varying vec3 vertexColor;
 varying vec3 FragPos;
 varying vec3 Normal;
 varying vec4 ShadowCoord;
+varying vec2 UV;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+
+uniform mat4 worldViewProj;
+
 uniform mat4 lightSpaceMatrix;
 //uniform float time;
 
@@ -82,13 +86,22 @@ mat4 transpose(mat4 m) {
 
 void main()
 {
+	UV=aUV;
     vec3 modifiedPos = aPos;
     modifiedPos += normalize(aNormal) * noise(aPos * 10.0 + time) * 0.1; // Add noise-based displacement
 
     FragPos = vec3(model * vec4(modifiedPos, 1.0));
     Normal = mat3(transpose(inverse(model))) * aNormal;
     ShadowCoord = lightSpaceMatrix * vec4(modifiedPos, 1.0);
+    
+    #if 0
     gl_Position = projection * view * vec4(FragPos, 1.0);
+    #elif 0
+    gl_Position = worldViewProj * vec4(FragPos, 1.0);
+    #else
+    gl_Position = worldViewProj * vec4(aPos, 1.0);
+    #endif
+    
     vertexColor = aColor;
 }
 
@@ -98,12 +111,14 @@ varying vec3 vertexColor;
 varying vec3 FragPos;
 varying vec3 Normal;
 varying vec4 ShadowCoord;
+varying vec2 UV;
 
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 viewPos;
 uniform vec3 ambientColor;
 uniform sampler2D shadowMap;
+uniform sampler2D DIFFUSE_SAMPLER;
 
 float ShadowCalculation(vec4 shadowCoord)
 {
@@ -144,6 +159,12 @@ void main()
     float shadow = ShadowCalculation(ShadowCoord);
 
     vec3 result = (ambient + shadow * (diffuse + specular)) * vertexColor;
+    result = vertexColor;
+    result = vec3(1,0,0);
+    #if 0
     gl_FragColor = vec4(result, 1.0);
+    #else
+    gl_FragColor = texture2D(DIFFUSE_SAMPLER, UV);
+    #endif
 }
 

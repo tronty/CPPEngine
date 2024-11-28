@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2024 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -7,16 +7,13 @@
 #include <GUI/GUIUtils.h>
 #include <FW3.h>
 
-//define defaultshader eSimpleShader
+#define defaultshader eSimpleShader
 //define alternativeshader eAmbientLighting
 //define alternativeshader eDiffuseLighting
-#define defaultshader ePhongLighting1
+//define alternativeshader ePhongLighting1
 //define alternativeshader ePhongLighting2
 #define alternativeshader defaultshader
 
-    D3DXFROMWINEMATRIX lightSpaceMatrix;
-	TextureID depthMapFBO;
-const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 class _Shape3D: public STXGUI
 {
 	ShaderID shd;
@@ -65,13 +62,9 @@ int init(const char* aTitle)
 	SamplerStateID ss=IRenderer::GetRendererInstance()->Getlinear();
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
 	tileTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, ss);
-	texID=tileTexID;
-    windowTexID=tileTexID;//IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
-#if 0
+    windowTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
+
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
-#else
-	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SDL2ProceduralArchitecture/SDL2ProceduralArchitecture.glsl", "main", "main");
-#endif
 	FormatDesc fmt[] = { 
 						0, TYPE_VERTEX,   FORMAT_FLOAT, 3,
 						0, TYPE_NORMAL,   FORMAT_FLOAT, 3,
@@ -81,75 +74,55 @@ int init(const char* aTitle)
 						0, TYPE_TEXCOORD, FORMAT_FLOAT, 2 };
 	vf = IRenderer::GetRendererInstance()->addVertexFormat(fmt, elementsOf(fmt), shd);
 
-#if 0
-	// Samplerstates
-	if ((linear = renderer->addSamplerState(LINEAR, WRAP, WRAP, WRAP)) == SS_NONE) return false;
-	if ((nearestClamp = renderer->addSamplerState(NEAREST, CLAMP, CLAMP, CLAMP)) == SS_NONE) return false;
-	if ((bilinearClamp = renderer->addSamplerState(BILINEAR, CLAMP, CLAMP, CLAMP)) == SS_NONE) return false;
-	if ((trilinearAniso = renderer->addSamplerState(TRILINEAR, WRAP, WRAP, WRAP)) == SS_NONE) return false;
-#endif
-	// Height render target
-	depthMapFBO = IRenderer::GetRendererInstance()->addRenderTarget(SHADOW_WIDTH, SHADOW_HEIGHT, FORMAT_R32F, IRenderer::GetRendererInstance()->GetnearestClamp());
-
 	return 0;
 }
-void SetParam()
-{
-	D3DXFROMWINEVECTOR3 lightPos(1.2f, 1.0f, 2.0f);
-	D3DXFROMWINEVECTOR3 lightColor(1.0f, 1.0f, 1.0f);
-	D3DXFROMWINEVECTOR3 viewPos(0.0f, 0.0f, 3.0f);
-	D3DXFROMWINEVECTOR3 ambientColor(0.2f, 0.2f, 0.2f);
-    
-	IRenderer::GetRendererInstance()->setShaderConstant3f("lightPos", lightPos);
-	IRenderer::GetRendererInstance()->setShaderConstant3f("lightColor", lightColor);
-	IRenderer::GetRendererInstance()->setShaderConstant3f("viewPos", viewPos);
-	IRenderer::GetRendererInstance()->setShaderConstant3f("ambientColor", ambientColor);
 
-    // Configure matrices
-    D3DXFROMWINEMATRIX lightProjection, lightView;
-    float near_plane = 1.0f, far_plane = 7.5f;
-    D3DXFROMWINEMatrixOrthoOffCenterLH(&lightProjection, -10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    {
-    	D3DXFROMWINEVECTOR3 eye(1.2f, 1.0f, 2.0f);
-    	D3DXFROMWINEVECTOR3 at(0.0f, 0.0f, 0.0f);
-    	D3DXFROMWINEVECTOR3 up(0.0f, 1.0f, 0.0f);
-	D3DXFROMWINEMatrixLookAtLH(&lightView, &eye, &at, &up);
-	}
-    lightSpaceMatrix = lightProjection * lightView;
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
-
-}
 void render( )
 {
-	{
-        // Render to depth map
-        IRenderer::GetRendererInstance()->changeRenderTarget(depthMapFBO);        
-        IRenderer::GetRendererInstance()->viewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	float f=128.0f/256.0f;
+	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
 	IRenderer::GetRendererInstance()->BeginScene();
-	//IRenderer::GetRendererInstance()->Clear(false, true,
-	IRenderer::GetRendererInstance()->Clear(true, true,
-		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
-		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-        // Render scene from light's perspective (depth-only)
-	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
-        
-        renderScene( );
-        IRenderer::GetRendererInstance()->EndScene();
-        //IRenderer::GetRendererInstance()->Present( );
 
-	IRenderer::GetRendererInstance()->changeToMainFramebuffer();
-	IRenderer::GetRendererInstance()->BeginScene();
+	float mAngleX=45.0f;
+	float mAngleY=45.0f;
+	stx_GetAngles(mAngleX, mAngleY);
+
+	if((m_i==2)||(m_i==3)||(m_i==4))
+		mAngleY+=180.0f;
+
+		D3DXFROMWINEMATRIX matRot;
+		D3DXFROMWINEMatrixRotationYawPitchRoll( &matRot,
+		                            D3DXFROMWINEToRadian(mAngleX),
+		                            D3DXFROMWINEToRadian(mAngleY),
+		                            0.0f );
+
+					D3DXFROMWINEVECTOR4 a(0.1f, 0.0f, 0.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 d(1.0f, 0.0f, 0.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 l(0.0f, 1.0f, -1.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 e(0.0f, 0.0f, -1.0f, 1.0f);
+					D3DXFROMWINEVECTOR4 gold=stx_GetRGBA(eGold);
+					D3DXFROMWINEVECTOR4 silver=stx_GetRGBA(eSilver);
+					a=silver;
+					d=silver;
+
+	if(m_s==0)
 	{
-		int w=STX_Service::GetWindowInstance()->Getwidth();
-		int h=STX_Service::GetWindowInstance()->GetHeight();
-        	IRenderer::GetRendererInstance()->viewport(0, 0, w, h);
-        }
-        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO, IRenderer::GetRendererInstance()->GetnearestClamp());
-	IRenderer::GetRendererInstance()->Clear(true, true,
-		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
-		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
-        // Render scene
-        renderScene( );
+	if(m_i==2)
+        	shape3D[m_i].Draw(&matRot, tileTexID, -1, -1, a, d, l, e);
+        	//shape3D[m_i].Draw(&matRot, windowTexID, -1, -1, a, d, l, e);
+	else
+        	shape3D[m_i].Draw(&matRot, texID, -1, -1, a, d, l, e);
+	}
+	else
+	{
+	shape3D[m_i].BeginDraw(0);
+	IRenderer::GetRendererInstance()->setShader(shd);
+	IRenderer::GetRendererInstance()->setVertexFormat(vf);
+    IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
+	float displacement=1.0; 
+    IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
+	shape3D[m_i].EndDraw();
+	}
 	
 	STXGUI::update();
 
@@ -177,65 +150,9 @@ void render( )
 			IRenderer::GetRendererInstance()->GetlinearClamp(), 
 			IRenderer::GetRendererInstance()->GetblendSrcAlpha(), 
 			IRenderer::GetRendererInstance()->GetnoDepthTest());
-			
-        IRenderer::GetRendererInstance()->EndScene();
-        IRenderer::GetRendererInstance()->Present( );
-	}
-}
-void renderScene( )
-{
-	float mAngleX=45.0f;
-	float mAngleY=45.0f;
-	stx_GetAngles(mAngleX, mAngleY);
 
-	if((m_i==2)||(m_i==3)||(m_i==4))
-		mAngleY+=180.0f;
-
-		D3DXFROMWINEMATRIX matRot;
-		D3DXFROMWINEMatrixRotationYawPitchRoll( &matRot,
-		                            D3DXFROMWINEToRadian(mAngleX),
-		                            D3DXFROMWINEToRadian(mAngleY),
-		                            0.0f );
-
-					D3DXFROMWINEVECTOR4 a(0.1f, 0.0f, 0.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 d(1.0f, 0.0f, 0.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 l(0.0f, 1.0f, -1.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 e(0.0f, 0.0f, -1.0f, 1.0f);
-					D3DXFROMWINEVECTOR4 gold=stx_GetRGBA(eGold);
-					D3DXFROMWINEVECTOR4 silver=stx_GetRGBA(eSilver);
-					a=silver;
-					d=silver;
-/*
-	if(m_s==0)
-	{
-	printf("0\n");
-		SetParam();
-	if(m_i==2)
-	{
-	printf("1\n");
-        	shape3D[m_i].Draw(&matRot, tileTexID, -1, -1, a, d, l, e);
-        	//shape3D[m_i].Draw(&matRot, windowTexID, -1, -1, a, d, l, e);
-	}
-	else{
-	printf("2\n");
-        	shape3D[m_i].Draw(&matRot, texID, -1, -1, a, d, l, e);
-	}}
-	else */
-	{
-	//printf("3\n");
-	#if 1
-	shape3D[m_i].BeginDraw(0,-1,shd,vf);
-	#else
-	IRenderer::GetRendererInstance()->setShader(shd);
-	IRenderer::GetRendererInstance()->setVertexFormat(vf);
-	#endif
-    IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
-	float displacement=1.0; 
-    IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
-    	SetParam();
-	shape3D[m_i].EndDraw();
-	}
-
+	IRenderer::GetRendererInstance()->EndScene();
+	IRenderer::GetRendererInstance()->Present( );
 }
 virtual void actionPerformed(GUIEvent &evt)
 {
