@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2024 Tommi Roenty   http://www.tommironty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -7,10 +7,10 @@
 #include <GUI/GUIUtils.h>
 #include <FW3.h>
 
-#define defaultshader eSimpleShader
+//define defaultshader eSimpleShader
 //define alternativeshader eAmbientLighting
 //define alternativeshader eDiffuseLighting
-//define alternativeshader ePhongLighting1
+#define defaultshader ePhongLighting1
 //define alternativeshader ePhongLighting2
 #define alternativeshader defaultshader
 
@@ -223,7 +223,7 @@ void renderScene( )
 	else */
 	{
 	//printf("3\n");
-	#if 0
+	#if 1
 	shape3D[m_i].BeginDraw(0,-1,shd,vf);
 	#else
 	IRenderer::GetRendererInstance()->setShader(shd);

@@ -1957,7 +1957,11 @@ if(!m_bTexImage)
 		{
 			//return; // ???
 			//apply(); // ???
-			if (fbo == 0) glGenFramebuffersEXT(1, &fbo);
+			if (fbo == 0)
+			{
+				glGenFramebuffersEXT(1, &fbo);
+				checkGlError("");
+			}
 			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 				checkGlError("");
 			return; // ???
