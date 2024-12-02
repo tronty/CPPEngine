@@ -1,3 +1,8 @@
+/*
+  Copyright (c) 2024 Tommi Roenty   http://www.tommironty.fi/
+  Licensed under The GNU Lesser General Public License, version 2.1:
+      http://opensource.org/licenses/LGPL-2.1
+*/
 // Vertex Shader Source
 [Vertex shader]
 
@@ -113,10 +118,11 @@ varying vec3 Normal;
 varying vec4 ShadowCoord;
 varying vec2 UV;
 
-uniform vec3 lightPos;
-uniform vec3 lightColor;
-uniform vec3 viewPos;
-uniform vec3 ambientColor;
+
+uniform vec3 lightPos=vec3(1.2, 1.0, 2.0);
+uniform vec3 lightColor=vec3(1.0, 1.0, 1.0);
+uniform vec3 viewPos=vec3(0.0, 0.0, 3.0);
+uniform vec3 ambientColor=vec3(0.2, 0.2, 0.2);
 uniform sampler2D shadowMap;
 uniform sampler2D DIFFUSE_SAMPLER;
 
@@ -139,6 +145,7 @@ float ShadowCalculation(vec4 shadowCoord)
 
 void main()
 {
+    #if 0
     // Ambient
     vec3 ambient = 0.1 * ambientColor;
 
@@ -156,12 +163,14 @@ void main()
     vec3 specular = specularStrength * spec * lightColor;
 
     // Shadow
-    float shadow = ShadowCalculation(ShadowCoord);
+    float shadow = 1;//ShadowCalculation(ShadowCoord);
 
-    vec3 result = (ambient + shadow * (diffuse + specular)) * vertexColor;
-    result = vertexColor;
-    result = vec3(1,0,0);
-    #if 0
+	diffuse=vec3(0,0,0);
+	specular=vec3(0,0,0);
+	vec3 vertexColor_ = vec3(1);
+	vertexColor_ = vertexColor;
+    vec3 result = (ambient + shadow * (diffuse + specular)) * vertexColor_;
+
     gl_FragColor = vec4(result, 1.0);
     #else
     gl_FragColor = texture2D(DIFFUSE_SAMPLER, UV);

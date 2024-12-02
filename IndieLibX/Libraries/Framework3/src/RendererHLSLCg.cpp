@@ -40,8 +40,8 @@ using namespace LuaUtil;
 #define USEXML 1
 
 #if 1
-#define STX_PRINT(...) printf(__VA_ARGS__)
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#define STX_PRINT(...) 
+#define STX_FNLN 
 #define LOG_FNLN
 #define LOG_PRINT
 #define LOG_FNLN_NONE
@@ -49,6 +49,8 @@ using namespace LuaUtil;
 #define LOG_FNLN_X
 #define LOG_PRINT_X
 #else
+#define STX_PRINT(...) printf(__VA_ARGS__)
+#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #define LOG_PRINT(...) LOG_PRINT(__VA_ARGS__);
 #define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 #define LOG_FNLN_X
@@ -6924,7 +6926,7 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 	//stx_exit(0);
 #endif
 #endif
-	STX_FNLN;
+	//STX_FNLN;
 #if 0
 	static unsigned int __s_i__=1;
 	if(__s_i__==2)

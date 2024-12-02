@@ -129,13 +129,14 @@ void SetParam()
 	D3DXFROMWINEMatrixLookAtLH(&view, &v1, &v2, &v3);}
 	    D3DXFROMWINEMatrixPerspectiveFovLH( &projection, D3DXFROMWINEToRadian( 45.0f ),
                                 //640.0f / 480.0f, 0.1f, 100.0f
-								IRenderer::GetRendererInstance()->GetAspect(), 0.001f, 20000.0f
+								IRenderer::GetRendererInstance()->GetAspect(), 0.001f, 20.0f
 								);
 
 }
 void render( )
 {
 	{
+	#if 0
         // Render to depth map
         IRenderer::GetRendererInstance()->changeRenderTarget(depthMapFBO); 
 	IRenderer::GetRendererInstance()->BeginScene();       
@@ -155,13 +156,14 @@ void render( )
 	//IRenderer::GetRendererInstance()->setTexture("Height", heightRT, IRenderer::GetRendererInstance()->GetnearestClamp());
 
 	IRenderer::GetRendererInstance()->changeToMainFramebuffer();
+	#endif
 	IRenderer::GetRendererInstance()->BeginScene();
 	{
 		int w=STX_Service::GetWindowInstance()->Getwidth();
 		int h=STX_Service::GetWindowInstance()->GetHeight();
         	IRenderer::GetRendererInstance()->viewport(0, 0, w, h);
         }
-        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO, IRenderer::GetRendererInstance()->GetnearestClamp());
+        IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO);
 	IRenderer::GetRendererInstance()->Clear(true, true,
 		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
 		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -257,7 +259,7 @@ void renderScene( )
     IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
 	float displacement=1.0; 
     IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
-    IRenderer::GetRendererInstance()->setShaderConstant1f("DIFFUSE_SAMPLER", tileTexID);
+    IRenderer::GetRendererInstance()->setTexture("DIFFUSE_SAMPLER", tileTexID);
     	SetParam();
     	int j=0;
 			if(shape3D[m_i].meshes[j].rindices[0].size()/3)
@@ -288,7 +290,7 @@ void renderScene( )
 }
 virtual void actionPerformed(GUIEvent &evt)
 {
-#if 0
+#if 1
   const NSString &callbackString  = evt.getCallbackString();
   GUIRectangle *sourceRectangle = evt.getEventSource();
   int widgetType      = sourceRectangle->getWidgetType();
@@ -395,7 +397,7 @@ virtual void actionPerformed(GUIEvent &evt)
 };
 int ApplicationLogic()
 {	
-	IRenderer* r=IRenderer::GetRendererInstance("Shape3D");	
+	IRenderer* r=IRenderer::GetRendererInstance("Shape3D2");	
 	IInput*    i=STX_Service::GetInputInstance();
 	_Shape3D shape3D;
 	shape3D.init("");
