@@ -168,8 +168,8 @@ void render( )
         }
         IRenderer::GetRendererInstance()->setTexture("shadowMap", depthMapFBO);
 	IRenderer::GetRendererInstance()->Clear(true, true,
-		//D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
-		D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
+		D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7f, 1.0f));
+		//D3DXFROMWINEVECTOR4(0.0f, 0.0f, 0.0f, 1.0f));
         // Render scene
         renderScene( );
 	if(1)

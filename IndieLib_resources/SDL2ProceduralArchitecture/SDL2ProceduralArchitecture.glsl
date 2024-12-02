@@ -141,6 +141,7 @@ attribute vec2 aUV;
 varying vec3 vertexColor;
 varying vec3 FragPos;
 varying vec3 Normal;
+varying vec3 Color;
 varying vec4 ShadowCoord;
 varying vec2 UV;
 
@@ -181,6 +182,7 @@ void main()
 void main() {
 	UV=aUV;
 	vertexColor=aColor;
+	Normal=aNormal;
     // Compute displacement using noise
     float displacement = smoothNoise(aPos + vec3(10.0*time)) * displacementScale;
 
@@ -193,12 +195,14 @@ void main() {
 
     // Apply final transformations
     gl_Position = projection * view * vec4(FragPos, 1.0);
+    FragPos=gl_Position.xyz;
+    Color=aColor;
 }
 #else
 void main()
 {
 	UV=aUV;
-	vertexColor=aColor;
+	Normal=aNormal;
   // add time to the noise parameters so it's animated
   float noise_ = 10.0 *  (-.10) * turbulence( .5 * aNormal + time );
   float b = 5.0 * pnoise( 0.05 * aPos + vec3( 2.0 * time ), vec3( 100.0 ) );
@@ -207,16 +211,17 @@ void main()
   vec3 newPos = aPos + aNormal * displacement;
     //gl_Position = projection * view * vec4(aPos, 1.0);
     gl_Position = worldViewProj * vec4(aPos, 1.0);
+    FragPos=gl_Position.xyz;
+    Color=aColor;
 }
 #endif
 
 // Fragment Shader Source
 [Fragment shader]
-varying vec3 vertexColor;
 varying vec3 FragPos;
 varying vec3 Normal;
+varying vec3 Color;
 varying vec4 ShadowCoord;
-varying vec2 UV;
 
 uniform vec3 lightPos=vec3(1.2, 1.0, 2.0);
 uniform vec3 lightColor=vec3(1.0, 1.0, 1.0);
@@ -244,7 +249,7 @@ float ShadowCalculation(vec4 shadowCoord)
 
 void main()
 {
-    #if 0
+    #if 1
     // Ambient
     vec3 ambient = 0.1 * ambientColor;
 
@@ -264,18 +269,13 @@ void main()
     // Shadow
     float shadow = 1;//ShadowCalculation(ShadowCoord);
 
-	diffuse=vec3(1);
-	specular=vec3(1);
+	//diffuse=vec3(1);
+	//specular=vec3(1);
 	vec3 vertexColor_ = vec3(1);
-	vertexColor_ = vertexColor;
+	vertexColor_ = Color;
     vec3 result = (ambient + shadow * (diffuse + specular)) * vertexColor_;
 
     gl_FragColor = vec4(result, 1.0);
-    //???gl_FragColor = vec4(ambient, 1.0);
-    //gl_FragColor = vec4(shadow);
-    //???gl_FragColor = vec4(diffuse, 1.0); 
-    //???gl_FragColor = vec4(specular, 1.0);
-    //gl_FragColor = vertexColor_;
     #else
     gl_FragColor = texture2D(DIFFUSE_SAMPLER, UV);
     #endif
