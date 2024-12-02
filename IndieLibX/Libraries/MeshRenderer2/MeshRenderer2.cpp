@@ -2239,7 +2239,7 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
             width = width / 2.0f;
             height = height / 2.0f;
             depth = depth / 2.0f;
-
+#if 0
             D3DXFROMWINEVECTOR3 topLeftFront(-width, height, depth);
             D3DXFROMWINEVECTOR3 bottomLeftFront(-width, -height, depth);
             D3DXFROMWINEVECTOR3 topRightFront(width, height, depth);
@@ -2344,12 +2344,58 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
 		indices.push_back(vertices.size()-1);
 		indices.push_back(vertices.size()-2);
 		indices.push_back(vertices.size()-4);
+#else
+	stx_VertexPositionNormalTexture v;
+// Define interleaved vertex data for a cube (position, normal, binormal, tangent, color, texture coordinates)
+    // Front face
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
+    // Back face
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f, -1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f, -1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f, -1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  0.0f, -1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+    // Left face
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f, -1.0f), D3DXFROMWINEVECTOR3(-1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f,  1.0f), D3DXFROMWINEVECTOR3(-1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f,  1.0f), D3DXFROMWINEVECTOR3(-1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f, -1.0f), D3DXFROMWINEVECTOR3(-1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
+    // Right face
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f, -1.0f), D3DXFROMWINEVECTOR3( 1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f, -1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+    // Top face
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f,  1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f,  1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
+    // Bottom face
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f, -1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 0.0f));vertices.push_back(v);}
+    {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(-1.0f, -1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f, -1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  0.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 0.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f, -1.0f),  D3DXFROMWINEVECTOR3(0.0f, -1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(1.0f, 1.0f));vertices.push_back(v);}
+     {stx_VertexPositionNormalTexture v(D3DXFROMWINEVECTOR3(1.0f, -1.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.0f, -1.0f,  0.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(1.0f,  0.0f,  1.0f),  D3DXFROMWINEVECTOR3(0.5f, 0.5f, 0.5f),  D3DXFROMWINEVECTOR2(0.0f, 1.0f));vertices.push_back(v);}
 
+    // Front face
+    indices.push_back(0);indices.push_back(1);indices.push_back(2);indices.push_back(2);indices.push_back(3);indices.push_back(0);
+    // Back face
+    indices.push_back(4);indices.push_back( 5);indices.push_back(6);indices.push_back(6);indices.push_back(7);indices.push_back(4);
+    // Left face
+    indices.push_back(8);indices.push_back(9);indices.push_back(10);indices.push_back(10);indices.push_back(11);indices.push_back(8);
+    // Right face
+    indices.push_back(12);indices.push_back(13);indices.push_back(14);indices.push_back(14);indices.push_back(15);indices.push_back(12);
+    // Top face
+    indices.push_back(16);indices.push_back(17);indices.push_back(18);indices.push_back(18);indices.push_back(19);indices.push_back(16);
+    // Bottom face
+    indices.push_back(20);indices.push_back(21);indices.push_back( 22);indices.push_back(22);indices.push_back(23);indices.push_back(20);
+#endif
 		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
 
             // Create the actual vertex buffer
 
-	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
+	    // ??? computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
 
 	stx_Mesh mesh;
 	meshes.push_back(mesh);
@@ -2373,27 +2419,30 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
     D3DXFROMWINEVECTOR3 C( 1.0f,-1.0f,-1.0f);
     D3DXFROMWINEVECTOR3 D(-1.0f,-1.0f, 1.0f);
     D3DXFROMWINEVECTOR3 E( 1.0f,-1.0f, 1.0f);
+
 #if 1
-	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+{    D3DXFROMWINEVECTOR3 bn( 0.0f, 0.0f, 0.0f);D3DXFROMWINEVECTOR3 t( 0.0f, 0.0f, 0.0f);D3DXFROMWINEVECTOR3 c( 0.0f, 0.0f, 0.0f);
+	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, bn, t, c, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, bn, t, c, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, bn, t, c, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(A, normal, bn, t, c, D3DXFROMWINEVECTOR2(aTextureRepeatCoefficient.x*0.5, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
 
-	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(C, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
 
-	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
-	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, D3DXFROMWINEVECTOR2(  0, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(B, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, 0)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(E, normal, bn, t, c, D3DXFROMWINEVECTOR2(  aTextureRepeatCoefficient.x*1, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+	vertices.push_back(stx_VertexPositionNormalTexture(D, normal, bn, t, c, D3DXFROMWINEVECTOR2(  0, aTextureRepeatCoefficient.y*1)));indices.push_back(indices.size());
+}
 #else
 #endif
         D3DXFROMWINEMATRIX S, SH;
@@ -2438,10 +2487,10 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
             D3DXFROMWINEVECTOR3 frontNormal(0.0f, 0.0f, 1.0f);
 
             // Front face.
-            vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, textureTopLeft, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f)));
-            vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, textureTopRight, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f)));
-            vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomLeft, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f)));
-            vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, textureBottomRight, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f)));
+            vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), textureTopLeft));
+            vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), textureTopRight));
+            vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), textureBottomLeft));
+            vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), textureBottomRight));
 
             unsigned int indices_[] = { 1, 0, 2, 1, 2, 3};
 
@@ -2478,150 +2527,8 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
         /// <param name="depth">Depth of the box, along the z-axis.</param>
         void MeshRenderer2::CreateBox(float width, float height, float depth, tShader aShader_)
         {
-		Clear();
-		m_Shape=eBox;
-            // Because the box is centered at the origin, need to divide by two to find the + and - offsets
-            width = width / 2.0f;
-            height = height / 2.0f;
-            depth = depth / 2.0f;
-
-            D3DXFROMWINEVECTOR3 topLeftFront(-width, height, depth);
-            D3DXFROMWINEVECTOR3 bottomLeftFront(-width, -height, depth);
-            D3DXFROMWINEVECTOR3 topRightFront(width, height, depth);
-            D3DXFROMWINEVECTOR3 bottomRightFront(width, -height, depth);
-            D3DXFROMWINEVECTOR3 topLeftBack(-width, height, -depth);
-            D3DXFROMWINEVECTOR3 topRightBack(width, height, -depth);
-            D3DXFROMWINEVECTOR3 bottomLeftBack(-width, -height, -depth);
-            D3DXFROMWINEVECTOR3 bottomRightBack(width, -height, -depth);
-
-            D3DXFROMWINEVECTOR3 frontNormal(0.0f, 0.0f, 1.0f);
-            D3DXFROMWINEVECTOR3 backNormal(0.0f, 0.0f, -1.0f);
-            D3DXFROMWINEVECTOR3 topNormal(0.0f, 1.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 bottomNormal(0.0f, -1.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 leftNormal(-1.0f, 0.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 rightNormal(1.0f, 0.0f, 0.0f);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal));
-		stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
-
-            // Create the actual vertex buffer
-	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
-
-	stx_Mesh mesh;
-	meshes.push_back(mesh);
-	meshes[0].vertices=vertices;//vertices.clear();
-	meshes[0].indices=indices;
-	meshes[0].rindices.push_back(indices);meshes[0].indices.clear();//indices.clear();
-
-	if(aShader_!=eShaderNone)
-		InitShader(aShader_);
+            CreateTexturedBox(width, height, depth, aShader_);
+            m_Shape=eBox;
         }
 
 #if 0
@@ -3043,9 +2950,9 @@ std::vector<float> MeshRenderer2::computeFaceNormal(float x1, float y1, float z1
             unsigned int triangleCount = (stacks + 1) * slices * 2; //cone = stacks * slices * 2 + slices
             unsigned int indexCount = triangleCount * 3;
             float currentRadius = bottomRadius;
-
+		D3DXFROMWINEVECTOR3 v;
             // Start at the bottom of the cylinder
-            vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, currentHeight, 0), D3DXFROMWINEVECTOR3(0, -1, 0)));
+            vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, currentHeight, 0), D3DXFROMWINEVECTOR3(0, -1, 0),v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 	vertices[vertices.size()-1].Tex=D3DXFROMWINEVECTOR2(0.0f, TextureRepeatCoefficient.y*currentHeight);
         if(((TextureRepeatCoefficient.x-1.0f)<0.5f) && ((TextureRepeatCoefficient.x-1.0f)<0.5f))
 	stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
@@ -3061,7 +2968,7 @@ std::vector<float> MeshRenderer2::computeFaceNormal(float x1, float y1, float z1
                     D3DXFROMWINEVECTOR3 position(x, y, z);
 			D3DXFROMWINEVECTOR3 normal(x, y, z);
 			D3DXFROMWINEVec3Normalize(&normal, &normal);
-                    vertices.push_back(stx_VertexPositionNormalTexture(position, normal));
+                    vertices.push_back(stx_VertexPositionNormalTexture(position, normal,v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 
 	vertices[vertices.size()-1].Tex=D3DXFROMWINEVECTOR2(TextureRepeatCoefficient.x*sliceAngle, TextureRepeatCoefficient.y*currentHeight);
         if(((TextureRepeatCoefficient.x-1.0f)<0.5f) && ((TextureRepeatCoefficient.x-1.0f)<0.5f))
@@ -3072,7 +2979,7 @@ std::vector<float> MeshRenderer2::computeFaceNormal(float x1, float y1, float z1
                 currentHeight += heightStep;
                 currentRadius += radiusStep;
             }
-            vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, length / 2, 0), D3DXFROMWINEVECTOR3(0, 1, 0)));
+            vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, length / 2, 0), D3DXFROMWINEVECTOR3(0, 1, 0),v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 
 	vertices[vertices.size()-1].Tex=D3DXFROMWINEVECTOR2(0.0f, TextureRepeatCoefficient.y*currentHeight);
 if(((TextureRepeatCoefficient.x-1.0f)<0.5f) && ((TextureRepeatCoefficient.x-1.0f)<0.5f))
@@ -3669,10 +3576,11 @@ void MeshRenderer2::Grid(std::vector<stx_VertexPositionNormalTexture>& vertices,
 	//mesh->resize(gridX * gridZ, (gridX - 1) * (gridZ - 1) * 2);
 	int vertCnt = 0;
 	int faceCnt = 0;
+	D3DXFROMWINEVECTOR3 v;
 	for (int x = 0; x < gridX; x++)
 		for (int z = 0; z < gridZ; z++)
 		{
-			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1 - (float) x / (gridX - 1), 0, 1 - (float) z / (gridZ - 1))));
+			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1 - (float) x / (gridX - 1), 0, 1 - (float) z / (gridZ - 1)), v,v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 	stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
 			if (x < gridX - 1 && z < gridZ - 1)
 			{
@@ -3700,10 +3608,11 @@ void MeshRenderer2::makeGrid(int gridX, int gridZ)
 	//mesh->resize(gridX * gridZ, (gridX - 1) * (gridZ - 1) * 2);
 	int vertCnt = 0;
 	int faceCnt = 0;
+	D3DXFROMWINEVECTOR3 v;
 	for (int x = 0; x < gridX; x++)
 		for (int z = 0; z < gridZ; z++)
 		{
-			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1 - (float) x / (gridX - 1), 0, 1 - (float) z / (gridZ - 1))));
+			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1 - (float) x / (gridX - 1), 0, 1 - (float) z / (gridZ - 1)), v,v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
 			if (x < gridX - 1 && z < gridZ - 1)
 			{
@@ -3734,6 +3643,7 @@ void MeshRenderer2::CreateHemis_(int stepLng, int stepLat, tShader aShader_)
 	float unitLng = 2 * D3DXFROMWINE_PI / stepLng;
 	float unitLat = D3DXFROMWINE_PI / (stepLat / 2);
 	int vertCnt = 0;
+	D3DXFROMWINEVECTOR3 v;
 	for (int i = 0; i < stepLng + 1; i++)
 	{
 		for (int j = 0; j < (stepLat / 4) + 1; j++)
@@ -3742,11 +3652,11 @@ void MeshRenderer2::CreateHemis_(int stepLng, int stepLat, tShader aShader_)
 		D3DXFROMWINEMATRIX RM;
 			D3DXFROMWINEMatrixRotationYawPitchRoll(&RM, j * unitLat, i * unitLng, 0.0f);
 		D3DXFROMWINEVec3TransformCoord(&v, &v, &RM);
-			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(v.x, v.y, v.z)));
+			vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(v.x, v.y, v.z), v,v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
 			indices.push_back(vertices.size()-1);
 		}
-		vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0)));
+		vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0), v,v,v,v, D3DXFROMWINEVECTOR2(0,0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
 		indices.push_back(vertices.size()-1);
 	}
@@ -3977,18 +3887,18 @@ void MeshRenderer2::CreateTorus2_(float radMajor, float radMinor, int slices, in
 void MeshRenderer2::CreateOcta(tShader aShader_)
 {
 		Clear();
-	m_Shape=eOcta;
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0)));
+	m_Shape=eOcta;D3DXFROMWINEVECTOR3 v;
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 0)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 0), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 1)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 1), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 1)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 1), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0.5f, -1, 0.5f)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0.5f, -1, 0.5f), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0.5f, 1, 0.5f)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0.5f, 1, 0.5f), v,v,v,v, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
 	setFace(0, 0, 1, 4);
 	setFace(1, 1, 2, 4);
@@ -4012,15 +3922,15 @@ void MeshRenderer2::CreateOcta(tShader aShader_)
 void MeshRenderer2::CreateTetra(tShader aShader_)
 {
 		Clear();
-	m_Shape=eTetra;
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0)));
+	m_Shape=eTetra;{D3DXFROMWINEVECTOR3 n,bn,t,c;
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 0, 0), n,bn,t,c, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 1, 0)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 1, 0), n,bn,t,c, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 1, 1)));
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(0, 1, 1), n,bn,t,c, D3DXFROMWINEVECTOR2(0, 0)));
 			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
-	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 1)));
-			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);
+	vertices.push_back(stx_VertexPositionNormalTexture(D3DXFROMWINEVECTOR3(1, 0, 1), n,bn,t,c, D3DXFROMWINEVECTOR2(0, 0)));
+			stx_CalculatePositionalSphericalMapping(vertices[vertices.size()-1]);}
 	setFace(0, 0, 1, 3);
 	setFace(1, 0, 2, 1);
 	setFace(2, 0, 3, 2);
@@ -4709,13 +4619,13 @@ void MeshRenderer2::AddPolygon(std::string point_names, std::vector<D3DXFROMWINE
         void MeshRenderer2::AddPolygon(std::vector<D3DXFROMWINEVECTOR3> points)
         {
             // Create the points.
-            D3DXFROMWINEVECTOR3 n;
+            D3DXFROMWINEVECTOR3 n, bn, t, c;
             int index1 = vertices.size();
             for(unsigned int i=0;i<points.size();i++)
             {
             	D3DXFROMWINEVec3Normalize(&n, &points[i]);
             D3DXFROMWINEVECTOR2 uv(points[i].x, points[i].y); // ???
-            	stx_VertexPositionNormalTexture(points[i], n, uv);
+            	stx_VertexPositionNormalTexture(points[i], n, bn, t, c, uv);
                 vertices.push_back(points[i]);
             }
 

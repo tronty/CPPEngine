@@ -20,7 +20,7 @@ int init(const char* aTitle)
 	D3DXFROMWINEMatrixIdentity(&I);
 	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp",false, IRenderer::GetRendererInstance()->Getlinear());
 
-	#if 0
+	#if 1
         shape3D.CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
         #else
         shape3D.CreateSphere(1.0f, eShaderNone);

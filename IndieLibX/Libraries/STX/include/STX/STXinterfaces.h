@@ -1819,6 +1819,23 @@ struct Vertex332N
         D3DXFROMWINEVECTOR3 Tangent;
         D3DXFROMWINEVECTOR3 Color;
         D3DXFROMWINEVECTOR2 Tex;
+        //stx_VertexPositionNormalTexture(){}
+        //virtual ~stx_VertexPositionNormalTexture(){}
+	stx_VertexPositionNormalTexture(	D3DXFROMWINEVECTOR3 position = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), 
+					D3DXFROMWINEVECTOR3 normal = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f),
+					D3DXFROMWINEVECTOR3 binormal = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f),
+					D3DXFROMWINEVECTOR3 tangent = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f),
+					D3DXFROMWINEVECTOR3 color = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f),
+					D3DXFROMWINEVECTOR2 tex=D3DXFROMWINEVECTOR2(0.0f, 0.0f))
+        {
+            Position = position;
+            Normal = normal;
+            BiNormal = binormal;
+	    Tangent = tangent;
+		Color=color;
+	    Tex = tex;
+        }
+        #if 0
 	stx_VertexPositionNormalTexture(	D3DXFROMWINEVECTOR3 position = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f), 
 					D3DXFROMWINEVECTOR3 normal = D3DXFROMWINEVECTOR3(0.0f, 0.0f, 0.0f),
 					D3DXFROMWINEVECTOR2 tex=D3DXFROMWINEVECTOR2(0.0f, 0.0f),
@@ -1831,7 +1848,8 @@ struct Vertex332N
 	    Tangent = tangent;
 		Color=D3DXFROMWINEVECTOR3(1.0f, 1.0f, 1.0f);
 	    Tex = tex;
-        }
+        } 
+        #endif
 	stx_VertexPositionNormalTexture(const stx_VertexPositionNormalTexture& rhs)
         {
             Position = rhs.Position;
