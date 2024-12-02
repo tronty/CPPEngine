@@ -20,7 +20,11 @@ int init(const char* aTitle)
 	D3DXFROMWINEMatrixIdentity(&I);
 	texture=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp",false, IRenderer::GetRendererInstance()->Getlinear());
 
+	#if 0
         shape3D.CreateTexturedBox(1.0f, 1.0f, 1.0f, eShaderNone);
+        #else
+        shape3D.CreateSphere(1.0f, eShaderNone);
+        #endif
 
 	STXGUI::init("/MeshRenderer2/GUILayout3.xml");
 
@@ -75,7 +79,7 @@ void render( )
 		static float start=timeGetTime();
 		float time=.00025 * (timeGetTime() - start );
 
-		IRenderer::GetRendererInstance()->setTexture("tExplosion", texture);
+		IRenderer::GetRendererInstance()->setTexture("DIFFUSE_SAMPLER", texture);
 		IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
 	
 	shape3D.EndDraw();

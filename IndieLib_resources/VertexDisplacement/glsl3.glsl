@@ -49,8 +49,9 @@ float turbulence(vec3 p) {
 }
 
 varying vec4 position;
-varying vec2 uv;
+varying vec2 UV;
 varying float noise_;
+varying vec3 vertexColor;
 
 [Vertex shader]
 attribute vec3 aPos;
@@ -63,8 +64,6 @@ uniform mat4 worldViewProj;
 //float time;
 void main()
 {
-  uv=aUV;
-
   // add time to the noise parameters so it's animated
   noise_ = 10.0 *  (-.10) * turbulence( .5 * aNormal + time );
   float b = 5.0 * pnoise( 0.05 * aPos + vec3( 2.0 * time ), vec3( 100.0 ) );
@@ -73,11 +72,12 @@ void main()
   vec3 newPosition = aPos + aNormal * displacement;
   gl_Position = worldViewProj * vec4(newPosition, 1.0);
   position=gl_Position;
+  UV=aUV;
+  vertexColor=aColor;
 }
 
 [Fragment shader]
-uniform sampler2D tExplosion;
-
+#if 0
 float random( vec3 scale, float seed, vec3 FragCoord ){
   return fract( sin( dot( FragCoord + seed, scale ) ) * 43758.5453 + seed ) ;
 }
@@ -93,4 +93,67 @@ void main()
 
   gl_FragColor = vec4( color.rgb, 1.0 );
 }
+#else
+varying vec3 FragPos;
+varying vec3 Normal;
+varying vec4 ShadowCoord;
+
+uniform vec3 lightPos=vec3(1.2, 1.0, 2.0);
+uniform vec3 lightColor=vec3(1.0, 1.0, 1.0);
+uniform vec3 viewPos=vec3(0.0, 0.0, 3.0);
+uniform vec3 ambientColor=vec3(0.2, 0.2, 0.2);
+uniform sampler2D DIFFUSE_SAMPLER;
+uniform sampler2D shadowMap;
+
+float ShadowCalculation(vec4 shadowCoord)
+{
+    // Perform perspective divide
+    vec3 projCoords = shadowCoord.xyz / shadowCoord.w;
+    projCoords = projCoords * 0.5 + 0.5;
+
+    // Get closest depth value from the shadow map
+    float closestDepth = texture2D(shadowMap, projCoords.xy).r;
+    // Get current depth value
+    float currentDepth = projCoords.z;
+
+    // Check if in shadow
+    float shadow = currentDepth > closestDepth + 0.005 ? 0.5 : 1.0;
+
+    return shadow;
+}
+
+void main()
+{
+    #if 1
+    // Ambient
+    vec3 ambient = 0.1 * ambientColor;
+
+    // Diffuse
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float diff = max(dot(norm, lightDir), 1.0);
+    vec3 diffuse = diff * lightColor;
+
+    // Specular
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 1.0), 32);
+    vec3 specular = specularStrength * spec * lightColor;
+
+    // Shadow
+    float shadow = 1;//ShadowCalculation(ShadowCoord);
+
+	diffuse=vec3(1);
+	specular=vec3(1);
+	vec3 vertexColor_ = vec3(1);
+	vertexColor_ = vertexColor;
+    vec3 result = (ambient + shadow * (diffuse + specular)) * vertexColor_;
+
+    gl_FragColor = vec4(result, 1.0);
+    #else
+    gl_FragColor = texture2D(DIFFUSE_SAMPLER, UV);
+    #endif
+}
+#endif
 
