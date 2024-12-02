@@ -1,3 +1,4 @@
+cd ./bin;./VertexDisplacement.bin;cd .. &&
 cd ./bin;./Shape3D2.bin;cd .. &&
 cd ./bin;./Shape3D.bin;cd .. &&
 cd ./bin;./ai.bin;cd .. &&

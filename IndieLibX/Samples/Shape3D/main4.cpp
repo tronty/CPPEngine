@@ -122,7 +122,7 @@ void SetParam()
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("lightSpaceMatrix", lightSpaceMatrix);
 	
 	
-	D3DXFROMWINEMatrixIdentity(&model);
+	#if 0
   {D3DXFROMWINEVECTOR3 v1(1.2f, 1.0f, 2.0f);
   D3DXFROMWINEVECTOR3 v2(0.0f, 0.0f, 0.0f);
   D3DXFROMWINEVECTOR3 v3(0.0f, 1.0f, 0.0f);
@@ -130,8 +130,11 @@ void SetParam()
 	    D3DXFROMWINEMatrixPerspectiveFovLH( &projection, D3DXFROMWINEToRadian( 45.0f ),
                                 //640.0f / 480.0f, 0.1f, 100.0f
 								IRenderer::GetRendererInstance()->GetAspect(), 0.001f, 20.0f
-								);
-
+		#else
+D3DXFROMWINEMatrixIdentity(&view);
+D3DXFROMWINEMatrixIdentity(&projection);
+#endif						);
+D3DXFROMWINEMatrixIdentity(&model);
 }
 void render( )
 {
