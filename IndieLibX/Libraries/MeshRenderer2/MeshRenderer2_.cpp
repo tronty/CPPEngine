@@ -2240,6 +2240,111 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
             height = height / 2.0f;
             depth = depth / 2.0f;
 #if 0
+            D3DXFROMWINEVECTOR3 topLeftFront(-width, height, depth);
+            D3DXFROMWINEVECTOR3 bottomLeftFront(-width, -height, depth);
+            D3DXFROMWINEVECTOR3 topRightFront(width, height, depth);
+            D3DXFROMWINEVECTOR3 bottomRightFront(width, -height, depth);
+            D3DXFROMWINEVECTOR3 topLeftBack(-width, height, -depth);
+            D3DXFROMWINEVECTOR3 topRightBack(width, height, -depth);
+            D3DXFROMWINEVECTOR3 bottomLeftBack(-width, -height, -depth);
+            D3DXFROMWINEVECTOR3 bottomRightBack(width, -height, -depth);
+
+            D3DXFROMWINEVECTOR2 textureTopLeft(0.0f, 0.0f);
+            D3DXFROMWINEVECTOR2 textureBottomLeft(0.0f, TextureRepeatCoefficient.y*1.0f);
+            D3DXFROMWINEVECTOR2 textureTopRight(TextureRepeatCoefficient.x*1.0f, 0.0f);
+            D3DXFROMWINEVECTOR2 textureBottomRight(TextureRepeatCoefficient.x*1.0f, TextureRepeatCoefficient.y*1.0f);
+
+            D3DXFROMWINEVECTOR3 frontNormal(0.0f, 0.0f, 1.0f);
+            D3DXFROMWINEVECTOR3 backNormal(0.0f, 0.0f, -1.0f);
+            D3DXFROMWINEVECTOR3 topNormal(0.0f, 1.0f, 0.0f);
+            D3DXFROMWINEVECTOR3 bottomNormal(0.0f, -1.0f, 0.0f);
+            D3DXFROMWINEVECTOR3 leftNormal(-1.0f, 0.0f, 0.0f);
+            D3DXFROMWINEVECTOR3 rightNormal(1.0f, 0.0f, 0.0f);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, backNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, textureBottomLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, textureBottomRight));
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, textureTopLeft));
+	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, textureTopRight));
+
+	//	0 1 3 3 2 0
+		indices.push_back(vertices.size()-4);
+		indices.push_back(vertices.size()-3);
+		indices.push_back(vertices.size()-1);
+
+		indices.push_back(vertices.size()-1);
+		indices.push_back(vertices.size()-2);
+		indices.push_back(vertices.size()-4);
+#else
 	stx_VertexPositionNormalTexture v;
 // Define interleaved vertex data for a cube (position, normal, binormal, tangent, color, texture coordinates)
     // Front face
@@ -2285,124 +2390,12 @@ D3DXFROMWINEMATRIX MeshRenderer2::ScaleAsset(void)
     indices.push_back(16);indices.push_back(17);indices.push_back(18);indices.push_back(18);indices.push_back(19);indices.push_back(16);
     // Bottom face
     indices.push_back(20);indices.push_back(21);indices.push_back( 22);indices.push_back(22);indices.push_back(23);indices.push_back(20);
-		
-		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
-    #else
-            D3DXFROMWINEVECTOR3 topLeftFront(-width, height, depth);
-            D3DXFROMWINEVECTOR3 bottomLeftFront(-width, -height, depth);
-            D3DXFROMWINEVECTOR3 topRightFront(width, height, depth);
-            D3DXFROMWINEVECTOR3 bottomRightFront(width, -height, depth);
-            D3DXFROMWINEVECTOR3 topLeftBack(-width, height, -depth);
-            D3DXFROMWINEVECTOR3 topRightBack(width, height, -depth);
-            D3DXFROMWINEVECTOR3 bottomLeftBack(-width, -height, -depth);
-            D3DXFROMWINEVECTOR3 bottomRightBack(width, -height, -depth);
-
-            D3DXFROMWINEVECTOR2 textureTopLeft(0.0f, 0.0f);
-            D3DXFROMWINEVECTOR2 textureBottomLeft(0.0f, TextureRepeatCoefficient.y*1.0f);
-            D3DXFROMWINEVECTOR2 textureTopRight(TextureRepeatCoefficient.x*1.0f, 0.0f);
-            D3DXFROMWINEVECTOR2 textureBottomRight(TextureRepeatCoefficient.x*1.0f, TextureRepeatCoefficient.y*1.0f);
-
-
-            D3DXFROMWINEVECTOR3 frontNormal(0.0f, 0.0f, 1.0f);
-            D3DXFROMWINEVECTOR3 backNormal(0.0f, 0.0f, -1.0f);
-            D3DXFROMWINEVECTOR3 topNormal(0.0f, 1.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 bottomNormal(0.0f, -1.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 leftNormal(-1.0f, 0.0f, 0.0f);
-            D3DXFROMWINEVECTOR3 rightNormal(1.0f, 0.0f, 0.0f);
-		D3DXFROMWINEVECTOR3 v3;
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, v3, v3, v3, textureTopRight));
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, backNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, v3, v3, v3, textureTopRight));
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, v3, v3, v3, textureTopRight));
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal, v3, v3, v3, textureTopRight));
-
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightBack, rightNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomRightFront, frontNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightBack, backNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topRightFront, frontNormal, v3, v3, v3, textureTopRight));
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftBack, backNormal, v3, v3, v3, textureBottomLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(bottomLeftFront, frontNormal, v3, v3, v3, textureBottomRight));
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftBack, backNormal, v3, v3, v3, textureTopLeft));
-	vertices.push_back(stx_VertexPositionNormalTexture(topLeftFront, frontNormal, v3, v3, v3, textureTopRight));
-
-	//	0 1 3 3 2 0
-		indices.push_back(vertices.size()-4);
-		indices.push_back(vertices.size()-3);
-		indices.push_back(vertices.size()-1);
-
-		indices.push_back(vertices.size()-1);
-		indices.push_back(vertices.size()-2);
-		indices.push_back(vertices.size()-4);
-		
+#endif
 		D3DXFROMWINEVECTOR3 aiVecs[2];D3DXFROMWINEMATRIX m;D3DXFROMWINEMatrixIdentity(&m);CalculateBounds(&aiVecs[0], &m);
 
             // Create the actual vertex buffer
 
-	    computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
-
-#endif
+	    // ??? computeTangentSpace(&vertices[0], sizeof(vertices[0]), vertices.size());
 
 	stx_Mesh mesh;
 	meshes.push_back(mesh);

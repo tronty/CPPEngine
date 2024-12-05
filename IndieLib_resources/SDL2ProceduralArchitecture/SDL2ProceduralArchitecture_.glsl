@@ -198,7 +198,7 @@ void main() {
     FragPos=gl_Position.xyz;
     Color=aColor;
 }
-#else
+#elif 0
 void main()
 {
 	UV=aUV;
