@@ -415,18 +415,36 @@ list::pop_back
 						stx_exit(0);
 						return true;
 					}
-					switch(m_Scancode)
-					{
-						case SDL_SCANCODE_F1:
-							m_Key=SDLK_F1;
-							return true;
-						case SDL_SCANCODE_F2:
-							m_Key=SDLK_F2;
-							return true;
-						default:
-							return true;
+            				if (m_KeyboardState[SDL_SCANCODE_F1])
+            				{
+						m_Key=SDLK_F1;
+						return true;
 					}
-
+					if (m_KeyboardState[SDL_SCANCODE_F2])
+            				{
+						m_Key=SDLK_F2;
+						return true;
+					}
+            				if (m_KeyboardState[SDL_SCANCODE_UP])
+            				{
+						m_Key=SDLK_UP;
+						return true;
+					}
+					if (m_KeyboardState[SDL_SCANCODE_DOWN])
+            				{
+						m_Key=SDLK_DOWN;
+						return true;
+					}
+            				if (m_KeyboardState[SDL_SCANCODE_PAGEUP])
+            				{
+						m_Key=SDLK_PAGEUP;
+						return true;
+					}
+					if (m_KeyboardState[SDL_SCANCODE_PAGEDOWN])
+            				{
+						m_Key=SDLK_PAGEDOWN;
+						return true;
+					}
 			if ( (event.key.keysym.sym == SDLK_g) &&
 			     (event.key.keysym.mod & KMOD_CTRL) ) {
 				STX_Service::GetWindowInstance()->HotKey_ToggleGrab();
