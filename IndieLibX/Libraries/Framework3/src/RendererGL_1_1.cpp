@@ -595,10 +595,11 @@ if(b)
 
 		void RendererGL_1_1::SaveScreenShotVrtl(const char* fn)
 		{
-		//printf("RendererGL_1_1::SaveScreenShotVrtl1:\n");
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		if(fn==0)return;
 
 		{
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			Image3 img;
 			char buf[256];
 			char gifbuf[256];
@@ -616,8 +617,8 @@ if(b)
 		//printf("RendererGL_1_1::SaveScreenShotVrtl2:\n");
 			captureScreenshot(img);
 			img.flipX();
-			LOG_FNLN_NONE;
-			LOG_PRINT_NONE("img.saveImageLibImage:%s\n", buf);
+			printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+			printf("img.saveImageLibImage:%s\n", buf);
 			img.saveImageLibImage(buf,false);
 			RendererHLSLCg::OpenILToGIF(img,gifbuf);
 		//printf("RendererGL_1_1::SaveScreenShotVrtl3:\n");

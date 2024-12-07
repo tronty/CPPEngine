@@ -50,7 +50,7 @@ using namespace LuaUtil;
 #define LOG_PRINT_X
 #else
 #define STX_PRINT(...) printf(__VA_ARGS__)
-#define STX_FNLN printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#define STX_FNLN //printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 #define LOG_PRINT(...) LOG_PRINT(__VA_ARGS__);
 #define LOG_FNLN LOG_PRINT("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 #define LOG_FNLN_X
@@ -403,6 +403,7 @@ void IRenderer::OnClear()
 }
 void IRenderer::OnPresent(IInput* Input)
 {
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	//printf("IRenderer::OnPresent0:\n");
 #if 0
 	if(1)
@@ -433,6 +434,7 @@ void IRenderer::OnPresent(IInput* Input)
 		fps = (int)framesPerSecond;
     }
 }	//LOG_FNLN_NONE;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		if(Input) Input->Update ();
 
 	//LOG_FNLN_NONE;
@@ -446,6 +448,7 @@ void IRenderer::OnPresent(IInput* Input)
 		h=STX_Service::GetWindowInstance()->GetHeight();
 		s_pRenderer->setViewport(0,0,w,h);
 	}
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 //LOG_FNLN_NONE;
 		
 /*
@@ -468,20 +471,25 @@ while(!done)
 #ifndef _MSC_VER
 	//LOG_FNLN_NONE;
 		//printf("IRenderer::OnPresent11:\n");
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	
 		bool bIsKeyPressed=true;
+		bIsKeyPressed=STX_Service::GetInputInstance()->Quit();
+		if(bIsKeyPressed)
+			stx_exit(0);
 		#if 1
 		bIsKeyPressed=STX_Service::GetInputInstance()->IsKeyPressed(STX_KEY_x);
 		#else
 		{
-			char ch;
-			//ch = getch();
+			char ch='\0';
+			ch = getch();
 			if(ch == 'x')
 				bIsKeyPressed=true;
 		}
 		#endif
 		if(bIsKeyPressed)
 	{
-		//printf("IRenderer::OnPresent1:\n");
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		char buffer [256];
 		buffer [0]='\0';
 #if !defined(__MINGW32__) && !defined(__MINGW64__)
@@ -518,9 +526,9 @@ while(!done)
     SDL_FreeSurface(surface);
 }
 #elif 1
-		//printf("IRenderer::OnPresent2:\n");
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		IRenderer::GetRendererInstance()->SaveScreenShot(buf);
-		//printf("IRenderer::OnPresent3:\n");
+		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #endif
 	}
 #endif
@@ -765,7 +773,7 @@ void IRenderer::Init(int awidth, int aheight, const char* atitle, tRenderer rtb
 	if(_WIN32_IE>=0x0500) LOG_PRINT_X("Internet Explorer 5.0, 5.0a, 5.0b\n");
 	//WinVer();
 #endif
-;
+
 //LOG_PRINT_X("ST:IRenderer::Init\n");
 		IRenderer::GetRendererInstance( rtb,false,argc,argv);
 
@@ -1185,7 +1193,7 @@ void IRenderer::insert_to_Texture_cache(const char* fileName, TextureID id)
 		m_Texture_cache.insert ( std::pair<std::string,TextureID>(fileName, id) );
 }
 
-//define LOG_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
+//define LOG_FNLN //printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 TextureID IRenderer::addImageLibTexture(const char *fileName0,
 										  //const unsigned int mips
 										  const bool useMipMaps

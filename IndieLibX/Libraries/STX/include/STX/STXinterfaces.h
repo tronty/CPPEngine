@@ -934,10 +934,13 @@ typedef enum
 		STX_JOYBUTTONUP
 	} eJoyButton;
 
-	typedef enum _eMouseButton {
+	typedef enum _eMouseEvent {
        STX_MOUSE_MOTION,
        STX_MOUSE_BUTTONDOWN,
-       STX_MOUSE_BUTTONUP,
+       STX_MOUSE_BUTTONUP, /*
+	} eMouseEvent;
+
+	typedef enum _eMouseButton { */
 	   STX_MBUTTON_LEFT,
 	   STX_MBUTTON_RIGHT,
 	   STX_MBUTTON_MIDDLE,
@@ -1073,9 +1076,8 @@ virtual bool OnMODEKeyPress()=0;
 
 class DummyInput : public IInput
 	{
-		private:
-			std::map<int, char> m_Keystates;	/**< Holds the state of the keys */
 		protected:
+        		unsigned char*  m_KeyboardState;
 int MouseX;
 int MouseY;
 int MouseLB;
@@ -1096,9 +1098,9 @@ case SDL_KEYDOWN:
         switch (e->key()) {
 
 */
-virtual void SetKeyDown(eKey a){m_Keystates[a]='d';}
-virtual void SetKeyUp(eKey a){m_Keystates[a]='u';}
-virtual void SetKey(unsigned int a){Key=a;}
+virtual void SetKeyDown(eKey a){}
+virtual void SetKeyUp(eKey a){}
+virtual void SetKey(unsigned int a){ /* m_KeyboardState[a]; ??? */ }
 virtual void SetMouseX(int a){MouseX=a;}
 virtual void SetMouseY(int a){MouseY=a;}
 virtual void SetMouseLB(int a){MouseLB=a;}
@@ -1107,6 +1109,7 @@ virtual void SetMouseRB(int a){MouseRB=a;}
 			/// Default Constructor
                         DummyInput():IInput()
 {
+m_KeyboardState=0;
 Key=0;
 MouseX=0;
 MouseY=0;
@@ -1128,62 +1131,7 @@ MouseRB=0;
                         virtual ~DummyInput(){}
 
 			/// Updates keyboard events
-			virtual bool Update()
-{
-/*
-for( std::map<int, char>::iterator itr = m_Keystates.begin(); itr != m_Keystates.end(); itr++)
-		{
-			//put no status flag
-			if( itr->second == 'u' )
-			{
-			}
-		}
-*/
-		//check to see if any keys haven't been released but were press
-		// ie being held
-/*
-		for( std::map<int, char>::iterator itr = m_Keystates.begin(); itr != m_Keystates.end(); itr++)
-		{
-			//put no status flag
-			if( itr->second == 'u' )
-			{
-				bool keyFound = false;
-				for(int i = 0; i < keys.size(); i++)
-				{
-					if(keys[i] == itr->first)
-					{
-						keyFound = true;
-						break;
-					}
-				}
-
-				if( !keyFound )
-				{
-					itr->second = 'n';
-				}
-			}
-			else if( itr->second == 'd')
-			{
-				bool keyFound = false;
-				for(int i = 0; i < keys.size(); i++)
-				{
-					if(keys[i] == itr->first)
-					{
-						keyFound = true;
-						break;
-					}
-				}
-
-				if( !keyFound )
-				{
-					itr->second = 'h';
-				}
-			}
-		}
-*/
-
-return true;
-}
+			virtual bool Update(){return true;}
 
 virtual bool OnShiftKeyPress(){return false;}
 virtual bool OnLShiftKeyPress(){return false;}
@@ -1204,19 +1152,17 @@ virtual bool OnMODEKeyPress(){return false;}
 #if 1
 virtual bool OnKeyPress	(eKey pKey)
 {
-if(m_Keystates[pKey] == 'd')
-		{
-			return true;
-		}
+        bool isPressed = m_KeyboardState[SDL_SCANCODE_A+pKey];
+        if(isPressed)
+		return true;
 	return false;
 }
 
 virtual bool OnKeyRelease	(eKey pKey)
 {
-if(m_Keystates[pKey] == 'u')
-		{
-			return true;
-		}
+        bool isPressed = m_KeyboardState[SDL_SCANCODE_A+pKey];
+        if(!isPressed)
+		return true;
 	return false;
 }
 	//
@@ -1224,36 +1170,27 @@ if(m_Keystates[pKey] == 'u')
 	//
 	virtual bool IsKeyHeld(eKey Key)
 	{
-		if(m_Keystates[Key] == 'h')
-		{
-			return true;
-		}
-
 		return false;
 	}
 
 	//
 	// Tells if a key is pressed
-	virtual bool IsKeyDown(eKey Key)
+	virtual bool IsKeyDown(eKey aKey)
 	{
-		if(m_Keystates[Key] == 'd')
-		{
+        	bool isPressed = m_KeyboardState[SDL_SCANCODE_A+aKey];
+        	if(isPressed)
 			return true;
-		}
-
 		return false;
 	}
 
 	//
 	// Tells if a key is released
 	//
-	virtual bool IsKeyUp(eKey Key)
+	virtual bool IsKeyUp(eKey aKey)
 	{
-		if(m_Keystates[Key] == 'u')
-		{
+        	bool isPressed = m_KeyboardState[SDL_SCANCODE_A+aKey];
+        	if(!isPressed)
 			return true;
-		}
-
 		return false;
 	}
 	virtual bool IsKeyPressed(eKey a){return IsKeyDown(a);}
@@ -1349,7 +1286,12 @@ extern SDL_Event event;
 	{
 		public:
 			/// Default Constructor
-			SDLInput(){m_quit=false;}
+			SDLInput()
+			{
+				m_KeyboardState = SDL_GetKeyboardState(nullptr);
+                		m_MouseState = SDL_GetMouseState(&m_MouseX, &m_MouseY);
+				m_quit=false;
+			}
 
 			/// Default Destructor
 			virtual ~SDLInput(){}
@@ -1442,10 +1384,12 @@ virtual bool OnMODEKeyPress(){return (event.key.keysym.mod & KMOD_MODE);}
 
 		private:
 
-			std::map<int, char> m_Keystates;	/**< Holds the state of the keys */
+			//std::map<int, char> m_Keystates;	/**< Holds the state of the keys */Uint8* 
+        		Uint8*  m_KeyboardState;
 			int m_MouseX;
 			int m_MouseY;
-			std::vector< char > m_MouseButtons;
+			Uint32 m_MouseState;
+			//std::vector< char > m_MouseButtons;
 			bool m_quit;
 
 

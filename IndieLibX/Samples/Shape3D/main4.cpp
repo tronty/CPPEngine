@@ -24,7 +24,7 @@ class _Shape3D: public STXGUI
 	D3DXFROMWINEMATRIX projection;
 	ShaderID shd;
 	VertexFormatID vf;
-	TextureID texID, tileTexID, windowTexID;
+	TextureID texID;//, tileTexID, windowTexID;
 	MeshRenderer2 shape3D[20];
 	unsigned int m_i, m_s;
 public:
@@ -67,9 +67,11 @@ int init(const char* aTitle)
 
 	SamplerStateID ss=IRenderer::GetRendererInstance()->Getlinear();
 	texID=IRenderer::GetRendererInstance()->addImageLibTexture("/test.bmp", false, ss);
+#if 0
 	tileTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/textures/ATI_SDK/1024px-brick.png", false, ss);
 	//texID=tileTexID;
     windowTexID=IRenderer::GetRendererInstance()->addImageLibTexture("/RadeonTerrainDemo/CastleWindow256px.png", false, ss);
+#endif
 #if 0
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/vnoise/vnoise.hlsl", "main", "main");
 #else
@@ -262,7 +264,7 @@ void renderScene( )
     IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", matRot );
 	float displacement=1.0; 
     IRenderer::GetRendererInstance()->setShaderConstant1f("Displacement", displacement );
-    IRenderer::GetRendererInstance()->setTexture("DIFFUSE_SAMPLER", tileTexID);
+    IRenderer::GetRendererInstance()->setTexture("DIFFUSE_SAMPLER", texID);
     	SetParam();
     	int j=0;
 			if(shape3D[m_i].meshes[j].rindices[0].size()/3)

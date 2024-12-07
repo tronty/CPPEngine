@@ -233,24 +233,79 @@ eKey SDLKtoKEY(int key)
 	};
 	return STX_KEY_UNKNOWN;
 }
-	
+#if 0
+    /* Print all information about a key event */
+    void PrintKeyInfo( SDL_KeyboardEvent *key ){
+        /* Is it a release or a press? */
+        if( key->type == SDL_KEYUP )
+            printf( "Release:- " );
+        else
+            printf( "Press:- " );
+
+        /* Print the hardware scancode first */
+        printf( "Scancode: 0x%02X", key->keysym.scancode );
+        /* Print the name of the key */
+        printf( ", Name: %s", SDL_GetKeyName( key->keysym.sym ) );
+        /* We want to print the unicode info, but we need to make */
+        /* sure its a press event first (remember, release events */
+        /* don't have unicode info                                */
+        if( key->type == SDL_KEYDOWN ){
+            /* If the Unicode value is less than 0x80 then the    */
+            /* unicode value can be used to get a printable       */
+            /* representation of the key, using (char)unicode.    */
+            //printf(", Unicode: " );
+            if( key->keysym.unicode < 0x80 && key->keysym.unicode > 0 ){
+                printf( "%c (0x%04X)", (char)key->keysym.unicode,
+                        key->keysym.unicode );
+            }
+            else{
+                printf( "? (0x%04X)", key->keysym.unicode );
+            }
+        }
+        printf( "\n" );
+        /* Print modifier info */
+        PrintModifiers( key->keysym.mod );
+    }
+
+    /* Print modifier info */
+    void PrintModifiers( SDLMod mod ){
+        printf( "Modifers: " );
+
+        /* If there are none then say so and return */
+        if( mod == KMOD_NONE ){
+            printf( "None\n" );
+            return;
+        }
+
+        /* Check for the presence of each SDLMod value */
+        /* This looks messy, but there really isn't    */
+        /* a clearer way.                              */
+        if( mod & KMOD_NUM ) printf( "NUMLOCK " );
+        if( mod & KMOD_CAPS ) printf( "CAPSLOCK " );
+        if( mod & KMOD_LCTRL ) printf( "LCTRL " );
+        if( mod & KMOD_RCTRL ) printf( "RCTRL " );
+        if( mod & KMOD_RSHIFT ) printf( "RSHIFT " );
+        if( mod & KMOD_LSHIFT ) printf( "LSHIFT " );
+        if( mod & KMOD_RALT ) printf( "RALT " );
+        if( mod & KMOD_LALT ) printf( "LALT " );
+        if( mod & KMOD_CTRL ) printf( "CTRL " );
+        if( mod & KMOD_SHIFT ) printf( "SHIFT " );
+        if( mod & KMOD_ALT ) printf( "ALT " );
+        printf( "\n" );
+    }
+#endif
 #if 1
 bool SDLInput::OnKeyPress	(eKey pKey)
 {
-if(m_Keystates[pKey] == 'd')
-		{
-			return true;
-		}
+        bool isPressed = false; // ??? m_KeyboardState[pKey];
+        if(isPressed)
+		return true;
 	return false;
 }
 
 bool SDLInput::OnKeyRelease	(eKey pKey)
 {
-if(m_Keystates[pKey] == 'u')
-		{
-			return true;
-		}
-	return false;
+	return !OnKeyPress(pKey);
 }
 #endif
 bool SDLInput::Quit(void)
@@ -263,37 +318,22 @@ bool SDLInput::Quit(void)
 	//
 	bool SDLInput::IsKeyHeld(eKey Key)
 	{
-		if(m_Keystates[Key] == 'h')
-		{
-			return true;
-		}
-
 		return false;
 	}
 
 	//
 	// Tells if a key is pressed
-	bool SDLInput::IsKeyDown(eKey Key)
+	bool SDLInput::IsKeyDown(eKey aKey)
 	{
-		if(m_Keystates[Key] == 'd')
-		{
-			return true;
-		}
-
-		return false;
+		return OnKeyPress(aKey);
 	}
 
 	//
 	// Tells if a key is released
 	//
-	bool SDLInput::IsKeyUp(eKey Key)
+	bool SDLInput::IsKeyUp(eKey aKey)
 	{
-		if(m_Keystates[Key] == 'u')
-		{
-			return true;
-		}
-
-		return false;
+		return OnKeyRelease(aKey);
 	}
 
 	//
@@ -315,7 +355,7 @@ SDL_Event event;
 	bool SDLInput::Update()
 	{
 		
-		std::vector< eKey > keys;
+		//std::vector< eKey > keys;
 		m_quit=false;
 		m_iWheelY=0;
 		//cGuiManager* Gui = Singleton<cGuiManager>::GetSingletonPtr();
@@ -346,14 +386,21 @@ SDL_Event event;
 #endif
 				case SDL_QUIT:
 					m_quit=true;
+					stx_exit(0);
 					return true;
 					break;
 				case SDL_KEYDOWN:
 					if(event.key.type==SDLK_ESCAPE)
-m_quit=true;
-					m_Keystates[SDLKtoKEY(event.key.keysym.sym)] = 'd';
-					keys.push_back(SDLKtoKEY(event.key.keysym.sym));
+					{
+						m_quit=true;
+						stx_exit(0);
+						return true;
+					}
+					//keys.push_back(SDLKtoKEY(event.key.keysym.sym));
 
+        				// Get keyboard state
+        				//const Uint8* 
+        				m_KeyboardState = SDL_GetKeyboardState(nullptr);
 
 			if ( (event.key.keysym.sym == SDLK_g) &&
 			     (event.key.keysym.mod & KMOD_CTRL) ) {
@@ -369,18 +416,21 @@ m_quit=true;
 			}
 					break;
 				case SDL_KEYUP:
-					m_Keystates[SDLKtoKEY(event.key.keysym.sym)] = 'u';
-					keys.push_back(SDLKtoKEY(event.key.keysym.sym));
 					break;
                 case SDL_MOUSEMOTION:
-                    m_MouseX = event.motion.x;
-                    m_MouseY = event.motion.y;
+                	 {	int mouseX, mouseY;
+                		m_MouseState = SDL_GetMouseState(&mouseX, &mouseY);
+                    		m_MouseX = mouseX;
+                    		m_MouseY = mouseY;}
                     break;
                 case SDL_MOUSEBUTTONUP:
 						//do input core stuff here
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-						//do input core stuff here
+                	 {	int mouseX, mouseY;
+                		m_MouseState = SDL_GetMouseState(&mouseX, &mouseY);
+                    		m_MouseX = mouseX;
+                    		m_MouseY = mouseY;}
                     break;
 #ifdef SDL_2_0_5_BUILD
 		case SDL_MOUSEWHEEL:
@@ -402,48 +452,6 @@ m_quit=true;
 		if(sdl_events.size()) sdl_events.pop_front();
 		sdl_events.push_back(eventlst);
 		#endif
-		//check to see if any keys haven't been released but were press
-		// ie being held
-
-		for( std::map<int, char>::iterator itr = m_Keystates.begin(); itr != m_Keystates.end(); itr++)
-		{
-			//put no status flag
-			if( itr->second == 'u' )
-			{
-				bool keyFound = false;
-				for(int i = 0; i < keys.size(); i++)
-				{
-					if(keys[i] == itr->first)
-					{
-						keyFound = true;
-						break;
-					}
-				}
-
-				if( !keyFound )
-				{
-					itr->second = 'n';
-				}
-			}
-			else if( itr->second == 'd')
-			{
-				bool keyFound = false;
-				for(int i = 0; i < keys.size(); i++)
-				{
-					if(keys[i] == itr->first)
-					{
-						keyFound = true;
-						break;
-					}
-				}
-
-				if( !keyFound )
-				{
-					itr->second = 'h';
-				}
-			}
-		}
-
 
 float x=0.0f;//319.5f;//9.8875f;//*2.0f*PI/360.0f;
 float y=0.0f;//300.96f;//=6.836f/2.0f;//*2.0f*PI/360.0f;
@@ -456,11 +464,11 @@ float y=0.0f;//300.96f;//=6.836f/2.0f;//*2.0f*PI/360.0f;
 	UINT width = vi->current_w;
 	UINT height = vi->current_h;
 #endif
-x+=GetMouseX()
+x+=m_MouseX//GetMouseX()
 //*2.0f*PI
 *360.0f*1.1f
 / width;
-y+=GetMouseY()
+y+=m_MouseY//GetMouseY()
 //*PI
 *180.0f*1.1f
 / height;
@@ -494,13 +502,34 @@ if(IsMouseButtonPressed(STX_MBUTTON_RIGHT))
       m_fSpinX_R=x;
       m_fSpinY_R=y;
 }
-
-
+/*
+	for(unsigned int i=0;i<keys.size();i++)
+	{
+		//printf("keys[%d]= %c\n", i, keys[i]);
+	} */
 		return false;
 	}
 
-int SDLInput::GetMouseX(void){return event.motion.x;}
-int SDLInput::GetMouseY(void){return event.motion.y;}
+int SDLInput::GetMouseX(void)
+{
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	m_fX=x;
+	m_fY=y;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("SDLInput::GetMouseX()=%d\n", x);
+	return x;
+}
+int SDLInput::GetMouseY(void)
+{
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	m_fX=x;
+	m_fY=y;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("SDLInput::GetMouseY()=%d\n", y);
+	return y;
+}
 
 
 bool SDLInput::IsWindowMoved(void)
@@ -553,88 +582,87 @@ bool SDLInput::IsWindowClosed(void)
 	return false;
 }
 
-Sint32 SDLInput::getKeyCode(){return event.key.keysym.sym;}
-int SDLInput::getKeyID(void){return 0;}//???(int)event.key.keysym;}
-char SDLInput::getKeyChar(void){return 0;}//???(char)event.key.keysym;}
+Sint32 SDLInput::getKeyCode()
+{
+	int s=event.key.keysym.sym;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("event.key.keysym.sym=%d\n", s);	
+	return s;
+}
+int SDLInput::getKeyID(void){return getKeyCode();}//???(int)event.key.keysym;}
+char SDLInput::getKeyChar(void){return getKeyCode();}//???(char)event.key.keysym;}
 
 bool SDLInput::IsKeyPressed(void)
 {
-	Uint8 e=event.type;
-	if(e==SDL_KEYDOWN)
-	{
-		//LOG_FNLN;
+        bool isPressed = false; // ??? m_KeyboardState[pKey];
+        if(isPressed)
 		return true;
-	}
 	return false;
 }
 
 bool SDLInput::IsKeyReleased(void)
 {
-	Uint8 e=event.type;
-	if(e==SDL_KEYUP)
-	{
-		//LOG_FNLN;
-		return true;
-	}
-	return false;
+	return !IsKeyPressed();
 }
 
 bool SDLInput::IsMouseButtonPressed(void)
 {
-	Uint8 e=event.button.state;
-	if(e==SDL_PRESSED)
-	{
-		//LOG_FNLN;
-		return IsMouseButton() && true;
-	}
-	return false;
+	return IsMouseButton();
 }
 
 bool SDLInput::IsMouseButtonReleased(void)
 {
-	Uint8 e=event.button.state;
-	if(e==SDL_RELEASED)
-	{
-		//LOG_FNLN;
-		return IsMouseButton() && true;
-	}
-	return false;
+	return !IsMouseButton();
 }
 
 bool SDLInput::IsMouseClick(void)
 {
-#if defined(SDL_2_0_5_BUILD)
-	Uint8 e=event.button.clicks;
-	if(e==1)
-	{
-		//LOG_FNLN;
-		return IsMouseButton() && true;
-	}
-#endif
-	return false;
+	return IsMouseButton();
 }
 
 bool SDLInput::IsMouseDoubleClick(void)
 {
-#if defined(SDL_2_0_5_BUILD)
-	Uint8 e=event.button.clicks;
-	if(e==2)
-	{
-		//LOG_FNLN;
-		return IsMouseButton() && true;
-	}
-#endif
 	return false;
 }
 bool SDLInput::IsMouseButton(void)
 {
-	Uint32 mousestate=SDL_GetMouseState(NULL, NULL);
-	if(mousestate & SDL_BUTTON(SDL_BUTTON_LEFT)) return true;
-	if(mousestate & SDL_BUTTON(SDL_BUTTON_RIGHT)) return true;
-	if(mousestate & SDL_BUTTON(SDL_BUTTON_MIDDLE)) return true;
+	m_MouseState=SDL_GetMouseState(NULL, NULL);
+	if(m_MouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
+	{
+		//printf("SDL_BUTTON_LEFT\n");
+		//printf("m_fX=%f\n", m_fX);
+		//printf("m_fY=%f\n", m_fY);
+		return true;
+	}
+	if(m_MouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))
+	{
+		//printf("SDL_BUTTON_RIGHT\n");
+		//printf("m_fX=%f\n", m_fX);
+		//printf("m_fY=%f\n", m_fY);
+		return true;
+	}
+	if(m_MouseState & SDL_BUTTON(SDL_BUTTON_MIDDLE))
+	{
+		//printf("SDL_BUTTON_MIDDLE\n");
+		//printf("m_fX=%f\n", m_fX);
+		//printf("m_fY=%f\n", m_fY);
+		return true;
+	}
 	#if defined(SDL_1_2_15_BUILD)
-	if(mousestate & SDL_BUTTON(SDL_BUTTON_WHEELUP)) return true;
-	if(mousestate & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) return true;
+	if(m_MouseState & SDL_BUTTON(SDL_BUTTON_WHEELUP))
+	{
+		//printf("SDL_BUTTON_WHEELUP\n");
+		//printf("m_fX=%f\n", m_fX);
+		//printf("m_fY=%f\n", m_fY);
+		return true;
+	}
+	if(m_MouseState & SDL_BUTTON(SDL_BUTTON_WHEELDOWN))
+	{
+		//printf("SDL_BUTTON_WHEELDOWN\n");
+		//printf("m_fX=%f\n", m_fX);
+		//printf("m_fY=%f\n", m_fY);
+		return true;
+	}
 	#endif
 	return false;
 }
@@ -644,14 +672,24 @@ bool SDLInput::IsMouseMotion(void)
 }
 bool SDLInput::IsKeyPressed(eKey e,unsigned int)
 {
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	if(event.key.state!=SDL_PRESSED) return false;
 	if(event.key.keysym.sym!=e) return false;
 	return true;
 }
 bool SDLInput::IsKeyPressed(eKey e)
 {
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("SDL_PRESSED=%d\n",SDL_PRESSED);
+	//printf("event.key.state=%d\n",event.key.state);
+	//printf("event.key.keysym.sym=%d\n",event.key.keysym.sym);
+	//printf("event.key.state=%d\n",event.key.state);
+	//printf("eKey ee=%d\n",e);
 	if(event.key.state!=SDL_PRESSED) return false;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 	if(event.key.keysym.sym!=e) return false;
+	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+	//printf("eKey=%d\n", e);
 	return true;
 }
 
@@ -661,13 +699,33 @@ bool SDLInput::IsMouseButtonPressed(eMouseButton e,unsigned int){return MouseBut
 bool SDLInput::IsMouseButtonPressed(eMouseButton e){return MouseButtonPressed(e);}
 bool SDLInput::MouseButtonPressed(eMouseButton e)
 {
-	Uint32 mousestate=SDL_GetMouseState(NULL, NULL);
-	if((mousestate & SDL_BUTTON(SDL_BUTTON_LEFT)) &&(e==STX_MBUTTON_LEFT)) return true;
-	if((mousestate & SDL_BUTTON(SDL_BUTTON_RIGHT)) &&(e==STX_MBUTTON_RIGHT)) return true;
-	if((mousestate & SDL_BUTTON(SDL_BUTTON_MIDDLE)) &&(e==STX_MBUTTON_MIDDLE)) return true;
+	m_MouseState=SDL_GetMouseState(NULL, NULL);
+	if((m_MouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) &&(e==STX_MBUTTON_LEFT))
+	{
+		//printf("STX_MBUTTON_LEFT\n");
+		return true;
+	}
+	if((m_MouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) &&(e==STX_MBUTTON_RIGHT))
+	{
+		//printf("STX_MBUTTON_RIGHT\n");
+		return true;
+	}
+	if((m_MouseState & SDL_BUTTON(SDL_BUTTON_MIDDLE)) &&(e==STX_MBUTTON_MIDDLE))
+	{
+		//printf("STX_MBUTTON_MIDDLE\n");
+		return true;
+	}
 	#if defined(SDL_1_2_15_BUILD)
-	if((mousestate & SDL_BUTTON(SDL_BUTTON_WHEELUP)) &&(e==STX_MBUTTON_WHEELUP)) return true;
-	if((mousestate & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) &&(e==STX_MBUTTON_WHEELDOWN)) return true;
+	if((m_MouseState & SDL_BUTTON(SDL_BUTTON_WHEELUP)) &&(e==STX_MBUTTON_WHEELUP))
+	{
+		//printf("STX_MBUTTON_WHEELUP\n");
+		return true;
+	}
+	if((m_MouseState & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) &&(e==STX_MBUTTON_WHEELDOWN))
+	{
+		//printf("STX_MBUTTON_WHEELDOWN\n");
+		return true;
+	}
 	#elif defined(SDL_2_0_5_BUILD)
 /*
 case SDL_MOUSEWHEEL:
