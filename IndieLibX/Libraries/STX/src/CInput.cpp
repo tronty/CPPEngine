@@ -297,7 +297,7 @@ eKey SDLKtoKEY(int key)
 #if 1
 bool SDLInput::OnKeyPress	(eKey pKey)
 {
-        bool isPressed = false; // ??? m_KeyboardState[pKey];
+        bool isPressed = (pKey==m_Key);
         if(isPressed)
 		return true;
 	return false;
@@ -336,6 +336,21 @@ bool SDLInput::Quit(void)
 		return OnKeyRelease(aKey);
 	}
 
+bool SDLInput::OnShiftKeyPress(){return (event.key.keysym.mod & KMOD_SHIFT);}
+bool SDLInput::OnLShiftKeyPress(){return (event.key.keysym.mod & KMOD_LSHIFT);}
+bool SDLInput::OnRShiftKeyPress(){return (event.key.keysym.mod & KMOD_RSHIFT);}
+
+bool SDLInput::OnCTRLKeyPress(){return (event.key.keysym.mod & KMOD_CTRL);}
+bool SDLInput::OnLCTRLKeyPress(){return (event.key.keysym.mod & KMOD_LCTRL);}
+bool SDLInput::OnRCTRLKeyPress(){return (event.key.keysym.mod & KMOD_RCTRL);}
+
+bool SDLInput::OnALTKeyPress(){return (event.key.keysym.mod & KMOD_ALT);}
+bool SDLInput::OnLALTKeyPress(){return (event.key.keysym.mod & KMOD_LALT);}
+bool SDLInput::OnRALTKeyPress(){return (event.key.keysym.mod & KMOD_RALT);}
+
+bool SDLInput::OnNUMKeyPress(){return (event.key.keysym.mod & KMOD_NUM);}
+bool SDLInput::OnCAPSKeyPress(){return (event.key.keysym.mod & KMOD_CAPS);}
+bool SDLInput::OnMODEKeyPress(){return (event.key.keysym.mod & KMOD_MODE);}
 	//
 	// Updates keyboard events
 	/// @returns True is returned on an Exit key being pressed (ctrl+c, window being closed)
@@ -350,12 +365,12 @@ list::pop_front
 list::push_back
 list::pop_back
 */
-SDL_Event event;
 		
 	bool SDLInput::Update()
 	{
-		
+		//SDL_Event event;
 		//std::vector< eKey > keys;
+		m_Key='\0';m_Scancode='\0';
 		m_quit=false;
 		m_iWheelY=0;
 		//cGuiManager* Gui = Singleton<cGuiManager>::GetSingletonPtr();
@@ -390,17 +405,27 @@ SDL_Event event;
 					return true;
 					break;
 				case SDL_KEYDOWN:
-					if(event.key.type==SDLK_ESCAPE)
+        				m_KeyboardState = SDL_GetKeyboardState(&m_Numkeys);
+					m_Key=event.key.keysym.sym;
+					m_Scancode=event.key.keysym.scancode;
+					//printf("m_Scancode=%x\n", m_Scancode);
+					if(m_Key==SDLK_ESCAPE)
 					{
 						m_quit=true;
 						stx_exit(0);
 						return true;
 					}
-					//keys.push_back(SDLKtoKEY(event.key.keysym.sym));
-
-        				// Get keyboard state
-        				//const Uint8* 
-        				m_KeyboardState = SDL_GetKeyboardState(nullptr);
+					switch(m_Scancode)
+					{
+						case SDL_SCANCODE_F1:
+							m_Key=SDLK_F1;
+							return true;
+						case SDL_SCANCODE_F2:
+							m_Key=SDLK_F2;
+							return true;
+						default:
+							return true;
+					}
 
 			if ( (event.key.keysym.sym == SDLK_g) &&
 			     (event.key.keysym.mod & KMOD_CTRL) ) {
@@ -584,18 +609,16 @@ bool SDLInput::IsWindowClosed(void)
 
 Sint32 SDLInput::getKeyCode()
 {
-	int s=event.key.keysym.sym;
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	//printf("event.key.keysym.sym=%d\n", s);	
-	return s;
+	if(m_Key)
+		return m_Key;
+	return '\0';
 }
-int SDLInput::getKeyID(void){return getKeyCode();}//???(int)event.key.keysym;}
-char SDLInput::getKeyChar(void){return getKeyCode();}//???(char)event.key.keysym;}
+int SDLInput::getKeyID(void){return getKeyCode();}
+char SDLInput::getKeyChar(void){return getKeyCode();}
 
 bool SDLInput::IsKeyPressed(void)
 {
-        bool isPressed = false; // ??? m_KeyboardState[pKey];
-        if(isPressed)
+	if(m_Key)
 		return true;
 	return false;
 }
@@ -672,25 +695,12 @@ bool SDLInput::IsMouseMotion(void)
 }
 bool SDLInput::IsKeyPressed(eKey e,unsigned int)
 {
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	if(event.key.state!=SDL_PRESSED) return false;
-	if(event.key.keysym.sym!=e) return false;
+	if(m_Key!=e) return false;
 	return true;
 }
 bool SDLInput::IsKeyPressed(eKey e)
 {
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	//printf("SDL_PRESSED=%d\n",SDL_PRESSED);
-	//printf("event.key.state=%d\n",event.key.state);
-	//printf("event.key.keysym.sym=%d\n",event.key.keysym.sym);
-	//printf("event.key.state=%d\n",event.key.state);
-	//printf("eKey ee=%d\n",e);
-	if(event.key.state!=SDL_PRESSED) return false;
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	if(event.key.keysym.sym!=e) return false;
-	//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-	//printf("eKey=%d\n", e);
-	return true;
+	return IsKeyPressed(e, 0);
 }
 
 bool SDLInput::OnMouseButtonPress(eMouseButton e){return MouseButtonPressed(e);}

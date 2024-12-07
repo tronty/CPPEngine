@@ -1083,7 +1083,7 @@ int MouseY;
 int MouseLB;
 int MouseMB;
 int MouseRB;
-unsigned int Key;
+unsigned int m_Key;
 		public:
 /*
 case SDL_KEYUP:
@@ -1110,7 +1110,7 @@ virtual void SetMouseRB(int a){MouseRB=a;}
                         DummyInput():IInput()
 {
 m_KeyboardState=0;
-Key=0;
+m_Key='\0';
 MouseX=0;
 MouseY=0;
 MouseLB=0;
@@ -1119,7 +1119,7 @@ MouseRB=0;
 }
 virtual void clear()
 {
-Key=0;
+m_Key='\0';
 MouseX=0;
 MouseY=0;
 MouseLB=0;
@@ -1152,7 +1152,7 @@ virtual bool OnMODEKeyPress(){return false;}
 #if 1
 virtual bool OnKeyPress	(eKey pKey)
 {
-        bool isPressed = m_KeyboardState[SDL_SCANCODE_A+pKey];
+        bool isPressed = m_Key==pKey;
         if(isPressed)
 		return true;
 	return false;
@@ -1160,7 +1160,7 @@ virtual bool OnKeyPress	(eKey pKey)
 
 virtual bool OnKeyRelease	(eKey pKey)
 {
-        bool isPressed = m_KeyboardState[SDL_SCANCODE_A+pKey];
+        bool isPressed = m_Key==pKey;
         if(!isPressed)
 		return true;
 	return false;
@@ -1177,7 +1177,7 @@ virtual bool OnKeyRelease	(eKey pKey)
 	// Tells if a key is pressed
 	virtual bool IsKeyDown(eKey aKey)
 	{
-        	bool isPressed = m_KeyboardState[SDL_SCANCODE_A+aKey];
+        	bool isPressed = m_Key==aKey;
         	if(isPressed)
 			return true;
 		return false;
@@ -1188,7 +1188,7 @@ virtual bool OnKeyRelease	(eKey pKey)
 	//
 	virtual bool IsKeyUp(eKey aKey)
 	{
-        	bool isPressed = m_KeyboardState[SDL_SCANCODE_A+aKey];
+        	bool isPressed = m_Key==aKey;
         	if(!isPressed)
 			return true;
 		return false;
@@ -1281,13 +1281,16 @@ return false;
 	virtual Sint32 getKeyCode(){return 0;}
     };
 #if defined(SDL_1_2_15_BUILD) || defined(SDL_2_0_5_BUILD)
-extern SDL_Event event;
+//extern SDL_Event event;
 	class SDLInput : public IInput
 	{
+		protected:
+			SDL_Event event;
 		public:
 			/// Default Constructor
 			SDLInput()
 			{
+				m_Key='\0';
 				m_KeyboardState = SDL_GetKeyboardState(nullptr);
                 		m_MouseState = SDL_GetMouseState(&m_MouseX, &m_MouseY);
 				m_quit=false;
@@ -1308,21 +1311,21 @@ extern SDL_Event event;
 			/// Updates keyboard events
 			virtual bool Update();
 
-virtual bool OnShiftKeyPress(){return (event.key.keysym.mod & KMOD_SHIFT);}
-virtual bool OnLShiftKeyPress(){return (event.key.keysym.mod & KMOD_LSHIFT);}
-virtual bool OnRShiftKeyPress(){return (event.key.keysym.mod & KMOD_RSHIFT);}
+virtual bool OnShiftKeyPress();
+virtual bool OnLShiftKeyPress();
+virtual bool OnRShiftKeyPress();
 
-virtual bool OnCTRLKeyPress(){return (event.key.keysym.mod & KMOD_CTRL);}
-virtual bool OnLCTRLKeyPress(){return (event.key.keysym.mod & KMOD_LCTRL);}
-virtual bool OnRCTRLKeyPress(){return (event.key.keysym.mod & KMOD_RCTRL);}
+virtual bool OnCTRLKeyPress();
+virtual bool OnLCTRLKeyPress();
+virtual bool OnRCTRLKeyPress();
 
-virtual bool OnALTKeyPress(){return (event.key.keysym.mod & KMOD_ALT);}
-virtual bool OnLALTKeyPress(){return (event.key.keysym.mod & KMOD_LALT);}
-virtual bool OnRALTKeyPress(){return (event.key.keysym.mod & KMOD_RALT);}
+virtual bool OnALTKeyPress();
+virtual bool OnLALTKeyPress();
+virtual bool OnRALTKeyPress();
 
-virtual bool OnNUMKeyPress(){return (event.key.keysym.mod & KMOD_NUM);}
-virtual bool OnCAPSKeyPress(){return (event.key.keysym.mod & KMOD_CAPS);}
-virtual bool OnMODEKeyPress(){return (event.key.keysym.mod & KMOD_MODE);}
+virtual bool OnNUMKeyPress();
+virtual bool OnCAPSKeyPress();
+virtual bool OnMODEKeyPress();
 
 	virtual bool OnKeyPress				(eKey pKey);
 	virtual bool OnKeyRelease			(eKey pKey);
@@ -1384,8 +1387,10 @@ virtual bool OnMODEKeyPress(){return (event.key.keysym.mod & KMOD_MODE);}
 
 		private:
 
-			//std::map<int, char> m_Keystates;	/**< Holds the state of the keys */Uint8* 
+			//std::map<int, char> m_Keystates;	/**< Holds the state of the keys */
+			int m_Numkeys; 
         		Uint8*  m_KeyboardState;
+        		Uint8 m_Key, m_Scancode;
 			int m_MouseX;
 			int m_MouseY;
 			Uint32 m_MouseState;
