@@ -115,7 +115,7 @@ void render()
 	IRenderer::GetRendererInstance()->Clear(true, true, D3DXFROMWINEVECTOR4 (f, f, f, 1.0f));
 	IRenderer::GetRendererInstance()->BeginScene();
 	
-	if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F1))
+	if(STX_Service::GetInputInstance()->IsKeyPressed (STX_KEY_F1))
 	{
 		IRenderer::GetRendererInstance()->DeleteShader(s_i);
 		if(!s_i)
@@ -133,7 +133,7 @@ void render()
 			LoadShader(s_i);
 		}
 	}
-	else if(STX_Service::GetInputInstance()->OnKeyPress (STX_KEY_F2))
+	else if(STX_Service::GetInputInstance()->IsKeyPressed (STX_KEY_F2))
 	{
 		IRenderer::GetRendererInstance()->DeleteShader(s_i);
 		s_i++;
@@ -296,7 +296,7 @@ int ApplicationLogic()
 	IRenderer* r=IRenderer::GetRendererInstance("ai2");	
 	IInput*    i=STX_Service::GetInputInstance();
 	init("");
-	while (!i->OnKeyPress (STX_KEY_ESCAPE) && !i->Quit())
+	while (!i->IsKeyPressed (STX_KEY_ESCAPE) && !i->Quit())
 	{
 		i->Update();
 		render();

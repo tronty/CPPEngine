@@ -489,7 +489,7 @@ while(!done)
 		#endif
 		if(bIsKeyPressed)
 	{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		char buffer [256];
 		buffer [0]='\0';
 #if !defined(__MINGW32__) && !defined(__MINGW64__)
@@ -526,9 +526,9 @@ while(!done)
     SDL_FreeSurface(surface);
 }
 #elif 1
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		IRenderer::GetRendererInstance()->SaveScreenShot(buf);
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 #endif
 	}
 #endif

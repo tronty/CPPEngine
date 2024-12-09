@@ -595,11 +595,11 @@ if(b)
 
 		void RendererGL_1_1::SaveScreenShotVrtl(const char* fn)
 		{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//printf("%s:%s:%d%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 		if(fn==0)return;
 
 		{
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+		//printf("%s:%s:%d%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
 			Image3 img;
 			char buf[256];
 			char gifbuf[256];
@@ -614,11 +614,11 @@ if(b)
                 stx_snprintf(buf,256,"../%s","ScreenShot.jpg");
                 stx_snprintf(gifbuf,256,"../%s","ScreenShot.gif");
 			}
-		//printf("RendererGL_1_1::SaveScreenShotVrtl2:\n");
+		////printf("%s:%s:%dRendererGL_1_1::SaveScreenShotVrtl2:\n");
 			captureScreenshot(img);
 			img.flipX();
-			printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-			printf("img.saveImageLibImage:%s\n", buf);
+			//printf("%s:%s:%d%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
+			//printf("%s:%s:%dimg.saveImageLibImage:%s\n", buf);
 			img.saveImageLibImage(buf,false);
 			RendererHLSLCg::OpenILToGIF(img,gifbuf);
 		//printf("RendererGL_1_1::SaveScreenShotVrtl3:\n");

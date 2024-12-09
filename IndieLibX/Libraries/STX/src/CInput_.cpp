@@ -297,7 +297,10 @@ eKey SDLKtoKEY(int key)
 #if 1
 bool SDLInput::OnKeyPress	(eKey pKey)
 {
-	return IsKeyPressed(pKey);
+        bool isPressed = (pKey==m_Key);
+        if(isPressed)
+		return true;
+	return false;
 }
 
 bool SDLInput::OnKeyRelease	(eKey pKey)
@@ -371,17 +374,57 @@ list::pop_back
 		m_quit=false;
 		m_iWheelY=0;
 		//cGuiManager* Gui = Singleton<cGuiManager>::GetSingletonPtr();
+#if 0
+		std::list<SDL_Event> eventlst;
+		if(STX_Service::IsReplayOn())
+			eventlst=sdl_events[STX_Service::GetReplayIndex()];
+		else
+		while ( SDL_PollEvent( &event ) )
+			eventlst.push_back(event);
 
-    // Event handler
-    SDL_Event event;
+		if(STX_Service::IncrementReplayIndex()>=sdl_events.size()) STX_Service::ResetReplayIndex();
 
-    // While application is running
-    //while (!m_quit)
-    {
-        // Handle events on queue
-        while (SDL_PollEvent(&event) != 0) {
-            // User requests quit
- 			switch( event.type )
+		//STX_Service::StopReplay();
+
+		for(unsigned int i=0;i<eventlst.size();i++)
+#else
+		while ( SDL_PollEvent( &event ) )
+#endif
+		{
+        		m_KeyboardState = SDL_GetKeyboardState(&m_Numkeys);
+            				if (m_KeyboardState[SDL_SCANCODE_F1])
+            				{
+						m_Key=SDLK_F1;
+						return true;
+					}
+					if (m_KeyboardState[SDL_SCANCODE_F2])
+            				{
+						m_Key=SDLK_F2;
+						return true;
+					}
+            				if (m_KeyboardState[SDL_SCANCODE_UP])
+            				{
+						m_Key=SDLK_UP;
+						return true;
+					}
+					if (m_KeyboardState[SDL_SCANCODE_DOWN])
+            				{
+						m_Key=SDLK_DOWN;
+						return true;
+					}
+            				if (m_KeyboardState[SDL_SCANCODE_PAGEUP])
+            				{
+						m_Key=SDLK_PAGEUP;
+						return true;
+					}
+					if (m_KeyboardState[SDL_SCANCODE_PAGEDOWN])
+            				{
+						m_Key=SDLK_PAGEDOWN;
+						return true;
+					}
+        		SDL_Keymod m_modState = SDL_GetModState();
+			//event=eventlst[i];
+			switch( event.type )
 			{
 #if !defined(SDL_2_0_5_BUILD) 
 				case SDL_VIDEORESIZE:
@@ -394,38 +437,30 @@ list::pop_back
 					return true;
 					break;
 				case SDL_KEYDOWN:
-					m_Key=SDLKtoKEY(event.key.keysym.sym);
-					//m_Scancode=event.key.keysym.scancode;
+					m_Key=event.key.keysym.sym;
+					m_Scancode=event.key.keysym.scancode;
 					//printf("m_Scancode=%x\n", m_Scancode);
-					if(m_Key==STX_KEY_ESCAPE)
+					if(m_Key==SDLK_ESCAPE)
 					{
 						m_quit=true;
 						stx_exit(0);
 						return true;
 					}
-					#if 0
- 			switch( event.key.keysym.sym)
-			{
-      case SDLK_F1:
-        std::cout << "F1 key pressed\n";
-        break;
-      case SDLK_F2:
-        std::cout << "F2 key pressed\n";
-        break;
-        };
- 			switch( m_Key)
-			{
-      case STX_KEY_F1:
-        std::cout << "STX_KEY_F1 key pressed\n";
-        break;
-      case STX_KEY_F2:
-        std::cout << "STX_KEY_F2 key pressed\n";
-        break;
-        };
+			if ( (event.key.keysym.sym == SDLK_g) &&
+			     (m_modState & KMOD_CTRL) ) {
+				STX_Service::GetWindowInstance()->HotKey_ToggleGrab();
+			}
+			if ( (event.key.keysym.sym == SDLK_z) &&
+			     (m_modState & KMOD_CTRL) ) {
+				STX_Service::GetWindowInstance()->HotKey_Iconify();
+			}
+			if ( (event.key.keysym.sym == SDLK_RETURN) &&
+			     (m_modState & KMOD_ALT) ) {
+				STX_Service::GetWindowInstance()->HotKey_ToggleFullScreen();
+			}
 					break;
 				case SDL_KEYUP:
 					break;
-#endif
                 case SDL_MOUSEMOTION:
                 	 {	int mouseX, mouseY;
                 		m_MouseState = SDL_GetMouseState(&mouseX, &mouseY);
@@ -456,61 +491,7 @@ list::pop_back
 				default:
 					break;
 			}
-        }
-#if 0
-        // Get keyboard state
-        const Uint8* m_KeyboardState = SDL_GetKeyboardState(nullptr);
-        if (m_KeyboardState[SDL_SCANCODE_F1])
-            				{
-						m_Key=SDLK_F1;
-						return true;
-					}
-					if (m_KeyboardState[SDL_SCANCODE_F2])
-            				{
-						m_Key=SDLK_F2;
-						return true;
-					}
-            				if (m_KeyboardState[SDL_SCANCODE_UP])
-            				{
-						m_Key=SDLK_UP;
-						return true;
-					}
-					if (m_KeyboardState[SDL_SCANCODE_DOWN])
-            				{
-						m_Key=SDLK_DOWN;
-						return true;
-					}
-            				if (m_KeyboardState[SDL_SCANCODE_PAGEUP])
-            				{
-						m_Key=SDLK_PAGEUP;
-						return true;
-					}
-					if (m_KeyboardState[SDL_SCANCODE_PAGEDOWN])
-            				{
-						m_Key=SDLK_PAGEDOWN;
-						return true;
-
-					}
-
-        // Get modifier keys state
-        SDL_Keymod m_modState = SDL_GetModState();
-
-			if ( (event.key.keysym.sym == SDLK_g) &&
-			     (m_modState & KMOD_CTRL) ) {
-				STX_Service::GetWindowInstance()->HotKey_ToggleGrab();
-			}
-			if ( (event.key.keysym.sym == SDLK_z) &&
-			     (m_modState & KMOD_CTRL) ) {
-				STX_Service::GetWindowInstance()->HotKey_Iconify();
-			}
-			if ( (event.key.keysym.sym == SDLK_RETURN) &&
-			     (m_modState & KMOD_ALT) ) {
-				STX_Service::GetWindowInstance()->HotKey_ToggleFullScreen();
-			}
-#endif
-
-    }
-            				
+		}
 		#if 0
 		if(sdl_events.size()) sdl_events.pop_front();
 		sdl_events.push_back(eventlst);
@@ -648,13 +629,7 @@ bool SDLInput::IsWindowClosed(void)
 Sint32 SDLInput::getKeyCode()
 {
 	if(m_Key)
-	{
-		#if 0
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("Key m_Key=%x pressed", m_Key);
-		#endif
 		return m_Key;
-	}
 	return '\0';
 }
 int SDLInput::getKeyID(void){return getKeyCode();}
@@ -740,11 +715,6 @@ bool SDLInput::IsMouseMotion(void)
 bool SDLInput::IsKeyPressed(eKey e,unsigned int)
 {
 	if(m_Key!=e) return false;
-	#if 0
-		printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__);
-		printf("Key e=%x pressed", e);
-		printf("Key m_Key=%x pressed", m_Key);
-	#endif
 	return true;
 }
 bool SDLInput::IsKeyPressed(eKey e)

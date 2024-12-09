@@ -1390,7 +1390,8 @@ virtual bool OnMODEKeyPress();
 			//std::map<int, char> m_Keystates;	/**< Holds the state of the keys */
 			int m_Numkeys; 
         		Uint8*  m_KeyboardState;
-        		Uint8 m_Key, m_Scancode;
+        		Uint8 m_Scancode;
+        		eKey m_Key;
 			int m_MouseX;
 			int m_MouseY;
 			Uint32 m_MouseState;
