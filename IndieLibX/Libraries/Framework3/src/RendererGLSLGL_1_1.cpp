@@ -66,6 +66,17 @@
 typedef GLvoid (APIENTRY *UNIFORM_FUNC)(GLint location, GLsizei count, const void *value);
 typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 
+#include <STX/LuaUtil.h>
+using namespace LuaUtil;
+
+#define USEXML 1
+
+#ifdef USEXML 
+extern TiXmlElement* _IRenderer_BodyElement;
+#else
+extern LuaScript _IRenderer_script;
+#endif
+
 //void RendererGL_1_1::
 		void RendererGLSLGL_1_1::changeVertexBufferVrtl(const int stream, const VertexBufferID vertexBuffer, const intptr offset)
 		{
@@ -807,9 +818,39 @@ LOG_FNLN;
 	std::string csText="";
 	std::string tcsText="";
 	std::string tesText="";
-	char versionString[16];
+	char versionString[64];
+	std::string version="330 core";
+	version="130";
 	
-	
+	if(0)
+{printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+	printf("_IRenderer_BodyElement=%x\n", _IRenderer_BodyElement);
+	if(_IRenderer_BodyElement)
+	{
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+#if defined(ANDROID)
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("NDK")->ToElement()->Attribute("version");
+#elif defined(__APPLE__) && (defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("iOS")->ToElement()->Attribute("version");
+#elif defined(__APPLE__)
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("OSX")->ToElement()->Attribute("version");
+#elif defined(LINUX)
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("LNX")->ToElement()->Attribute("version");
+#elif defined(WIN_PHONE_APP)
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("WIP")->ToElement()->Attribute("version");
+#elif defined(_MSC_VER)
+	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("MSC")->ToElement()->Attribute("version");
+#endif
+printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
+	}
+}
+
 	#if 0
 	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
@@ -833,12 +874,11 @@ LOG_FNLN;
 		printf(versionString, 16, "\n#version %d%d\n", major, minor);
 	}
 	
-	#elif 0
-	stx_snprintf(versionString, 16, "\n#version 130\n";//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n");
-	const char * def=versionString;
-	#elif 1
-	const char * def="\n#version 130\n";//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n";
 	#endif
+	stx_snprintf(versionString, 64, "\n#version %s\n", version.c_str());//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n");
+	const char * def=versionString;
+printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);	
+	printf("def=%s\n", def);
 
 #if 0
 	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
@@ -856,7 +896,7 @@ LOG_FNLN;
 	if (def) tesText.append(def);
 	
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) // || defined(__APPLE__)
 	vsText.append("precision highp float;\n");
 	fsText.append("precision highp float;\n");
 	gsText.append("precision highp float;\n");
@@ -1049,6 +1089,8 @@ GL_FRAGMENT_SHADER_ARB
     out << "\nmainvs:\n";
     out << vsName;
     out.close();
+#elif 0//defined(__APPLE__) || defined(_MSC_VER)
+	STX_Service::WriteTxtFile("./vsText.txt", vsText.c_str());
 #endif
 		glShaderSourceARB(shaderGL1_1.shader[eVertexShader], strIndex, shaderStrings, 0);
 				checkGlError("");
@@ -1130,6 +1172,8 @@ LOG_FNLN;
     out << "\nmainps:\n";
     out << psName;
     out.close();
+#elif 0//defined(__APPLE__) || defined(_MSC_VER)
+	STX_Service::WriteTxtFile("./fsText.txt", fsText.c_str());
 #endif
 			glShaderSourceARB(shaderGL1_1.shader[ePixelShader], strIndex, shaderStrings, 0);
 				checkGlError("");

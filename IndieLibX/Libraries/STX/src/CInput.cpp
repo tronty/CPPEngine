@@ -367,7 +367,7 @@ list::pop_back
 	{
 		//SDL_Event event;
 		//std::vector< eKey > keys;
-		m_Key='\0';m_Scancode='\0';
+		m_Key=STX_KEY_UNKNOWN;m_Scancode='\0';
 		m_quit=false;
 		m_iWheelY=0;
 		//cGuiManager* Gui = Singleton<cGuiManager>::GetSingletonPtr();

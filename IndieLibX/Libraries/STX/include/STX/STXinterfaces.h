@@ -1290,7 +1290,7 @@ return false;
 			/// Default Constructor
 			SDLInput()
 			{
-				m_Key='\0';
+				m_Key=STX_KEY_UNKNOWN;
 				m_KeyboardState = SDL_GetKeyboardState(nullptr);
                 		m_MouseState = SDL_GetMouseState(&m_MouseX, &m_MouseY);
 				m_quit=false;
@@ -1389,7 +1389,7 @@ virtual bool OnMODEKeyPress();
 
 			//std::map<int, char> m_Keystates;	/**< Holds the state of the keys */
 			int m_Numkeys; 
-        		Uint8*  m_KeyboardState;
+        		const Uint8* m_KeyboardState;
         		Uint8 m_Scancode;
         		eKey m_Key;
 			int m_MouseX;

@@ -4846,7 +4846,8 @@ if(stx_strcmp(slash, "/scripting")!=0)
 	static 
 	#endif
 	TiXmlHandle docHandle(&doc);
-    Renderer = docHandle.FirstChild("Body").FirstChild("Renderer").Element()->Attribute("Value");
+	_IRenderer_BodyElement=docHandle.FirstChild("Body").Element();
+    Renderer = _IRenderer_BodyElement->FirstChild("Renderer")->ToElement()->Attribute("Value");
 }
 #endif
 		if(Debug=="True")

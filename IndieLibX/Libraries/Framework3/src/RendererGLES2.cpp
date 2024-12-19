@@ -35,6 +35,18 @@ typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboo
 
 #define LOG_FNLN_X
 #define LOG_PRINT_X
+
+#include <STX/LuaUtil.h>
+using namespace LuaUtil;
+
+#define USEXML 1
+
+#ifdef USEXML 
+extern TiXmlElement* _IRenderer_BodyElement;
+#else
+extern LuaScript _IRenderer_script;
+#endif
+
 		bool samplerCompGL2std(const XSampler & s0, const XSampler &s1)
 		{
        if(!(s0.name.c_str()&& s1.name.c_str()))return false;
@@ -835,9 +847,28 @@ LOG_FNLN;
 	std::string csText="";
 	std::string tcsText="";
 	std::string tesText="";
-	char versionString[16];
-	
-	
+
+	char versionString[64];
+	std::string version="330 core";
+{
+	if(_IRenderer_BodyElement->FirstChild("OpenGL"))
+	{
+#if defined(ANDROID)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("NDK")->ToElement()->Attribute("version");
+#elif defined(__APPLE__) && (defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("iOS")->ToElement()->Attribute("version");
+#elif defined(__APPLE__)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("OSX")->ToElement()->Attribute("version");
+#elif defined(LINUX)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("LNX")->ToElement()->Attribute("version");
+#elif defined(WIN_PHONE_APP)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("WIP")->ToElement()->Attribute("version");
+#elif defined(_MSC_VER)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("MSC")->ToElement()->Attribute("version");
+#endif
+	}
+}
+
 	#if 0
 	const char *version = (const char *) glGetString(GL_VERSION);
 	if (version)
@@ -861,12 +892,11 @@ LOG_FNLN;
 		printf(versionString, 16, "\n#version %d%d\n", major, minor);
 	}
 	
-	#elif 0
-	stx_snprintf(versionString, 16, "\n#version 130\n");
-	const char * def=versionString;
-	#elif 1
-	const char * def="\n#version 130\n";
 	#endif
+	stx_snprintf(versionString, 64, "\n#version %s\n", version.c_str());//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n");
+	const char * def=versionString;
+	
+	printf("def=%s\n", def);
 	
 	if (def) vsText.append(def);
 	if (def) fsText.append(def);
@@ -1365,7 +1395,4 @@ LOG_PRINT("shaders.size()=%d\n", shaders.size());
 #endif
 }
 #endif
-/*
-1302:69: error: 'getConstantType_GL' was not declared in this scope
-*/
 

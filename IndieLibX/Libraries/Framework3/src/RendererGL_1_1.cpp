@@ -213,7 +213,7 @@ void RendererGL_1_1::BeginSceneVrtl(bool aB)
 			,int argc, char *argv[]
 		): RendererHLSLCg(argc, argv)
 {
-{	
+{
 	#if 1
 	int major=1;
 	int minor=1;
@@ -232,8 +232,8 @@ void RendererGL_1_1::BeginSceneVrtl(bool aB)
 	#endif
 
 	#if 1
-	STX_PRINT("GL_VERSION: %d.%d\n", major, minor);
-	STX_PRINT("GL_SHADING_LANGUAGE_VERSION: %d.%d\n", SHADING_LANGUAGE_VERSION_MAJOR, SHADING_LANGUAGE_VERSION_MINOR);
+	printf("GL_VERSION: %d.%d\n", major, minor);
+	printf("GL_SHADING_LANGUAGE_VERSION: %d.%d\n", SHADING_LANGUAGE_VERSION_MAJOR, SHADING_LANGUAGE_VERSION_MINOR);
 	#endif
 	#if 0
 	GLint N;
@@ -550,7 +550,7 @@ if(b)
 
 	bool m_bDebugInit=false;
 	
-
+#if 0
 #ifndef USEXML
 	if(!m_bLuaScript)
 	{
@@ -569,6 +569,7 @@ if(b)
 #endif
 		if(m_bDebugInit)
 			stx_exit(0);
+#endif
 		}
 		//stx_exit(0);
 		}
@@ -1625,9 +1626,9 @@ if(flags!=0xFFFF)
 	{
 		
 		std::string GL_TEXTURE_RECTANGLE_EXT_ = "False";
-		#ifndef USEXML
+		#if 0//ndef USEXML
 		GL_TEXTURE_RECTANGLE_EXT_ = _IRenderer_script.get<std::string>("GL_TEXTURE_RECTANGLE_EXT");
-		#else
+		#elif 0
 		if(_IRenderer_BodyElement)
 			GL_TEXTURE_RECTANGLE_EXT_ = _IRenderer_BodyElement->FirstChild("GL_TEXTURE_RECTANGLE_EXT")->ToElement()->Attribute("Value");
 		#endif
@@ -1728,9 +1729,9 @@ if(flags!=0xFFFF)
 	if(!m_bLuaScript)
 	{
 		std::string TexImage = "False";
-		#ifndef USEXML
+		#if 0//ndef USEXML
 		TexImage = _IRenderer_script.get<std::string>("TexImage");
-		#else
+		#elif 0
 		if(_IRenderer_BodyElement)
 			TexImage = _IRenderer_BodyElement->FirstChild("TexImage")->ToElement()->Attribute("Value");
 		#endif

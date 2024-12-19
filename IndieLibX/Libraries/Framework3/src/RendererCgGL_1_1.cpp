@@ -883,6 +883,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
     		out << "\nmainvs:\n";
     		out << vsMain;
     		out.close();
+		#elif defined(__APPLE__) || defined(_MSC_VER)
+		STX_Service::WriteTxtFile("./vsText.txt", vsText.c_str());
 		#endif
 				shader->profile[eVertexShader]=new CGprofile(vertexShaderprofile);
 				shader->program[eVertexShader] = cgCreateProgram( RendererCgGL_1_1::GetCgContext(),
@@ -974,6 +976,8 @@ const char *vsMain, const char *gsMain, const char *fsMain, const char *csMain, 
     		out << "\nmainfs:\n";
     		out << fsMain;
     		out.close();
+		#elif defined(__APPLE__) || defined(_MSC_VER)
+		STX_Service::WriteTxtFile("./fsText.txt", fsText.c_str());
 		#endif
 				shader->profile[ePixelShader] = new CGprofile(fragmentShaderprofile);
 				shader->program[ePixelShader] = cgCreateProgram( RendererCgGL_1_1::GetCgContext(),

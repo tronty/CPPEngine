@@ -1,33 +1,49 @@
-#version 140
 
-#line 18
+#version 130
+
+#line 25
 struct VsOut {
     vec4 position;
     vec2 texCoord;
 };
-#line 25
-uniform sampler1D Base1;
+#line 4
+uniform float iTime;
+uniform float time;
+#line 8
+uniform float iGlobalTime;
+uniform vec3 iResolution;
+uniform vec4 iMouse;
+uniform vec3 resolution;
+#line 12
+uniform vec4 mouse;
+uniform vec4 iDate;
+uniform float iSampleRate;
+uniform vec3 iChannelResolution[4];
+#line 16
+uniform float iChannelTime[4];
+uniform vec2 ifFragCoordOffsetUniform;
+uniform float iTimeDelta;
+uniform int iFrame;
+#line 20
+uniform float iFrameRate;
+#line 30
 uniform sampler2D Base;
-uniform sampler3D Base3;
-uniform int dim;
-#line 29
-uniform float z;
-#line 43
-#line 37
+uniform vec4 colorRGBA;
+#line 32
 vec4 xlat_main( in VsOut IN ) {
-    #line 39
-    return texture2D( Base, IN.texCoord);
+    return (texture2D( Base, IN.texCoord) * colorRGBA);
 }
-varying vec4 xlv_COLOR;
+varying vec2 xlv_TEXCOORD0;
 void main() {
     vec4 xl_retval;
     VsOut xlt_IN;
-    xlt_IN.position = vec4(gl_Vertex);
-    xlt_IN.texCoord = vec2(gl_MultiTexCoord0);
+    xlt_IN.position = vec4(0.0);
+    xlt_IN.texCoord = vec2(xlv_TEXCOORD0);
     xl_retval = xlat_main( xlt_IN);
-    xlv_COLOR = vec4(xl_retval);
+    gl_FragData[0] = vec4(xl_retval);
 }
 
 // uniforms:
 // Base:<none> type 25 arrsize 0
+// colorRGBA:<none> type 12 arrsize 0
 
