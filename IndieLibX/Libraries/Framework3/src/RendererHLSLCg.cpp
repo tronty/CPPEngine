@@ -179,6 +179,7 @@ unsigned int IRenderer::bpp=32;
 #else
 unsigned int IRenderer::bpp=24;
 #endif
+std::string version="130";
 #ifdef USEXML 
 	TiXmlElement* _IRenderer_BodyElement=0;
 #else
@@ -4848,6 +4849,19 @@ if(stx_strcmp(slash, "/scripting")!=0)
 	TiXmlHandle docHandle(&doc);
 	_IRenderer_BodyElement=docHandle.FirstChild("Body").Element();
     Renderer = _IRenderer_BodyElement->FirstChild("Renderer")->ToElement()->Attribute("Value");
+    #if defined(ANDROID)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("NDK")->ToElement()->Attribute("version");
+    #elif defined(OS_IPHONE) || defined(IPHONE_SIMULATOR)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("iOS")->ToElement()->Attribute("version");
+    #elif defined(__APPLE__)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("OSX")->ToElement()->Attribute("version");
+    #elif defined(LINUX)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("LNX")->ToElement()->Attribute("version");
+    #elif defined(WIN_PHONE_APP)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("WIP")->ToElement()->Attribute("version");
+    #elif defined(_MSC_VER)
+    version = _IRenderer_BodyElement->FirstChild("OpenGL")->ToElement()->FirstChild("MSC")->ToElement()->Attribute("version");
+    #endif
 }
 #endif
 		if(Debug=="True")

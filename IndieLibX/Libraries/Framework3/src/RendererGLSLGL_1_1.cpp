@@ -73,6 +73,7 @@ using namespace LuaUtil;
 
 #ifdef USEXML 
 extern TiXmlElement* _IRenderer_BodyElement;
+extern TiXmlElement* _IRenderer_OpenGLElement;
 #else
 extern LuaScript _IRenderer_script;
 #endif
@@ -804,7 +805,7 @@ shaderGL1_1.uniforms[nUniforms].location = glGetUniformLocation(shaderGL1_1.prog
 						shaderGL1_1.uniforms[i].dirty = false;
 					}
 }
-
+extern std::string version;
 ShaderID RendererGLSLGL_1_1::addGLSLShaderVrtl(
 const char *vsText0, const char *gsText0, const char *fsText0, const char *csText0, const char *hsText0_, const char *dsText0_, const char *tcsText0, const char *tesText0,
 const char *vsName, const char *gsMain, const char *psName, const char *csMain, const char *hsMain_, const char *dsMain_, const char *tcsMain, const char *tesMain,
@@ -819,37 +820,6 @@ LOG_FNLN;
 	std::string tcsText="";
 	std::string tesText="";
 	char versionString[64];
-	std::string version="330 core";
-	version="130";
-	
-	if(0)
-{printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-	printf("_IRenderer_BodyElement=%x\n", _IRenderer_BodyElement);
-	if(_IRenderer_BodyElement)
-	{
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-#if defined(ANDROID)
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("NDK")->ToElement()->Attribute("version");
-#elif defined(__APPLE__) && (defined(OS_IPHONE) || defined(IPHONE_SIMULATOR))
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("iOS")->ToElement()->Attribute("version");
-#elif defined(__APPLE__)
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("OSX")->ToElement()->Attribute("version");
-#elif defined(LINUX)
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("LNX")->ToElement()->Attribute("version");
-#elif defined(WIN_PHONE_APP)
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("WIP")->ToElement()->Attribute("version");
-#elif defined(_MSC_VER)
-	printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-    version = _IRenderer_BodyElement->FirstChild("OpenGL")->FirstChild("MSC")->ToElement()->Attribute("version");
-#endif
-printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
-	}
-}
 
 	#if 0
 	const char *version = (const char *) glGetString(GL_VERSION);
@@ -877,9 +847,7 @@ printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);
 	#endif
 	stx_snprintf(versionString, 64, "\n#version %s\n", version.c_str());//#define fract frac\n#define mix lerp\n#define atan(x,y) atan2(y,x)\n");
 	const char * def=versionString;
-printf("%s:%s:%d\n", __FILE__, __FUNCTION__, __LINE__);	
-	printf("def=%s\n", def);
-
+	printf("version: %s\n", version.c_str());
 #if 0
 	const char* defvs="#undef TEX2D\n#define SAMPLE2D(TEX, TEXCOORD) texture2Dlod\(TEX, TEXCOORD, 0.0\)\)\n#define SAMPLER2D sampler2D\n";
 #elif 0
