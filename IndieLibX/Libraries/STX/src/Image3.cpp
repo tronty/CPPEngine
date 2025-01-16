@@ -4278,9 +4278,9 @@ std::string STX_Service::LoadTxtFile(const std::string aFileName, std::string& c
 
 void STX_Service::WriteTxtFile(const char* aFileName, const char* contents)
 {
-	std::string fn=stx_convertpath(aFileName);
+	std::string fn=aFileName;//stx_convertpath(aFileName);
 	ofstream myfile;
-	myfile.open (fn.c_str());
+	myfile.open (fn.c_str(), fstream::in | fstream::out | fstream::app);
 	myfile << contents;
 	myfile << "\n";
 	myfile.close();

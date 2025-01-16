@@ -895,7 +895,7 @@ LOG_FNLN;
 	STX_PRINT("\nvsText:\n%s\n", vsText.c_str());
 	STX_PRINT("\nfsText:\n%s\n", fsText.c_str());
 	//STX_PRINT("\ngsText:\n%s\n", gsText.c_str());
-	stx_exit(0);
+	//stx_exit(0);
 #endif
 	ShaderGLSLGL3 shaderGL1_1;
 	char line[16];
@@ -1067,15 +1067,6 @@ GL_FRAGMENT_SHADER_ARB
 				glGetObjectParameterivARB(shaderGL1_1.shader[eVertexShader], GL_OBJECT_COMPILE_STATUS_ARB, &vsResult);
 				checkGlError("");
 LOG_FNLN;
-#ifndef _MSC_VER
-			{
-            			char* s=new char(32768);
-				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.shader[eVertexShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", vsText.c_str(), s);
-            			delete[] s;
-			}
-#endif
 				if (vsResult)
 				{
 LOG_FNLN;
@@ -1140,8 +1131,19 @@ LOG_FNLN;
     out << "\nmainps:\n";
     out << psName;
     out.close();
-#elif 0//defined(__APPLE__) || defined(_MSC_VER)
-	STX_Service::WriteTxtFile("./fsText.txt", fsText.c_str());
+#elif 1
+#if defined(LINUX)
+	STX_Service::WriteTxtFile("./vsText.lnx.txt", vsText.c_str());
+	STX_Service::WriteTxtFile("./fsText.lnx.txt", fsText.c_str());
+#endif
+#if defined(__APPLE__)
+	STX_Service::WriteTxtFile("./vsText.osx.txt", vsText.c_str());
+	STX_Service::WriteTxtFile("./fsText.osx.txt", fsText.c_str());
+#endif
+#if defined(_MSC_VER)
+	STX_Service::WriteTxtFile("./vsText.msc.txt", vsText.c_str());
+	STX_Service::WriteTxtFile("./fsText.msc.txt", fsText.c_str());
+#endif
 #endif
 			glShaderSourceARB(shaderGL1_1.shader[ePixelShader], strIndex, shaderStrings, 0);
 				checkGlError("");
@@ -1150,15 +1152,6 @@ LOG_FNLN;
 				glGetObjectParameterivARB(shaderGL1_1.shader[ePixelShader], GL_OBJECT_COMPILE_STATUS_ARB, &fsResult);
 				checkGlError("");
 LOG_FNLN;
-#ifndef _MSC_VER
-			{
-            			char* s=new char(32768);
-				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.shader[ePixelShader],32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Compile Log: \n%s\n%s\n", fsText.c_str(), s);
-            			delete[] s;
-			}
-#endif
 				if (fsResult)
 				{
 LOG_FNLN;
@@ -1215,15 +1208,6 @@ if (fsResult)
 LOG_FNLN;
 			glLinkProgramARB(shaderGL1_1.program);
 				checkGlError("");
-#ifndef _MSC_VER
-			{
-	    			char* s=new char(32768);
-				s[0]='\0';
-            			glGetInfoLogARB(shaderGL1_1.program,32768,NULL,s);
-            			if(s) if(stx_strlen(s)) printf("Link Log: \nvs:\n%s\nfs:\n%s\n%s\n", vsText.c_str(), fsText.c_str(), s);
-            			delete[] s;
-			}
-#endif
 				glGetObjectParameterivARB(shaderGL1_1.program, GL_OBJECT_LINK_STATUS_ARB, &linkResult);
 				checkGlError("");
 				glGetInfoLogARB(shaderGL1_1.program, sizeof(infoLog) - infoLogPos, &len, infoLog + infoLogPos);

@@ -256,29 +256,29 @@ IRenderer::GetRendererInstance()->drawHyperbole(120, 370, 25, 50,D3DXFROMWINEVEC
 	unsigned int N=100.0f;
 IRenderer::GetRendererInstance()->drawParabole(x0, y0, a2, N, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 0
-IRenderer::GetRendererInstance()->drawParabole(220, 370, -4, 35, 0,-5, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(1.0f, -30.0f, 450.0f, 0.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(220.0f, 0.0f, 330.0f, 220.0f, 440.0f, 0.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(220, 370, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(1.0f, -30.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(220.0f, 0.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 0
-IRenderer::GetRendererInstance()->drawParabole(0.20f, 100.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(0.16f, 200.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(0.12f, 300.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(0.08f, 400.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(0.04f, 500.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(0.20f, 100.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(0.16f, 200.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(0.12f, 300.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(0.08f, 400.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(0.04f, 500.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 0
-IRenderer::GetRendererInstance()->drawParabole(1.25f, 100.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(1.5625f, 150.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(2.0833f, 200.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(3.125f, 250.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(6.25f, 300.0f, 300.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(1.25f, 100.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(1.5625f, 150.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(2.0833f, 200.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(3.125f, 250.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(6.25f, 300.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 1
-IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 50.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 75.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 100.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 0
-IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 50.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 75.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 100.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 #endif
 
 		IRenderer::GetRendererInstance()->drawTriangle(30,30,40,40,50,30,D3DXFROMWINEVECTOR4(1,1,1,1));//,1.0f);

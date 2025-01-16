@@ -14,6 +14,7 @@ VertexFormatID vf=-1;
 
 int init(const char* aTitle)
 {
+        STX_Service::WriteTxtFile("./SimpleTexture.txt", "XXX");
 	STX_FNLN;
 	shd = IRenderer::GetRendererInstance()->addShaderFromFile("/SimpleTexture/SimpleTexture.hlsl", "mainVS", "mainPS");
 	STX_FNLN;

@@ -1087,10 +1087,7 @@ RendererHLSLCg::ib=-1;
 	virtual unsigned int drawRoundRectVrtl(const float x0, const float y0, const float x1, const float y1, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
 
 virtual unsigned int drawEllipseVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
-virtual unsigned int drawParaboleVrtl(const float xpos, const float x0, const float k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
-virtual unsigned int drawParaboleVrtl(const float p, const float h, const unsigned int k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
 virtual unsigned int drawParaboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
-virtual unsigned int drawParaboleVrtl(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
 virtual unsigned int drawHyperboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
 virtual unsigned int drawBezierVrtl(D3DXFROMWINEVECTOR2 anchor1, D3DXFROMWINEVECTOR2 anchor2, D3DXFROMWINEVECTOR2 control1, D3DXFROMWINEVECTOR2 control2, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
 

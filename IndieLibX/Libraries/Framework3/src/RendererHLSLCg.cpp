@@ -3359,102 +3359,30 @@ unsigned int RendererHLSLCg::drawBezierVrtl(D3DXFROMWINEVECTOR2 anchor1, D3DXFRO
 	setDepthState(GetnoDepthTest());
 	return DrawPrimitiveUP(PRIM_LINES, (points.size()-2)/2+2, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
 }
-#if 1
-unsigned int RendererHLSLCg::drawParaboleVrtl(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
+
+unsigned int RendererHLSLCg::drawParaboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
 {
-	std::vector<D3DXFROMWINEVECTOR2> points;
-	float denom = (x1-x2) * (x1-x3) * (x2-x3);
-	float a     = (x3 * (y2-y1) + x2 * (y1-y3) + x1 * (y3-y2)) / denom;
-	float b     = (x3*x3 * (y1-y2) + x2*x2 * (y3-y1) + x1*x1 * (y2-y3)) / denom;
-	float c     = (x2 * x3 * (x2-x3) * y1+x3 * x1 * (x3-x1) * y2+x1 * x2 * (x1-x2) * y3) / denom;
-#if 0
-	unsigned int N=60;
-	for(unsigned int i=0;i<N;i++)
-	{
-		float x_val=-0.5f*N/3.0f+1.0f*i;
-		points.push_back(D3DXFROMWINEVECTOR2(x_val, fabs(a*x_val*x_val+b*x_val+c)));
-		LOG_PRINT("%f\t%f\n", points[points.size()-1].x, points[points.size()-1].y);
-	}
-	unsigned int col = toBGRA(color);
-	InitPlain(plainShader, plainVF);
-	setShader(plainShader);
-	setVertexFormat(plainVF);
-	setup2DMode(0, (float) GetViewportWidth(), 0, (float) GetViewportHeight());
-	setShaderConstant4f("scaleBias", GetscaleBias2D());
-	setShaderConstant4f("colorRGBA", color);
-	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_POINTS, points.size(), &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
-#else
-	bool first = true;
-	unsigned int prev_x;
-	unsigned int prev_y;
-	for(unsigned int y=0;y<STX_Service::GetWindowInstance()->GetHeight();y++)
-	{
-        	for(unsigned int x=0;x<STX_Service::GetWindowInstance()->GetWidth();x++)
-		{
-            		//if(x == y*y - 30*y + 450)
-			if(x == a*y*y + b*y + c)
-			{
-                		if(first)
-				{
-                    			first = false;
-                   			prev_x = x;
-                   			prev_y = y;
-                    			continue;
-				}
-				points.push_back(D3DXFROMWINEVECTOR2(prev_y, prev_x));
-				points.push_back(D3DXFROMWINEVECTOR2(y, x));
-                		prev_x = x;
-                		prev_y = y;
-			}
-		}
-	}
-	unsigned int col = toBGRA(color);
-	InitPlain(plainShader, plainVF);
-	setShader(plainShader);
-	setVertexFormat(plainVF);
-	setup2DMode(0, (float) GetViewportWidth(), 0, (float) GetViewportHeight());
-	setShaderConstant4f("scaleBias", GetscaleBias2D());
-	setShaderConstant4f("colorRGBA", color);
-	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_LINES, (points.size()-2)/2+2, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
-#endif
-}
-#if 0
-parabola equation: y=a(x-x0)(x+x0)
-		   a=y/((x-x0)(x+x0))=0.25/p
-		   p=0.25*((x-x0)(x+x0))/y
-#endif
-unsigned int RendererHLSLCg::drawParaboleVrtl(const float xpos, const float x0, const float k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
-{
-	// y = a(x-h)2+k. (h,k) is the vertex
-	std::vector<D3DXFROMWINEVECTOR2> points;
-	float prev_x;
-	float prev_y;
-	bool first = true;
-	unsigned int N=100;
-	float dx=2.0f*x0/float(N);
-	float a = -k/(x0*x0);
-	for(unsigned int i=0;i<N;i++)
-	{
-		float x=-x0+dx*float(i);
-		float y = a*(x-x0)*(x+x0);
-                if(first)
-		{
-                    	first = false;
-                   	prev_x = x;
-                   	prev_y = y;
-                    	continue;
-		}
-#if 0
-		points.push_back(D3DXFROMWINEVECTOR2(prev_x+xpos, prev_y-0.5f*GetViewportHeight()));
-		points.push_back(D3DXFROMWINEVECTOR2(x+xpos, y-0.5f*GetViewportHeight()));
-#else
-		points.push_back(D3DXFROMWINEVECTOR2(prev_x+xpos, prev_y));
-		points.push_back(D3DXFROMWINEVECTOR2(x+xpos, y));
-#endif
-	}
-	unsigned int col = toBGRA(color);
+    // Number of segments in the parabola (the more segments, the smoother the curve)
+    const int NUM_SEGMENTS = 50;
+
+    // Create a buffer to store our line-strip vertices
+    std::vector<D3DXFROMWINEVECTOR2> points(NUM_SEGMENTS + 1);
+
+    // Populate the vertex list
+    // Here, we use a parameter t from 0 to 1
+    // x(t) = originx + t * width
+    // y(t) = originy + (t^2) * height
+    for (int i = 0; i <= NUM_SEGMENTS; ++i)
+    {
+        float t = static_cast<float>(i) / static_cast<float>(NUM_SEGMENTS);
+
+        float xPos = originx + t * width;
+        float yPos = originy + (t * t) * height;  // parabola
+
+        points[i].x     = xPos;
+        points[i].y     = yPos;
+    }
+    unsigned int col = toBGRA(color);
 	if(points.size())
 	{
 		InitPlain(plainShader, plainVF);
@@ -3464,193 +3392,31 @@ unsigned int RendererHLSLCg::drawParaboleVrtl(const float xpos, const float x0, 
 		setShaderConstant4f("scaleBias", GetscaleBias2D());
 		setShaderConstant4f("colorRGBA", color);
 		setDepthState(GetnoDepthTest());
-		DrawPrimitiveUP(PRIM_LINES, (points.size()-2)/2+2, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
+		return DrawPrimitiveUP(PRIM_LINE_STRIP, NUM_SEGMENTS, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
 	}
 	return 0;
 }
-unsigned int RendererHLSLCg::drawParaboleVrtl(const float p, const float h, const unsigned int k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
+unsigned int RendererHLSLCg::drawEllipseVrtl(const float originX, const float originY, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
 {
-	// y = a(x-h)2+k. (h,k) is the vertex
-	std::vector<D3DXFROMWINEVECTOR2> points;
-	std::vector<D3DXFROMWINEVECTOR2> points2;
-	bool first = true;
-	float prev_x;
-	float prev_y;
+    // Number of segments to approximate the ellipse.
+    // Increase for a smoother ellipse, but with higher overhead.
+    const int NUM_SEGMENTS = 64; 
 
-	//LOG_PRINT("k=%ld\n", k);
-	//LOG_PRINT("STX_Service::GetWindowInstance()->GetHeight()=%d\n", STX_Service::GetWindowInstance()->GetHeight());
+    // Array of points defining the ellipse (closed loop)
+    D3DXFROMWINEVECTOR2 ellipsePoints[NUM_SEGMENTS + 1];
 
-	for(unsigned int y=k;y<STX_Service::GetWindowInstance()->GetHeight();y++)
-	{
-        	//for(unsigned int x=0;x<STX_Service::GetWindowInstance()->GetWidth();x++)
-		{
-            		//if(x == y*y - 30*y + 450)
-			float x = (y-h)*(y-h)*0.25f/p+k;
-			{
-                		if(first)
-				{
-                    			first = false;
-                   			prev_x = x;
-                   			prev_y = y;
-                    			continue;
-				}
-				points.push_back(D3DXFROMWINEVECTOR2(prev_y, prev_x));
-				points.push_back(D3DXFROMWINEVECTOR2(y, x));
-				points2.push_back(D3DXFROMWINEVECTOR2(prev_y, -prev_x));
-				points2.push_back(D3DXFROMWINEVECTOR2(y, -x));
-                		prev_x = x;
-                		prev_y = y;
-			}
-		}
-	}
-	//points2.clear();
-	unsigned int col = toBGRA(color);
-	if(points.size())
-	{
-	InitPlain(plainShader, plainVF);
-	setShader(plainShader);
-	setVertexFormat(plainVF);
-	setup2DMode(0, (float) GetViewportWidth(), 0, (float) GetViewportHeight());
-	setShaderConstant4f("scaleBias", GetscaleBias2D());
-	setShaderConstant4f("colorRGBA", color);
-	setDepthState(GetnoDepthTest());
-	       DrawPrimitiveUP(PRIM_LINES, (points.size()-2)/2+2, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
-	}
-	if(points2.size())
-	{
-	InitPlain(plainShader, plainVF);
-	setShader(plainShader);
-	setVertexFormat(plainVF);
-	setup2DMode(0, (float) GetViewportWidth(), 0, (float) GetViewportHeight());
-	setShaderConstant4f("scaleBias", GetscaleBias2D());
-	setShaderConstant4f("colorRGBA", color);
-	setDepthState(GetnoDepthTest());
-		DrawPrimitiveUP(PRIM_LINES, (points2.size()-2)/2+2, &points2[0], &points2[0], sizeof(D3DXFROMWINEVECTOR2));
-	}
-	return 0;
-}
+    // Half-dimensions for convenience
+    float halfW = width  * 0.5f;
+    float halfH = height * 0.5f;
 
-unsigned int RendererHLSLCg::drawParaboleVrtl(const float a, const float b, const float c, const float ___, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
-{
-/*
- 		Cartesian equation:	Parametrically:	
-Ellipse:	x2/a2 + y2/b2 = 1	x = a cos(t), y = b sin(t)	x2b2+y2a2=a2b2
-Parabole:	y = ax2 + bx + c 
-
-		ax2 - y + bx = - c
-
-Hyperbole:	x2/a2 - y2/b2 = 1	x = a sec(t), y = b tan(t)	x2b2-y2a2=a2b2
-
-Conic:		f(x,y)=Ax2+Bxy+Cy2+Dx+Ey+F
-*/
-	std::vector<D3DXFROMWINEVECTOR2> points;
-	bool first = true;
-	unsigned int prev_x;
-	unsigned int prev_y;
-	for(unsigned int y=0;y<STX_Service::GetWindowInstance()->GetHeight();y++)
-	{
-        	for(unsigned int x=0;x<STX_Service::GetWindowInstance()->GetWidth();x++)
-		{
-            		//if(x == y*y - 30*y + 450)
-			if(x == a*y*y + b*y + c)
-			{
-                		if(first)
-				{
-                    			first = false;
-                   			prev_x = x;
-                   			prev_y = y;
-                    			continue;
-				}
-				points.push_back(D3DXFROMWINEVECTOR2(prev_y, prev_x));
-				points.push_back(D3DXFROMWINEVECTOR2(y, x));
-                		prev_x = x;
-                		prev_y = y;
-			}
-		}
-	}
-	unsigned int col = toBGRA(color);
-	InitPlain(plainShader, plainVF);
-	setShader(plainShader);
-	setVertexFormat(plainVF);
-	setup2DMode(0, (float) GetViewportWidth(), 0, (float) GetViewportHeight());
-	setShaderConstant4f("scaleBias", GetscaleBias2D());
-	setShaderConstant4f("colorRGBA", color);
-	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_LINES, (points.size()-2)/2+2, &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
-}
-#endif
-unsigned int RendererHLSLCg::drawEllipseVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
-{
-	std::vector<D3DXFROMWINEVECTOR2> points;
-/*
- 		Cartesian equation:	Parametrically:	
-Ellipse:	x2/a2 + y2/b2 = 1	x = a cos(t), y = b sin(t)	x2b2+y2a2=a2b2
-Parabola:	y = ax2 + bx + c 
-Hyperbola:	x2/a2 - y2/b2 = 1	x = a sec(t), y = b tan(t)	x2b2-y2a2=a2b2
-
-Conic:		f(x,y)=Ax2+Bxy+Cy2+Dx+Ey+F
-*/
-#if 1
-	int hh = height * height;
-	int ww = width * width;
-	int hhww = hh * ww;
-	int x0 = width;
-	int dx = 0;
-	// do the horizontal diameter
-	for (int x = -width; x <= width; x++)
-    		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy));
-	// now do both halves at the same time, away from the diameter
-	for (int y = 1; y <= height; y++)
-	{
-		int x1 = x0 - (dx - 1);  // try slopes of dx - 1 or more
-    		for ( ; x1 > 0; x1--)
-        		if (x1*x1*hh + y*y*ww <= hhww)
-            			break;
-    		dx = x0 - x1;  // current approximation of the slope
-    		x0 = x1;
-    		for (int x = -x0; x <= x0; x++)
-    		{
-        		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy - y));
-        		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy + y));
-    		}
-	}
-#else /* One of Abrash's ellipse algorithms  */
-	int x=originx;
-	int y=originy;
-	int a=width;
-	int b=height;
-
-    int wx, wy;
-    int thresh;
-    int asq = a * a;
-    int bsq = b * b;
-    int xa, ya;
-
-    points.push_back(D3DXFROMWINEVECTOR2(x, y+b));
-    points.push_back(D3DXFROMWINEVECTOR2(x, y-b));
-
-    wx = 0;
-    wy = b;
-    xa = 0;
-    ya = asq * 2 * b;
-    thresh = asq / 4 - asq * b;
-
-    for (;;) {
-        thresh += xa + bsq;
-
-        if (thresh >= 0) {
-            ya -= asq * 2;
-            thresh -= ya;
-            wy--;
-        }
-
-        xa += bsq * 2;
-        wx++;
-
-        if (xa >= ya)
-          break;
+    // Populate the array with ellipse coordinates
+    for(int i = 0; i <= NUM_SEGMENTS; ++i)
+    {
+        float theta = 2.0f * D3DXFROMWINE_PI * float(i) / float(NUM_SEGMENTS);
+        ellipsePoints[i].x = originX + (halfW * cosf(theta));
+        ellipsePoints[i].y = originY + (halfH * sinf(theta));
     }
-#endif
+
 	unsigned int col = toBGRA(color);
 	InitPlain(plainShader, plainVF);
 	setShader(plainShader);
@@ -3659,43 +3425,28 @@ Conic:		f(x,y)=Ax2+Bxy+Cy2+Dx+Ey+F
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_POINTS, points.size(), &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
+	return DrawPrimitiveUP(PRIM_POINTS, NUM_SEGMENTS + 1, &ellipsePoints[0], &ellipsePoints[0], sizeof(D3DXFROMWINEVECTOR2));
 }
 
 unsigned int RendererHLSLCg::drawHyperboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
 {
-	std::vector<D3DXFROMWINEVECTOR2> points;
-/*
- 		Cartesian equation:	Parametrically:	
-Ellipse:	x2/a2 + y2/b2 = 1	x = a cos(t), y = b sin(t)	x2b2+y2a2=a2b2
-Parabole:	y = ax2 + bx + c 
-Hyperbole:	x2/a2 - y2/b2 = 1	x = a sec(t), y = b tan(t)	x2b2-y2a2=a2b2
+    // We will sample 't' from -MAX_T to +MAX_T to get both branches of the hyperbola.
+    // You can tweak MAX_T or the step size to get more (or fewer) segments.
+    const float MAX_T = 2.0f;      // how “wide” (in terms of parameter t) to go
+    const float STEP  = 0.01f;     // smaller step => smoother hyperbola, but more points
 
-Conic:		f(x,y)=Ax2+Bxy+Cy2+Dx+Ey+F
-*/
-	int hh = height * height;
-	int ww = width * width;
-	int hhww = hh * ww;
-	int x0 = width;
-	int dx = 0;
-	// do the horizontal diameter
-	for (int x = -width; x <= width; x++)
-    		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy));
-	// now do both halves at the same time, away from the diameter
-	for (int y = 1; y <= height; y++)
-	{
-		int x1 = x0 - (dx - 1);  // try slopes of dx - 1 or more
-    		for ( ; x1 > 0; x1--)
-        		if (x1*x1*hh - y*y*ww <= hhww)
-            			break;
-    		dx = x0 - x1;  // current approximation of the slope
-    		x0 = x1;
-    		for (int x = -x0; x <= x0; x++)
-    		{
-        		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy - y));
-        		points.push_back(D3DXFROMWINEVECTOR2(originx + x, originy + y));
-    		}
-	}
+    std::vector<D3DXFROMWINEVECTOR2> points;
+    points.reserve(static_cast<size_t>((MAX_T * 2.0f) / STEP) + 1);
+
+    // Generate the hyperbola points
+    for (float t = -MAX_T; t <= MAX_T; t += STEP)
+    {
+        float x = originx + width  * coshf(t);
+        float y = originy + height * sinhf(t);
+
+        points.push_back(D3DXFROMWINEVECTOR2(x, y));
+    }
+    
 	unsigned int col = toBGRA(color);
 	InitPlain(plainShader, plainVF);
 	setShader(plainShader);
@@ -3704,7 +3455,7 @@ Conic:		f(x,y)=Ax2+Bxy+Cy2+Dx+Ey+F
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_POINTS, points.size(), &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
+	return DrawPrimitiveUP(PRIM_LINE_STRIP, static_cast<UINT>(points.size()), &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
 }
 unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, const float x1, const float y1, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
 {
@@ -6621,6 +6372,7 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    vec3 Color;\n"
 				"    vec2 uv;\n"
 				"};\n"
+				"//out vec4 xlv_Position;\n"
 				"uniform mat4 _x_worldViewProj_x_;\n"
 				"//layout(location = 0) in mat4 _x_worldViewProj_x_;\n"
 				"_x_VsOut_x_ main2( in _x_VsIn2_x_ In ) {\n"
@@ -6638,6 +6390,7 @@ saturate 	clamp(x, 0.0, 1.0)
 				"    xlt_In.uv = vec2(gl_MultiTexCoord0);\n"
 				"    xl_retval = main2( xlt_In);\n"
 				"    gl_Position = vec4(xl_retval.position);\n"
+				"    //xlv_Position = gl_Position;\n"
 				"    //gl_FragCoord = vec2(xl_retval.uv);\n"
 				"    xlv_TEXCOORD0 = vec2(xl_retval.uv);\n"
 				"}\n";
@@ -7018,6 +6771,20 @@ ShaderID IRenderer::addShader(  const char* shaderText_,
 		fsStr=std::string("#define fract frac\n")+fsStr;
 		vsStr=std::string("#define atan(x,y) atan2(y,x)\n")+vsStr;
 		fsStr=std::string("#define atan(x,y) atan2(y,x)\n")+fsStr;
+#endif
+#if 1
+#if defined(LINUX)
+	STX_Service::WriteTxtFile("./vsText.lnx.txt", vsStr.c_str());
+	STX_Service::WriteTxtFile("./fsText.lnx.txt", fsStr.c_str());
+#endif
+#if defined(__APPLE__)
+	STX_Service::WriteTxtFile("./vsText.osx.txt", vsStr.c_str());
+	STX_Service::WriteTxtFile("./fsText.osx.txt", fsStr.c_str());
+#endif
+#if defined(_MSC_VER)
+	STX_Service::WriteTxtFile("./vsText.msc.txt", vsStr.c_str());
+	STX_Service::WriteTxtFile("./fsText.msc.txt", fsStr.c_str());
+#endif
 #endif
 #if !defined(IPHONE_SIMULATOR) && !defined(ANDROID) // &&!defined(OS_IPHONE)
 		static bool Hlsl2Glsl_init=true;

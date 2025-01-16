@@ -22,15 +22,15 @@ public:
 		IRenderer::GetRendererInstance()->Clear(true,true, D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7, 1.0f));
 		IRenderer::GetRendererInstance()->BeginScene();
 #if 1
-IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 50.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 75.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 100.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(500.0f, 100.0f*SizeX, 100.0f*SizeY, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(500.0f, 50.0f, 100.0f*SizeX, 100.0f*SizeY, D3DXFROMWINEVECTOR4(1,1,1,1));
 #elif 0
-IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 50.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 75.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 100.0f, D3DXFROMWINEVECTOR4(1,1,1,1));
-IRenderer::GetRendererInstance()->drawParabole(500.0f, 100.0f*SizeX, 100.0f*SizeY, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
+IRenderer::GetRendererInstance()->drawParabole(500.0f, 50.0f, 100.0f*SizeX, 100.0f*SizeY, D3DXFROMWINEVECTOR4(1,1,1,1));
 #endif
   		STXGUI::update();
 

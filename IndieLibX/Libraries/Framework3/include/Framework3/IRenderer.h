@@ -2440,22 +2440,8 @@ inline unsigned int drawRoundRect(const float x0, const float y0, const float x1
 virtual unsigned int drawEllipseVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
 inline  unsigned int drawEllipse(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth = 0){return  drawEllipseVrtl(originx, originy, width, height, color, lineWidth);}
 
-
-
-virtual unsigned int drawParaboleVrtl(const float xpos, const float x0, const float k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
-inline  unsigned int drawParabole(const float xpos, const float x0, const float k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth=0){return drawParaboleVrtl(xpos, x0, k, color, lineWidth);}
-
-
-
-virtual unsigned int drawParaboleVrtl(const float p, const float h, const unsigned int k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
-inline  unsigned int drawParabole(const float p, const float h, const unsigned int k, const D3DXFROMWINEVECTOR4 &color, const float lineWidth=0){return drawParaboleVrtl(p, h, k, color, lineWidth);}
-
-
 virtual unsigned int drawParaboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
-inline  unsigned int drawParabole(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth = 0){return  drawParaboleVrtl(originx, originy, width, height, color, lineWidth);}
-
-virtual unsigned int drawParaboleVrtl(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
-inline  unsigned int drawParabole(const float x1, const float y1, const float x2, const float y2, const float x3, const float y3, const D3DXFROMWINEVECTOR4 &color, const float lineWidth = 0){return  drawParaboleVrtl(x1, y1, x2, y2, x3, y3, color, lineWidth);}
+inline  unsigned int drawParabole(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth=0){return drawParaboleVrtl(originx, originy, width, height, color, lineWidth);}
 
 virtual unsigned int drawHyperboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)=0;
 inline  unsigned int drawHyperbole(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth = 0){return  drawHyperboleVrtl(originx, originy, width, height, color, lineWidth);}
