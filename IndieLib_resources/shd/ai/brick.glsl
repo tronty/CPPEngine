@@ -1,6 +1,6 @@
 // Uniform variables with default values
-        vec3 position=vec3(0.0, 0.0, -1.0);
-uniform vec3 viewPosition = vec3(0.0, 0.0, -15);      // Camera position
+        vec3 position=vec3(0.0, 0.0, 0.5);
+uniform vec3 viewPosition = vec3(0.0, 0.0, -0.5);      // Camera position
 uniform vec3 lightPosition = vec3(10.0, 10.0, 10.0);  // Light position
 uniform vec3 lightColor = vec3(1.0, 1.0, 1.0);        // Light color
 uniform vec3 brickColor = vec3(0.8, 0.3, 0.1);        // Brick color

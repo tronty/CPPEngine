@@ -173,7 +173,7 @@ void main()
 
     // Simple camera setup
     vec3 ro = vec3(0.0, 6.0, -1.0); // camera position
-    vec3 rd = normalize(vec3(uv.x, -0.3, -1.0));
+    vec3 rd = normalize(vec3(uv.x, 0.3, 1.0));
 
     // Ray march the scene
     vec3 color = raymarch(ro, rd);

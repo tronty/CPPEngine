@@ -100,7 +100,7 @@ void main()
     vec3 rd = normalize(vec3(uv.x, -0.3, -1.0));
 #else
     vec3 ro = vec3(0.0, 0.0, -1.0); // Ray origin
-    vec3 rd = normalize(vec3(uv, -1.5)); // Ray direction
+    vec3 rd = normalize(vec3(uv, 1.0)); // Ray direction
 #endif
     // Perform the raymarch
     vec3 color = raymarch(ro, rd);
