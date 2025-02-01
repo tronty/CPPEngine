@@ -1,157 +1,128 @@
-// ------------------------ PARAMETERS ------------------------
-
-#define MAX_STEPS 100
-#define MAX_DIST  100.0
-#define EPS       0.001     // SDF/EPS for normal calculation, etc.
-
-// "Rectangular Tower" parameters
-const float R = 0.15;   // rounding radius
-
-// Grid dimensions
-const int Nx = 4;
-const int Ny = 6;
-const int Nz = 2;
-
-// Each box’s half size
-const vec3 boxHalf = vec3(0.4, 0.4, 0.4);
-
-// Light parameters
-const vec3  lightDir = normalize(vec3(0.5, 1.0, 0.3));
-const vec3  lightColor = vec3(1.0, 0.95, 0.8); // warm-white
-
-// Material parameters
-const vec3  objectColor = vec3(0.4, 0.6, 0.8);
-const float shininess   = 32.0;
-const float specularStr = 0.3;
-
-// ------------------------ SDF HELPERS ------------------------
-
-// Signed distance to an axis-aligned box of half-size b
-float sdBox(vec3 p, vec3 b)
-{
-    vec3 d = abs(p) - b;
-    // Outside distance: length of positive part
-    // Inside distance: largest negative component
-    return length(max(d, 0.0)) + min(max(d.x, max(d.y, d.z)), 0.0);
+ 
+// SDF for a capped cylinder
+float sdCappedCylinder(vec3 p, float h, float r) {
+    float d = length(p.xz) - r;
+    d = max(d, abs(p.y) - h);
+    return d;
 }
 
-// Replace sdRoundTower with a 3D grid (N x M x K) of boxes
-float sdRectangularTower(vec3 p)
-{
-    float d = 1e10;  // large initial distance
-
-    // For each cell in a 3D grid, union the distance to that box
-    for(int i = 0; i < Nx; i++)
-    {
-        for(int j = 0; j < Ny; j++)
-        {
-            for(int k = 0; k < Nz; k++)
-            {
-                // Center each box at integer coordinates, shifted by +0.5
-                vec3 boxCenter = vec3(float(i)+0.5, float(j)+0.5, float(k)+0.5);
-                float boxDist  = sdBox(p - boxCenter, boxHalf);
-                d = min(d, boxDist);
-            }
-        }
-    }
-
-    // Round the edges by subtracting R
-    return d - R;
+// SDF for a box
+float sdBox(vec3 p, vec3 b) {
+    vec3 q = abs(p) - b;
+    return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
 
-// Our scene SDF (just one object in this example)
-float mapScene(vec3 p)
-{
-    return sdRectangularTower(p);
+// Repeat space along a given axis
+vec3 repeat(vec3 p, vec3 c) {
+    return mod(p + 0.5 * c, c) - 0.5 * c;
+}
+ 
+float towerSDF(vec3 p) {
+    // Main tower (capped cylinder)
+    float tower = sdCappedCylinder(p, 2.0, 0.5);
+
+    // Add repeated boxes for details (e.g., windows)
+    vec3 q = repeat(p, vec3(0.3, 0.3, 0.3));
+    float details = sdBox(q, vec3(0.1, 0.1, 0.1));
+
+    // Combine the tower and details
+    return min(tower, details);
+}
+ 
+float battlementSDF(vec3 p) {
+    // Create a single battlement box
+    float box = sdBox(p, vec3(0.1, 0.05, 0.1));
+
+    // Repeat the boxes along the x and z axes
+    vec3 q = repeat(p, vec3(0.2, 0.0, 0.2));
+    return sdBox(q, vec3(0.1, 0.05, 0.1));
 }
 
-// Approximate normal by sampling the gradient of the distance field
-vec3 calcNormal(vec3 p)
-{
-    const vec2 e = vec2(EPS, 0.0);
-    return normalize(vec3(
-        mapScene(p + vec3(e.x, e.y, e.y)) - mapScene(p - vec3(e.x, e.y, e.y)),
-        mapScene(p + vec3(e.y, e.x, e.y)) - mapScene(p - vec3(e.y, e.x, e.y)),
-        mapScene(p + vec3(e.y, e.y, e.x)) - mapScene(p - vec3(e.y, e.y, e.x))
-    ));
+float sceneSDF(vec3 p) {
+    // Combine the tower and battlement
+    float tower = towerSDF(p);
+    float battlement = battlementSDF(p + vec3(0.0, 2.05, 0.0)); // Position the battlement on top
+    return min(tower, battlement);
 }
-
-// Hard shadow by sphere tracing along the ray from intersection to light
-float calcShadow(vec3 ro, vec3 rd)
-{
-    float t = 0.01; // offset a bit from the surface
-    for(int i = 0; i < 64; i++)
-    {
-        if(t > MAX_DIST) break;
-        float h = mapScene(ro + rd * t);
-        if(h < 0.001)
-        {
-            // In shadow
-            return 0.0;
-        }
-        t += h;
-    }
-    return 1.0;
-}
-
-// Sphere-trace the scene along ray origin (ro) and direction (rd).
-// Returns the distance along the ray to the intersection, or -1.0 if none found.
-float raymarch(vec3 ro, vec3 rd)
-{
+ 
+float raymarch(vec3 ro, vec3 rd, float maxDist, int maxSteps) {
     float t = 0.0;
-    for(int i = 0; i < MAX_STEPS; i++)
-    {
-        vec3 p = ro + rd * t;
-        float distToScene = mapScene(p);
-        if(distToScene < EPS) {
-            return t; // we hit the surface
-        }
-        t += distToScene;
-        if(t > MAX_DIST) break;
+    for (int i = 0; i < maxSteps; i++) {
+        vec3 p = ro + t * rd;
+        float d = sceneSDF(p);
+        if (d < 0.001) return t; // Hit
+        t += d;
+        if (t >= maxDist) break; // Miss
     }
-    return -1.0; // no hit
+    return -1.0; // Miss
 }
+ 
+vec3 computeNormal(vec3 p) {
+    float eps = 0.001;
+    float d = sceneSDF(p);
+    vec3 n = d - vec3(
+        sceneSDF(p - vec3(eps, 0.0, 0.0)),
+        sceneSDF(p - vec3(0.0, eps, 0.0)),
+        sceneSDF(p - vec3(0.0, 0.0, eps))
+    );
+    return normalize(n);
+}
+ 
+vec3 lighting(vec3 p, vec3 rd) {
+    vec3 lightPos = vec3(2.0, 5.0, 2.0);
+    vec3 normal = computeNormal(p);
+    vec3 lightDir = normalize(lightPos - p);
 
-// ------------------------ MAIN RENDER ------------------------
+    // Diffuse
+    float diffuse = max(dot(normal, lightDir), 0.0);
 
-void main()
-{
-    // Normalized pixel coordinates (-1..1)
-    vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
+    // Specular
+    vec3 viewDir = -rd;
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float specular = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
 
-    // Simple rotating camera
-    float ang = iTime * 0.3;
-    vec3 ro   = vec3(6.0 * cos(ang), 3.0, 6.0 * sin(ang)); 
-    vec3 lookAt = vec3(1.5, 2.0, 0.5); // aim somewhere roughly near the center
-    vec3 ww = normalize(lookAt - ro);
-    vec3 uu = normalize(cross(ww, vec3(0,1,0)));
-    vec3 vv = cross(uu, ww);
+    return diffuse * vec3(1.0, 0.8, 0.6) + specular * vec3(1.0);
+}
+ 
+vec3 sky(vec3 rd) {
+    return mix(vec3(0.5, 0.7, 1.0), vec3(1.0), smoothstep(-0.1, 0.1, rd.y));
+}
+ 
+mat3 rotateY(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        c, 0.0, s,
+        0.0, 1.0, 0.0,
+        -s, 0.0, c
+    );
+}
+ 
+void main() {
+    vec2 uv = gl_FragCoord.xy / iResolution.xy * 2.0 - 1.0;
+    uv.x *= iResolution.x / iResolution.y;
 
-    // Generate ray direction using a pinhole camera model
-    vec3 rd = normalize(uu * uv.x + vv * uv.y + ww);
+    // Camera setup
+    vec3 ro = vec3(0.0, 1.0, 5.0); // Ray origin
+    vec3 rd = normalize(vec3(uv, -1.0)); // Ray direction
+
+    // Rotate the scene
+    float angle = iTime * 0.5; // Rotate over time
+    ro *= rotateY(angle);
+    rd *= rotateY(angle);
 
     // Raymarch
-    float t = raymarch(ro, rd);
-    vec3 color = vec3(0.9, 0.95, 1.0); // background sky color
+    float t = raymarch(ro, rd, 20.0, 100);
 
-    if(t > 0.0)
-    {
-        // We hit geometry
-        vec3 p = ro + rd * t;
-        vec3 n = calcNormal(p);
-
-        // Basic Lambert + specular
-        float shadowFactor = calcShadow(p, lightDir);
-        float diff = max(dot(n, lightDir), 0.0) * shadowFactor;
-
-        vec3 viewDir    = normalize(-rd);
-        vec3 halfVector = normalize(lightDir + viewDir);
-        float specAngle = max(dot(n, halfVector), 0.0);
-        float spec = pow(specAngle, shininess) * specularStr * shadowFactor;
-
-        vec3 lighting = lightColor * (diff + spec);
-        color = objectColor * lighting;
+    // Shade the scene
+    vec3 col = vec3(0.0);
+    if (t > 0.0) {
+        vec3 p = ro + t * rd;
+        col = lighting(p, rd);
+    } else {
+        col = sky(rd); // Sky for misses
     }
 
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = vec4(col, 1.0);
 }
+

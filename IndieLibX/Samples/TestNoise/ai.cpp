@@ -217,14 +217,21 @@ void render()
 	
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("worldViewProj", I);
 	IRenderer::GetRendererInstance()->setShaderConstant4x4f("modelViewProjection", I);
+		
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("model", R);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("view", I);
+	IRenderer::GetRendererInstance()->setShaderConstant4x4f("projection", I);
+	
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iMouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("u_resolution", resolution);
 	IRenderer::GetRendererInstance()->setShaderConstant4f("iDate", iDate);
 
 	//time=timeGetTime()/1000.0f;
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("u_time", time);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iGlobalTime", time);
 

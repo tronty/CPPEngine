@@ -1,53 +1,95 @@
-//Certainly! Below is a GLSL 1.3 fragment shader that renders a **tilted spherical Jupiter planet with horizontal turbulent cloud belts**. This shader does not use any `uniform` or `varying` variables, adhering to your requirements.
+// Simplex noise function
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
+float snoise(vec2 v) {
+    const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+    vec2 i = floor(v + dot(v, C.yy));
+    vec2 x0 = v - i + dot(i, C.xx);
+    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+    vec4 x12 = x0.xyxy + C.xxzz;
+    x12.xy -= i1;
+    i = mod289(i);
+    vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+    vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+    m = m * m;
+    m = m * m;
+    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 h = abs(x) - 0.5;
+    vec3 ox = floor(x + 0.5);
+    vec3 a0 = x - ox;
+    m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+    vec3 g;
+    g.x = a0.x * x0.x + h.x * x0.y;
+    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+    return 130.0 * dot(m, g);
+}
 
-void main()
-{
-    // Fixed screen resolution
-    const vec2 resolution = vec2(800.0, 600.0);
+// Generate turbulence for cloud belts
+float turbulence(vec2 p, float size) {
+    float value = 0.0;
+    float initialSize = size;
+    while (size >= 1.0) {
+        value += abs(snoise(p / size)) * size;
+        size /= 2.0;
+    }
+    return value / initialSize;
+}
 
-    // Normalize coordinates to range [-1, 1]
-    vec2 uv = (gl_FragCoord.xy / resolution) * 2.0 - 1.0;
+// Generate cloud belts
+float cloudBelts(vec2 uv) {
+    float belts = 0.0;
+    float frequency = 10.0; // Controls the number of belts
+    float amplitude = 0.5;  // Controls the intensity of the belts
+
+    // Create band-like structures using sine waves and noise
+    belts += sin(uv.y * frequency) * amplitude;
+    belts += turbulence(uv * 2.0, 16.0) * 0.2; // Add turbulence for detail
+
+    return belts;
+}
+
+// Generate the Great Red Spot
+float greatRedSpot(vec2 uv) {
+    vec2 spotCenter = vec2(0.7, 0.5); // Position of the Great Red Spot
+    float spotRadius = 0.1; // Size of the spot
+    float dist = distance(uv, spotCenter);
+    return smoothstep(spotRadius, spotRadius - 0.02, dist);
+}
+
+void main() {
+    // Normalize coordinates to [-1, 1]
+    vec2 uv = (gl_FragCoord.xy / resolution.xy) * 2.0 - 1.0;
     uv.x *= resolution.x / resolution.y; // Correct aspect ratio
 
-    // Compute distance from the center
+    // Rotate the planet over time
+    float angle = time * 0.1; // Rotation speed
+    mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+    uv = rotation * uv;
+
+    // Map to spherical coordinates
     float radius = length(uv);
-
-    // Discard fragments outside the circle (sphere projection)
-    if (radius > 1.0)
-    {
-        discard;
+    if (radius > 1.0) {
+        gl_FragColor = vec4(0.0); // Discard pixels outside the sphere
+        return;
     }
+    vec2 sphereUV = vec2(atan(uv.y, uv.x) / 3.1416, radius);
 
-    // Compute the z-coordinate of the sphere's surface (before rotation)
-    float z = sqrt(1.0 - radius * radius);
+    // Generate cloud belts
+    float belts = cloudBelts(sphereUV * vec2(1.0, 4.0)); // Stretch vertically for more bands
+    vec3 baseColor = vec3(0.8, 0.6, 0.4); // Base color of Jupiter
+    vec3 cloudColor = baseColor + vec3(belts * 0.3); // Apply cloud belts
 
-    // Sphere position before rotation
-    vec3 spherePos = vec3(uv.x, uv.y, z);
+    // Add the Great Red Spot
+    float redSpot = greatRedSpot(sphereUV);
+    cloudColor = mix(cloudColor, vec3(0.8, 0.2, 0.1), redSpot * 0.5);
 
-    // Apply tilt rotation to the sphere around the x-axis
-    float angle = radians(25.0); // Tilt angle in degrees
-    mat3 rotation = mat3(
-        1.0,        0.0,         0.0,
-        0.0, cos(angle), -sin(angle),
-        0.0, sin(angle),  cos(angle)
-    );
-    spherePos = rotation * spherePos;
+    // Final color with lighting (simple diffuse)
+    vec3 normal = normalize(vec3(uv, sqrt(1.0 - radius * radius)));
+    vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
+    float diffuse = max(dot(normal, lightDir), 0.0);
+    vec3 finalColor = cloudColor * (diffuse + 0.2);
 
-    // Compute spherical coordinates from the rotated position
-    float phi = asin(spherePos.y);                // Latitude
-    float theta = atan(spherePos.x, spherePos.z) + time; // Longitude
-
-    // Generate horizontal turbulent cloud belts using phi (latitude)
-    float bands = sin(phi * 20.0);
-    float turbulence = sin(theta * 40.0 + sin(phi * 60.0));
-    float pattern = bands + turbulence * 0.2;
-
-    // Map the pattern to Jupiter-like colors
-    //vec3 planetColor = mix(vec3(1.0, 0.8, 0.6), vec3(0.8, 0.5, 0.2), pattern * 0.5 + 0.5);	// JupiterColor    
-    vec3 planetColor = mix(vec3(0.9, 0.85, 0.7), vec3(0.8, 0.75, 0.6), pattern * 0.5 + 0.5);	// SaturnColor
-    //vec3 planetColor = mix(vec3(0.4, 0.7, 0.9), vec3(0.6, 0.8, 1.0), pattern * 0.5 + 0.5);	// UranusColor
-    //vec3 planetColor = mix(vec3(0.1, 0.2, 0.7), vec3(0.2, 0.3, 0.9), pattern * 0.5 + 0.5);	// NeptunusColor
-    
-    gl_FragColor = vec4(planetColor, 1.0);
+    gl_FragColor = vec4(finalColor, 1.0);
 }
 

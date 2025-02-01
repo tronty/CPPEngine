@@ -218,9 +218,11 @@ void render()
 	IRenderer::GetRendererInstance()->setShaderConstant2f("iResolution", resolution);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("mouse", mouse);
 	IRenderer::GetRendererInstance()->setShaderConstant2f("resolution", resolution);
+	IRenderer::GetRendererInstance()->setShaderConstant2f("u_resolution", resolution);
 	time=timeGetTime()/1000.0f;
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iTime", time);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("time", time);
+	IRenderer::GetRendererInstance()->setShaderConstant1f("u_time", time);
 	IRenderer::GetRendererInstance()->setShaderConstant1f("iGlobalTime", time);
 	#endif
 
