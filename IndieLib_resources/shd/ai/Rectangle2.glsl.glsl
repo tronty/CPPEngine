@@ -1,31 +1,31 @@
 // Define a rounded rectangle (box with rounded corners)
-float sdRoundRectangle(vec3 p) 
-{
-    float radius = 0.05;
-    vec3 size = vec3(1.0, 0.25, 0.05);
+float sdRoundRectangle(vec3 p, vec3 size, float radius) {
     vec3 q = abs(p) - size + radius;
     return length(max(q, 0.0)) - radius;
 }
 
-// Define a tiled wall with n x m tiles
-float sdTileWall(vec3 p, int n, int m) 
-{
-    // Tile size
-    vec2 tileSize = vec2(1.0 / float(n), 1.0 / float(m));
-    
-    // Repeat the pattern in the x and y directions
-    vec2 tileCoord = mod(p.xy, tileSize) - 0.5 * tileSize;
-    
-    // Create a rounded rectangle for each tile
-    return sdRoundRectangle(vec3(tileCoord, p.z));
+// Repeat a shape in a grid pattern
+vec3 repeat(vec3 p, vec3 c) {
+    return mod(p + 0.5 * c, c) - 0.5 * c;
+}
+
+// Define the castle wall as an n x m grid of rounded rectangles
+float sdCastleWall(vec3 p, int n, int m) {
+    vec3 gridSize = vec3(float(n), 1.0, float(m)); // Grid dimensions
+    vec3 rectSize = vec3(0.4, 1.5, 0.4); // Size of each rounded rectangle
+    float radius = 0.1; // Radius of the rounded corners
+
+    // Repeat the rounded rectangle in a grid
+    vec3 q = repeat(p, gridSize);
+    return sdRoundRectangle(q, rectSize, radius);
 }
 
 // Raymarching function
-float raymarch(vec3 ro, vec3 rd, int n, int m) {
+float raymarch(vec3 ro, vec3 rd) {
     float t = 0.0;
     for (int i = 0; i < 64; i++) {
         vec3 p = ro + t * rd;
-        float d = sdTileWall(p, n, m);
+        float d = sdCastleWall(p, 5, 5); // 5x5 grid of rounded rectangles
         if (d < 0.001) return t;
         t += d;
         if (t > 100.0) break;
@@ -34,15 +34,15 @@ float raymarch(vec3 ro, vec3 rd, int n, int m) {
 }
 
 // Compute normals using finite differences
-vec3 computeNormal(vec3 p, int n, int m) {
-    float d = sdTileWall(p, n, m);
+vec3 computeNormal(vec3 p) {
+    float d = sdCastleWall(p, 5, 5);
     vec2 e = vec2(0.001, 0.0);
-    vec3 normal = d - vec3(
-        sdTileWall(p - e.xyy, n, m),
-        sdTileWall(p - e.yxy, n, m),
-        sdTileWall(p - e.yyx, n, m)
+    vec3 n = d - vec3(
+        sdCastleWall(p - e.xyy, 5, 5),
+        sdCastleWall(p - e.yxy, 5, 5),
+        sdCastleWall(p - e.yyx, 5, 5)
     );
-    return normalize(normal);
+    return normalize(n);
 }
 
 // Diffuse lighting
@@ -69,23 +69,19 @@ void main() {
     vec3 ro = vec3(0.0, 1.0, 5.0);
     vec3 rd = normalize(vec3(uv, -1.0));
 
-    // Rotate the wall around the y-axis
+    // Rotate the castle wall around the y-axis
     float angle = time * 0.5;
     mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
     ro.xz = rot * ro.xz;
     rd.xz = rot * rd.xz;
 
-    // Number of tiles in x and y directions
-    int n = 5; // Number of tiles in x direction
-    int m = 5; // Number of tiles in y direction
-
     // Raymarch through the scene
-    float t = raymarch(ro, rd, n, m);
+    float t = raymarch(ro, rd);
 
     // Shading
     if (t > 0.0) {
         vec3 p = ro + t * rd;
-        vec3 n = computeNormal(p, n, m);
+        vec3 n = computeNormal(p);
         vec3 l = normalize(vec3(1.0, 1.0, -1.0));
         vec3 v = normalize(ro - p);
 
@@ -99,3 +95,4 @@ void main() {
         gl_FragColor = vec4(sky(rd), 1.0);
     }
 }
+

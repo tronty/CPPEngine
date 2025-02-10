@@ -1,3 +1,4 @@
+vec3 castlePos=vec3(0.5);
 // A simple 2D rotation matrix (rotates vectors in the xz–plane).
 mat2 rot(float a) {
     float c = cos(a), s = sin(a);
@@ -19,6 +20,8 @@ float sdCylinder(vec3 p, float r, float h) {
 
 // The scene SDF: a rectangular castle with round towers at each corner.
 float map(vec3 p) {
+    // Translate p so that the castle is centered at castlePos.
+    p -= castlePos;
     // Rotate the entire scene (castle) about the y–axis.
     float castleAngle = time * 0.3;
     p.xz = rot(castleAngle) * p.xz;

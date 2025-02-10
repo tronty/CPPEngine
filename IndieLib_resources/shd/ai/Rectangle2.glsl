@@ -1,31 +1,29 @@
-// Define a rounded rectangle (box with rounded corners)
-float sdRoundRectangle(vec3 p) 
-{
-    float radius = 0.05;
-    vec3 size = vec3(1.0, 0.25, 0.05);
-    vec3 q = abs(p) - size + radius;
-    return length(max(q, 0.0)) - radius;
-}
-
-// Define a tiled wall with n x m tiles
-float sdTileWall(vec3 p, int n, int m) 
-{
-    // Tile size
-    vec2 tileSize = vec2(1.0 / float(n), 1.0 / float(m));
+float sdRectangle(vec3 p) {
+    // Define the half–dimensions of the rectangle.
+    // (This rectangle extends from –1.0 to +1.0 in x and –0.5 to +0.5 in y.)
+    vec2 halfSize = vec2(1.0, 0.5);
     
-    // Repeat the pattern in the x and y directions
-    vec2 tileCoord = mod(p.xy, tileSize) - 0.5 * tileSize;
+    // Compute the difference between the absolute point coordinates and the half–dimensions.
+    // This gives a 2D vector d:
+    //   - If p.xy is inside the rectangle, d will have negative components.
+    //   - If p.xy is outside, d will be positive in the directions in which p exceeds the bounds.
+    vec2 d = abs(p.xy) - halfSize;
     
-    // Create a rounded rectangle for each tile
-    return sdRoundRectangle(vec3(tileCoord, p.z));
+    // The distance is computed by combining two terms:
+    // 1. For the part outside the rectangle, we use the Euclidean distance.
+    // 2. For the inside, we take the maximum negative offset.
+    float outsideDist = length(max(d, vec2(0.0)));
+    float insideDist  = min(max(d.x, d.y), 0.0);
+    
+    return outsideDist + insideDist;
 }
 
 // Raymarching function
-float raymarch(vec3 ro, vec3 rd, int n, int m) {
+float raymarch(vec3 ro, vec3 rd) {
     float t = 0.0;
     for (int i = 0; i < 64; i++) {
         vec3 p = ro + t * rd;
-        float d = sdTileWall(p, n, m);
+        float d = sdRectangle(p);
         if (d < 0.001) return t;
         t += d;
         if (t > 100.0) break;
@@ -34,15 +32,15 @@ float raymarch(vec3 ro, vec3 rd, int n, int m) {
 }
 
 // Compute normals using finite differences
-vec3 computeNormal(vec3 p, int n, int m) {
-    float d = sdTileWall(p, n, m);
+vec3 computeNormal(vec3 p) {
+    float d = sdRectangle(p);
     vec2 e = vec2(0.001, 0.0);
-    vec3 normal = d - vec3(
-        sdTileWall(p - e.xyy, n, m),
-        sdTileWall(p - e.yxy, n, m),
-        sdTileWall(p - e.yyx, n, m)
+    vec3 n = d - vec3(
+        sdRectangle(p - e.xyy),
+        sdRectangle(p - e.yxy),
+        sdRectangle(p - e.yyx)
     );
-    return normalize(normal);
+    return normalize(n);
 }
 
 // Diffuse lighting
@@ -69,23 +67,19 @@ void main() {
     vec3 ro = vec3(0.0, 1.0, 5.0);
     vec3 rd = normalize(vec3(uv, -1.0));
 
-    // Rotate the wall around the y-axis
+    // Rotate the tower around the y-axis
     float angle = time * 0.5;
     mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
     ro.xz = rot * ro.xz;
     rd.xz = rot * rd.xz;
 
-    // Number of tiles in x and y directions
-    int n = 5; // Number of tiles in x direction
-    int m = 5; // Number of tiles in y direction
-
     // Raymarch through the scene
-    float t = raymarch(ro, rd, n, m);
+    float t = raymarch(ro, rd);
 
     // Shading
     if (t > 0.0) {
         vec3 p = ro + t * rd;
-        vec3 n = computeNormal(p, n, m);
+        vec3 n = computeNormal(p);
         vec3 l = normalize(vec3(1.0, 1.0, -1.0));
         vec3 v = normalize(ro - p);
 
@@ -99,3 +93,4 @@ void main() {
         gl_FragColor = vec4(sky(rd), 1.0);
     }
 }
+

@@ -1,3 +1,4 @@
+vec3 castlePos=vec3(0.5);
 // ---------------------------------------------------------------------------
 // 2D Rotation Matrix (rotates a vec2 in the XZ–plane)
 mat2 rot(float a) {
@@ -54,6 +55,8 @@ float towerSDF(in vec3 p) {
 // Castle SDF: Builds a quad (square) castle by unioning a wall and four towers.
 // The castle is rotated as a whole by time.
 float castleSDF(in vec3 p) {
+    // Translate p so that the castle is centered at castlePos.
+    p -= castlePos;
     // Rotate the entire castle about the Y–axis.
     vec3 q = p;
     q.xz = rot(time) * q.xz;
@@ -113,7 +116,7 @@ vec3 estimateNormal(in vec3 p) {
     float dz = castleSDF(p + vec3(0.0, 0.0, eps)) - castleSDF(p - vec3(0.0, 0.0, eps));
     return normalize(vec3(dx, dy, dz));
 }
-
+#if 0
 // ---------------------------------------------------------------------------
 // Main Fragment Shader
 void main(void) {
@@ -157,4 +160,41 @@ void main(void) {
     // Output the final color.
     gl_FragColor = vec4(col, 1.0);
 }
+#elif 1
+void main() {
+    // Compute normalized pixel coordinates (with y scaled by the fixed resolution).
+    vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
+    
+    // --- Camera Setup ---
+    vec3 ro = vec3(3.0, 2.0, 3.0);    // camera position
+    vec3 target = vec3(0.0, 0.5, 0.0);  // look–at target (roughly the castle center)
+    vec3 forward = normalize(target - ro);
+    vec3 right = normalize(cross(forward, vec3(0.0, 1.0, 0.0)));
+    vec3 up = cross(right, forward);
+    // Build the ray direction (simple perspective projection).
+    vec3 rd = normalize(uv.x * right + uv.y * up + 1.5 * forward);
+    
+    // --- Raymarching ---
+    float t = rayMarch(ro, rd);
+    vec3 pos = ro + rd * t;
+    
+    vec3 col;
+    if(t > 100.0) {
+        // No hit – display a sky-like gradient.
+        col = vec3(0.7, 0.9, 1.0) - rd.y * 0.5;
+    } else {
+        // Surface hit: compute lighting.
+        vec3 n = estimateNormal(pos);
+        // A rotating light direction (rotating in the xz–plane).
+        vec3 lightDir = normalize(vec3(cos(time), 0.8, sin(time)));
+        float diff = max(dot(n, lightDir), 0.0);
+        // Simple specular highlight.
+        vec3 ref = reflect(-lightDir, n);
+        float spec = pow(max(dot(ref, -rd), 0.0), 16.0);
+        // Combine ambient, diffuse, and specular lighting.
+        col = vec3(0.2) + diff * vec3(0.8, 0.7, 0.6) + spec * vec3(1.0);
+    }    
+    gl_FragColor = vec4(col, 1.0);
+}
+#endif
 

@@ -1,0 +1,88 @@
+GLSL (OpenGL Shading Language) doesn’t come with a built‐in “menu” of effects—instead, it provides the language features (such as texture lookups, math functions, control flow, etc.) that let you write your own custom fragment shaders. That said, over the years developers have implemented many common visual effects using GLSL 1.3. Here’s an overview (an “enumeration”) of typical fragment shader effects you might create with GLSL 1.3:
+
+---
+
+### 1. **Basic Color and Tone Adjustments**
+- **Brightness/Contrast & Gamma Correction:**  
+  Adjust the overall brightness, contrast, and gamma of your output.
+- **Color Inversion / Grayscale:**  
+  Convert colors to their negatives or compute luminance to render a grayscale image.
+- **Color Filtering/Color Balance:**  
+  Modify or remap color channels to achieve stylistic looks (e.g., sepia tone).
+
+---
+
+### 2. **Lighting and Shading Effects**
+- **Phong Shading:**  
+  Compute per-fragment ambient, diffuse, and specular lighting for smooth, realistic illumination.
+- **Blinn-Phong Shading:**  
+  A variant that uses the half-vector approach to simplify and sometimes improve specular calculations.
+- **Fresnel Effects:**  
+  Simulate the increased reflectivity of surfaces at grazing angles.
+
+---
+
+### 3. **Texture-Based Effects**
+- **Standard Texture Mapping:**  
+  Apply 2D or 3D textures to fragments.
+- **Multi-Texturing / Decals:**  
+  Blend several textures together (for example, overlaying decals or detail maps).
+- **Normal (Bump) Mapping:**  
+  Use a texture of normals to simulate fine surface details without extra geometry.
+- **Parallax / Relief Mapping:**  
+  Enhance depth perception in textured surfaces by offsetting texture coordinates based on a height map.
+
+---
+
+### 4. **Post‐Processing Effects**
+These are typically applied as full‑screen passes using render-to-texture techniques.
+- **Blur Effects:**  
+  *Gaussian, Box, or Radial Blur* can soften an image or simulate camera effects.
+- **Edge Detection:**  
+  Use operators (such as Sobel or Laplacian filters) to highlight edges for a sketch or outline effect.
+- **Bloom:**  
+  Extract and blur bright parts of the scene to add a glow around light sources.
+- **Motion Blur:**  
+  Simulate the blurring that occurs when objects move quickly relative to the camera.
+- **Depth of Field:**  
+  Blur parts of the scene based on depth, imitating a camera’s focus range.
+
+---
+
+### 5. **Stylized / Procedural Effects**
+- **Cel (Toon) Shading:**  
+  Quantize lighting values to create flat, cartoon-like color regions with distinct edges.
+- **Procedural Noise and Turbulence:**  
+  Generate textures (like marble, wood, or fire) on the fly using noise functions.
+- **Chromatic Aberration:**  
+  Offset color channels slightly to mimic lens dispersion effects.
+- **Heat Haze / Refraction Effects:**  
+  Distort the underlying image as if seen through a rippling, refractive medium.
+
+---
+
+### 6. **Advanced and Combined Effects**
+- **Shadow Mapping:**  
+  Although it involves multiple passes, a fragment shader can compare depth values to determine shadowed areas.
+- **Screen-Space Ambient Occlusion (SSAO):**  
+  Estimate occlusion from nearby geometry to add realistic soft shadows in crevices.
+- **Multi-Pass Combinations:**  
+  Often, complex effects are built by combining several of the above techniques in multiple rendering passes (for example, blending blurred images with the original scene).
+
+---
+
+### Additional Notes
+
+- **Built-in Functions:**  
+  GLSL 1.3 supplies a wide array of functions (e.g., `mix()`, `smoothstep()`, `reflect()`, `refract()`, `step()`) that are invaluable in implementing these effects.
+  
+- **Custom Code is Key:**  
+  Since GLSL doesn’t offer prepackaged “effects,” the look and performance of any effect depend on how you implement it. Many of the above effects have countless variations and optimizations.
+
+- **Version Considerations:**  
+  While these examples are fully implementable in GLSL 1.3, many modern effects are written with more recent versions of GLSL. However, GLSL 1.3 is powerful enough for a wide range of creative fragment shading techniques.
+
+---
+
+In summary, while there isn’t an official “list” of GLSL 1.3 fragment shader effects, the techniques above represent many of the common strategies used to achieve a variety of visual effects. The flexibility of GLSL lets you mix and match these ideas to create your own unique shaders.
+
