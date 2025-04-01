@@ -1,94 +1,81 @@
-// ---------------------------------------------------------------------------
-// 2D Rotation Matrix (rotates a vec2 in the XZ–plane)
-mat2 rot(float a) {
-    float s = sin(a);
-    float c = cos(a);
-    return mat2(c, -s,
-                s,  c);
+#define PI 3.14159265359
+#define TWO_PI 6.28318530718
+
+// Function to generate noise
+float noise(vec3 p) {
+    return fract(sin(dot(p, vec3(12.9898, 78.233, 45.5432))) * 43758.5453);
 }
 
-// ---------------------------------------------------------------------------
-// Standard SDF for an axis–aligned box centered at the origin with half–extents b.
-float sdBox(in vec3 p, in vec3 b) {
+// Function to rotate a point around the Y axis
+vec3 rotateY(vec3 p, float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z);
+}
+float sdCube(vec3 p) {
+    // The cube is centered at the origin and has a size of 1.0 in all dimensions
+    vec3 b = vec3(1.0); // Half-size of the cube (since the cube goes from -0.5 to 0.5 in each axis)
+    
+    // Calculate the distance to the cube
     vec3 d = abs(p) - b;
-    return length(max(d, vec3(0.0))) + min(max(d.x, max(d.y, d.z)), 0.0);
+    
+    // If the point is inside the cube, the distance is the maximum of the negative components
+    // Otherwise, it's the length of the vector from the closest face to the point
+    return length(max(d, 0.0)) + min(max(d.x, max(d.y, d.z)), 0.0);
+}
+// Function to calculate the distance to a cube
+float sdCube(vec3 p, vec3 b) {
+    vec3 d = abs(p) - b;
+    return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
 }
 
-const vec3 boxSize = vec3(0.5); // the half–extents of our box
-
-// ---------------------------------------------------------------------------
-// Raymarching routine: marches from ray origin (ro) along direction (rd)
-// until the SDF is below a small threshold or a maximum distance is exceeded.
-float rayMarch(in vec3 ro, in vec3 rd) {
-    float t = 0.0;
-    const int MAX_STEPS = 100;
-    const float MAX_DIST = 100.0;
-    const float EPSILON = 0.001;
-    for (int i = 0; i < MAX_STEPS; i++) {
-        vec3 pos = ro + rd * t;
-        float d = sdBox(pos, boxSize); // now both parameters are supplied
-        if (d < EPSILON) break;
-        t += d;
-        if (t > MAX_DIST) break;
-    }
-    return t;
-}
-
-// ---------------------------------------------------------------------------
-// Estimate the normal at a point by finite differences.
-vec3 estimateNormal(in vec3 p) {
-    const float eps = 0.001;
-    float dx = sdBox(p + vec3(eps, 0.0, 0.0), boxSize) - sdBox(p - vec3(eps, 0.0, 0.0), boxSize);
-    float dy = sdBox(p + vec3(0.0, eps, 0.0), boxSize) - sdBox(p - vec3(0.0, eps, 0.0), boxSize);
-    float dz = sdBox(p + vec3(0.0, 0.0, eps), boxSize) - sdBox(p - vec3(0.0, 0.0, eps), boxSize);
-    return normalize(vec3(dx, dy, dz));
+// Function to calculate the normal of a cube
+vec3 getNormal(vec3 p) {
+    vec2 e = vec2(0.001, 0.0);
+    return normalize(vec3(
+        sdCube(p + e.xyy) - sdCube(p - e.xyy),
+        sdCube(p + e.yxy) - sdCube(p - e.yxy),
+        sdCube(p + e.yyx) - sdCube(p - e.yyx)
+    ));
 }
 
 void main() {
-    // Compute normalized pixel coordinates (with y scaled by the fixed resolution).
-    vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
-    
-    // --- Camera Setup ---
-    vec3 ro = vec3(3.0, 2.0, 3.0);    // camera position
-    vec3 target = vec3(0.0, 0.5, 0.0);  // look–at target (roughly the castle center)
-    vec3 forward = normalize(target - ro);
-    vec3 right = normalize(cross(forward, vec3(0.0, 1.0, 0.0)));
-    vec3 up = cross(right, forward);
-    // Build the ray direction (simple perspective projection).
-    vec3 rd = normalize(uv.x * right + uv.y * up + 1.5 * forward);
-    
-    // --- Raymarching ---
-    float t = rayMarch(ro, rd);
-    vec3 pos = ro + rd * t;
-    
-    vec3 col;
-    if (t > 100.0) {
-        // No hit – display a sky-like gradient.
-        col = vec3(0.7, 0.9, 1.0) - rd.y * 0.5;
-    } else {
-        // Surface hit: compute lighting.
-        vec3 n = estimateNormal(pos);
-        
-        // Light direction (rotating in the xz–plane).
-        vec3 lightDir = normalize(vec3(cos(iTime), 0.8, sin(iTime)));
-        
-        // Diffuse lighting.
-        float diff = max(dot(n, lightDir), 0.0);
-        
-        // Specular lighting.
-        vec3 viewDir = normalize(ro - pos); // Direction from surface to camera.
-        vec3 reflectDir = reflect(-lightDir, n);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-        
-        // Combine ambient, diffuse, and specular lighting.
-        vec3 ambient = vec3(0.2);
-        vec3 diffuse = diff * vec3(0.8, 0.7, 0.6);
-        vec3 specular = spec * vec3(1.0);
-        
-        col = ambient + diffuse + specular;
+    vec2 uv = gl_FragCoord.xy / vec2(800.0, 600.0); // Assuming a 800x600 resolution
+    uv = uv * 2.0 - 1.0; // Normalize to [-1, 1]
+
+    // Camera setup
+    vec3 ro = vec3(0.0, 0.0, 5.0); // Ray origin
+    vec3 rd = normalize(vec3(uv, -1.0)); // Ray direction
+
+    // Cube properties
+    vec3 cubePos = vec3(0.0, 0.0, 0.0);
+    vec3 cubeSize = vec3(1.0, 1.0, 1.0);
+    float cubeRotation = mod(0.1 * float(gl_FragCoord.x + gl_FragCoord.y), TWO_PI); // Rotate based on screen position
+
+    // Raymarching loop
+    float t = 0.0;
+    for (int i = 0; i < 64; i++) {
+        vec3 p = ro + rd * t;
+        p = rotateY(p - cubePos, cubeRotation) + cubePos; // Rotate the cube
+        float d = sdCube(p - cubePos, cubeSize);
+        if (d < 0.001) {
+            // Calculate lighting
+            vec3 normal = getNormal(p);
+            vec3 lightDir = normalize(vec3(1.0, 1.0, -1.0));
+            float diff = max(dot(normal, lightDir), 0.0);
+            float spec = pow(max(dot(reflect(-lightDir, normal), -rd), 0.0), 32.0);
+
+            // Add noise for a noisy effect
+            float n = noise(p * 10.0);
+            vec3 color = vec3(0.5 + 0.5 * diff + 0.5 * spec) * n;
+
+            gl_FragColor = vec4(color, 1.0);
+            return;
+        }
+        t += d;
     }
-    
-    // Output the final color.
-    gl_FragColor = vec4(col, 1.0);
+
+    // Background color if no intersection
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 }
 

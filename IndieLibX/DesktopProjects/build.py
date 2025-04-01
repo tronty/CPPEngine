@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2016 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -1068,7 +1068,7 @@ def parse(sln, abuildtool, gles2=False):
 def install():
 	install='''#!/bin/bash
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -2508,7 +2508,7 @@ def bootstrap(aproject, aarch='i386'):
 def bootstrapNDK_(abuildsln, abuildprj, abuildtool, apackage):
 	NDK_gl_code2='''#!/bin/bash
 #
-# Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2016 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #

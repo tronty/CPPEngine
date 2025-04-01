@@ -21,7 +21,7 @@ def ftplibFTP(filename, ddir):
 
 	shutil.copy(filename,ddir)
 	return
-	session = ftplib.FTP('www.tommironty.fi','tommiro1','')
+	session = ftplib.FTP('www.tuomasronty.fi','tuomasro','')
 	file = open(filename,'rb')                  # file to send
 	session.storbinary('STOR '+ddir+'/'+tail, file)     # send the file
 	file.close()                                    # close file and FTP
@@ -469,10 +469,10 @@ vulkan='''./multisampling_nomsaa.png
 ~/Asiakirjat/SDKs/DXSDK_Jun10/screenshots
 /home/tronty/Vulkan/screenshots
 
-# http://tommironty.fi/screenshots/ATI_SDK
-http://tommironty.fi/screenshots/SDK_9.5
-http://tommironty.fi/screenshots/DXSDK_Jun10
-http://tommironty.fi/screenshots/Vulkan
+# http://tuomasronty.fi/screenshots/ATI_SDK
+http://tuomasronty.fi/screenshots/SDK_9.5
+http://tuomasronty.fi/screenshots/DXSDK_Jun10
+http://tuomasronty.fi/screenshots/Vulkan
 
 ati_sdk(mar2006)
 NVIDIA_SDK_9.52.0324.0405

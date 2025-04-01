@@ -3,7 +3,7 @@
 #define STX_PRINT(...) printf(__VA_ARGS__)
 #define STX_FNLN printf("%s:%s:%d\n", __FILE__,__FUNCTION__, __LINE__)
 /*
-  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2021 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

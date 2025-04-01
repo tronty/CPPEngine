@@ -12,7 +12,7 @@
 // license, neither Intel Corporation nor its suppliers assumes any responsibility
 // or liability for any errors or inaccuracies that may appear herein.
 /*
-  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2019 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

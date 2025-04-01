@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -3996,7 +3996,7 @@ void STX_Dummy_TIMER::stx_Delay(Uint32 ms,STX_TIMER* _Timer){}
 /* The clock_gettime provides monotonous time, so we should use it if
    it's available. The clock_gettime function is behind ifdef
    for __USE_POSIX199309
-   Tommi Kyntola (tommi.kyntola@ray.fi) 27/09/2005
+   Tuomas Kyntola (tuomas.kyntola@ray.fi) 27/09/2005
 */
 #ifdef HAVE_CLOCK_GETTIME
 #include <time.h>

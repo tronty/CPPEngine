@@ -1,7 +1,7 @@
 import os, sys, re
 
 def replaceString(outtext):
-    outtext=re.sub(r'\bChatGPT-ChatGPT-o1-preview\b', 'ChatGPT-o1-preview', outtext)
+    outtext=re.sub(r'\bTuomas Roenty\b', 'Tuomas Roenty', outtext)
     '''
     outtext=re.sub(r"ä", "\&auml;", outtext)
     outtext=re.sub(r'ö', '\&ouml;', outtext)
@@ -223,7 +223,7 @@ def replaceString(outtext):
     outtext=re.sub(r'\bUINT\b', 'unsigned int', outtext)
     
     cr='''/*
-\tCopyright (c) 2020 Tommi Roenty   http://www.tommironty.fi/
+\tCopyright (c) 2020 Tuomas Roenty   http://www.tuomasronty.fi/
 \tLicensed under The GNU Lesser General Public License, version 2.1:
 \t\thttp://opensource.org/licenses/LGPL-2.1
 */
@@ -572,13 +572,13 @@ def replaceStringInFile_(filePath):
     	#text=replaceString(text)
 	
 	if True:
-		regex = r"\bTommi Roenty\b"
+		regex = r"\bTuomas Roenty\b"
 		person = re.findall(regex, text)
 		if True:#len(person)>1:
 			print "gedit " + filePath + "&"
 			#print len(person)
 	else:
-		txt_='''/*\n  Copyright (c) 2020 Tommi Roenty   http://www.tommironty.fi/\n  Licensed under The GNU Lesser General Public License, version 2.1:\n      http://opensource.org/licenses/LGPL-2.1\n*/\n'''
+		txt_='''/*\n  Copyright (c) 2020 Tuomas Roenty   http://www.tuomasronty.fi/\n  Licensed under The GNU Lesser General Public License, version 2.1:\n      http://opensource.org/licenses/LGPL-2.1\n*/\n'''
 		outtext = text.replace(txt_, "")
 
 		output = open(tempName,'w')
@@ -657,8 +657,8 @@ def myfunGL(dummy, dirr, filess):
 def myfun(dummy, dirr, filess):
 	for child in filess:
 		#os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
-		replaceStringInFile(dirr+'/'+child)
-		'''
+		#replaceStringInFile(dirr+'/'+child)
+		
 		if '.cpp' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInFile(dirr+'/'+child)
 		if '.cxx' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
@@ -673,7 +673,13 @@ def myfun(dummy, dirr, filess):
 			replaceStringInFile(dirr+'/'+child)
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInFile(dirr+'/'+child)
-		'''
+		if '.glsl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
+			replaceStringInFile(dirr+'/'+child)
+		if '.hlsl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
+			replaceStringInFile(dirr+'/'+child)
+		if '.shd' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
+			replaceStringInFile(dirr+'/'+child)
+		
 
 def myfun_(dummy, dirr, filess):
 	for child in filess:
@@ -698,6 +704,11 @@ def myfunmem(dummy, dirr, filess):
 			replaceStringInmemFile(dirr+'/'+child)
 		if '.inl' == os.path.splitext(child)[1] and os.path.isfile(dirr+'/'+child):
 			replaceStringInmemFile(dirr+'/'+child)
+
+v=['../Libraries', '../Samples']
+for i in v:
+	os.path.walk(i, myfun, 13)
+exit(0)
 
 os.path.walk('../../IndieLib_resources/shd/ai/', myfun, 13)
 exit(0)

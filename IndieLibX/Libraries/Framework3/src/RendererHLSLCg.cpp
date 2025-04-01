@@ -17,7 +17,7 @@
 *								 *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*
-  Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -3323,7 +3323,7 @@ unsigned int RendererHLSLCg::drawLineVrtl(const float x0, const float y0, const 
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 2, vertices, vertices, sizeof(PCVertex));
+	return DrawPrimitiveUP(PRIM_TRIANGLE_STRIP /* ??? PRIM_LINE_STRIP */, 2, vertices, vertices, sizeof(PCVertex));
 }
 	TextureID RendererHLSLCg::addRenderDepth(const int width, const int height, const int depthBits){
 		return addRenderDepth(width, height, 1, depthBits <= 16? FORMAT_D16 : FORMAT_D24);
@@ -3425,7 +3425,7 @@ unsigned int RendererHLSLCg::drawEllipseVrtl(const float originX, const float or
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
-	return DrawPrimitiveUP(PRIM_POINTS, NUM_SEGMENTS + 1, &ellipsePoints[0], &ellipsePoints[0], sizeof(D3DXFROMWINEVECTOR2));
+	return DrawPrimitiveUP(PRIM_POINTS /* ??? PRIM_LINE_STRIP */, NUM_SEGMENTS + 1, &ellipsePoints[0], &ellipsePoints[0], sizeof(D3DXFROMWINEVECTOR2));
 }
 
 unsigned int RendererHLSLCg::drawHyperboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
@@ -3457,16 +3457,19 @@ unsigned int RendererHLSLCg::drawHyperboleVrtl(const float originx, const float 
 	setDepthState(GetnoDepthTest());
 	return DrawPrimitiveUP(PRIM_LINE_STRIP, static_cast<UINT>(points.size()), &points[0], &points[0], sizeof(D3DXFROMWINEVECTOR2));
 }
-unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, const float x1, const float y1, const D3DXFROMWINEVECTOR4 &color, const float lineWidth)
+unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, 
+                        const float x1, const float y1, 
+                        const D3DXFROMWINEVECTOR4 &color, 
+                        const float lineWidth)
 {
-#if 0
-	LOG_FNLN_NONE;
-	LOG_PRINT_NONE("x0=%f\n", x0);
-	LOG_PRINT_NONE("y0=%f\n", y0);
-	LOG_PRINT_NONE("x1=%f\n", x1);
-	LOG_PRINT_NONE("y1=%f\n", y1);
-	LOG_PRINT_NONE("lineWidth=%f\n", lineWidth);
-#endif
+    // Define 5 points (4 corners + 1 duplicate of the first point to close the rectangle)
+    D3DXFROMWINEVECTOR2 rectPoints[5] = {
+        D3DXFROMWINEVECTOR2(x0, y0),  // Top-left
+        D3DXFROMWINEVECTOR2(x1, y0),  // Top-right
+        D3DXFROMWINEVECTOR2(x1, y1),  // Bottom-right
+        D3DXFROMWINEVECTOR2(x0, y1),  // Bottom-left
+        D3DXFROMWINEVECTOR2(x0, y0)   // Back to top-left to close the rectangle
+    };
 	unsigned int col = toBGRA(color);
 	InitPlain(plainShader, plainVF);
 	setShader(plainShader);
@@ -3475,106 +3478,7 @@ unsigned int RendererHLSLCg::drawRectVrtl(const float x0, const float y0, const 
 	setShaderConstant4f("scaleBias", GetscaleBias2D());
 	setShaderConstant4f("colorRGBA", color);
 	setDepthState(GetnoDepthTest());
-#if 0
-	Color4fv(color);
-	if (lineWidth > 0){
-		glLineWidth(lineWidth);
-		Begin(GL_LINE_LOOP);
-	} else {
-		Begin(GL_TRIANGLE_FAN);
-	}
-	Vertex2f(x0, y0);
-	Vertex2f(x1, y0);
-	Vertex2f(x1, y1);
-	Vertex2f(x0, y1);
-	End();
-}
-#elif 0
-	if (lineWidth > 0){
-		float d = 0.5f * lineWidth;
-		PCVertex vertices[] = {
-			float3(x0 - d, y0 - d, 0), col,
-			float3(x0 + d, y0 + d, 0), col,
-			float3(x1 + d, y0 - d, 0), col,
-			float3(x1 - d, y0 + d, 0), col,
-			float3(x1 + d, y1 + d, 0), col,
-			float3(x1 - d, y1 - d, 0), col,
-			float3(x0 - d, y1 + d, 0), col,
-			float3(x0 + d, y1 - d, 0), col,
-			float3(x0 - d, y0 - d, 0), col,
-			float3(x0 + d, y0 + d, 0), col,
-		};
-		dev->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 8, vertices, sizeof(PCVertex));
-	} else {
-		PCVertex vertices[] = {
-			float3(x0, y0, 0), col,
-			float3(x1, y0, 0), col,
-			float3(x1, y1, 0), col,
-			float3(x0, y1, 0), col,
-		};
-		dev->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, vertices, sizeof(PCVertex));
-	}
-#elif 0
-	if (lineWidth > 0){
-		float d = 0.5f * lineWidth;
-		PCVertex vertices[] = {
-			D3DXFROMWINEVECTOR2(x0 - d, y0 - d),// color,
-			D3DXFROMWINEVECTOR2(x0 + d, y0 + d),// color,
-			D3DXFROMWINEVECTOR2(x1 + d, y0 - d),// color,
-			D3DXFROMWINEVECTOR2(x1 - d, y0 + d),// color,
-			D3DXFROMWINEVECTOR2(x1 + d, y1 + d),// color,
-			D3DXFROMWINEVECTOR2(x1 - d, y1 - d),// color,
-			D3DXFROMWINEVECTOR2(x0 - d, y1 + d),// color,
-			D3DXFROMWINEVECTOR2(x0 + d, y1 - d),// color,
-
-			D3DXFROMWINEVECTOR2(x0 - d, y0 - d),// color,
-			D3DXFROMWINEVECTOR2(x0 + d, y0 + d),// color,
-		};
-
-		DrawPrimitiveUP(PRIM_TRIANGLE_STRIP, 8, vertices, vertices, sizeof(PCVertex));
-	} else {
-#ifndef _MSC_VER
-		PCVertex vertices[] = {
-			D3DXFROMWINEVECTOR2(x0, y0), //color,
-			D3DXFROMWINEVECTOR2(x1, y0), //color,
-			D3DXFROMWINEVECTOR2(x1, y1), //color,
-			D3DXFROMWINEVECTOR2(x0, y1), //color,
-		};
-		DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCVertex));
-#else
-		PCVertex vertices[] = {
-			D3DXFROMWINEVECTOR2(x1, y0);
-			D3DXFROMWINEVECTOR2(x1, y1);
-			D3DXFROMWINEVECTOR2(x0, y0);
-			D3DXFROMWINEVECTOR2(x0, y0);
-			D3DXFROMWINEVECTOR2(x1, y1);
-			D3DXFROMWINEVECTOR2(x0, y1);
-		};
-		DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCVertex));
-#endif
-	}
-#else
-#ifndef _MSC_VER
-	PCVertex vertices[] = {
-		D3DXFROMWINEVECTOR2(x0, y0),
-		D3DXFROMWINEVECTOR2(x1, y0),
-		D3DXFROMWINEVECTOR2(x1, y1),
-		D3DXFROMWINEVECTOR2(x0, y1),
-	};
-	DrawPrimitiveUP(PRIM_TRIANGLE_FAN, 2, vertices, vertices, sizeof(PCVertex));
-#else
-		PCVertex vertices[] = {
-			D3DXFROMWINEVECTOR2(x1, y0),
-			D3DXFROMWINEVECTOR2(x1, y1),
-			D3DXFROMWINEVECTOR2(x0, y0),
-			D3DXFROMWINEVECTOR2(x0, y0),
-			D3DXFROMWINEVECTOR2(x1, y1),
-			D3DXFROMWINEVECTOR2(x0, y1),
-		};
-		DrawPrimitiveUP(PRIM_TRIANGLES, 2, vertices, vertices, sizeof(PCVertex));
-#endif
-#endif
-	return 0;
+	return DrawPrimitiveUP(PRIM_LINE_STRIP, 4, &rectPoints[0], &rectPoints[0], sizeof(D3DXFROMWINEVECTOR2));
 }
 
 unsigned int RendererHLSLCg::drawRoundRectVrtl(const float x0, const float y0, const float x1, const float y1, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth){

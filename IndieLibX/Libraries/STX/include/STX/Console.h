@@ -1,6 +1,6 @@
 /*
  * TAR::Engine - Free C++ 3D engine ;
- * Copyright (C) 2007 Tommi Roenty ;
+ * Copyright (C) 2007 Tuomas Roenty ;
  * This program is free software;
  * you can redistribute it and/or ;
  * modify it under the terms of the GNU General Public License ;
@@ -18,7 +18,7 @@
  * Foundation, Inc., ;
  * 59 Temple Place - Suite 330, ;
  * Boston, MA 02111-1307, USA. ;
- * E-mail : tommi.ronty@iki.fi ;
+ * E-mail : tuomas.ronty@iki.fi ;
  */
 #if defined(_WIN32)
 #ifndef CONSOLE_H

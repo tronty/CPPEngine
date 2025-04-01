@@ -2,7 +2,7 @@
 // Example code for the OpenGL Shading Language Cookbook - 2nd Edition (3rd Edition now available) 
 // https://github.com/daw42/glslcookbook
 /*
-  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2019 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

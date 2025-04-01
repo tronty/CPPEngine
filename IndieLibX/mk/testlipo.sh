@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2016 Tommi Roenty   http://www.elisanet.fi/tommi.ronty/
+# Copyright (c) 2016 Tuomas Roenty   http://www.elisanet.fi/tuomas.ronty/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #

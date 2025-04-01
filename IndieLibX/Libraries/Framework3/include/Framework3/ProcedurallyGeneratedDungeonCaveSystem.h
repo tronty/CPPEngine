@@ -4,7 +4,7 @@
 // https://gamedevelopment.tutsplus.com/tutorials/create-a-procedurally-generated-dungeon-cave-system--gamedev-10099
 
 /*
-  Copyright (c) 2018 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2018 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

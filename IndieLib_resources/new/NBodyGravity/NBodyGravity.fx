@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
 /*
-  Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

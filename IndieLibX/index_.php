@@ -2,7 +2,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>IndieLibX</title>
 <style type="text/css">
-body {font-family: helvetica, arial, sans-serif; color: black; background-color: #000000; background: url(http://www.tommironty.fi/field.gif) black; background-attachment: fixed }
+body {font-family: helvetica, arial, sans-serif; color: black; background-color: #000000; background: url(http://www.tuomasronty.fi/field.gif) black; background-attachment: fixed }
 h1 {font-size: 200%; font-weight: bold; font-style: italic; color: #488B9B;
   margin-bottom: 0}
    h2 {margin-top: 0; margin-bottom: .4em; font-style:italic;  color: #488B9B;}
@@ -18,7 +18,7 @@ h1 {font-size: 200%; font-weight: bold; font-style: italic; color: #488B9B;
 	     a:visited {color: #9820c8; font-weight: bold}
 	     p,address {color: lime; font-weight: bold}
 </style>
-<!-- meta http-equiv="refresh" content="0; url=http://www.tommironty.fi/" -->
+<!-- meta http-equiv="refresh" content="0; url=http://www.tuomasronty.fi/" -->
 </head>
 
 <body>
@@ -85,15 +85,15 @@ include("/public_html/counter.php");
 
 
 -->
-<tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/history.html">History</a></p></td></tr>
-<tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/screenshots/screenshots_.html">Screenshots</a></p></td></tr>
-<tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/screenshots/DirectX.html">DirectX</a></p></td></tr>
+<tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/history.html">History</a></p></td></tr>
+<tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/screenshots/screenshots_.html">Screenshots</a></p></td></tr>
+<tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/screenshots/DirectX.html">DirectX</a></p></td></tr>
 
     <tr><td><p align="CENTER">Some prequisities for the IndieLibX 2D and 3D game engine:</p></td></tr>
 
 <tr><td><p align="CENTER"><a target="_blank" href="https://www.libsdl.org/release/SDL2-2.0.8.tar.gz">SDL2-2.0.8.zip</a></p></td></tr>
-<tr><td><p align="CENTER"><a target="_blank" href="http://www.tommironty.fi/native-activity.zip">native-activity.zip</a></p></td></tr>
-<tr><td><p align="CENTER"><a target="_blank" href="http://www.tommironty.fi/Lesson01.zip">Lesson01.zip</a></p></td></tr>
+<tr><td><p align="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/native-activity.zip">native-activity.zip</a></p></td></tr>
+<tr><td><p align="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/Lesson01.zip">Lesson01.zip</a></p></td></tr>
 
 <!-- TR><TD><P ALIGN="CENTER"><a target="_blank" href="hello-GLES2.zip">hello-GLES2.zip</a></P></TD></TR>
 
@@ -113,24 +113,24 @@ include("/public_html/counter.php");
     -->
 
     <!--
-<TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX.zip'>./IndieLibX.zip</A></TD><TD>207441730</TD><TD>207441730</TD><TD>February 01 2020 02:07:33.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLib_resources.zip'>./IndieLib_resources.zip</A></TD><TD>264165954</TD><TD>264165954</TD><TD>January 31 2020 03:27:29.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_LNX32.zip'>./IndieLibX_AllLibs_LNX32.zip</A></TD><TD>61350632</TD><TD>61350632</TD><TD>January 27 2020 07:00:01.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_LNX64.zip'>./IndieLibX_AllLibs_LNX64.zip</A></TD><TD>65853995</TD><TD>65853995</TD><TD>January 27 2020 06:58:33.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_NDK.zip'>./IndieLibX_AllLibs_NDK.zip</A></TD><TD>167460347</TD><TD>167460347</TD><TD>January 27 2020 06:57:37.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_OSX.zip'>./IndieLibX_AllLibs_OSX.zip</A></TD><TD>40133191</TD><TD>40133191</TD><TD>January 27 2020 06:59:55.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_iOS.zip'>./IndieLibX_AllLibs_iOS.zip</A></TD><TD>78633314</TD><TD>78633314</TD><TD>January 27 2020 06:56:38.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tommironty.fi/./IndieLibX_AllLibs_WIN64.zip'>./IndieLibX_AllLibs_WIN64.zip</A></TD><TD>27457267</TD><TD>27457267</TD><TD>January 27 2020 07:00:50.</P></TD></TR>    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX.zip">IndieLibX.zip</a></P></TD></TR>
+<TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX.zip'>./IndieLibX.zip</A></TD><TD>207441730</TD><TD>207441730</TD><TD>February 01 2020 02:07:33.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLib_resources.zip'>./IndieLib_resources.zip</A></TD><TD>264165954</TD><TD>264165954</TD><TD>January 31 2020 03:27:29.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_LNX32.zip'>./IndieLibX_AllLibs_LNX32.zip</A></TD><TD>61350632</TD><TD>61350632</TD><TD>January 27 2020 07:00:01.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_LNX64.zip'>./IndieLibX_AllLibs_LNX64.zip</A></TD><TD>65853995</TD><TD>65853995</TD><TD>January 27 2020 06:58:33.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_NDK.zip'>./IndieLibX_AllLibs_NDK.zip</A></TD><TD>167460347</TD><TD>167460347</TD><TD>January 27 2020 06:57:37.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_OSX.zip'>./IndieLibX_AllLibs_OSX.zip</A></TD><TD>40133191</TD><TD>40133191</TD><TD>January 27 2020 06:59:55.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_iOS.zip'>./IndieLibX_AllLibs_iOS.zip</A></TD><TD>78633314</TD><TD>78633314</TD><TD>January 27 2020 06:56:38.</P></TD></TR><TR><TD><P ALIGN='CENTER'><A TARGET='_blank' HREF='http://tuomasronty.fi/./IndieLibX_AllLibs_WIN64.zip'>./IndieLibX_AllLibs_WIN64.zip</A></TD><TD>27457267</TD><TD>27457267</TD><TD>January 27 2020 07:00:50.</P></TD></TR>    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX.zip">IndieLibX.zip</a></P></TD></TR>
     
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLib_resources.zip">IndieLib_resources.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLib_resources.zip">IndieLib_resources.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_LNX32.zip">IndieLibX_AllLibs_LNX32.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_LNX32.zip">IndieLibX_AllLibs_LNX32.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_LNX64.zip">IndieLibX_AllLibs_LNX64.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_LNX64.zip">IndieLibX_AllLibs_LNX64.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_OSX.zip">IndieLibX_AllLibs_OSX.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_OSX.zip">IndieLibX_AllLibs_OSX.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_NDK.zip">IndieLibX_AllLibs_NDK.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_NDK.zip">IndieLibX_AllLibs_NDK.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_iOS.zip">IndieLibX_AllLibs_iOS.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_iOS.zip">IndieLibX_AllLibs_iOS.zip</a></P></TD></TR>
 
-    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tommironty.fi/IndieLibX_AllLibs_WIN64.zip">IndieLibX_AllLibs_WIN64.zip</a></P></TD></TR>
+    <TR><TD><P ALIGN="CENTER"><a target="_blank" href="http://www.tuomasronty.fi/IndieLibX_AllLibs_WIN64.zip">IndieLibX_AllLibs_WIN64.zip</a></P></TD></TR>
 
     -->
-    <tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/download.php">IndieLibX downloads</a></p></td></tr>
+    <tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/download.php">IndieLibX downloads</a></p></td></tr>
 
     <tr><td><p align="CENTER">How to make image files for IndieLibX 2D animations in PNG format:</p></td></tr>
 
@@ -172,9 +172,9 @@ include("/public_html/counter.php");
 
     <tr><td><p align="CENTER">How to convert 3DS format files to X format:</p></td></tr>
 
-    <tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/conv3ds.txt">conv3ds.txt</a></p></td></tr>
+    <tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/conv3ds.txt">conv3ds.txt</a></p></td></tr>
 
-    <tr><td><p align="CENTER"><a target="_blank" href="http://tommironty.fi/conv3ds.exe">conv3ds.exe</a></p></td></tr>
+    <tr><td><p align="CENTER"><a target="_blank" href="http://tuomasronty.fi/conv3ds.exe">conv3ds.exe</a></p></td></tr>
 
     <tr><td><p align="CENTER">Note that the -x option forces conv3ds to produce a text X file, not a binary
 X file. Text files are larger but can be hand edited easily.</p></td></tr>

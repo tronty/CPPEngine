@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -27,9 +27,9 @@ ccc=0
 g_node=0
 g_solution=''
 drive,tail=os.path.splitdrive(os.path.expanduser("~"))
-# C:\Users\tommi\OneDrive\Tiedostot\lib
+# C:\Users\tuomas\OneDrive\Tiedostot\lib
 # drive, tail
-# C: \Users\tommi\Documents\lib
+# C: \Users\tuomas\Documents\lib
 msdocspath=os.path.expanduser("~")+'\\Documents\\lib'
 
 SDL2version=''
@@ -6036,7 +6036,7 @@ Usage: ./make.sh -> Removes Temporary Files.
 def install():
 	txt='''#!/bin/bash
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -6983,7 +6983,7 @@ tronty@X16:~/Downloads/android-ndk-r15b$ find . -name libvulkan.so
 
 
 
-Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
+Tuomas'-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
 ./platforms/android-24/arch-arm/usr/lib/libvulkan.so
 ./platforms/android-24/arch-arm64/usr/lib/libvulkan.so
 ./platforms/android-24/arch-mips/usr/lib/libvulkan.so
@@ -6996,8 +6996,8 @@ Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
 ./platforms/android-26/arch-mips64/usr/lib64/libvulkan.so
 ./platforms/android-26/arch-x86/usr/lib/libvulkan.so
 ./platforms/android-26/arch-x86_64/usr/lib64/libvulkan.so
-Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.a
-Tommis-Mac-mini:android-ndk-r15b tronty$
+Tuomas'-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.a
+Tuomas'-Mac-mini:android-ndk-r15b tronty$
 
 tronty@ubuntu16:~/IndieLibX$ find . -name vulkan-1.lib
 ./Dependencies/vulkan/vulkan-1.lib

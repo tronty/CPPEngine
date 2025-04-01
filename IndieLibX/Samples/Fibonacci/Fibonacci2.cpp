@@ -1,6 +1,6 @@
 // https://hbfs.wordpress.com/2014/12/23/fibonacci-rabbits-as-a-rewrite-system/
 /*
-  Copyright (c) 2016 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2016 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

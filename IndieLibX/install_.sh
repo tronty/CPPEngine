@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2019 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -75,8 +75,8 @@ DISPLAY_MANAGER="lightdm"
 SDL2_IMAGE_VERSION="2.0.5"
 NDK_VERSION="r9d"
 ANDROID_NDK_URL="http://dl.google.com/android/ndk/android-ndk-$NDK_VERSION-$OS_-$bitness.tar.bz2"
-INDIELIBX_URL="http://tommironty.fi/IndieLibX.zip"
-INDIELIB_RESOURCES_URL="http://tommironty.fi/IndieLib_resources.zip"
+INDIELIBX_URL="http://tuomasronty.fi/IndieLibX.zip"
+INDIELIB_RESOURCES_URL="http://tuomasronty.fi/IndieLib_resources.zip"
 AMDVLK_DRIVER="amdvlk_2019.Q3.2_amd64.deb"
 AMDVLK_DRIVER_URL="https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2019.Q3.2/$AMDVLK_DRIVER"
 NVIDIA_DRIVER="NVIDIA-Linux-$bitness-390.129.run"

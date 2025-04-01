@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2019 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2019 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
@@ -21,7 +21,20 @@ public:
 	{
 		IRenderer::GetRendererInstance()->Clear(true,true, D3DXFROMWINEVECTOR4(0.35f, 0.53f, 0.7, 1.0f));
 		IRenderer::GetRendererInstance()->BeginScene();
-#if 1
+#if 0
+	virtual unsigned int drawLineVrtl(const float x0, const float y0, const float x1, const float y1, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+	virtual unsigned int drawRectVrtl(const float x0, const float y0, const float x1, const float y1, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+	virtual unsigned int drawRoundRectVrtl(const float x0, const float y0, const float x1, const float y1, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+
+virtual unsigned int drawEllipseVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+virtual unsigned int drawParaboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+virtual unsigned int drawHyperboleVrtl(const float originx, const float originy, const float width, const float height, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+virtual unsigned int drawBezierVrtl(D3DXFROMWINEVECTOR2 anchor1, D3DXFROMWINEVECTOR2 anchor2, D3DXFROMWINEVECTOR2 control1, D3DXFROMWINEVECTOR2 control2, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+
+	virtual unsigned int drawCircleVrtl(const float x, const float y, const float r, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+	virtual unsigned int drawTriangleVrtl(const float x0, const float y0, const float x1, const float y1, const float x2, const float y2, const D3DXFROMWINEVECTOR4 &color, const float lineWidth);
+	virtual unsigned int drawQuadVrtl(const float x0, const float y0, const float x1, const float y1, const float s0, const float t0, const float s1, const float t1, const D3DXFROMWINEVECTOR4 &color);
+#elif 1
 IRenderer::GetRendererInstance()->drawParabole(100.0f, 25.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 IRenderer::GetRendererInstance()->drawParabole(200.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));
 IRenderer::GetRendererInstance()->drawParabole(300.0f, 50.0f, 25, 50, D3DXFROMWINEVECTOR4(1,1,1,1));

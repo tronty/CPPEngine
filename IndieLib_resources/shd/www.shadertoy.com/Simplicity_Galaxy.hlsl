@@ -1,6 +1,6 @@
 #define texture(a1,a2) tex2D(a1,a2)
 /*
-  Copyright (c) 2022 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2022 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

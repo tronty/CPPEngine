@@ -1,5 +1,5 @@
 rem
-rem Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+rem Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 rem Licensed under The GNU Lesser General Public License, version 2.1:
 rem     http://opensource.org/licenses/LGPL-2.1
 rem

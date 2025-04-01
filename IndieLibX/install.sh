@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
 
-url="http://www.tommironty.fi"
+url="http://www.tuomasronty.fi"
 sdlurl="https://www.libsdl.org"
 androidurl="http://dl.google.com/android"
 adt="20131030"

@@ -1,5 +1,5 @@
 //if defined(GLCG1_1)
-#if (!defined(_MSC_VER) && !defined(__APPLE__) && !defined(ANDROID) && !defined(OS_IPHONE) && !defined(IPHONE_SIMULATOR))
+#if 0 // (!defined(_MSC_VER) && !defined(__APPLE__) && !defined(ANDROID) && !defined(OS_IPHONE) && !defined(IPHONE_SIMULATOR))
 /* * * * * * * * * * * * * Author's note * * * * * * * * * * * *\
 *   _       _   _       _   _       _   _       _     _ _ _ _   *
 *  |_|     |_| |_|     |_| |_|_   _|_| |_|     |_|  _|_|_|_|_|  *
@@ -20,7 +20,7 @@
 *                                                                *
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*
-  Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */

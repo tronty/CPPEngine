@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -20,16 +20,16 @@ import platform
 g_renderer=os.getenv("g_renderer", "GLSL1_1")
 if False:
 	cl="g_renderer=%s" % g_renderer
-	print cl
+	print(cl)
 	exit(0)
 
 ccc=0
 g_node=0
 g_solution=''
 drive,tail=os.path.splitdrive(os.path.expanduser("~"))
-# C:\Users\tommi\OneDrive\Tiedostot\lib
+# C:\Users\tuomas\OneDrive\Tiedostot\lib
 # drive, tail
-# C: \Users\tommi\Documents\lib
+# C: \Users\tuomas\Documents\lib
 msdocspath=os.path.expanduser("~")+'\\Documents\\lib'
 
 SDL2version=''
@@ -44,7 +44,7 @@ def osmakedirs(fn):
 		os.makedirs(fn)
 
 def ossystem(cmd):
-	print cmd
+	print(cmd)
 	os.system(cmd)
 
 def ossystem2(cmd):
@@ -108,12 +108,12 @@ def copy_(src, dst):
 	ossystem('cp -fr '+src+' '+dst)
 
 def load(file):
-    xml_file = os.path.abspath(file)
-    f=open(xml_file,'r')
-    lines=f.readlines()
-    f.close()
-    lXmlAsString=string.join(lines,'')
-    return lXmlAsString
+	xml_file = os.path.abspath(file)
+	f=open(xml_file,'r')
+	lines=f.readlines()
+	f.close()
+	lXmlAsString=string.join(lines,'')
+	return lXmlAsString
 
 def cnf():
 	txt=''
@@ -619,8 +619,8 @@ class Configuration:
 
 
     def usage(self):
-	print "usage: python Projects.py --solution <solution> --buildtool <buildtool> --platform <LNX|MW|OSX|WIN|NDK|iOS> --renderer <GLCG1_1|GLSL1_1|GLSL4_5|GLES2|GLES3_2|D3D9|D3D10|D3D11|D3D12|VULKAN|METAL>"
-	#print "usage: python Projects.py --buildproject <buildproject> --mainphoneproject <string> --package <string> --WindowsPhone <True|False> --iOS <True|False> --OpenAL <True|False> --SDL2 <True|False> --GLES2 <True|False> --apps <True|False> --iPhoneSimulator <True|False> --MVC <True|False> --TargetDirectory <string> --NDKPlatform <string>"
+	print("usage: python(Projects.py --solution <solution> --buildtool <buildtool> --platform <LNX|MW|OSX|WIN|NDK|iOS> --renderer <GLCG1_1|GLSL1_1|GLSL4_5|GLES2|GLES3_2|D3D9|D3D10|D3D11|D3D12|VULKAN|METAL>(")
+	#print("usage: python(Projects.py --buildproject <buildproject> --mainphoneproject <string> --package <string> --WindowsPhone <True|False> --iOS <True|False> --OpenAL <True|False> --SDL2 <True|False> --GLES2 <True|False> --apps <True|False> --iPhoneSimulator <True|False> --MVC <True|False> --TargetDirectory <string> --NDKPlatform <string>)")
 
     def settextfromxml(self,node):
 	self.text=''
@@ -6036,7 +6036,7 @@ Usage: ./make.sh -> Removes Temporary Files.
 def install():
 	txt='''#!/bin/bash
 #
-# Copyright (c) 2015 Tommi Roenty   http://www.tommironty.fi/
+# Copyright (c) 2015 Tuomas Roenty   http://www.tuomasronty.fi/
 # Licensed under The GNU Lesser General Public License, version 2.1:
 #     http://opensource.org/licenses/LGPL-2.1
 #
@@ -6983,7 +6983,7 @@ tronty@X16:~/Downloads/android-ndk-r15b$ find . -name libvulkan.so
 
 
 
-Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
+Tuomas'-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
 ./platforms/android-24/arch-arm/usr/lib/libvulkan.so
 ./platforms/android-24/arch-arm64/usr/lib/libvulkan.so
 ./platforms/android-24/arch-mips/usr/lib/libvulkan.so
@@ -6996,8 +6996,8 @@ Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.so
 ./platforms/android-26/arch-mips64/usr/lib64/libvulkan.so
 ./platforms/android-26/arch-x86/usr/lib/libvulkan.so
 ./platforms/android-26/arch-x86_64/usr/lib64/libvulkan.so
-Tommis-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.a
-Tommis-Mac-mini:android-ndk-r15b tronty$
+Tuomas'-Mac-mini:android-ndk-r15b tronty$ find . -name libvulkan.a
+Tuomas'-Mac-mini:android-ndk-r15b tronty$
 
 tronty@ubuntu16:~/IndieLibX$ find . -name vulkan-1.lib
 ./Dependencies/vulkan/vulkan-1.lib

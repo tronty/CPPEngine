@@ -37,7 +37,7 @@ def replaceStringInFile(filePath):
     outtext=re.sub(r'/resources/images/', '/', outtext)
     
     outtext1='''/*
-  Copyright (c) 2021 Tommi Roenty   http://www.tommironty.fi/
+  Copyright (c) 2021 Tuomas Roenty   http://www.tuomasronty.fi/
   Licensed under The GNU Lesser General Public License, version 2.1:
       http://opensource.org/licenses/LGPL-2.1
 */
